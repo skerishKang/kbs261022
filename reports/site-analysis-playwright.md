@@ -4,7 +4,7 @@
 - **담당**: CGI-2 모델 (Playwright 브라우저 분석)
 - **작성일**: 2026-10-22
 - **브라우저**: Playwright 1.64.1 / Chrome for Testing 156.0.8078.4 (Chromium 1248)
-- **산출물**: 본 문서, `reports/data/samastore-playwright-sample.csv` (20건), `reports/data/api-browser-parity.csv` (40건), `tools/playwright/` (재실행 스크립트), `reports/screenshots/` (검증 스크린샷 51장), `reports/evidence/` (원자료 JSON/JSONL)
+- **산출물**: 본 문서, `reports/data/samastore-playwright-sample.csv` (20건), `reports/data/api-browser-parity.csv` (40건), `tools/playwright/` (재실행 스크립트), `reports/screenshots/` (검증 스크린샷 60장), `reports/evidence/` (원자료 JSON/JSONL)
 
 > **모든 수치는 실측값이다.** 추정해야 하는 항목은 "미확정"으로 명시했다.
 > 가격·재고·취급 권한이 확인되지 않은 항목은 추정하지 않았다.
@@ -305,7 +305,8 @@ product 4167 (PreSonus Eris 3.5) 페이지의 select 3개:
 | 4056 | 1 | ✅ | OutOfStock | `SOLD OUT` | 일치 |
 | **합계** | **12** | **12** | 11/12 | 12/12 | **일치 12/12, 오탐 0건** |
 
-스크린샷: `reports/screenshots/soldout-detail-{1119,1304,3184,4115,4385}.jpg`
+스크린샷: `reports/screenshots/soldout-detail-{1119,1304,3184,4056,4115,4385}.jpg`
+재현 스크립트: `tools/playwright/verify-soldout.js` (상세 6/6건 품절 배지 확인, 목록 5카테고리에서 배지 0건)
 
 #### (c) 목록 페이지에서는 품절 배지가 안 보인다
 
@@ -549,6 +550,8 @@ node compare-api-browser.js --sample 40                                    # →
 node verify-final.js                                                       # 이미지/도메인/SSR 검증
 node verify-search.js && node verify-search-price.js                        # 검색·검색결함 검증
 node collect-screenshots.js && node consolidate.js                          # 증거 정리
+node regen-sample-table.js                                                 # 표본 표 재생성
+node verify-report-consistency.js                                          # 보고서-데이터 일관성 23항목
 ```
 
 ### 5.3 안전장치
@@ -607,9 +610,11 @@ node collect-screenshots.js && node consolidate.js                          # �
 | `reports/site-analysis-playwright.md` | 본 문서 (고객용 PART 1 + AI 검토용 PART 2) |
 | `reports/data/samastore-playwright-sample.csv` | 브라우저 수집 20건 (58컬럼, UTF-8 BOM) |
 | `reports/data/api-browser-parity.csv` | API↔브라우저 행 단위 대조 40건 |
-| `reports/screenshots/` | 검증 스크린샷 51장 (JPEG 압축, 3.51 MB) |
+| `reports/screenshots/` | 검증 스크린샷 60장 (JPEG 압축, 4.03 MB) |
 | `reports/evidence/consolidated.json` | 모든 수치가 모인 단일 JSON |
 | `reports/evidence/crosscheck-samasound.json` | 삼아사운드(B2B) 가격 공개 여부 교차 대조 원자료 |
+| `reports/evidence/soldout-render.json` | 품절 배지·구매영역·JSON-LD 3중 표시 검증 (상세 6건 + 목록 5카테고리) |
+| `reports/evidence/option-scope.json` | 옵션 스코프(본인 vs 크로스셀) 판별 근거 |
 | `reports/evidence/search-verification.json` | 검색 3건 실측(정상 2 + 무결과 1) |
 | `reports/evidence/search-price-defect.json` | 검색 결과 페이지 정적 속성 오염 증명 |
 | `reports/evidence/*.json` | 도메인·카테고리·검색·패리티·최종검증 원자료 |
@@ -618,6 +623,7 @@ node collect-screenshots.js && node consolidate.js                          # �
 | `reports/evidence/screenshot-manifest.json` | 스크린샷 선별 근거 |
 | `tools/playwright/` | 재실행 스크립트 전체 (README 포함) |
 | `tools/playwright/test-extractors.js` | 파서 단위 테스트 36건 |
+| `tools/playwright/verify-report-consistency.js` | 보고서-데이터 일관성 검증 23항목 (표본 표 20행을 원본과 셀 단위 대조) |
 
 ## 8. 제약 준수 기록
 

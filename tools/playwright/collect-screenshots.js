@@ -47,6 +47,9 @@ for (const f of files) {
     if (ownOptionIds.has(id)) { keep = true; reason = 'own option group'; }
   } else if (/^soldout-detail-(\d+)\.png$/.test(f)) { keep = true; reason = 'sold-out evidence'; }
   else if (/^soldout-list-cate-/.test(f)) { keep = true; reason = 'sold-out list evidence'; }
+  else if (/^crosscheck-samasound-/.test(f)) { keep = true; reason = 'samasound B2B cross-check'; }
+  else if (/^verify-search-price-defect\.png$/.test(f)) { keep = true; reason = 'search price attribute defect'; }
+  else if (/^verify-search-/.test(f)) { keep = true; reason = 'search verification'; }
 
   if (keep) {
     // compress straight to JPEG (max width 1280, q78) so the evidence stays small

@@ -14,8 +14,8 @@
     "is_g2g": false,
     "nav_link_count": 11,
     "first_product_no": "3712",
-    "html_bytes": 1611366,
-    "html_sha256": "f1821503cdc10772",
+    "html_bytes": 1612042,
+    "html_sha256": "824a810088399f3c",
     "screenshot": "domain-samamusic_www.png"
   },
   {
@@ -33,8 +33,8 @@
     "is_g2g": false,
     "nav_link_count": 11,
     "first_product_no": "3712",
-    "html_bytes": 1612053,
-    "html_sha256": "30d194756c7b3782",
+    "html_bytes": 1612019,
+    "html_sha256": "421b16d81cb37b0a",
     "screenshot": "domain-samamusic_apex.png"
   },
   {
@@ -52,8 +52,8 @@
     "is_g2g": false,
     "nav_link_count": 11,
     "first_product_no": "3712",
-    "html_bytes": 1612024,
-    "html_sha256": "e67fee3be146147f",
+    "html_bytes": 1612019,
+    "html_sha256": "4b9d88072dc5ae4b",
     "screenshot": "domain-samastore_apex.png"
   },
   {
@@ -71,8 +71,8 @@
     "is_g2g": false,
     "nav_link_count": 11,
     "first_product_no": "3712",
-    "html_bytes": 1612072,
-    "html_sha256": "4f204770d06bb701",
+    "html_bytes": 1612042,
+    "html_sha256": "6106f8484d258dd8",
     "screenshot": "domain-samastore_www.png"
   },
   {
@@ -90,8 +90,8 @@
     "is_g2g": false,
     "nav_link_count": 0,
     "first_product_no": "3826",
-    "html_bytes": 1002559,
-    "html_sha256": "069d22809cac2723",
+    "html_bytes": 1002569,
+    "html_sha256": "3064cfcc0f82b924",
     "screenshot": "domain-samasound_www.png"
   }
 ]

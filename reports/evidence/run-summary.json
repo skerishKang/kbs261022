@@ -1,5 +1,5 @@
 {
-  "started_at": "2026-10-22T04:29:19.606Z",
+  "started_at": "2026-10-22T04:46:47.571Z",
   "tool": "playwright",
   "playwright_version": "1.64.1",
   "domains": [
@@ -18,8 +18,8 @@
       "is_g2g": false,
       "nav_link_count": 11,
       "first_product_no": "3712",
-      "html_bytes": 1611366,
-      "html_sha256": "f1821503cdc10772",
+      "html_bytes": 1612042,
+      "html_sha256": "824a810088399f3c",
       "screenshot": "domain-samamusic_www.png"
     },
     {
@@ -37,8 +37,8 @@
       "is_g2g": false,
       "nav_link_count": 11,
       "first_product_no": "3712",
-      "html_bytes": 1612053,
-      "html_sha256": "30d194756c7b3782",
+      "html_bytes": 1612019,
+      "html_sha256": "421b16d81cb37b0a",
       "screenshot": "domain-samamusic_apex.png"
     },
     {
@@ -56,8 +56,8 @@
       "is_g2g": false,
       "nav_link_count": 11,
       "first_product_no": "3712",
-      "html_bytes": 1612024,
-      "html_sha256": "e67fee3be146147f",
+      "html_bytes": 1612019,
+      "html_sha256": "4b9d88072dc5ae4b",
       "screenshot": "domain-samastore_apex.png"
     },
     {
@@ -75,8 +75,8 @@
       "is_g2g": false,
       "nav_link_count": 11,
       "first_product_no": "3712",
-      "html_bytes": 1612072,
-      "html_sha256": "4f204770d06bb701",
+      "html_bytes": 1612042,
+      "html_sha256": "6106f8484d258dd8",
       "screenshot": "domain-samastore_www.png"
     },
     {
@@ -94,8 +94,8 @@
       "is_g2g": false,
       "nav_link_count": 0,
       "first_product_no": "3826",
-      "html_bytes": 1002559,
-      "html_sha256": "069d22809cac2723",
+      "html_bytes": 1002569,
+      "html_sha256": "3064cfcc0f82b924",
       "screenshot": "domain-samasound_www.png"
     }
   ],
@@ -275,8 +275,8 @@
           },
           {
             "label": "할인 기간",
-            "value": "남은시간 29일 10:27:12 (500,000원 할인)2026-10-19 00:00 ~ 2026-11-20 23:55",
-            "visible_value": "남은시간 29일 10:27:12 (500,000원 할인) 2026-10-19 00:00 ~ 2026-11-20 23:55"
+            "value": "남은시간 29일 10:07:00 (500,000원 할인)2026-10-19 00:00 ~ 2026-11-20 23:55",
+            "visible_value": "남은시간 29일 10:07:00 (500,000원 할인) 2026-10-19 00:00 ~ 2026-11-20 23:55"
           },
           {
             "label": "브랜드",
@@ -319,7 +319,7 @@
           "판매가": "2,490,000원",
           "소비자가": "2,770,000원",
           "할인판매가": "1,990,000원 (500,000원 할인)",
-          "할인 기간": "남은시간 29일 10:27:12 (500,000원 할인)2026-10-19 00:00 ~ 2026-11-20 23:55",
+          "할인 기간": "남은시간 29일 10:07:00 (500,000원 할인)2026-10-19 00:00 ~ 2026-11-20 23:55",
           "브랜드": "APOGEE",
           "모델명": "Symphony Desktop",
           "적합인증번호": "R-R-sDI-Symphony-DT",
@@ -9171,11 +9171,11 @@
           "declared_sold_out": false,
           "observed_price_text": "1,290,000원",
           "observed_price_numeric": 1290000,
-          "observed_option_box_price": null,
-          "observed_item_code": null,
-          "observed_total_text": "총상품금액 0원 (0개)",
+          "observed_option_box_price": 1290000,
+          "observed_item_code": "P0000GTI000A",
+          "observed_total_text": "총상품금액 1,290,000원 (1개)",
           "visible_sold_out_badges": 0,
-          "option_rejected": true
+          "option_rejected": false
         },
         {
           "option_label": "월넛",
@@ -9185,8 +9185,8 @@
           "observed_price_text": "1,290,000원",
           "observed_price_numeric": 1290000,
           "observed_option_box_price": 1290000,
-          "observed_item_code": "P0000GTI000A",
-          "observed_total_text": "총상품금액 2,580,000원 (2개)",
+          "observed_item_code": "P0000GTI000D",
+          "observed_total_text": "총상품금액 1,290,000원 (1개)",
           "visible_sold_out_badges": 0,
           "option_rejected": false
         }
@@ -9217,15 +9217,15 @@
           "declared_sold_out": false,
           "observed_price_text": "1,290,000원",
           "observed_price_numeric": 1290000,
-          "observed_option_box_price": null,
-          "observed_item_code": null,
-          "observed_total_text": "총상품금액 0원 (0개)",
+          "observed_option_box_price": 1290000,
+          "observed_item_code": "P0000GTI000A",
+          "observed_total_text": "총상품금액 1,290,000원 (1개)",
           "visible_sold_out_badges": 0,
-          "option_rejected": true,
+          "option_rejected": false,
           "base_option_box_price": 1290000,
           "effective_option_price": 1290000,
-          "delta_vs_base": null,
-          "matches_declared_delta": null,
+          "delta_vs_base": 0,
+          "matches_declared_delta": true,
           "visible_price_reacts_to_option": false
         },
         {
@@ -9236,8 +9236,8 @@
           "observed_price_text": "1,290,000원",
           "observed_price_numeric": 1290000,
           "observed_option_box_price": 1290000,
-          "observed_item_code": "P0000GTI000A",
-          "observed_total_text": "총상품금액 2,580,000원 (2개)",
+          "observed_item_code": "P0000GTI000D",
+          "observed_total_text": "총상품금액 1,290,000원 (1개)",
           "visible_sold_out_badges": 0,
           "option_rejected": false,
           "base_option_box_price": 1290000,
@@ -11833,5 +11833,5 @@
   ],
   "csv": "D:\\1022\\1022-2\\kbs261022\\reports\\data\\samastore-playwright-sample.csv",
   "row_count": 20,
-  "finished_at": "2026-10-22T04:31:26.531Z"
+  "finished_at": "2026-10-22T04:49:07.285Z"
 }

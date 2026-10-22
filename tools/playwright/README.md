@@ -50,10 +50,16 @@ node verify-option-scope.js
 node capture-search-network.js
 node verify-search-price.js
 
+# 3e) 품절 표시 검증 (상세 배지 / 구매영역 SOLD OUT / JSON-LD OutOfStock)
+node verify-soldout.js
+
 # 4) 증거 정리 (스크린샷 선별 + 압축, JSON 통합, 보고서 표 재생성)
 node collect-screenshots.js
 node consolidate.js
 node regen-sample-table.js
+
+# 5) 보고서-데이터 일관성 검증 (표본 표 20행을 원본과 셀 단위 대조 + 핵심 수치 23항목)
+node verify-report-consistency.js
 ```
 
 ### CLI 옵션
@@ -87,12 +93,14 @@ node regen-sample-table.js
 | `verify-final.js` | 이미지 HTTP 응답, 두 도메인 상품 동일성, SSR HTML vs 렌더 DOM |
 | `verify-search.js` | 검색 3건(정상 2 + 무결과 1) 실측, "검색결과 없음" 메시지 토글 확인 |
 | `verify-search-price.js` | 검색 결과 카드의 정적 속성 오염(`data-price` 전부 `^1,050,000`) 증명 |
+| `verify-soldout.js` | 품절 표시 3중(배지·`SOLD OUT`·JSON-LD) 확인 + 목록 페이지에 배지가 없는 사실 확인 |
 | `verify-option-scope.js` | 옵션 스코프 증명 — `product_option_id*`(본인) vs `addproduct_option_id_*`(크로스셀) |
 | `capture-search-network.js` | 상점이 실제로 호출하는 공개 JSON 엔드포인트(`/dcse/query`) 네트워크 캡처 |
 | `crosscheck-samasound.js` | 삼아사운드(B2B) 가격 공개 여부 교차 대조 |
 | `collect-screenshots.js` | 스크린샷 선별 + JPEG 압축 → `reports/screenshots/` |
 | `consolidate.js` | 모든 증거를 `reports/evidence/consolidated.json` 으로 통합 |
 | `regen-sample-table.js` | 보고서의 20건 표본 표를 원본 JSON 에서 자동 재생성 (드리프트 방지) |
+| `verify-report-consistency.js` | 보고서가 실측 데이터와 어긋나지 않는지 23개 항목으로 검증 (표본 표 셀 단위 대조 포함) |
 | `test-extractors.js` | 파서 단위 테스트 (36 assertion) |
 | `create-pr.js` / `update-pr.js` | git credential manager 가 보유한 자격증명으로 GitHub API 호출 (새 자격증명 없음) |
 | `verify-pr.js` | PR 메타데이터·변경 파일·병합 가능 상태 확인 |
