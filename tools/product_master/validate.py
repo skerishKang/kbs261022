@@ -16,11 +16,15 @@ import re
 from typing import Any, Iterable, Mapping, Optional, Sequence
 
 from .schema import (
+    BRAND_SOURCES,
+    MANUFACTURER_SOURCES,
     MASTER_FIELDS,
     PRICE_TYPES,
     REQUIRED_FIELDS,
     SITES,
+    SITE_BRAND_SOURCE,
     SITE_FIELD_AVAILABILITY,
+    SITE_MANUFACTURER_SOURCE,
     VERIFICATION_STATUSES,
     source_key,
 )
@@ -89,10 +93,34 @@ def validate_policy(record: Mapping[str, Any]) -> list[str]:
     availability = SITE_FIELD_AVAILABILITY[site]
 
     # --- 사이트에 없는 필드는 반드시 null 이어야 한다 (요구사항 2, 7) --------
-    if not availability["brand"] and record.get("brand") is not None:
-        errors.append(f"brand_not_offered_by_site:{record.get('brand')!r}")
+    # 브랜드는 예외적으로 "근거 수준"을 함께 기록한다.
+    #   brand_source='spec'      -> 브랜드 스펙행 값 (해당 스펙행이 있는 사이트만)
+    #   brand_source='category'  -> 브랜드 카테고리에서 파생 (samasound)
+    # 값이 있는데 근거가 기록되지 않았거나, 근거가 사이트와 맞지 않으면 위반.
+    brand = record.get("brand")
+    brand_source = record.get("brand_source")
+    expected_brand_source = SITE_BRAND_SOURCE.get(site, "none")
+    if brand_source is not None and brand_source not in BRAND_SOURCES:
+        errors.append(f"invalid_brand_source:{brand_source!r}")
+    if brand is None:
+        if brand_source not in (None, "none"):
+            errors.append(f"brand_source_without_value:{brand_source!r}")
+    else:
+        if brand_source != expected_brand_source:
+            errors.append(
+                f"brand_source_mismatch:{brand_source!r}!={expected_brand_source!r}"
+            )
+        if brand_source == "spec" and not availability["brand"]:
+            errors.append(f"brand_not_offered_by_site:{brand!r}")
     if not availability["manufacturer"] and record.get("manufacturer") is not None:
         errors.append(f"manufacturer_not_offered_by_site:{record.get('manufacturer')!r}")
+    manufacturer_source = record.get("manufacturer_source")
+    if manufacturer_source is not None and manufacturer_source not in MANUFACTURER_SOURCES:
+        errors.append(f"invalid_manufacturer_source:{manufacturer_source!r}")
+    if record.get("manufacturer") is None and manufacturer_source not in (None, "none"):
+        errors.append(f"manufacturer_source_without_value:{manufacturer_source!r}")
+    if record.get("manufacturer") is not None and manufacturer_source != "spec":
+        errors.append(f"manufacturer_source_mismatch:{manufacturer_source!r}!='spec'")
     if not availability["model"] and record.get("model") is not None:
         errors.append(f"model_not_offered_by_site:{record.get('model')!r}")
     if not availability["english_name"] and "영문상품명" in (record.get("specs") or {}):

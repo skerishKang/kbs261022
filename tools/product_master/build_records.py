@@ -282,6 +282,9 @@ def build_record(
         "availability": None,
         "extraction_time": extraction_time,
         "extraction_method": extraction_method,
+        # 근거 수준 기록: 값이 있어도 스펙행 기반인지 카테고리 파생인지 구분한다.
+        "brand_source": "spec" if brand else "none",
+        "manufacturer_source": "spec" if manufacturer else "none",
         "source_evidence": {
             "url": dump.get("final_url"),
             "page_title": dump.get("page_title"),
