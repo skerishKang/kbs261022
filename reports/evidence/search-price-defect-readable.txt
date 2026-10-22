@@ -1,0 +1,26 @@
+SEARCH cards:
+  card_id=anchorBoxId_4558 href_no=1118 dprice_id=dprice_1118 rendered=620,000원 data_price=^1,050,000
+  card_id=anchorBoxId_4558 href_no=4688 dprice_id=dprice_4688 rendered=620,000원 data_price=^1,050,000
+  card_id=anchorBoxId_4558 href_no=4239 dprice_id=dprice_4239 rendered=620,000원 data_price=^1,050,000
+  card_id=anchorBoxId_4558 href_no=2827 dprice_id=dprice_2827 rendered=620,000원 data_price=^1,050,000
+  card_id=anchorBoxId_4558 href_no=5396 dprice_id=dprice_5396 rendered=8,592,000원 data_price=^1,050,000
+  card_id=anchorBoxId_4558 href_no=2847 dprice_id=dprice_2847 rendered=8,500,000원 data_price=^1,050,000
+  card_id=anchorBoxId_4558 href_no=1129 dprice_id=dprice_1129 rendered=3,960,000원 data_price=^1,050,000
+  card_id=anchorBoxId_4558 href_no=1132 dprice_id=dprice_1132 rendered=5,160,000원 data_price=^1,050,000
+  card_id=anchorBoxId_4558 href_no=2844 dprice_id=dprice_2844 rendered=5,160,000원 data_price=^1,050,000
+  card_id=anchorBoxId_4558 href_no=4429 dprice_id=dprice_4429 rendered=5,160,000원 data_price=^1,050,000
+  card_id=anchorBoxId_4558 href_no=1127 dprice_id=dprice_1127 rendered=2,670,000원 data_price=^1,050,000
+  card_id=anchorBoxId_4558 href_no=2841 dprice_id=dprice_2841 rendered=2,670,000원 data_price=^1,050,000
+CATEGORY cards:
+  card_id=anchorBoxId_4167 data_price=^219000 prices=["219,000원"]
+  card_id=anchorBoxId_4168 data_price=^249000 prices=["249,000원"]
+  card_id=anchorBoxId_974 data_price=^219000 prices=["219,000원"]
+  card_id=anchorBoxId_1562 data_price=^249000 prices=["249,000원"]
+  card_id=anchorBoxId_1118 data_price=^620000 prices=["620,000원"]
+  card_id=anchorBoxId_2827 data_price=^620000 prices=["620,000원"]
+  card_id=anchorBoxId_2828 data_price=^950000 prices=["950,000원"]
+  card_id=anchorBoxId_1120 data_price=^1190000 prices=["1,190,000원"]
+  card_id=anchorBoxId_2830 data_price=^1190000 prices=["1,190,000원"]
+  card_id=anchorBoxId_2832 data_price=^1910000 prices=["1,910,000원"]
+  card_id=anchorBoxId_2833 data_price=^1910000 prices=["1,910,000원"]
+  card_id=anchorBoxId_2835 data_price=^1220000 prices=["1,220,000원"]

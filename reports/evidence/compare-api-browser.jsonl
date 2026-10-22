@@ -1,0 +1,6 @@
+{"ts":"2026-10-22T04:08:03.828Z","step":"api","totalCount":1969,"count":1969}
+{"ts":"2026-10-22T04:08:04.085Z","step":"sitemap","product_locs":1597,"total_locs":2136}
+{"ts":"2026-10-22T04:08:04.086Z","step":"setops","api_total":1969,"sitemap_total_product_ids":1597,"intersection":1597,"api_only_count":372,"sitemap_only_count":0}
+{"ts":"2026-10-22T04:21:47.998Z","step":"api","totalCount":1969,"count":1969}
+{"ts":"2026-10-22T04:21:48.725Z","step":"sitemap","product_locs":1597,"total_locs":2136}
+{"ts":"2026-10-22T04:21:48.726Z","step":"setops","api_total":1969,"sitemap_total_product_ids":1597,"intersection":1597,"api_only_count":372,"sitemap_only_count":0}
