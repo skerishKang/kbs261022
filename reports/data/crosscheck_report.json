@@ -1,0 +1,1867 @@
+{
+  "summary": {
+    "compared_records": 29,
+    "fully_matched_records": 29,
+    "mismatched_records": 0,
+    "match_rate": 1.0,
+    "field_status": {
+      "name": {
+        "match": 29
+      },
+      "brand": {
+        "both_null": 15,
+        "match": 14
+      },
+      "manufacturer": {
+        "match": 15,
+        "both_null": 14
+      },
+      "model": {
+        "both_null": 19,
+        "match": 10
+      },
+      "public_price": {
+        "both_null": 15,
+        "match": 14
+      },
+      "public_price_text": {
+        "match": 29
+      },
+      "canonical_url": {
+        "match": 29
+      },
+      "category_leaf_cate_no": {
+        "match": 29
+      }
+    }
+  },
+  "records": [
+    {
+      "source_key": "samasound:3875",
+      "ok": true,
+      "mismatch_count": 0,
+      "comparisons": [
+        {
+          "field": "name",
+          "browser": "WL185MB/C-TQG",
+          "http": "WL185MB/C-TQG",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "brand",
+          "browser": null,
+          "http": null,
+          "status": "both_null",
+          "detail": null
+        },
+        {
+          "field": "manufacturer",
+          "browser": "Shure",
+          "http": "Shure",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "model",
+          "browser": null,
+          "http": null,
+          "status": "both_null",
+          "detail": null
+        },
+        {
+          "field": "public_price",
+          "browser": null,
+          "http": null,
+          "status": "both_null",
+          "detail": null
+        },
+        {
+          "field": "public_price_text",
+          "browser": "가격 문의",
+          "http": "가격 문의",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "canonical_url",
+          "browser": "https://samasound.co.kr/product/wl185mbc-tqg/3875/",
+          "http": "https://samasound.co.kr/product/wl185mbc-tqg/3875/",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "category_leaf_cate_no",
+          "browser": "42",
+          "http": "42",
+          "status": "match",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "source_key": "samasound:3874",
+      "ok": true,
+      "mismatch_count": 0,
+      "comparisons": [
+        {
+          "field": "name",
+          "browser": "SM35-XLR",
+          "http": "SM35-XLR",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "brand",
+          "browser": null,
+          "http": null,
+          "status": "both_null",
+          "detail": null
+        },
+        {
+          "field": "manufacturer",
+          "browser": "Shure",
+          "http": "Shure",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "model",
+          "browser": null,
+          "http": null,
+          "status": "both_null",
+          "detail": null
+        },
+        {
+          "field": "public_price",
+          "browser": null,
+          "http": null,
+          "status": "both_null",
+          "detail": null
+        },
+        {
+          "field": "public_price_text",
+          "browser": "가격 문의",
+          "http": "가격 문의",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "canonical_url",
+          "browser": "https://samasound.co.kr/product/sm35-xlr/3874/",
+          "http": "https://samasound.co.kr/product/sm35-xlr/3874/",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "category_leaf_cate_no",
+          "browser": "42",
+          "http": "42",
+          "status": "match",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "source_key": "samasound:3873",
+      "ok": true,
+      "mismatch_count": 0,
+      "comparisons": [
+        {
+          "field": "name",
+          "browser": "SM35-TQG",
+          "http": "SM35-TQG",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "brand",
+          "browser": null,
+          "http": null,
+          "status": "both_null",
+          "detail": null
+        },
+        {
+          "field": "manufacturer",
+          "browser": "Shure",
+          "http": "Shure",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "model",
+          "browser": null,
+          "http": null,
+          "status": "both_null",
+          "detail": null
+        },
+        {
+          "field": "public_price",
+          "browser": null,
+          "http": null,
+          "status": "both_null",
+          "detail": null
+        },
+        {
+          "field": "public_price_text",
+          "browser": "가격 문의",
+          "http": "가격 문의",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "canonical_url",
+          "browser": "https://samasound.co.kr/product/sm35-tqg/3873/",
+          "http": "https://samasound.co.kr/product/sm35-tqg/3873/",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "category_leaf_cate_no",
+          "browser": "42",
+          "http": "42",
+          "status": "match",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "source_key": "samasound:3872",
+      "ok": true,
+      "mismatch_count": 0,
+      "comparisons": [
+        {
+          "field": "name",
+          "browser": "SM31FH-TQG",
+          "http": "SM31FH-TQG",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "brand",
+          "browser": null,
+          "http": null,
+          "status": "both_null",
+          "detail": null
+        },
+        {
+          "field": "manufacturer",
+          "browser": "Shure",
+          "http": "Shure",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "model",
+          "browser": null,
+          "http": null,
+          "status": "both_null",
+          "detail": null
+        },
+        {
+          "field": "public_price",
+          "browser": null,
+          "http": null,
+          "status": "both_null",
+          "detail": null
+        },
+        {
+          "field": "public_price_text",
+          "browser": "가격 문의",
+          "http": "가격 문의",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "canonical_url",
+          "browser": "https://samasound.co.kr/product/sm31fh-tqg/3872/",
+          "http": "https://samasound.co.kr/product/sm31fh-tqg/3872/",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "category_leaf_cate_no",
+          "browser": "42",
+          "http": "42",
+          "status": "match",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "source_key": "samasound:3825",
+      "ok": true,
+      "mismatch_count": 0,
+      "comparisons": [
+        {
+          "field": "name",
+          "browser": "SHURE KSM32C 슈어 스튜디오 콘덴서 마이크 라이트 세트",
+          "http": "SHURE KSM32C 슈어 스튜디오 콘덴서 마이크 라이트 세트",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "brand",
+          "browser": null,
+          "http": null,
+          "status": "both_null",
+          "detail": null
+        },
+        {
+          "field": "manufacturer",
+          "browser": "Shure",
+          "http": "Shure",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "model",
+          "browser": null,
+          "http": null,
+          "status": "both_null",
+          "detail": null
+        },
+        {
+          "field": "public_price",
+          "browser": null,
+          "http": null,
+          "status": "both_null",
+          "detail": null
+        },
+        {
+          "field": "public_price_text",
+          "browser": "가격 문의",
+          "http": "가격 문의",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "canonical_url",
+          "browser": "https://samasound.co.kr/product/shure-ksm32c-슈어-스튜디오-콘덴서-마이크-라이트-세트/3825/",
+          "http": "https://samasound.co.kr/product/shure-ksm32c-슈어-스튜디오-콘덴서-마이크-라이트-세트/3825/",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "category_leaf_cate_no",
+          "browser": "42",
+          "http": "42",
+          "status": "match",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "source_key": "samasound:3824",
+      "ok": true,
+      "mismatch_count": 0,
+      "comparisons": [
+        {
+          "field": "name",
+          "browser": "SHURE KSM32C 슈어 스튜디오 콘덴서 마이크 프리미엄 세트",
+          "http": "SHURE KSM32C 슈어 스튜디오 콘덴서 마이크 프리미엄 세트",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "brand",
+          "browser": null,
+          "http": null,
+          "status": "both_null",
+          "detail": null
+        },
+        {
+          "field": "manufacturer",
+          "browser": "Shure",
+          "http": "Shure",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "model",
+          "browser": null,
+          "http": null,
+          "status": "both_null",
+          "detail": null
+        },
+        {
+          "field": "public_price",
+          "browser": null,
+          "http": null,
+          "status": "both_null",
+          "detail": null
+        },
+        {
+          "field": "public_price_text",
+          "browser": "가격 문의",
+          "http": "가격 문의",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "canonical_url",
+          "browser": "https://samasound.co.kr/product/shure-ksm32c-슈어-스튜디오-콘덴서-마이크-프리미엄-세트/3824/",
+          "http": "https://samasound.co.kr/product/shure-ksm32c-슈어-스튜디오-콘덴서-마이크-프리미엄-세트/3824/",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "category_leaf_cate_no",
+          "browser": "42",
+          "http": "42",
+          "status": "match",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "source_key": "samasound:3823",
+      "ok": true,
+      "mismatch_count": 0,
+      "comparisons": [
+        {
+          "field": "name",
+          "browser": "SHURE KSM40C 슈어 프리미엄 스튜디오 콘덴서 마이크",
+          "http": "SHURE KSM40C 슈어 프리미엄 스튜디오 콘덴서 마이크",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "brand",
+          "browser": null,
+          "http": null,
+          "status": "both_null",
+          "detail": null
+        },
+        {
+          "field": "manufacturer",
+          "browser": "Shure",
+          "http": "Shure",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "model",
+          "browser": null,
+          "http": null,
+          "status": "both_null",
+          "detail": null
+        },
+        {
+          "field": "public_price",
+          "browser": null,
+          "http": null,
+          "status": "both_null",
+          "detail": null
+        },
+        {
+          "field": "public_price_text",
+          "browser": "가격 문의",
+          "http": "가격 문의",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "canonical_url",
+          "browser": "https://samasound.co.kr/product/shure-ksm40c-슈어-프리미엄-스튜디오-콘덴서-마이크/3823/",
+          "http": "https://samasound.co.kr/product/shure-ksm40c-슈어-프리미엄-스튜디오-콘덴서-마이크/3823/",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "category_leaf_cate_no",
+          "browser": "42",
+          "http": "42",
+          "status": "match",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "source_key": "samasound:3822",
+      "ok": true,
+      "mismatch_count": 0,
+      "comparisons": [
+        {
+          "field": "name",
+          "browser": "SHURE KSM44MP 슈어 플래그쉽 스튜디오 콘덴서 마이크",
+          "http": "SHURE KSM44MP 슈어 플래그쉽 스튜디오 콘덴서 마이크",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "brand",
+          "browser": null,
+          "http": null,
+          "status": "both_null",
+          "detail": null
+        },
+        {
+          "field": "manufacturer",
+          "browser": "Shure",
+          "http": "Shure",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "model",
+          "browser": null,
+          "http": null,
+          "status": "both_null",
+          "detail": null
+        },
+        {
+          "field": "public_price",
+          "browser": null,
+          "http": null,
+          "status": "both_null",
+          "detail": null
+        },
+        {
+          "field": "public_price_text",
+          "browser": "가격 문의",
+          "http": "가격 문의",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "canonical_url",
+          "browser": "https://samasound.co.kr/product/shure-ksm44mp-슈어-플래그쉽-스튜디오-콘덴서-마이크/3822/",
+          "http": "https://samasound.co.kr/product/shure-ksm44mp-슈어-플래그쉽-스튜디오-콘덴서-마이크/3822/",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "category_leaf_cate_no",
+          "browser": "42",
+          "http": "42",
+          "status": "match",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "source_key": "samasound:3738",
+      "ok": true,
+      "mismatch_count": 0,
+      "comparisons": [
+        {
+          "field": "name",
+          "browser": "SLXD4D+",
+          "http": "SLXD4D+",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "brand",
+          "browser": null,
+          "http": null,
+          "status": "both_null",
+          "detail": null
+        },
+        {
+          "field": "manufacturer",
+          "browser": "Shure",
+          "http": "Shure",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "model",
+          "browser": null,
+          "http": null,
+          "status": "both_null",
+          "detail": null
+        },
+        {
+          "field": "public_price",
+          "browser": null,
+          "http": null,
+          "status": "both_null",
+          "detail": null
+        },
+        {
+          "field": "public_price_text",
+          "browser": "가격 문의",
+          "http": "가격 문의",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "canonical_url",
+          "browser": "https://samasound.co.kr/product/slxd4d/3738/",
+          "http": "https://samasound.co.kr/product/slxd4d/3738/",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "category_leaf_cate_no",
+          "browser": "42",
+          "http": "42",
+          "status": "match",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "source_key": "samasound:3739",
+      "ok": true,
+      "mismatch_count": 0,
+      "comparisons": [
+        {
+          "field": "name",
+          "browser": "SLXD4Q+",
+          "http": "SLXD4Q+",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "brand",
+          "browser": null,
+          "http": null,
+          "status": "both_null",
+          "detail": null
+        },
+        {
+          "field": "manufacturer",
+          "browser": "Shure",
+          "http": "Shure",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "model",
+          "browser": null,
+          "http": null,
+          "status": "both_null",
+          "detail": null
+        },
+        {
+          "field": "public_price",
+          "browser": null,
+          "http": null,
+          "status": "both_null",
+          "detail": null
+        },
+        {
+          "field": "public_price_text",
+          "browser": "가격 문의",
+          "http": "가격 문의",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "canonical_url",
+          "browser": "https://samasound.co.kr/product/slxd4q/3739/",
+          "http": "https://samasound.co.kr/product/slxd4q/3739/",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "category_leaf_cate_no",
+          "browser": "42",
+          "http": "42",
+          "status": "match",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "source_key": "samasound:3735",
+      "ok": true,
+      "mismatch_count": 0,
+      "comparisons": [
+        {
+          "field": "name",
+          "browser": "SLXD1+",
+          "http": "SLXD1+",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "brand",
+          "browser": null,
+          "http": null,
+          "status": "both_null",
+          "detail": null
+        },
+        {
+          "field": "manufacturer",
+          "browser": "Shure",
+          "http": "Shure",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "model",
+          "browser": null,
+          "http": null,
+          "status": "both_null",
+          "detail": null
+        },
+        {
+          "field": "public_price",
+          "browser": null,
+          "http": null,
+          "status": "both_null",
+          "detail": null
+        },
+        {
+          "field": "public_price_text",
+          "browser": "가격 문의",
+          "http": "가격 문의",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "canonical_url",
+          "browser": "https://samasound.co.kr/product/slxd1/3735/",
+          "http": "https://samasound.co.kr/product/slxd1/3735/",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "category_leaf_cate_no",
+          "browser": "42",
+          "http": "42",
+          "status": "match",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "source_key": "samasound:3863",
+      "ok": true,
+      "mismatch_count": 0,
+      "comparisons": [
+        {
+          "field": "name",
+          "browser": "MVX2U G2",
+          "http": "MVX2U G2",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "brand",
+          "browser": null,
+          "http": null,
+          "status": "both_null",
+          "detail": null
+        },
+        {
+          "field": "manufacturer",
+          "browser": "Shure",
+          "http": "Shure",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "model",
+          "browser": null,
+          "http": null,
+          "status": "both_null",
+          "detail": null
+        },
+        {
+          "field": "public_price",
+          "browser": null,
+          "http": null,
+          "status": "both_null",
+          "detail": null
+        },
+        {
+          "field": "public_price_text",
+          "browser": "가격 문의",
+          "http": "가격 문의",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "canonical_url",
+          "browser": "https://samasound.co.kr/product/mvx2u-g2/3863/",
+          "http": "https://samasound.co.kr/product/mvx2u-g2/3863/",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "category_leaf_cate_no",
+          "browser": "42",
+          "http": "42",
+          "status": "match",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "source_key": "samasound:3733",
+      "ok": true,
+      "mismatch_count": 0,
+      "comparisons": [
+        {
+          "field": "name",
+          "browser": "Fender Studio Pro",
+          "http": "Fender Studio Pro",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "brand",
+          "browser": null,
+          "http": null,
+          "status": "both_null",
+          "detail": null
+        },
+        {
+          "field": "manufacturer",
+          "browser": "PreSonus",
+          "http": "PreSonus",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "model",
+          "browser": null,
+          "http": null,
+          "status": "both_null",
+          "detail": null
+        },
+        {
+          "field": "public_price",
+          "browser": null,
+          "http": null,
+          "status": "both_null",
+          "detail": null
+        },
+        {
+          "field": "public_price_text",
+          "browser": "가격 문의",
+          "http": "가격 문의",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "canonical_url",
+          "browser": "https://samasound.co.kr/product/fender-studio-pro/3733/",
+          "http": "https://samasound.co.kr/product/fender-studio-pro/3733/",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "category_leaf_cate_no",
+          "browser": "1",
+          "http": "1",
+          "status": "match",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "source_key": "samasound:3714",
+      "ok": true,
+      "mismatch_count": 0,
+      "comparisons": [
+        {
+          "field": "name",
+          "browser": "TONEX PEDAL Bass Edition",
+          "http": "TONEX PEDAL Bass Edition",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "brand",
+          "browser": null,
+          "http": null,
+          "status": "both_null",
+          "detail": null
+        },
+        {
+          "field": "manufacturer",
+          "browser": "IK MULTIMEDIA",
+          "http": "IK MULTIMEDIA",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "model",
+          "browser": null,
+          "http": null,
+          "status": "both_null",
+          "detail": null
+        },
+        {
+          "field": "public_price",
+          "browser": null,
+          "http": null,
+          "status": "both_null",
+          "detail": null
+        },
+        {
+          "field": "public_price_text",
+          "browser": "가격 문의",
+          "http": "가격 문의",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "canonical_url",
+          "browser": "https://samasound.co.kr/product/tonex-pedal-bass-edition/3714/",
+          "http": "https://samasound.co.kr/product/tonex-pedal-bass-edition/3714/",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "category_leaf_cate_no",
+          "browser": "1",
+          "http": "1",
+          "status": "match",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "source_key": "samasound:3720",
+      "ok": true,
+      "mismatch_count": 0,
+      "comparisons": [
+        {
+          "field": "name",
+          "browser": "StudioLive SE32",
+          "http": "StudioLive SE32",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "brand",
+          "browser": null,
+          "http": null,
+          "status": "both_null",
+          "detail": null
+        },
+        {
+          "field": "manufacturer",
+          "browser": "PreSonus",
+          "http": "PreSonus",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "model",
+          "browser": null,
+          "http": null,
+          "status": "both_null",
+          "detail": null
+        },
+        {
+          "field": "public_price",
+          "browser": null,
+          "http": null,
+          "status": "both_null",
+          "detail": null
+        },
+        {
+          "field": "public_price_text",
+          "browser": "가격 문의",
+          "http": "가격 문의",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "canonical_url",
+          "browser": "https://samasound.co.kr/product/studiolive-se32/3720/",
+          "http": "https://samasound.co.kr/product/studiolive-se32/3720/",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "category_leaf_cate_no",
+          "browser": "1",
+          "http": "1",
+          "status": "match",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "source_key": "samamusic:5557",
+      "ok": true,
+      "mismatch_count": 0,
+      "comparisons": [
+        {
+          "field": "name",
+          "browser": "SHURE WL185MB/C-TQG 무선용 단일 지향성 핀마이크 블랙",
+          "http": "SHURE WL185MB/C-TQG 무선용 단일 지향성 핀마이크 블랙",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "brand",
+          "browser": "SHURE",
+          "http": "SHURE",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "manufacturer",
+          "browser": null,
+          "http": null,
+          "status": "both_null",
+          "detail": null
+        },
+        {
+          "field": "model",
+          "browser": "WL185MB/C-TQG",
+          "http": "WL185MB/C-TQG",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "public_price",
+          "browser": 279000,
+          "http": 279000,
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "public_price_text",
+          "browser": "279,000원",
+          "http": "279,000원",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "canonical_url",
+          "browser": "https://samastore.co.kr/product/shure-wl185mbc-tqg-무선용-단일-지향성-핀마이크-블랙/5557/",
+          "http": "https://samastore.co.kr/product/shure-wl185mbc-tqg-무선용-단일-지향성-핀마이크-블랙/5557/",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "category_leaf_cate_no",
+          "browser": "671",
+          "http": "671",
+          "status": "match",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "source_key": "samamusic:5564",
+      "ok": true,
+      "mismatch_count": 0,
+      "comparisons": [
+        {
+          "field": "name",
+          "browser": "SHURE 헤드셋 단일지향성 컨덴서 마이크, 윈드스크린 (XLR 커넥터) SM35-XLR",
+          "http": "SHURE 헤드셋 단일지향성 컨덴서 마이크, 윈드스크린 (XLR 커넥터) SM35-XLR",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "brand",
+          "browser": "SHURE",
+          "http": "SHURE",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "manufacturer",
+          "browser": null,
+          "http": null,
+          "status": "both_null",
+          "detail": null
+        },
+        {
+          "field": "model",
+          "browser": "SM35-XLR",
+          "http": "SM35-XLR",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "public_price",
+          "browser": 391000,
+          "http": 391000,
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "public_price_text",
+          "browser": "391,000원",
+          "http": "391,000원",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "canonical_url",
+          "browser": "https://samastore.co.kr/product/shure-헤드셋-단일지향성-컨덴서-마이크-윈드스크린-xlr-커넥터-sm35-xlr/5564/",
+          "http": "https://samastore.co.kr/product/shure-헤드셋-단일지향성-컨덴서-마이크-윈드스크린-xlr-커넥터-sm35-xlr/5564/",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "category_leaf_cate_no",
+          "browser": "671",
+          "http": "671",
+          "status": "match",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "source_key": "samamusic:5563",
+      "ok": true,
+      "mismatch_count": 0,
+      "comparisons": [
+        {
+          "field": "name",
+          "browser": "SHURE 헤드셋 단일지향성 컨덴서 마이크, 윈드스크린 및 TA4F 커넥터 포함 SM35-TQG",
+          "http": "SHURE 헤드셋 단일지향성 컨덴서 마이크, 윈드스크린 및 TA4F 커넥터 포함 SM35-TQG",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "brand",
+          "browser": "SHURE",
+          "http": "SHURE",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "manufacturer",
+          "browser": null,
+          "http": null,
+          "status": "both_null",
+          "detail": null
+        },
+        {
+          "field": "model",
+          "browser": "SM35-TQG",
+          "http": "SM35-TQG",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "public_price",
+          "browser": 234000,
+          "http": 234000,
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "public_price_text",
+          "browser": "234,000원",
+          "http": "234,000원",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "canonical_url",
+          "browser": "https://samastore.co.kr/product/shure-헤드셋-단일지향성-컨덴서-마이크-윈드스크린-및-ta4f-커넥터-포함-sm35-tqg/5563/",
+          "http": "https://samastore.co.kr/product/shure-헤드셋-단일지향성-컨덴서-마이크-윈드스크린-및-ta4f-커넥터-포함-sm35-tqg/5563/",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "category_leaf_cate_no",
+          "browser": "671",
+          "http": "671",
+          "status": "match",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "source_key": "samamusic:5562",
+      "ok": true,
+      "mismatch_count": 0,
+      "comparisons": [
+        {
+          "field": "name",
+          "browser": "SHURE 헤드셋 단일지향성 컨덴서 마이크, TA4F 커넥터 포함 SM31FH-TQG",
+          "http": "SHURE 헤드셋 단일지향성 컨덴서 마이크, TA4F 커넥터 포함 SM31FH-TQG",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "brand",
+          "browser": "SHURE",
+          "http": "SHURE",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "manufacturer",
+          "browser": null,
+          "http": null,
+          "status": "both_null",
+          "detail": null
+        },
+        {
+          "field": "model",
+          "browser": "SM31FH-TQG",
+          "http": "SM31FH-TQG",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "public_price",
+          "browser": 234000,
+          "http": 234000,
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "public_price_text",
+          "browser": "234,000원",
+          "http": "234,000원",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "canonical_url",
+          "browser": "https://samastore.co.kr/product/shure-헤드셋-단일지향성-컨덴서-마이크-ta4f-커넥터-포함-sm31fh-tqg/5562/",
+          "http": "https://samastore.co.kr/product/shure-헤드셋-단일지향성-컨덴서-마이크-ta4f-커넥터-포함-sm31fh-tqg/5562/",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "category_leaf_cate_no",
+          "browser": "671",
+          "http": "671",
+          "status": "match",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "source_key": "samamusic:5490",
+      "ok": true,
+      "mismatch_count": 0,
+      "comparisons": [
+        {
+          "field": "name",
+          "browser": "SHURE KSM32C 슈어 스튜디오 콘덴서 마이크 라이트 세트",
+          "http": "SHURE KSM32C 슈어 스튜디오 콘덴서 마이크 라이트 세트",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "brand",
+          "browser": "SHURE",
+          "http": "SHURE",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "manufacturer",
+          "browser": null,
+          "http": null,
+          "status": "both_null",
+          "detail": null
+        },
+        {
+          "field": "model",
+          "browser": "KSM32C/HM",
+          "http": "KSM32C/HM",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "public_price",
+          "browser": 1370000,
+          "http": 1370000,
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "public_price_text",
+          "browser": "1,370,000원",
+          "http": "1,370,000원",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "canonical_url",
+          "browser": "https://samastore.co.kr/product/shure-ksm32c-슈어-스튜디오-콘덴서-마이크-라이트-세트/5490/",
+          "http": "https://samastore.co.kr/product/shure-ksm32c-슈어-스튜디오-콘덴서-마이크-라이트-세트/5490/",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "category_leaf_cate_no",
+          "browser": "671",
+          "http": "671",
+          "status": "match",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "source_key": "samamusic:5491",
+      "ok": true,
+      "mismatch_count": 0,
+      "comparisons": [
+        {
+          "field": "name",
+          "browser": "SHURE KSM32C 슈어 스튜디오 콘덴서 마이크 프리미엄 세트",
+          "http": "SHURE KSM32C 슈어 스튜디오 콘덴서 마이크 프리미엄 세트",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "brand",
+          "browser": "SHURE",
+          "http": "SHURE",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "manufacturer",
+          "browser": null,
+          "http": null,
+          "status": "both_null",
+          "detail": null
+        },
+        {
+          "field": "model",
+          "browser": "KSM32C/SM",
+          "http": "KSM32C/SM",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "public_price",
+          "browser": 1510000,
+          "http": 1510000,
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "public_price_text",
+          "browser": "1,510,000원",
+          "http": "1,510,000원",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "canonical_url",
+          "browser": "https://samastore.co.kr/product/shure-ksm32c-슈어-스튜디오-콘덴서-마이크-프리미엄-세트/5491/",
+          "http": "https://samastore.co.kr/product/shure-ksm32c-슈어-스튜디오-콘덴서-마이크-프리미엄-세트/5491/",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "category_leaf_cate_no",
+          "browser": "671",
+          "http": "671",
+          "status": "match",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "source_key": "samamusic:5492",
+      "ok": true,
+      "mismatch_count": 0,
+      "comparisons": [
+        {
+          "field": "name",
+          "browser": "SHURE KSM40C 슈어 프리미엄 스튜디오 콘덴서 마이크",
+          "http": "SHURE KSM40C 슈어 프리미엄 스튜디오 콘덴서 마이크",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "brand",
+          "browser": "SHURE",
+          "http": "SHURE",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "manufacturer",
+          "browser": null,
+          "http": null,
+          "status": "both_null",
+          "detail": null
+        },
+        {
+          "field": "model",
+          "browser": "KSM40C",
+          "http": "KSM40C",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "public_price",
+          "browser": 1830000,
+          "http": 1830000,
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "public_price_text",
+          "browser": "1,830,000원",
+          "http": "1,830,000원",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "canonical_url",
+          "browser": "https://samastore.co.kr/product/shure-ksm40c-슈어-프리미엄-스튜디오-콘덴서-마이크/5492/",
+          "http": "https://samastore.co.kr/product/shure-ksm40c-슈어-프리미엄-스튜디오-콘덴서-마이크/5492/",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "category_leaf_cate_no",
+          "browser": "671",
+          "http": "671",
+          "status": "match",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "source_key": "samamusic:5493",
+      "ok": true,
+      "mismatch_count": 0,
+      "comparisons": [
+        {
+          "field": "name",
+          "browser": "SHURE KSM44MP 슈어 플래그쉽 스튜디오 콘덴서 마이크",
+          "http": "SHURE KSM44MP 슈어 플래그쉽 스튜디오 콘덴서 마이크",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "brand",
+          "browser": "SHURE",
+          "http": "SHURE",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "manufacturer",
+          "browser": null,
+          "http": null,
+          "status": "both_null",
+          "detail": null
+        },
+        {
+          "field": "model",
+          "browser": "KSM44MP",
+          "http": "KSM44MP",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "public_price",
+          "browser": 2280000,
+          "http": 2280000,
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "public_price_text",
+          "browser": "2,280,000원",
+          "http": "2,280,000원",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "canonical_url",
+          "browser": "https://samastore.co.kr/product/shure-ksm44mp-슈어-플래그쉽-스튜디오-콘덴서-마이크/5493/",
+          "http": "https://samastore.co.kr/product/shure-ksm44mp-슈어-플래그쉽-스튜디오-콘덴서-마이크/5493/",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "category_leaf_cate_no",
+          "browser": "671",
+          "http": "671",
+          "status": "match",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "source_key": "samamusic:5525",
+      "ok": true,
+      "mismatch_count": 0,
+      "comparisons": [
+        {
+          "field": "name",
+          "browser": "SHURE SLXD4D+ 듀얼채널 다이버시티 수신기",
+          "http": "SHURE SLXD4D+ 듀얼채널 다이버시티 수신기",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "brand",
+          "browser": "SHURE",
+          "http": "SHURE",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "manufacturer",
+          "browser": null,
+          "http": null,
+          "status": "both_null",
+          "detail": null
+        },
+        {
+          "field": "model",
+          "browser": null,
+          "http": null,
+          "status": "both_null",
+          "detail": null
+        },
+        {
+          "field": "public_price",
+          "browser": 2300000,
+          "http": 2300000,
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "public_price_text",
+          "browser": "2,300,000원",
+          "http": "2,300,000원",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "canonical_url",
+          "browser": "https://samastore.co.kr/product/shure-slxd4d-듀얼채널-다이버시티-수신기/5525/",
+          "http": "https://samastore.co.kr/product/shure-slxd4d-듀얼채널-다이버시티-수신기/5525/",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "category_leaf_cate_no",
+          "browser": "671",
+          "http": "671",
+          "status": "match",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "source_key": "samamusic:5524",
+      "ok": true,
+      "mismatch_count": 0,
+      "comparisons": [
+        {
+          "field": "name",
+          "browser": "SHURE SLXD4+ 싱글채널 다이버시티 수신기",
+          "http": "SHURE SLXD4+ 싱글채널 다이버시티 수신기",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "brand",
+          "browser": "SHURE",
+          "http": "SHURE",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "manufacturer",
+          "browser": null,
+          "http": null,
+          "status": "both_null",
+          "detail": null
+        },
+        {
+          "field": "model",
+          "browser": null,
+          "http": null,
+          "status": "both_null",
+          "detail": null
+        },
+        {
+          "field": "public_price",
+          "browser": 1085000,
+          "http": 1085000,
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "public_price_text",
+          "browser": "1,085,000원",
+          "http": "1,085,000원",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "canonical_url",
+          "browser": "https://samastore.co.kr/product/shure-slxd4-싱글채널-다이버시티-수신기/5524/",
+          "http": "https://samastore.co.kr/product/shure-slxd4-싱글채널-다이버시티-수신기/5524/",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "category_leaf_cate_no",
+          "browser": "671",
+          "http": "671",
+          "status": "match",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "source_key": "samamusic:5513",
+      "ok": true,
+      "mismatch_count": 0,
+      "comparisons": [
+        {
+          "field": "name",
+          "browser": "SHURE SLXD1+ 바디팩 송신기",
+          "http": "SHURE SLXD1+ 바디팩 송신기",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "brand",
+          "browser": "SHURE",
+          "http": "SHURE",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "manufacturer",
+          "browser": null,
+          "http": null,
+          "status": "both_null",
+          "detail": null
+        },
+        {
+          "field": "model",
+          "browser": null,
+          "http": null,
+          "status": "both_null",
+          "detail": null
+        },
+        {
+          "field": "public_price",
+          "browser": 640000,
+          "http": 640000,
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "public_price_text",
+          "browser": "640,000원",
+          "http": "640,000원",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "canonical_url",
+          "browser": "https://samastore.co.kr/product/shure-slxd1-바디팩-송신기/5513/",
+          "http": "https://samastore.co.kr/product/shure-slxd1-바디팩-송신기/5513/",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "category_leaf_cate_no",
+          "browser": "671",
+          "http": "671",
+          "status": "match",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "source_key": "samamusic:5611",
+      "ok": true,
+      "mismatch_count": 0,
+      "comparisons": [
+        {
+          "field": "name",
+          "browser": "SHURE MVX2UG2 2세대 슈어 XLR to USB-C 오디오 인터페이스 (모바일 지원)",
+          "http": "SHURE MVX2UG2 2세대 슈어 XLR to USB-C 오디오 인터페이스 (모바일 지원)",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "brand",
+          "browser": "SHURE",
+          "http": "SHURE",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "manufacturer",
+          "browser": null,
+          "http": null,
+          "status": "both_null",
+          "detail": null
+        },
+        {
+          "field": "model",
+          "browser": "MVX2UG2 (2세대)",
+          "http": "MVX2UG2 (2세대)",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "public_price",
+          "browser": 237000,
+          "http": 237000,
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "public_price_text",
+          "browser": "237,000원",
+          "http": "237,000원",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "canonical_url",
+          "browser": "https://samastore.co.kr/product/shure-mvx2ug2-2세대-슈어-xlr-to-usb-c-오디오-인터페이스-모바일-지원/5611/",
+          "http": "https://samastore.co.kr/product/shure-mvx2ug2-2세대-슈어-xlr-to-usb-c-오디오-인터페이스-모바일-지원/5611/",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "category_leaf_cate_no",
+          "browser": "671",
+          "http": "671",
+          "status": "match",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "source_key": "samamusic:5346",
+      "ok": true,
+      "mismatch_count": 0,
+      "comparisons": [
+        {
+          "field": "name",
+          "browser": "Shure MV88 USB-C C타입 포터블 스테레오 컨덴서 마이크",
+          "http": "Shure MV88 USB-C C타입 포터블 스테레오 컨덴서 마이크",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "brand",
+          "browser": "SHURE",
+          "http": "SHURE",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "manufacturer",
+          "browser": null,
+          "http": null,
+          "status": "both_null",
+          "detail": null
+        },
+        {
+          "field": "model",
+          "browser": "MV88-USBC",
+          "http": "MV88-USBC",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "public_price",
+          "browser": 296000,
+          "http": 296000,
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "public_price_text",
+          "browser": "296,000원",
+          "http": "296,000원",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "canonical_url",
+          "browser": "https://samastore.co.kr/product/shure-mv88-usb-c-c타입-포터블-스테레오-컨덴서-마이크/5346/",
+          "http": "https://samastore.co.kr/product/shure-mv88-usb-c-c타입-포터블-스테레오-컨덴서-마이크/5346/",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "category_leaf_cate_no",
+          "browser": "671",
+          "http": "671",
+          "status": "match",
+          "detail": null
+        }
+      ]
+    },
+    {
+      "source_key": "samamusic:4698",
+      "ok": true,
+      "mismatch_count": 0,
+      "comparisons": [
+        {
+          "field": "name",
+          "browser": "SHURE NXN6 슈어 넥사다인 드럼 탐/스네어용 슈퍼카디오이드 다이나믹 마이크",
+          "http": "SHURE NXN6 슈어 넥사다인 드럼 탐/스네어용 슈퍼카디오이드 다이나믹 마이크",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "brand",
+          "browser": "SHURE",
+          "http": "SHURE",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "manufacturer",
+          "browser": null,
+          "http": null,
+          "status": "both_null",
+          "detail": null
+        },
+        {
+          "field": "model",
+          "browser": null,
+          "http": null,
+          "status": "both_null",
+          "detail": null
+        },
+        {
+          "field": "public_price",
+          "browser": 476000,
+          "http": 476000,
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "public_price_text",
+          "browser": "476,000원",
+          "http": "476,000원",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "canonical_url",
+          "browser": "https://samastore.co.kr/product/shure-nxn6-슈어-넥사다인-드럼-탐스네어용-슈퍼카디오이드-다이나믹-마이크/4698/",
+          "http": "https://samastore.co.kr/product/shure-nxn6-슈어-넥사다인-드럼-탐스네어용-슈퍼카디오이드-다이나믹-마이크/4698/",
+          "status": "match",
+          "detail": null
+        },
+        {
+          "field": "category_leaf_cate_no",
+          "browser": "671",
+          "http": "671",
+          "status": "match",
+          "detail": null
+        }
+      ]
+    }
+  ]
+}
