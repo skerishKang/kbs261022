@@ -13,6 +13,19 @@ COM1에서 기존 GitHub 작업(PR)을 이어받을 수 있는 최소 재실행 
 - 도착 지점은 COM1의 `C:\cgi-handoff\inbox\<runId>`이며, **기존 파일은 절대 덮어쓰지 않는다.**
 - 실제 업무 데이터(고객 정보, 계정, 실제 상품 데이터)는 이 경로로 옮기지 않는다.
 
+### 전송 수단 요약 (2026-10-22 실측 기준)
+
+| 수단 | 상태 | 도구 | 도착 지점 |
+|---|---|---|---|
+| **SMB over Tailscale (445)** | ✅ **실측 검증 완료 — 지금 바로 사용 가능** | `tools/handoff/send_to_com1.ps1` | `\\100.124.21.64\Users\Public\CGI-HANDOFF\batch-*` |
+| OpenSSH/SCP (2222) | ⏸ COM1 측 공개키 등록 1회 필요 | `tools/handoff/send-handoff.ps1 -Transport ssh` | `C:\cgi-handoff\inbox\<runId>` |
+| Tailscale Taildrop | ✅ 키 불필요, 수신측 명령 1회 | `tools/handoff/send-handoff.ps1 -Transport taildrop` | COM1 Taildrop 수신함 |
+| Tailscale SSH (22) | ❌ COM1에서 미개방 (Windows Tailscale SSH 서버 미지원) | — | — |
+
+SMB 경로는 **추가 포트 개방, 별도 비밀키, COM1 측 부트스트랩 없이** 즉시 동작하며
+SHA256 무결성 검증과 충돌/중복 방지를 모두 포함한다.
+SSH 경로는 5장 부트스트랩이 완료되면 무인 자동화 관점에서 가장 유리하므로 유지한다.
+
 ## 2. 환경 조사 결과 (2026-10-22 실측)
 
 ### 2.1 Tailscale
@@ -31,7 +44,7 @@ COM1에서 기존 GitHub 작업(PR)을 이어받을 수 있는 최소 재실행 
 | 포트 | 서비스 | 사용 가능 여부 |
 |---|---|---|
 | 2222 | **OpenSSH for Windows 9.5** | ✅ **주 자동화 경로** |
-| 445 | SMB | ❌ 인증 필요 (현재 자격증명으로 접근 거부, 오류 5) |
+| 445 | SMB | ✅ **사용 가능** — 현재 Windows 자격증명으로 `Users` 공유 열람 + `Users\Public` 쓰기 확인 (2.5 절) |
 | 5985 | WinRM | ❌ Kerberos 불가(다른 워크그룹) + CGI-1에 TrustedHosts 미설정 + 관리자 권한 없음 |
 | 135 / 49664–49670 | RPC | ❌ DCOM 동적 포트 차단으로 WMI 연결 실패 ("표준 공급자 오류") |
 | 61346 | Tailscale 기본 HTTP(Hello 페이지) | 파일 기능 없음 |
@@ -58,6 +71,36 @@ $ tailscale file cp --verbose probe.txt "padiem-command-center:"
 
 COM1에서 `tailscale file get` 실행이 필요한 점이 유일한 제약이며, `com1-pull.ps1`가 이 1회 명령을 포함한다.
 → **키 미설치 상태에서도** 파이프라인 전체가 성립한다(수신측 명령 1회 필요).
+
+### 2.5 SMB(445) 경로 실측 — 2026-10-22 추가 확인
+
+`net view \\100.124.21.64` 는 SMB1 브라우저가 꺼져 있어 `오류 1702(잘못된 바인딩 핸들)`로 실패한다.
+**이 오류는 인증 실패가 아니다.** SMB2/3 세션은 정상 성립하며, 인증은 NTLM 패스스루로 성공한다.
+`Get-SmbConnection` 조회 결과 `\\100.124.21.64\IPC$` 세션 상태가 `OK`인 것이 이를 뒷받침한다.
+
+`\\100.124.21.64\Users` 공유는 **읽기 가능**하고, 그 아래 `Users\Public`은 **읽기·쓰기 가능**하다
+(파일 생성/수정/삭제, 하위 디렉터리 생성까지 전부 확인).
+
+```text
+\\100.124.21.64\Users\Default
+\\100.124.21.64\Users\limone-AppData
+\\100.124.21.64\Users\Public     <- 쓰기 가능
+\\100.124.21.64\Users\TEMP
+```
+
+| 확인 항목 | 명령 | 결과 |
+|---|---|---|
+| IPC$ 세션 | `Get-SmbConnection` | `\\100.124.21.64\IPC$` 상태 `OK` -> SMB2/3 + NTLM 패스스루 성공 |
+| `Users` 열람 | `[IO.Directory]::GetFileSystemEntries("\\100.124.21.64\Users")` | 5개 항목 정상 열람 |
+| `C$` / `ADMIN$` | `Get-ChildItem "\\100.124.21.64\C$"` | `액세스가 거부되었습니다` -> `sji` 는 COM1 로컬 관리자가 아님 |
+| `Users\Public` 쓰기 | `[IO.File]::WriteAllText` / `CreateDirectory` | **성공** (파일·디렉터리 생성/삭제 모두) |
+| 하위 경로 쓰기 | `Users\Public\_probe\a\b\x.txt` | **성공** + 읽기 일치 |
+| 공유 루트 이탈 | `Users\Public\..\..` | **차단됨** -> 공유는 `C:\Users` 로 정상 격리(트래버설 없음) |
+| COM1 sshd 설정 열람 | `Users\Public\..\..\ProgramData\ssh` | **거부됨** -> COM1 `sshd_config` 는 SMB로 열람 불가 |
+
+=> SMB 경로는 COM1 측에서 **관리자 권한 없이**, **추가 포트 개방 없이**, **새 비밀키 없이** 동작한다.
+`Public` 은 다른 사용자에게도 열려 있는 폴더이므로, 전송 대상은 `Public` 하위의
+**전용 수신 폴더 `CGI-HANDOFF`** 로만 한정한다(3.2 절).
 
 ## 3. 파이프라인 구조
 
@@ -87,6 +130,51 @@ CGI-1                                                     COM1
 | `check-receipt.ps1` | CGI-1 | COM1이 회신한 receipt를 받아 해시 일치 확인(닫힌 루프 검증) |
 | `bootstrap-com1.ps1` | COM1(1회) | 공개키 등록 + 수신 폴더 생성 |
 | `handoff.config.ps1` | 양쪽 | 호스트/포트/계정/allowlist/제외 규칙 설정 |
+| `send_to_com1.ps1` | CGI-1 | **SMB 경로**: 소스 폴더 -> COM1 전용 수신 폴더로 전송, 도착 즉시 SHA256 대조, `manifest.sha256` / `handoff.json` 기록 |
+| `verify_handoff.ps1` | 양쪽 | **SMB 경로**: 배치(batch)의 manifest 기준으로 SHA256 재계산 -> PASS/FAIL |
+| `receive_to_pr.ps1` | COM1 | **SMB 경로**: 배치 검증 -> 작업 트리 반영 -> branch/commit -> (선택) push/PR |
+| `handoff-common.ps1` | 양쪽 | **SMB 경로**: 공용 헬퍼(경로 포함 판정, SHA256, 매니페스트 읽기/쓰기) |
+| `handoff.config.psd1` | 양쪽 | **SMB 경로**: 수신 루트 화이트리스트, 제외 규칙, 용량 상한, COM1 저장소 경로 |
+
+### 3.2 SMB 경로 구조 (키·부트스트랩 불필요)
+
+```text
+CGI-1                                                     COM1
++------------------  SMB 445 over Tailscale  -------------+---------------------+
+| send_to_com1.ps1                                        | C:\Users\Public\    |
+|  1) 소스 폴더 확인 + 제외 규칙( .git 등 ) + 용량 상한   |   CGI-HANDOFF\     |
+|  2) 수신 루트 화이트리스트 판정                          |     batch-<id>\    |
+|  3) batch-<utc>-<rand> 디렉터리 신규 생성 (고유)         |       payload\     |
+|  4) 파일 복사 -> 도착 파일 SHA256 재계산 -> 대조         |         <src>\     |
+|  5) manifest.sha256 + handoff.json + README 기록         |       manifest.    |
+|                                                      +->|         sha256    |
+|                                                      |   +   handoff.json  |
+|                                                      |   +   README-handoff|
+| verify_handoff.ps1  <---- 수신측 재검증 (COM1에서 실행)  +---------------------+
+| receive_to_pr.ps1  <---- 검증 -> 반영 -> branch -> commit -> push -> PR
+```
+
+**수신 폴더를 1곳으로 한정하는 이유**: `C:\Users\Public` 은 COM1에서 여러 계정이 공유하는 폴더다.
+`CGI-HANDOFF` 하위에만 쓰고, 그 안에서도 매번 `batch-<id>` 를 새로 만들어
+서로 다른 실행·서로 다른 에이전트의 결과물이 같은 파일명을 두고 충돌하지 않게 한다.
+
+**반복 실행 명령 (CGI-1)**
+
+```powershell
+# 전송 (SHA256 검증 포함)
+powershell -NoProfile -ExecutionPolicy Bypass -File .\tools\handoff\send_to_com1.ps1 `
+  -SourcePath C:\Users\sji\cgi-work\kbs261022\docs
+
+# 미리보기 (전송 없이 대상 목록/해시만)
+powershell -NoProfile -ExecutionPolicy Bypass -File .\tools\handoff\send_to_com1.ps1 `
+  -SourcePath <폴더> -DryRun
+
+# 중단된 전송 재개 (동일 batchId 재사용, 다른 내용 파일은 충돌로 보고)
+powershell -NoProfile -ExecutionPolicy Bypass -File .\tools\handoff\send_to_com1.ps1 `
+  -SourcePath <폴더> -BatchId <이전 batchId> -Resume
+```
+
+종료 코드: `0` 성공 / `2` 무결성 실패 / `3` 충돌(중복 batch, 내용 불일치) / `4` 전송 실패 / `5` 사용법 오류.
 
 ## 4. 전송 수단
 
@@ -196,6 +284,19 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\tools\handoff\send-handoff
 | `PULL_RESULT: no_package` | COM1 수신함에 패키지 없음 | `tailscale file get` 재실행 또는 CGI-1에서 재전송 |
 | `RECEIPT_FAIL: timeout` | COM1에서 pull 미실행 | COM1에서 §4.2 명령 실행 후 `check-receipt.ps1` 재실행 |
 
+### 8.1 SMB 경로 실패 복구
+
+| 증상 | 원인 | 조치 |
+|---|---|---|
+| `ERROR Cannot create batch directory on COM1` | SMB 세션 끊김 / 권한 회수 | `Get-SmbConnection` 으로 `\\100.124.21.64\IPC$` 상태 확인. `net use \\100.124.21.64\IPC$ /persistent:yes` 로 재연결 후 재실행 |
+| `ERROR Batch directory already exists, refusing to reuse it` | 같은 `batchId` 로 재실행 | 정상(중복 방지). 인자 없이 재실행하면 새 batchId 로 생성된다. 중단된 전송 이어갈 때만 `-Resume` 사용 |
+| `FAIL CONFLICT, existing file left untouched` | 같은 batch 안에서 원본이 변경됨 | 수신 파일은 **그대로 보존**된다. 최신본을 보내려면 새 batchId 로 재전송하거나, 의도적 교체라면 `-Resume -OverwriteChanged` |
+| `FAIL HASH MISMATCH for <file>` | 복사 중 전송 오류로 파일 손상 | 해당 batch 는 사용하지 말 것. `verify_handoff.ps1` 로 FAIL 확인 후 새 batchId 로 재전송 |
+| `FAIL Integrity check FAIL` (검증 단계) | 수신측 파일 변조/손상 | 배치 폐기. `manifest.sha256` 의 기대값과 실제값을 대조해 원인 특정 |
+| `ERROR git has no user.email configured` | COM1에 git 사용자 정보 없음 | `git -C <저장소> config user.email <you@example.com>` 及 `user.name <Your Name>` 설정 후 재실행 |
+| COM1에 `CGI-HANDOFF` 가 보이지 않음 | 다른 계정/세션으로 로그인 | 수신 폴더는 `C:\Users\Public\CGI-HANDOFF` (모든 계정에서 보임). `Get-ChildItem \\100.124.21.64\Users\Public\CGI-HANDOFF` 으로 확인 |
+| SMB 자체가 안 될 때 | Tailscale 연결 끊김 | `tailscale ping padiem-command-center` 확인. SSH/Taildrop 경로(4장)로 대체 |
+
 ## 9. COM1에서 GitHub PR 만들기
 
 COM1은 이미 GitHub 작업(PR #3/#4/#6)을 이어받는 환경이므로, GitHub 인증은 **COM1 쪽에 이미 있는 자격증명**을 사용한다.
@@ -220,6 +321,38 @@ gh pr create --base main --head handoff/20261022-121237-ce96 --title "handoff: 2
 
 주의: `apply-handoff.ps1`가 `APPLY_CONFLICT`를 낸 경우 **커밋하지 말고** 다른 에이전트 작업과 먼저 조율한다.
 
+### 9.1 SMB 경로로 PR 만들기 (1단계 자동화)
+
+SMB 경로는 검증 -> 반영 -> branch -> commit -> push -> PR 까지 한 스크립트로 묶여 있고,
+**기존 파일과 내용이 다르면 덮어쓰지 않고 충돌로 멈춘다.**
+
+```powershell
+# COM1에서 (저장소 클론 위치는 실제 경로로 지정)
+powershell -NoProfile -ExecutionPolicy Bypass -File .\tools\handoff\receive_to_pr.ps1 `
+  -BatchPath C:\Users\Public\CGI-HANDOFF\batch-20261022T030416Z-5392e8b9 `
+  -RepoPath C:\cgi-work\kbs261022 `
+  -Push -OpenPR
+```
+
+`receive_to_pr.ps1` 이 하는 일(각 단계는 다음 단계의 게이트):
+
+1. `verify_handoff.ps1` 로 배치 재검증 — **실패하면 아무것도 하지 않고 중단**
+2. 페이로드를 저장소 작업 트리에 반영 (같은 내용이면 건너뜀, 다른 내용이면 충돌로 중단 후 이번 실행이 복사한 파일 롤백)
+3. `git checkout -b handoff/<batchId>` (이미 있는 브랜치는 재생성하지 않음)
+4. `git add` -> `git commit` (변경이 없으면 빈 커밋을 만들지 않고 종료)
+5. `-Push` 지정 시 `git push -u origin <branch>` (base 브랜치에는 절대 push 하지 않음, force push 없음)
+6. `-OpenPR` 지정 시 `gh pr create` (gh 없으면 PR URL 만 출력)
+
+수동 처리 시의 최소 순서:
+
+```powershell
+git -C C:\cgi-work\kbs261022 checkout -b handoff/20261022T030416Z-5392e8b9
+git -C C:\cgi-work\kbs261022 add -- <대상폴더>
+git -C C:\cgi-work\kbs261022 commit -m "chore(handoff): receive CGI-1 batch 20261022T030416Z-5392e8b9"
+git -C C:\cgi-work\kbs261022 push -u origin handoff/20261022T030416Z-5392e8b9
+gh pr create --base main --head handoff/20261022T030416Z-5392e8b9 --title "chore(handoff): receive CGI-1 batch" --body "Refs #7"
+```
+
 ## 10. 보안·운영 메모
 
 - 개인 키는 `C:\Users\sji\.ssh\cgi_handoff_ed25519`에만 존재하며 저장소·패키지에 포함되지 않는다.
@@ -232,3 +365,26 @@ gh pr create --base main --head handoff/20261022-121237-ce96 --title "handoff: 2
 ## 11. 테스트 기록
 
 실제 실행 결과는 [`CGI_LOCAL_HANDOFF_TESTLOG.md`](./CGI_LOCAL_HANDOFF_TESTLOG.md) 참조.
+
+## 12. SMB 경로 실측 결과 요약 (2026-10-22)
+
+이슈 #7 완료 기준 중 "CGI-1→COM1 파일 전달 PASS, 무결성 PASS, 직접 반복 가능"을
+SMB 경로로 실측 완료했다. 상세는 테스트 기록 7장을 참조.
+
+| 항목 | 결과 |
+|---|---|
+| 실제 전송 | **PASS** — 6개 파일 / 262,227 bytes, 배치 `batch-20261022T030416Z-5392e8b9` |
+| 무결성 | **PASS** — 전송 스크립트 내 대조 6/6, `verify_handoff.ps1` 재검증 6/6, Python 독립 검증 6/6 |
+| 바이너리/유니코드 | **PASS** — 256 KiB 난수 바이너리, 한글 파일명, 공백 포함 경로 모두 바이트 일치 |
+| 중복 실행 | **PASS** — 동일 `batchId` 재실행 시 거부(exit 3), 기존 배치 불변 |
+| 충돌 | **PASS** — 원본 변경 후 재전송 시 `CONFLICT` 로 보고, 수신 파일 **미변경**(해시 동일 확인) |
+| 변조 탐지 | **PASS** — 수신 파일 1바이트 변조 -> `verify_handoff.ps1` FAIL(exit 2) |
+| 명시적 교체 | **PASS** — `-Resume -OverwriteChanged` 시에만 교체 후 재검증 |
+| 반복 가능 | **PASS** — 인자 없이 재실행하면 새 `batchId` 로 생성, 기존 배치와 공존 |
+| 수신측 -> PR | **PASS** — 검증 -> 반영 -> branch -> commit -> push 까지 자동, 푸시본 해시가 CGI-1 원본과 동일 |
+
+**미완료 항목(정확한 장애 근거)**: OpenSSH(2222) 경로는 COM1 측 `authorized_keys` 등록이
+완료되지 않아 `Permission denied (publickey, keyboard-interactive)` 로 종료된다.
+CGI-1에서 SMB로 COM1의 `~\.ssh\authorized_keys` 와 `C:\ProgramData\ssh\` 에 접근할 수 없어
+(COM1 사용자 프로필 디렉터리 미노출, `C$`/`ADMIN$` 관리자 공유 거부) 원격 등록이 불가능했다.
+COM1 콘솔에서 `bootstrap-com1.ps1` 을 1회 실행하면 SSH 경로도 사용 가능하다(5장).

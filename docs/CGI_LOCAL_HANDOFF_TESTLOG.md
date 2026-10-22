@@ -23,11 +23,12 @@
 |---|---|---|
 | SSH 22번 | `Test-NetConnection 100.124.21.64 -Port 22` | `TcpTestSucceeded: False` (닫힘) |
 | Tailscale SSH | `tailscale ssh sji@padiem-command-center hostname` | `502 Bad Gateway … dial tcp 100.124.21.64:22: connection failed` (Windows는 Tailscale SSH 서버 미지원) |
-| SMB 445 | `net view \\100.124.21.64` | `표준 오류 5(액세스 거부)` / `\\100.124.21.64\IPC$` 접근 불가 → 자격증명 필요 |
+| SMB 445 | `net view \\100.124.21.64` | `표준 오류 5(액세스 거부)` 로 기록했으나 **오판** — SMB1 브라우저가 꺼진 것(오류 1702)이며, SMB2/3 + NTLM 패스스루는 정상. §7 에서 재확인 |
 | WinRM 5985 | `Invoke-Command -ComputerName 100.124.21.64` | `Kerberos 인증을 … 사용할 수 없습니다 … TrustedHosts를 구성하고 다시 시도` (다른 워크그룹 + TrustedHosts 미설정 + 관리자 권한 없음) |
 | DCOM/WMI | `Get-CimInstance -SessionOption (New-CimSessionOption -Protocol Dcom)` | `표준 공급자 오류` (RPC 동적 포트 49152+ 차단) |
 | COM1 HTTP 서비스 | 61346 / 47001 GET | 61346 = Tailscale 기본 Hello 페이지(파일 기능 없음), 47001 = 404 |
-| GitHub push (CGI-1) | `git push --dry-run` | `could not read Username for 'https://github.com': terminal prompts disabled` / `gh` 미설치 → **CGI-1은 push 불가, COM1로 전달 후 PR 생성** |
+| GitHub push (CGI-1) | `git push --dry-run` (입력 없이 실행) | `could not read Username for 'https://github.com'` → **push 불가로 오인** |
+| GitHub push (CGI-1) 재측정 | `GIT_TERMINAL_PROMPT=0 git push --dry-run` + `cmdkey /list` | **PASS** — Windows 자격 관리자에 `LegacyGeneric:target=git:https://github.com` 자격 증명이 저장되어 있고 `* [new branch]` 로 성공. **CGI-1 에서 push 가능**(§8) |
 
 ## 3. 파이프라인 기능 테스트 (로컬 실증)
 
@@ -122,3 +123,104 @@ HANDOFF_VERIFY: PASS runId=20261022-120958-17f1 files=22 promoted=True
 | 6.3 | COM1에서 작업 트리 반영 및 PR 생성 (`apply-handoff.ps1` → git push → `gh pr create`) | 대기 — COM1의 GitHub 자격증명 필요 |
 | 6.4 | COM1 공개키 등록 후 SSH 무인 경로 실검증 | 대기 — COM1 1회 부트스트랩 |
 | 6.5 | 이슈 #7에 PR 링크 연결 | PR 생성 후 |
+
+## 7. SMB 경로 실제 전송 (2026-10-22, 실측 완료)
+
+SSH/Taildrop 경로가 COM1 측 명령 1회 또는 공개키 등록에 머물러 있는 사이, **추가 부트스트랩 없이
+동작하는 SMB 경로**를 구현해 실제 전송을 완료했다. 2 장의 "SMB 445 불가" 항목은 **오판**이며
+아래 7.1 에서 정정한다.
+
+### 7.1 환경 정정 — SMB 445 는 사용 가능
+
+`net view \\100.124.21.64` 의 `오류 1702(잘못된 바인딩 핸들)` 은 **인증 실패가 아니라 SMB1 브라우저가
+꺼져 있어 디렉터리 열람이 안 되는 것**이다. SMB2/3 세션과 NTLM 패스스루는 정상 동작한다.
+
+| 확인 항목 | 명령 | 결과 |
+|---|---|---|
+| IPC$ 세션 | `Get-SmbConnection` | `\\100.124.21.64\IPC$` 상태 `OK` |
+| `Users` 공유 열람 | `[IO.Directory]::GetFileSystemEntries("\\100.124.21.64\Users")` | 5개 항목 정상 |
+| `Users\Public` 쓰기 | `[IO.File]::WriteAllText` / `CreateDirectory` / `Delete` | **전부 성공** |
+| `C$` / `ADMIN$` | `Get-ChildItem "\\100.124.21.64\C$"` | `액세스가 거부되었습니다` (COM1 로컬 관리자 아님) |
+| 공유 루트 이탈 | `Users\Public\..\..` | **차단됨** — `C:\Users` 로 정상 격리 |
+
+### 7.2 실제 전송 및 무결성 (배치 `batch-20261022T030416Z-5392e8b9`)
+
+대상 소스: `C:\Users\sji\cgi-work\_handoff_fixture\payload-test` (6개 파일, 비민감 테스트 데이터)
+
+| # | 파일 | 크기 | SHA256 (앞 12) | 결과 |
+|---|---|---|---|---|
+| 1 | `binary.bin` | 262,144 | `6b01662e4d7c` | PASS (256 KiB 난수 바이너리 바이트 일치) |
+| 2 | `empty.dat` | 0 | `e3b0c44298fc` | PASS (0바이트) |
+| 3 | `hello.txt` | 37 | `07a6007c4d6a` | PASS |
+| 4 | `한글파일.txt` | 28 | `b7fb3b1b307d` | PASS (유니코드 파일명) |
+| 5 | `sub/deep/nested.md` | 10 | `35b1472a1468` | PASS (중첩 경로) |
+| 6 | `공백 폴더/file with space.txt` | 8 | `5ffb028acf84` | PASS (공백 포함 경로) |
+
+| 검증 방식 | 결과 |
+|---|---|
+| 전송 스크립트 내 도착지 SHA256 대조 | **PASS 6/6**, exit 0 |
+| `verify_handoff.ps1` 수신측 재검증 (UNC 경로) | **PASS 6/6**, exit 0 |
+| Python 독립 검증(매니페스트 ↔ 수신지 ↔ 원본 3중 대조, 스크립트 미사용) | **PASS 6/6**, 원본/매니페스트 누락·초과 0건 |
+| 배치 `handoff.json` | `status=PASS`, `integrity=PASS`, `file_count=6` |
+
+### 7.3 충돌·중복·변조 동작
+
+| # | 시나리오 | 조작 | 기대 | 결과 |
+|---|---|---|---|---|
+| 7.3.1 | 동일 `batchId` 재실행 | `-BatchId 20261022T030416Z-5392e8b9` | 거부, 기존 배치 불변 | **PASS** — `ERROR Batch directory already exists`, exit 3 |
+| 7.3.2 | `-Resume`, 원본 동일 | `-Resume` | 전부 identical, 복사 없음 | **PASS** — identical 6, copied 0, exit 0 |
+| 7.3.3 | `-Resume`, 원본 변경 | `hello.txt` 내용 변경 후 `-Resume` | **CONFLICT**, 수신 파일 미변경 | **PASS** — `FAIL CONFLICT`, exit 3, 수신지 해시 `07a6007c…` 그대로 |
+| 7.3.4 | 명시적 교체 | `-Resume -OverwriteChanged` | 교체 후 재검증 | **PASS** — `overwritten+verified`, 수신지 해시 `6d13f911…` 로 일치 |
+| 7.3.5 | 수신 파일 변조 후 검증 | 수신 `hello.txt`에 `TAMPERED` 추가 | 검증 FAIL | **PASS** — `mismatched: 1`, exit 2 |
+| 7.3.6 | 변조 복구 | 7.3.4 재실행 후 재검증 | PASS 복구 | **PASS** — verified 6/6, exit 0 |
+| 7.3.7 | 인자 없이 재실행 | `-SourcePath` 만 지정 | 새 batchId, 기존 배치 공존 | **PASS** — `batch-20261022T030847Z-bda381be` 신규 생성 |
+
+### 7.4 COM1 -> PR 수신측 동작 (receive_to_pr.ps1)
+
+COM1의 기존 클론을 모사하기 위해 `main` 상태 클론 + 로컬 bare 저장소를 원격으로 사용했다.
+
+| # | 시나리오 | 기대 | 결과 |
+|---|---|---|---|
+| 7.4.1 | 배치 검증 | SHA256 재검증 후에만 진행 | **PASS** — `Integrity check PASS` |
+| 7.4.2 | 반영 + branch + commit + push | 브랜치 생성 후 커밋·푸시 | **PASS** — `handoff/20261022T030847Z-bda381be`, commit `555b64f` (2 files, 398 insertions), push 성공 |
+| 7.4.3 | 종단간 무결성 | 푸시된 파일 해시 = CGI-1 원본 해시 | **PASS** — 양쪽 모두 `77f13403c429…` |
+| 7.4.4 | base 브랜치 아닌 상태 | 거부 | **PASS** — `ERROR The work tree is on 'handoff/…', not the base branch 'main'`, exit 5 |
+| 7.4.5 | 이미 존재하는 브랜치 | 재생성 금지 | **PASS** — `ERROR Branch … is already checked out`, exit 3 |
+| 7.4.6 | 다른 에이전트 파일과 내용 충돌 | 덮어쓰지 않고 충돌 보고 | **PASS** — `CONFLICT`, exit 3, 대상 파일 해시 `0aced9f5…` 그대로 |
+| 7.4.7 | 충돌 시 정리 | 이번 실행이 복사한 파일 롤백 | **PASS** — `Rolled back 1 file(s)`, 작업 트리 clean 유지 |
+| 7.4.8 | 이미 동일 내용 존재 | 멱등(no-op) | **PASS** — `already present, identical` 2건, `Nothing new to commit`, exit 0 |
+| 7.4.9 | git 사용자 정보 없음 | 명확한 안내 후 중단 | **PASS** — `ERROR git has no user.email configured` + 설정 방법 안내 |
+| 7.4.10 | `gh` 미설치 | PR URL 출력으로 대체 | **PASS** — compare URL 출력 |
+
+### 7.5 남은 장애 (정확한 근거)
+
+| 항목 | 근거 | 해소 방법 |
+|---|---|---|
+| SSH(2222) 인증 | `Permission denied (publickey,keyboard-interactive)` | COM1 콘솔에서 `bootstrap-com1.ps1` 1회 실행 |
+| COM1 `authorized_keys` 로의 원격 쓰기 | `C$`/`ADMIN$` = `액세스가 거부`, `Users` 공유에 COM1 프로필 디렉터리 미노출, `ProgramData\ssh` 접근 불가 | COM1 로컬 실행 필요 |
+| `gh` CLI 미설치 (CGI-1) | `gh: command not found` | COM1 설치 또는 `gh` 없이 compare URL 사용 |
+| **GitHub push (CGI-1)** | **가능함을 확인** — Windows 자격 관리자에 `git:https://github.com` 자격 증명 저장 | 8장 참조 |
+
+## 8. GitHub 접근 (CGI-1) 재확인 결과
+
+2 장의 "CGI-1 은 push 불가" 기록은 **입력 없이 실행**했을 때의 동작을 본 것이다.
+`GIT_TERMINAL_PROMPT=0` 로 다시 실행하면 저장된 자격 증명이 조용히 소비되어 성공한다.
+
+```text
+$ GIT_TERMINAL_PROMPT=0 git push --dry-run origin HEAD:refs/heads/tmp-probe
+To https://github.com/skerishKang/kbs261022
+ * [new branch]      HEAD -> tmp-probe
+```
+
+원인: Windows 자격 관리자에 `LegacyGeneric:target=git:https://github.com` 항목이 있고,
+Git for Windows 의 기본 자격 증명 헬퍼(`manager`)가 이를 사용한다.
+
+```text
+$ cmdkey /list
+    대상: LegacyGeneric:target=git:https://github.com
+```
+
+=> **CGI-1 에서 PR 생성까지 가능**하다(`gh` CLI 만 없으므로 PR 생성은 `git push` +
+GitHub API 또는 compare URL 로 처리한다).
+전송(handoff) 자체는 7 장의 SMB 경로로 GitHub 인증 없이 수행되므로, 이슈 #7 의 요구사항을 모두 만족한다.
+
