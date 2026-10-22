@@ -1,0 +1,3946 @@
+[
+ {
+  "id": "samasound.co.kr:3887",
+  "name": "V Collection 11 PRO EDU(학생/교직원용)",
+  "brand": "ARTURIA",
+  "brand_raw": "ARTURIA",
+  "brand_norm": "ARTURIA",
+  "manufacturer": "ARTURIA",
+  "model": "",
+  "category_path": [
+   "홈",
+   "제품분류별 보기",
+   "레코딩&악기",
+   "소프트웨어/플러그인"
+  ],
+  "category": {
+   "id": "23",
+   "name": "소프트웨어/플러그인",
+   "path": "홈 > 제품분류별 보기 > 레코딩&악기 > 소프트웨어/플러그인",
+   "registered_count": 2229,
+   "list_url": "https://www.samasound.co.kr/product/list.html?cate_no=23"
+  },
+  "price": {
+   "value": null,
+   "text": "가격 문의",
+   "state": "inquiry"
+  },
+  "availability": "{\"stock_number_displayed\": \"0\", \"use_stock\": false, \"use_soldout\": \"F\", \"is_reserve_stat\": \"N\"}",
+  "images": [
+   "https://www.samasound.co.kr/web/product/small/202608/e5f857bb7b802859bae58d61eaa27319.png",
+   "https://samasound.co.kr/web/upload/NNEditor/20260811/buy_banner.png",
+   "https://sama2015.cafe24.com/SAMADNI/ARTURIA/V-Collection11/V-Collection11PRO_MAIN_1.jpg",
+   "https://sama2015.cafe24.com/SAMADNI/ARTURIA/V-Collection11/V-Collection11PRO_MAIN_2.jpg",
+   "https://sama2015.cafe24.com/SAMADNI/ARTURIA/V-Collection11/V-Collection11PRO_MAIN_3.jpg",
+   "https://sama2015.cafe24.com/SAMADNI/ARTURIA/V-Collection11/V-Collection11PRO_MAIN_4.jpg",
+   "https://sama2015.cafe24.com/SAMADNI/ARTURIA/V-Collection11/V-Collection11PRO_MAIN_5.jpg",
+   "https://sama2015.cafe24.com/SAMADNI/ARTURIA/V-Collection11/V-Collection11PRO_MAIN_6.jpg",
+   "https://sama2015.cafe24.com/SAMADNI/ARTURIA/V-Collection11/V-Collection11INTRO_MAIN_7.jpg",
+   "https://sama2015.cafe24.com/SAMADNI/ARTURIA/V-Collection11/V-Collection11PRO_MAIN_8.jpg"
+  ],
+  "specs": [
+   {
+    "label": "구매방법",
+    "value": "1회구매 정기배송 할인"
+   },
+   {
+    "label": "배송주기",
+    "value": "정기배송 할인 save 결제 시 : 할인"
+   },
+   {
+    "label": "상품명",
+    "value": "V Collection 11 PRO EDU(학생/교직원용)"
+   },
+   {
+    "label": "상품요약정보",
+    "value": "아투리아 키보드/신디사이저 올인원 가상악기 사운드컬렉션 - 45 개 키보드/신디사이저, 12,000 개 이상 고품질 프리셋 사운드 포함 가상악기"
+   },
+   {
+    "label": "원산지",
+    "value": "유럽 프랑스"
+   },
+   {
+    "label": "제조사",
+    "value": "ARTURIA"
+   },
+   {
+    "label": "판매가",
+    "value": "가격 문의"
+   }
+  ],
+  "options": [],
+  "source": {
+   "site": "samasound.co.kr",
+   "site_label": "삼아사운드",
+   "product_id": "3887",
+   "url": "https://samasound.co.kr/product/v-collection-11-pro-edu학생교직원용/3887/",
+   "list_url": "https://www.samasound.co.kr/product/v-collection-11-pro-edu학생교직원용/3887/category/23/display/1/",
+   "extraction_method": "http_get_public_html+list_crawl_join",
+   "verification_status": "verified_against_source_page",
+   "updated_at": "2026-10-22"
+  }
+ },
+ {
+  "id": "samasound.co.kr:3875",
+  "name": "WL185MB/C-TQG",
+  "brand": "Shure",
+  "brand_raw": "Shure",
+  "brand_norm": "SHURE",
+  "manufacturer": "Shure",
+  "model": "",
+  "category_path": [
+   "홈",
+   "제품분류별 보기",
+   "마이크",
+   "무선마이크"
+  ],
+  "category": {
+   "id": "23",
+   "name": "무선 바디팩용 마이크",
+   "path": "홈 > 제품분류별 보기 > 마이크 > 무선마이크",
+   "registered_count": 2229,
+   "list_url": "https://www.samasound.co.kr/product/list.html?cate_no=23"
+  },
+  "price": {
+   "value": null,
+   "text": "가격 문의",
+   "state": "inquiry"
+  },
+  "availability": "{\"stock_number_displayed\": \"0\", \"use_stock\": false, \"use_soldout\": \"F\", \"is_reserve_stat\": \"N\"}",
+  "images": [
+   "https://www.samasound.co.kr/web/product/small/202608/d5f2efab9eb1e9c5199e2960a94f1882.jpg",
+   "https://www.samasound.co.kr/web/product/extra/small/202608/a6dd45b590b57d33f7f2d2b7129ddbd1.png",
+   "https://samasound.co.kr/web/upload/NNEditor/20260811/copy-1786424339-buy_banner.png",
+   "https://samasound.co.kr/web/upload/NNEditor/20260811/data_Shure.png",
+   "https://sama2015.cafe24.com/shure_genuine_info.jpg",
+   "https://sama2015.cafe24.com/SAMADNI/SHURE_Wired/WL185_MAIN.jpg"
+  ],
+  "specs": [
+   {
+    "label": "구매방법",
+    "value": "1회구매 정기배송 할인"
+   },
+   {
+    "label": "배송주기",
+    "value": "정기배송 할인 save 결제 시 : 할인"
+   },
+   {
+    "label": "상품간략설명",
+    "value": "SHURE 무선용 단일 지향성 핀마이크 블랙"
+   },
+   {
+    "label": "상품명",
+    "value": "WL185MB/C-TQG"
+   },
+   {
+    "label": "상품요약정보",
+    "value": "단일지향성 로우 프로파일 카디오이드 라발리에 컨덴서 마이크"
+   },
+   {
+    "label": "원산지",
+    "value": "아시아 중국"
+   },
+   {
+    "label": "제조사",
+    "value": "Shure"
+   },
+   {
+    "label": "판매가",
+    "value": "가격 문의"
+   }
+  ],
+  "options": [],
+  "source": {
+   "site": "samasound.co.kr",
+   "site_label": "삼아사운드",
+   "product_id": "3875",
+   "url": "https://samasound.co.kr/product/wl185mbc-tqg/3875/",
+   "list_url": "https://www.samasound.co.kr/product/wl185mbc-tqg/3875/category/23/display/1/",
+   "extraction_method": "http_get_public_html+list_crawl_join",
+   "verification_status": "verified_against_source_page",
+   "updated_at": "2026-10-22"
+  }
+ },
+ {
+  "id": "samasound.co.kr:3569",
+  "name": "XXCR",
+  "brand": "Neutrik",
+  "brand_raw": "Neutrik",
+  "brand_norm": "NEUTRIK",
+  "manufacturer": "Neutrik",
+  "model": "",
+  "category_path": [
+   "홈",
+   "제품분류별 보기",
+   "프로 오디오",
+   "커넥터&케이블"
+  ],
+  "category": {
+   "id": "24",
+   "name": "액세서리",
+   "path": "홈 > 제품분류별 보기 > 프로 오디오 > 커넥터&케이블",
+   "registered_count": 2211,
+   "list_url": "https://www.samasound.co.kr/product/list.html?cate_no=24"
+  },
+  "price": {
+   "value": null,
+   "text": "가격 문의",
+   "state": "inquiry"
+  },
+  "availability": "{\"stock_number_displayed\": \"0\", \"use_stock\": false, \"use_soldout\": \"F\", \"is_reserve_stat\": \"N\"}",
+  "images": [
+   "https://www.samasound.co.kr/web/product/small/202511/a538f0087c8b34d498150cfafe983a75.jpg",
+   "https://samasound.co.kr/web/upload/NNEditor/20251125/buy_banner.png",
+   "https://samasound.co.kr/web/upload/NNEditor/20251112/data_Neutrik.png",
+   "https://gi.esmplus.com/samadni/NEUTRIK/XXCR-MAIN.jpg"
+  ],
+  "specs": [
+   {
+    "label": "구매방법",
+    "value": "1회구매 정기배송 할인"
+   },
+   {
+    "label": "배송주기",
+    "value": "정기배송 할인 save 결제 시 : 할인"
+   },
+   {
+    "label": "상품명",
+    "value": "XXCR"
+   },
+   {
+    "label": "상품요약정보",
+    "value": "XX 시리즈 투명 코딩 링"
+   },
+   {
+    "label": "원산지",
+    "value": "유럽 리히텐슈타인"
+   },
+   {
+    "label": "제조사",
+    "value": "Neutrik"
+   },
+   {
+    "label": "판매가",
+    "value": "가격 문의"
+   }
+  ],
+  "options": [],
+  "source": {
+   "site": "samasound.co.kr",
+   "site_label": "삼아사운드",
+   "product_id": "3569",
+   "url": "https://samasound.co.kr/product/xxcr/3569/",
+   "list_url": "https://www.samasound.co.kr/product/xxcr/3569/category/24/display/1/",
+   "extraction_method": "http_get_public_html+list_crawl_join",
+   "verification_status": "verified_against_source_page",
+   "updated_at": "2026-10-22"
+  }
+ },
+ {
+  "id": "samasound.co.kr:3737",
+  "name": "SLXD4+",
+  "brand": "Shure",
+  "brand_raw": "Shure",
+  "brand_norm": "SHURE",
+  "manufacturer": "Shure",
+  "model": "",
+  "category_path": [
+   "홈",
+   "제품분류별 보기",
+   "마이크",
+   "무선마이크"
+  ],
+  "category": {
+   "id": "23",
+   "name": "SLX-D 시리즈",
+   "path": "홈 > 제품분류별 보기 > 마이크 > 무선마이크",
+   "registered_count": 2229,
+   "list_url": "https://www.samasound.co.kr/product/list.html?cate_no=23"
+  },
+  "price": {
+   "value": null,
+   "text": "가격 문의",
+   "state": "inquiry"
+  },
+  "availability": "{\"stock_number_displayed\": \"0\", \"use_stock\": false, \"use_soldout\": \"F\", \"is_reserve_stat\": \"N\"}",
+  "images": [
+   "https://www.samasound.co.kr/web/product/small/202603/3af9745dfceaa238de125f51d51afce4.jpg",
+   "https://www.samasound.co.kr/web/product/extra/small/202603/2c5fb9b2b07a13860454f6d54d1bc98c.jpg",
+   "https://www.samasound.co.kr/web/product/extra/small/202603/95736ed6ab74c66509462df5235f4951.jpg",
+   "https://samasound.co.kr/web/upload/NNEditor/20251113/data_Shure.png",
+   "https://samasound.co.kr/web/upload/NNEditor/20260318/copy-1773818228-Shure-SLX-D2B-Wireless-system_full_1.jpg",
+   "https://samasound.co.kr/web/upload/NNEditor/20260318/copy-1773818238-Shure-SLX-D2B-Wireless-system_full_2.jpg",
+   "https://samasound.co.kr/web/upload/NNEditor/20260303/Shure_SLXD42B_spec.jpg"
+  ],
+  "specs": [
+   {
+    "label": "구매방법",
+    "value": "1회구매 정기배송 할인"
+   },
+   {
+    "label": "배송주기",
+    "value": "정기배송 할인 save 결제 시 : 할인"
+   },
+   {
+    "label": "상품간략설명",
+    "value": "SLX-D+ 싱글 채널 디지털 무선 수신기"
+   },
+   {
+    "label": "상품명",
+    "value": "SLXD4+"
+   },
+   {
+    "label": "상품요약정보",
+    "value": "SLX-D+ 싱글 채널 디지털 무선 수신기"
+   },
+   {
+    "label": "영문상품명",
+    "value": "SLXD4+"
+   },
+   {
+    "label": "원산지",
+    "value": "아시아 중국"
+   },
+   {
+    "label": "제조사",
+    "value": "Shure"
+   },
+   {
+    "label": "판매가",
+    "value": "가격 문의"
+   }
+  ],
+  "options": [],
+  "source": {
+   "site": "samasound.co.kr",
+   "site_label": "삼아사운드",
+   "product_id": "3737",
+   "url": "https://samasound.co.kr/product/slxd4/3737/",
+   "list_url": "https://www.samasound.co.kr/product/slxd4/3737/category/23/display/1/",
+   "extraction_method": "http_get_public_html+list_crawl_join",
+   "verification_status": "verified_against_source_page",
+   "updated_at": "2026-10-22"
+  }
+ },
+ {
+  "id": "samasound.co.kr:3112",
+  "name": "GENELEC 8030C 제네렉 스튜디오 모니터 스피커 (블랙)",
+  "brand": "Genelec",
+  "brand_raw": "Genelec",
+  "brand_norm": "GENELEC",
+  "manufacturer": "Genelec",
+  "model": "",
+  "category_path": [
+   "홈",
+   "제품분류별 보기",
+   "스피커&퍼스널리스닝",
+   "스튜디오 모니터 스피커"
+  ],
+  "category": {
+   "id": "23",
+   "name": "액티브 스피커",
+   "path": "홈 > 제품분류별 보기 > 스피커&퍼스널리스닝 > 스튜디오 모니터 스피커",
+   "registered_count": 2229,
+   "list_url": "https://www.samasound.co.kr/product/list.html?cate_no=23"
+  },
+  "price": {
+   "value": null,
+   "text": "가격 문의",
+   "state": "inquiry"
+  },
+  "availability": "{\"stock_number_displayed\": \"0\", \"use_stock\": false, \"use_soldout\": \"F\", \"is_reserve_stat\": \"N\"}",
+  "images": [
+   "https://www.samasound.co.kr/web/product/small/202507/dbdb5ddc60351fa447aa1f343849ab3f.jpg",
+   "https://www.samasound.co.kr/web/product/extra/small/202507/c10a689aa78ebb01f94737f0ef2e8830.jpg",
+   "https://www.samasound.co.kr/web/product/extra/small/202507/989804778c17afcb70939d533f4f824a.jpg",
+   "https://www.samasound.co.kr/web/product/extra/small/202507/e80f30c604277f08f54b476ffedaf19d.jpg",
+   "https://www.samasound.co.kr/web/product/extra/small/202507/43aaf86610de2bd1975a3ed6829f890d.jpg",
+   "https://sama2015.cafe24.com/SAMADNI/GENELEC/241212_GENELEC_Experience_Center_banner_01.png",
+   "https://sama2015.cafe24.com/SAMADNI/GENELEC/241212_GENELEC_Experience_Center_banner_02.png",
+   "https://sama2015.cafe24.com/SAMADNI/GENELEC/241212_GENELEC_Experience_Center_banner_03.png",
+   "https://sama2015.cafe24.com/SAMADNI/GENELEC/8030CM-MAIN.jpg",
+   "https://gi.esmplus.com/samadni/GENELEC/Genelec_8000_Series_comparison.jpg"
+  ],
+  "specs": [
+   {
+    "label": "구매방법",
+    "value": "1회구매 정기배송 할인"
+   },
+   {
+    "label": "배송주기",
+    "value": "정기배송 할인 save 결제 시 : 할인"
+   },
+   {
+    "label": "상품명",
+    "value": "GENELEC 8030C 제네렉 스튜디오 모니터 스피커 (블랙)"
+   },
+   {
+    "label": "상품요약정보",
+    "value": "Classic Studio Monitors 12.7cm (5타입)"
+   },
+   {
+    "label": "원산지",
+    "value": "유럽 핀란드"
+   },
+   {
+    "label": "제조사",
+    "value": "Genelec"
+   },
+   {
+    "label": "판매가",
+    "value": "가격 문의"
+   }
+  ],
+  "options": [],
+  "source": {
+   "site": "samasound.co.kr",
+   "site_label": "삼아사운드",
+   "product_id": "3112",
+   "url": "https://samasound.co.kr/product/genelec-8030c-제네렉-스튜디오-모니터-스피커-블랙/3112/",
+   "list_url": "https://www.samasound.co.kr/product/genelec-8030c-제네렉-스튜디오-모니터-스피커-블랙/3112/category/23/display/1/",
+   "extraction_method": "http_get_public_html+list_crawl_join",
+   "verification_status": "verified_against_source_page",
+   "updated_at": "2026-10-22"
+  }
+ },
+ {
+  "id": "samasound.co.kr:1697",
+  "name": "Antares Aspire 안타레스 아스파이어 숨소리 컨트롤 플러그인",
+  "brand": "Antares",
+  "brand_raw": "Antares",
+  "brand_norm": "ANTARES",
+  "manufacturer": "Antares",
+  "model": "",
+  "category_path": [
+   "홈",
+   "제품분류별 보기",
+   "레코딩&악기",
+   "소프트웨어/플러그인"
+  ],
+  "category": {
+   "id": "23",
+   "name": "소프트웨어/플러그인",
+   "path": "홈 > 제품분류별 보기 > 레코딩&악기 > 소프트웨어/플러그인",
+   "registered_count": 2229,
+   "list_url": "https://www.samasound.co.kr/product/list.html?cate_no=23"
+  },
+  "price": {
+   "value": null,
+   "text": "가격 문의",
+   "state": "inquiry"
+  },
+  "availability": "{\"stock_number_displayed\": \"0\", \"use_stock\": false, \"use_soldout\": \"F\", \"is_reserve_stat\": \"N\"}",
+  "images": [
+   "https://www.samasound.co.kr/web/product/small/202504/b0183e4380a1224ef75357cfdd87406e.jpg",
+   "https://ai.esmplus.com/samadni/Antares/Aspire-MAIN_01.jpg",
+   "https://ai.esmplus.com/samadni/Antares/Aspire-MAIN_02.jpg"
+  ],
+  "specs": [
+   {
+    "label": "구매방법",
+    "value": "1회구매 정기배송 할인"
+   },
+   {
+    "label": "배송주기",
+    "value": "정기배송 할인 save 결제 시 : 할인"
+   },
+   {
+    "label": "상품간략설명",
+    "value": "본 제품은 소프트웨어 전자배송 상품으로 이메일 발송이 이루어지며 교환 및 환불 이 불가 합니다."
+   },
+   {
+    "label": "상품명",
+    "value": "Antares Aspire 안타레스 아스파이어 숨소리 컨트롤 플러그인"
+   },
+   {
+    "label": "상품요약정보",
+    "value": "숨소리 컨트롤 프로세서"
+   },
+   {
+    "label": "원산지",
+    "value": "아메리카 미국"
+   },
+   {
+    "label": "제조사",
+    "value": "Antares"
+   },
+   {
+    "label": "판매가",
+    "value": "가격 문의"
+   }
+  ],
+  "options": [],
+  "source": {
+   "site": "samasound.co.kr",
+   "site_label": "삼아사운드",
+   "product_id": "1697",
+   "url": "https://samasound.co.kr/product/antares-aspire-안타레스-아스파이어-숨소리-컨트롤-플러그인/1697/",
+   "list_url": "https://www.samasound.co.kr/product/antares-aspire-안타레스-아스파이어-숨소리-컨트롤-플러그인/1697/category/23/display/1/",
+   "extraction_method": "http_get_public_html+list_crawl_join",
+   "verification_status": "verified_against_source_page",
+   "updated_at": "2026-10-22"
+  }
+ },
+ {
+  "id": "samasound.co.kr:2486",
+  "name": "PB-55 베이스 기타 (커스텀 오더)",
+  "brand": "NASH GUITARS",
+  "brand_raw": "NASH GUITARS",
+  "brand_norm": "NASH GUITARS",
+  "manufacturer": "NASH GUITARS",
+  "model": "",
+  "category_path": [
+   "홈",
+   "제품분류별 보기",
+   "레코딩&악기",
+   "악기/앰프"
+  ],
+  "category": {
+   "id": "23",
+   "name": "베이스 기타",
+   "path": "홈 > 제품분류별 보기 > 레코딩&악기 > 악기/앰프",
+   "registered_count": 2229,
+   "list_url": "https://www.samasound.co.kr/product/list.html?cate_no=23"
+  },
+  "price": {
+   "value": null,
+   "text": "가격 문의",
+   "state": "inquiry"
+  },
+  "availability": "{\"stock_number_displayed\": \"0\", \"use_stock\": false, \"use_soldout\": \"F\", \"is_reserve_stat\": \"N\"}",
+  "images": [
+   "https://www.samasound.co.kr/web/product/small/202504/1b2c9a8cb96b95638c9d54e4ede92143.jpg",
+   "https://www.samasound.co.kr/web/product/extra/small/202504/58aa42430470c5f67586a428113e5702.jpg",
+   "https://www.samasound.co.kr/web/product/extra/small/202504/0ef8dd9fcb82111d9369e2605cec8a92.jpg",
+   "https://www.samasound.co.kr/web/product/extra/small/202504/300911373ff1a0516af199c9ac093278.jpg",
+   "https://www.samasound.co.kr/web/product/extra/small/202504/bfd78bb2abb1e8b444c77b0550174143.jpg",
+   "https://samasound.co.kr/web/upload/NNEditor/20251124/copy-1763952155-buy_banner.png",
+   "https://gi.esmplus.com/samadni/NashGuitars/Nash_PB-55_Dealer-MAIN_01.jpg",
+   "https://gi.esmplus.com/samadni/NashGuitars/Nash_PB-55_Dealer-MAIN_02.jpg",
+   "https://gi.esmplus.com/samadni/NashGuitars/Nash_bass-MAIN_02.jpg",
+   "https://gi.esmplus.com/samadni/NashGuitars/Nash_bass-MAIN_03.jpg"
+  ],
+  "specs": [
+   {
+    "label": "구매방법",
+    "value": "1회구매 정기배송 할인"
+   },
+   {
+    "label": "배송주기",
+    "value": "정기배송 할인 save 결제 시 : 할인"
+   },
+   {
+    "label": "상품명",
+    "value": "PB-55 베이스 기타 (커스텀 오더)"
+   },
+   {
+    "label": "상품요약정보",
+    "value": "프레시전 베이스"
+   },
+   {
+    "label": "원산지",
+    "value": "아메리카 미국"
+   },
+   {
+    "label": "제조사",
+    "value": "NASH GUITARS"
+   },
+   {
+    "label": "판매가",
+    "value": "가격 문의"
+   }
+  ],
+  "options": [],
+  "source": {
+   "site": "samasound.co.kr",
+   "site_label": "삼아사운드",
+   "product_id": "2486",
+   "url": "https://samasound.co.kr/product/pb-55-베이스-기타-커스텀-오더/2486/",
+   "list_url": "https://www.samasound.co.kr/product/pb-55-베이스-기타-커스텀-오더/2486/category/23/display/1/",
+   "extraction_method": "http_get_public_html+list_crawl_join",
+   "verification_status": "verified_against_source_page",
+   "updated_at": "2026-10-22"
+  }
+ },
+ {
+  "id": "samasound.co.kr:2745",
+  "name": "JACK-JACK CABLE 1.5m",
+  "brand": "QED",
+  "brand_raw": "QED",
+  "brand_norm": "QED",
+  "manufacturer": "QED",
+  "model": "",
+  "category_path": [
+   "홈",
+   "제품분류별 보기",
+   "스피커&퍼스널리스닝",
+   "Hi-Fi"
+  ],
+  "category": {
+   "id": "23",
+   "name": "Hi-Fi 케이블",
+   "path": "홈 > 제품분류별 보기 > 스피커&퍼스널리스닝 > Hi-Fi",
+   "registered_count": 2229,
+   "list_url": "https://www.samasound.co.kr/product/list.html?cate_no=23"
+  },
+  "price": {
+   "value": null,
+   "text": "가격 문의",
+   "state": "inquiry"
+  },
+  "availability": "{\"stock_number_displayed\": \"0\", \"use_stock\": false, \"use_soldout\": \"F\", \"is_reserve_stat\": \"N\"}",
+  "images": [
+   "https://www.samasound.co.kr/web/product/small/202504/e469278354d3c557b8556417ea5b8df1.jpg",
+   "https://www.samasound.co.kr/web/product/extra/small/202504/5c7d72e925e89b5a700c14cefe2518ec.jpg",
+   "https://samasound.co.kr/web/upload/NNEditor/20251128/copy-1764305816-buy_banner.png",
+   "https://sama2015.cafe24.com/SAMADNI/QED/QED_notice.jpg",
+   "https://sama2015.cafe24.com/SAMADNI/QED/QED_CONNECT_QE8124_Jack-to-Jack.jpg"
+  ],
+  "specs": [
+   {
+    "label": "구매방법",
+    "value": "1회구매 정기배송 할인"
+   },
+   {
+    "label": "배송주기",
+    "value": "정기배송 할인 save 결제 시 : 할인"
+   },
+   {
+    "label": "상품명",
+    "value": "JACK-JACK CABLE 1.5m"
+   },
+   {
+    "label": "상품요약정보",
+    "value": "잭투잭 3.5 to 3.5 케이블"
+   },
+   {
+    "label": "원산지",
+    "value": "아시아 중국"
+   },
+   {
+    "label": "제조사",
+    "value": "QED"
+   },
+   {
+    "label": "판매가",
+    "value": "가격 문의"
+   }
+  ],
+  "options": [],
+  "source": {
+   "site": "samasound.co.kr",
+   "site_label": "삼아사운드",
+   "product_id": "2745",
+   "url": "https://samasound.co.kr/product/jack-jack-cable-15m/2745/",
+   "list_url": "https://www.samasound.co.kr/product/jack-jack-cable-15m/2745/category/23/display/1/",
+   "extraction_method": "http_get_public_html+list_crawl_join",
+   "verification_status": "verified_against_source_page",
+   "updated_at": "2026-10-22"
+  }
+ },
+ {
+  "id": "samasound.co.kr:3863",
+  "name": "MVX2U G2",
+  "brand": "Shure",
+  "brand_raw": "Shure",
+  "brand_norm": "SHURE",
+  "manufacturer": "Shure",
+  "model": "",
+  "category_path": [
+   "홈",
+   "제품분류별 보기",
+   "레코딩&악기",
+   "인터페이스"
+  ],
+  "category": {
+   "id": "23",
+   "name": "USB 인터페이스",
+   "path": "홈 > 제품분류별 보기 > 레코딩&악기 > 인터페이스",
+   "registered_count": 2229,
+   "list_url": "https://www.samasound.co.kr/product/list.html?cate_no=23"
+  },
+  "price": {
+   "value": null,
+   "text": "가격 문의",
+   "state": "inquiry"
+  },
+  "availability": "{\"stock_number_displayed\": \"0\", \"use_stock\": false, \"use_soldout\": \"F\", \"is_reserve_stat\": \"N\"}",
+  "images": [
+   "https://www.samasound.co.kr/web/product/small/202608/0b716dd62d8f552d9b2c75e32f747d15.jpg",
+   "https://www.samasound.co.kr/web/product/extra/small/202608/3e8d25e9c90b5e5ebae58b9585bc6380.jpg",
+   "https://www.samasound.co.kr/web/product/extra/small/202608/2fdb883d8f6fb12949eed29855726f77.jpg",
+   "https://www.samasound.co.kr/web/product/extra/small/202608/7fd39fd6013dd5f090700d8245f96aba.jpg",
+   "https://www.samasound.co.kr/web/product/extra/small/202608/3fdc0951c098f83a8bd6b32228eb2c48.jpg",
+   "https://www.samasound.co.kr/web/product/extra/small/202608/125f2f5ecbc5e70647d6476a13766a9c.jpg",
+   "https://www.samasound.co.kr/web/product/extra/small/202608/4dc5cd16504ead24e0f8bf88f00ecf0d.jpg",
+   "https://samasound.co.kr/web/upload/NNEditor/20260811/copy-1786425370-buy_banner.png",
+   "https://samasound.co.kr/web/upload/NNEditor/20260811/copy-1786425393-data_Shure.png",
+   "https://sama2015.cafe24.com/SAMADNI/SHURE_Accessory/MVX2U-Gen2_MAIN_1.jpg",
+   "https://sama2015.cafe24.com/SAMADNI/SHURE_Accessory/MVX2U-Gen2_MAIN_2.gif",
+   "https://sama2015.cafe24.com/SAMADNI/SHURE_Accessory/MVX2U-Gen2_MAIN_3.jpg",
+   "https://sama2015.cafe24.com/SAMADNI/SHURE_Accessory/MVX2U-Gen2_MAIN_4.jpg"
+  ],
+  "specs": [
+   {
+    "label": "구매방법",
+    "value": "1회구매 정기배송 할인"
+   },
+   {
+    "label": "배송주기",
+    "value": "정기배송 할인 save 결제 시 : 할인"
+   },
+   {
+    "label": "상품간략설명",
+    "value": "모든 XLR 마이크를 USB 마이크로 변환해주는 오디오 인터페이스"
+   },
+   {
+    "label": "상품명",
+    "value": "MVX2U G2"
+   },
+   {
+    "label": "상품요약정보",
+    "value": "XLR - USB-C 단일 채널 오디오 인터페이스 (모바일 지원)"
+   },
+   {
+    "label": "원산지",
+    "value": "아시아 중국"
+   },
+   {
+    "label": "제조사",
+    "value": "Shure"
+   },
+   {
+    "label": "판매가",
+    "value": "가격 문의"
+   }
+  ],
+  "options": [],
+  "source": {
+   "site": "samasound.co.kr",
+   "site_label": "삼아사운드",
+   "product_id": "3863",
+   "url": "https://samasound.co.kr/product/mvx2u-g2/3863/",
+   "list_url": "https://www.samasound.co.kr/product/mvx2u-g2/3863/category/23/display/1/",
+   "extraction_method": "http_get_public_html+list_crawl_join",
+   "verification_status": "verified_against_source_page",
+   "updated_at": "2026-10-22"
+  }
+ },
+ {
+  "id": "samasound.co.kr:215",
+  "name": "CDM32",
+  "brand": "자체제작",
+  "brand_raw": "자체제작",
+  "brand_norm": "자체제작",
+  "manufacturer": "자체제작",
+  "model": "",
+  "category_path": [
+   "홈",
+   "제품분류별 보기",
+   "프로 오디오",
+   "믹서"
+  ],
+  "category": {
+   "id": "23",
+   "name": "디지털 믹서",
+   "path": "홈 > 제품분류별 보기 > 프로 오디오 > 믹서",
+   "registered_count": 2229,
+   "list_url": "https://www.samasound.co.kr/product/list.html?cate_no=23"
+  },
+  "price": {
+   "value": null,
+   "text": "가격 문의",
+   "state": "inquiry"
+  },
+  "availability": "{\"stock_number_displayed\": \"0\", \"use_stock\": false, \"use_soldout\": \"F\", \"is_reserve_stat\": \"N\"}",
+  "images": [
+   "https://www.samasound.co.kr/web/product/small/202408/d28ac2c5749b389ab0a4ebe29c928bb0.jpg",
+   "https://www.samasound.co.kr/web/product/extra/small/202408/5720bac659c7a22c3f2faec441af21e7.jpg",
+   "https://www.samasound.co.kr/web/product/extra/small/202408/14f646a289716a7a115244d8c4e008e5.jpg",
+   "https://www.samasound.co.kr/web/product/extra/small/202408/fec4729c41619cc2a61d8e16be4306fe.jpg",
+   "https://samasound.co.kr/web/upload/NNEditor/20251112/data_AH.png",
+   "https://samasound.co.kr/web/upload/NNEditor/20240808/7801dcb31ffcfc9eeb3194f3951b102f_1499241722.5928.jpg"
+  ],
+  "specs": [
+   {
+    "label": "구매방법",
+    "value": "1회구매 정기배송 할인"
+   },
+   {
+    "label": "배송주기",
+    "value": "정기배송 할인 save 결제 시 : 할인"
+   },
+   {
+    "label": "상품명",
+    "value": "CDM32"
+   },
+   {
+    "label": "상품요약정보",
+    "value": "dLive C클래스 32 마이크 입력 MixRack"
+   },
+   {
+    "label": "영문상품명",
+    "value": "CDM32"
+   },
+   {
+    "label": "원산지",
+    "value": "아시아 중국"
+   },
+   {
+    "label": "제조사",
+    "value": "자체제작"
+   },
+   {
+    "label": "판매가",
+    "value": "가격문의"
+   }
+  ],
+  "options": [],
+  "source": {
+   "site": "samasound.co.kr",
+   "site_label": "삼아사운드",
+   "product_id": "215",
+   "url": "https://samasound.co.kr/product/cdm32/215/",
+   "list_url": "https://www.samasound.co.kr/product/cdm32/215/category/23/display/1/",
+   "extraction_method": "http_get_public_html+list_crawl_join",
+   "verification_status": "verified_against_source_page",
+   "updated_at": "2026-10-22"
+  }
+ },
+ {
+  "id": "samamusic.co.kr:2454",
+  "name": "SHURE PGA48 슈어 보컬용 유선 마이크",
+  "brand": "SHURE",
+  "brand_raw": "SHURE",
+  "brand_norm": "SHURE",
+  "manufacturer": "",
+  "model": "PGA48-LC",
+  "category_path": [
+   "레코딩"
+  ],
+  "category": {
+   "id": "26",
+   "name": "레코딩",
+   "path": "레코딩",
+   "registered_count": 0,
+   "list_url": "https://www.samamusic.co.kr/product/detail.html?product_no=2454&cate_no=26&display_group=1"
+  },
+  "price": {
+   "value": 78000,
+   "text": "78,000원",
+   "state": "public"
+  },
+  "availability": "{\"stock_number_displayed\": \"177\", \"use_stock\": true, \"use_soldout\": \"T\", \"is_reserve_stat\": \"N\"}",
+  "images": [
+   "https://www.samamusic.co.kr/web/product/small/202106/43beba2710f2c59470608d756ac097c4.jpg",
+   "https://www.samamusic.co.kr/web/product/extra/small/202106/93df7c64fdf0279cf1bdd35003c5de93.jpg",
+   "https://samamusic.co.kr/_wg/img/category_bnr/01.jpg",
+   "https://samamusic.co.kr/_wg/img/category_bnr/02.jpg",
+   "https://samamusic.co.kr/_wg/img/category_bnr/04_01.jpg",
+   "https://samamusic.co.kr/_wg/img/category_bnr/04_02.jpg",
+   "https://samamusic.co.kr/_wg/img/category_bnr/05.jpg",
+   "https://samamusic.co.kr/_wg/img/category_bnr/06.jpg",
+   "https://samamusic.co.kr/_wg/img/category_bnr/07.jpg",
+   "https://gi.esmplus.com/samadni/SAMA D&amp;I/SAMAD&amp;I-MAIN.jpg",
+   "https://samamusic.co.kr/shure_genuine_info.jpg",
+   "https://samamusic.co.kr/SAMADNI/APOGEE/apogee40th_event.jpg",
+   "https://gi.esmplus.com/samadni/SHURE_Wired/PGA48-MAIN.jpg",
+   "https://gi.esmplus.com/samadni/SAMA D&amp;I/SELLER-MAIN.jpg"
+  ],
+  "specs": [
+   {
+    "label": "구매방법",
+    "value": "1회구매 정기배송 할인"
+   },
+   {
+    "label": "길이선택",
+    "value": "- [필수] 옵션을 선택해 주세요 - ------------------- 1m 3m 5m 10m"
+   },
+   {
+    "label": "모델명",
+    "value": "PGA48-LC"
+   },
+   {
+    "label": "배송비",
+    "value": "3,000원 (50,000원 이상 구매 시 무료)"
+   },
+   {
+    "label": "배송주기",
+    "value": "정기배송 할인 save 결제 시 : 할인"
+   },
+   {
+    "label": "브랜드",
+    "value": "SHURE"
+   },
+   {
+    "label": "상품명",
+    "value": "SHURE PGA48 슈어 보컬용 유선 마이크"
+   },
+   {
+    "label": "상품선택",
+    "value": "- [필수] 상품 선택 - K&M 21020 (블랙) 케이앤엠 마이크 스탠드"
+   },
+   {
+    "label": "상품요약정보",
+    "value": "스피치에 최적화된 다이나믹 마이크로폰"
+   },
+   {
+    "label": "원산지",
+    "value": "아시아 중국 또는 멕시코"
+   },
+   {
+    "label": "판매가",
+    "value": "78,000원"
+   }
+  ],
+  "options": [
+   {
+    "name": "길이선택",
+    "sku": "",
+    "price": null,
+    "price_text": "가격 미확인",
+    "availability": "",
+    "group": "addproduct_options"
+   },
+   {
+    "name": "길이선택",
+    "sku": "",
+    "price": null,
+    "price_text": "가격 미확인",
+    "availability": "",
+    "group": "addproduct_options"
+   },
+   {
+    "name": "K&M 21020 (블랙) 케이앤엠 마이크 스탠드",
+    "sku": "",
+    "price": null,
+    "price_text": "가격 미확인",
+    "availability": "",
+    "group": "addproduct_options"
+   },
+   {
+    "name": "K&M 21090 (블랙) 케이앤엠 마이크 스탠드",
+    "sku": "",
+    "price": null,
+    "price_text": "가격 미확인",
+    "availability": "",
+    "group": "addproduct_options"
+   },
+   {
+    "name": "KLOTZ M1 PRIME 클로츠 마이크 케이블 (XLR to XLR, KLOTZ 커넥터) 블랙",
+    "sku": "",
+    "price": null,
+    "price_text": "가격 미확인",
+    "availability": "",
+    "group": "addproducts"
+   },
+   {
+    "name": "KLOTZ M5 HIGH-END 클로츠 마이크 케이블 (XLR to XLR, Neutrik 커넥터)",
+    "sku": "",
+    "price": null,
+    "price_text": "가격 미확인",
+    "availability": "",
+    "group": "addproducts"
+   },
+   {
+    "name": "K&M 21020 (블랙) 케이앤엠 마이크 스탠드",
+    "sku": "",
+    "price": null,
+    "price_text": "가격 미확인",
+    "availability": "",
+    "group": "addproducts"
+   },
+   {
+    "name": "K&M 21090 (블랙) 케이앤엠 마이크 스탠드",
+    "sku": "",
+    "price": null,
+    "price_text": "가격 미확인",
+    "availability": "",
+    "group": "addproducts"
+   },
+   {
+    "name": "길이선택",
+    "sku": "",
+    "price": 39000,
+    "price_text": "39,000원",
+    "availability": "",
+    "group": "add_option_data"
+   },
+   {
+    "name": "길이선택",
+    "sku": "",
+    "price": 45000,
+    "price_text": "45,000원",
+    "availability": "",
+    "group": "add_option_data"
+   },
+   {
+    "name": "길이선택",
+    "sku": "",
+    "price": 49000,
+    "price_text": "49,000원",
+    "availability": "",
+    "group": "add_option_data"
+   },
+   {
+    "name": "길이선택",
+    "sku": "",
+    "price": 67000,
+    "price_text": "67,000원",
+    "availability": "",
+    "group": "add_option_data"
+   },
+   {
+    "name": "길이선택",
+    "sku": "",
+    "price": 84000,
+    "price_text": "84,000원",
+    "availability": "",
+    "group": "add_option_data"
+   },
+   {
+    "name": "길이선택",
+    "sku": "",
+    "price": 103000,
+    "price_text": "103,000원",
+    "availability": "",
+    "group": "add_option_data"
+   },
+   {
+    "name": "길이선택",
+    "sku": "",
+    "price": 128000,
+    "price_text": "128,000원",
+    "availability": "",
+    "group": "add_option_data"
+   },
+   {
+    "name": "길이선택",
+    "sku": "",
+    "price": 191000,
+    "price_text": "191,000원",
+    "availability": "",
+    "group": "add_option_data"
+   }
+  ],
+  "source": {
+   "site": "samamusic.co.kr",
+   "site_label": "삼아스토어",
+   "product_id": "2454",
+   "url": "https://samastore.co.kr/product/shure-pga48-슈어-보컬용-유선-마이크/2454/",
+   "list_url": "https://www.samamusic.co.kr/product/detail.html?product_no=2454&cate_no=26&display_group=1",
+   "extraction_method": "http_get_public_html+list_crawl_join",
+   "verification_status": "verified_against_source_page",
+   "updated_at": "2026-10-22"
+  }
+ },
+ {
+  "id": "samamusic.co.kr:974",
+  "name": "PreSonus Eris 3.5 GEN2 프리소너스 에리스 2세대 모니터 스피커 1조(2통)",
+  "brand": "PRESONUS",
+  "brand_raw": "PRESONUS",
+  "brand_norm": "PRESONUS",
+  "manufacturer": "",
+  "model": "Eris 3.5 GEN2",
+  "category_path": [
+   "레코딩"
+  ],
+  "category": {
+   "id": "26",
+   "name": "레코딩",
+   "path": "레코딩",
+   "registered_count": 0,
+   "list_url": "https://www.samamusic.co.kr/product/detail.html?product_no=974&cate_no=26&display_group=1"
+  },
+  "price": {
+   "value": 219000,
+   "text": "219,000원",
+   "state": "public"
+  },
+  "availability": "{\"stock_number_displayed\": \"1293\", \"use_stock\": false, \"use_soldout\": \"F\", \"is_reserve_stat\": \"N\"}",
+  "images": [
+   "https://www.samamusic.co.kr/web/product/small/202502/fe5ba625f94a9a704cf49acd5cc601c9.jpg",
+   "https://www.samamusic.co.kr/web/product/extra/small/202310/5efdfefd6d38888247650296fa7d3267.jpg",
+   "https://www.samamusic.co.kr/web/product/extra/small/202310/a188787e4901bcad5bf7d8754e63fd31.jpg",
+   "https://samamusic.co.kr/_wg/img/category_bnr/01.jpg",
+   "https://samamusic.co.kr/_wg/img/category_bnr/02.jpg",
+   "https://samamusic.co.kr/_wg/img/category_bnr/04_01.jpg",
+   "https://samamusic.co.kr/_wg/img/category_bnr/04_02.jpg",
+   "https://samamusic.co.kr/_wg/img/category_bnr/05.jpg",
+   "https://samamusic.co.kr/_wg/img/category_bnr/06.jpg",
+   "https://samamusic.co.kr/_wg/img/category_bnr/07.jpg",
+   "https://gi.esmplus.com/samadni/SAMA D&amp;I/SAMAD&amp;I-MAIN.jpg",
+   "https://samamusic.co.kr/SAMADNI/SAMA_D%26I/Nowdelivery_event_web.jpg",
+   "https://samamusic.co.kr/SAMADNI/PRESONUS/Eris_35-MAIN_1.jpg",
+   "https://samamusic.co.kr/SAMADNI/PRESONUS/Eris_35-MAIN_2.jpg",
+   "https://samamusic.co.kr/SAMADNI/PRESONUS/Eris_35-MAIN_3.jpg",
+   "https://samamusic.co.kr/SAMADNI/PRESONUS/Eris_35-MAIN_4.jpg",
+   "https://samamusic.co.kr/SAMADNI/PRESONUS/Eris_35-MAIN_5.jpg",
+   "https://gi.esmplus.com/samadni/PRESONUS/eris_gen2_menual-notice.jpg",
+   "https://gi.esmplus.com/samadni/PRESONUS/Presonus_AS_banner.jpg",
+   "https://gi.esmplus.com/samadni/PRESONUS/brand_warranty_term_ProductGuide-banner.jpg",
+   "https://samamusic.co.kr/SAMADNI/SAMA_D%26I/SELLER-MAIN.jpg"
+  ],
+  "specs": [
+   {
+    "label": "구매방법",
+    "value": "1회구매 정기배송 할인"
+   },
+   {
+    "label": "길이 선택",
+    "value": "- [필수] 옵션을 선택해 주세요 - ------------------- 1.5m 2m (+3,000원) 3m (+6,000원) 4m (+10,000원) 5m [품절] (+14,000원)"
+   },
+   {
+    "label": "길이선택",
+    "value": "- [필수] 옵션을 선택해 주세요 - ------------------- 1m 2m (+3,000원) 3m (+6,000원) 6m (+12,000원)"
+   },
+   {
+    "label": "모델명",
+    "value": "Eris 3.5 GEN2"
+   },
+   {
+    "label": "배송비",
+    "value": "3,000원 (50,000원 이상 구매 시 무료)"
+   },
+   {
+    "label": "배송주기",
+    "value": "정기배송 할인 save 결제 시 : 할인"
+   },
+   {
+    "label": "브랜드",
+    "value": "PRESONUS"
+   },
+   {
+    "label": "상품간략설명",
+    "value": "국민스피커 ERIS, 2세대 2웨이 8.89cm (3.5타입) 미디어 레퍼런스 모니터 스피커"
+   },
+   {
+    "label": "상품명",
+    "value": "PreSonus Eris 3.5 GEN2 프리소너스 에리스 2세대 모니터 스피커 1조(2통)"
+   },
+   {
+    "label": "상품요약정보",
+    "value": "본 가격은 스피커 1조(2통)에 대한 가격입니다"
+   },
+   {
+    "label": "안전확인신고번호",
+    "value": "공급자적합성확인대상제품"
+   },
+   {
+    "label": "원산지",
+    "value": "아시아 중국"
+   },
+   {
+    "label": "적합인증번호",
+    "value": "R-R-YPS-Eris3-5"
+   },
+   {
+    "label": "판매가",
+    "value": "219,000원"
+   }
+  ],
+  "options": [
+   {
+    "name": "길이선택",
+    "sku": "",
+    "price": null,
+    "price_text": "가격 미확인",
+    "availability": "",
+    "group": "addproduct_options"
+   },
+   {
+    "name": "길이선택",
+    "sku": "",
+    "price": null,
+    "price_text": "가격 미확인",
+    "availability": "",
+    "group": "addproduct_options"
+   },
+   {
+    "name": "길이 선택",
+    "sku": "",
+    "price": null,
+    "price_text": "가격 미확인",
+    "availability": "",
+    "group": "addproduct_options"
+   },
+   {
+    "name": "KLOTZ AY7 클로츠 Lightweight Y 케이블 (3.5 TRS ㅡ자 to 2x RCA)",
+    "sku": "",
+    "price": null,
+    "price_text": "가격 미확인",
+    "availability": "",
+    "group": "addproducts"
+   },
+   {
+    "name": "KLOTZ AY7A 클로츠 Lightweight Y 케이블 (3.5 TRS ㄱ자 to 2x RCA)",
+    "sku": "",
+    "price": null,
+    "price_text": "가격 미확인",
+    "availability": "",
+    "group": "addproducts"
+   },
+   {
+    "name": "[묶음상품용] KLOTZ M1BTT 자체제작 클로츠 레코딩 케이블 (TRS : TRS, Neutrik 커넥터)",
+    "sku": "",
+    "price": null,
+    "price_text": "가격 미확인",
+    "availability": "",
+    "group": "addproducts"
+   },
+   {
+    "name": "길이선택",
+    "sku": "",
+    "price": 19000,
+    "price_text": "19,000원",
+    "availability": "",
+    "group": "add_option_data"
+   },
+   {
+    "name": "길이선택",
+    "sku": "",
+    "price": 22000,
+    "price_text": "22,000원",
+    "availability": "",
+    "group": "add_option_data"
+   },
+   {
+    "name": "길이선택",
+    "sku": "",
+    "price": 25000,
+    "price_text": "25,000원",
+    "availability": "",
+    "group": "add_option_data"
+   },
+   {
+    "name": "길이선택",
+    "sku": "",
+    "price": 31000,
+    "price_text": "31,000원",
+    "availability": "",
+    "group": "add_option_data"
+   },
+   {
+    "name": "길이선택",
+    "sku": "",
+    "price": 20000,
+    "price_text": "20,000원",
+    "availability": "",
+    "group": "add_option_data"
+   },
+   {
+    "name": "길이선택",
+    "sku": "",
+    "price": 22000,
+    "price_text": "22,000원",
+    "availability": "",
+    "group": "add_option_data"
+   },
+   {
+    "name": "길이선택",
+    "sku": "",
+    "price": 25000,
+    "price_text": "25,000원",
+    "availability": "",
+    "group": "add_option_data"
+   },
+   {
+    "name": "길이 선택",
+    "sku": "",
+    "price": 25000,
+    "price_text": "25,000원",
+    "availability": "",
+    "group": "add_option_data"
+   },
+   {
+    "name": "길이 선택",
+    "sku": "",
+    "price": 28000,
+    "price_text": "28,000원",
+    "availability": "",
+    "group": "add_option_data"
+   },
+   {
+    "name": "길이 선택",
+    "sku": "",
+    "price": 31000,
+    "price_text": "31,000원",
+    "availability": "",
+    "group": "add_option_data"
+   },
+   {
+    "name": "길이 선택",
+    "sku": "",
+    "price": 35000,
+    "price_text": "35,000원",
+    "availability": "",
+    "group": "add_option_data"
+   },
+   {
+    "name": "길이 선택",
+    "sku": "",
+    "price": 39000,
+    "price_text": "39,000원",
+    "availability": "",
+    "group": "add_option_data"
+   }
+  ],
+  "source": {
+   "site": "samamusic.co.kr",
+   "site_label": "삼아스토어",
+   "product_id": "974",
+   "url": "https://samastore.co.kr/product/presonus-eris-35-gen2-프리소너스-에리스-2세대-모니터-스피커-1조2통/974/",
+   "list_url": "https://www.samamusic.co.kr/product/detail.html?product_no=974&cate_no=26&display_group=1",
+   "extraction_method": "http_get_public_html+list_crawl_join",
+   "verification_status": "verified_against_source_page",
+   "updated_at": "2026-10-22"
+  }
+ },
+ {
+  "id": "samamusic.co.kr:5275",
+  "name": "[KLOTZ] OW15Y OmniWIRE 스튜디오 멀티코어 AES/EBU 케이블 (2채널) 100m",
+  "brand": "Klotz",
+  "brand_raw": "Klotz",
+  "brand_norm": "KLOTZ",
+  "manufacturer": "",
+  "model": "OW15Y02.100",
+  "category_path": [
+   "케이블커넥터"
+  ],
+  "category": {
+   "id": "366",
+   "name": "케이블커넥터",
+   "path": "케이블커넥터",
+   "registered_count": 0,
+   "list_url": "https://www.samamusic.co.kr/product/list.html?cate_no=366"
+  },
+  "price": {
+   "value": 852000,
+   "text": "852,000원",
+   "state": "public"
+  },
+  "availability": "{\"stock_number_displayed\": \"10\", \"use_stock\": true, \"use_soldout\": \"T\", \"is_reserve_stat\": \"N\"}",
+  "images": [
+   "https://www.samamusic.co.kr/web/product/small/202512/3f61a24924aabda9b3d035a3a98cabc5.jpg",
+   "https://samamusic.co.kr/_wg/img/category_bnr/01.jpg",
+   "https://samamusic.co.kr/_wg/img/category_bnr/02.jpg",
+   "https://samamusic.co.kr/_wg/img/category_bnr/04_01.jpg",
+   "https://samamusic.co.kr/_wg/img/category_bnr/04_02.jpg",
+   "https://samamusic.co.kr/_wg/img/category_bnr/05.jpg",
+   "https://samamusic.co.kr/_wg/img/category_bnr/06.jpg",
+   "https://samamusic.co.kr/_wg/img/category_bnr/07.jpg",
+   "https://gi.esmplus.com/samadni/SAMA D&amp;I/SAMAD&amp;I-MAIN.jpg",
+   "https://samamusic.co.kr/web/upload/NNEditor/20251226/OW15Y02_MAIN.jpg",
+   "https://gi.esmplus.com/samadni/SAMA D&amp;I/SELLER-MAIN.jpg"
+  ],
+  "specs": [
+   {
+    "label": "구매방법",
+    "value": "1회구매 정기배송 할인"
+   },
+   {
+    "label": "모델명",
+    "value": "OW15Y02.100"
+   },
+   {
+    "label": "배송비",
+    "value": "3,000원 (50,000원 이상 구매 시 무료)"
+   },
+   {
+    "label": "배송주기",
+    "value": "정기배송 할인 save 결제 시 : 할인"
+   },
+   {
+    "label": "브랜드",
+    "value": "Klotz"
+   },
+   {
+    "label": "상품명",
+    "value": "[KLOTZ] OW15Y OmniWIRE 스튜디오 멀티코어 AES/EBU 케이블 (2채널) 100m"
+   },
+   {
+    "label": "상품요약정보",
+    "value": "2채널"
+   },
+   {
+    "label": "원산지",
+    "value": "해외 (EU)"
+   },
+   {
+    "label": "판매가",
+    "value": "852,000원"
+   }
+  ],
+  "options": [],
+  "source": {
+   "site": "samamusic.co.kr",
+   "site_label": "삼아스토어",
+   "product_id": "5275",
+   "url": "https://samastore.co.kr/product/klotz-ow15y-omniwire-스튜디오-멀티코어-aesebu-케이블-2채널-100m/5275/",
+   "list_url": "https://www.samamusic.co.kr/product/detail.html?product_no=5275&cate_no=366&display_group=1",
+   "extraction_method": "http_get_public_html+list_crawl_join",
+   "verification_status": "verified_against_source_page",
+   "updated_at": "2026-10-22"
+  }
+ },
+ {
+  "id": "samamusic.co.kr:2228",
+  "name": "NEUTRIK NC3FXX-EMC / 뉴트릭 XLR (암) 커넥터 EMC",
+  "brand": "NEUTRIK",
+  "brand_raw": "NEUTRIK",
+  "brand_norm": "NEUTRIK",
+  "manufacturer": "",
+  "model": "NC3FXX-EMC",
+  "category_path": [
+   "neutrik-커넥터액세서리"
+  ],
+  "category": {
+   "id": "361",
+   "name": "neutrik-커넥터액세서리",
+   "path": "neutrik-커넥터액세서리",
+   "registered_count": 0,
+   "list_url": "https://www.samamusic.co.kr/product/detail.html?product_no=2228&cate_no=361&display_group=1"
+  },
+  "price": {
+   "value": 22000,
+   "text": "22,000원",
+   "state": "public"
+  },
+  "availability": "{\"stock_number_displayed\": \"4\", \"use_stock\": true, \"use_soldout\": \"T\", \"is_reserve_stat\": \"N\"}",
+  "images": [
+   "https://www.samamusic.co.kr/web/product/small/202506/65bb0a0788641457f2468232f437b0fb.jpg",
+   "https://samamusic.co.kr/_wg/img/category_bnr/01.jpg",
+   "https://samamusic.co.kr/_wg/img/category_bnr/02.jpg",
+   "https://samamusic.co.kr/_wg/img/category_bnr/04_01.jpg",
+   "https://samamusic.co.kr/_wg/img/category_bnr/04_02.jpg",
+   "https://samamusic.co.kr/_wg/img/category_bnr/05.jpg",
+   "https://samamusic.co.kr/_wg/img/category_bnr/06.jpg",
+   "https://samamusic.co.kr/_wg/img/category_bnr/07.jpg",
+   "https://gi.esmplus.com/samadni/SAMA D&amp;I/SAMAD&amp;I-MAIN.jpg",
+   "https://gi.esmplus.com/samadni/Event/210324_Neutrik_event-1000.jpg",
+   "https://gi.esmplus.com/samadni/NEUTRIK/NC3FXX-EMC-MAIN.jpg",
+   "https://gi.esmplus.com/samadni/SAMA D&amp;I/SELLER-MAIN.jpg"
+  ],
+  "specs": [
+   {
+    "label": "구매방법",
+    "value": "1회구매 정기배송 할인"
+   },
+   {
+    "label": "모델명",
+    "value": "NC3FXX-EMC"
+   },
+   {
+    "label": "배송비",
+    "value": "3,000원 (50,000원 이상 구매 시 무료)"
+   },
+   {
+    "label": "배송주기",
+    "value": "정기배송 할인 save 결제 시 : 할인"
+   },
+   {
+    "label": "브랜드",
+    "value": "NEUTRIK"
+   },
+   {
+    "label": "상품간략설명",
+    "value": "EMC 억제 (RF 프로텍션)"
+   },
+   {
+    "label": "상품명",
+    "value": "NEUTRIK NC3FXX-EMC / 뉴트릭 XLR (암) 커넥터 EMC"
+   },
+   {
+    "label": "소비자가",
+    "value": "27,500원"
+   },
+   {
+    "label": "원산지",
+    "value": "유럽 리히텐슈타인"
+   },
+   {
+    "label": "판매가",
+    "value": "22,000원"
+   }
+  ],
+  "options": [],
+  "source": {
+   "site": "samamusic.co.kr",
+   "site_label": "삼아스토어",
+   "product_id": "2228",
+   "url": "https://samastore.co.kr/product/neutrik-nc3fxx-emc-뉴트릭-xlr-암-커넥터-emc/2228/",
+   "list_url": "https://www.samamusic.co.kr/product/detail.html?product_no=2228&cate_no=361&display_group=1",
+   "extraction_method": "http_get_public_html+list_crawl_join",
+   "verification_status": "verified_against_source_page",
+   "updated_at": "2026-10-22"
+  }
+ },
+ {
+  "id": "samamusic.co.kr:3874",
+  "name": "Michael Tuttle Guitars Custom Classic S 893 마이클 터틀 일렉 기타 (딜러 셀렉트 모델)",
+  "brand": "Michael Tuttle Guitars",
+  "brand_raw": "Michael Tuttle Guitars",
+  "brand_norm": "MICHAEL TUTTLE GUITARS",
+  "manufacturer": "",
+  "model": "",
+  "category_path": [
+   "악기앰프"
+  ],
+  "category": {
+   "id": "379",
+   "name": "악기앰프",
+   "path": "악기앰프",
+   "registered_count": 0,
+   "list_url": "https://www.samamusic.co.kr/product/list.html?cate_no=379"
+  },
+  "price": {
+   "value": null,
+   "text": "가격 미확인",
+   "state": "unknown"
+  },
+  "availability": "{\"stock_number_displayed\": \"0\", \"use_stock\": true, \"use_soldout\": \"T\", \"is_reserve_stat\": \"N\"}",
+  "images": [
+   "https://www.samamusic.co.kr/web/product/small/202402/2f20f6ccff6ab8b65e1e86b993af58ce.png",
+   "https://www.samamusic.co.kr/web/product/extra/small/202402/8748ccb8bb8393a5ca49740977412af5.jpg",
+   "https://www.samamusic.co.kr/web/product/extra/small/202402/ab0cd3497bca88e206e546bac6cdbee8.jpg",
+   "https://www.samamusic.co.kr/web/product/extra/small/202402/24fb892405424b724fd3c00c978c7a0d.jpg",
+   "https://www.samamusic.co.kr/web/product/extra/small/202402/81547d8b5b3ecbfcb3cae3c10e188d92.png",
+   "https://www.samamusic.co.kr/web/product/extra/small/202402/8919281d1ad7a54ed0b19b2cb2d0d2e5.png",
+   "https://samamusic.co.kr/_wg/img/category_bnr/01.jpg",
+   "https://samamusic.co.kr/_wg/img/category_bnr/02.jpg",
+   "https://samamusic.co.kr/_wg/img/category_bnr/04_01.jpg",
+   "https://samamusic.co.kr/_wg/img/category_bnr/04_02.jpg",
+   "https://samamusic.co.kr/_wg/img/category_bnr/05.jpg",
+   "https://samamusic.co.kr/_wg/img/category_bnr/06.jpg",
+   "https://samamusic.co.kr/_wg/img/category_bnr/07.jpg",
+   "https://gi.esmplus.com/samadni/SAMA D&amp;I/SAMAD&amp;I-MAIN.jpg",
+   "https://ai.esmplus.com/samadni/Michael_Tuttle_Guitars/Dealer_Select/893--Candy-Apple-Red-Nitro_MAIN1.jpg",
+   "https://ai.esmplus.com/samadni/Michael_Tuttle_Guitars/Dealer_Select/893--Candy-Apple-Red-Nitro_MAIN2.jpg",
+   "https://ai.esmplus.com/samadni/Michael_Tuttle_Guitars/Dealer_Select/893--Candy-Apple-Red-Nitro_MAIN3.jpg",
+   "https://ai.esmplus.com/samadni/Michael_Tuttle_Guitars/Dealer_Select/893--Candy-Apple-Red-Nitro_MAIN4.jpg",
+   "https://ai.esmplus.com/samadni/Michael_Tuttle_Guitars/Dealer_Select/893--Candy-Apple-Red-Nitro_MAIN5.jpg",
+   "https://gi.esmplus.com/samadni/SAMA D&amp;I/SELLER-MAIN.jpg"
+  ],
+  "specs": [
+   {
+    "label": "구매방법",
+    "value": "1회구매 정기배송 할인"
+   },
+   {
+    "label": "배송비",
+    "value": "무료"
+   },
+   {
+    "label": "배송주기",
+    "value": "정기배송 할인 save 결제 시 : 할인"
+   },
+   {
+    "label": "브랜드",
+    "value": "Michael Tuttle Guitars"
+   },
+   {
+    "label": "상품간략설명",
+    "value": "딜러 셀렉트 모델로 바로 구매가 가능합니다"
+   },
+   {
+    "label": "상품명",
+    "value": "Michael Tuttle Guitars Custom Classic S 893 마이클 터틀 일렉 기타 (딜러 셀렉트 모델)"
+   },
+   {
+    "label": "상품요약정보",
+    "value": "커스텀 클래식S / 캔디 애플 니트로 / 애쉬 바디,IRW / 3ply 화이트픽가드 / 힙샷 락킹/ SSH / #893"
+   },
+   {
+    "label": "원산지",
+    "value": "아메리카 미국"
+   },
+   {
+    "label": "판매가",
+    "value": "판매완료"
+   }
+  ],
+  "options": [],
+  "source": {
+   "site": "samamusic.co.kr",
+   "site_label": "삼아스토어",
+   "product_id": "3874",
+   "url": "https://samastore.co.kr/product/michael-tuttle-guitars-custom-classic-s-893-마이클-터틀-일렉-기타-딜러-셀렉트-모델/3874/",
+   "list_url": "https://www.samamusic.co.kr/product/detail.html?product_no=3874&cate_no=379&display_group=1",
+   "extraction_method": "http_get_public_html+list_crawl_join",
+   "verification_status": "verified_against_source_page",
+   "updated_at": "2026-10-22"
+  }
+ },
+ {
+  "id": "samamusic.co.kr:2090",
+  "name": "GENELEC 8000-403 제네렉 플로어 스탠드(컴팩트) + 플레이트",
+  "brand": "Genelec",
+  "brand_raw": "Genelec",
+  "brand_norm": "GENELEC",
+  "manufacturer": "",
+  "model": "8000-403 (26000-329-55)",
+  "category_path": [
+   "스피커"
+  ],
+  "category": {
+   "id": "42",
+   "name": "스피커",
+   "path": "스피커",
+   "registered_count": 0,
+   "list_url": "https://www.samamusic.co.kr/product/list.html?cate_no=42"
+  },
+  "price": {
+   "value": 148000,
+   "text": "148,000원",
+   "state": "public"
+  },
+  "availability": "{\"stock_number_displayed\": null, \"use_stock\": null, \"use_soldout\": null, \"is_reserve_stat\": null}",
+  "images": [
+   "https://www.samamusic.co.kr/web/product/small/202012/f81eb322bee09b12026e97392f1f21da.jpg",
+   "https://samamusic.co.kr/_wg/img/category_bnr/01.jpg",
+   "https://samamusic.co.kr/_wg/img/category_bnr/02.jpg",
+   "https://samamusic.co.kr/_wg/img/category_bnr/04_01.jpg",
+   "https://samamusic.co.kr/_wg/img/category_bnr/04_02.jpg",
+   "https://samamusic.co.kr/_wg/img/category_bnr/05.jpg",
+   "https://samamusic.co.kr/_wg/img/category_bnr/06.jpg",
+   "https://samamusic.co.kr/_wg/img/category_bnr/07.jpg",
+   "https://gi.esmplus.com/samadni/SAMA D&amp;I/SAMAD&amp;I-MAIN.jpg",
+   "https://samamusic.co.kr/SAMADNI/GENELEC/8000-403-MAIN.jpg",
+   "https://gi.esmplus.com/samadni/SAMA D&amp;I/SELLER-MAIN.jpg"
+  ],
+  "specs": [
+   {
+    "label": "구매방법",
+    "value": "1회구매 정기배송 할인"
+   },
+   {
+    "label": "모델명",
+    "value": "8000-403 (26000-329-55)"
+   },
+   {
+    "label": "배송비",
+    "value": "3,000원 (50,000원 이상 구매 시 무료)"
+   },
+   {
+    "label": "배송주기",
+    "value": "정기배송 할인 save 결제 시 : 할인"
+   },
+   {
+    "label": "브랜드",
+    "value": "Genelec"
+   },
+   {
+    "label": "상품간략설명",
+    "value": "스탠드 1개 + 플레이트 1개 금액입니다."
+   },
+   {
+    "label": "상품명",
+    "value": "GENELEC 8000-403 제네렉 플로어 스탠드(컴팩트) + 플레이트"
+   },
+   {
+    "label": "상품요약정보",
+    "value": "컴팩트형 Genelec 전용 플로어 스탠드(독일 K&M 제조)"
+   },
+   {
+    "label": "원산지",
+    "value": "유럽 독일"
+   },
+   {
+    "label": "판매가",
+    "value": "148,000원"
+   },
+   {
+    "label": "플레이트 필수선택",
+    "value": "- [필수] 옵션을 선택해 주세요 - ------------------- 8000-403 (1ea) + 8010-408 (1ea) (+91,000원) 8000-403 (1ea) + 8020-408 (1ea) (+93,000원) 8000-403 (1ea) + 8030-408 (1ea) (+98,000원)"
+   }
+  ],
+  "options": [
+   {
+    "name": "플레이트 필수선택",
+    "sku": "",
+    "price": null,
+    "price_text": "가격 미확인",
+    "availability": "",
+    "group": "main"
+   }
+  ],
+  "source": {
+   "site": "samamusic.co.kr",
+   "site_label": "삼아스토어",
+   "product_id": "2090",
+   "url": "https://samastore.co.kr/product/genelec-8000-403-제네렉-플로어-스탠드컴팩트-플레이트/2090/",
+   "list_url": "https://www.samamusic.co.kr/product/detail.html?product_no=2090&cate_no=42&display_group=1",
+   "extraction_method": "http_get_public_html+list_crawl_join",
+   "verification_status": "verified_against_source_page",
+   "updated_at": "2026-10-22"
+  }
+ },
+ {
+  "id": "samamusic.co.kr:4558",
+  "name": "Q Acoustics Q M20 큐어쿠스틱 Hi-Res 블루투스 무선 스피커 (Pair)",
+  "brand": "Q Acoustics",
+  "brand_raw": "Q Acoustics",
+  "brand_norm": "Q ACOUSTICS",
+  "manufacturer": "",
+  "model": "M20",
+  "category_path": [
+   "스피커"
+  ],
+  "category": {
+   "id": "42",
+   "name": "스피커",
+   "path": "스피커",
+   "registered_count": 0,
+   "list_url": "https://www.samamusic.co.kr/product/list.html?cate_no=42"
+  },
+  "price": {
+   "value": 1290000,
+   "text": "1,290,000원",
+   "state": "public"
+  },
+  "availability": "{\"stock_number_displayed\": null, \"use_stock\": null, \"use_soldout\": null, \"is_reserve_stat\": null}",
+  "images": [
+   "https://www.samamusic.co.kr/web/product/small/202501/3cc7ffce0342860553e3f1b5343b956c.jpg",
+   "https://www.samamusic.co.kr/web/product/extra/small/202501/9cc4278109a7aa39b385b84fc4010842.jpg",
+   "https://www.samamusic.co.kr/web/product/extra/small/202501/5b98718fddec7c351c49476ce7cf5e65.jpg",
+   "https://www.samamusic.co.kr/web/product/extra/small/202501/1386eb6f9bae4875c8ea7932ec358984.jpg",
+   "https://www.samamusic.co.kr/web/product/extra/small/202501/47d0c15c5a931529bca70f4143513384.jpg",
+   "https://samamusic.co.kr/_wg/img/category_bnr/01.jpg",
+   "https://samamusic.co.kr/_wg/img/category_bnr/02.jpg",
+   "https://samamusic.co.kr/_wg/img/category_bnr/04_01.jpg",
+   "https://samamusic.co.kr/_wg/img/category_bnr/04_02.jpg",
+   "https://samamusic.co.kr/_wg/img/category_bnr/05.jpg",
+   "https://samamusic.co.kr/_wg/img/category_bnr/06.jpg",
+   "https://samamusic.co.kr/_wg/img/category_bnr/07.jpg",
+   "https://gi.esmplus.com/samadni/SAMA D&amp;I/SAMAD&amp;I-MAIN.jpg",
+   "https://samamusic.co.kr/SAMADNI/Q_Active/QActive_M20_1.jpg",
+   "https://samamusic.co.kr/SAMADNI/Q_Active/QActive_M20_2.jpg",
+   "https://samamusic.co.kr/SAMADNI/Q_Active/QActive_M20_3.jpg",
+   "https://samamusic.co.kr/SAMADNI/SAMA_D%26I/SELLER-MAIN.jpg"
+  ],
+  "specs": [
+   {
+    "label": "구매방법",
+    "value": "1회구매 정기배송 할인"
+   },
+   {
+    "label": "모델명",
+    "value": "M20"
+   },
+   {
+    "label": "배송비",
+    "value": "3,000원 (50,000원 이상 구매 시 무료)"
+   },
+   {
+    "label": "배송주기",
+    "value": "정기배송 할인 save 결제 시 : 할인"
+   },
+   {
+    "label": "브랜드",
+    "value": "Q Acoustics"
+   },
+   {
+    "label": "상품명",
+    "value": "Q Acoustics Q M20 큐어쿠스틱 Hi-Res 블루투스 무선 스피커 (Pair)"
+   },
+   {
+    "label": "상품요약정보",
+    "value": "파워 앰프가 내장된 Active 스피커(1pair)"
+   },
+   {
+    "label": "색상 선택",
+    "value": "- [필수] 옵션을 선택해 주세요 - ------------------- 블랙 화이트 월넛"
+   },
+   {
+    "label": "소비자가",
+    "value": "1,840,000원"
+   },
+   {
+    "label": "원산지",
+    "value": "아시아 중국"
+   },
+   {
+    "label": "판매가",
+    "value": "1,290,000원"
+   }
+  ],
+  "options": [
+   {
+    "name": "색상 선택",
+    "sku": "",
+    "price": null,
+    "price_text": "가격 미확인",
+    "availability": "",
+    "group": "main"
+   }
+  ],
+  "source": {
+   "site": "samamusic.co.kr",
+   "site_label": "삼아스토어",
+   "product_id": "4558",
+   "url": "https://samastore.co.kr/product/q-acoustics-q-m20-큐어쿠스틱-hi-res-블루투스-무선-스피커-pair/4558/",
+   "list_url": "https://www.samamusic.co.kr/product/detail.html?product_no=4558&cate_no=42&display_group=1",
+   "extraction_method": "http_get_public_html+list_crawl_join",
+   "verification_status": "verified_against_source_page",
+   "updated_at": "2026-10-22"
+  }
+ },
+ {
+  "id": "samamusic.co.kr:4686",
+  "name": "GENELEC 8030C 제네렉 스튜디오 모니터 스피커 (블랙)",
+  "brand": "Genelec",
+  "brand_raw": "Genelec",
+  "brand_norm": "GENELEC",
+  "manufacturer": "",
+  "model": "8030CM",
+  "category_path": [
+   "레코딩"
+  ],
+  "category": {
+   "id": "26",
+   "name": "레코딩",
+   "path": "레코딩",
+   "registered_count": 0,
+   "list_url": "https://www.samamusic.co.kr/product/detail.html?product_no=4686&cate_no=26&display_group=1"
+  },
+  "price": {
+   "value": 1190000,
+   "text": "1,190,000원",
+   "state": "public"
+  },
+  "availability": "{\"stock_number_displayed\": \"37\", \"use_stock\": true, \"use_soldout\": \"T\", \"is_reserve_stat\": \"N\"}",
+  "images": [
+   "https://www.samamusic.co.kr/web/product/small/202504/ba37fc103ea086802f7819c3dbd0c1ae.jpg",
+   "https://www.samamusic.co.kr/web/product/extra/small/202504/31d4099a2d5e7d1cc9af6b4313de0171.jpg",
+   "https://www.samamusic.co.kr/web/product/extra/small/202504/14eeb0af4083f4e71c86482965d8074a.jpg",
+   "https://www.samamusic.co.kr/web/product/extra/small/202504/404ab8a5fed64b5d8ecdb49c32fe3b8a.jpg",
+   "https://www.samamusic.co.kr/web/product/extra/small/202504/a80ff4cbc8d4e0d3042539229e66ab5d.jpg",
+   "https://samamusic.co.kr/_wg/img/category_bnr/01.jpg",
+   "https://samamusic.co.kr/_wg/img/category_bnr/02.jpg",
+   "https://samamusic.co.kr/_wg/img/category_bnr/04_01.jpg",
+   "https://samamusic.co.kr/_wg/img/category_bnr/04_02.jpg",
+   "https://samamusic.co.kr/_wg/img/category_bnr/05.jpg",
+   "https://samamusic.co.kr/_wg/img/category_bnr/06.jpg",
+   "https://samamusic.co.kr/_wg/img/category_bnr/07.jpg",
+   "https://gi.esmplus.com/samadni/SAMA D&amp;I/SAMAD&amp;I-MAIN.jpg",
+   "https://samamusic.co.kr/SAMADNI/GENELEC/241212_GENELEC_Experience_Center_banner_01.png",
+   "https://samamusic.co.kr/SAMADNI/GENELEC/241212_GENELEC_Experience_Center_banner_02.png",
+   "https://samamusic.co.kr/SAMADNI/GENELEC/241212_GENELEC_Experience_Center_banner_03.png",
+   "https://samamusic.co.kr/SAMADNI/GENELEC/8030CM-MAIN.jpg",
+   "https://gi.esmplus.com/samadni/GENELEC/Genelec_8000_Series_comparison.jpg",
+   "https://gi.esmplus.com/samadni/SAMA D&amp;I/SELLER-MAIN.jpg"
+  ],
+  "specs": [
+   {
+    "label": "구매방법",
+    "value": "1회구매 정기배송 할인"
+   },
+   {
+    "label": "길이 선택",
+    "value": "- [필수] 옵션을 선택해 주세요 - ------------------- 2m [품절] 3m [품절] (+3,000원) 4m (+7,000원) 5m (+12,000원)"
+   },
+   {
+    "label": "모델명",
+    "value": "8030CM"
+   },
+   {
+    "label": "배송비",
+    "value": "3,000원 (50,000원 이상 구매 시 무료)"
+   },
+   {
+    "label": "배송주기",
+    "value": "정기배송 할인 save 결제 시 : 할인"
+   },
+   {
+    "label": "브랜드",
+    "value": "Genelec"
+   },
+   {
+    "label": "상품간략설명",
+    "value": "Classic Studio Monitors 12.7cm (5타입)"
+   },
+   {
+    "label": "상품명",
+    "value": "GENELEC 8030C 제네렉 스튜디오 모니터 스피커 (블랙)"
+   },
+   {
+    "label": "상품요약정보",
+    "value": "본 가격은 스피커 1통 가격입니다"
+   },
+   {
+    "label": "안전확인신고번호",
+    "value": "공급자적합성확인대상제품"
+   },
+   {
+    "label": "원산지",
+    "value": "유럽 핀란드"
+   },
+   {
+    "label": "적합인증번호",
+    "value": "MSIP-REI-SPS-8030C"
+   },
+   {
+    "label": "판매가",
+    "value": "1,190,000원"
+   }
+  ],
+  "options": [
+   {
+    "name": "길이 선택",
+    "sku": "",
+    "price": null,
+    "price_text": "가격 미확인",
+    "availability": "",
+    "group": "addproduct_options"
+   },
+   {
+    "name": "[묶음상품용] KLOTZ M2BMXT 자체제작 클로츠 레코딩 케이블 (XLR 수 : TRS, Neutrik 커넥터)",
+    "sku": "",
+    "price": null,
+    "price_text": "가격 미확인",
+    "availability": "",
+    "group": "addproducts"
+   },
+   {
+    "name": "길이 선택",
+    "sku": "",
+    "price": 30000,
+    "price_text": "30,000원",
+    "availability": "",
+    "group": "add_option_data"
+   },
+   {
+    "name": "길이 선택",
+    "sku": "",
+    "price": 33000,
+    "price_text": "33,000원",
+    "availability": "",
+    "group": "add_option_data"
+   },
+   {
+    "name": "길이 선택",
+    "sku": "",
+    "price": 37000,
+    "price_text": "37,000원",
+    "availability": "",
+    "group": "add_option_data"
+   },
+   {
+    "name": "길이 선택",
+    "sku": "",
+    "price": 42000,
+    "price_text": "42,000원",
+    "availability": "",
+    "group": "add_option_data"
+   }
+  ],
+  "source": {
+   "site": "samamusic.co.kr",
+   "site_label": "삼아스토어",
+   "product_id": "4686",
+   "url": "https://samastore.co.kr/product/genelec-8030c-제네렉-스튜디오-모니터-스피커-블랙/4686/",
+   "list_url": "https://www.samamusic.co.kr/product/detail.html?product_no=4686&cate_no=26&display_group=1",
+   "extraction_method": "http_get_public_html+list_crawl_join",
+   "verification_status": "verified_against_source_page",
+   "updated_at": "2026-10-22"
+  }
+ },
+ {
+  "id": "samamusic.co.kr:3238",
+  "name": "Antares Aspire 안타레스 아스파이어 숨소리 컨트롤 플러그인",
+  "brand": "Antares",
+  "brand_raw": "Antares",
+  "brand_norm": "ANTARES",
+  "manufacturer": "",
+  "model": "Aspire",
+  "category_path": [
+   "레코딩"
+  ],
+  "category": {
+   "id": "26",
+   "name": "레코딩",
+   "path": "레코딩",
+   "registered_count": 0,
+   "list_url": "https://www.samamusic.co.kr/product/detail.html?product_no=3238&cate_no=26&display_group=1"
+  },
+  "price": {
+   "value": 85000,
+   "text": "85,000원",
+   "state": "public"
+  },
+  "availability": "{\"stock_number_displayed\": \"0\", \"use_stock\": false, \"use_soldout\": \"F\", \"is_reserve_stat\": \"N\"}",
+  "images": [
+   "https://www.samamusic.co.kr/web/product/small/202304/83d8246845c57b8222cd3378afa40a3d.jpg",
+   "https://samamusic.co.kr/_wg/img/category_bnr/01.jpg",
+   "https://samamusic.co.kr/_wg/img/category_bnr/02.jpg",
+   "https://samamusic.co.kr/_wg/img/category_bnr/04_01.jpg",
+   "https://samamusic.co.kr/_wg/img/category_bnr/04_02.jpg",
+   "https://samamusic.co.kr/_wg/img/category_bnr/05.jpg",
+   "https://samamusic.co.kr/_wg/img/category_bnr/06.jpg",
+   "https://samamusic.co.kr/_wg/img/category_bnr/07.jpg",
+   "https://gi.esmplus.com/samadni/SAMA D&amp;I/SAMAD&amp;I-MAIN.jpg",
+   "https://ai.esmplus.com/samadni/Antares/Aspire-MAIN_01.jpg",
+   "https://ai.esmplus.com/samadni/Antares/Aspire-MAIN_02.jpg",
+   "https://gi.esmplus.com/samadni/SAMA D&amp;I/SELLER_EMAIL-MAIN.jpg"
+  ],
+  "specs": [
+   {
+    "label": "구매방법",
+    "value": "1회구매 정기배송 할인"
+   },
+   {
+    "label": "라이센스 발급 이메일주소[필수]",
+    "value": "( 0 /50)"
+   },
+   {
+    "label": "모델명",
+    "value": "Aspire"
+   },
+   {
+    "label": "배송비",
+    "value": "무료"
+   },
+   {
+    "label": "배송주기",
+    "value": "정기배송 할인 save 결제 시 : 할인"
+   },
+   {
+    "label": "브랜드",
+    "value": "Antares"
+   },
+   {
+    "label": "상품간략설명",
+    "value": "본 제품은 소프트웨어 전자배송 상품으로 이메일 발송이 이루어지며 교환 및 환불 이 불가 합니다."
+   },
+   {
+    "label": "상품명",
+    "value": "Antares Aspire 안타레스 아스파이어 숨소리 컨트롤 플러그인"
+   },
+   {
+    "label": "상품요약정보",
+    "value": "숨소리 컨트롤 프로세서"
+   },
+   {
+    "label": "소비자가",
+    "value": "95,000원"
+   },
+   {
+    "label": "원산지",
+    "value": "아메리카 미국"
+   },
+   {
+    "label": "판매가",
+    "value": "85,000원"
+   }
+  ],
+  "options": [],
+  "source": {
+   "site": "samamusic.co.kr",
+   "site_label": "삼아스토어",
+   "product_id": "3238",
+   "url": "https://samastore.co.kr/product/antares-aspire-안타레스-아스파이어-숨소리-컨트롤-플러그인/3238/",
+   "list_url": "https://www.samamusic.co.kr/product/detail.html?product_no=3238&cate_no=26&display_group=1",
+   "extraction_method": "http_get_public_html+list_crawl_join",
+   "verification_status": "verified_against_source_page",
+   "updated_at": "2026-10-22"
+  }
+ },
+ {
+  "id": "samamusic.co.kr:664",
+  "name": "RADIAL J48 레디알 액티브 다이렉트 박스",
+  "brand": "RADIAL",
+  "brand_raw": "RADIAL",
+  "brand_norm": "RADIAL",
+  "manufacturer": "",
+  "model": "",
+  "category_path": [
+   "다이렉트-박스"
+  ],
+  "category": {
+   "id": "67",
+   "name": "다이렉트-박스",
+   "path": "다이렉트-박스",
+   "registered_count": 0,
+   "list_url": "https://www.samamusic.co.kr/product/detail.html?product_no=664&cate_no=67&display_group=1"
+  },
+  "price": {
+   "value": 471000,
+   "text": "471,000원",
+   "state": "public"
+  },
+  "availability": "{\"stock_number_displayed\": \"25\", \"use_stock\": false, \"use_soldout\": \"F\", \"is_reserve_stat\": \"N\"}",
+  "images": [
+   "https://www.samamusic.co.kr/web/product/small/202105/0a64cc2b358b81ca97fd1baa074d5adf.jpg",
+   "https://www.samamusic.co.kr/web/product/extra/small/202105/daeae9f76ee2cea4137a2efb49a12e31.jpg",
+   "https://www.samamusic.co.kr/web/product/extra/small/202105/9a9f70b4343842fb8fa5e6be2e14d38a.jpg",
+   "https://www.samamusic.co.kr/web/product/extra/small/202105/a66018cadf883f68a045a36b251d5a03.jpg",
+   "https://samamusic.co.kr/_wg/img/category_bnr/01.jpg",
+   "https://samamusic.co.kr/_wg/img/category_bnr/02.jpg",
+   "https://samamusic.co.kr/_wg/img/category_bnr/04_01.jpg",
+   "https://samamusic.co.kr/_wg/img/category_bnr/04_02.jpg",
+   "https://samamusic.co.kr/_wg/img/category_bnr/05.jpg",
+   "https://samamusic.co.kr/_wg/img/category_bnr/06.jpg",
+   "https://samamusic.co.kr/_wg/img/category_bnr/07.jpg",
+   "https://gi.esmplus.com/samadni/SAMA D&amp;I/SAMAD&amp;I-MAIN.jpg",
+   "https://gi.esmplus.com/samadni/RADIAL/Radial_ProductGuide-banner.jpg",
+   "https://gi.esmplus.com/samadni/RADIAL/J48-MAIN.jpg",
+   "https://gi.esmplus.com/samadni/SAMA D&amp;I/SELLER-MAIN.jpg"
+  ],
+  "specs": [
+   {
+    "label": "구매방법",
+    "value": "1회구매 정기배송 할인"
+   },
+   {
+    "label": "길이선택",
+    "value": "- [필수] 옵션을 선택해 주세요 - ------------------- 1.5m 3m 4.5m 6m 9m"
+   },
+   {
+    "label": "배송비",
+    "value": "3,000원 (50,000원 이상 구매 시 무료)"
+   },
+   {
+    "label": "배송주기",
+    "value": "정기배송 할인 save 결제 시 : 할인"
+   },
+   {
+    "label": "브랜드",
+    "value": "RADIAL"
+   },
+   {
+    "label": "상품명",
+    "value": "RADIAL J48 레디알 액티브 다이렉트 박스"
+   },
+   {
+    "label": "소비자가",
+    "value": "523,000원"
+   },
+   {
+    "label": "원산지",
+    "value": "아메리카 캐나다"
+   },
+   {
+    "label": "적합인증번호",
+    "value": "MSIP-REI-sDI-J48"
+   },
+   {
+    "label": "판매가",
+    "value": "471,000원"
+   }
+  ],
+  "options": [
+   {
+    "name": "길이선택",
+    "sku": "",
+    "price": null,
+    "price_text": "가격 미확인",
+    "availability": "",
+    "group": "addproduct_options"
+   },
+   {
+    "name": "길이선택",
+    "sku": "",
+    "price": null,
+    "price_text": "가격 미확인",
+    "availability": "",
+    "group": "addproduct_options"
+   },
+   {
+    "name": "KLOTZ PRO ARTIST PRIME 클로츠 기타 케이블 (TSㅡ자 to TSㅡ자, Neutrik 커넥터)",
+    "sku": "",
+    "price": null,
+    "price_text": "가격 미확인",
+    "availability": "",
+    "group": "addproducts"
+   },
+   {
+    "name": "KLOTZ M2 SUPERIOR 클로츠 마이크 케이블 (XLR to XLR, Neutrik 커넥터)",
+    "sku": "",
+    "price": null,
+    "price_text": "가격 미확인",
+    "availability": "",
+    "group": "addproducts"
+   },
+   {
+    "name": "길이선택",
+    "sku": "",
+    "price": 56000,
+    "price_text": "56,000원",
+    "availability": "",
+    "group": "add_option_data"
+   },
+   {
+    "name": "길이선택",
+    "sku": "",
+    "price": 63000,
+    "price_text": "63,000원",
+    "availability": "",
+    "group": "add_option_data"
+   },
+   {
+    "name": "길이선택",
+    "sku": "",
+    "price": 68000,
+    "price_text": "68,000원",
+    "availability": "",
+    "group": "add_option_data"
+   },
+   {
+    "name": "길이선택",
+    "sku": "",
+    "price": 73000,
+    "price_text": "73,000원",
+    "availability": "",
+    "group": "add_option_data"
+   },
+   {
+    "name": "길이선택",
+    "sku": "",
+    "price": 83000,
+    "price_text": "83,000원",
+    "availability": "",
+    "group": "add_option_data"
+   },
+   {
+    "name": "길이선택",
+    "sku": "",
+    "price": 64000,
+    "price_text": "64,000원",
+    "availability": "",
+    "group": "add_option_data"
+   },
+   {
+    "name": "길이선택",
+    "sku": "",
+    "price": 71000,
+    "price_text": "71,000원",
+    "availability": "",
+    "group": "add_option_data"
+   },
+   {
+    "name": "길이선택",
+    "sku": "",
+    "price": 87000,
+    "price_text": "87,000원",
+    "availability": "",
+    "group": "add_option_data"
+   }
+  ],
+  "source": {
+   "site": "samamusic.co.kr",
+   "site_label": "삼아스토어",
+   "product_id": "664",
+   "url": "https://samastore.co.kr/product/radial-j48-레디알-액티브-다이렉트-박스/664/",
+   "list_url": "https://www.samamusic.co.kr/product/detail.html?product_no=664&cate_no=67&display_group=1",
+   "extraction_method": "http_get_public_html+list_crawl_join",
+   "verification_status": "verified_against_source_page",
+   "updated_at": "2026-10-22"
+  }
+ },
+ {
+  "id": "samasound.co.kr:3884",
+  "name": "Komplete 26 Ultimate",
+  "brand": "NATIVE INSTRUMENTS",
+  "brand_raw": "NATIVE INSTRUMENTS",
+  "brand_norm": "NATIVE INSTRUMENTS",
+  "manufacturer": "NATIVE INSTRUMENTS",
+  "model": "Komplete 26 Ultimate",
+  "category_path": [
+   "제품분류별 보기",
+   "레코딩&악기",
+   "소프트웨어/플러그인"
+  ],
+  "category": {
+   "id": "23",
+   "name": "전체보기",
+   "path": "홈 > 전체보기",
+   "registered_count": 2229,
+   "list_url": "https://www.samasound.co.kr/product/list.html?cate_no=23"
+  },
+  "price": {
+   "value": null,
+   "text": "가격 문의",
+   "state": "inquiry"
+  },
+  "availability": "InStock",
+  "images": [
+   "https://www.samasound.co.kr/web/product/big/202608/3bc7c399c69f0906ee4530e0863e3144.jpg",
+   "https://www.samasound.co.kr/web/product/extra/big/202608/b202668e712496b01f044931c86c44a7.jpg"
+  ],
+  "specs": [
+   {
+    "label": "상품명",
+    "value": "Komplete 26 Ultimate"
+   },
+   {
+    "label": "상품요약정보",
+    "value": "확장된 사운드, 깊이 있는 표현력"
+   },
+   {
+    "label": "상품간략설명",
+    "value": "장르의 제한 없이 자유로운 음악 제작이 가능한 강력한 사운드 컬렉션"
+   },
+   {
+    "label": "제조사",
+    "value": "NATIVE INSTRUMENTS"
+   },
+   {
+    "label": "원산지",
+    "value": "유럽 독일"
+   },
+   {
+    "label": "판매가",
+    "value": "가격 문의"
+   },
+   {
+    "label": "구매방법",
+    "value": "1회구매 정기배송 할인"
+   },
+   {
+    "label": "배송주기",
+    "value": "정기배송 할인 save 결제 시 : 할인"
+   },
+   {
+    "label": "번호",
+    "value": "제목"
+   }
+  ],
+  "options": [],
+  "source": {
+   "site": "samasound.co.kr",
+   "site_label": "삼아사운드",
+   "product_id": "3884",
+   "url": "https://www.samasound.co.kr/product/komplete-26-ultimate/3884/category/23/display/1/",
+   "list_url": "https://www.samasound.co.kr/product/list.html?cate_no=23&page=1",
+   "extraction_method": "http-ssr+json-ld",
+   "verification_status": "verified-by-http-fetch",
+   "updated_at": "2026-10-22T02:45:06Z"
+  }
+ },
+ {
+  "id": "samasound.co.kr:3881",
+  "name": "Komplete 26 Ultimate UPG/UPD",
+  "brand": "NATIVE INSTRUMENTS",
+  "brand_raw": "NATIVE INSTRUMENTS",
+  "brand_norm": "NATIVE INSTRUMENTS",
+  "manufacturer": "NATIVE INSTRUMENTS",
+  "model": "Komplete 26 Ultimate UPG/UPD",
+  "category_path": [
+   "제품분류별 보기",
+   "레코딩&악기",
+   "소프트웨어/플러그인"
+  ],
+  "category": {
+   "id": "23",
+   "name": "전체보기",
+   "path": "홈 > 전체보기",
+   "registered_count": 2229,
+   "list_url": "https://www.samasound.co.kr/product/list.html?cate_no=23"
+  },
+  "price": {
+   "value": null,
+   "text": "가격 문의",
+   "state": "inquiry"
+  },
+  "availability": "InStock",
+  "images": [
+   "https://www.samasound.co.kr/web/product/big/202608/6f448a6da1ca89dd39aa5666299168ae.jpg"
+  ],
+  "specs": [
+   {
+    "label": "상품명",
+    "value": "Komplete 26 Ultimate UPG/UPD"
+   },
+   {
+    "label": "상품요약정보",
+    "value": "확장된 사운드, 깊이 있는 표현력"
+   },
+   {
+    "label": "상품간략설명",
+    "value": "본 제품은 기존 사용 중인 제품을 최신 버전으로 업그레이드/업데이트하는 상품입니다. 대상 제품을 보유하고 있지 않은 경우 사용 및 활성화가 불가능합니다."
+   },
+   {
+    "label": "제조사",
+    "value": "NATIVE INSTRUMENTS"
+   },
+   {
+    "label": "원산지",
+    "value": "유럽 독일"
+   },
+   {
+    "label": "판매가",
+    "value": "가격 문의"
+   },
+   {
+    "label": "구매방법",
+    "value": "1회구매 정기배송 할인"
+   },
+   {
+    "label": "배송주기",
+    "value": "정기배송 할인 save 결제 시 : 할인"
+   },
+   {
+    "label": "번호",
+    "value": "제목"
+   }
+  ],
+  "options": [],
+  "source": {
+   "site": "samasound.co.kr",
+   "site_label": "삼아사운드",
+   "product_id": "3881",
+   "url": "https://www.samasound.co.kr/product/komplete-26-ultimate-upgupd/3881/category/23/display/1/",
+   "list_url": "https://www.samasound.co.kr/product/list.html?cate_no=23&page=1",
+   "extraction_method": "http-ssr+json-ld",
+   "verification_status": "verified-by-http-fetch",
+   "updated_at": "2026-10-22T02:45:06Z"
+  }
+ },
+ {
+  "id": "samasound.co.kr:3878",
+  "name": "Komplete 26 Ultimate S-Series Upgrade (Kontrol S mk3 사용자)",
+  "brand": "NATIVE INSTRUMENTS",
+  "brand_raw": "NATIVE INSTRUMENTS",
+  "brand_norm": "NATIVE INSTRUMENTS",
+  "manufacturer": "NATIVE INSTRUMENTS",
+  "model": "Komplete 26 Ultimate S-Series Upgrade (Kontrol S mk3 사용자)",
+  "category_path": [
+   "제품분류별 보기",
+   "레코딩&악기",
+   "소프트웨어/플러그인"
+  ],
+  "category": {
+   "id": "23",
+   "name": "전체보기",
+   "path": "홈 > 전체보기",
+   "registered_count": 2229,
+   "list_url": "https://www.samasound.co.kr/product/list.html?cate_no=23"
+  },
+  "price": {
+   "value": null,
+   "text": "가격 문의",
+   "state": "inquiry"
+  },
+  "availability": "InStock",
+  "images": [
+   "https://www.samasound.co.kr/web/product/big/202608/63f44a171689018d123194b8b6b85029.jpg"
+  ],
+  "specs": [
+   {
+    "label": "상품명",
+    "value": "Komplete 26 Ultimate S-Series Upgrade (Kontrol S mk3 사용자)"
+   },
+   {
+    "label": "상품요약정보",
+    "value": "확장된 사운드, 깊이 있는 표현력"
+   },
+   {
+    "label": "상품간략설명",
+    "value": "본 제품은 Kontrol S 키보드 보유 고객 전용 상품입니다. 해당 제품을 보유하지 않은 경우 활성화가 제한될 수 있습니다."
+   },
+   {
+    "label": "제조사",
+    "value": "NATIVE INSTRUMENTS"
+   },
+   {
+    "label": "원산지",
+    "value": "유럽 독일"
+   },
+   {
+    "label": "판매가",
+    "value": "가격 문의"
+   },
+   {
+    "label": "구매방법",
+    "value": "1회구매 정기배송 할인"
+   },
+   {
+    "label": "배송주기",
+    "value": "정기배송 할인 save 결제 시 : 할인"
+   },
+   {
+    "label": "번호",
+    "value": "제목"
+   }
+  ],
+  "options": [],
+  "source": {
+   "site": "samasound.co.kr",
+   "site_label": "삼아사운드",
+   "product_id": "3878",
+   "url": "https://www.samasound.co.kr/product/komplete-26-ultimate-s-series-upgrade-kontrol-s-mk3-사용자/3878/category/23/display/1/",
+   "list_url": "https://www.samasound.co.kr/product/list.html?cate_no=23&page=1",
+   "extraction_method": "http-ssr+json-ld",
+   "verification_status": "verified-by-http-fetch",
+   "updated_at": "2026-10-22T02:45:06Z"
+  }
+ },
+ {
+  "id": "samasound.co.kr:3872",
+  "name": "SM31FH-TQG",
+  "brand": "Shure",
+  "brand_raw": "Shure",
+  "brand_norm": "SHURE",
+  "manufacturer": "Shure",
+  "model": "SM31FH-TQG",
+  "category_path": [
+   "제품분류별 보기",
+   "마이크",
+   "유선마이크",
+   "SM 시리즈"
+  ],
+  "category": {
+   "id": "23",
+   "name": "전체보기",
+   "path": "홈 > 전체보기",
+   "registered_count": 2229,
+   "list_url": "https://www.samasound.co.kr/product/list.html?cate_no=23"
+  },
+  "price": {
+   "value": null,
+   "text": "가격 문의",
+   "state": "inquiry"
+  },
+  "availability": "InStock",
+  "images": [
+   "https://www.samasound.co.kr/web/product/big/202608/be91c4ac3fecedb027f1bd323a0c78e6.jpg"
+  ],
+  "specs": [
+   {
+    "label": "상품명",
+    "value": "SM31FH-TQG"
+   },
+   {
+    "label": "상품요약정보",
+    "value": "단일지향성 피트니스 헤드셋 컨덴서 마이크"
+   },
+   {
+    "label": "상품간략설명",
+    "value": "SHURE 헤드셋 단일지향성 컨덴서 마이크, TA4F 커넥터 포함"
+   },
+   {
+    "label": "제조사",
+    "value": "Shure"
+   },
+   {
+    "label": "원산지",
+    "value": "아시아 중국"
+   },
+   {
+    "label": "판매가",
+    "value": "가격 문의"
+   },
+   {
+    "label": "구매방법",
+    "value": "1회구매 정기배송 할인"
+   },
+   {
+    "label": "배송주기",
+    "value": "정기배송 할인 save 결제 시 : 할인"
+   },
+   {
+    "label": "번호",
+    "value": "제목"
+   }
+  ],
+  "options": [],
+  "source": {
+   "site": "samasound.co.kr",
+   "site_label": "삼아사운드",
+   "product_id": "3872",
+   "url": "https://www.samasound.co.kr/product/sm31fh-tqg/3872/category/23/display/1/",
+   "list_url": "https://www.samasound.co.kr/product/list.html?cate_no=23&page=1",
+   "extraction_method": "http-ssr+json-ld",
+   "verification_status": "verified-by-http-fetch",
+   "updated_at": "2026-10-22T02:45:06Z"
+  }
+ },
+ {
+  "id": "samasound.co.kr:3869",
+  "name": "WL93T",
+  "brand": "Shure",
+  "brand_raw": "Shure",
+  "brand_norm": "SHURE",
+  "manufacturer": "Shure",
+  "model": "WL93T",
+  "category_path": [
+   "제품분류별 보기",
+   "마이크",
+   "무선마이크",
+   "무선 바디팩용 마이크"
+  ],
+  "category": {
+   "id": "23",
+   "name": "전체보기",
+   "path": "홈 > 전체보기",
+   "registered_count": 2229,
+   "list_url": "https://www.samasound.co.kr/product/list.html?cate_no=23"
+  },
+  "price": {
+   "value": null,
+   "text": "가격 문의",
+   "state": "inquiry"
+  },
+  "availability": "InStock",
+  "images": [
+   "https://www.samasound.co.kr/web/product/big/202608/4652f27b1e8e13d09dd23f0171a90b75.jpg",
+   "https://www.samasound.co.kr/web/product/extra/big/202608/37795405bb0c6ab8a5f12dc8c84f1895.jpg",
+   "https://www.samasound.co.kr/web/product/extra/big/202608/504b2ac6217998e97a652a8a97441254.jpg"
+  ],
+  "specs": [
+   {
+    "label": "상품명",
+    "value": "WL93T"
+   },
+   {
+    "label": "상품요약정보",
+    "value": "무지향성 미니어처 라발리에 마이크"
+   },
+   {
+    "label": "상품간략설명",
+    "value": "SHURE 무선용 전지향성 소형 컨덴서 핀마이크 황갈색"
+   },
+   {
+    "label": "제조사",
+    "value": "Shure"
+   },
+   {
+    "label": "원산지",
+    "value": "아시아 중국"
+   },
+   {
+    "label": "판매가",
+    "value": "가격 문의"
+   },
+   {
+    "label": "구매방법",
+    "value": "1회구매 정기배송 할인"
+   },
+   {
+    "label": "배송주기",
+    "value": "정기배송 할인 save 결제 시 : 할인"
+   },
+   {
+    "label": "번호",
+    "value": "제목"
+   }
+  ],
+  "options": [],
+  "source": {
+   "site": "samasound.co.kr",
+   "site_label": "삼아사운드",
+   "product_id": "3869",
+   "url": "https://www.samasound.co.kr/product/wl93t/3869/category/23/display/1/",
+   "list_url": "https://www.samasound.co.kr/product/list.html?cate_no=23&page=1",
+   "extraction_method": "http-ssr+json-ld",
+   "verification_status": "verified-by-http-fetch",
+   "updated_at": "2026-10-22T02:45:06Z"
+  }
+ },
+ {
+  "id": "samasound.co.kr:3867",
+  "name": "VicOffice Desk",
+  "brand": "VICOUSTIC",
+  "brand_raw": "VICOUSTIC",
+  "brand_norm": "VICOUSTIC",
+  "manufacturer": "VICOUSTIC",
+  "model": "VicOffice Desk",
+  "category_path": [
+   "제품분류별 보기",
+   "룸어쿠스틱&스탠드",
+   "룸어쿠스틱",
+   "어쿠스틱 패널"
+  ],
+  "category": {
+   "id": "23",
+   "name": "전체보기",
+   "path": "홈 > 전체보기",
+   "registered_count": 2229,
+   "list_url": "https://www.samasound.co.kr/product/list.html?cate_no=23"
+  },
+  "price": {
+   "value": null,
+   "text": "가격 문의",
+   "state": "inquiry"
+  },
+  "availability": "InStock",
+  "images": [
+   "https://www.samasound.co.kr/web/product/big/202608/a380678ab5f3bdb5df2f33eba97b08ed.jpg",
+   "https://www.samasound.co.kr/web/product/extra/big/202608/e1c31533a6280f7b11ebaf0080f8efc6.jpg",
+   "https://www.samasound.co.kr/web/product/extra/big/202608/3e235d3fce4115e53f7b9a1e57e924e2.jpg"
+  ],
+  "specs": [
+   {
+    "label": "상품명",
+    "value": "VicOffice Desk"
+   },
+   {
+    "label": "상품요약정보",
+    "value": "업무 공간의 프라이버시 확보와 소음 저감을 위한 PET 흡음 데스크 파티션"
+   },
+   {
+    "label": "상품간략설명",
+    "value": "사무실, 오픈 오피스, 개인 업무 공간, 교육시설 등에 적합한 데스크 디바이더"
+   },
+   {
+    "label": "제조사",
+    "value": "VICOUSTIC"
+   },
+   {
+    "label": "원산지",
+    "value": "유럽 포르투갈"
+   },
+   {
+    "label": "판매가",
+    "value": "가격 문의"
+   },
+   {
+    "label": "구매방법",
+    "value": "1회구매 정기배송 할인"
+   },
+   {
+    "label": "배송주기",
+    "value": "정기배송 할인 save 결제 시 : 할인"
+   },
+   {
+    "label": "번호",
+    "value": "제목"
+   }
+  ],
+  "options": [],
+  "source": {
+   "site": "samasound.co.kr",
+   "site_label": "삼아사운드",
+   "product_id": "3867",
+   "url": "https://www.samasound.co.kr/product/vicoffice-desk/3867/category/23/display/1/",
+   "list_url": "https://www.samasound.co.kr/product/list.html?cate_no=23&page=2",
+   "extraction_method": "http-ssr+json-ld",
+   "verification_status": "verified-by-http-fetch",
+   "updated_at": "2026-10-22T02:45:06Z"
+  }
+ },
+ {
+  "id": "samasound.co.kr:3864",
+  "name": "Stand Alone",
+  "brand": "VICOUSTIC",
+  "brand_raw": "VICOUSTIC",
+  "brand_norm": "VICOUSTIC",
+  "manufacturer": "VICOUSTIC",
+  "model": "Stand Alone",
+  "category_path": [
+   "제품분류별 보기",
+   "룸어쿠스틱&스탠드",
+   "룸어쿠스틱",
+   "어쿠스틱 패널"
+  ],
+  "category": {
+   "id": "23",
+   "name": "전체보기",
+   "path": "홈 > 전체보기",
+   "registered_count": 2229,
+   "list_url": "https://www.samasound.co.kr/product/list.html?cate_no=23"
+  },
+  "price": {
+   "value": null,
+   "text": "가격 문의",
+   "state": "inquiry"
+  },
+  "availability": "InStock",
+  "images": [
+   "https://www.samasound.co.kr/web/product/big/202608/5a82448d353c2bb305dd8b885e44f0f0.jpg",
+   "https://www.samasound.co.kr/web/product/extra/big/202608/d8643363f83a14c77b9b327befcd453a.jpg",
+   "https://www.samasound.co.kr/web/product/extra/big/202608/94fcfb68577703f8b47302eea90a2d72.jpg"
+  ],
+  "specs": [
+   {
+    "label": "상품명",
+    "value": "Stand Alone"
+   },
+   {
+    "label": "상품요약정보",
+    "value": "비쿠스틱 어쿠스틱 트리트먼트 패널"
+   },
+   {
+    "label": "상품간략설명",
+    "value": "무타공 이동형 어쿠스틱 패널 솔루션"
+   },
+   {
+    "label": "제조사",
+    "value": "VICOUSTIC"
+   },
+   {
+    "label": "원산지",
+    "value": "유럽 포르투갈"
+   },
+   {
+    "label": "판매가",
+    "value": "가격 문의"
+   },
+   {
+    "label": "구매방법",
+    "value": "1회구매 정기배송 할인"
+   },
+   {
+    "label": "배송주기",
+    "value": "정기배송 할인 save 결제 시 : 할인"
+   },
+   {
+    "label": "번호",
+    "value": "제목"
+   }
+  ],
+  "options": [],
+  "source": {
+   "site": "samasound.co.kr",
+   "site_label": "삼아사운드",
+   "product_id": "3864",
+   "url": "https://www.samasound.co.kr/product/stand-alone/3864/category/23/display/1/",
+   "list_url": "https://www.samasound.co.kr/product/list.html?cate_no=23&page=2",
+   "extraction_method": "http-ssr+json-ld",
+   "verification_status": "verified-by-http-fetch",
+   "updated_at": "2026-10-22T02:45:06Z"
+  }
+ },
+ {
+  "id": "samasound.co.kr:3861",
+  "name": "TONEX ONE PLUS",
+  "brand": "IK MULTIMEDIA",
+  "brand_raw": "IK MULTIMEDIA",
+  "brand_norm": "IK MULTIMEDIA",
+  "manufacturer": "IK MULTIMEDIA",
+  "model": "TONEX ONE PLUS",
+  "category_path": [
+   "제품분류별 보기",
+   "레코딩&악기",
+   "악기/앰프",
+   "기타 액세서리"
+  ],
+  "category": {
+   "id": "23",
+   "name": "전체보기",
+   "path": "홈 > 전체보기",
+   "registered_count": 2229,
+   "list_url": "https://www.samasound.co.kr/product/list.html?cate_no=23"
+  },
+  "price": {
+   "value": null,
+   "text": "가격 문의",
+   "state": "inquiry"
+  },
+  "availability": "InStock",
+  "images": [
+   "https://www.samasound.co.kr/web/product/big/202608/b48a167592151a512ae19246eeb5b151.jpg",
+   "https://www.samasound.co.kr/web/product/extra/big/202608/d39854c67fe28015bb4633670a220e39.jpg",
+   "https://www.samasound.co.kr/web/product/extra/big/202608/7727c13d2bd2c6c28634a951a412c1e3.jpg",
+   "https://www.samasound.co.kr/web/product/extra/big/202608/f1f348604877c9673c3b923115a1f494.jpg",
+   "https://www.samasound.co.kr/web/product/extra/big/202608/5f5e74c0a740db66ac0d93048776b55d.jpg",
+   "https://www.samasound.co.kr/web/product/extra/big/202608/64a7fb4ab753c07f3255ee472b920d2d.jpg",
+   "https://www.samasound.co.kr/web/product/extra/big/202608/9200dd7e7cac912648143115087ce4f0.jpg"
+  ],
+  "specs": [
+   {
+    "label": "상품명",
+    "value": "TONEX ONE PLUS"
+   },
+   {
+    "label": "상품요약정보",
+    "value": "블루투스/MIDI 지원 AI 머신 모델링 앰프/페달 톤 모델 미니 페달"
+   },
+   {
+    "label": "상품간략설명",
+    "value": "AI 머신 모델링 기반 톤 모델링, 블루투스 조작, MIDI 연결, 톤 쉐이핑을 위한 이펙터 내장, 20개 프리셋 저장, 소프트웨어 무료 제공"
+   },
+   {
+    "label": "제조사",
+    "value": "IK MULTIMEDIA"
+   },
+   {
+    "label": "원산지",
+    "value": "유럽 이탈리아"
+   },
+   {
+    "label": "판매가",
+    "value": "가격 문의"
+   },
+   {
+    "label": "구매방법",
+    "value": "1회구매 정기배송 할인"
+   },
+   {
+    "label": "배송주기",
+    "value": "정기배송 할인 save 결제 시 : 할인"
+   },
+   {
+    "label": "번호",
+    "value": "제목"
+   }
+  ],
+  "options": [],
+  "source": {
+   "site": "samasound.co.kr",
+   "site_label": "삼아사운드",
+   "product_id": "3861",
+   "url": "https://www.samasound.co.kr/product/tonex-one-plus/3861/category/23/display/1/",
+   "list_url": "https://www.samasound.co.kr/product/list.html?cate_no=23&page=2",
+   "extraction_method": "http-ssr+json-ld",
+   "verification_status": "verified-by-http-fetch",
+   "updated_at": "2026-10-22T02:45:06Z"
+  }
+ },
+ {
+  "id": "samasound.co.kr:3858",
+  "name": "G1 (로우컬러)",
+  "brand": "Genelec",
+  "brand_raw": "Genelec",
+  "brand_norm": "GENELEC",
+  "manufacturer": "Genelec",
+  "model": "G1 (로우컬러)",
+  "category_path": [
+   "제품분류별 보기",
+   "스피커&퍼스널리스닝",
+   "Hi-Fi",
+   "액티브 스피커"
+  ],
+  "category": {
+   "id": "23",
+   "name": "전체보기",
+   "path": "홈 > 전체보기",
+   "registered_count": 2229,
+   "list_url": "https://www.samasound.co.kr/product/list.html?cate_no=23"
+  },
+  "price": {
+   "value": null,
+   "text": "가격 문의",
+   "state": "inquiry"
+  },
+  "availability": "InStock",
+  "images": [
+   "https://www.samasound.co.kr/web/product/big/202608/f9d38dbe02b317d70b81761eb8565fcd.jpg",
+   "https://www.samasound.co.kr/web/product/extra/big/202608/40c07fc6bb5b68ffa1b8576e9c1f9fe0.jpg",
+   "https://www.samasound.co.kr/web/product/extra/big/202608/bd52715d31a26e221e1da5cdd3642005.jpg",
+   "https://www.samasound.co.kr/web/product/extra/big/202608/1333a0d058fbb1fdc9a439deb2b4d9fb.jpg"
+  ],
+  "specs": [
+   {
+    "label": "상품명",
+    "value": "G1 (로우컬러)"
+   },
+   {
+    "label": "상품요약정보",
+    "value": "제네렉 홈 오디오 액티브 라우드 스피커"
+   },
+   {
+    "label": "상품간략설명",
+    "value": "제네렉의 순수한 모니터링 사운드를 홈 오디오로"
+   },
+   {
+    "label": "제조사",
+    "value": "Genelec"
+   },
+   {
+    "label": "원산지",
+    "value": "유럽 핀란드"
+   },
+   {
+    "label": "판매가",
+    "value": "가격 문의"
+   },
+   {
+    "label": "구매방법",
+    "value": "1회구매 정기배송 할인"
+   },
+   {
+    "label": "배송주기",
+    "value": "정기배송 할인 save 결제 시 : 할인"
+   },
+   {
+    "label": "번호",
+    "value": "제목"
+   }
+  ],
+  "options": [],
+  "source": {
+   "site": "samasound.co.kr",
+   "site_label": "삼아사운드",
+   "product_id": "3858",
+   "url": "https://www.samasound.co.kr/product/g1-로우컬러/3858/category/23/display/1/",
+   "list_url": "https://www.samasound.co.kr/product/list.html?cate_no=23&page=2",
+   "extraction_method": "http-ssr+json-ld",
+   "verification_status": "verified-by-http-fetch",
+   "updated_at": "2026-10-22T02:45:06Z"
+  }
+ },
+ {
+  "id": "samasound.co.kr:3836",
+  "name": "SQ5+",
+  "brand": "Allen&Heath",
+  "brand_raw": "Allen&Heath",
+  "brand_norm": "ALLEN&HEATH",
+  "manufacturer": "Allen&Heath",
+  "model": "SQ5+",
+  "category_path": [
+   "제품분류별 보기",
+   "프로 오디오",
+   "믹서",
+   "디지털 믹서"
+  ],
+  "category": {
+   "id": "23",
+   "name": "전체보기",
+   "path": "홈 > 전체보기",
+   "registered_count": 2229,
+   "list_url": "https://www.samasound.co.kr/product/list.html?cate_no=23"
+  },
+  "price": {
+   "value": null,
+   "text": "가격 문의",
+   "state": "inquiry"
+  },
+  "availability": "InStock",
+  "images": [
+   "https://www.samasound.co.kr/web/product/big/202607/f3e772af3e060588f106f293a5cc66ac.png",
+   "https://www.samasound.co.kr/web/product/extra/big/202607/71d38ee7d150161255c3602619bd6e92.png",
+   "https://www.samasound.co.kr/web/product/extra/big/202607/c4adb4a880bcce85795e99881cfc5afb.png"
+  ],
+  "specs": [
+   {
+    "label": "상품명",
+    "value": "SQ5+"
+   },
+   {
+    "label": "상품요약정보",
+    "value": "48채널 44버스 17페이더 디지털 믹서"
+   },
+   {
+    "label": "상품간략설명",
+    "value": "컴팩트 디지털 믹싱의 기준이 되어온 SQ의 핵심을 유지하며 업그레이드된 SQ+. 17개의 모터 페이더와 8개의 소프트키, 4개의 온보드 RackUltraFX 엔진을 통해 플래그십급 프로레싱과 직관적인 컨트롤 환경을 제공합니다."
+   },
+   {
+    "label": "제조사",
+    "value": "Allen&Heath"
+   },
+   {
+    "label": "원산지",
+    "value": "아시아 중국"
+   },
+   {
+    "label": "영문상품명",
+    "value": "SQ5+"
+   },
+   {
+    "label": "판매가",
+    "value": "가격 문의"
+   },
+   {
+    "label": "구매방법",
+    "value": "1회구매 정기배송 할인"
+   },
+   {
+    "label": "배송주기",
+    "value": "정기배송 할인 save 결제 시 : 할인"
+   },
+   {
+    "label": "번호",
+    "value": "제목"
+   }
+  ],
+  "options": [],
+  "source": {
+   "site": "samasound.co.kr",
+   "site_label": "삼아사운드",
+   "product_id": "3836",
+   "url": "https://www.samasound.co.kr/product/sq5/3836/category/23/display/1/",
+   "list_url": "https://www.samasound.co.kr/product/list.html?cate_no=23&page=2",
+   "extraction_method": "http-ssr+json-ld",
+   "verification_status": "verified-by-http-fetch",
+   "updated_at": "2026-10-22T02:45:06Z"
+  }
+ },
+ {
+  "id": "samamusic.co.kr:4175",
+  "name": "SHURE SV100 슈어 다이나믹 유선 마이크 노래방 스피치 용",
+  "brand": "SHURE",
+  "brand_raw": "SHURE",
+  "brand_norm": "SHURE",
+  "manufacturer": "",
+  "model": "SV100",
+  "category_path": [
+   "마이크",
+   "레코딩",
+   "마이크",
+   "SHURE",
+   "마이크",
+   "유선 마이크",
+   "레코딩"
+  ],
+  "category": {
+   "id": "84",
+   "name": "마이크",
+   "path": "마이크",
+   "registered_count": 0,
+   "list_url": "https://www.samamusic.co.kr/product/list.html?cate_no=84"
+  },
+  "price": {
+   "value": 40000,
+   "text": "40,000원",
+   "state": "public"
+  },
+  "availability": "InStock",
+  "images": [
+   "https://www.samamusic.co.kr/web/product/big/202408/5dae5f573fe371edaca0f9b5a43bacb8.jpg",
+   "https://www.samamusic.co.kr/web/product/extra/big/202408/5b32b93af5cc68d547275b2f8c0eb765.jpg",
+   "https://www.samamusic.co.kr/web/product/extra/big/202408/321ead69640c60ea1e0eac7f0a60923a.jpg"
+  ],
+  "specs": [
+   {
+    "label": "상품명",
+    "value": "SHURE SV100 슈어 다이나믹 유선 마이크 노래방 스피치 용"
+   },
+   {
+    "label": "판매가",
+    "value": "40,000원"
+   },
+   {
+    "label": "브랜드",
+    "value": "SHURE"
+   },
+   {
+    "label": "모델명",
+    "value": "SV100"
+   },
+   {
+    "label": "상품요약정보",
+    "value": "보컬에 최적화된 다이나믹 마이크로폰"
+   },
+   {
+    "label": "원산지",
+    "value": "아시아 중국 또는 멕시코"
+   },
+   {
+    "label": "배송비",
+    "value": "3,000원 (50,000원 이상 구매 시 무료)"
+   },
+   {
+    "label": "구매방법",
+    "value": "1회구매 정기배송 할인"
+   },
+   {
+    "label": "배송주기",
+    "value": "정기배송 할인 save 결제 시 : 할인"
+   }
+  ],
+  "options": [],
+  "source": {
+   "site": "samamusic.co.kr",
+   "site_label": "삼아스토어",
+   "product_id": "4175",
+   "url": "https://www.samamusic.co.kr/product/detail.html?product_no=4175&cate_no=84&display_group=1",
+   "list_url": "https://www.samamusic.co.kr/product/list.html?cate_no=84",
+   "extraction_method": "http-ssr+json-ld+dalue-api",
+   "verification_status": "verified-by-http-fetch",
+   "updated_at": "2026-10-22T02:45:06Z"
+  }
+ },
+ {
+  "id": "samamusic.co.kr:4167",
+  "name": "[한정판] PreSonus Eris 3.5 GEN2 White 프리소너스 에리스 2세대 모니터 스피커 1조(2통) 화이트",
+  "brand": "PRESONUS",
+  "brand_raw": "PRESONUS",
+  "brand_norm": "PRESONUS",
+  "manufacturer": "",
+  "model": "Eris 3.5 GEN2 White",
+  "category_path": [
+   "스피커",
+   "모니터 스피커",
+   "레코딩",
+   "모니터 스피커",
+   "PRESONUS",
+   "스피커",
+   "PRESONUS",
+   "스피커",
+   "PRESONUS",
+   "스피커",
+   "모니터 스피커",
+   "스피커",
+   "ERIS 스피커",
+   "레코딩",
+   "7% 할인",
+   "7% 할인 상품",
+   "PreSonus"
+  ],
+  "category": {
+   "id": "42",
+   "name": "스피커",
+   "path": "스피커",
+   "registered_count": 0,
+   "list_url": "https://www.samamusic.co.kr/product/list.html?cate_no=42"
+  },
+  "price": {
+   "value": 219000,
+   "text": "219,000원",
+   "state": "public"
+  },
+  "availability": "InStock",
+  "images": [
+   "https://www.samamusic.co.kr/web/product/big/202502/d479799a48de869774eab46aa04df3d4.jpg",
+   "https://www.samamusic.co.kr/web/product/extra/big/202502/e5540120f9cb46e52937fb0774f41ce4.jpg",
+   "https://www.samamusic.co.kr/web/product/extra/big/202408/e3367cc27ed8ec9281824974004ff0b6.jpg"
+  ],
+  "specs": [
+   {
+    "label": "상품명",
+    "value": "[한정판] PreSonus Eris 3.5 GEN2 White 프리소너스 에리스 2세대 모니터 스피커 1조(2통) 화이트"
+   },
+   {
+    "label": "판매가",
+    "value": "219,000원"
+   },
+   {
+    "label": "브랜드",
+    "value": "PRESONUS"
+   },
+   {
+    "label": "모델명",
+    "value": "Eris 3.5 GEN2 White"
+   },
+   {
+    "label": "안전확인신고번호",
+    "value": "공급자적합성확인대상제품"
+   },
+   {
+    "label": "적합인증번호",
+    "value": "R-R-YPS-Eris3-5"
+   },
+   {
+    "label": "상품요약정보",
+    "value": "본 가격은 스피커 1조(2통)에 대한 가격입니다"
+   },
+   {
+    "label": "상품간략설명",
+    "value": "국민스피커 ERIS, 2세대 2웨이 8.89cm (3.5타입) 미디어 레퍼런스 모니터 스피커"
+   },
+   {
+    "label": "원산지",
+    "value": "아시아 중국"
+   },
+   {
+    "label": "배송비",
+    "value": "3,000원 (50,000원 이상 구매 시 무료)"
+   },
+   {
+    "label": "구매방법",
+    "value": "1회구매 정기배송 할인"
+   },
+   {
+    "label": "배송주기",
+    "value": "정기배송 할인 save 결제 시 : 할인"
+   },
+   {
+    "label": "길이선택",
+    "value": "- [필수] 옵션을 선택해 주세요 - ------------------- 1m 2m (+3,000원) 3m (+6,000원) 6m (+12,000원)"
+   },
+   {
+    "label": "길이 선택",
+    "value": "- [필수] 옵션을 선택해 주세요 - ------------------- 1.5m 2m (+3,000원) 3m (+6,000원) 4m (+10,000원) 5m [품절] (+14,000원)"
+   }
+  ],
+  "options": [],
+  "source": {
+   "site": "samamusic.co.kr",
+   "site_label": "삼아스토어",
+   "product_id": "4167",
+   "url": "https://www.samamusic.co.kr/product/detail.html?product_no=4167&cate_no=42&display_group=1",
+   "list_url": "https://www.samamusic.co.kr/product/list.html?cate_no=42",
+   "extraction_method": "http-ssr+json-ld+dalue-api",
+   "verification_status": "verified-by-http-fetch",
+   "updated_at": "2026-10-22T02:45:06Z"
+  }
+ },
+ {
+  "id": "samamusic.co.kr:3563",
+  "name": "SHURE AONIC 50 GEN2 슈어 무선 노이즈 캔슬링 헤드폰 (블랙)",
+  "brand": "SHURE",
+  "brand_raw": "SHURE",
+  "brand_norm": "SHURE",
+  "manufacturer": "",
+  "model": "AONIC 50 GEN2",
+  "category_path": [
+   "레코딩",
+   "헤드폰",
+   "SHURE",
+   "15% 할인",
+   "이어폰/헤드폰",
+   "헤드폰",
+   "레코딩",
+   "15% 할인 상품",
+   "SHURE",
+   "15% 할인",
+   "SHURE"
+  ],
+  "category": {
+   "id": "25",
+   "name": "이어폰헤드폰",
+   "path": "이어폰헤드폰",
+   "registered_count": 0,
+   "list_url": "https://www.samamusic.co.kr/product/list.html?cate_no=25"
+  },
+  "price": {
+   "value": 608000,
+   "text": "608,000원",
+   "state": "public"
+  },
+  "availability": "InStock",
+  "images": [
+   "https://www.samamusic.co.kr/web/product/big/202412/96508646576450d271e72ae7ca27e64c.jpg",
+   "https://www.samamusic.co.kr/web/product/extra/big/202412/8382f725d88bad5a7560ffead78dce84.jpg",
+   "https://www.samamusic.co.kr/web/product/extra/big/202412/5f1011d872b347abec7741dee6eb4a36.jpg",
+   "https://www.samamusic.co.kr/web/product/extra/big/202412/3a3931935228f7dc1b1057cface186ca.jpg",
+   "https://www.samamusic.co.kr/web/product/extra/big/202412/f8723a08b29c6a536123f609fd41beb6.jpg",
+   "https://www.samamusic.co.kr/web/product/extra/big/202412/4c5b2c7c7fb208de2586c117af5285f7.jpg"
+  ],
+  "specs": [
+   {
+    "label": "상품명",
+    "value": "SHURE AONIC 50 GEN2 슈어 무선 노이즈 캔슬링 헤드폰 (블랙)"
+   },
+   {
+    "label": "판매가",
+    "value": "608,000원"
+   },
+   {
+    "label": "브랜드",
+    "value": "SHURE"
+   },
+   {
+    "label": "모델명",
+    "value": "AONIC 50 GEN2"
+   },
+   {
+    "label": "안전확인신고번호",
+    "value": "XU101514-18001"
+   },
+   {
+    "label": "적합인증번호",
+    "value": "R-C-SHU-MH36458"
+   },
+   {
+    "label": "상품요약정보",
+    "value": "Wireless Noise Cancelling 헤드폰"
+   },
+   {
+    "label": "원산지",
+    "value": "아시아 중국"
+   },
+   {
+    "label": "배송비",
+    "value": "무료"
+   },
+   {
+    "label": "구매방법",
+    "value": "1회구매 정기배송 할인"
+   },
+   {
+    "label": "배송주기",
+    "value": "정기배송 할인 save 결제 시 : 할인"
+   }
+  ],
+  "options": [],
+  "source": {
+   "site": "samamusic.co.kr",
+   "site_label": "삼아스토어",
+   "product_id": "3563",
+   "url": "https://www.samamusic.co.kr/product/detail.html?product_no=3563&cate_no=25&display_group=1",
+   "list_url": "https://www.samamusic.co.kr/product/list.html?cate_no=25",
+   "extraction_method": "http-ssr+json-ld+dalue-api",
+   "verification_status": "verified-by-http-fetch",
+   "updated_at": "2026-10-22T02:45:06Z"
+  }
+ },
+ {
+  "id": "samamusic.co.kr:5612",
+  "name": "CLOUD MINI CL-25 초소형 인라인 마이크 프리앰프",
+  "brand": "Cloud",
+  "brand_raw": "Cloud",
+  "brand_norm": "CLOUD",
+  "manufacturer": "",
+  "model": "CL-25",
+  "category_path": [
+   "레코딩/음향",
+   "프리앰프",
+   "레코딩/음향",
+   "액세서리",
+   "CLOUD",
+   "레코딩/음향",
+   "10% 할인",
+   "CLOUD"
+  ],
+  "category": {
+   "id": "28",
+   "name": "레코딩음향",
+   "path": "레코딩음향",
+   "registered_count": 0,
+   "list_url": "https://www.samamusic.co.kr/product/list.html?cate_no=28"
+  },
+  "price": {
+   "value": 281000,
+   "text": "281,000원",
+   "state": "public"
+  },
+  "availability": "InStock",
+  "images": [
+   "https://www.samamusic.co.kr/web/product/big/202606/959c8149ab30172fd235841f8bd3eab8.jpg",
+   "https://www.samamusic.co.kr/web/product/extra/big/202606/22068b9b78ab62c2ddc6295e13ff3763.jpg",
+   "https://www.samamusic.co.kr/web/product/extra/big/202606/43a738a8386d7059d0f0830c43fc641f.jpg",
+   "https://www.samamusic.co.kr/web/product/extra/big/202606/ae2a989d7ed1a6e2c679049c269fff46.jpg",
+   "https://www.samamusic.co.kr/web/product/extra/big/202606/21234f4075f91c918d1fc23502f58aea.jpg",
+   "https://www.samamusic.co.kr/web/product/extra/big/202606/8b91e66708cf61929a45d20e4cc099c5.jpg",
+   "https://www.samamusic.co.kr/web/product/extra/big/202606/33f218bc435ee60725700fb8afb4f49f.jpg",
+   "https://www.samamusic.co.kr/web/product/extra/big/202606/15d3927cde6635d364d3666688f193d3.jpg",
+   "https://www.samamusic.co.kr/web/product/extra/big/202606/7cd6848b876f9ad58a68e991429533cb.jpg"
+  ],
+  "specs": [
+   {
+    "label": "상품명",
+    "value": "CLOUD MINI CL-25 초소형 인라인 마이크 프리앰프"
+   },
+   {
+    "label": "판매가",
+    "value": "281,000원"
+   },
+   {
+    "label": "브랜드",
+    "value": "Cloud"
+   },
+   {
+    "label": "모델명",
+    "value": "CL-25"
+   },
+   {
+    "label": "적합인증번호",
+    "value": "R-R-sSI-CL-25"
+   },
+   {
+    "label": "상품요약정보",
+    "value": "최대 +25dB까지 깨끗하게 증폭해 주는 초소형 인라인 마이크 프리앰프"
+   },
+   {
+    "label": "상품간략설명",
+    "value": "다이내믹 및 리본 마이크의 신호를 최대 +25dB까지 깨끗하게 증폭해 주는 초소형 인라인 마이크 프리앰프"
+   },
+   {
+    "label": "원산지",
+    "value": "아메리카 미국"
+   },
+   {
+    "label": "배송비",
+    "value": "3,000원 (50,000원 이상 구매 시 무료)"
+   },
+   {
+    "label": "구매방법",
+    "value": "1회구매 정기배송 할인"
+   },
+   {
+    "label": "배송주기",
+    "value": "정기배송 할인 save 결제 시 : 할인"
+   }
+  ],
+  "options": [],
+  "source": {
+   "site": "samamusic.co.kr",
+   "site_label": "삼아스토어",
+   "product_id": "5612",
+   "url": "https://www.samamusic.co.kr/product/detail.html?product_no=5612&cate_no=28&display_group=1",
+   "list_url": "https://www.samamusic.co.kr/product/list.html?cate_no=28",
+   "extraction_method": "http-ssr+json-ld+dalue-api",
+   "verification_status": "verified-by-http-fetch",
+   "updated_at": "2026-10-22T02:45:06Z"
+  }
+ },
+ {
+  "id": "samamusic.co.kr:4494",
+  "name": "Rickenbacker 4005XC 리켄배커 리미티드 에디션 세미-할로우 베이스 기타",
+  "brand": "Rickenbacker",
+  "brand_raw": "Rickenbacker",
+  "brand_norm": "RICKENBACKER",
+  "manufacturer": "",
+  "model": "4005XC",
+  "category_path": [
+   "RICKENBACKER",
+   "악기/앰프",
+   "베이스 기타",
+   "악기/앰프",
+   "베이스 기타",
+   "Rickenbacker"
+  ],
+  "category": {
+   "id": "379",
+   "name": "악기앰프",
+   "path": "악기앰프",
+   "registered_count": 0,
+   "list_url": "https://www.samamusic.co.kr/product/list.html?cate_no=379"
+  },
+  "price": {
+   "value": 9030000,
+   "text": "9,030,000원",
+   "state": "public"
+  },
+  "availability": "InStock",
+  "images": [
+   "https://www.samamusic.co.kr/web/product/big/202411/97494264ccda9942ed065d242c82f319.jpg",
+   "https://www.samamusic.co.kr/web/product/extra/big/202411/0bd16f64893b2be4c349c38cbf7ce604.jpg",
+   "https://www.samamusic.co.kr/web/product/extra/big/202411/4a1f541475fbc852923dca8a8a017c63.jpg",
+   "https://www.samamusic.co.kr/web/product/extra/big/202411/34974cf0fb60be7a522d09a2f6da0166.jpg",
+   "https://www.samamusic.co.kr/web/product/extra/big/202411/a110257011d6ce2b1f8823a0a82dcc79.jpg",
+   "https://www.samamusic.co.kr/web/product/extra/big/202411/baeda8baeb25e53228788e598ad17da3.jpg",
+   "https://www.samamusic.co.kr/web/product/extra/big/202411/33c58d69de66a9dfda5e5ddb3cc8b87b.jpg"
+  ],
+  "specs": [
+   {
+    "label": "상품명",
+    "value": "Rickenbacker 4005XC 리켄배커 리미티드 에디션 세미-할로우 베이스 기타"
+   },
+   {
+    "label": "판매가",
+    "value": "9,030,000원"
+   },
+   {
+    "label": "브랜드",
+    "value": "Rickenbacker"
+   },
+   {
+    "label": "모델명",
+    "value": "4005XC"
+   },
+   {
+    "label": "상품요약정보",
+    "value": "브리티쉬 사운드의 상징 리켄배커(Rickenbacker) 베이스 기타"
+   },
+   {
+    "label": "상품간략설명",
+    "value": "리켄배커 90주년 기념하는 한정판 4005XC 베이스 기타"
+   },
+   {
+    "label": "원산지",
+    "value": "아메리카 미국"
+   },
+   {
+    "label": "배송비",
+    "value": "3,000원 (50,000원 이상 구매 시 무료)"
+   },
+   {
+    "label": "구매방법",
+    "value": "1회구매 정기배송 할인"
+   },
+   {
+    "label": "배송주기",
+    "value": "정기배송 할인 save 결제 시 : 할인"
+   }
+  ],
+  "options": [],
+  "source": {
+   "site": "samamusic.co.kr",
+   "site_label": "삼아스토어",
+   "product_id": "4494",
+   "url": "https://www.samamusic.co.kr/product/detail.html?product_no=4494&cate_no=379&display_group=1",
+   "list_url": "https://www.samamusic.co.kr/product/list.html?cate_no=379",
+   "extraction_method": "http-ssr+json-ld+dalue-api",
+   "verification_status": "verified-by-http-fetch",
+   "updated_at": "2026-10-22T02:45:06Z"
+  }
+ },
+ {
+  "id": "samamusic.co.kr:5685",
+  "name": "KLOTZ D-Sub (25pin) 수 to 4/4 XLR M/F 클로츠 LOOM 디지털 케이블 (YAMAHA 핀 배열) YCDAE",
+  "brand": "Klotz",
+  "brand_raw": "Klotz",
+  "brand_norm": "KLOTZ",
+  "manufacturer": "",
+  "model": "YCDAE",
+  "category_path": [
+   "KLOTZ 케이블",
+   "레코딩 케이블",
+   "케이블/커넥터",
+   "레코딩 케이블",
+   "KLOTZ 케이블",
+   "케이블/커넥터",
+   "D-Sub 케이블",
+   "KLOTZ",
+   "케이블/커넥터"
+  ],
+  "category": {
+   "id": "366",
+   "name": "케이블커넥터",
+   "path": "케이블커넥터",
+   "registered_count": 0,
+   "list_url": "https://www.samamusic.co.kr/product/list.html?cate_no=366"
+  },
+  "price": {
+   "value": 440000,
+   "text": "440,000원",
+   "state": "public"
+  },
+  "availability": "InStock",
+  "images": [
+   "https://www.samamusic.co.kr/web/product/medium/202608/f0a8d6ef504f30f3b65e9afb1ef9cc8e.jpg"
+  ],
+  "specs": [
+   {
+    "label": "상품명",
+    "value": "KLOTZ D-Sub (25pin) 수 to 4/4 XLR M/F 클로츠 LOOM 디지털 케이블 (YAMAHA 핀 배열) YCDAE"
+   },
+   {
+    "label": "판매가",
+    "value": "440,000원"
+   },
+   {
+    "label": "브랜드",
+    "value": "Klotz"
+   },
+   {
+    "label": "모델명",
+    "value": "YCDAE"
+   },
+   {
+    "label": "상품요약정보",
+    "value": "1m, 3m, 5m 선택가능"
+   },
+   {
+    "label": "원산지",
+    "value": "유럽 독일"
+   },
+   {
+    "label": "배송비",
+    "value": "3,000원 (50,000원 이상 구매 시 무료)"
+   },
+   {
+    "label": "구매방법",
+    "value": "1회구매 정기배송 할인"
+   },
+   {
+    "label": "배송주기",
+    "value": "정기배송 할인 save 결제 시 : 할인"
+   },
+   {
+    "label": "길이",
+    "value": "- [필수] 옵션을 선택해 주세요 - ------------------- 1m 3m [품절] (+40,000원) 5m [품절] (+85,000원)"
+   }
+  ],
+  "options": [
+   {
+    "name": "KLOTZ D-Sub (25pin) 수 to 4/4 XLR M/F 클로츠 LOOM 디지털 케이블 (YAMAHA 핀 배열) YCDAE 1m",
+    "sku": "cafe24_sama2015_1_5685_P0000IKR000E",
+    "price": 440000,
+    "price_text": "440,000원",
+    "availability": "InStock",
+    "group": "variants"
+   },
+   {
+    "name": "KLOTZ D-Sub (25pin) 수 to 4/4 XLR M/F 클로츠 LOOM 디지털 케이블 (YAMAHA 핀 배열) YCDAE 3m",
+    "sku": "cafe24_sama2015_1_5685_P0000IKR000F",
+    "price": 480000,
+    "price_text": "480,000원",
+    "availability": "OutOfStock",
+    "group": "variants"
+   },
+   {
+    "name": "KLOTZ D-Sub (25pin) 수 to 4/4 XLR M/F 클로츠 LOOM 디지털 케이블 (YAMAHA 핀 배열) YCDAE 5m",
+    "sku": "cafe24_sama2015_1_5685_P0000IKR000G",
+    "price": 525000,
+    "price_text": "525,000원",
+    "availability": "OutOfStock",
+    "group": "variants"
+   }
+  ],
+  "source": {
+   "site": "samamusic.co.kr",
+   "site_label": "삼아스토어",
+   "product_id": "5685",
+   "url": "https://www.samamusic.co.kr/product/detail.html?product_no=5685&cate_no=366&display_group=1",
+   "list_url": "https://www.samamusic.co.kr/product/list.html?cate_no=366",
+   "extraction_method": "http-ssr+json-ld+dalue-api",
+   "verification_status": "verified-by-http-fetch",
+   "updated_at": "2026-10-22T02:45:06Z"
+  }
+ },
+ {
+  "id": "samamusic.co.kr:4537",
+  "name": "NI Maschine 3 Bundle Update 비트메이킹, 뮤직 프로덕션 머신 3 번들 소프트웨어 업데이트(라이브러리 포함) (실시간)",
+  "brand": "Native Instruments",
+  "brand_raw": "Native Instruments",
+  "brand_norm": "NATIVE INSTRUMENTS",
+  "manufacturer": "",
+  "model": "Maschine 3 Bundle Update",
+  "category_path": [
+   "레코딩",
+   "소프트웨어 (Plug-in)",
+   "소프트웨어",
+   "레코딩",
+   "소프트웨어 (Plug-in)",
+   "NATIVE INSTRUMENTS",
+   "소프트웨어",
+   "실시간 전자배송 제품",
+   "소프트웨어",
+   "NATIVE INSTRUMENTS",
+   "소프트웨어",
+   "NATIVE INSTRUMENTS",
+   "MASCHINE 3",
+   "소프트웨어",
+   "NATIVE INSTRUMENTS",
+   "MASCHINE 3",
+   "기존 사용자 (UPD / UPG)",
+   "NATIVE INSTRUMENTS",
+   "소프트웨어",
+   "NATIVE INSTRUMENTS",
+   "소프트웨어",
+   "MASCHINE 3 (기존사용자)"
+  ],
+  "category": {
+   "id": "758",
+   "name": "소프트웨어",
+   "path": "소프트웨어",
+   "registered_count": 0,
+   "list_url": "https://www.samamusic.co.kr/product/list.html?cate_no=758"
+  },
+  "price": {
+   "value": 84000,
+   "text": "84,000원",
+   "state": "public"
+  },
+  "availability": "InStock",
+  "images": [
+   "https://www.samamusic.co.kr/web/product/big/202412/a6df2db3e9009efe0942598ef687dbb7.jpg",
+   "https://www.samamusic.co.kr/web/product/extra/big/202412/15f42ba5a842e5481c9af67ae88a7bf0.jpg"
+  ],
+  "specs": [
+   {
+    "label": "상품명",
+    "value": "NI Maschine 3 Bundle Update 비트메이킹, 뮤직 프로덕션 머신 3 번들 소프트웨어 업데이트(라이브러리 포함) (실시간)"
+   },
+   {
+    "label": "판매가",
+    "value": "84,000원"
+   },
+   {
+    "label": "소비자가",
+    "value": "120,000원"
+   },
+   {
+    "label": "브랜드",
+    "value": "Native Instruments"
+   },
+   {
+    "label": "모델명",
+    "value": "Maschine 3 Bundle Update"
+   },
+   {
+    "label": "상품요약정보",
+    "value": "Mashcine 3 업데이트 / Maschine 2 버전을 3 버전으로 업데이트 / 신규 Central 라이브러리 포함"
+   },
+   {
+    "label": "상품간략설명",
+    "value": "본 제품은 소프트웨어 실시간 전자배송 상품으로 결제와 동시에 이메일 발송이 이루어지며 교환 및 환불 이 불가 합니다."
+   },
+   {
+    "label": "원산지",
+    "value": "유럽 독일"
+   },
+   {
+    "label": "배송비",
+    "value": "무료"
+   },
+   {
+    "label": "구매방법",
+    "value": "1회구매 정기배송 할인"
+   },
+   {
+    "label": "배송주기",
+    "value": "정기배송 할인 save 결제 시 : 할인"
+   }
+  ],
+  "options": [],
+  "source": {
+   "site": "samamusic.co.kr",
+   "site_label": "삼아스토어",
+   "product_id": "4537",
+   "url": "https://www.samamusic.co.kr/product/detail.html?product_no=4537&cate_no=758&display_group=1",
+   "list_url": "https://www.samamusic.co.kr/product/list.html?cate_no=758",
+   "extraction_method": "http-ssr+json-ld+dalue-api",
+   "verification_status": "verified-by-http-fetch",
+   "updated_at": "2026-10-22T02:45:06Z"
+  }
+ },
+ {
+  "id": "samamusic.co.kr:5665",
+  "name": "GENELEC G1 제네렉 홈 오디오 액티브 라우드 스피커 (화이트)",
+  "brand": "Genelec",
+  "brand_raw": "Genelec",
+  "brand_norm": "GENELEC",
+  "manufacturer": "",
+  "model": "G1BW",
+  "category_path": [
+   "GENELEC",
+   "Hi-Fi",
+   "GENELEC",
+   "G Series Loudspeakers",
+   "Hi-Fi",
+   "Hi-Fi 스피커",
+   "스피커",
+   "Hi-Fi 스피커"
+  ],
+  "category": {
+   "id": "1038",
+   "name": "hi-fi",
+   "path": "hi-fi",
+   "registered_count": 0,
+   "list_url": "https://www.samamusic.co.kr/product/list.html?cate_no=1038"
+  },
+  "price": {
+   "value": 620000,
+   "text": "620,000원",
+   "state": "public"
+  },
+  "availability": "InStock",
+  "images": [
+   "https://www.samamusic.co.kr/web/product/big/202607/e59966159d2edc65f7463845508aa8b8.jpg",
+   "https://www.samamusic.co.kr/web/product/extra/big/202607/e78bdabdb57a726686a3c86710086e10.jpg",
+   "https://www.samamusic.co.kr/web/product/extra/big/202607/edec3d90449087410ec7c714c9965c9a.jpg"
+  ],
+  "specs": [
+   {
+    "label": "상품명",
+    "value": "GENELEC G1 제네렉 홈 오디오 액티브 라우드 스피커 (화이트)"
+   },
+   {
+    "label": "판매가",
+    "value": "620,000원"
+   },
+   {
+    "label": "브랜드",
+    "value": "Genelec"
+   },
+   {
+    "label": "모델명",
+    "value": "G1BW"
+   },
+   {
+    "label": "안전확인신고번호",
+    "value": "공급자적합성확인대상제품"
+   },
+   {
+    "label": "적합인증번호",
+    "value": "R-R-sSI-G_One"
+   },
+   {
+    "label": "상품요약정보",
+    "value": "본 가격은 스피커 1통 가격입니다"
+   },
+   {
+    "label": "원산지",
+    "value": "유럽 핀란드"
+   },
+   {
+    "label": "배송비",
+    "value": "3,000원 (50,000원 이상 구매 시 무료)"
+   },
+   {
+    "label": "구매방법",
+    "value": "1회구매 정기배송 할인"
+   },
+   {
+    "label": "배송주기",
+    "value": "정기배송 할인 save 결제 시 : 할인"
+   }
+  ],
+  "options": [],
+  "source": {
+   "site": "samamusic.co.kr",
+   "site_label": "삼아스토어",
+   "product_id": "5665",
+   "url": "https://www.samamusic.co.kr/product/detail.html?product_no=5665&cate_no=1038&display_group=1",
+   "list_url": "https://www.samamusic.co.kr/product/list.html?cate_no=1038",
+   "extraction_method": "http-ssr+json-ld+dalue-api",
+   "verification_status": "verified-by-http-fetch",
+   "updated_at": "2026-10-22T02:45:06Z"
+  }
+ },
+ {
+  "id": "samamusic.co.kr:40",
+  "name": "TC Electronic PolyTune Clip White 티씨 일렉트로닉 기타 튜너 결제창",
+  "brand": "TC Electronic",
+  "brand_raw": "TC Electronic",
+  "brand_norm": "TC ELECTRONIC",
+  "manufacturer": "",
+  "model": "TC Electronic PolyTune Clip White 티씨 일렉트로닉 기타 튜너 결제창",
+  "category_path": [
+   "악기/앰프",
+   "튜너",
+   "TC",
+   "특가상품"
+  ],
+  "category": {
+   "id": "97",
+   "name": "특가상품",
+   "path": "특가상품",
+   "registered_count": 0,
+   "list_url": "https://www.samamusic.co.kr/product/list.html?cate_no=97"
+  },
+  "price": {
+   "value": 64000,
+   "text": "64,000원",
+   "state": "public"
+  },
+  "availability": "InStock",
+  "images": [
+   "https://www.samamusic.co.kr/web/product/big/202106/d5154eb4b937a11cde8799b833f73004.jpg",
+   "https://www.samamusic.co.kr/web/product/extra/big/202106/0239dfbe74d4fac26e9b5854f9049d99.jpg",
+   "https://www.samamusic.co.kr/web/product/extra/big/202106/8b67f511a32235c69227acecbc09c273.jpg",
+   "https://www.samamusic.co.kr/web/product/extra/big/202106/9d94c742ddd478ac6c6f16036bd4e5a4.jpg",
+   "https://www.samamusic.co.kr/web/product/extra/big/202106/a31932497c166f50253c3b4651d8322e.jpg"
+  ],
+  "specs": [
+   {
+    "label": "상품명",
+    "value": "TC Electronic PolyTune Clip White 티씨 일렉트로닉 기타 튜너 결제창"
+   },
+   {
+    "label": "판매가",
+    "value": "64,000원"
+   },
+   {
+    "label": "소비자가",
+    "value": "82,000원"
+   },
+   {
+    "label": "브랜드",
+    "value": "TC Electronic"
+   },
+   {
+    "label": "원산지",
+    "value": "아시아 중국"
+   },
+   {
+    "label": "배송비",
+    "value": "3,000원 (50,000원 이상 구매 시 무료)"
+   },
+   {
+    "label": "구매방법",
+    "value": "1회구매 정기배송 할인"
+   },
+   {
+    "label": "배송주기",
+    "value": "정기배송 할인 save 결제 시 : 할인"
+   }
+  ],
+  "options": [],
+  "source": {
+   "site": "samamusic.co.kr",
+   "site_label": "삼아스토어",
+   "product_id": "40",
+   "url": "https://www.samamusic.co.kr/product/detail.html?product_no=40&cate_no=97&display_group=1",
+   "list_url": "https://www.samamusic.co.kr/product/list.html?cate_no=97",
+   "extraction_method": "http-ssr+json-ld+dalue-api",
+   "verification_status": "verified-by-http-fetch",
+   "updated_at": "2026-10-22T02:45:06Z"
+  }
+ }
+]

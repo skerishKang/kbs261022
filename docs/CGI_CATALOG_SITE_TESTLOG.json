@@ -1,0 +1,187 @@
+{
+  "base": "http://127.0.0.1:8848",
+  "at": "2026-10-22T03:35:49.292Z",
+  "total": 18,
+  "failed": 0,
+  "results": [
+    {
+      "name": "1. 메인 페이지 표시",
+      "ok": true,
+      "detail": {
+        "h1": "CGI 상품 카탈로그",
+        "statCount": 4,
+        "cards": 8,
+        "chips": 42,
+        "notice": "공급처 공개 수집 데이터 기반 미리보기입니다. 표시 수량은 수집 샘플 기준이며 CGI 판매 가능 수량이 아닙니다."
+      }
+    },
+    {
+      "name": "1b. 전체 상품 목록 표시",
+      "ok": true,
+      "detail": {
+        "cards": 12,
+        "result": "39건 표시",
+        "facetGroups": 3
+      }
+    },
+    {
+      "name": "5. 실제 상품 이미지 표시",
+      "ok": true,
+      "detail": {
+        "total": 12,
+        "loaded": 12,
+        "sample": [
+          "https://www.samamusic.co.kr/web/product/big/202502/d479799a48de869774eab46aa04df3d4.jpg",
+          "https://www.samamusic.co.kr/web/product/big/202606/959c8149ab30172fd235841f8bd3eab8.jpg",
+          "https://www.samasound.co.kr/web/product/big/202608/f9d38dbe02b317d70b81761eb8565fcd.jpg"
+        ]
+      }
+    },
+    {
+      "name": "2. 상품 검색",
+      "ok": true,
+      "detail": {
+        "totalProducts": 39,
+        "hash": "#/products?q=SHURE",
+        "count": "8건 표시 · 검색어 “SHURE”",
+        "cards": 8,
+        "allShure": true
+      }
+    },
+    {
+      "name": "3. 브랜드 필터",
+      "ok": true,
+      "detail": {
+        "brand": "ALLEN&HEATH",
+        "hash": "#/products?brand=ALLEN%26HEATH",
+        "cards": 1,
+        "chips": 1
+      }
+    },
+    {
+      "name": "4. 카테고리 필터",
+      "ok": true,
+      "detail": {
+        "cat": "Hi-Fi 케이블",
+        "hash": "#/products?cat=Hi-Fi+%EC%BC%80%EC%9D%B4%EB%B8%94",
+        "cards": 1,
+        "chips": 1
+      }
+    },
+    {
+      "name": "6. 상품 상세페이지 이동",
+      "ok": true,
+      "detail": {
+        "cardName": "[한정판] PreSonus Eris 3.5 GEN2 White 프리소너스 에리스 2세대 모니터 스피커 1조(2통) 화이트",
+        "hash": "#/product/samamusic.co.kr%3A4167",
+        "title": "[한정판] PreSonus Eris 3.5 GEN2 White 프리소너스 에리스 2세대 모니터 스피커 1조(2통) 화이트",
+        "price": "219,000원",
+        "specRows": 14,
+        "thumbs": 3,
+        "sourceLink": true,
+        "backLink": true
+      }
+    },
+    {
+      "name": "6b. 상세에서 목록으로 돌아가기",
+      "ok": true,
+      "detail": {
+        "hash": "/products"
+      }
+    },
+    {
+      "name": "10. 가격 미확인 상품 처리",
+      "ok": true,
+      "detail": {
+        "inquiryProduct": {
+          "id": "samasound.co.kr:3887",
+          "name": "V Collection 11 PRO EDU(학생/교직원용)",
+          "text": "가격 문의"
+        },
+        "detailPrice": {
+          "text": "가격 문의",
+          "isInquiry": true,
+          "note": "공급처에 공개된 판매가가 없어 문의로 표기합니다."
+        }
+      }
+    },
+    {
+      "name": "10b. 공개 판매가 상품 병존",
+      "ok": true,
+      "detail": {
+        "publicProducts": 18
+      }
+    },
+    {
+      "name": "8. 빈 검색 결과",
+      "ok": true,
+      "detail": {
+        "hasEmpty": true,
+        "heading": "검색 결과가 없습니다",
+        "cards": 0
+      }
+    },
+    {
+      "name": "9. 잘못된 이미지 URL 처리",
+      "ok": true,
+      "detail": {
+        "placeholderShown": true,
+        "brokenNatural": 1000
+      }
+    },
+    {
+      "name": "7a. 모바일 메인(390px)",
+      "ok": true,
+      "detail": {
+        "vw": 390,
+        "searchVisible": true,
+        "cards": 8,
+        "gridCols": 1,
+        "overflowX": false
+      }
+    },
+    {
+      "name": "7b. 모바일 필터/목록",
+      "ok": true,
+      "detail": {
+        "toggleVisible": true,
+        "vw": 390,
+        "filterPanelVisible": true,
+        "facets": 20,
+        "cards": 12,
+        "overflowX": false
+      }
+    },
+    {
+      "name": "7c. 모바일 검색",
+      "ok": true,
+      "detail": {
+        "cards": 8,
+        "overflowX": false
+      }
+    },
+    {
+      "name": "7d. 모바일 상세페이지",
+      "ok": true,
+      "detail": {
+        "title": "SHURE AONIC 50 GEN2 슈어 무선 노이즈 캔슬링 헤드폰 (블랙)",
+        "overflowX": false,
+        "specRows": 11
+      }
+    },
+    {
+      "name": "12. 태블릿(820px) 레이아웃",
+      "ok": true,
+      "detail": {
+        "vw": 820,
+        "gridCols": 2,
+        "overflowX": false
+      }
+    },
+    {
+      "name": "13. 콘솔 JS 오류 없음",
+      "ok": true,
+      "detail": []
+    }
+  ]
+}
