@@ -126,6 +126,25 @@
     });
   }
 
+  /* ------------------------------------------------------ 브랜드 칩 좁히기 */
+  function initBrandFilter() {
+    var input = $('#brandFilter');
+    var grid = $('#brandGrid');
+    if (!input || !grid) { return; }
+    input.addEventListener('input', function () {
+      var q = this.value.trim().toLowerCase();
+      var items = $$('#brandGrid li');
+      var shown = 0;
+      items.forEach(function (li) {
+        var hit = !q || (li.textContent || '').toLowerCase().indexOf(q) >= 0;
+        li.style.display = hit ? '' : 'none';
+        if (hit) { shown++; }
+      });
+      var empty = $('#brandEmpty');
+      if (empty) { empty.hidden = shown > 0; }
+    });
+  }
+
   /* ------------------------------------------------------ 모바일 메뉴 */
   function initNav() {
     var btn = $('#navToggle');
@@ -210,6 +229,7 @@
     initNav();
     initScrollSpy();
     initRefTabs();
+    initBrandFilter();
   }
 
   if (document.readyState === 'loading') {
