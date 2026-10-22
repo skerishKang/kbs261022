@@ -1,0 +1,24 @@
+{
+  "written": {
+    "products_json": "site\\data\\products.json",
+    "products_js": "site\\data\\products.js",
+    "products_json_bytes": "11294137",
+    "products_js_bytes": "11296154"
+  },
+  "brands": 64,
+  "sources": [
+    "samamusic.co.kr",
+    "samasound.co.kr"
+  ],
+  "match": {
+    "site_products": 4575,
+    "master_products": 4575,
+    "count_match": true,
+    "id_match": true,
+    "missing_in_site": [],
+    "missing_in_site_count": 0,
+    "extra_in_site": [],
+    "extra_in_site_count": 0,
+    "duplicate_ids_in_site": 0
+  }
+}
