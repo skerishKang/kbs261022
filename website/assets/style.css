@@ -197,6 +197,13 @@ button { font: inherit; cursor: pointer; }
 /* 브랜드 */
 .brand-bar { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin: 22px 0 26px; }
 .brand-bar-note { font-size: 13.5px; color: var(--cgi-muted); }
+.brand-filter { margin-left: auto; }
+.brand-filter input {
+  height: 40px; min-width: 210px; padding: 0 14px; font-size: 14px;
+  border: 1px solid var(--cgi-line); border-radius: 6px; background: #fff;
+}
+.brand-filter input:focus { outline: 2px solid var(--cgi-amber); outline-offset: -1px; }
+.brand-empty { font-size: 14px; color: var(--cgi-muted); padding: 12px 0; }
 .brand-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(168px, 1fr)); gap: 9px; }
 .brand-grid a {
   display: block; padding: 13px 14px; text-align: center; font-size: 14.5px; font-weight: 700;

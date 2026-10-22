@@ -106,7 +106,22 @@ button, input, select { font: inherit; color: inherit; }
 .loading { padding: 80px 0; text-align: center; color: var(--cgi-muted); }
 
 .breadcrumb { font-size: 13px; color: var(--cgi-muted); margin-bottom: 14px; }
+.breadcrumb a { display: inline-block; padding: 3px 0; }
 .breadcrumb a:hover { color: var(--cgi-primary); text-decoration: underline; }
+.breadcrumb .home-link {
+  margin-left: 10px; padding-left: 10px; border-left: 1px solid var(--cgi-line);
+  white-space: nowrap; text-decoration: underline; display: inline-block; padding-top: 4px; padding-bottom: 4px;
+}
+.breadcrumb .home-link:hover { color: var(--cgi-primary); }
+
+/* --- 쇼핑몰 ↔ 회사 홈페이지 복귀 링크 --- */
+.header-nav a[data-home-link] { white-space: nowrap; }
+.site-footer a[data-home-link] { display: inline-block; padding: 6px 0; }
+/* 터치 영역 확보 (모바일 최소 24px) */
+@media (max-width: 899px) {
+  .header-nav a { display: inline-block; padding: 12px 4px; }
+  .header-nav a[data-home-link] { padding: 12px 4px; }
+}
 
 /* --------------------------------- home --------------------------------- */
 .hero {
