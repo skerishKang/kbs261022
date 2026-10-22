@@ -1,0 +1,35 @@
+﻿쇼핑몰구분,주문 수집내역 상세보기,신규주문,주문확인(수신),주문확인(송신),배송처리,취소접수,취소완료(수신),취소완료(송신),반품접수,반품완료,교환접수,교환완료,상품등록,추가구성품 수집여부
+11번가,조회,O,O,O,O,O,O,O,O,O,O,O,X,O
+쿠팡,조회,O,O,O,O,O,X,O,O,O,O,X,X,X
+Lazada,조회,O,O,X,X,O,X,X,X,X,X,X,X,X
+고도몰,조회,O,O,O,O,X,X,X,O,O,O,O,O,X
+샵링커,조회,O,O,X,O,O,X,X,O,X,O,X,X,O
+카페24,조회,O,O,O,O,O,X,X,O,X,O,X,X,O
+SSG,조회,O,O,X,X,X,X,X,X,X,X,X,X,X
+CJ ONSTYLE,조회,O,O,X,X,X,X,X,X,X,X,X,X,X
+텐바이텐,조회,O,O,X,O,X,O,X,O,X,O,X,X,X
+도매꾹,조회,O,O,X,X,O,X,X,X,X,X,X,X,X
+카카오톡 스토어(톡딜),조회,O,O,O,O,O,O,X,O,X,O,X,X,X
+롯데홈쇼핑,조회,O,O,X,O,X,O,X,O,X,X,X,X,X
+식스샵,조회,O,O,X,X,O,O,X,O,X,X,X,X,X
+Hmall,조회,O,O,O,O,X,X,X,X,X,X,X,X,X
+Shopee,조회,O,O,X,O,X,O,X,O,X,X,X,X,X
+롯데ON,조회,O,O,X,X,O,O,X,O,X,O,X,X,X
+플레이오토 2.0,조회,O,O,X,X,O,O,X,O,X,O,X,X,X
+퍼스트몰,조회,O,O,O,O,X,X,X,X,X,X,X,X,O
+스룩,조회,O,O,X,O,X,X,X,X,X,X,X,X,X
+GSShop,조회,O,O,X,X,X,O,X,O,X,O,X,X,X
+플레이오토EMP,조회,X,O,X,O,O,O,X,O,X,O,X,X,X
+NaverPay (네이버 ID),조회,O,O,X,X,X,X,X,X,X,X,X,X,O
+Shopee 메인 계정,조회,O,O,X,O,X,O,X,O,X,X,X,X,X
+G마켓,조회,O,O,O,O,O,O,O,O,O,O,O,X,X
+스마트스토어2.0,조회,O,O,O,O,O,O,O,O,O,O,O,X,X
+옥션2.0,조회,O,O,O,O,O,O,O,O,O,O,O,X,O
+샵플링,조회,O,O,O,O,O,O,O,O,O,O,O,X,O
+아임웹2.0,조회,O,O,O,O,X,X,X,X,X,X,X,X,O
+메이크샵2.0,조회,O,O,O,O,X,X,X,X,X,X,X,X,O
+카카오톡선물하기,조회,O,O,O,O,O,O,X,O,X,O,X,X,X
+Ebay2.0,조회,O,O,X,X,X,X,X,X,X,X,X,X,X
+TikTok Shop(Tokopedia),조회,X,O,X,O,X,O,X,O,X,X,X,X,X
+토스쇼핑,조회,O,O,O,O,O,O,O,O,O,O,O,X,O
+개인쇼핑몰,조회,,,,,,,,,,,,,
