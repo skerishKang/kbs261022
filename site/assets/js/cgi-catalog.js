@@ -222,7 +222,7 @@
       '</section>' +
 
       '<dl class="stat-row">' +
-        '<div class="stat-card"><dt>표시 중인 상품</dt><dd>' + total + '<small>공개 수집 샘플 기준</small></dd></div>' +
+        '<div class="stat-card"><dt>표시 중인 상품</dt><dd>' + total + '<small>공급처 공개 수집 기준</small></dd></div>' +
         '<div class="stat-card"><dt>브랜드</dt><dd>' + brands.length + '<small>표시 가능한 브랜드</small></dd></div>' +
         '<div class="stat-card"><dt>공개 판매가</dt><dd>' + priced + '<small>가격 미공개 ' + inquiry + '건은 가격 문의</small></dd></div>' +
         '<div class="stat-card"><dt>공급처 카탈로그 규모</dt><dd>' + totalKeys.length + '곳<small>' + esc(totalLine || '확인 중') + ' · 공급처 전체 규모이며 CGI 판매 가능 수량 아님</small></dd></div>' +

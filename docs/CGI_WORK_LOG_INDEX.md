@@ -20,6 +20,8 @@
 | [#7 CGI-1 ↔ COM1 작업물 전달](https://github.com/skerishKang/kbs261022/issues/7) | 원격 CGI 컴퓨터 산출물을 COM1로 보내 GitHub에 기록 | Tailscale 연결 확인; 파일 전송 자동화 별도 개발 | 네트워크 연결 확인 / 파일 전달 검증 대기 |
 | [#8 상품 마스터](https://github.com/skerishKang/kbs261022/issues/8) | 브랜드·모델·원본출처·공개가격·ERP 매핑을 위한 공통 표 설계 | ZCode 담당 독립 작업 | 개발 지시 / 결과 확인 필요 |
 | [#9 작업 기록 체계](https://github.com/skerishKang/kbs261022/issues/9) | 고객에게 보여줄 작업 이력·검증 근거·산출물 목차 | 이 문서 및 [보고서 기준](CGI_WORK_REPORT_STANDARD.md) | 구축 중 |
+| [#11 CGI 상품 카탈로그](https://github.com/skerishKang/kbs261022/issues/11) | 공급처 공개 수집 데이터로 동작하는 상품 카탈로그 웹사이트 | [PR #17](https://github.com/skerishKang/kbs261022/pull/17): 정적 사이트·브라우저 검증 18/18 PASS | 샘플 39건 표시, 전체 카탈로그는 #19 데이터로 교체 예정 |
+| [#19 전체 상품 Excel DB](https://github.com/skerishKang/kbs261022/issues/19) | 공급처 전체 상품 수집·정규화·엑셀 DB·쇼핑몰 JSON | 원천 상품 **4,575건**(삼아사운드 2,281 + 삼아스토어 2,294) 전량 수집, 이슈 #8 통합 마스터 스키마로 정규화, 엑셀 8시트(4,575행) + 쇼핑몰 JSON 4,575건 생성, 검증 8/8 PASS·테스트 80개 | 데이터 확보·DB 완성 / 대표 "약 20,000개" 근거는 **미확인(UNVERIFIED)** — [분석 보고서](CGI_FULL_CATALOG_ANALYSIS.md) · [Excel·쇼핑몰 보고서](CGI_FULL_CATALOG_EXCEL.md) |
 
 ## 대표에게 설명할 때 구분할 항목
 
