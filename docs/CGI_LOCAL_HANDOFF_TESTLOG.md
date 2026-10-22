@@ -50,16 +50,20 @@
 |---|---|---|---|---|---|---|
 | 20261022-120925-92db | 12:09:25 | taildrop | 22 | f7a3d14e… | b4a48db0… | **중단**(스크립트 버그, §5.1) → 12:09:58 재시도 |
 | 20261022-120958-17f1 | 12:09:58 | taildrop | 22 | 1dafb137… | 29155d33… | 전송 성공. 단, 다른 에이전트 미커밋 WIP 12개가 섞임 → §5.2로 대체 전송 |
-| **20261022-121237-ce96** | **12:12:38** | **taildrop** | **11** | **16961b86…** | **64653da3…** | **최종 정상 전송 (git-tracked only)** |
+| 20261022-121237-ce96 | 12:12:38 | taildrop | 11 | 16961b86… | 64653da3… | git-tracked only 정상 전송. 이후 `com1-pull.ps1` 기본 newest-only 보강 → 최종본 재전송 |
+| **20261022-121435-ccb3** | **12:14:36** | **taildrop** | **11** | **f9fafdd3…** | **fb04aafa…** | **최종 전달본 (COM1에서 이 runId를 사용할 것)** |
 
 최종 전송 콘솔 로그(발췌):
 
 ```
 HANDOFF_INFO: source=…\wt-issue7-cgi1 files=11 skipped=1 transport=taildrop
 HANDOFF_INFO: git_guard tracked_only=true repo=C:\Users\sji\cgi-work\wt-issue7-cgi1 rel= kept=11
-HANDOFF_TAILDROP: 2026/10/22 12:12:38 sent "cgi-handoff-20261022-121237-ce96.zip"
-HANDOFF_SENT: transport=taildrop run_id=20261022-121237-ce96 zip_sha256=64653da3… manifest_sha256=16961b86…
+HANDOFF_TAILDROP: 2026/10/22 12:14:36 sent "cgi-handoff-20261022-121435-ccb3.zip"
+HANDOFF_SENT: transport=taildrop run_id=20261022-121435-ccb3 zip_sha256=fb04aafa… manifest_sha256=f9fafdd3…
 ```
+
+> COM1 수신함에는 위 3개 패키지가 쌓여 있다. `com1-pull.ps1`는 **최신 1건만** 처리하도록 기본값이 잡혀 있고
+> (`PULL_INFO: newest_only=true skipped_packages=…`), 1 linersequence도 최신 zip을 선택한다. 이전 2건은 폐기해도 된다.
 
 ### 4.2 수신측 절차 리허설(CGI-1에서 COM1 명령을 그대로 재현)
 
