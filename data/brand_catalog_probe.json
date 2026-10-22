@@ -1,0 +1,66 @@
+[
+ {
+  "url": "https://fliphtml5.com/bookcase/vndwo/",
+  "status": 200,
+  "bytes": 46694,
+  "book_titles": [
+   "SAMASOUND 카탈로그 모음",
+   "Shure",
+   "[Shure] DCA901 카달로그",
+   "[Shure] ANX4 카달로그",
+   "[Shure] 무선 시스템 제품 선택 가이드",
+   "[Shure] KSM11 브로슈어",
+   "[Shure] IntelliMix RoomKits DataSheet",
+   "[Shure] STEM Ecosystem",
+   "[Shure] ULXD 디지털 무선 시스템 카달로그",
+   "[Shure] QLXD 디지털 무선 시스템 카달로그",
+   "[Shure Conferencing] P300 카달로그",
+   "[Shure] Nexadyne 리플렛",
+   "[Shure Conferencing] MXCW 카달로그",
+   "[Shure Conferencing] MXC 카달로그",
+   "[Shure] BLX 무선 시스템 카달로그",
+   "[Shure] GLXD 디지털 무선 시스템 카달로그",
+   "Shure_SLXD Portable 카달로그",
+   "[Shure] UNIPLEX 카달로그",
+   "[Shure] DuraPlex 카달로그",
+   "[Shure] Axient Digital 카달로그"
+  ],
+  "book_title_count": 98,
+  "book_ids": 0,
+  "page_counts": [
+   1,
+   2,
+   4,
+   6,
+   8,
+   10,
+   11,
+   12,
+   14,
+   15,
+   16,
+   17,
+   18,
+   20,
+   21,
+   23,
+   24,
+   25,
+   27,
+   28
+  ],
+  "total_pages_sum": 1720
+ },
+ {
+  "url": "https://s1forum.kr/shure_selector/",
+  "status": 200,
+  "bytes": 3822,
+  "title": "나의 첫 슈어 무선 마이크 찾기",
+  "product_links": 0,
+  "option_selects": 4,
+  "scripts": [
+   "selector-data.js",
+   "script.js"
+  ]
+ }
+]
