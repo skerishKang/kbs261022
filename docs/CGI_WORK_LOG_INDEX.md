@@ -22,6 +22,8 @@
 | [#9 작업 기록 체계](https://github.com/skerishKang/kbs261022/issues/9) | 고객에게 보여줄 작업 이력·검증 근거·산출물 목차 | 이 문서 및 [보고서 기준](CGI_WORK_REPORT_STANDARD.md) | 구축 중 |
 | [#11 CGI 상품 카탈로그 웹사이트](https://github.com/skerishKang/kbs261022/issues/11) | 삼아스토어 웹사이트를 실브라우저로 분석해 그 구조를 재사용한 CGI 자체 카탈로그 HTML 사이트(검색·필터·상품 그리드·상세·모바일) | `site/`(정적 사이트, [PR #17](https://github.com/skerishKang/kbs261022/pull/17) 병합 완료) + [보고서](CGI_CATALOG_SITE_REPORT.md) + 실제 캡처 14종 | **개발 완료(로컬 검증) / 배포·주문기능 미완료** — 실주소 배포·주문·결제는 스마트스토어 개설 후 |
 | [#18 CGI 회사 홈페이지](https://github.com/skerishKang/kbs261022/issues/18) | 기존 CGI 홈페이지 자료(제작 요청서·카다로그·회사소개서·사업자등록증명)를 근거로 한 CGI 회사 홈페이지 시연본 + 상품 쇼핑몰 통합 연결 | `website/`(홈페이지) · `site/config.js`(복귀 링크) · [시연안내](CGI_DEMO_GUIDE.md) · [배포안내](CGI_DEPLOYMENT.md) · [작업보고](../reports/cgi-company-website-work-report.md) · 캡처 11종 | **개발 완료(로컬 검증) / 실주소 배포 미완료** — 신규 시연 주소 확보 필요. 기존 `cgiinc.kr` 은 현재 접속 불가(Cloudflare 521)라 무개입 |
+| [#19 전체 상품 Excel DB](https://github.com/skerishKang/kbs261022/issues/19) | 공급처 전체 상품 수집·정규화·엑셀 DB·쇼핑몰 JSON | 원천 상품 **4,575건**(삼아사운드 2,281 + 삼아스토어 2,294) 전량 수집, 이슈 #8 통합 마스터 스키마로 정규화, 엑셀 8시트(4,575행) + 쇼핑몰 JSON 4,575건 생성, 검증 8/8 PASS·테스트 80개 | 데이터 확보·DB 완성 / 대표 "약 20,000개" 근거는 **미확인(UNVERIFIED)** — [분석 보고서](CGI_FULL_CATALOG_ANALYSIS.md) · [Excel·쇼핑몰 보고서](CGI_FULL_CATALOG_EXCEL.md) |
+
 
 ## 대표에게 설명할 때 구분할 항목
 

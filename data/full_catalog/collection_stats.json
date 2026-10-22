@@ -1,0 +1,36 @@
+{
+ "generated_at": "2026-10-22T05:16:51Z",
+ "source_products": {
+  "samasound": 2281,
+  "samamusic": 2294
+ },
+ "total_source_products": 4575,
+ "unique_master_keys": 4499,
+ "duplicate_candidate_rows": 138,
+ "duplicate_groups": 62,
+ "option_sku_rows": 4233,
+ "products_with_options": 587,
+ "products_with_images": 4575,
+ "products_with_public_price": 2117,
+ "products_inquiry_price": 2370,
+ "products_sold_out_state": 87,
+ "sales_status_distribution": {
+  "재고미관리": 2491,
+  "품절(판매중지)": 1700,
+  "미확인": 271,
+  "판매중": 26,
+  "판매완료": 87
+ },
+ "price_state_distribution": {
+  "inquiry_price": 2370,
+  "public": 2117,
+  "sold_out_sale_completed": 87,
+  "missing": 1
+ },
+ "detail_collected": 4575,
+ "distinct_brands": 64,
+ "distinct_categories": 238,
+ "xlsx_path": "C:\\cgi-work\\catalog-data\\product_db.xlsx",
+ "xlsx_sha256": "fef5d6a269cf79afe472db2a5070317bd7f9da039eb2d51b18495d910691dac6",
+ "xlsx_bytes": 3232988
+}

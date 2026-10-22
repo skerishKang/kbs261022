@@ -1,0 +1,193 @@
+[
+ {
+  "url": "https://samassi.cafe24.com/",
+  "status": 200,
+  "final": "https://samassi.cafe24.com/",
+  "bytes": 123526,
+  "title": "삼아사운드",
+  "registered": null,
+  "external_hosts": {
+   "www.samasound.co.kr": 8,
+   "samasound.co.kr": 6,
+   "m.samasound.co.kr": 1,
+   "fliphtml5.com": 1,
+   "samassi.cafe24.com": 1,
+   "www.instagram.com": 1,
+   "www.facebook.com": 1,
+   "www.youtube.com": 1,
+   "blog.naver.com": 1,
+   "samastore.co.kr": 1,
+   "www.samacds.co.kr": 1,
+   "pf.kakao.com": 1
+  },
+  "special_hosts": {
+   "fliphtml5": [
+    "fliphtml5.com"
+   ],
+   "samacds": [
+    "www.samacds.co.kr"
+   ],
+   "cafe24": [
+    "samassi.cafe24.com"
+   ],
+   "samastore": [
+    "samastore.co.kr"
+   ],
+   "samasound": [
+    "m.samasound.co.kr",
+    "samasound.co.kr",
+    "www.samasound.co.kr"
+   ],
+   "naver": [
+    "blog.naver.com",
+    "naver.me"
+   ]
+  }
+ },
+ {
+  "url": "https://sama2015.cafe24.com/",
+  "status": 200,
+  "final": "https://sama2015.cafe24.com/",
+  "bytes": 869890,
+  "title": "삼아스토어",
+  "registered": null,
+  "external_hosts": {
+   "samastore.co.kr": 19,
+   "www.samastore.co.kr": 8,
+   "brand.naver.com": 3,
+   "www.samasound.co.kr": 2,
+   "pf.kakao.com": 2,
+   "www.facebook.com": 2,
+   "www.instagram.com": 2,
+   "www.youtube.com": 2,
+   "s1forum.kr": 2,
+   "www.ilogen.com": 2,
+   "www.tosspayments.com": 2,
+   "blog.naver.com": 1
+  },
+  "special_hosts": {
+   "s1forum": [
+    "s1forum.kr"
+   ],
+   "cafe24": [
+    "cafe24.com"
+   ],
+   "samastore": [
+    "samastore.co.kr",
+    "www.samastore.co.kr"
+   ],
+   "samasound": [
+    "www.samasound.co.kr"
+   ],
+   "naver": [
+    "blog.naver.com",
+    "brand.naver.com",
+    "naver.com"
+   ]
+  }
+ },
+ {
+  "url": "https://www.samacds.co.kr/",
+  "status": 200,
+  "final": "https://www.samacds.co.kr/",
+  "bytes": 401573,
+  "title": "삼아CDS",
+  "registered": null,
+  "external_hosts": {
+   "cdn.imweb.me": 2,
+   "vendor-cdn.imweb.me": 2,
+   "www.samacds.co.kr": 1
+  },
+  "special_hosts": {
+   "samacds": [
+    "www.samacds.co.kr"
+   ]
+  }
+ },
+ {
+  "url": "https://www.samamusic.co.kr/product/list.html?cate_no=1",
+  "status": 404,
+  "final": "https://www.samamusic.co.kr/product/list.html?cate_no=1",
+  "bytes": 6652,
+  "title": "카페24",
+  "registered": null,
+  "external_hosts": {
+   "www.cafe24.com": 1
+  },
+  "special_hosts": {
+   "cafe24": [
+    "www.cafe24.com"
+   ]
+  }
+ },
+ {
+  "url": "https://samasound.co.kr/product/list.html?cate_no=1",
+  "status": 404,
+  "final": "https://samasound.co.kr/product/list.html?cate_no=1",
+  "bytes": 3269,
+  "title": "카페24",
+  "registered": null,
+  "external_hosts": {
+   "www.cafe24.com": 1
+  },
+  "special_hosts": {
+   "cafe24": [
+    "www.cafe24.com"
+   ]
+  }
+ },
+ {
+  "url": "https://samastore.co.kr/product/list.html?cate_no=1",
+  "status": 404,
+  "final": "https://samastore.co.kr/product/list.html?cate_no=1",
+  "bytes": 6652,
+  "title": "카페24",
+  "registered": null,
+  "external_hosts": {
+   "www.cafe24.com": 1
+  },
+  "special_hosts": {
+   "cafe24": [
+    "www.cafe24.com"
+   ]
+  }
+ },
+ {
+  "url": "https://www.samasound.co.kr/sitemap.xml",
+  "status": 404,
+  "final": "https://www.samasound.co.kr/sitemap.xml",
+  "bytes": 3269,
+  "title": "카페24",
+  "registered": null,
+  "external_hosts": {
+   "www.cafe24.com": 1
+  },
+  "special_hosts": {
+   "cafe24": [
+    "www.cafe24.com"
+   ]
+  }
+ },
+ {
+  "url": "https://s1forum.kr/",
+  "status": 200,
+  "final": "https://s1forum.kr/",
+  "bytes": 233693,
+  "title": "스원포코",
+  "registered": null,
+  "external_hosts": {
+   "s1forum.kr": 322,
+   "open.kakao.com": 3,
+   "www.samastore.co.kr": 2,
+   "www.ftc.go.kr": 1
+  },
+  "special_hosts": {
+   "s1forum": [
+    "s1forum.kr"
+   ],
+   "samastore": [
+    "www.samastore.co.kr"
+   ]
+  }
+ }
+]
