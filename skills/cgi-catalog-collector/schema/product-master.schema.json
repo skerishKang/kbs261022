@@ -1,0 +1,229 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/skerishKang/kbs261022/schemas/cgi-product-master.schema.json",
+  "title": "CGI 통합 상품 마스터 (Tri-A 삼아사운드 / Tri-B 삼아스토어)",
+  "description": "공급처 공개 사이트에서 수집한 상품 1건 = 1행. 추정 금지 원칙에 따라 확인 불가 값은 빈 값 또는 상태 토큰으로만 기록한다.",
+  "type": "object",
+  "x-csv": {
+    "delimiter": ",",
+    "encoding": "utf-8-sig",
+    "header": true,
+    "one_row_per": "source_product_id + source_site"
+  },
+  "x-conventions": {
+    "empty_string": "확인 불가(공개 데이터 없음). 추정/임의 채움 금지.",
+    "state_tokens": "published_price_state / availability_unverified / verification_status 는 추정 금지 상태를 명시적으로 표현한다.",
+    "multi_value": "구분자 '|' 또는 ';' 사용. 옵션/이미지/카테고리는 JSON 문자열로 중첩 가능.",
+    "money": "KRW 정수(원 단위, 쉼표/원 포함 없음)."
+  },
+  "properties": {
+    "source_site": {
+      "type": "string",
+      "enum": ["samasound", "samamusic"],
+      "description": "원천 사이트 키. Tri-A=삼아사운드, Tri-B=삼아스토어."
+    },
+    "source_site_label": {
+      "type": "string",
+      "description": "표시용 서비스명."
+    },
+    "source_category_id": {
+      "type": ["integer", "string", "null"],
+      "description": "원천 사이트 카테고리 ID (Cafe24 cate_no / category_no)."
+    },
+    "source_category_name": {
+      "type": ["string", "null"],
+      "description": "원천 카테고리명."
+    },
+    "source_category_path": {
+      "type": ["string", "null"],
+      "description": "카테고리 경로 ' > ' 구분. Tri-A 는 상세 브레드크럼에서, Tri-B 는 목록 크롤 조인에서 산출."
+    },
+    "source_brand": {
+      "type": ["string", "null"],
+      "description": "브랜드. Tri-A 는 '제조사' 행, Tri-B 는 '브랜드' 행에서 산출. 미기재 시 빈 값."
+    },
+    "source_product_id": {
+      "type": "string",
+      "description": "원천 상품 ID (Cafe24 product_no). 사이트 간 유일하지 않다."
+    },
+    "source_item_code": {
+      "type": ["string", "null"],
+      "description": "Cafe24 item_code (예: P0000DQK000A). 옵션 단위 코드."
+    },
+    "product_name": {
+      "type": ["string", "null"],
+      "description": "상품명(원문). 미정규화."
+    },
+    "model": {
+      "type": ["string", "null"],
+      "description": "모델번호. Tri-B 는 '모델명' 행 값, Tri-A 는 해당 필드 부재 → 상품명에서 추출 필요(별도 파이프라인). 추정 금지: 미확인 시 빈 값."
+    },
+    "canonical_url": {
+      "type": ["string", "null"],
+      "description": "정규 URL. Tri-A https://samasound.co.kr/product/{slug}/{id}/ , Tri-B https://samastore.co.kr/product/{slug}/{id}/"
+    },
+    "source_list_url": {
+      "type": ["string", "null"],
+      "description": "목록/검증에 사용한 원본 URL."
+    },
+    "summary": {
+      "type": ["string", "null"],
+      "description": "상품요약정보."
+    },
+    "short_description": {
+      "type": ["string", "null"],
+      "description": "상품간략설명 (Tri-A 다수 보유, Tri-B 일부 보유)."
+    },
+    "manufacturer": {
+      "type": ["string", "null"],
+      "description": "제조사 (Tri-A 기본정보 행)."
+    },
+    "country_of_origin": {
+      "type": ["string", "null"],
+      "description": "원산지."
+    },
+    "specs": {
+      "type": ["string", "null"],
+      "description": "기본정보 표 전체를 JSON 객체 문자열로. 라벨 집합이 템플릿마다 달라 free-form 유지(예: 배송비, 상품구성품, 부가세, 영수증번호)."
+    },
+    "image_urls": {
+      "type": ["string", "null"],
+      "description": "'|' 구분 원본 이미지 URL. Café24 경로: /web/product/{tiny|small|medium|big|extra}/{YYYYMM}/{hash}.{ext}"
+    },
+    "option_summary": {
+      "type": ["string", "null"],
+      "description": "JSON 문자열. {main:[메인 옵션], addproduct_options:[추가구성상품 옵션], addproducts:[연결 추가상품], add_option_data:[옵션별 추가금액/품절]}"
+    },
+    "option_count": {
+      "type": ["integer", "null"],
+      "description": "선택지 옵션 총 개수(메인+추가구성상품)."
+    },
+    "published_price": {
+      "type": ["integer", "null"],
+      "description": "공개된 판매가(원). 공개되지 않으면 빈 값. 추정 금지."
+    },
+    "published_price_text": {
+      "type": ["string", "null"],
+      "description": "판매가 원문 표기 (예: '78,000원', '가격 문의', '판매 완료')."
+    },
+    "published_price_state": {
+      "type": "string",
+      "enum": ["numeric_price", "inquiry_price", "sold_out_sale_completed", "not_for_sale", "empty", "other"],
+      "description": "가격 공개 상태. numeric_price 가 아니면 published_price 는 빈 값이어야 한다."
+    },
+    "published_price_unavailable": {
+      "type": ["integer", "null"],
+      "description": "1 = 판매가 미공개(미확인), 0 = 공개됨."
+    },
+    "retail_list_price": {
+      "type": ["integer", "null"],
+      "description": "정가(소비자가/할인가 기준가, 원). Tri-B 한정 공개. 미설정(0.00)이면 빈 값."
+    },
+    "consumer_price": {
+      "type": ["integer", "null"],
+      "description": "기본정보 표의 '소비자가' 값(원)."
+    },
+    "min_selling_price": {
+      "type": ["integer", "null"],
+      "description": "기본정보 표의 '최저판매가' 값(원). 드묾."
+    },
+    "tax_excluded_component": {
+      "type": ["integer", "null"],
+      "description": "Cafe24 _iPrdtPriceOrg = 판매가에서 부가세 10%를 차감한 구성액. 공급가(cost)가 아니므로 '공급가'로 해석 금지."
+    },
+    "dealer_price_unverified": {
+      "type": ["string", "null"],
+      "description": "대리점/공급가. 두 사이트 모두 공개 데이터 없음 → 항상 빈 값. 추정 금지."
+    },
+    "availability_unverified": {
+      "type": ["string", "null"],
+      "description": "JSON 문자열 {stock_number_displayed, use_stock, use_soldout, is_reserve_stat}. 페이지 공개 표기만. 확인 불가 시 빈 값."
+    },
+    "stock_display": {
+      "type": ["string", "null"],
+      "description": "페이지에 노출된 재고 숫자 문자열. use_stock=false 인데 0 인 경우 '미관리'로 해석."
+    },
+    "soldout_display": {
+      "type": ["string", "null"],
+      "description": "품절 표기 원문 (예: 'soldout_icon', '품절'). 단종/판매중지 판정은 별도 근거 필요."
+    },
+    "product_code": {
+      "type": ["string", "null"],
+      "description": "Cafe24 product_code (예: P0000DQK). ERP/재고 계정에서 쓰는 대표 상품코드 후보."
+    },
+    "product_status_flags": {
+      "type": ["string", "null"],
+      "description": "';' 구분 상태 플래그: use_stock=false, use_soldout=T, is_reserve_stat, option_type, has_option, item_listing_type=S(미판매/문의)."
+    },
+    "updated_at": {
+      "type": ["string", "null"],
+      "description": "수집 기준시각(ISO8601). 원천 갱신시각이 공개되지 않으므로 '수집시각'임."
+    },
+    "extraction_method": {
+      "type": "string",
+      "enum": ["http_get_public_html", "http_get_public_html+list_crawl_join"],
+      "description": "추출 경로. 브라우저 렌더가 필요한 항목은 별도 표시."
+    },
+    "verification_status": {
+      "type": "string",
+      "enum": ["verified_against_source_page", "list_only_unverified_detail", "browser_cross_checked"],
+      "description": "원본 대조 상태."
+    },
+    "source_evidence": {
+      "type": "string",
+      "description": "검증 근거 URL(원본 상품 페이지)."
+    },
+    "list_observed_price": {
+      "type": ["integer", "null"],
+      "description": "목록 페이지에서 관측된 판매가. 상세 페이지 값과 대조용."
+    },
+    "list_page_url": {
+      "type": ["string", "null"],
+      "description": "해당 상품이 관측된 목록 페이지 URL(카테고리 근거)."
+    }
+  },
+  "required": [
+    "source_site",
+    "source_product_id",
+    "product_name",
+    "canonical_url",
+    "published_price_state",
+    "published_price_unavailable",
+    "dealer_price_unverified",
+    "extraction_method",
+    "verification_status",
+    "source_evidence"
+  ],
+  "x-required-semantics": "required 는 컬럼(키)의 존재를 뜻하며, 값이 비어 있어도 허용된다. 특히 dealer_price_unverified 는 두 사이트 모두 공개 데이터가 없어 **항상 빈 값**이어야 한다(비어 있으면 추정하지 않은 것).",
+  "x-mapping": {
+    "note": "네이버 스마트스토어/이카운트 연계 관점. '현재 수집 가능' 과 '향후 매핑 필요' 를 분리한다.",
+    "naver_smartstore_required_now": [
+      "상품명 → product_name",
+      "카테고리(10단계) → source_category_path (원천 계층을 매핑해야 하며 1:1 대응 아님)",
+      "판매가 → published_price (Tri-A 는 미공개이므로 채움 불가)",
+      "옵션명/옵션값/추가금액 → option_summary (Tri-B 만 가능)",
+      "대표이미지/추가이미지 → image_urls",
+      "자재/모델 → model (Tri-A 는 상품명 추출 필요)",
+      "옵션 재고 → stock_display (공개 표기 범위 한정)"
+    ],
+    "naver_smartstore_missing_requires_account": [
+      "salePrice 원가/공급가(dealer_price_unverified) — 공급자 ERP/계약서 필요",
+      "옵션별 실재고 — ERP/재고 시스템 필요",
+      "AS/출고지/출고일",
+      "반품/교환 정책, 최소주문수량, 구매제한 수량",
+      "KC인증/전기용품인증 정보, 원산지 증빙"
+    ],
+    "ecount_erp_required_now": [
+      "product_code (Cafe24) — ERP 상품코드 후보키",
+      "item_code (옵션 단위) — ERP 옵션코드 후보키",
+      "source_product_id — ERP 원천키",
+      "model — 자재/품목 코드 후보"
+    ],
+    "ecount_erp_missing_requires_account": [
+      "매입가/공급가 — 공급 계약 또는 ERP 대账单",
+      "실재고/가용재고 — ERP 재고 모듈",
+      "단가/판매단가 마스터 — ERP 가격 마스터",
+      "거래처/부서/사번 등 원가요소 — ERP 전표 구조"
+    ]
+  }
+}
