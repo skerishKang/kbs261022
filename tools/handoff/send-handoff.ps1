@@ -171,23 +171,32 @@ Write-Line "HANDOFF_INFO: source=$src files=$($files.Count) skipped=$($skipped.C
 $onlyTracked = [bool]$cfg.OnlyTrackedByDefault
 if ($IncludeUntracked) { $onlyTracked = $false }
 if ($onlyTracked) {
-    $tracked = $null
-    $gitRoot = (& git -C $src rev-parse --show-toplevel 2>$null | Select-Object -First 1)
-    if ($gitRoot) {
-        $rel = $src.Substring($gitRoot.Length).TrimStart('\', '/') -replace '\\', '/'
-        $argsList = @('-C', $gitRoot, 'ls-files', '-z')
+    $gitRootRaw = (& git -C $src rev-parse --show-toplevel 2>$null | Select-Object -First 1)
+    if ($gitRootRaw) {
+        # git reports forward slashes; normalise to backslashes for path math
+        $gitRoot = ($gitRootRaw.Trim().TrimEnd('/', '\')) -replace '/', '\'
+        $srcNorm = ($src -replace '/', '\').TrimEnd('\')
+        $rel = ''
+        if ($srcNorm.Length -gt $gitRoot.Length) {
+            $rel = ($srcNorm.Substring($gitRoot.Length).TrimStart('\') -replace '\\', '/')
+        }
+        $argsList = @('-C', $gitRoot, 'ls-files')
         if ($rel) { $argsList += @('--', $rel) }
-        $raw = (& git @argsList 2>$null) -join "`n"
+        $raw = @(& git @argsList 2>$null)
         $trackedSet = New-Object 'System.Collections.Generic.HashSet[string]' ([StringComparer]::OrdinalIgnoreCase)
-        foreach ($t in ($raw -split "`n")) { if ($t.Trim()) { [void]$trackedSet.Add($t.Trim()) } }
+        foreach ($t in $raw) {
+            $t = ([string]$t).Trim()
+            if (-not $t) { continue }
+            if ($t.StartsWith('"') -and $t.EndsWith('"')) { $t = $t.Trim('"') }
+            [void]$trackedSet.Add($t)
+        }
         $kept = New-Object System.Collections.Generic.List[object]
         foreach ($f in $files) {
-            $relFile = $f.path
-            if ($rel) { $relFile = "$rel/$($f.path)" }
+            $relFile = if ($rel) { "$rel/$($f.path)" } else { $f.path }
             if ($trackedSet.Contains($relFile)) { $kept.Add($f) } else { $skipped.Add("untracked_not_committed:$($f.path)") }
         }
         $files = $kept
-        Write-Line "HANDOFF_INFO: git_guard tracked_only=true repo=$gitRoot kept=$($files.Count)"
+        Write-Line "HANDOFF_INFO: git_guard tracked_only=true repo=$gitRoot rel=$rel kept=$($files.Count)"
     } else {
         Write-Line "HANDOFF_INFO: git_guard skipped reason=not_a_git_work_tree"
     }
