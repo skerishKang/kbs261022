@@ -256,7 +256,32 @@ python -m unittest discover -t . -s tools/full_catalog/tests -v
 
 ---
 
-## 11. 남은 작업
+## 11. CGI-1 → COM1 전달
+
+SMB over Tailscale 로 3개 배치 전송, 도착 바이트를 되읽어 SHA256 재검증 **PASS**.
+
+| 배치 | 내용 | 파일 | 바이트 |
+|---|---|---|---|
+| `batch-20261022T054810Z-480ca0e1` | 저장소 산출물 (코드 + Excel + 쇼핑몰 JSON + 검증) | 97 | 33,067,545 |
+| `batch-20261022T054909Z-30f0a795` | 통합 마스터 전체 + Excel + 사이트 데이터 | 13 | 77,396,945 |
+| `batch-20261022T055006Z-e2bacfbc` | 수집 원본(상세/목록/전체) + 공급처 원본 CSV | 24 | 83,208,474 |
+
+도착 경로: `\\100.124.21.64\Users\Public\CGI-HANDOFF\<배치ID>`
+
+COM1 수신측 재검증:
+
+```
+product_db.xlsx  sha256=ee61ac545e51b043ad2fd9943b49e1595a14a8f00286b43a388e8c38cf48475f  (3,176,083 B)  <- 로컬과 동일
+site/data/products.json  sha256=5371f819cc97a1f25d01331f98ccae207b4841b54f83d0a4a560eda61ed272d7  (11,294,137 B)
+```
+
+전송 도구: `tools/handoff/send_to_com1.ps1` (이슈 #7 파이프라인).
+수신 후 PR 반영 절차는 `docs/CGI_LOCAL_HANDOFF.md` §2 참고.
+
+---
+
+## 12. 남은 작업
+
 
 * 상품별 판매상태(품절/판매중지) 원시 표기가 3,988건 중 1,700건 "품절(판매중지)" 로
   수집된다. 재고 수량은 공개 근거가 없어 계속 공란이며, 이 값은 **판매 상태 표기**로만
