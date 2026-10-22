@@ -16,12 +16,23 @@
   var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
 
   /* ------------------------------------------------------ 쇼핑몰 주소 */
-  function mallUrl(brand) {
-    var base = CFG.mallUrl || '../site/index.html';
+  function mallBase() {
     var override = new URLSearchParams(location.search).get('mall');
-    if (override) { base = override; }
+    if (override) { return override; }
+    return CFG.mallUrl || '../site/index.html';
+  }
+
+  /** 쇼핑몰 URL 생성.
+   *  - 브랜드 지정 없으면: ../site/index.html
+   *  - 브랜드 지정 시  : ../site/index.html#/products?brand=SHURE
+   *  (PR #17 쇼핑몰은 해시 라우터이며 brand 값은 brand_norm 대문자 기준) */
+  function mallUrl(brand) {
+    var base = mallBase();
     if (!brand) { return base; }
-    return base + (base.indexOf('?') >= 0 ? '&' : '?') + 'brand=' + encodeURIComponent(brand);
+    var listBase = CFG.mallListUrl || (base + '#/products');
+    var key = CFG.mallBrandParam || 'brand';
+    var value = (CFG.mallBrandCase === 'upper') ? String(brand).toUpperCase() : String(brand);
+    return listBase + '?' + key + '=' + encodeURIComponent(value);
   }
 
   function applyMallLinks() {
@@ -33,20 +44,85 @@
   }
 
   /* ------------------------------------------------------ 브랜드 목록 */
-  function renderBrands() {
+  function brandListFromMaster(items) {
+    var counts = {};
+    items.forEach(function (p) {
+      var b = p.brand_norm || p.brand || '';
+      if (!b) { return; }
+      b = (CFG.mallBrandCase === 'upper') ? String(b).toUpperCase() : String(b);
+      counts[b] = (counts[b] || 0) + 1;
+    });
+    return Object.keys(counts).map(function (b) {
+      return { name: b, count: counts[b] };
+    }).sort(function (a, b) { return b.count - a.count || a.name.localeCompare(b.name); });
+  }
+
+  function renderBrands(list) {
     var grid = $('#brandGrid');
-    if (!grid || !CFG.brands) { return; }
+    if (!grid) { return; }
     grid.innerHTML = '';
-    CFG.brands.forEach(function (b) {
+    list.forEach(function (item) {
+      var name = typeof item === 'string' ? item : item.name;
+      var count = typeof item === 'string' ? null : item.count;
       var li = document.createElement('li');
       var a = document.createElement('a');
-      a.href = mallUrl(b);
+      a.href = mallUrl(name);
       a.target = '_blank';
       a.rel = 'noopener';
-      a.textContent = b;
-      a.title = b + ' 제품 보기 — ' + (CFG.mallLabel || 'CGI 상품 쇼핑몰');
+      a.appendChild(document.createTextNode(name));
+      if (count) {
+        var c = document.createElement('span');
+        c.className = 'brand-count';
+        c.textContent = count;
+        a.appendChild(c);
+      }
+      a.title = name + ' 제품 보기 — ' + (CFG.mallLabel || 'CGI 상품 쇼핑몰');
       li.appendChild(a);
       grid.appendChild(li);
+    });
+    var note = $('#brandNote');
+    if (note && list.length && list[0].count) {
+      var total = list.reduce(function (s, b) { return s + (b.count || 0); }, 0);
+      var withData = list.filter(function (b) { return b.count; }).length;
+      note.textContent = '현재 쇼핑몰 데이터 기준 ' + total + '건 · 데이터 보유 브랜드 ' + withData + '종 / '
+        + '취급 브랜드 ' + list.length + '종 (데이터 준비 중 브랜드는 목록이 비어 보일 수 있습니다)';
+    }
+  }
+
+  /** 공통 상품 마스터(쇼핑몰 데이터)를 읽어 브랜드 목록을 자동 반영한다.
+   *  마스터에 있는 브랜드는 건수를 표시하고, 아직 데이터가 없는 취급 브랜드는
+   *  config 의 정적 목록(31종)에 포함시켜 함께 보여준다(공급처 실측 목록 유지).
+   *  파일이 없거나 읽지 못하면 config 의 정적 목록으로 graceful fallback 한다. */
+  function loadMasterBrands() {
+    var url = CFG.mallDataUrl;
+    var staticList = (CFG.brands || []).map(function (b) { return { name: b, count: null }; });
+    if (!url) { renderBrands(staticList); return Promise.resolve(); }
+    return new Promise(function (resolve) {
+      var s = document.createElement('script');
+      s.src = url;
+      s.onload = function () {
+        var items = window[CFG.mallDataGlobal || 'CGI_PRODUCTS'];
+        if (!Array.isArray(items) || !items.length) {
+          renderBrands(staticList);
+          resolve();
+          return;
+        }
+        var master = brandListFromMaster(items);
+        var seen = {};
+        master.forEach(function (m) { seen[m.name] = true; });
+        var merged = master.slice();
+        staticList.forEach(function (st) {
+          var key = (CFG.mallBrandCase === 'upper') ? st.name.toUpperCase() : st.name;
+          if (!seen[key]) {
+            // 쇼핑몰 표기(brand_norm 대문자)와 맞추기 위해 대문자로 표기한다
+            merged.push({ name: key, count: null });
+          }
+        });
+        renderBrands(merged);
+        resolve();
+      };
+      s.onerror = function () { renderBrands(staticList); resolve(); };
+      document.head.appendChild(s);
     });
   }
 
@@ -130,7 +206,7 @@
   /* ------------------------------------------------------ 시작 */
   function boot() {
     applyMallLinks();
-    renderBrands();
+    loadMasterBrands();
     initNav();
     initScrollSpy();
     initRefTabs();

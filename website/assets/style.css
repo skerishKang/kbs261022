@@ -165,7 +165,9 @@ button { font: inherit; cursor: pointer; }
 .timeline .what { font-size: 14.5px; color: #3a3a3a; }
 
 /* 위치 */
-.map-holder iframe { width: 100%; height: 330px; border: 1px solid var(--cgi-line); border-radius: 3px; }
+.map-holder .map-figure { aspect-ratio: auto; background: #fff; }
+.map-holder .map-figure img { position: static; width: 100%; height: auto; object-fit: contain; }
+.map-holder .map-figure figcaption { position: static; padding: 8px 0 0; color: var(--cgi-muted); background: none; }
 .map-note { font-size: 12.5px; color: var(--cgi-muted); margin: 8px 0 0; }
 .contact-list li {
   display: flex; gap: 14px; padding: 9px 0; border-bottom: 1px dashed var(--cgi-line); font-size: 14.5px;
@@ -203,6 +205,10 @@ button { font: inherit; cursor: pointer; }
 }
 .brand-grid a:hover {
   border-color: var(--cgi-green); color: var(--cgi-green-dark); background: var(--cgi-green-soft);
+}
+.brand-grid .brand-count {
+  display: inline-block; margin-left: 6px; font-size: 11px; font-weight: 700;
+  color: var(--cgi-green-dark); background: var(--cgi-green-soft); border-radius: 999px; padding: 0 6px;
 }
 
 /* 레퍼런스 */
@@ -329,6 +335,6 @@ button { font: inherit; cursor: pointer; }
   .cta-band h2 { font-size: 22px; }
   .foot-inner { grid-template-columns: 1fr; gap: 24px; }
   .foot-bottom { flex-direction: column; gap: 8px; }
-  .map-holder iframe { height: 250px; }
+  .map-holder .map-figure img { max-height: 300px; object-fit: contain; }
   .timeline .year { display: block; min-width: 0; }
 }

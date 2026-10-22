@@ -20,21 +20,37 @@ python -m http.server 8811 --directory <루트>
 # → http://127.0.0.1:8811/website/index.html
 ```
 
-## 상품 쇼핑몰(PR #15) 연결
+## 상품 쇼핑몰(PR #17, main 병합본) 연결
 
-`website/assets/config.js` 의 `mallUrl` **한 줄**만 바꾸면 됩니다.
+`website/assets/config.js` 의 `mallUrl` / `mallListUrl` **한 줄**만 바꾸면 됩니다.
 
 ```js
 window.CGI_CONFIG = {
-  mallUrl: '../site/index.html',   // 기본값: website/ 와 site/ 가 같은 배포 루트에 있을 때
+  mallUrl: '../site/index.html',                // 쇼핑몰 홈
+  mallListUrl: '../site/index.html#/products',  // 쇼핑몰 전체 목록
+  mallDataUrl: '../site/data/products.js',      // 공통 상품 마스터(있으면 자동 반영)
   ...
 };
 ```
 
-- `website/` 와 `site/` 를 같은 배포 루트에 두면 `../site/index.html` 로 바로 동작합니다.
+- `website/` 와 `site/` 를 같은 배포 루트에 두면 그대로 동작합니다.
 - 실제 도메인을 쓰게 되면 `mallUrl` 을 전체 URL 로 바꿉니다.
 - URL 파라미터로도 덮어씁니다: `index.html?mall=https://example.com/site/`
-- 브랜드 칩을 누르면 쇼핑몰의 해당 브랜드 필터로 이동합니다: `../site/index.html?brand=Shure`
+- 브랜드 칩을 누르면 쇼핑몰의 해당 브랜드 필터로 이동합니다:
+  `../site/index.html#/products?brand=SHURE`
+
+> **쇼핑몰 라우팅 규칙 (PR #17 구현 기준)** — 해시 라우터입니다.
+> `#/` 홈 · `#/products` 목록 · `#/products?brand=SHURE` 브랜드 필터 · `#/product/<id>` 상세
+> `brand` 값은 쇼핑몰의 `brand_norm`(대문자 정규화) 기준입니다. (Shure → `SHURE`, Q Acoustics → `Q ACOUSTICS`)
+
+## 공통 상품 마스터 연동 (이슈 #19 대비)
+
+홈페이지가 쇼핑몰의 상품 데이터(`site/data/products.js`)를 읽어 **브랜드 목록과 건수를 자동으로** 표시합니다.
+따라서 이슈 #19의 전체 4,575건 마스터가 `site/data/products.js` 로 교체되면
+**`website/` 코드는 한 글자도 바꾸지 않고** 목록·건수가 자동 갱신됩니다.
+
+- 데이터 파일이 없거나 읽지 못하면 `config.js` 의 정적 취급 브랜드 목록(31종)으로 graceful fallback 합니다.
+- `site/` 없이 `website/index.html` 만 실행해도 정상 동작합니다.
 
 ## 메뉴 구성 (기존 홈페이지 제작 요청서 기준)
 
@@ -64,15 +80,17 @@ window.CGI_CONFIG = {
 | 화면 내용 | 출처 파일 |
 |---|---|
 | 메뉴 구조·검정 배경 요구 | `Z:\홈페이지\홈페이지제작가이드(참고사항포함).docx` |
-| 회사 소개·사업 분야·연혁·납품실적 | `Z:\홈페이지\CGI카다로그8P.pdf` |
-| 회사 개요(설립/직원수/주소/연락처) | `Z:\1.회사소개서\...회사소개서.pdf` (2017) |
-| 로고 | `Z:\시지아이 로고\`, `Z:\3.카다로그\2.스마트팜\시지아이로고_250711.png` (2025-07 최신) |
+| 회사 소개·사업 분야·연혁·납품실적 | `Z:\홈페이지\CGI카다로그8P.pdf` (2016-02-22) |
+| 회사 개요·인사말·연혁·주소 111호 | `Z:\1.회사소개서\...회사소개서.pdf` (2017-10-25) |
+| 법인명·대표자·개업일·업종·사업장소지 | `Z:\1.회사소개서\회사소개서 자료\CGI 사업자등록증명.jpg` (2014-10-06) |
+| 위치도 | `Z:\1.회사소개서\회사소개서 자료\cgi찾아오시는길.jpg` |
+| 로고 | `Z:\3.카다로그\2.스마트팜\시지아이로고_250711.png` (2025-07 최신) |
 | 사진 | `Z:\1.회사소개서\_171025 기업SNS 홍보교육용\` (기업 홍보용 자료) |
-| 취급 브랜드 31종 | Issue #5 실측 (samasound.co.kr) — `reports/site-analysis-model-a.md` |
+| 취급 브랜드 | Issue #5 실측 (samasound.co.kr) — `reports/site-analysis-model-a.md` |
 
 ## 표시 규칙
 
-- **가격을 이 홈페이지에서 표시하지 않습니다.** 가격은 쇼핑몰(PR #15)에 있고, 거기도 원본 공개가(참고용) 구분입니다.
+- **가격을 이 홈페이지에서 표시하지 않습니다.** 가격은 쇼핑몰(PR #17)에 있고, 거기도 원본 공개가(참고용) 구분입니다.
 - **주문·결제 기능이 없습니다.** 스마트스토어 개설 전이며, 문의는 연락처로 안내합니다.
 - 회사 실적·연락처는 회사 자료에 있는 것만 사용했고, 없는 항목은 만들지 않았습니다.
 
