@@ -1,0 +1,960 @@
+{
+  "image_checks": [
+    {
+      "id": "1710",
+      "kind": "main",
+      "url": "//www.samamusic.co.kr/web/product/small/202610/a09fae405d40710deae57b84e3c72459.jpg",
+      "absolute_url": "https://www.samamusic.co.kr/web/product/small/202610/a09fae405d40710deae57b84e3c72459.jpg",
+      "status": 200,
+      "type": "image/jpeg",
+      "length": "141345"
+    },
+    {
+      "id": "1710",
+      "kind": "extra",
+      "url": "//www.samamusic.co.kr/web/product/extra/small/20200605/15c786dd000fbbc090a51013ceb50034.jpg",
+      "absolute_url": "https://www.samamusic.co.kr/web/product/extra/small/20200605/15c786dd000fbbc090a51013ceb50034.jpg",
+      "status": 200,
+      "type": "image/jpeg",
+      "length": "90302"
+    },
+    {
+      "id": "1710",
+      "kind": "extra",
+      "url": "//www.samamusic.co.kr/web/product/extra/small/20200605/aaa3c47f64f18d13b13eb6c92b8d10a0.jpg",
+      "absolute_url": "https://www.samamusic.co.kr/web/product/extra/small/20200605/aaa3c47f64f18d13b13eb6c92b8d10a0.jpg",
+      "status": 200,
+      "type": "image/jpeg",
+      "length": "57915"
+    },
+    {
+      "id": "3687",
+      "kind": "main",
+      "url": "//www.samamusic.co.kr/web/product/small/202312/aff908e5fb2fb5f4b5e47b10248e32f7.png",
+      "absolute_url": "https://www.samamusic.co.kr/web/product/small/202312/aff908e5fb2fb5f4b5e47b10248e32f7.png",
+      "status": 200,
+      "type": "image/png",
+      "length": "447858"
+    },
+    {
+      "id": "3687",
+      "kind": "extra",
+      "url": "//www.samamusic.co.kr/web/product/extra/small/202312/84005892762af065e6baec07ffcf2c05.png",
+      "absolute_url": "https://www.samamusic.co.kr/web/product/extra/small/202312/84005892762af065e6baec07ffcf2c05.png",
+      "status": 200,
+      "type": "image/png",
+      "length": "437864"
+    },
+    {
+      "id": "3687",
+      "kind": "extra",
+      "url": "//www.samamusic.co.kr/web/product/extra/small/202312/20dad1efc76eef3cc0cc30c24d29bd3f.png",
+      "absolute_url": "https://www.samamusic.co.kr/web/product/extra/small/202312/20dad1efc76eef3cc0cc30c24d29bd3f.png",
+      "status": 200,
+      "type": "image/png",
+      "length": "420751"
+    },
+    {
+      "id": "1139",
+      "kind": "main",
+      "url": "//www.samamusic.co.kr/web/product/small/201808/d163712c248e6043a59ba53fe23957bc.jpg",
+      "absolute_url": "https://www.samamusic.co.kr/web/product/small/201808/d163712c248e6043a59ba53fe23957bc.jpg",
+      "status": 200,
+      "type": "image/jpeg",
+      "length": "108349"
+    },
+    {
+      "id": "5162",
+      "kind": "main",
+      "url": "//www.samamusic.co.kr/web/product/small/202509/0ca04e591832241b612cbbcfaaf95f6a.jpg",
+      "absolute_url": "https://www.samamusic.co.kr/web/product/small/202509/0ca04e591832241b612cbbcfaaf95f6a.jpg",
+      "status": 200,
+      "type": "image/jpeg",
+      "length": "136115"
+    },
+    {
+      "id": "4103",
+      "kind": "main",
+      "url": "//www.samamusic.co.kr/web/product/small/202406/c3b445ad49c99619466888c0f25cc8e4.jpg",
+      "absolute_url": "https://www.samamusic.co.kr/web/product/small/202406/c3b445ad49c99619466888c0f25cc8e4.jpg",
+      "status": 200,
+      "type": "image/jpeg",
+      "length": "34945"
+    },
+    {
+      "id": "1502",
+      "kind": "main",
+      "url": "//www.samamusic.co.kr/web/product/small/20191216/21c95f5c42c5c269a853a49a2f68f652.jpg",
+      "absolute_url": "https://www.samamusic.co.kr/web/product/small/20191216/21c95f5c42c5c269a853a49a2f68f652.jpg",
+      "status": 200,
+      "type": "image/jpeg",
+      "length": "59219"
+    },
+    {
+      "id": "3184",
+      "kind": "main",
+      "url": "//www.samamusic.co.kr/web/product/small/202303/66ec58105f01633b718553b2f549b76a.jpg",
+      "absolute_url": "https://www.samamusic.co.kr/web/product/small/202303/66ec58105f01633b718553b2f549b76a.jpg",
+      "status": 200,
+      "type": "image/jpeg",
+      "length": "69390"
+    },
+    {
+      "id": "3184",
+      "kind": "extra",
+      "url": "//www.samamusic.co.kr/web/product/extra/small/202303/b014401c7d9c0c3f854ef22a9f499ea1.jpg",
+      "absolute_url": "https://www.samamusic.co.kr/web/product/extra/small/202303/b014401c7d9c0c3f854ef22a9f499ea1.jpg",
+      "status": 200,
+      "type": "image/jpeg",
+      "length": "181301"
+    },
+    {
+      "id": "3184",
+      "kind": "extra",
+      "url": "//www.samamusic.co.kr/web/product/extra/small/202303/45811638648b95cead27efa9d9df27e0.jpg",
+      "absolute_url": "https://www.samamusic.co.kr/web/product/extra/small/202303/45811638648b95cead27efa9d9df27e0.jpg",
+      "status": 200,
+      "type": "image/jpeg",
+      "length": "43163"
+    },
+    {
+      "id": "4558",
+      "kind": "main",
+      "url": "//www.samamusic.co.kr/web/product/small/202501/3cc7ffce0342860553e3f1b5343b956c.jpg",
+      "absolute_url": "https://www.samamusic.co.kr/web/product/small/202501/3cc7ffce0342860553e3f1b5343b956c.jpg",
+      "status": 200,
+      "type": "image/jpeg",
+      "length": "104485"
+    },
+    {
+      "id": "4558",
+      "kind": "extra",
+      "url": "//www.samamusic.co.kr/web/product/extra/small/202501/47d0c15c5a931529bca70f4143513384.jpg",
+      "absolute_url": "https://www.samamusic.co.kr/web/product/extra/small/202501/47d0c15c5a931529bca70f4143513384.jpg",
+      "status": 200,
+      "type": "image/jpeg",
+      "length": "165180"
+    },
+    {
+      "id": "4558",
+      "kind": "extra",
+      "url": "//www.samamusic.co.kr/web/product/extra/small/202501/9cc4278109a7aa39b385b84fc4010842.jpg",
+      "absolute_url": "https://www.samamusic.co.kr/web/product/extra/small/202501/9cc4278109a7aa39b385b84fc4010842.jpg",
+      "status": 200,
+      "type": "image/jpeg",
+      "length": "116587"
+    },
+    {
+      "id": "974",
+      "kind": "main",
+      "url": "//www.samamusic.co.kr/web/product/small/202502/fe5ba625f94a9a704cf49acd5cc601c9.jpg",
+      "absolute_url": "https://www.samamusic.co.kr/web/product/small/202502/fe5ba625f94a9a704cf49acd5cc601c9.jpg",
+      "status": 200,
+      "type": "image/jpeg",
+      "length": "116867"
+    },
+    {
+      "id": "974",
+      "kind": "extra",
+      "url": "//www.samamusic.co.kr/web/product/extra/small/202310/a188787e4901bcad5bf7d8754e63fd31.jpg",
+      "absolute_url": "https://www.samamusic.co.kr/web/product/extra/small/202310/a188787e4901bcad5bf7d8754e63fd31.jpg",
+      "status": 200,
+      "type": "image/jpeg",
+      "length": "118332"
+    },
+    {
+      "id": "974",
+      "kind": "extra",
+      "url": "//www.samamusic.co.kr/web/product/extra/small/202310/5efdfefd6d38888247650296fa7d3267.jpg",
+      "absolute_url": "https://www.samamusic.co.kr/web/product/extra/small/202310/5efdfefd6d38888247650296fa7d3267.jpg",
+      "status": 200,
+      "type": "image/jpeg",
+      "length": "155666"
+    },
+    {
+      "id": "4175",
+      "kind": "main",
+      "url": "//www.samamusic.co.kr/web/product/small/202408/46776d794f99a4a331a63b22a3af5011.jpg",
+      "absolute_url": "https://www.samamusic.co.kr/web/product/small/202408/46776d794f99a4a331a63b22a3af5011.jpg",
+      "status": 200,
+      "type": "image/jpeg",
+      "length": "29865"
+    },
+    {
+      "id": "4175",
+      "kind": "extra",
+      "url": "//www.samamusic.co.kr/web/product/extra/small/202408/321ead69640c60ea1e0eac7f0a60923a.jpg",
+      "absolute_url": "https://www.samamusic.co.kr/web/product/extra/small/202408/321ead69640c60ea1e0eac7f0a60923a.jpg",
+      "status": 200,
+      "type": "image/jpeg",
+      "length": "89079"
+    },
+    {
+      "id": "4175",
+      "kind": "extra",
+      "url": "//www.samamusic.co.kr/web/product/extra/small/202408/5b32b93af5cc68d547275b2f8c0eb765.jpg",
+      "absolute_url": "https://www.samamusic.co.kr/web/product/extra/small/202408/5b32b93af5cc68d547275b2f8c0eb765.jpg",
+      "status": 200,
+      "type": "image/jpeg",
+      "length": "33077"
+    },
+    {
+      "id": "4167",
+      "kind": "main",
+      "url": "//www.samamusic.co.kr/web/product/small/202502/e4649d43a00fb70bc48bae1936529c25.jpg",
+      "absolute_url": "https://www.samamusic.co.kr/web/product/small/202502/e4649d43a00fb70bc48bae1936529c25.jpg",
+      "status": 200,
+      "type": "image/jpeg",
+      "length": "126962"
+    },
+    {
+      "id": "4167",
+      "kind": "extra",
+      "url": "//www.samamusic.co.kr/web/product/extra/small/202408/e3367cc27ed8ec9281824974004ff0b6.jpg",
+      "absolute_url": "https://www.samamusic.co.kr/web/product/extra/small/202408/e3367cc27ed8ec9281824974004ff0b6.jpg",
+      "status": 200,
+      "type": "image/jpeg",
+      "length": "124335"
+    },
+    {
+      "id": "4167",
+      "kind": "extra",
+      "url": "//www.samamusic.co.kr/web/product/extra/small/202502/e5540120f9cb46e52937fb0774f41ce4.jpg",
+      "absolute_url": "https://www.samamusic.co.kr/web/product/extra/small/202502/e5540120f9cb46e52937fb0774f41ce4.jpg",
+      "status": 200,
+      "type": "image/jpeg",
+      "length": "68270"
+    },
+    {
+      "id": "3563",
+      "kind": "main",
+      "url": "//www.samamusic.co.kr/web/product/small/202412/aeba82e8fa0f0f435a97ceccb7798c0a.jpg",
+      "absolute_url": "https://www.samamusic.co.kr/web/product/small/202412/aeba82e8fa0f0f435a97ceccb7798c0a.jpg",
+      "status": 200,
+      "type": "image/jpeg",
+      "length": "108578"
+    },
+    {
+      "id": "3563",
+      "kind": "extra",
+      "url": "//www.samamusic.co.kr/web/product/extra/small/202412/4c5b2c7c7fb208de2586c117af5285f7.jpg",
+      "absolute_url": "https://www.samamusic.co.kr/web/product/extra/small/202412/4c5b2c7c7fb208de2586c117af5285f7.jpg",
+      "status": 200,
+      "type": "image/jpeg",
+      "length": "254645"
+    },
+    {
+      "id": "3563",
+      "kind": "extra",
+      "url": "//www.samamusic.co.kr/web/product/extra/small/202412/8382f725d88bad5a7560ffead78dce84.jpg",
+      "absolute_url": "https://www.samamusic.co.kr/web/product/extra/small/202412/8382f725d88bad5a7560ffead78dce84.jpg",
+      "status": 200,
+      "type": "image/jpeg",
+      "length": "292691"
+    },
+    {
+      "id": "5612",
+      "kind": "main",
+      "url": "//www.samamusic.co.kr/web/product/small/202606/3050b91388ccdc606862e208e2ee121c.jpg",
+      "absolute_url": "https://www.samamusic.co.kr/web/product/small/202606/3050b91388ccdc606862e208e2ee121c.jpg",
+      "status": 200,
+      "type": "image/jpeg",
+      "length": "24606"
+    },
+    {
+      "id": "5612",
+      "kind": "extra",
+      "url": "//www.samamusic.co.kr/web/product/extra/small/202606/7cd6848b876f9ad58a68e991429533cb.jpg",
+      "absolute_url": "https://www.samamusic.co.kr/web/product/extra/small/202606/7cd6848b876f9ad58a68e991429533cb.jpg",
+      "status": 200,
+      "type": "image/jpeg",
+      "length": "188935"
+    },
+    {
+      "id": "5612",
+      "kind": "extra",
+      "url": "//www.samamusic.co.kr/web/product/extra/small/202606/22068b9b78ab62c2ddc6295e13ff3763.jpg",
+      "absolute_url": "https://www.samamusic.co.kr/web/product/extra/small/202606/22068b9b78ab62c2ddc6295e13ff3763.jpg",
+      "status": 200,
+      "type": "image/jpeg",
+      "length": "24926"
+    },
+    {
+      "id": "4494",
+      "kind": "main",
+      "url": "//www.samamusic.co.kr/web/product/small/202411/d48f0e3df6cb0b0e5b715109681b0569.jpg",
+      "absolute_url": "https://www.samamusic.co.kr/web/product/small/202411/d48f0e3df6cb0b0e5b715109681b0569.jpg",
+      "status": 200,
+      "type": "image/jpeg",
+      "length": "32588"
+    },
+    {
+      "id": "4494",
+      "kind": "extra",
+      "url": "//www.samamusic.co.kr/web/product/extra/small/202411/33c58d69de66a9dfda5e5ddb3cc8b87b.jpg",
+      "absolute_url": "https://www.samamusic.co.kr/web/product/extra/small/202411/33c58d69de66a9dfda5e5ddb3cc8b87b.jpg",
+      "status": 200,
+      "type": "image/jpeg",
+      "length": "38414"
+    },
+    {
+      "id": "4494",
+      "kind": "extra",
+      "url": "//www.samamusic.co.kr/web/product/extra/small/202411/0bd16f64893b2be4c349c38cbf7ce604.jpg",
+      "absolute_url": "https://www.samamusic.co.kr/web/product/extra/small/202411/0bd16f64893b2be4c349c38cbf7ce604.jpg",
+      "status": 200,
+      "type": "image/jpeg",
+      "length": "81857"
+    },
+    {
+      "id": "5665",
+      "kind": "main",
+      "url": "//www.samamusic.co.kr/web/product/small/202607/b5058e91f1338bb9449f7a0b9fcac854.jpg",
+      "absolute_url": "https://www.samamusic.co.kr/web/product/small/202607/b5058e91f1338bb9449f7a0b9fcac854.jpg",
+      "status": 200,
+      "type": "image/jpeg",
+      "length": "95726"
+    },
+    {
+      "id": "5665",
+      "kind": "extra",
+      "url": "//www.samamusic.co.kr/web/product/extra/small/202607/edec3d90449087410ec7c714c9965c9a.jpg",
+      "absolute_url": "https://www.samamusic.co.kr/web/product/extra/small/202607/edec3d90449087410ec7c714c9965c9a.jpg",
+      "status": 200,
+      "type": "image/jpeg",
+      "length": "35297"
+    },
+    {
+      "id": "5665",
+      "kind": "extra",
+      "url": "//www.samamusic.co.kr/web/product/extra/small/202607/e78bdabdb57a726686a3c86710086e10.jpg",
+      "absolute_url": "https://www.samamusic.co.kr/web/product/extra/small/202607/e78bdabdb57a726686a3c86710086e10.jpg",
+      "status": 200,
+      "type": "image/jpeg",
+      "length": "39379"
+    },
+    {
+      "id": "5685",
+      "kind": "main",
+      "url": "//www.samamusic.co.kr/web/product/small/202608/6e1674e5133475e2cb63df486edce665.jpg",
+      "absolute_url": "https://www.samamusic.co.kr/web/product/small/202608/6e1674e5133475e2cb63df486edce665.jpg",
+      "status": 200,
+      "type": "image/jpeg",
+      "length": "62017"
+    },
+    {
+      "id": "4537",
+      "kind": "main",
+      "url": "//www.samamusic.co.kr/web/product/small/202412/73c9cac635e10cc73ae4956fbb2dfe51.jpg",
+      "absolute_url": "https://www.samamusic.co.kr/web/product/small/202412/73c9cac635e10cc73ae4956fbb2dfe51.jpg",
+      "status": 200,
+      "type": "image/jpeg",
+      "length": "74913"
+    },
+    {
+      "id": "4537",
+      "kind": "extra",
+      "url": "//www.samamusic.co.kr/web/product/extra/small/202412/15f42ba5a842e5481c9af67ae88a7bf0.jpg",
+      "absolute_url": "https://www.samamusic.co.kr/web/product/extra/small/202412/15f42ba5a842e5481c9af67ae88a7bf0.jpg",
+      "status": 200,
+      "type": "image/jpeg",
+      "length": "280954"
+    },
+    {
+      "id": "40",
+      "kind": "main",
+      "url": "//www.samamusic.co.kr/web/product/small/202106/32835abc7d8367247b950bd8c7de2c8d.jpg",
+      "absolute_url": "https://www.samamusic.co.kr/web/product/small/202106/32835abc7d8367247b950bd8c7de2c8d.jpg",
+      "status": 200,
+      "type": "image/jpeg",
+      "length": "65653"
+    },
+    {
+      "id": "40",
+      "kind": "extra",
+      "url": "//www.samamusic.co.kr/web/product/extra/small/202106/a31932497c166f50253c3b4651d8322e.jpg",
+      "absolute_url": "https://www.samamusic.co.kr/web/product/extra/small/202106/a31932497c166f50253c3b4651d8322e.jpg",
+      "status": 200,
+      "type": "image/jpeg",
+      "length": "93528"
+    },
+    {
+      "id": "40",
+      "kind": "extra",
+      "url": "//www.samamusic.co.kr/web/product/extra/small/202106/0239dfbe74d4fac26e9b5854f9049d99.jpg",
+      "absolute_url": "https://www.samamusic.co.kr/web/product/extra/small/202106/0239dfbe74d4fac26e9b5854f9049d99.jpg",
+      "status": 200,
+      "type": "image/jpeg",
+      "length": "59740"
+    },
+    {
+      "id": "1562",
+      "kind": "main",
+      "url": "//www.samamusic.co.kr/web/product/small/202502/5f9dad96516f50013730bd03d40fe6c0.jpg",
+      "absolute_url": "https://www.samamusic.co.kr/web/product/small/202502/5f9dad96516f50013730bd03d40fe6c0.jpg",
+      "status": 200,
+      "type": "image/jpeg",
+      "length": "156090"
+    },
+    {
+      "id": "1562",
+      "kind": "extra",
+      "url": "//www.samamusic.co.kr/web/product/extra/small/202310/db4bae82563b7c742a6d06467c84648b.jpg",
+      "absolute_url": "https://www.samamusic.co.kr/web/product/extra/small/202310/db4bae82563b7c742a6d06467c84648b.jpg",
+      "status": 200,
+      "type": "image/jpeg",
+      "length": "156948"
+    },
+    {
+      "id": "1562",
+      "kind": "extra",
+      "url": "//www.samamusic.co.kr/web/product/extra/small/202310/d6ddf07111e9a09c7b760cadd44b0a1e.jpg",
+      "absolute_url": "https://www.samamusic.co.kr/web/product/extra/small/202310/d6ddf07111e9a09c7b760cadd44b0a1e.jpg",
+      "status": 200,
+      "type": "image/jpeg",
+      "length": "204833"
+    },
+    {
+      "id": "4176",
+      "kind": "main",
+      "url": "//www.samamusic.co.kr/web/product/small/202408/e34d0cee197b6ffb9fd672d625c6404c.jpg",
+      "absolute_url": "https://www.samamusic.co.kr/web/product/small/202408/e34d0cee197b6ffb9fd672d625c6404c.jpg",
+      "status": 200,
+      "type": "image/jpeg",
+      "length": "29514"
+    },
+    {
+      "id": "4176",
+      "kind": "extra",
+      "url": "//www.samamusic.co.kr/web/product/extra/small/202408/ae73e7ceb0591e47cd817faeface316f.jpg",
+      "absolute_url": "https://www.samamusic.co.kr/web/product/extra/small/202408/ae73e7ceb0591e47cd817faeface316f.jpg",
+      "status": 200,
+      "type": "image/jpeg",
+      "length": "87538"
+    },
+    {
+      "id": "4176",
+      "kind": "extra",
+      "url": "//www.samamusic.co.kr/web/product/extra/small/202408/96d1e74b3c547a6354aa17ede9080dd4.jpg",
+      "absolute_url": "https://www.samamusic.co.kr/web/product/extra/small/202408/96d1e74b3c547a6354aa17ede9080dd4.jpg",
+      "status": 200,
+      "type": "image/jpeg",
+      "length": "37712"
+    }
+  ],
+  "domain_checks": [
+    {
+      "product_no": "4167",
+      "www.samamusic.co.kr": {
+        "final_url": "https://www.samamusic.co.kr/product/detail.html?product_no=4167&cate_no=42&display_group=1",
+        "canonical": "https://samastore.co.kr/product/%ED%95%9C%EC%A0%95%ED%8C%90-presonus-eris-35-gen2-white-%ED%94%84%EB%A6%AC%EC%86%8C%EB%84%88%EC%8A%A4-%EC%97%90%EB%A6%AC%EC%8A%A4-2%EC%84%B8%EB%8C%80-%EB%AA%A8%EB%8B%88%ED%84%B0-%EC%8A%A4%ED%94%BC%EC%BB%A4-1%EC%A1%B02%ED%86%B5-%ED%99%94%EC%9D%B4%ED%8A%B8/4167/",
+        "og_url": "https://samastore.co.kr/product/한정판-presonus-eris-35-gen2-white-프리소너스-에리스-2세대-모니터-스피커-1조2통-화이트/4167/",
+        "spec": {
+          "상품명": "[한정판] PreSonus Eris 3.5 GEN2 White 프리소너스 에리스 2세대 모니터 스피커 1조(2통) 화이트",
+          "판매가": "219,000원",
+          "브랜드": "PRESONUS",
+          "모델명": "Eris 3.5 GEN2 White",
+          "안전확인신고번호": "공급자적합성확인대상제품",
+          "적합인증번호": "R-R-YPS-Eris3-5",
+          "상품요약정보": "본 가격은 스피커 1조(2통)에 대한 가격입니다",
+          "상품간략설명": "국민스피커 ERIS, 2세대 2웨이 8.89cm (3.5타입) 미디어 레퍼런스 모니터 스피커",
+          "원산지": "아시아 중국",
+          "배송비": "3,000원 (50,000원 이상 구매 시 무료)"
+        },
+        "image_count": 7,
+        "image_hash": "4d9e33af",
+        "image_hash_ordered": "86df3f1b",
+        "images": [
+          "//HOST/web/product/extra/small/202408/e3367cc27ed8ec9281824974004ff0b6.jpg",
+          "//HOST/web/product/extra/small/202502/e5540120f9cb46e52937fb0774f41ce4.jpg",
+          "//HOST/web/product/small/202502/e4649d43a00fb70bc48bae1936529c25.jpg",
+          "//HOST/web/product/tiny/20200514/950ecc11f50c394716f444a92b80a018.jpg",
+          "//HOST/web/product/tiny/20200514/b088b7ded7db3aa2b4be946835cb78f6.jpg",
+          "//HOST/web/product/tiny/202304/c79c856f7cd269e691bc224039fc33c8.jpg",
+          "/web/product/tiny/202502/ed5e460eb52dc7064ec37e37ea3d909f.jpg"
+        ],
+        "jsonld_sku": "cafe24_sama2015_1_4167",
+        "jsonld_price": 219000,
+        "jsonld_availability": "https://schema.org/InStock"
+      },
+      "samastore.co.kr": {
+        "final_url": "https://samastore.co.kr/product/detail.html?product_no=4167&cate_no=42&display_group=1",
+        "canonical": "https://samastore.co.kr/product/%ED%95%9C%EC%A0%95%ED%8C%90-presonus-eris-35-gen2-white-%ED%94%84%EB%A6%AC%EC%86%8C%EB%84%88%EC%8A%A4-%EC%97%90%EB%A6%AC%EC%8A%A4-2%EC%84%B8%EB%8C%80-%EB%AA%A8%EB%8B%88%ED%84%B0-%EC%8A%A4%ED%94%BC%EC%BB%A4-1%EC%A1%B02%ED%86%B5-%ED%99%94%EC%9D%B4%ED%8A%B8/4167/",
+        "og_url": "https://samastore.co.kr/product/한정판-presonus-eris-35-gen2-white-프리소너스-에리스-2세대-모니터-스피커-1조2통-화이트/4167/",
+        "spec": {
+          "상품명": "[한정판] PreSonus Eris 3.5 GEN2 White 프리소너스 에리스 2세대 모니터 스피커 1조(2통) 화이트",
+          "판매가": "219,000원",
+          "브랜드": "PRESONUS",
+          "모델명": "Eris 3.5 GEN2 White",
+          "안전확인신고번호": "공급자적합성확인대상제품",
+          "적합인증번호": "R-R-YPS-Eris3-5",
+          "상품요약정보": "본 가격은 스피커 1조(2통)에 대한 가격입니다",
+          "상품간략설명": "국민스피커 ERIS, 2세대 2웨이 8.89cm (3.5타입) 미디어 레퍼런스 모니터 스피커",
+          "원산지": "아시아 중국",
+          "배송비": "3,000원 (50,000원 이상 구매 시 무료)"
+        },
+        "image_count": 7,
+        "image_hash": "4d9e33af",
+        "image_hash_ordered": "86df3f1b",
+        "images": [
+          "//HOST/web/product/extra/small/202408/e3367cc27ed8ec9281824974004ff0b6.jpg",
+          "//HOST/web/product/extra/small/202502/e5540120f9cb46e52937fb0774f41ce4.jpg",
+          "//HOST/web/product/small/202502/e4649d43a00fb70bc48bae1936529c25.jpg",
+          "//HOST/web/product/tiny/20200514/950ecc11f50c394716f444a92b80a018.jpg",
+          "//HOST/web/product/tiny/20200514/b088b7ded7db3aa2b4be946835cb78f6.jpg",
+          "//HOST/web/product/tiny/202304/c79c856f7cd269e691bc224039fc33c8.jpg",
+          "/web/product/tiny/202502/ed5e460eb52dc7064ec37e37ea3d909f.jpg"
+        ],
+        "jsonld_sku": "cafe24_sama2015_1_4167",
+        "jsonld_price": 219000,
+        "jsonld_availability": "https://schema.org/InStock"
+      },
+      "same_canonical": true,
+      "same_price": true,
+      "same_images": true,
+      "same_sku": true,
+      "identical": true
+    },
+    {
+      "product_no": "4558",
+      "www.samamusic.co.kr": {
+        "final_url": "https://www.samamusic.co.kr/product/detail.html?product_no=4558&cate_no=42&display_group=1",
+        "canonical": "https://samastore.co.kr/product/q-acoustics-q-m20-%ED%81%90%EC%96%B4%EC%BF%A0%EC%8A%A4%ED%8B%B1-hi-res-%EB%B8%94%EB%A3%A8%ED%88%AC%EC%8A%A4-%EB%AC%B4%EC%84%A0-%EC%8A%A4%ED%94%BC%EC%BB%A4-pair/4558/",
+        "og_url": "https://samastore.co.kr/product/q-acoustics-q-m20-큐어쿠스틱-hi-res-블루투스-무선-스피커-pair/4558/",
+        "spec": {
+          "상품명": "Q Acoustics Q M20 큐어쿠스틱 Hi-Res 블루투스 무선 스피커 (Pair)",
+          "판매가": "1,290,000원",
+          "소비자가": "1,840,000원",
+          "브랜드": "Q Acoustics",
+          "모델명": "M20",
+          "상품요약정보": "파워 앰프가 내장된 Active 스피커(1pair)",
+          "원산지": "아시아 중국",
+          "배송비": "3,000원 (50,000원 이상 구매 시 무료)"
+        },
+        "image_count": 7,
+        "image_hash": "16314266",
+        "image_hash_ordered": "ae470fff",
+        "images": [
+          "//HOST/web/product/extra/small/202501/1386eb6f9bae4875c8ea7932ec358984.jpg",
+          "//HOST/web/product/extra/small/202501/47d0c15c5a931529bca70f4143513384.jpg",
+          "//HOST/web/product/extra/small/202501/5b98718fddec7c351c49476ce7cf5e65.jpg",
+          "//HOST/web/product/extra/small/202501/9cc4278109a7aa39b385b84fc4010842.jpg",
+          "//HOST/web/product/small/202501/3cc7ffce0342860553e3f1b5343b956c.jpg",
+          "/web/product/tiny/202501/d8e8283830d0614f7005c078e3082569.jpg",
+          "/web/product/tiny/202502/ed5e460eb52dc7064ec37e37ea3d909f.jpg"
+        ],
+        "jsonld_sku": "cafe24_sama2015_1_4558",
+        "jsonld_price": "",
+        "jsonld_availability": ""
+      },
+      "samastore.co.kr": {
+        "final_url": "https://samastore.co.kr/product/detail.html?product_no=4558&cate_no=42&display_group=1",
+        "canonical": "https://samastore.co.kr/product/q-acoustics-q-m20-%ED%81%90%EC%96%B4%EC%BF%A0%EC%8A%A4%ED%8B%B1-hi-res-%EB%B8%94%EB%A3%A8%ED%88%AC%EC%8A%A4-%EB%AC%B4%EC%84%A0-%EC%8A%A4%ED%94%BC%EC%BB%A4-pair/4558/",
+        "og_url": "https://samastore.co.kr/product/q-acoustics-q-m20-큐어쿠스틱-hi-res-블루투스-무선-스피커-pair/4558/",
+        "spec": {
+          "상품명": "Q Acoustics Q M20 큐어쿠스틱 Hi-Res 블루투스 무선 스피커 (Pair)",
+          "판매가": "1,290,000원",
+          "소비자가": "1,840,000원",
+          "브랜드": "Q Acoustics",
+          "모델명": "M20",
+          "상품요약정보": "파워 앰프가 내장된 Active 스피커(1pair)",
+          "원산지": "아시아 중국",
+          "배송비": "3,000원 (50,000원 이상 구매 시 무료)"
+        },
+        "image_count": 7,
+        "image_hash": "16314266",
+        "image_hash_ordered": "ed9fc1de",
+        "images": [
+          "//HOST/web/product/extra/small/202501/1386eb6f9bae4875c8ea7932ec358984.jpg",
+          "//HOST/web/product/extra/small/202501/47d0c15c5a931529bca70f4143513384.jpg",
+          "//HOST/web/product/extra/small/202501/5b98718fddec7c351c49476ce7cf5e65.jpg",
+          "//HOST/web/product/extra/small/202501/9cc4278109a7aa39b385b84fc4010842.jpg",
+          "//HOST/web/product/small/202501/3cc7ffce0342860553e3f1b5343b956c.jpg",
+          "/web/product/tiny/202501/d8e8283830d0614f7005c078e3082569.jpg",
+          "/web/product/tiny/202502/ed5e460eb52dc7064ec37e37ea3d909f.jpg"
+        ],
+        "jsonld_sku": "cafe24_sama2015_1_4558",
+        "jsonld_price": "",
+        "jsonld_availability": ""
+      },
+      "same_canonical": true,
+      "same_price": true,
+      "same_images": true,
+      "same_sku": true,
+      "identical": true
+    },
+    {
+      "product_no": "5685",
+      "www.samamusic.co.kr": {
+        "final_url": "https://www.samamusic.co.kr/product/detail.html?product_no=5685&cate_no=42&display_group=1",
+        "canonical": "https://samastore.co.kr/product/klotz-d-sub-25pin-%EC%88%98-to-44-xlr-mf-%ED%81%B4%EB%A1%9C%EC%B8%A0-loom-%EB%94%94%EC%A7%80%ED%84%B8-%EC%BC%80%EC%9D%B4%EB%B8%94-yamaha-%ED%95%80-%EB%B0%B0%EC%97%B4-ycdae/5685/",
+        "og_url": "https://samastore.co.kr/product/klotz-d-sub-25pin-수-to-44-xlr-mf-클로츠-loom-디지털-케이블-yamaha-핀-배열-ycdae/5685/",
+        "spec": {
+          "상품명": "KLOTZ D-Sub (25pin) 수 to 4/4 XLR M/F 클로츠 LOOM 디지털 케이블 (YAMAHA 핀 배열) YCDAE",
+          "판매가": "440,000원",
+          "브랜드": "Klotz",
+          "모델명": "YCDAE",
+          "상품요약정보": "1m, 3m, 5m 선택가능",
+          "원산지": "유럽 독일",
+          "배송비": "3,000원 (50,000원 이상 구매 시 무료)"
+        },
+        "image_count": 4,
+        "image_hash": "ec7e401",
+        "image_hash_ordered": "496d4440",
+        "images": [
+          "//HOST/web/product/small/202608/6e1674e5133475e2cb63df486edce665.jpg",
+          "/web/product/tiny/202501/d8e8283830d0614f7005c078e3082569.jpg",
+          "/web/product/tiny/202502/ed5e460eb52dc7064ec37e37ea3d909f.jpg",
+          "/web/product/tiny/202608/8b89aac5c38e467855fab7956cd25e03.jpg"
+        ],
+        "jsonld_sku": "cafe24_sama2015_1_5685"
+      },
+      "samastore.co.kr": {
+        "final_url": "https://samastore.co.kr/product/detail.html?product_no=5685&cate_no=42&display_group=1",
+        "canonical": "https://samastore.co.kr/product/klotz-d-sub-25pin-%EC%88%98-to-44-xlr-mf-%ED%81%B4%EB%A1%9C%EC%B8%A0-loom-%EB%94%94%EC%A7%80%ED%84%B8-%EC%BC%80%EC%9D%B4%EB%B8%94-yamaha-%ED%95%80-%EB%B0%B0%EC%97%B4-ycdae/5685/",
+        "og_url": "https://samastore.co.kr/product/klotz-d-sub-25pin-수-to-44-xlr-mf-클로츠-loom-디지털-케이블-yamaha-핀-배열-ycdae/5685/",
+        "spec": {
+          "상품명": "KLOTZ D-Sub (25pin) 수 to 4/4 XLR M/F 클로츠 LOOM 디지털 케이블 (YAMAHA 핀 배열) YCDAE",
+          "판매가": "440,000원",
+          "브랜드": "Klotz",
+          "모델명": "YCDAE",
+          "상품요약정보": "1m, 3m, 5m 선택가능",
+          "원산지": "유럽 독일",
+          "배송비": "3,000원 (50,000원 이상 구매 시 무료)"
+        },
+        "image_count": 4,
+        "image_hash": "ec7e401",
+        "image_hash_ordered": "496d4440",
+        "images": [
+          "//HOST/web/product/small/202608/6e1674e5133475e2cb63df486edce665.jpg",
+          "/web/product/tiny/202501/d8e8283830d0614f7005c078e3082569.jpg",
+          "/web/product/tiny/202502/ed5e460eb52dc7064ec37e37ea3d909f.jpg",
+          "/web/product/tiny/202608/8b89aac5c38e467855fab7956cd25e03.jpg"
+        ],
+        "jsonld_sku": "cafe24_sama2015_1_5685"
+      },
+      "same_canonical": true,
+      "same_price": true,
+      "same_images": true,
+      "same_sku": true,
+      "identical": true
+    },
+    {
+      "product_no": "3184",
+      "www.samamusic.co.kr": {
+        "final_url": "https://www.samamusic.co.kr/product/detail.html?product_no=3184&cate_no=42&display_group=1",
+        "canonical": "https://samastore.co.kr/product/michael-tuttle-guitars-custom-classic-s-799-%EB%A7%88%EC%9D%B4%ED%81%B4-%ED%84%B0%ED%8B%80-%EC%9D%BC%EB%A0%89-%EA%B8%B0%ED%83%80-%EB%94%9C%EB%9F%AC-%EC%85%80%EB%A0%89%ED%8A%B8-%EB%AA%A8%EB%8D%B8/3184/",
+        "og_url": "https://samastore.co.kr/product/michael-tuttle-guitars-custom-classic-s-799-마이클-터틀-일렉-기타-딜러-셀렉트-모델/3184/",
+        "spec": {
+          "상품명": "Michael Tuttle Guitars Custom Classic S 799 마이클 터틀 일렉 기타 (딜러 셀렉트 모델)",
+          "판매가": "판매완료",
+          "소비자가": "6,350,000원",
+          "브랜드": "Michael Tuttle Guitars",
+          "상품요약정보": "커스텀 클래식T / 버터스카치 니트로 / 애쉬바디,메이플 / 매트블랙 픽가드 / #799",
+          "상품간략설명": "딜러 셀렉트 모델로 바로 구매가 가능합니다.",
+          "원산지": "국내",
+          "배송비": "무료"
+        },
+        "image_count": 13,
+        "image_hash": "afe993d7",
+        "image_hash_ordered": "2114adfc",
+        "images": [
+          "//HOST/web/product/extra/small/202303/04904dc8dda48496640d56a528de4f81.jpg",
+          "//HOST/web/product/extra/small/202303/3a74b729f2f5b5fd2a454b6ee73162da.jpg",
+          "//HOST/web/product/extra/small/202303/45811638648b95cead27efa9d9df27e0.jpg",
+          "//HOST/web/product/extra/small/202303/5a2ee972f4a3e8300bc91b8363dd7097.jpg",
+          "//HOST/web/product/extra/small/202303/5c5ab2ff5e1c4573f5a216ac324218bc.jpg",
+          "//HOST/web/product/extra/small/202303/74843cc164edfdc6cd2324318eb4d108.jpg",
+          "//HOST/web/product/extra/small/202303/b014401c7d9c0c3f854ef22a9f499ea1.jpg",
+          "//HOST/web/product/extra/small/202303/ec0bdac0e95de3a5185e75b96acb94de.jpg",
+          "//HOST/web/product/small/202303/66ec58105f01633b718553b2f549b76a.jpg",
+          "/web/product/tiny/202303/243bafe5c0527c9656918744e8fec4b1.jpg",
+          "/web/product/tiny/202501/d8e8283830d0614f7005c078e3082569.jpg",
+          "/web/product/tiny/202502/ed5e460eb52dc7064ec37e37ea3d909f.jpg",
+          "/web/product/tiny/202608/8b89aac5c38e467855fab7956cd25e03.jpg"
+        ],
+        "jsonld_sku": "cafe24_sama2015_1_3184",
+        "jsonld_price": "판매완료",
+        "jsonld_availability": "https://schema.org/OutOfStock"
+      },
+      "samastore.co.kr": {
+        "final_url": "https://samastore.co.kr/product/detail.html?product_no=3184&cate_no=42&display_group=1",
+        "canonical": "https://samastore.co.kr/product/michael-tuttle-guitars-custom-classic-s-799-%EB%A7%88%EC%9D%B4%ED%81%B4-%ED%84%B0%ED%8B%80-%EC%9D%BC%EB%A0%89-%EA%B8%B0%ED%83%80-%EB%94%9C%EB%9F%AC-%EC%85%80%EB%A0%89%ED%8A%B8-%EB%AA%A8%EB%8D%B8/3184/",
+        "og_url": "https://samastore.co.kr/product/michael-tuttle-guitars-custom-classic-s-799-마이클-터틀-일렉-기타-딜러-셀렉트-모델/3184/",
+        "spec": {
+          "상품명": "Michael Tuttle Guitars Custom Classic S 799 마이클 터틀 일렉 기타 (딜러 셀렉트 모델)",
+          "판매가": "판매완료",
+          "소비자가": "6,350,000원",
+          "브랜드": "Michael Tuttle Guitars",
+          "상품요약정보": "커스텀 클래식T / 버터스카치 니트로 / 애쉬바디,메이플 / 매트블랙 픽가드 / #799",
+          "상품간략설명": "딜러 셀렉트 모델로 바로 구매가 가능합니다.",
+          "원산지": "국내",
+          "배송비": "무료"
+        },
+        "image_count": 13,
+        "image_hash": "afe993d7",
+        "image_hash_ordered": "2114adfc",
+        "images": [
+          "//HOST/web/product/extra/small/202303/04904dc8dda48496640d56a528de4f81.jpg",
+          "//HOST/web/product/extra/small/202303/3a74b729f2f5b5fd2a454b6ee73162da.jpg",
+          "//HOST/web/product/extra/small/202303/45811638648b95cead27efa9d9df27e0.jpg",
+          "//HOST/web/product/extra/small/202303/5a2ee972f4a3e8300bc91b8363dd7097.jpg",
+          "//HOST/web/product/extra/small/202303/5c5ab2ff5e1c4573f5a216ac324218bc.jpg",
+          "//HOST/web/product/extra/small/202303/74843cc164edfdc6cd2324318eb4d108.jpg",
+          "//HOST/web/product/extra/small/202303/b014401c7d9c0c3f854ef22a9f499ea1.jpg",
+          "//HOST/web/product/extra/small/202303/ec0bdac0e95de3a5185e75b96acb94de.jpg",
+          "//HOST/web/product/small/202303/66ec58105f01633b718553b2f549b76a.jpg",
+          "/web/product/tiny/202303/243bafe5c0527c9656918744e8fec4b1.jpg",
+          "/web/product/tiny/202501/d8e8283830d0614f7005c078e3082569.jpg",
+          "/web/product/tiny/202502/ed5e460eb52dc7064ec37e37ea3d909f.jpg",
+          "/web/product/tiny/202608/8b89aac5c38e467855fab7956cd25e03.jpg"
+        ],
+        "jsonld_sku": "cafe24_sama2015_1_3184",
+        "jsonld_price": "판매완료",
+        "jsonld_availability": "https://schema.org/OutOfStock"
+      },
+      "same_canonical": true,
+      "same_price": true,
+      "same_images": true,
+      "same_sku": true,
+      "identical": true
+    },
+    {
+      "product_no": "1710",
+      "www.samamusic.co.kr": {
+        "final_url": "https://www.samamusic.co.kr/product/detail.html?product_no=1710&cate_no=42&display_group=1",
+        "canonical": "https://samastore.co.kr/product/apogee-symphony-desktop-%EC%95%84%ED%8F%AC%EC%A7%80-%EC%8B%AC%ED%8F%AC%EB%8B%88-%EB%8D%B0%EC%8A%A4%ED%81%AC%ED%83%91-%EC%98%A4%EB%94%94%EC%98%A4-%EC%9D%B8%ED%84%B0%ED%8E%98%EC%9D%B4%EC%8A%A4/1710/",
+        "og_url": "https://samastore.co.kr/product/apogee-symphony-desktop-아포지-심포니-데스크탑-오디오-인터페이스/1710/",
+        "spec": {
+          "상품명": "APOGEE Symphony Desktop 아포지 심포니 데스크탑 오디오 인터페이스",
+          "판매가": "2,490,000원",
+          "소비자가": "2,770,000원",
+          "할인판매가": "1,990,000원 (500,000원 할인)",
+          "할인 기간": "남은시간 29일 10:05:38 (500,000원 할인)2026-10-19 00:00 ~ 2026-11-20 23:55",
+          "브랜드": "APOGEE",
+          "모델명": "Symphony Desktop",
+          "적합인증번호": "R-R-sDI-Symphony-DT",
+          "상품요약정보": "2 In x 6 Out USB Audio Interface for Win, Mac, iPad Pro",
+          "상품간략설명": "Apogee FX 하드웨어 DSP 지원 / Symphony ECS Channel Strip, Clearmountain's Spaces Reverb 기본 제공",
+          "원산지": "아메리카 멕시코",
+          "배송비": "3,000원 (50,000원 이상 구매 시 무료)"
+        },
+        "image_count": 12,
+        "image_hash": "d7ccdbd8",
+        "image_hash_ordered": "656c0853",
+        "images": [
+          "//HOST/web/product/extra/small/20200605/15c786dd000fbbc090a51013ceb50034.jpg",
+          "//HOST/web/product/extra/small/20200605/aaa3c47f64f18d13b13eb6c92b8d10a0.jpg",
+          "//HOST/web/product/small/202610/a09fae405d40710deae57b84e3c72459.jpg",
+          "//HOST/web/product/tiny/202212/3ec0f9e31cc2d77044b9998dd119158b.jpg",
+          "//HOST/web/product/tiny/202212/63d1484fcec55b3f6bca2a23f060d172.jpg",
+          "//HOST/web/product/tiny/202212/d0ec883f1e50d622c3c68ca5db52b417.jpg",
+          "//HOST/web/product/tiny/202304/826c7966b1cec53f283232db21742077.jpg",
+          "/web/product/tiny/202303/243bafe5c0527c9656918744e8fec4b1.jpg",
+          "/web/product/tiny/202501/d8e8283830d0614f7005c078e3082569.jpg",
+          "/web/product/tiny/202502/ed5e460eb52dc7064ec37e37ea3d909f.jpg",
+          "/web/product/tiny/202608/8b89aac5c38e467855fab7956cd25e03.jpg",
+          "/web/product/tiny/202610/e5e6466c8da8bb4ea24fa88fac580053.jpg"
+        ],
+        "jsonld_sku": "cafe24_sama2015_1_1710",
+        "jsonld_price": 2490000,
+        "jsonld_availability": "https://schema.org/OutOfStock"
+      },
+      "samastore.co.kr": {
+        "final_url": "https://samastore.co.kr/product/detail.html?product_no=1710&cate_no=42&display_group=1",
+        "canonical": "https://samastore.co.kr/product/apogee-symphony-desktop-%EC%95%84%ED%8F%AC%EC%A7%80-%EC%8B%AC%ED%8F%AC%EB%8B%88-%EB%8D%B0%EC%8A%A4%ED%81%AC%ED%83%91-%EC%98%A4%EB%94%94%EC%98%A4-%EC%9D%B8%ED%84%B0%ED%8E%98%EC%9D%B4%EC%8A%A4/1710/",
+        "og_url": "https://samastore.co.kr/product/apogee-symphony-desktop-아포지-심포니-데스크탑-오디오-인터페이스/1710/",
+        "spec": {
+          "상품명": "APOGEE Symphony Desktop 아포지 심포니 데스크탑 오디오 인터페이스",
+          "판매가": "2,490,000원",
+          "소비자가": "2,770,000원",
+          "할인판매가": "1,990,000원 (500,000원 할인)",
+          "할인 기간": "남은시간 29일 10:07:00 (500,000원 할인)2026-10-19 00:00 ~ 2026-11-20 23:55",
+          "브랜드": "APOGEE",
+          "모델명": "Symphony Desktop",
+          "적합인증번호": "R-R-sDI-Symphony-DT",
+          "상품요약정보": "2 In x 6 Out USB Audio Interface for Win, Mac, iPad Pro",
+          "상품간략설명": "Apogee FX 하드웨어 DSP 지원 / Symphony ECS Channel Strip, Clearmountain's Spaces Reverb 기본 제공",
+          "원산지": "아메리카 멕시코",
+          "배송비": "3,000원 (50,000원 이상 구매 시 무료)"
+        },
+        "image_count": 12,
+        "image_hash": "d7ccdbd8",
+        "image_hash_ordered": "656c0853",
+        "images": [
+          "//HOST/web/product/extra/small/20200605/15c786dd000fbbc090a51013ceb50034.jpg",
+          "//HOST/web/product/extra/small/20200605/aaa3c47f64f18d13b13eb6c92b8d10a0.jpg",
+          "//HOST/web/product/small/202610/a09fae405d40710deae57b84e3c72459.jpg",
+          "//HOST/web/product/tiny/202212/3ec0f9e31cc2d77044b9998dd119158b.jpg",
+          "//HOST/web/product/tiny/202212/63d1484fcec55b3f6bca2a23f060d172.jpg",
+          "//HOST/web/product/tiny/202212/d0ec883f1e50d622c3c68ca5db52b417.jpg",
+          "//HOST/web/product/tiny/202304/826c7966b1cec53f283232db21742077.jpg",
+          "/web/product/tiny/202303/243bafe5c0527c9656918744e8fec4b1.jpg",
+          "/web/product/tiny/202501/d8e8283830d0614f7005c078e3082569.jpg",
+          "/web/product/tiny/202502/ed5e460eb52dc7064ec37e37ea3d909f.jpg",
+          "/web/product/tiny/202608/8b89aac5c38e467855fab7956cd25e03.jpg",
+          "/web/product/tiny/202610/e5e6466c8da8bb4ea24fa88fac580053.jpg"
+        ],
+        "jsonld_sku": "cafe24_sama2015_1_1710",
+        "jsonld_price": 2490000,
+        "jsonld_availability": "https://schema.org/OutOfStock"
+      },
+      "same_canonical": true,
+      "same_price": true,
+      "same_images": true,
+      "same_sku": true,
+      "identical": true
+    }
+  ],
+  "ssr_vs_dom": [
+    {
+      "product_no": "4167",
+      "ssr_rows": [
+        {
+          "label": "상품명",
+          "value": "[한정판] PreSonus Eris 3.5 GEN2 White 프리소너스 에리스 2세대 모니터 스피커 1조(2통) 화이트"
+        },
+        {
+          "label": "판매가",
+          "value": "219,000원"
+        },
+        {
+          "label": "브랜드",
+          "value": "PRESONUS"
+        },
+        {
+          "label": "모델명",
+          "value": "Eris 3.5 GEN2 White"
+        },
+        {
+          "label": "안전확인신고번호",
+          "value": "공급자적합성확인대상제품"
+        },
+        {
+          "label": "적합인증번호",
+          "value": "R-R-YPS-Eris3-5"
+        },
+        {
+          "label": "상품요약정보",
+          "value": "본 가격은 스피커 1조(2통)에 대한 가격입니다"
+        },
+        {
+          "label": "상품간략설명",
+          "value": "국민스피커 ERIS, 2세대 2웨이 8.89cm (3.5타입) 미디어 레퍼런스 모니터 스피커"
+        },
+        {
+          "label": "원산지",
+          "value": "아시아 중국"
+        },
+        {
+          "label": "배송비",
+          "value": "3,000원 (50,000원 이상 구매 시 무료)"
+        },
+        {
+          "label": "수량",
+          "value": ""
+        }
+      ],
+      "ssr_price": "219,000원",
+      "ssr_brand": "PRESONUS",
+      "dom_price": "219,000원",
+      "dom_brand": "PRESONUS",
+      "ssr_has_jsonld": true,
+      "ssr_html_bytes": 501144
+    },
+    {
+      "product_no": "4558",
+      "ssr_rows": [
+        {
+          "label": "상품명",
+          "value": "Q Acoustics Q M20 큐어쿠스틱 Hi-Res 블루투스 무선 스피커 (Pair)"
+        },
+        {
+          "label": "판매가",
+          "value": "1,290,000원"
+        },
+        {
+          "label": "소비자가",
+          "value": "1,840,000원"
+        },
+        {
+          "label": "브랜드",
+          "value": "Q Acoustics"
+        },
+        {
+          "label": "모델명",
+          "value": "M20"
+        },
+        {
+          "label": "상품요약정보",
+          "value": "파워 앰프가 내장된 Active 스피커(1pair)"
+        },
+        {
+          "label": "원산지",
+          "value": "아시아 중국"
+        },
+        {
+          "label": "배송비",
+          "value": "3,000원 (50,000원 이상 구매 시 무료)"
+        },
+        {
+          "label": "수량",
+          "value": ""
+        }
+      ],
+      "ssr_price": "1,290,000원",
+      "ssr_brand": "Q Acoustics",
+      "dom_price": "1,290,000원",
+      "dom_brand": "Q Acoustics",
+      "ssr_has_jsonld": true,
+      "ssr_html_bytes": 454983
+    },
+    {
+      "product_no": "3184",
+      "ssr_rows": [
+        {
+          "label": "상품명",
+          "value": "Michael Tuttle Guitars Custom Classic S 799 마이클 터틀 일렉 기타 (딜러 셀렉트 모델)"
+        },
+        {
+          "label": "판매가",
+          "value": "판매완료"
+        },
+        {
+          "label": "소비자가",
+          "value": "6,350,000원"
+        },
+        {
+          "label": "브랜드",
+          "value": "Michael Tuttle Guitars"
+        },
+        {
+          "label": "상품요약정보",
+          "value": "커스텀 클래식T / 버터스카치 니트로 / 애쉬바디,메이플 / 매트블랙 픽가드 / #799"
+        },
+        {
+          "label": "상품간략설명",
+          "value": "딜러 셀렉트 모델로 바로 구매가 가능합니다."
+        },
+        {
+          "label": "원산지",
+          "value": "국내"
+        },
+        {
+          "label": "배송비",
+          "value": "무료"
+        },
+        {
+          "label": "수량",
+          "value": ""
+        }
+      ],
+      "ssr_price": "판매완료",
+      "ssr_brand": "Michael Tuttle Guitars",
+      "dom_price": "판매완료",
+      "dom_brand": "Michael Tuttle Guitars",
+      "ssr_has_jsonld": true,
+      "ssr_html_bytes": 450197
+    }
+  ]
+}

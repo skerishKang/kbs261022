@@ -1,0 +1,9 @@
+# Keep the generated data files byte-identical across platforms.
+# The CSVs are UTF-8 with BOM (Excel compatibility) and the JSON evidence files
+# are machine-generated - rewriting line endings would create noisy diffs.
+*.csv   text eol=lf
+*.json  text eol=lf
+*.jsonl text eol=lf
+*.md    text eol=lf
+*.js    text eol=lf
+*.jpg   binary

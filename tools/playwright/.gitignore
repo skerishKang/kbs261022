@@ -1,0 +1,21 @@
+# Playwright working artefacts.
+#
+# These rules live in a nested .gitignore on purpose: the repository root
+# .gitignore is edited by other issue branches, and touching it from this branch
+# creates a merge conflict. A nested file is a new path that nobody else owns,
+# so this branch stays conflict-free.
+
+# raw screenshots taken during a run (the curated copy is committed to
+# reports/screenshots/ by tools/playwright/collect-screenshots.js)
+screenshots/
+
+# scratch output of the exploratory probe scripts
+probes/
+
+# npm lockfile is environment specific
+package-lock.json
+
+# one-off scratch files
+*.png
+probe-out.json
+o1.json
