@@ -1,0 +1,44 @@
+{
+ "samasound:cate23": {
+  "unique": 2229,
+  "cached_pages": 113,
+  "last_page_marker": 112
+ },
+ "samasound:cate24": {
+  "unique": 2211,
+  "cached_pages": 112,
+  "last_page_marker": 111
+ },
+ "samasound:cate25": {
+  "unique": 2053,
+  "cached_pages": 104,
+  "last_page_marker": 103
+ },
+ "samamusic:cate42": {
+  "unique": 216,
+  "cached_pages": 12,
+  "last_page_marker": 11
+ },
+ "samamusic:cate97": {
+  "unique": 57,
+  "cached_pages": 4,
+  "last_page_marker": 3
+ },
+ "samamusic:cate1152": {
+  "unique": 583,
+  "cached_pages": 31,
+  "last_page_marker": 30
+ },
+ "samasound": {
+  "전체상품 cate23 unique": 2229,
+  "전체 카테고리 크롤 unique": 2281,
+  "cate23 밖에서만 발견": 52,
+  "cate23 에만 존재": 0
+ },
+ "samamusic": {
+  "sitemap product ids": 1597,
+  "목록 크롤 unique": 2294,
+  "sitemap 미포함(목록에서만)": 697,
+  "sitemap 에만 존재": 0
+ }
+}

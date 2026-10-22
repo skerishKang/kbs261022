@@ -1,0 +1,75 @@
+{
+ "product_db.xlsx": {
+  "local_path": "C:\\cgi-work\\catalog-data\\product_db.xlsx",
+  "bytes": 3232987,
+  "sha256": "2d7cc08771c54e74751362dd7141546e3ed47c1643091e0b1d70bbd5d450390e",
+  "published_in_repo": false
+ },
+ "db/catalog.full.json": {
+  "local_path": "C:\\cgi-work\\catalog-data\\db\\catalog.full.json",
+  "bytes": 20166800,
+  "sha256": "54596eefac8565de779249b7467a79c20ef7f542a83ca8f9afe995f644b9b0e5",
+  "published_in_repo": false
+ },
+ "db/products.full.json": {
+  "local_path": "C:\\cgi-work\\catalog-data\\db\\products.full.json",
+  "bytes": 12273027,
+  "sha256": "263c64f95829886417347f8d8d3b077fd0e2c3509303ece99ce8d55eb63c9080",
+  "published_in_repo": false
+ },
+ "db/products.full.js": {
+  "local_path": "C:\\cgi-work\\catalog-data\\db\\products.full.js",
+  "bytes": 12273255,
+  "sha256": "744d65e524632e222e8fdbd30eb4cd30238c368fefb95ec575d4744d20a750ec",
+  "published_in_repo": false
+ },
+ "db/product_db_compact.csv": {
+  "local_path": "C:\\cgi-work\\catalog-data\\db\\product_db_compact.csv",
+  "bytes": 2154083,
+  "sha256": "beb4dfe51e1f0e0266a3cd9e901c298549465436cc6aac8ed79d11651c7d7bc5",
+  "published_in_repo": true
+ },
+ "db/options_compact.csv": {
+  "local_path": "C:\\cgi-work\\catalog-data\\db\\options_compact.csv",
+  "bytes": 696491,
+  "sha256": "eec8afaaf238887556457f6c906f91d002da9afef43f7c09de83c8b316c6f290",
+  "published_in_repo": true
+ },
+ "all_detail.json": {
+  "local_path": "C:\\cgi-work\\catalog-data\\all_detail.json",
+  "bytes": 15218728,
+  "sha256": "fa19eb256127975307dad2b693d1acfc8d1695c15f49bff0a67af571e0f74e13",
+  "published_in_repo": false
+ },
+ "list_products.json": {
+  "local_path": "C:\\cgi-work\\catalog-data\\list_products.json",
+  "bytes": 2284757,
+  "sha256": "2b472e73dd99d7deafd512c451feaa79403ff5aa086c4bd3d0a08820cf820d95",
+  "published_in_repo": false
+ },
+ "samasound_detail.json": {
+  "local_path": "C:\\cgi-work\\catalog-data\\samasound_detail.json",
+  "bytes": 6914598,
+  "sha256": "331080f0c6f97a1eeced72722d987b4a70ecfe86b1a079001bb28a50c5370fda",
+  "published_in_repo": false
+ },
+ "samamusic_detail.json": {
+  "local_path": "C:\\cgi-work\\catalog-data\\samamusic_detail.json",
+  "bytes": 8853136,
+  "sha256": "288a00f2a4b78fc28b1a66f132b5475ee3e8abe29f9eae9e0515f3fa2d8b2444",
+  "published_in_repo": false
+ },
+ "verify/browser_verification.json": {
+  "local_path": "C:\\cgi-work\\catalog-data\\verify\\browser_verification.json",
+  "bytes": 77649,
+  "sha256": "3bf3b4c0ba740aa3b1b9b38eb658962ef0596c7824e0e8fb762693b23bbb0b35",
+  "published_in_repo": true
+ },
+ "verify/search_completeness.json": {
+  "local_path": "C:\\cgi-work\\catalog-data\\verify\\search_completeness.json",
+  "bytes": 73388,
+  "sha256": "12b1c188bf6b10997c968a192c520a9ad6fc24f509e6eba162bfd0a3cde3d9c4",
+  "published_in_repo": true
+ },
+ "_note": "대용량 원본(XLSX/전체 JSON)은 CGI-1 로컬에 보관한다. 공개 저장소에는 경량 CSV·통계·검증 JSON만 포함하며, 전체본은 tools/full_catalog/ 스크립트로 동일하게 재생성할 수 있다."
+}
