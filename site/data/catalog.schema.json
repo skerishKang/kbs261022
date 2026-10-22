@@ -1,0 +1,169 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/skerishKang/kbs261022/site/data/catalog.schema.json",
+  "title": "CGI 상품 카탈로그 데이터 계약 (v1.0)",
+  "description": "CGI 카탈로그 사이트가 기대하는 데이터 구조. 시연 초기 데이터는 공개 샘플로, 향후 전체 수집 결과(상품 마스터)를 같은 구조로 변환해 data/catalog.full.json 으로 두면 교체된다. 로더는 site/assets/data-loader.js 의 CGICatalog.load() 참조.",
+  "type": "object",
+  "required": ["meta", "categories", "brands", "products"],
+  "properties": {
+    "meta": {
+      "type": "object",
+      "description": "카탈로그 메타. 사이트 하단에 데이터 출처를 표기할 때 사용한다.",
+      "properties": {
+        "schema_version": { "type": "string" },
+        "catalog_id": { "type": "string" },
+        "generated_at": { "type": "string", "format": "date-time" },
+        "generated_by": { "type": "string" },
+        "data_basis": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "이 데이터를 만들 때 사용한 원본 수집 결과(파일/브랜치) 목록. 공개 범위만 기재한다."
+        },
+        "site_name": { "type": "string" },
+        "site_owner": { "type": "string" },
+        "disclaimer": { "type": "array", "items": { "type": "string" } },
+        "brand_statement": { "type": "string" }
+      }
+    },
+    "categories": {
+      "type": "array",
+      "description": "카테고리. 원본 삼아스토어 LNB 11종 구조를 재사용한다.",
+      "items": {
+        "type": "object",
+        "required": ["id", "name"],
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "parent_id": { "type": "string" },
+          "level": { "type": "integer" },
+          "path": { "type": "string" },
+          "product_count": { "type": "integer" },
+          "list_url": { "type": "string" }
+        }
+      }
+    },
+    "brands": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name"],
+        "properties": {
+          "name": { "type": "string" },
+          "count": { "type": "integer" }
+        }
+      }
+    },
+    "products": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "source_site", "source_product_id", "product_name",
+                     "published_price_state", "cgi_sale_status"],
+        "properties": {
+          "id": { "type": "string", "description": "고유키. 형식: {source_site}:{source_product_id}" },
+          "source_site": { "type": "string", "description": "samamusic.co.kr | samasound.co.kr" },
+          "source_site_label": { "type": "string" },
+          "source_product_id": { "type": "string", "description": "원본몰 상품 식별자" },
+          "source_category_id": { "type": "string" },
+          "source_category_path": { "type": "string" },
+          "brand": { "type": "string" },
+          "model": { "type": "string" },
+          "product_name": { "type": "string" },
+          "summary": { "type": "string" },
+          "manufacturer": { "type": "string" },
+          "country_of_origin": { "type": "string" },
+          "canonical_url": { "type": "string", "description": "원본 상품 페이지 URL (출처 표기용)" },
+          "source_list_url": { "type": "string" },
+          "specs": {
+            "type": "object",
+            "description": "원본 '기본 정보' 표의 라벨-값. 미확인 키는 넣지 않는다.",
+            "additionalProperties": { "type": "string" }
+          },
+          "options": {
+            "type": "array",
+            "description": "옵션 그룹. 선택지가 이어붙여져 있어 확정할 수 없으면 values_uncertain=true 로 두고 값을 쪼개지 않는다.",
+            "items": {
+              "type": "object",
+              "required": ["name", "values"],
+              "properties": {
+                "name": { "type": "string" },
+                "option_type": { "type": "string" },
+                "item_codes": { "type": "array", "items": { "type": "string" } },
+                "values_uncertain": { "type": "boolean" },
+                "values": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "label": { "type": "string" },
+                      "add_price": { "type": ["integer", "null"], "description": "옵션 추가가(원본 표기). 미확정이면 null." },
+                      "sold_out": { "type": "boolean" },
+                      "item_code": { "type": ["string", "null"] }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "bundled_items": {
+            "type": "array",
+            "description": "구성/추가상품 목록 (원본 addproducts). 옵션 그룹이 아니다.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": { "type": "string" },
+                "price_text": { "type": "string" },
+                "sold_out": { "type": "boolean" }
+              }
+            }
+          },
+          "image_urls": { "type": "array", "items": { "type": "string" } },
+          "image": { "type": "string" },
+          "published_price": {
+            "type": ["integer", "null"],
+            "description": "원본 공개가 숫자. 공개되지 않았으면 null (추정 금지)."
+          },
+          "published_price_text": { "type": "string" },
+          "published_price_state": {
+            "type": "string",
+            "enum": ["public", "inquiry_price", "missing", "sold_out_sale_completed"],
+            "description": "public=숫자 공개 / inquiry_price=공급처 문의 / missing=정보 없음 / sold_out_sale_completed=판매완료·품절"
+          },
+          "availability": { "type": "string" },
+          "review_count": { "type": "string" },
+          "extraction_method": { "type": "string" },
+          "verification_status": { "type": "string" },
+          "source_evidence": { "type": "string" },
+          "updated_at": { "type": "string" },
+          "cgi_sale_status": {
+            "type": "string",
+            "enum": ["approved", "unapproved"],
+            "description": "CGI가 실제 취급·판매를 승인했는지. 전체 수집 상품과 승인 상품은 다른 집합이다."
+          },
+          "cgi_sale_note": { "type": "string" },
+          "cgi_dealer_price": {
+            "type": ["number", "null"],
+            "description": "공급가. 미확정이면 null — 추정 금액을 넣지 않는다."
+          },
+          "cgi_dealer_price_state": { "type": "string", "enum": ["unconfirmed", "confirmed"] },
+          "cgi_stock": { "type": ["integer", "null"] },
+          "cgi_stock_state": { "type": "string", "enum": ["unconfirmed", "confirmed"] },
+          "naver_smartstore_mapping": {
+            "type": "object",
+            "description": "스마트스토어 개설 후 등록 데이터 생성용 매핑 초안. 확정값이 아니며 ready=false 를 유지한다.",
+            "properties": {
+              "ready": { "type": "boolean" },
+              "product_name": { "type": "string" },
+              "category_id": { "type": ["string", "null"] },
+              "option_type": { "type": ["string", "null"] },
+              "price": { "type": ["number", "null"] },
+              "stock": { "type": ["integer", "null"] },
+              "image_urls": { "type": "array", "items": { "type": "string" } },
+              "memo": { "type": "string" }
+            }
+          }
+        }
+      }
+    }
+  }
+}
