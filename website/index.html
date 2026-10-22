@@ -223,9 +223,14 @@
       <div class="brand-bar">
         <a class="btn btn-primary" href="#" id="mallLinkProducts" data-mall-link>제품 보기 — CGI 상품 쇼핑몰로 이동 <span aria-hidden="true">→</span></a>
         <span class="brand-bar-note">브랜드를 누르면 쇼핑몰의 해당 브랜드 목록으로 바로 이동합니다.</span>
+        <label class="brand-filter">
+          <span class="sr-only">브랜드 이름으로 좁히기</span>
+          <input type="search" id="brandFilter" placeholder="브랜드 이름으로 좁히기" autocomplete="off">
+        </label>
       </div>
 
       <ul class="brand-grid" id="brandGrid"><!-- JS 로 주입 (config.js / 쇼핑몰 데이터) --></ul>
+      <p class="brand-empty" id="brandEmpty" hidden>해당 이름과 일치하는 브랜드가 없습니다. 검색어를 지우고 전체 목록을 보세요.</p>
       <p class="note" id="brandNote">
         브랜드 목록은 현재 취급 기준입니다. 실제 취급 범위와 판매 가능 여부는 대표님 확인 후 확정되며,
         쇼핑몰에 표시된 가격은 원본 공개 페이지의 참고용 공개가입니다.

@@ -358,7 +358,8 @@
     }
 
     app.innerHTML =
-      '<div class="breadcrumb"><a href="#/">홈</a> › <a href="' + esc(listUrl({ q: '', brands: [], cats: [], sites: [] })) + '">상품 목록</a> › ' + esc(product.name) + '</div>' +
+      '<div class="breadcrumb"><a href="#/">홈</a> › <a href="' + esc(listUrl({ q: '', brands: [], cats: [], sites: [] })) + '">상품 목록</a> › ' + esc(product.name) +
+        ' &nbsp;<a class="home-link" href="../website/index.html" data-home-link>← 회사 홈페이지</a></div>' +
       '<div class="detail-grid">' +
         '<div>' +
           '<div class="gallery-main">' + mainImg + '</div>' +
@@ -465,6 +466,7 @@
 
   function render() {
     state.route = parseHash();
+    applySiteConfig();
     var nav = document.querySelectorAll('.header-nav a');
     for (var i = 0; i < nav.length; i++) {
       nav[i].classList.toggle('is-active', nav[i].getAttribute('data-nav') === state.route.view ||
@@ -476,6 +478,25 @@
     else renderAbout();
     renderFooterSources();
     if (location.hash === '#/products') window.scrollTo(0, 0);
+  }
+
+  /* ------------------------------------------- 쇼핑몰 ↔ 홈페이지 연결 설정 */
+  function siteConfig() {
+    return window.CGI_SITE_CONFIG || {};
+  }
+
+  /* config.js 의 homepageUrl 을 모든 '회사 홈페이지' 링크에 적용한다.
+     (HTML 에는 기본값이 들어 있어 JS 없이도 동작한다) */
+  function applySiteConfig() {
+    var cfg = siteConfig();
+    if (!cfg.homepageUrl) return;
+    var links = document.querySelectorAll('[data-home-link]');
+    for (var i = 0; i < links.length; i++) {
+      links[i].setAttribute('href', cfg.homepageUrl);
+      if (cfg.homepageLabel && links[i].hasAttribute('data-home-label')) {
+        links[i].textContent = cfg.homepageLabel;
+      }
+    }
   }
 
   function renderFooterSources() {
