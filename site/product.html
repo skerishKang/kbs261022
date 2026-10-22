@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CGI 상품 카탈로그 · 상품 상세</title>
+<link rel="canonical" href="../index.html">
+<meta http-equiv="refresh" content="0; url=index.html">
+<script>
+  // 상세 진입 래퍼: index.html#/product/<id> 로 넘긴다 (홈페이지/외부 링크용)
+  (function () {
+    var id = new URLSearchParams(location.search).get('id');
+    var target = 'index.html' + (id ? '#/product/' + encodeURIComponent(id) : '#/products');
+    location.replace(target);
+  })();
+</script>
+</head>
+<body>
+<p>상품 상세 페이지로 이동 중입니다… <a href="index.html">바로 이동</a></p>
+</body>
+</html>
