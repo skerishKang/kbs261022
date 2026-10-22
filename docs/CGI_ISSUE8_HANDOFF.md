@@ -10,10 +10,10 @@
 
 | 항목 | 값 |
 |---|---|
-| 배치 ID | `batch-20261022T033231Z-166c1a3d` |
-| 도착 경로 | `\\100.124.21.64\Users\Public\CGI-HANDOFF\batch-20261022T033231Z-166c1a3d` |
+| 배치 ID | `batch-20261022T033550Z-def738aa` (최종) · `batch-20261022T033231Z-166c1a3d` (최초, 28파일) |
+| 도착 경로 | `\\100.124.21.64\Users\Public\CGI-HANDOFF\batch-20261022T033550Z-def738aa` |
 | 전송 방식 | `smb-over-tailscale` (Tailscale 100.124.21.64:445) |
-| 전송 파일 | **28개** |
+| 전송 파일 | **29개** (최종) |
 | 무결성 | `integrity = PASS` (모든 파일 SHA256 재계산 일치) |
 | 충돌 / 실패 | 0 / 0 |
 | 매니페스트 | `handoff.json`, `manifest.sha256` (sha256sum 호환) |
@@ -77,11 +77,11 @@ COM1 에서는 저장소를 체크아웃한 뒤 배치 안의 파일을 그대�
 ```powershell
 # 1) 수신 배치 검증 (COM1 측)
 powershell -ExecutionPolicy Bypass -File tools/handoff/verify_handoff.ps1 `
-  -BatchPath "\\100.124.21.64\Users\Public\CGI-HANDOFF\batch-20261022T033231Z-166c1a3d"
+  -BatchPath "\\100.124.21.64\Users\Public\CGI-HANDOFF\batch-20261022T033550Z-def738aa"
 
 # 2) 작업 복제본에 적용 후 PR (COM1 측)
 powershell -ExecutionPolicy Bypass -File tools/handoff/receive_to_pr.ps1 `
-  -BatchPath "\\100.124.21.64\Users\Public\CGI-HANDOFF\batch-20261022T033231Z-166c1a3d" `
+  -BatchPath "\\100.124.21.64\Users\Public\CGI-HANDOFF\batch-20261022T033550Z-def738aa" `
   -RepoPath "<COM1 의 kbs261022 작업복제본>"
 ```
 
@@ -91,7 +91,7 @@ powershell -ExecutionPolicy Bypass -File tools/handoff/receive_to_pr.ps1 `
 수동으로 처리할 경우:
 
 ```powershell
-$batch = "\\100.124.21.64\Users\Public\CGI-HANDOFF\batch-20261022T033231Z-166c1a3d"
+$batch = "\\100.124.21.64\Users\Public\CGI-HANDOFF\batch-20261022T033550Z-def738aa"
 $repo  = "C:\work\kbs261022"
 Copy-Item "$batch\payload\wt-issue8\*" $repo -Recurse -Force
 cd $repo
