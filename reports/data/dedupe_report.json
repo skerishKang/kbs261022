@@ -1,0 +1,473 @@
+{
+  "record_count": 29,
+  "verdict_counts": {
+    "candidate": 2,
+    "confirmed": 11
+  },
+  "group_count": 11,
+  "groups": {
+    "samamusic:5557": [
+      "samamusic:5557",
+      "samasound:3875"
+    ],
+    "samamusic:5564": [
+      "samamusic:5564",
+      "samasound:3874"
+    ],
+    "samamusic:5563": [
+      "samamusic:5563",
+      "samasound:3873"
+    ],
+    "samamusic:5562": [
+      "samamusic:5562",
+      "samasound:3872"
+    ],
+    "samamusic:5490": [
+      "samamusic:5490",
+      "samasound:3825"
+    ],
+    "samamusic:5491": [
+      "samamusic:5491",
+      "samasound:3824"
+    ],
+    "samamusic:5492": [
+      "samamusic:5492",
+      "samasound:3823"
+    ],
+    "samamusic:5493": [
+      "samamusic:5493",
+      "samasound:3822"
+    ],
+    "samamusic:5525": [
+      "samamusic:5525",
+      "samasound:3738"
+    ],
+    "samamusic:5513": [
+      "samamusic:5513",
+      "samasound:3735"
+    ],
+    "samamusic:5611": [
+      "samamusic:5611",
+      "samasound:3863"
+    ]
+  },
+  "same_site_duplicates": [],
+  "candidates": [
+    {
+      "left_source_key": "samamusic:5490",
+      "right_source_key": "samasound:3824",
+      "verdict": "candidate",
+      "auto_mergeable": false,
+      "shared_phrases": [
+        "KSM32C"
+      ],
+      "signals": {
+        "name_similarity": 0.7778,
+        "org_value_agreement": true,
+        "org_fields_compared": [
+          "brand~manufacturer"
+        ],
+        "variant_conflict": true,
+        "source_model_conflict": false,
+        "left_model_field": "KSM32C/HM",
+        "right_model_field": null,
+        "shared_phrase_cardinality": {
+          "KSM32C": {
+            "left": 2,
+            "right": 2
+          }
+        },
+        "unique_on_both_sites": false
+      },
+      "reasons": [
+        "변형 서명 충돌(예: 라이트 세트 vs 프리미엄 세트) → 자동 병합 금지"
+      ]
+    },
+    {
+      "left_source_key": "samamusic:5491",
+      "right_source_key": "samasound:3825",
+      "verdict": "candidate",
+      "auto_mergeable": false,
+      "shared_phrases": [
+        "KSM32C"
+      ],
+      "signals": {
+        "name_similarity": 0.7778,
+        "org_value_agreement": true,
+        "org_fields_compared": [
+          "brand~manufacturer"
+        ],
+        "variant_conflict": true,
+        "source_model_conflict": false,
+        "left_model_field": "KSM32C/SM",
+        "right_model_field": null,
+        "shared_phrase_cardinality": {
+          "KSM32C": {
+            "left": 2,
+            "right": 2
+          }
+        },
+        "unique_on_both_sites": false
+      },
+      "reasons": [
+        "변형 서명 충돌(예: 라이트 세트 vs 프리미엄 세트) → 자동 병합 금지"
+      ]
+    },
+    {
+      "left_source_key": "samamusic:5490",
+      "right_source_key": "samasound:3825",
+      "verdict": "confirmed",
+      "auto_mergeable": true,
+      "shared_phrases": [
+        "KSM32C"
+      ],
+      "signals": {
+        "name_similarity": 1.0,
+        "org_value_agreement": true,
+        "org_fields_compared": [
+          "brand~manufacturer"
+        ],
+        "variant_conflict": false,
+        "source_model_conflict": false,
+        "left_model_field": "KSM32C/HM",
+        "right_model_field": null,
+        "shared_phrase_cardinality": {
+          "KSM32C": {
+            "left": 2,
+            "right": 2
+          }
+        },
+        "unique_on_both_sites": false,
+        "variant_signature_left": [
+          "라이트",
+          "마이크",
+          "스튜디오",
+          "콘덴서"
+        ],
+        "variant_signature_right": [
+          "라이트",
+          "마이크",
+          "스튜디오",
+          "콘덴서"
+        ],
+        "variant_agreement": true
+      },
+      "reasons": [
+        "모호한 모델 표현 ['KSM32C'] 이지만 변형 서명이 일치하고 이름이 유사"
+      ]
+    },
+    {
+      "left_source_key": "samamusic:5491",
+      "right_source_key": "samasound:3824",
+      "verdict": "confirmed",
+      "auto_mergeable": true,
+      "shared_phrases": [
+        "KSM32C"
+      ],
+      "signals": {
+        "name_similarity": 1.0,
+        "org_value_agreement": true,
+        "org_fields_compared": [
+          "brand~manufacturer"
+        ],
+        "variant_conflict": false,
+        "source_model_conflict": false,
+        "left_model_field": "KSM32C/SM",
+        "right_model_field": null,
+        "shared_phrase_cardinality": {
+          "KSM32C": {
+            "left": 2,
+            "right": 2
+          }
+        },
+        "unique_on_both_sites": false,
+        "variant_signature_left": [
+          "마이크",
+          "스튜디오",
+          "콘덴서",
+          "프리미엄"
+        ],
+        "variant_signature_right": [
+          "마이크",
+          "스튜디오",
+          "콘덴서",
+          "프리미엄"
+        ],
+        "variant_agreement": true
+      },
+      "reasons": [
+        "모호한 모델 표현 ['KSM32C'] 이지만 변형 서명이 일치하고 이름이 유사"
+      ]
+    },
+    {
+      "left_source_key": "samamusic:5492",
+      "right_source_key": "samasound:3823",
+      "verdict": "confirmed",
+      "auto_mergeable": true,
+      "shared_phrases": [
+        "KSM40C"
+      ],
+      "signals": {
+        "name_similarity": 1.0,
+        "org_value_agreement": true,
+        "org_fields_compared": [
+          "brand~manufacturer"
+        ],
+        "variant_conflict": false,
+        "source_model_conflict": false,
+        "left_model_field": "KSM40C",
+        "right_model_field": null,
+        "shared_phrase_cardinality": {
+          "KSM40C": {
+            "left": 1,
+            "right": 1
+          }
+        },
+        "unique_on_both_sites": true
+      },
+      "reasons": [
+        "공통 모델 표현 ['KSM40C'] 이 양 사이트에서 각각 단일 상품"
+      ]
+    },
+    {
+      "left_source_key": "samamusic:5493",
+      "right_source_key": "samasound:3822",
+      "verdict": "confirmed",
+      "auto_mergeable": true,
+      "shared_phrases": [
+        "KSM44MP"
+      ],
+      "signals": {
+        "name_similarity": 1.0,
+        "org_value_agreement": true,
+        "org_fields_compared": [
+          "brand~manufacturer"
+        ],
+        "variant_conflict": false,
+        "source_model_conflict": false,
+        "left_model_field": "KSM44MP",
+        "right_model_field": null,
+        "shared_phrase_cardinality": {
+          "KSM44MP": {
+            "left": 1,
+            "right": 1
+          }
+        },
+        "unique_on_both_sites": true
+      },
+      "reasons": [
+        "공통 모델 표현 ['KSM44MP'] 이 양 사이트에서 각각 단일 상품"
+      ]
+    },
+    {
+      "left_source_key": "samamusic:5513",
+      "right_source_key": "samasound:3735",
+      "verdict": "confirmed",
+      "auto_mergeable": true,
+      "shared_phrases": [
+        "SLXD1"
+      ],
+      "signals": {
+        "name_similarity": 0.25,
+        "org_value_agreement": true,
+        "org_fields_compared": [
+          "brand~manufacturer"
+        ],
+        "variant_conflict": false,
+        "source_model_conflict": false,
+        "left_model_field": null,
+        "right_model_field": null,
+        "shared_phrase_cardinality": {
+          "SLXD1": {
+            "left": 1,
+            "right": 1
+          }
+        },
+        "unique_on_both_sites": true
+      },
+      "reasons": [
+        "공통 모델 표현 ['SLXD1'] 이 양 사이트에서 각각 단일 상품"
+      ]
+    },
+    {
+      "left_source_key": "samamusic:5525",
+      "right_source_key": "samasound:3738",
+      "verdict": "confirmed",
+      "auto_mergeable": true,
+      "shared_phrases": [
+        "SLXD4D"
+      ],
+      "signals": {
+        "name_similarity": 0.2,
+        "org_value_agreement": true,
+        "org_fields_compared": [
+          "brand~manufacturer"
+        ],
+        "variant_conflict": false,
+        "source_model_conflict": false,
+        "left_model_field": null,
+        "right_model_field": null,
+        "shared_phrase_cardinality": {
+          "SLXD4D": {
+            "left": 1,
+            "right": 1
+          }
+        },
+        "unique_on_both_sites": true
+      },
+      "reasons": [
+        "공통 모델 표현 ['SLXD4D'] 이 양 사이트에서 각각 단일 상품"
+      ]
+    },
+    {
+      "left_source_key": "samamusic:5557",
+      "right_source_key": "samasound:3875",
+      "verdict": "confirmed",
+      "auto_mergeable": true,
+      "shared_phrases": [
+        "WL185MBCTQG"
+      ],
+      "signals": {
+        "name_similarity": 0.3333,
+        "org_value_agreement": true,
+        "org_fields_compared": [
+          "brand~manufacturer"
+        ],
+        "variant_conflict": false,
+        "source_model_conflict": false,
+        "left_model_field": "WL185MB/C-TQG",
+        "right_model_field": null,
+        "shared_phrase_cardinality": {
+          "WL185MBCTQG": {
+            "left": 1,
+            "right": 1
+          }
+        },
+        "unique_on_both_sites": true
+      },
+      "reasons": [
+        "공통 모델 표현 ['WL185MBCTQG'] 이 양 사이트에서 각각 단일 상품"
+      ]
+    },
+    {
+      "left_source_key": "samamusic:5562",
+      "right_source_key": "samasound:3872",
+      "verdict": "confirmed",
+      "auto_mergeable": true,
+      "shared_phrases": [
+        "SM31FHTQG"
+      ],
+      "signals": {
+        "name_similarity": 0.2,
+        "org_value_agreement": true,
+        "org_fields_compared": [
+          "brand~manufacturer"
+        ],
+        "variant_conflict": false,
+        "source_model_conflict": false,
+        "left_model_field": "SM31FH-TQG",
+        "right_model_field": null,
+        "shared_phrase_cardinality": {
+          "SM31FHTQG": {
+            "left": 1,
+            "right": 1
+          }
+        },
+        "unique_on_both_sites": true
+      },
+      "reasons": [
+        "공통 모델 표현 ['SM31FHTQG'] 이 양 사이트에서 각각 단일 상품"
+      ]
+    },
+    {
+      "left_source_key": "samamusic:5563",
+      "right_source_key": "samasound:3873",
+      "verdict": "confirmed",
+      "auto_mergeable": true,
+      "shared_phrases": [
+        "SM35TQG"
+      ],
+      "signals": {
+        "name_similarity": 0.1667,
+        "org_value_agreement": true,
+        "org_fields_compared": [
+          "brand~manufacturer"
+        ],
+        "variant_conflict": false,
+        "source_model_conflict": false,
+        "left_model_field": "SM35-TQG",
+        "right_model_field": null,
+        "shared_phrase_cardinality": {
+          "SM35TQG": {
+            "left": 1,
+            "right": 1
+          }
+        },
+        "unique_on_both_sites": true
+      },
+      "reasons": [
+        "공통 모델 표현 ['SM35TQG'] 이 양 사이트에서 각각 단일 상품"
+      ]
+    },
+    {
+      "left_source_key": "samamusic:5564",
+      "right_source_key": "samasound:3874",
+      "verdict": "confirmed",
+      "auto_mergeable": true,
+      "shared_phrases": [
+        "SM35XLR"
+      ],
+      "signals": {
+        "name_similarity": 0.2222,
+        "org_value_agreement": true,
+        "org_fields_compared": [
+          "brand~manufacturer"
+        ],
+        "variant_conflict": false,
+        "source_model_conflict": false,
+        "left_model_field": "SM35-XLR",
+        "right_model_field": null,
+        "shared_phrase_cardinality": {
+          "SM35XLR": {
+            "left": 1,
+            "right": 1
+          }
+        },
+        "unique_on_both_sites": true
+      },
+      "reasons": [
+        "공통 모델 표현 ['SM35XLR'] 이 양 사이트에서 각각 단일 상품"
+      ]
+    },
+    {
+      "left_source_key": "samamusic:5611",
+      "right_source_key": "samasound:3863",
+      "verdict": "confirmed",
+      "auto_mergeable": true,
+      "shared_phrases": [
+        "MVX2UG2"
+      ],
+      "signals": {
+        "name_similarity": 0.0,
+        "org_value_agreement": true,
+        "org_fields_compared": [
+          "brand~manufacturer"
+        ],
+        "variant_conflict": false,
+        "source_model_conflict": false,
+        "left_model_field": "MVX2UG2 (2세대)",
+        "right_model_field": null,
+        "shared_phrase_cardinality": {
+          "MVX2UG2": {
+            "left": 1,
+            "right": 1
+          }
+        },
+        "unique_on_both_sites": true
+      },
+      "reasons": [
+        "공통 모델 표현 ['MVX2UG2'] 이 양 사이트에서 각각 단일 상품"
+      ]
+    }
+  ]
+}

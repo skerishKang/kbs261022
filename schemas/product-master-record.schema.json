@@ -1,0 +1,209 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/skerishKang/kbs261022/schemas/product-master-record.json",
+  "title": "CGI 통합 상품 마스터 레코드",
+  "type": "object",
+  "required": [
+    "source_site",
+    "source_product_id",
+    "canonical_url",
+    "name",
+    "brand",
+    "manufacturer",
+    "model",
+    "category_path",
+    "specs",
+    "image_urls",
+    "public_price",
+    "dealer_price",
+    "availability",
+    "extraction_time",
+    "source_evidence",
+    "verification_status"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "source_site": {
+      "type": "string",
+      "enum": [
+        "samamusic",
+        "samasound"
+      ]
+    },
+    "source_product_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_key": {
+      "type": "string",
+      "pattern": "^[a-z]+:[0-9A-Za-z_-]+$"
+    },
+    "canonical_url": {
+      "type": "string",
+      "minLength": 1
+    },
+    "collection_url": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "brand": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "manufacturer": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "model": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "category_path": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "category_namespace": {
+      "type": "string",
+      "enum": [
+        "samasound.cate_no",
+        "samamusic.cate_no"
+      ]
+    },
+    "category_path_cate_no": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "category_leaf_cate_no": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "specs": {
+      "type": "object"
+    },
+    "options": {
+      "type": "array"
+    },
+    "image_urls": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "public_price": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "public_price_text": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "price_type": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "public_selling_price",
+        "inquiry",
+        "unknown",
+        null
+      ]
+    },
+    "dealer_price": {
+      "type": [
+        "null"
+      ],
+      "description": "공개 근거 없음. 항상 null."
+    },
+    "availability": {
+      "type": [
+        "null"
+      ],
+      "description": "공개 근거 없음. 항상 null."
+    },
+    "extraction_time": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "extraction_method": {
+      "type": "string"
+    },
+    "source_evidence": {
+      "type": "object"
+    },
+    "verification_status": {
+      "type": "string",
+      "enum": [
+        "browser_verified",
+        "http_verified",
+        "browser_http_crossverified",
+        "unverified"
+      ]
+    },
+    "derived": {
+      "type": "object"
+    },
+    "naver_product_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "erp_item_code": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "smartstore_category_no": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "mapping_ready": {
+      "type": "boolean"
+    },
+    "quality_flags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "dedupe_group_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "dedupe_confidence": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  }
+}
