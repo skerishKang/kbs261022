@@ -1,0 +1,23 @@
+{
+ "product_db.xlsx": {
+  "path": "C:\\cgi-work\\catalog-data\\product_db.xlsx",
+  "bytes": 3232988,
+  "sha256": "fef5d6a269cf79afe472db2a5070317bd7f9da039eb2d51b18495d910691dac6"
+ },
+ "catalog.full.json": {
+  "path": "C:\\cgi-work\\catalog-data\\db\\catalog.full.json",
+  "bytes": 20166800,
+  "sha256": "92f36b68e23081d615312b52eeba1195f142aaed14d092277854d7645e4c6773"
+ },
+ "all_detail.json": {
+  "path": "C:\\cgi-work\\catalog-data\\all_detail.json",
+  "bytes": 15218728,
+  "sha256": "fa19eb256127975307dad2b693d1acfc8d1695c15f49bff0a67af571e0f74e13"
+ },
+ "list_products.json": {
+  "path": "C:\\cgi-work\\catalog-data\\list_products.json",
+  "bytes": 2284757,
+  "sha256": "2b472e73dd99d7deafd512c451feaa79403ff5aa086c4bd3d0a08820cf820d95"
+ },
+ "_note": "대용량 원본은 CGI-1 로컬 보관. 저장소에는 data/full_catalog 경량 CSV·통계만 포함."
+}
