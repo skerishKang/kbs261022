@@ -83,7 +83,7 @@ NEXT=#19 XLSX 검수 후 #11 site/ 데이터 경로 연결
 | `build_catalog_data.py` (HTML 사이트 데이터 경로) | **main (PR #17)** | 본 PR 은 **건드리지 않음**. 40컬럼 마스터 CSV 를 그대로 넣으면 재사용 가능(§6) |
 | `tools/product_master/` (정규화·중복·검증) | **PR #16** | **중복 개발하지 않음.** 중복 후보 산출은 마스터 필드로 계산해 CSV 제출(§5.4) |
 
-> **새로 만든 것은 "전량 수집 오케스트레이터 + 검증기 + XLSX 빌더" 뿐**이고, 이들은 `tools/full_catalog/` 라는 충돌 없는 신규 경로에 두었다.
+> **새로 만든 것은 "전량 수집 오케스트레이터 + 검증기 + XLSX 빌더" 뿐**이고, 이들은 `tools/catalog_collection/` 라는 충돌 없는 신규 경로에 두었다.
 
 ### 2.2 수집 파이프라인
 
@@ -184,6 +184,32 @@ NEXT=#19 XLSX 검수 후 #11 site/ 데이터 경로 연결
 
 > 두 결함 모두 **브라우저 렌더 이미지 수와 수집 이미지 수의 대조에서 드러났다.** 수집기 원본(PR #12)은 수정하지 않았고, 상위 반영이 필요하므로 §8 에 별도 보고한다.
 
+#### 3.3.1 다른 #19 PR 과의 교차 비교 (D-1/D-2 의 외부 확인)
+
+작업 도중 **PR #24**(`feature/issue-19-full-catalog-db`) · **PR #26**(`feature/issue-19-full-catalog`) 이 동일 #19 범위에서 병렬 진행되어, 그 산출 통계와 내 산출을 **수치로 교차 검증**했다.
+
+| 지표 | 내 측정(PR #27) | PR #24 산출 | 판정 |
+|---|---:|---:|---|
+| samasound / samamusic / 합계 | 2,281 / 2,294 / **4,575** | 2,281 / 2,294 / **4,575** | **일치** |
+| 옵션 보유 상품 | 587 | 587 | **일치** |
+| 이미지 보유 상품 | 4,575 | 4,575 | **일치** |
+| 공개 판매가 | 2,117 | 2,117 | **일치** |
+| inquiry_price | 2,370 (=2,281+89) | 2,370 | **일치** |
+| sold_out_sale_completed | 87 | 87 | **일치** |
+| **평균 이미지 수** | **3.6장** | **10.9장** | **불일치 → D-1/D-2** |
+| **최대 이미지 수** | **21장** | **71장** | **불일치 → D-1/D-2** |
+| 비상품 이미지 포함 | **0건** | 다수 | **불일치 → D-1** |
+
+> **핵심**: 4,575건의 **건수와 핵심 필드 개수는 두 작업이 완전히 일치**해 4,575 라는 수치가 재현 가능함을 확인해 준다. 그러나 **이미지 필드만 크게 어긋난다.** PR #24 산출은 삼아스토어 358번에 `image_count=14`(실제 상품 이미지 4), 삼아사운드 776번에 `image_count=3`(실제 2, big 누락) 로, **D-1(비상품 이미지 혼입) + D-2(대표 이미지 누락)** 이 그대로 재현된다.
+> 즉 **PR #24/#26 의 이미지 필드는 보정 없이 사용하면 안 된다.** §3.3 의 오버라이드(또는 PR #12 수집기 상위 수정)를 적용해야 한다.
+
+| # | 항목 | 내용 |
+|---|---|---|
+| 경로 충돌 | PR #24 와 **동일 경로 0건**. PR #26 과는 `tools/catalog_collection/README.md` 1건만 동일 → **본 PR 에서 도구 디렉터리를 `tools/catalog_collection/` 로 변경**해 **동일 경로 0건**으로 해소 |
+| 본 PR 의 고유 기여 | ① 브라우저 2층 교차검증(48건 100%) ② 이미지 정책 오버라이드(D-1/D-2) ③ Tri-B 공개검색 4중 교차(3,694/1,400) ④ **이카운트 실계정 근거(품목 964/거래처 1,505)** ⑤ Tri-B 4단계 카테고리 트리(893) ⑥ 40컬럼 마스터 + #11 빌더 직접 연결 |
+
+
+
 ### 3.4 기록한 주의점 (오류 아님)
 
 | 항목 | 내용 |
@@ -281,11 +307,11 @@ NEXT=#19 XLSX 검수 후 #11 site/ 데이터 경로 연결
 
 | 파일 | 내용 |
 |---|---|
-| `tools/full_catalog/collect_full_catalog.py` | 전체 수집 오케스트레이터 (PR #12 수집기 재사용) |
-| `tools/full_catalog/verify_browser.py` | Playwright 2층 교차검증기 |
-| `tools/full_catalog/dalue_export_full.py` | Tri-B 공개검색 API 전체 덤프 |
-| `tools/full_catalog/build_xlsx_db.py` | #19 XLSX 7시트 빌더 |
-| `tools/full_catalog/README.md` | 절차·환경·재현 명령 |
+| `tools/catalog_collection/collect_full_catalog.py` | 전체 수집 오케스트레이터 (PR #12 수집기 재사용) |
+| `tools/catalog_collection/verify_browser.py` | Playwright 2층 교차검증기 |
+| `tools/catalog_collection/dalue_export_full.py` | Tri-B 공개검색 API 전체 덤프 |
+| `tools/catalog_collection/build_xlsx_db.py` | #19 XLSX 7시트 빌더 |
+| `tools/catalog_collection/README.md` | 절차·환경·재현 명령 |
 | `reports/full-catalog-collection-report.md` | 본 보고서 |
 | `reports/customer-summary-full-catalog.md` | 고객용 요약 |
 | `docs/CGI_ISSUE19_HANDOFF.md` | #19 담당자 인계 |
@@ -370,7 +396,7 @@ PY
 ### 7.1 제공 형태
 
 ```
-tools/full_catalog/
+tools/catalog_collection/
 ├── README.md                      # 절차·환경·재현 명령·주의사항
 ├── collect_full_catalog.py        # 전체 수집 오케스트레이터
 ├── verify_browser.py              # Playwright 2층 교차검증
@@ -388,24 +414,24 @@ pip install requests openpyxl playwright && python -m playwright install chromiu
 # PR #12 수집기가 main 에 없으면 자동 fetch 된다(수정 없음)
 
 # 1) Tri-A / Tri-B 카테고리 + 상세 전체 수집
-python tools/full_catalog/collect_full_catalog.py --stage categories --site samasound
-python tools/full_catalog/collect_full_catalog.py --stage categories --site samamusic
-python tools/full_catalog/collect_full_catalog.py --stage details --site samasound --workers 4
-python tools/full_catalog/collect_full_catalog.py --stage details --site samamusic --workers 4
-python tools/full_catalog/collect_full_catalog.py --stage merge
+python tools/catalog_collection/collect_full_catalog.py --stage categories --site samasound
+python tools/catalog_collection/collect_full_catalog.py --stage categories --site samamusic
+python tools/catalog_collection/collect_full_catalog.py --stage details --site samasound --workers 4
+python tools/catalog_collection/collect_full_catalog.py --stage details --site samamusic --workers 4
+python tools/catalog_collection/collect_full_catalog.py --stage merge
 
 # 2) Tri-B 스토어 전체 인덱스(비노출 포함) — 공개검색 API
 export DALUE_API_KEY=<스토어 공개 검색키>
-python tools/full_catalog/dalue_export_full.py --out .work/full_catalog/triB_dalue_full.json
+python tools/catalog_collection/dalue_export_full.py --out .work/full_catalog/triB_dalue_full.json
 
 # 3) 브라우저 교차검증
-python tools/full_catalog/verify_browser.py \
+python tools/catalog_collection/verify_browser.py \
   --master .work/full_catalog/product_master_full.csv \
   --sample .work/full_catalog/verify_sample.csv \
   --out .work/full_catalog/browser_verification.csv
 
 # 4) XLSX
-python tools/full_catalog/build_xlsx_db.py \
+python tools/catalog_collection/build_xlsx_db.py \
   --master .work/full_catalog/product_master_full.csv \
   --cats   .work/full_catalog/category_catalog_full.csv \
   --quality .work/full_catalog/product_master_full_quality.csv \
@@ -429,7 +455,8 @@ python tools/full_catalog/build_xlsx_db.py \
 | 3 | **PR #16** | 중복 후보 산출을 PR #16 의 `dedupe` 모듈로 이관 가능(본 PR 은 근거 컬럼만 제공) |
 | 4 | **#11 / PR #15 (HTML 사이트)** | `site/data/products.json` 39건 → 4,575건 재생성 명령은 §6. `site/` 파일은 본 PR 이 건드리지 않았다 |
 | 5 | **#19 담당자** | XLSX 7시트 빌더를 제공했으므로 중복 구현하지 말 것. `docs/CGI_ISSUE19_HANDOFF.md` 참조 |
-| 6 | **대표** | 20,000개 근거(§4.3) · CGI 판매가/공급가 승인 · 네이버 카테고리 매핑 결정 필요 |
+| 6 | **PR #24 / PR #26 (병렬 #19 작업)** | ① **이미지 필드에 D-1/D-2 결함이 동일하게 재현**됨(평균 10.9장 vs 본 PR 3.6장). §3.3 의 오버라이드 적용 필요 ② 본 PR 과 동일 경로 0건(도구 디렉터리 `tools/catalog_collection/` 로 분리). ③ 수치(4,575 / 587 / 2,117 / 2,370 / 87)는 **완전 일치** — 중복 수집이 아니라 **교차 검증**으로 활용 가능 |
+| 7 | **대표** | 20,000개 근거(§4.3) · CGI 판매가/공급가 승인 · 네이버 카테고리 매핑 결정 필요 |
 
 ---
 

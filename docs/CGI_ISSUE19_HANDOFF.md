@@ -12,10 +12,10 @@
 |---|---|---|
 | 정본 데이터 | 40컬럼 상품 마스터 4,575행 (CSV/JSON) | 로컬 `.work/full_catalog/product_master_full.csv` / `.json` |
 | XLSX | 7시트 (4,575행) | 로컬 `.work/full_catalog/product_master_full.xlsx` |
-| 빌더 코드 | XLSX 생성기 | `tools/full_catalog/build_xlsx_db.py` |
-| 수집 코드 | 전체 수집 오케스트레이터 | `tools/full_catalog/collect_full_catalog.py` |
-| 검증 코드 | Playwright 2층 교차검증 | `tools/full_catalog/verify_browser.py` |
-| 공개 API 덤프 | Tri-B 스토어 전체 인덱스 3,694건 | `tools/full_catalog/dalue_export_full.py` |
+| 빌더 코드 | XLSX 생성기 | `tools/catalog_collection/build_xlsx_db.py` |
+| 수집 코드 | 전체 수집 오케스트레이터 | `tools/catalog_collection/collect_full_catalog.py` |
+| 검증 코드 | Playwright 2층 교차검증 | `tools/catalog_collection/verify_browser.py` |
+| 공개 API 덤프 | Tri-B 스토어 전체 인덱스 3,694건 | `tools/catalog_collection/dalue_export_full.py` |
 | 카테고리 카탈로그 | 893행 (2사이트) | `reports/samples/category_catalog_full.csv` (공개) / 로컬 전문본 |
 | 품질 통계 | 필드별 확보율 · 공개가 상태 | `reports/samples/full-catalog-quality.csv` (공개) |
 | 규모 분해 | 20,000 주장 대조 근거 | `reports/samples/full-catalog-scale.json` (공개) |
@@ -78,7 +78,7 @@
 ## 4. #19 담당자가 해야 할 것 / 하지 말 것
 
 **하지 말 것**
-- XLSX 빌더를 다시 만들지 말 것 → `tools/full_catalog/build_xlsx_db.py` 로 생성 가능
+- XLSX 빌더를 다시 만들지 말 것 → `tools/catalog_collection/build_xlsx_db.py` 로 생성 가능
 - 수집기를 다시 만들지 말 것 → PR #12 수집기를 재사용
 - `site/data/products.json` 을 직접 고치지 말 것 → PR #15 와의 충돌 위험. `build_catalog_data.py --master-csv <전체마스터.csv>` 로 재생성 후 조율
 
@@ -113,16 +113,16 @@ git clone https://github.com/skerishKang/kbs261022.git && cd kbs261022
 git checkout feature/issue-19-full-product-details
 pip install requests openpyxl playwright && python -m playwright install chromium
 
-python tools/full_catalog/collect_full_catalog.py --stage categories --site samasound
-python tools/full_catalog/collect_full_catalog.py --stage categories --site samamusic
-python tools/full_catalog/collect_full_catalog.py --stage details --site samasound --workers 4
-python tools/full_catalog/collect_full_catalog.py --stage details --site samamusic --workers 4
-python tools/full_catalog/collect_full_catalog.py --stage merge
+python tools/catalog_collection/collect_full_catalog.py --stage categories --site samasound
+python tools/catalog_collection/collect_full_catalog.py --stage categories --site samamusic
+python tools/catalog_collection/collect_full_catalog.py --stage details --site samasound --workers 4
+python tools/catalog_collection/collect_full_catalog.py --stage details --site samamusic --workers 4
+python tools/catalog_collection/collect_full_catalog.py --stage merge
 export DALUE_API_KEY=<스토어 공개 검색키>
-python tools/full_catalog/dalue_export_full.py --out .work/full_catalog/triB_dalue_full.json
-python tools/full_catalog/verify_browser.py --master .work/full_catalog/product_master_full.csv \
+python tools/catalog_collection/dalue_export_full.py --out .work/full_catalog/triB_dalue_full.json
+python tools/catalog_collection/verify_browser.py --master .work/full_catalog/product_master_full.csv \
   --sample .work/full_catalog/verify_sample.csv --out .work/full_catalog/browser_verification.csv
-python tools/full_catalog/build_xlsx_db.py --master .work/full_catalog/product_master_full.csv \
+python tools/catalog_collection/build_xlsx_db.py --master .work/full_catalog/product_master_full.csv \
   --cats .work/full_catalog/category_catalog_full.csv \
   --quality .work/full_catalog/product_master_full_quality.csv \
   --out .work/full_catalog/product_master_full.xlsx
