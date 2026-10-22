@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CGI 상품 카탈로그 — 장비를 파는 곳</title>
+<meta name="description" content="CGI(김범신 대표) 자체 상품 카탈로그. 공급처 공개 페이지에서 수집한 상품 정보를 참고용으로 제공합니다. 네이버 스마트스토어 개설 전이며 주문·결제 기능이 없습니다.">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<!-- ── 상단 유틸리티 바 ─────────────────────────────────────────── -->
+<div class="topbar">
+  <div class="wrap">
+    <span class="tag">CGI 자체 카탈로그</span>
+    <span>공급처 공개 페이지 기반 참고 정보</span>
+    <span class="spacer"></span>
+    <a href="https://github.com/skerishKang/kbs261022/issues/11" target="_blank" rel="noopener">개발 이슈 #11</a>
+    <a href="https://www.samamusic.co.kr/" target="_blank" rel="noopener">원본 출처: 삼아스토어</a>
+  </div>
+</div>
+
+<!-- ── 로고 · 검색 ─────────────────────────────────────────────── -->
+<header class="masthead">
+  <div class="wrap">
+    <a class="brandmark" href="index.html" aria-label="CGI 상품 카탈로그 홈">
+      <span class="glyph" aria-hidden="true">CGI</span>
+      <span class="txt">
+        <strong>CGI 상품 카탈로그</strong>
+        <span>CGI · 김범신 대표</span>
+      </span>
+    </a>
+
+    <!-- 원본 사이트와 동일하게 GET 폼 + query 파라미터 구조를 재사용 -->
+    <form class="searchform" id="searchForm" action="index.html" method="get" role="search">
+      <label class="sr-only" for="q">상품 검색</label>
+      <input type="search" id="q" name="q" placeholder="상품명 · 모델명 · 브랜드로 검색" autocomplete="off">
+      <button type="submit">검색</button>
+    </form>
+
+    <div class="actions">
+      <span class="ghost" aria-disabled="true" title="스마트스토어 개설 후 활성화 예정">장바구니</span>
+      <span class="ghost" aria-disabled="true" title="스마트스토어 개설 후 활성화 예정">주문내역</span>
+    </div>
+  </div>
+</header>
+
+<!-- ── 카테고리 LNB (원본 #category-lnb 구조 재사용) ─────────────── -->
+<nav class="lnb" aria-label="상품 카테고리">
+  <div class="wrap">
+    <button class="lnb-toggle" id="lnbToggle" aria-expanded="false" aria-controls="lnbList">☰ 전체메뉴</button>
+    <ul class="lnb-list" id="lnbList"><!-- JS 로 주입 --></ul>
+  </div>
+</nav>
+
+<!-- ── 데이터 상태 고지 ────────────────────────────────────────── -->
+<div class="notice">
+  <div class="wrap">
+    <span class="ico" aria-hidden="true">!</span>
+    <div>
+      <strong>미개설 안내 — 이 사이트는 주문·결제 사이트가 아닙니다.</strong>
+      <ul>
+        <li>표시 가격은 <b>원본 공개 페이지의 참고용 공개가</b>이며 CGI 판매가가 아닙니다. 공급가·재고·판매가는 아직 미확정이며 추정 금액을 표시하지 않습니다.</li>
+        <li>표시되는 상품은 <b>수집된 공개 정보</b>이며, <b>CGI가 실제 취급·판매를 승인한 상품 목록과는 다릅니다</b>. 승인 상품은 카드에 별도 배지가 붙습니다.</li>
+        <li>네이버 스마트스토어 개설 후 실제 주문·결제 기능을 제공할 예정입니다.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<main class="wrap">
+  <div class="layout">
+
+    <!-- ── 사이드 필터 ──────────────────────────────────────────── -->
+    <aside class="side">
+      <div class="box facet-box" id="facetBox">
+        <h2>브랜드</h2>
+        <div class="body">
+          <fieldset class="facet">
+            <legend>브랜드 선택</legend>
+            <div id="brandFacet"><!-- JS 로 주입 --></div>
+            <button class="clear" type="button" id="clearBrands">브랜드 필터 해제</button>
+          </fieldset>
+        </div>
+      </div>
+      <div class="box">
+        <h2>데이터 출처</h2>
+        <div class="body note" id="sourceNote"><!-- JS 로 주입 --></div>
+      </div>
+    </aside>
+
+    <!-- ── 상품 목록 ────────────────────────────────────────────── -->
+    <section class="maincol">
+      <nav class="crumbs" id="crumbs" aria-label="현재 위치"></nav>
+
+      <div class="toolbar">
+        <span class="count" id="resultCount">상품을 불러오는 중…</span>
+        <span class="spacer"></span>
+        <button type="button" class="filter-toggle" id="facetToggle" aria-expanded="false" aria-controls="facetBox">브랜드 필터</button>
+        <label class="approved-toggle" title="CGI가 판매를 승인한 상품만 표시합니다">
+          <input type="checkbox" id="approvedOnly">
+          <span>CGI 승인 상품만</span>
+        </label>
+        <label class="sr-only" for="sortSelect">정렬</label>
+        <select id="sortSelect">
+          <option value="recent">최신순</option>
+          <option value="name">상품명순</option>
+          <option value="price_asc">낮은 가격순</option>
+          <option value="price_desc">높은 가격순</option>
+          <option value="brand">브랜드순</option>
+        </select>
+      </div>
+
+      <div class="grid" id="grid"></div>
+      <div id="emptyState" hidden>
+        <div class="empty">
+          <strong>조건에 맞는 상품이 없습니다.</strong>
+          검색어나 필터를 바꿔 보세요.
+        </div>
+      </div>
+
+      <nav class="pager" id="pager" aria-label="페이지"></nav>
+    </section>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <strong>CGI 상품 카탈로그</strong>
+    <div>본 사이트는 CGI(김범신 대표) 자체 브랜드로, 삼아스토어·삼아사운드의 상표·로고·화면을 복제하지 않습니다. 상품 정보의 원본 출처는 각 상품 카드 및 상세 페이지에 표기됩니다.</div>
+    <div class="disclaim">
+      수집된 전체 상품과 CGI 실제 판매 승인 상품은 서로 다른 집합입니다. 가격·재고·공급가는 공개 정보 범위 내에서만 표시되며, 미확정 항목은 추정하지 않고 상태로만 안내합니다.
+      네이버 스마트스토어 개설 전이므로 실제 주문·결제 기능이 없습니다. · Issue #11
+    </div>
+  </div>
+</footer>
+
+<script src="data/catalog.demo.js"></script>
+<script src="assets/data-loader.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

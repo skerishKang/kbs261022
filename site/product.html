@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>상품 상세 — CGI 상품 카탈로그</title>
+<meta name="description" content="CGI 상품 카탈로그 상품 상세. 공급처 공개 페이지 기준 참고 정보이며 CGI 판매가는 미확정입니다.">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap">
+    <span class="tag">CGI 자체 카탈로그</span>
+    <span>공급처 공개 페이지 기반 참고 정보</span>
+    <span class="spacer"></span>
+    <a href="index.html">← 전체 상품 보기</a>
+    <a href="https://github.com/skerishKang/kbs261022/issues/11" target="_blank" rel="noopener">개발 이슈 #11</a>
+  </div>
+</div>
+
+<header class="masthead">
+  <div class="wrap">
+    <a class="brandmark" href="index.html" aria-label="CGI 상품 카탈로그 홈">
+      <span class="glyph" aria-hidden="true">CGI</span>
+      <span class="txt">
+        <strong>CGI 상품 카탈로그</strong>
+        <span>CGI · 김범신 대표</span>
+      </span>
+    </a>
+    <form class="searchform" action="index.html" method="get" role="search">
+      <label class="sr-only" for="q">상품 검색</label>
+      <input type="search" id="q" name="q" placeholder="상품명 · 모델명 · 브랜드로 검색" autocomplete="off">
+      <button type="submit">검색</button>
+    </form>
+    <div class="actions">
+      <span class="ghost" aria-disabled="true" title="스마트스토어 개설 후 활성화 예정">장바구니</span>
+    </div>
+  </div>
+</header>
+
+<nav class="lnb" aria-label="상품 카테고리">
+  <div class="wrap">
+    <button class="lnb-toggle" id="lnbToggle" aria-expanded="false" aria-controls="lnbList">☰ 전체메뉴</button>
+    <ul class="lnb-list" id="lnbList"></ul>
+  </div>
+</nav>
+
+<div class="notice">
+  <div class="wrap">
+    <span class="ico" aria-hidden="true">!</span>
+    <div>
+      <strong>미개설 안내 — 주문·결제 기능이 없습니다.</strong>
+      <ul>
+        <li>표시 가격은 <b>원본 공개 페이지의 참고용 공개가</b>이며 CGI 판매가가 아닙니다.</li>
+        <li><b>CGI 판매 승인 상품이 아닌 수집 참고 정보</b>이며, 실제 취급·판매 승인 목록과는 다릅니다.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<main class="wrap">
+  <nav class="crumbs" id="crumbs" aria-label="현재 위치" style="padding-top:16px"></nav>
+  <div id="detailRoot" style="padding:0 0 40px"></div>
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <strong>CGI 상품 카탈로그</strong>
+    <div>본 사이트는 CGI(김범신 대표) 자체 브랜드로, 삼아스토어·삼아사운드의 상표·로고·화면을 복제하지 않습니다.</div>
+    <div class="disclaim">가격·재고·공급가는 공개 정보 범위 내에서만 표시되며 미확정 항목은 추정하지 않습니다. 네이버 스마트스토어 개설 전이므로 실제 주문·결제 기능이 없습니다. · Issue #11</div>
+  </div>
+</footer>
+
+<script src="data/catalog.demo.js"></script>
+<script src="assets/data-loader.js"></script>
+<script src="assets/app.js"></script>
+<script src="assets/product.js"></script>
+</body>
+</html>
