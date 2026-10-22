@@ -13,6 +13,9 @@ $home_ = $env:USERPROFILE
     # Dedicated key pair for CGI-1 -> COM1 transfers (private key never leaves CGI-1).
     IdentityFile    = Join-Path $home_ '.ssh\cgi_handoff_ed25519'
 
+    # Tailscale CLI (not on PATH on this machine).
+    TailscaleExe    = Join-Path $env:ProgramFiles 'Tailscale\tailscale.exe'
+
     # Remote layout (created by bootstrap-com1.ps1)
     RemoteIncoming  = 'C:/cgi-handoff/incoming'   # transfer staging area ( ".part" packages )
     RemoteInbox     = 'C:/cgi-handoff/inbox'       # verified, immutable packages
@@ -23,6 +26,12 @@ $home_ = $env:USERPROFILE
         (Join-Path $home_ 'cgi-work\kbs261022'),
         (Join-Path $home_ 'cgi-work')
     )
+
+    # When the source folder is inside a git work tree, only files that are
+    # already committed (tracked) are packaged. This keeps the work in progress
+    # of other agents working in the same checkout out of the delivery.
+    # Override per run with -IncludeUntracked.
+    OnlyTrackedByDefault = $true
 
     # Directories / files skipped while packaging.
     ExcludeDirNames  = @('.git', 'node_modules', '.venv', 'venv', '__pycache__',
