@@ -70,9 +70,9 @@ python tools/catalog_collection/build_xlsx_db.py \
 
 | 파일 | 공개 저장소 |
 |---|---|
-| `.work/full_catalog/product_master_full.csv` (11.7MB) | **미제출** (로컬 보존) |
+| `.work/full_catalog/product_master_full.csv` (9.0MB) | **미제출** (로컬 보존) |
 | `.work/full_catalog/product_master_full.json` | **미제출** |
-| `.work/full_catalog/product_master_full.xlsx` (2.5MB) | **미제출** (대표 지침) |
+| `.work/full_catalog/product_master_full.xlsx` (2.4MB) | **미제출** (대표 지침) |
 | `.work/full_catalog/triB_dalue_full.json` | **미제출** |
 | `.work/full_catalog/triB_nonlisted_products.csv` | **미제출** |
 | `reports/samples/*` (샘플·통계·검증) | 제출 |

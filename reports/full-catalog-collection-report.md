@@ -3,7 +3,7 @@
 > **보안 원칙**
 > - 실운영 데이터(거래처 실명, 주문, 재고 실수량, 인증키)는 수집·보존·공개하지 않았다.
 > - **CGI 공급가 · 실재고 · CGI 판매가 · 취급 승인 여부** 는 공개 근거가 없어 **빈 값(NULL)** 로 두었다. 추정하지 않았다.
-> - 대용량 산출물(전체 마스터 CSV 11.7MB / JSON / XLSX 2.5MB)은 **로컬 보존**하고, GitHub 에는 **재현 코드 · 스키마 · 비식별 통계 · 검증 결과** 만 제출했다(이슈 #19 대표 지침).
+> - 대용량 산출물(전체 마스터 CSV 9.0MB / JSON / XLSX 2.4MB)은 **로컬 보존**하고, GitHub 에는 **재현 코드 · 스키마 · 비식별 통계 · 검증 결과** 만 제출했다(이슈 #19 대표 지침).
 > - 계정정보는 이 저장소에 기록하지 않았다.
 
 - 저장소: `skerishKang/kbs261022` · 브랜치: `feature/issue-19-full-product-details`
@@ -296,10 +296,10 @@ NEXT=#19 XLSX 검수 후 #11 site/ 데이터 경로 연결
 
 | 파일 | 크기 | 내용 |
 |---|---:|---|
-| `.work/full_catalog/product_master_full.csv` | 11.7MB | **40컬럼 상품 마스터 4,575행** (PR #12 스키마 1:1) |
-| `.work/full_catalog/product_master_full.json` | ~30MB | 동일 데이터 JSON 배열 |
-| `.work/full_catalog/product_master_full.xlsx` | 2.5MB | #19 요구 XLSX 7시트 |
-| `.work/full_catalog/triB_dalue_full.json` | ~9MB | Tri-B 스토어 전체 인덱스 3,694건 (비노출 포함) |
+| `.work/full_catalog/product_master_full.csv` | 9.0MB | **40컬럼 상품 마스터 4,575행** (PR #12 스키마 1:1) |
+| `.work/full_catalog/product_master_full.json` | 13.5MB | 동일 데이터 JSON 배열 |
+| `.work/full_catalog/product_master_full.xlsx` | 2.4MB | #19 요구 XLSX 7시트 |
+| `.work/full_catalog/triB_dalue_full.json` | ~9.0MB | Tri-B 스토어 전체 인덱스 3,694건 (비노출 포함) |
 | `.work/full_catalog/triB_nonlisted_products.csv` | 0.4MB | Tri-B 목록 미노출 1,400건 (판매중지/숨김) |
 | `.cache/cgi-catalog/` | 651MB+ | HTTP 캐시 (재실행 시 네트워크 0) |
 
