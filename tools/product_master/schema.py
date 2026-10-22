@@ -17,7 +17,7 @@ import csv
 import json
 from typing import Any, Iterable, Mapping, Optional, Sequence
 
-SCHEMA_VERSION = "1.0.0"
+SCHEMA_VERSION = "1.1.0"
 
 #: 수집 대상 사이트. ``namespace`` 접두사와 1:1 대응한다.
 SITES: dict[str, dict[str, Any]] = {
@@ -74,6 +74,29 @@ SITE_FIELD_AVAILABILITY: dict[str, dict[str, bool]] = {
     },
 }
 
+#: 사이트별 브랜드 값의 출처 (issue #19 전수 수집에서 확인).
+#:
+#: ``spec``     페이지의 ``브랜드`` 스펙행 값. (samamusic: 2,294/2,294 건)
+#: ``category`` 상품이 게시된 **브랜드 카테고리**에서 파생. samasound 는
+#:              ``브랜드`` 스펙행이 없어 이 경로만 있다. (2,281/2,281 건)
+#:
+#: 두 값 모두 원천 증거가 있는 값이지만 **근거 수준이 다르다.** 그래서
+#: ``brand`` 값과 함께 ``brand_source`` 를 반드시 함께 기록한다.
+#: (요구사항 2 — 제조사/브랜드 혼동 방지)
+SITE_BRAND_SOURCE: dict[str, str] = {
+    "samasound": "category",
+    "samamusic": "spec",
+}
+
+#: 제조사 값의 출처. ``spec`` = ``제조사`` 스펙행, ``none`` = 스펙행 없음.
+SITE_MANUFACTURER_SOURCE: dict[str, str] = {
+    "samasound": "spec",
+    "samamusic": "none",
+}
+
+BRAND_SOURCES: tuple[str, ...] = ("spec", "category", "none")
+MANUFACTURER_SOURCES: tuple[str, ...] = ("spec", "none")
+
 #: 필수 컬럼 (issue #8 요구사항 1).
 REQUIRED_FIELDS: tuple[str, ...] = (
     "source_site",
@@ -97,6 +120,9 @@ REQUIRED_FIELDS: tuple[str, ...] = (
 #: 필수 컬럼 바로 뒤에 오는 출처(메타) 필드.
 PROVENANCE_FIELDS: tuple[str, ...] = (
     "extraction_method",
+    # 값의 근거 수준. 값이 있어도 근거가 다르면 다른 필드로 오인될 수 있다.
+    "brand_source",
+    "manufacturer_source",
 )
 
 #: 전체 마스터 레코드 필드 순서 (CSV 헤더와 동일).
@@ -104,6 +130,10 @@ MASTER_FIELDS: tuple[str, ...] = REQUIRED_FIELDS + PROVENANCE_FIELDS + (
     # 식별자 / 정규화 보조
     "source_key",
     "collection_url",
+    # 공급처 원본 식별자 (요구사항 3 — 공급처별 원본 ID 보존)
+    "source_item_code",
+    "product_code",
+    "source_category_name",
     "public_price_text",
     "price_type",
     "category_namespace",
@@ -155,6 +185,9 @@ def json_schema() -> dict[str, Any]:
             "source_key": {"type": "string", "pattern": "^[a-z]+:[0-9A-Za-z_-]+$"},
             "canonical_url": {"type": "string", "minLength": 1},
             "collection_url": {"type": ["string", "null"]},
+            "source_item_code": {"type": ["string", "null"], "description": "공급처 원본 품목코드"},
+            "product_code": {"type": ["string", "null"], "description": "공급처 원본 상품코드"},
+            "source_category_name": {"type": ["string", "null"], "description": "말단 카테고리명"},
             "name": {"type": "string", "minLength": 1},
             "brand": {"type": ["string", "null"]},
             "manufacturer": {"type": ["string", "null"]},
@@ -173,6 +206,16 @@ def json_schema() -> dict[str, Any]:
             "availability": {"type": ["null"], "description": "공개 근거 없음. 항상 null."},
             "extraction_time": {"type": "string", "format": "date-time"},
             "extraction_method": {"type": "string"},
+            "brand_source": {
+                "type": ["string", "null"],
+                "enum": list(BRAND_SOURCES) + [None],
+                "description": "브랜드 값의 근거: spec(브랜드 스펙행) / category(브랜드 카테고리 파생) / none",
+            },
+            "manufacturer_source": {
+                "type": ["string", "null"],
+                "enum": list(MANUFACTURER_SOURCES) + [None],
+                "description": "제조사 값의 근거: spec(제조사 스펙행) / none",
+            },
             "source_evidence": {"type": "object"},
             "verification_status": {"type": "string", "enum": list(VERIFICATION_STATUSES)},
             "derived": {"type": "object"},

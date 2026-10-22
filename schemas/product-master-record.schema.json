@@ -48,6 +48,27 @@
         "null"
       ]
     },
+    "source_item_code": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "공급처 원본 품목코드"
+    },
+    "product_code": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "공급처 원본 상품코드"
+    },
+    "source_category_name": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "말단 카테고리명"
+    },
     "name": {
       "type": "string",
       "minLength": 1
@@ -150,6 +171,31 @@
     },
     "extraction_method": {
       "type": "string"
+    },
+    "brand_source": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "spec",
+        "category",
+        "none",
+        null
+      ],
+      "description": "브랜드 값의 근거: spec(브랜드 스펙행) / category(브랜드 카테고리 파생) / none"
+    },
+    "manufacturer_source": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "spec",
+        "none",
+        null
+      ],
+      "description": "제조사 값의 근거: spec(제조사 스펙행) / none"
     },
     "source_evidence": {
       "type": "object"

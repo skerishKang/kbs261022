@@ -40,6 +40,8 @@ def minimal_record(**overrides) -> dict:
         "availability": None,
         "extraction_time": "2026-10-22T03:00:00Z",
         "extraction_method": "browser_zcode_iab",
+        "brand_source": "spec",
+        "manufacturer_source": "none",
         "source_evidence": {"url": "https://example.invalid"},
         "verification_status": "browser_verified",
         "derived": {},
@@ -117,14 +119,42 @@ class TestValidation(unittest.TestCase):
 
 class TestNullPolicy(unittest.TestCase):
     def test_brand_not_offered_by_samasound_must_be_null(self) -> None:
+        # samasound 에는 "브랜드" 스펙행이 없으므로 brand_source="spec" 는 위반이다.
         record = minimal_record(
             source_site="samasound",
             source_key="samasound:3875",
             category_namespace="samasound.cate_no",
             brand="Shure",
+            brand_source="spec",
         )
         errors = VA.validate_policy(record)
         self.assertIn("brand_not_offered_by_site:'Shure'", errors)
+        self.assertIn("brand_source_mismatch:'spec'!='category'", errors)
+
+    def test_samasound_category_derived_brand_is_allowed(self) -> None:
+        # 브랜드 카테고리에서 파생된 브랜드는 근거가 있으므로 허용된다.
+        record = minimal_record(
+            source_site="samasound",
+            source_key="samasound:3875",
+            category_namespace="samasound.cate_no",
+            brand="Shure",
+            brand_source="category",
+            manufacturer="Shure",
+            manufacturer_source="spec",
+            model=None,
+        )
+        errors = VA.validate_policy(record)
+        self.assertEqual(errors, [])
+
+    def test_brand_without_source_is_rejected(self) -> None:
+        record = minimal_record(brand_source=None)
+        errors = VA.validate_policy(record)
+        self.assertIn("brand_source_mismatch:None!='spec'", errors)
+
+    def test_manufacturer_source_must_be_spec_when_value_present(self) -> None:
+        record = minimal_record(manufacturer="Shure", manufacturer_source="none")
+        errors = VA.validate_policy(record)
+        self.assertIn("manufacturer_source_mismatch:'none'!='spec'", errors)
 
     def test_model_not_offered_by_samasound_must_be_null(self) -> None:
         record = minimal_record(
@@ -137,7 +167,7 @@ class TestNullPolicy(unittest.TestCase):
         self.assertIn("model_not_offered_by_site:'WL185MB/C-TQG'", errors)
 
     def test_manufacturer_not_offered_by_samamusic_must_be_null(self) -> None:
-        record = minimal_record(manufacturer="Shure")
+        record = minimal_record(manufacturer="Shure", manufacturer_source="spec")
         errors = VA.validate_policy(record)
         self.assertIn("manufacturer_not_offered_by_site:'Shure'", errors)
 
