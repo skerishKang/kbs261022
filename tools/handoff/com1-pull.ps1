@@ -15,6 +15,7 @@ param(
     [string] $TailscaleExe = "$env:ProgramFiles\Tailscale\tailscale.exe",
     [string] $RunId = '',
     [string] $RepoPath = '',
+    [switch] $All,
     [switch] $NoReceiptBack
 )
 
@@ -45,6 +46,14 @@ if ($RunId) { $zips = @($zips | Where-Object { $_.BaseName -eq "cgi-handoff-$Run
 if ($zips.Count -eq 0) {
     Write-Line "PULL_RESULT: no_package (pull_exit=$pullExit) incoming=$incoming"
     exit 3
+}
+if (-not $All -and $zips.Count -gt 1) {
+    # Only the newest package is processed by default so that a superseded
+    # delivery (for example one that still contained another agent's work in
+    # progress) is never imported. Use -All to process every pending package.
+    $skippedZips = @($zips[0..($zips.Count - 2)] | ForEach-Object { $_.Name })
+    $zips = @($zips[-1])
+    Write-Line "PULL_INFO: newest_only=true skipped_packages=$($skippedZips -join ',')"
 }
 
 $overallFail = $false
