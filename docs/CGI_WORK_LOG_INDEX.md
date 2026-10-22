@@ -20,6 +20,8 @@
 | [#7 CGI-1 ↔ COM1 작업물 전달](https://github.com/skerishKang/kbs261022/issues/7) | 원격 CGI 컴퓨터 산출물을 COM1로 보내 GitHub에 기록 | Tailscale 연결 확인; 파일 전송 자동화 별도 개발 | 네트워크 연결 확인 / 파일 전달 검증 대기 |
 | [#8 상품 마스터](https://github.com/skerishKang/kbs261022/issues/8) | 브랜드·모델·원본출처·공개가격·ERP 매핑을 위한 공통 표 설계 | ZCode 담당 독립 작업 | 개발 지시 / 결과 확인 필요 |
 | [#9 작업 기록 체계](https://github.com/skerishKang/kbs261022/issues/9) | 고객에게 보여줄 작업 이력·검증 근거·산출물 목차 | 이 문서 및 [보고서 기준](CGI_WORK_REPORT_STANDARD.md) | 구축 중 |
+| [#11 CGI 상품 카탈로그 웹사이트](https://github.com/skerishKang/kbs261022/issues/11) | 삼아스토어 웹사이트를 실브라우저로 분석해 그 구조를 재사용한 CGI 자체 카탈로그 HTML 사이트(검색·필터·상품 그리드·상세·모바일) | `site/`(정적 사이트, [PR #17](https://github.com/skerishKang/kbs261022/pull/17) 병합 완료) + [보고서](CGI_CATALOG_SITE_REPORT.md) + 실제 캡처 14종 | **개발 완료(로컬 검증) / 배포·주문기능 미완료** — 실주소 배포·주문·결제는 스마트스토어 개설 후 |
+| [#18 CGI 회사 홈페이지](https://github.com/skerishKang/kbs261022/issues/18) | 기존 CGI 홈페이지 자료(제작 요청서·카다로그·회사소개서)를 근거로 한 CGI 회사 홈페이지 시연본 + 상품 쇼핑몰 연결 | `website/`(정적 홈페이지) + [작업보고](../reports/cgi-company-website-work-report.md) + 실제 캡처 5종 | **개발 완료(로컬 검증) / 실주소 배포·기존 운영사이트 교체 미완료** — 기존 `cgiinc.kr` 은 현재 접속 불가(원인 서버 응답 오류) |
 
 ## 대표에게 설명할 때 구분할 항목
 
