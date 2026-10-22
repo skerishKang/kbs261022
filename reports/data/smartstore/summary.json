@@ -1,0 +1,20 @@
+{
+  "generated_at": "2026-10-22T23:57:08.898191+00:00",
+  "source_db": "data/full_catalog/product_db.xlsx",
+  "total_products": 4575,
+  "ready_for_price_count": 2117,
+  "blocked_price_count": 2458,
+  "prep_ready_count": 0,
+  "prep_partial_count": 4575,
+  "prep_blocked_count": 0,
+  "duplicate_keys": 0,
+  "outputs": {
+    "csv": "data/smartstore_prep/smartstore_registration_prep.csv",
+    "xlsx": "data/smartstore_prep/smartstore_registration_prep.xlsx",
+    "missing_fields_report": "reports/data/smartstore/missing_fields_report.json",
+    "duplicate_ids_report": "reports/data/smartstore/duplicate_ids_report.json",
+    "image_url_mapping": "reports/data/smartstore/image_url_mapping.csv"
+  },
+  "live_registration_performed": false,
+  "store_approval_verified": false
+}
