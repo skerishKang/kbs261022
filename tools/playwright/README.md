@@ -94,6 +94,9 @@ node regen-sample-table.js
 | `consolidate.js` | 모든 증거를 `reports/evidence/consolidated.json` 으로 통합 |
 | `regen-sample-table.js` | 보고서의 20건 표본 표를 원본 JSON 에서 자동 재생성 (드리프트 방지) |
 | `test-extractors.js` | 파서 단위 테스트 (36 assertion) |
+| `create-pr.js` / `update-pr.js` | git credential manager 가 보유한 자격증명으로 GitHub API 호출 (새 자격증명 없음) |
+| `verify-pr.js` | PR 메타데이터·변경 파일·병합 가능 상태 확인 |
+| `check-branch-conflicts.js` | 저장소의 다른 모든 브랜치에 이 브랜치를 병합해 충돌 여부 실측 |
 
 ---
 
