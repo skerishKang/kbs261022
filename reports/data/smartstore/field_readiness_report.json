@@ -1,0 +1,58 @@
+{
+ "generated_from": "data/full_catalog/product_db_compact.csv",
+ "total_products": 4575,
+ "note_price": "'판매가'는 공급처 공개 판매가이며 CGI 공급가·판매가와 무관. 문의/품절/미확인 상품은 판매가 누락으로 계상.",
+ "note_scope": "실제 네이버 상품 게시·등록은 별도 단계. 본 보고서는 필드 준비도만 산출.",
+ "required_fields": [
+  "상품명",
+  "판매가",
+  "재고수량",
+  "대표이미지",
+  "상세설명",
+  "카테고리번호",
+  "원산지코드",
+  "ASTemplateCode",
+  "배송비"
+ ],
+ "derivable_from_source": [
+  "대표이미지",
+  "상품명",
+  "재고수량",
+  "판매가"
+ ],
+ "structurally_unavailable_from_public_source": [
+  "상세설명",
+  "카테고리번호",
+  "원산지코드",
+  "ASTemplateCode",
+  "배송비"
+ ],
+ "required_missing_counts": {
+  "재고수량": 4575,
+  "상세설명": 4575,
+  "카테고리번호": 4575,
+  "원산지코드": 4575,
+  "ASTemplateCode": 4575,
+  "배송비": 4575,
+  "판매가": 2458
+ },
+ "recommended_missing_counts": {
+  "모델명": 2835,
+  "제조사": 2294
+ },
+ "readiness_counts": {
+  "partial": 4575
+ },
+ "readiness_by_site": {
+  "samasound": {
+   "partial": 2281
+  },
+  "samamusic": {
+   "partial": 2294
+  }
+ },
+ "public_price_available_count": 2117,
+ "public_price_available_pct": 46.3,
+ "products_with_any_required_missing": 4575,
+ "fully_ready_count": 0
+}

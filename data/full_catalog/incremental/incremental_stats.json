@@ -1,0 +1,42 @@
+{
+ "generated_at": "2026-10-23T04:05:34Z",
+ "site_counts": {
+  "samasound": {
+   "baseline_products": 2281,
+   "snapshot_products": 2229
+  },
+  "samamusic": {
+   "baseline_products": 2294,
+   "snapshot_products": 1597
+  }
+ },
+ "totals": {
+  "baseline_products": 4575,
+  "snapshot_products": 3826,
+  "new": 0,
+  "changed": 0,
+  "removed_candidate": 52,
+  "partial_unobserved": 697,
+  "changed_breakdown": {}
+ },
+ "per_site": {
+  "samamusic": {
+   "baseline_products": 2294,
+   "snapshot_products": 1597,
+   "new": 0,
+   "changed": 0,
+   "removed_candidate": 0,
+   "partial_unobserved": 697,
+   "unchanged": 1597
+  },
+  "samasound": {
+   "baseline_products": 2281,
+   "snapshot_products": 2229,
+   "new": 0,
+   "changed": 0,
+   "removed_candidate": 52,
+   "partial_unobserved": 0,
+   "unchanged": 2229
+  }
+ }
+}
