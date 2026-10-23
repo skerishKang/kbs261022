@@ -1,0 +1,32 @@
+{
+ "schema_version": "1.2.0",
+ "issue": 43,
+ "stage": "stage3_review_decisions",
+ "queue_fingerprint": "139e2753a89468a87f3e0c05862f3905a7bd8a4b1bf49a3bfc3204137e8bf98a",
+ "queue_version": "1.1.0",
+ "counts": {
+  "approved": 0,
+  "rejected": 0,
+  "held": 0,
+  "pending": 2311,
+  "invalid": 0,
+  "duplicate_pairs_recorded": 1353,
+  "duplicate_pairs_decided": 0
+ },
+ "policy": {
+  "original_master_overwritten": false,
+  "duplicates_merged": 0,
+  "price_invented": false,
+  "stock_invented": false,
+  "wholesale_invented": false,
+  "new_scraping_performed": false,
+  "unapproved_values_applied": false,
+  "invalid_rows_rejected": 0
+ },
+ "approved": [],
+ "rejected": [],
+ "held": [],
+ "invalid": [],
+ "duplicate_verdicts": [],
+ "errors": []
+}
