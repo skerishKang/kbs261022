@@ -1,0 +1,50 @@
+[
+  {
+    "bid_no": "CGI-001",
+    "title": "공공기관 음향장비 납품 및 설치",
+    "agency": "샘플 공공기관",
+    "region": "서울",
+    "category": "물품",
+    "estimated_price": 120000000,
+    "winning_bid": 108000000,
+    "bidders": 4,
+    "status": "낙찰",
+    "close_date": "20260901"
+  },
+  {
+    "bid_no": "CGI-002",
+    "title": "학교 방송설비 유지보수 용역",
+    "agency": "샘플 교육청",
+    "region": "경기",
+    "category": "용역",
+    "estimated_price": 45000000,
+    "winning_bid": 41400000,
+    "bidders": 3,
+    "status": "낙찰",
+    "close_date": "20260915"
+  },
+  {
+    "bid_no": "CGI-003",
+    "title": "공연장 무대조명 및 음향 설치공사",
+    "agency": "샘플 문화재단",
+    "region": "부산",
+    "category": "공사",
+    "estimated_price": 250000000,
+    "winning_bid": 227500000,
+    "bidders": 6,
+    "status": "낙찰",
+    "close_date": "20260920"
+  },
+  {
+    "bid_no": "CGI-004",
+    "title": "회의실 영상장비 납품",
+    "agency": "샘플 공공기관",
+    "region": "서울",
+    "category": "물품",
+    "estimated_price": 30000000,
+    "winning_bid": null,
+    "bidders": 2,
+    "status": "유찰",
+    "close_date": "20260925"
+  }
+]
