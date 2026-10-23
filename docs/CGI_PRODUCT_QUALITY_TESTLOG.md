@@ -1,8 +1,9 @@
 # 이슈 #43 상품 DB 품질 개선 — 테스트 로그
 
-- **일시:** 2026-10-23
+- **일시:** 2026-10-23 (Stage 1 + Stage 2)
 - **환경:** CGI-1 · Windows 11 · PowerShell / Git Bash · Python 3.13 (`python -X utf8`)
-- **저장소 상태:** `origin/main` = `9394b20` · 작업 브랜치 `feature/issue-43-product-quality`
+- **저장소 상태:** Stage 1 `origin/main` = `9394b20` · 브랜치 `feature/issue-43-product-quality`
+  / Stage 2 base `origin/main` = `fe9be1c` · 브랜치 `feature/issue-43-stage2-review-verify`
 
 ## 1. 산출물 생성 실행
 
@@ -45,13 +46,19 @@ OK
 ```powershell
 python -m unittest discover -t . -s tools\product_master\tests   # Ran 62 tests OK
 python -m unittest discover -t . -s tools\full_catalog\tests     # Ran 18 tests OK
-python -m unittest tools.erp.tests.test_erp_prep                 # Ran 12 tests OK
-python -m unittest tools.procurement.tests.test_procurement      # Ran 15 tests OK
-python -m unittest tools.smartstore.tests.test_smartstore_prep   # Ran 19 tests OK
+python .\tools\erp\tests\test_erp_prep.py                        # Ran 12 tests OK
+python .\tools\procurement\tests\test_procurement.py             # Ran 15 tests OK
+python .\tools\procurement\tests\test_g2b_classifier.py          # Ran 34 tests OK
+python .\tools\smartstore\tests\test_smartstore_prep.py          # Ran 19 tests OK
 ```
 
-합계 **148 케이스 PASS**. `tools/erp·procurement·smartstore` 는 `tests/__init__.py` 가 없어
-`discover` 대신 모듈 경로로 직접 실행했다(기존 상태, 본 작업에서 변경하지 않음).
+`148 케이스 PASS` 는 product_quality 22 + 위 5개 suites(product_master 62 · full_catalog 18 ·
+erp 12 · procurement 15 · smartstore 19) 기준이다. `tools/erp·procurement·smartstore` 는
+`tests/__init__.py` 가 없어 `discover` 대신 파일 경지로 직접 실행했다(기존 상태, 본 작업에서 변경하지 않음).
+
+Stage 2에서도 동일 회귀를 재실행했다(§7.2). `tools/procurement/tests/test_g2b_classifier.py` 34케이스를
+추가로 돌려 합계 **210 케이스 PASS** (product_quality 50 + product_master 62 + full_catalog 18 +
+erp 12 + smartstore 19 + procurement 15 + g2b 34).
 
 > **주의(기존 결함 발견):** `tools.procurement.tests.test_procurement` 를 실행하면
 > `reports/data/procurement/bid_analysis.*` 3개 파일에 **실행 컴퓨터의 절대경로**
@@ -87,5 +94,75 @@ python -m unittest tools.smartstore.tests.test_smartstore_prep   # Ran 19 tests 
 
 ## 6. 미실행 항목
 
-- 브라우저 실화면 재대조(검토후보 2,351건) — 사람 확정 전이므로 미수행.
+- 브라우저 실화면 재대조(검토후보) — 사람 확정 전이므로 미수행. Stage 2 이후 2,311건.
 - 원본 덮어쓰기·중복 병합·사이트 배포 — 의도적으로 수행하지 않음.
+- 공급처 재수집 — Stage 1·2 모두 네트워크 호출 0건 (코드에 요청 경로 없음).
+
+## 7. Stage 2 — 검토 후보 교차 실측 실행 근거
+
+### 7.1 생성 실행
+
+```powershell
+python .\tools\product_quality\build_quality.py
+```
+
+stdout 요약 (실제 실행값):
+
+```text
+patch_rows=5270 duplicate_rows=1353 stage2_rows=2351 promoted=40 out_dir=data/product_quality
+schema_version=1.1.0
+missing_after : model 2427 / manufacturer 206 / brand 0        (Stage 1: model 2467)
+auto_corrected_records=2495 (model 408 = 368+40, manufacturer 2088, brand 0)
+review_required_total=2311  (Stage 1 2351 − 승격 40)  근거없음 463
+stage2: auto_promoted_model=40 / manufacturer=0 / brand=0
+        review_priority_remaining = P1 148, P2 620, P3 239, P4 962
+        brand_placeholder_proposed_only=8, remaining=65, manufacturer_review_remaining=269
+policy: original_master_modified=false new_scraping_performed=false duplicates_merged=0
+```
+
+Stage 1 수치만 뽑는 비교 실행도 가능하다: `--no-stage2` (승격 전 값 그대로 재현).
+
+### 7.2 승격 규칙 검증 (집중 테스트)
+
+```powershell
+python -m unittest discover -t . -s tools\product_quality\tests
+```
+
+```text
+Ran 50 tests in 5.371s
+OK
+```
+
+- `test_quality.py` 22케이스 (Stage 1 규칙·실마스터 회귀) — Stage 2 배선 후에도 그대로 PASS.
+- `test_verify_review.py` 28케이스 — 승격 기준/비승격 경계:
+  독립 ID 2건 → 승격, 1건 → 미승격(P1), **동일 원본 ID 2행 → 관찰 2건·독립 1건 → 미승격**,
+  타 브랜드 실측 → 미승격, 승격 표기는 원본 스펙행 표기 사용, 어휘는 brand_norm×원본ID 기준,
+  브랜드는 제안+P1만(`brand` 원본 유지), 제조사 검토 P4·승격 0, 가격·원본 dicts 불변,
+  `change_history`·`Verification` 열 계약·우선순위 라벨 닫힘,
+  실마스터: 승격 40건 전건을 원본에서 재대조(같은 brand_norm·같은 compact 모델명·`site:product_id` 2건↑),
+  모델 외 승격 0건, improved.json/summary.json/CSV/XLSX 산출물 상호 수치 일치.
+
+### 7.3 산출물 내용 검증 (Stage 2)
+
+| 확인 항목 | 방법 | 결과 |
+|---|---|---|
+| 원본 마스터 보존 | 실행 전후 `site/data/products.json` 바이트 비교 + SHA (테스트) | 동일 |
+| LOCAL2 계약 유지 | 승격 행도 `classification=auto_confirmed` + `id` 조인, 필드 추가만 있음 | 확인 |
+| improved.json | `schema_version=1.1.0`, 4,575건, `model_stage2_promoted` 플래그 40건, `verification` 2,139레코드 | 확인 |
+| stage2 CSV | 2,351행(승격 40 + 남은 검토 2,311), 열 24개(실측독립ID·실측관찰·영문파생일치·중복판정등급·검토우선순위 포함) | 확인 |
+| patch CSV | 5,270행, 자동 2,496 / 검토 2,311 / 근거없음 463 | 확인 |
+| 리뷰 XLSX | 시트 8개(Stage2승격 40행 추가), 검토후보 2,311행 우선순위 정렬(테스트로 정렬 검증) | 확인 |
+| 승격 표본 | `samasound.co.kr:3219` `KSM8 (블랙)` ← `samamusic.co.kr:5018`·`5019` 의 `모델명` 행 `KSM8` | 확인 |
+| 가격·재고 | `price_original`/`price_state_original` 분포 = 원본 (테스트) | 동일 |
+| 작업 영역 | `git status` 변경 = `data/product_quality/`, `tools/product_quality/`, `docs/CGI_PRODUCT_QUALITY_*` 뿐 | 확인 |
+
+### 7.4 Stage 2 PR·CI·병합
+
+| 항목 | 실측 |
+|---|---|
+| 브랜치 | `feature/issue-43-stage2-review-verify` |
+| PR | PR번호_채울예정 (base `main` @ `fe9be1c`) |
+| GitHub Actions | `.github/workflows` 없음 → 필수 체크 0건 (Stage 1과 동일) |
+| 완료된 체크 | GitGuardian Security Checks = `success` |
+| 병합 가능 | `mergeable = true`, `mergeable_state = clean` |
+| 병합 | MERGE결과_채울예정 |

@@ -18,13 +18,14 @@
 
 **확인된 결과(실측).**
 
-| 항목 | 보완 전 | 보완 후 | 자동 보완 | 검토후보 | 근거없음 |
-|---|---|---|---|---|---|
-| 모델명 누락 | 2,835건 | 2,467건 | 368건 | 2,009건 | 458건 |
-| 제조사 누락 | 2,294건 | 206건 | 2,088건 | 269건 | 5건 |
-| 브랜드 자리표시자 | 73건 | 73건(표기 유지) | 0건 | 73건 | 0건 |
+| 항목 | 보완 전 | Stage 1 후 | Stage 2 후 | 자동 확정 | 검토후보 | 근거없음 |
+|---|---|---|---|---|---|---|
+| 모델명 누락 | 2,835건 | 2,467건 | **2,427건** | 408건 (368+40) | 1,969건 | 458건 |
+| 제조사 누락 | 2,294건 | 206건 | 206건 | 2,088건 | 269건 | 5건 |
+| 브랜드 자리표시자 | 73건 | 73건(표기 유지) | 73건(표기 유지) | 0건 | 73건(제안 8 포함) | 0건 |
 
-- 자동 보완된 레코드: **2,456건** (모델명 368 + 제조사 2,088). 원본 레코드 수는 4,575건 그대로.
+- 자동 보완된 레코드: 2,456건(Stage 1) → **2,495건**(Stage 2). 원본 레코드 수는 4,575건 그대로.
+- 검토후보: 2,351건(Stage 1) → **2,311건**(Stage 2). 승격 40건만큼 줄었다.
 - 중복 후보: **1,353쌍** (확정 538 / 추정 274 / 대조필요 521 / 같은 사이트 완전일치 20),
   관련 상품 2,018건. **병합은 0건** — 원본 ID 전부 보존.
 
@@ -35,6 +36,23 @@
 - 모델명: 이슈 #8 정본에서 "자동 병합 가능(confirmed)"으로 판정된 동일 상품 쌍 중 한쪽에만
   `모델명` 행이 있는 368건을 승계했습니다.
 
+**Stage 2 — 검토 후보 교차 실측(2026-10-23 추가).**
+검토로 남긴 2,351건 전체를 새로 긁지 않고, 이미 수집된 원본 `모델명` 스펙행 어휘
+(1,632개 표현)로 재대조했습니다. 승격 조건은 대표 결정대로
+**같은 브랜드의 명시 `모델명` 스펙행에서 독립 원본 ID 2건 이상**입니다.
+동일 원본 ID에서 두 번 관찰돼도 독립 증거로 치지 않습니다.
+
+- 승격: **모델명 40건** (예: `samasound.co.kr:3219` "KSM8 (블랙)" → 삼아스토어 원본ID 5018·5019
+  두 행의 `모델명` 행이 `KSM8` 으로 실측). 승격 값은 후보 문자열이 아니라 원본 표기를 그대로 씁니다.
+- 승격 불가: 제조사 269건(교차 실측 근거 0건), 브랜드 73건 — 전부 검토 유지.
+  브랜드 자리표시자 중 8건은 모델명 어휘가 단일 브랜드로 실증해 **제안 + 우선검토(P1) 표시만** 하고
+  원본 표기(`자체제작`)는 바꾸지 않았습니다.
+- 남은 검토 2,311건에 우선순위를 붙였습니다:
+  P1 148건(실측 1건) · P2 620건(영문상품명=파생 일치) · P3 239건(상대 공급처 중복 판정) · P4 962건(링크 없음).
+- `product_quality_review.xlsx` 에 **Stage2승격** 시트를 추가하고, 검토후보 시트를 우선순위 순으로
+  정렬하며 실측 독립 ID 수·실측 관찰 수·영문/파생 일치·중복 판정 등급·우선순위 열을 붙였습니다.
+  별도 파일: `product_quality_stage2_verification.csv` (2,351행).
+
 **검토로 돌린 항목과 이유.**
 - `영문상품명` 행(891건): 이슈 #8 정책상 영문상품명은 모델명으로 간주하지 않았습니다. 사람이 확정 필요.
 - 상품명에서 뽑은 모델 표현 후보(1,118건): 화면 대조 전에는 원본 필드로 바꾸지 않았습니다.
@@ -42,10 +60,11 @@
 - 브랜드가 삼아사운드 쪽에 없는 201개 브랜드: 브랜드=제조사는 가정이라 검토 항목으로 남겼습니다.
 
 **안 된 것 / 미확인.** 공급처 원본에 모델명 표기가 없는 458건은 계속 비어 있습니다.
+Stage 2 어휘에서 독립 ID 2건 이상으로 실측되지 못한 모델명 후보 1,969건도 그대로 검토입니다.
 공개 판매가가 없는 상품 2,458건(원본의 `가격 문의` 표기)은 이번 작업과 무관하게 문의 상태로 남았습니다.
 
-**다음 순서.** LOCAL2가 자동 보완 항목을 카탈로그·견적서에 반영하고, 검토후보 2,351건은
-`product_quality_review.xlsx` 의 검토후보 시트를 화면 확인하며 확정합니다.
+**다음 순서.** LOCAL2가 자동 확정 항목(2,495건)을 카탈로그·견적서에 반영하고, 검토후보 2,311건은
+`product_quality_review.xlsx` 검토후보 시트를 우선순위 P1 → P4 순으로 화면 확인하며 확정합니다.
 
 ## B. AI 공동검토용 기록
 
@@ -60,18 +79,21 @@ MODEL=Qoder 에이전트 세션 (이전 Beam 1.0 사용량 제한 세션의 복�
 DEVICE=CGI-1 Windows / PowerShell
 OBJECTIVE=기존 4,575건 상품 마스터의 모델명·제조사·브랜드·중복·출처 정합성을 출처 기반으로 점검하고 LOCAL2가 쓸 수 있는 보완 산출물(자동/검토 분리)을 만든다
 INPUTS=site/data/products.json(원본 4,575건), data/full_catalog/product_db.xlsx(이슈 #8 정본: 통합상품·중복후보 시트), data/full_catalog/collection_stats.json
-IMPLEMENTED=tools/product_quality/quality.py(근거 규칙 엔진), tools/product_quality/build_quality.py(산출물 빌더·CLI), tools/product_quality/tests/test_quality.py(22케이스), data/product_quality/{5개 산출물 + README}
-EXECUTION_EVIDENCE=python tools/product_quality/build_quality.py 실행 → patch_rows=5270 duplicate_rows=1353, summary 실측 출력; python -m unittest discover -t . -s tools/product_quality/tests → Ran 22 tests OK; 원본 products.json SHA-256 실행 전후 동일(테스트로 검증)
-TESTS=22/22 PASS (집중) + 회귀: tools/product_master 80케이스, tools/full_catalog, tools/erp (아래 TESTLOG)
+IMPLEMENTED=tools/product_quality/quality.py(근거 규칙 엔진), tools/product_quality/build_quality.py(산출물 빌더·CLI), tools/product_quality/verify_review.py(Stage 2 교차 실측·승격 규칙), tools/product_quality/tests/test_quality.py(22케이스)+test_verify_review.py(28케이스), data/product_quality/{6개 산출물 + README}
+EXECUTION_EVIDENCE=python tools/product_quality/build_quality.py 실행 → patch_rows=5270 duplicate_rows=1353 stage2_rows=2351 promoted=40; summary 실측 출력(schema_version 1.1.0, 모델명 미확정 2,467→2,427); python -m unittest discover -t . -s tools/product_quality/tests → Ran 50 tests OK; 원본 products.json SHA-256 실행 전후 동일(테스트로 검증)
+TESTS=50/50 PASS (product_quality 집중+실마스터 회귀) + 회귀: tools/product_master 62, tools/full_catalog 18, tools/erp 12, tools/smartstore 19, tools/procurement 49 (아래 TESTLOG)
 OBSERVED_FACTS=모델명 누락 2,835건(samasound 2,281 전체 + samamusic 554), 제조사 누락 2,294건(samamusic 전체 — 이 사이트는 제조사 스펙행 자체가 없음), 브랜드 필드 누락 0건, 브랜드 표기 64종, 중복 판정 confirmed 538쌍/probable 274쌍/candidate 521쌍, 같은 사이트 브랜드+상품명 완전일치 20쌍, 자리표시자 제조사 '자체제작' 68건
 MODEL_CLAIMS_NOT_INDEPENDENTLY_VERIFIED=브랜드↔제조사 대응 41종은 원본 스펙행 실측이지만 "동일 브랜드商品的 제조사가 계약상 제조사와 일치"하는지는 CGI 확인 필요
 LIMITATIONS=원본에 표기가 없는 모델명 458건은 공백 유지. 승계된 모델명 368건은 이슈 #8 confirmed 판정에 의존(변형 충돌 검사 통과 건만). 가격·재고·공급권한은 본 작업 범위 밖
-OUTPUTS=data/product_quality/product_quality_improved.json, product_quality_patch_candidates.csv, product_duplicate_candidates.csv, product_quality_summary.json, product_quality_review.xlsx
+OUTPUTS=data/product_quality/product_quality_improved.json, product_quality_patch_candidates.csv, product_quality_stage2_verification.csv, product_duplicate_candidates.csv, product_quality_summary.json, product_quality_review.xlsx
 MERGED=YES (merge commit 5f5c8aa, base 9394b20 → main)
+STAGE2_AUTO_PROMOTED=40 (모델명 승격) / 제조사 0 / 브랜드 0
+STAGE2_INDEPENDENT_EVIDENCE=같은 brand_norm 의 명시 모델명 스펙행에서 site:product_id 기준 2개 이상; 산출물 40건 전건을 원본에서 재대조해 테스트로 고정
+STAGE2_SCHEMA=1.1.0 (Stage 1 1.0.0 → Stage 2 1.1.0), improved.json·summary.json 동기
 DEPLOYED=NO
 LIVE_VERIFIED=NO (데이터 산출물이라 배포 대상 아님)
-REMAINING=검토후보 2,351건 확정, 근거없음 모델명 458건은 공급처 원본 재확인 필요
-NEXT=LOCAL2가 auto_confirmed 항목을 카탈로그/견적 데이터에 반영, LOCAL3은 ERP 품목매핑 시 manufacturer_after 대신 원본값 병기 검토
+REMAINING=검토후보 2,311건 확정(P1 148/P2 620/P3 239/P4 962), 근거없음 모델명 458건은 공급처 원본 재확인 필요, 제조사 검토 269건·브랜드 73건 자동화 불가
+NEXT=LOCAL2가 auto_confirmed 2,495건(승격 40 포함)을 카탈로그/견적 데이터에 반영, LOCAL3은 ERP 품목매핑 시 manufacturer_after 대신 원본값 병기 검토
 ```
 
 ### 사실 수준
@@ -89,6 +111,12 @@ python .\tools\product_quality\build_quality.py
 - 조인 키: `id` = `site/data/products.json` 의 `id` (`"samasound.co.kr:3836"` 형식).
 - 사용할 필드: `manufacturer_after`, `model_after` — 단 `patches.<field>.classification == "auto_confirmed"` 인 행만.
 - `review_required` / `no_evidence` 는 원본 `manufacturer` / `model` 값을 계속 사용한다.
+- Stage 2 승격 40건도 위 계약 그대로 따라온다 — 조인 키·필드 이름·분류 값 변경 없음.
+  `schema_version` 은 `1.0.0` → `1.1.0` (값 추가만 있고 제거 없음).
+- 승격 여부는 `quality_flags` 의 `model_stage2_promoted` 또는
+  `verification.model.promoted_by_stage2 == true`, `patches.model.evidence_type == "multi_source_attestation"` 으로 확인한다.
+- `verification.<field>` 는 사람 검토 지표다(`priority`/`priority_label`/`attest_independent_ids`).
+  우선순위가 붙었다고 해서 자동 적용 대상이 아니며, `classification` 이 `review_required` 면 원본값 유지가 정답이다.
 - `price_original`, `price_state_original` 은 원본 전달값(새로 만든 값 아님).
 - `quality_flags` 로 검토후보/근거없음/자리표시자를 필터할 수 있다.
 - 사이트 표시·UI(`site/**`), 견적 백엔드, ERP·나라장터 파일은 이 PR에서 변경하지 않았다.
