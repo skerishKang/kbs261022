@@ -71,7 +71,8 @@ Stage 2 어휘에서 독립 ID 2건 이상으로 실측되지 못한 모델명 �
 ```text
 PROJECT=CGI
 ISSUE=43
-PR=46 https://github.com/skerishKang/kbs261022/pull/46
+PR=46 https://github.com/skerishKang/kbs261022/pull/46 (Stage 1)
+STAGE2_PR=51 https://github.com/skerishKang/kbs261022/pull/51 (Stage 2, base main @ 62cdeb9)
 REPOSITORY=skerishKang/kbs261022
 WORK_DATE=2026-10-23
 AGENT=Qoder (CGI-1)
@@ -86,7 +87,7 @@ OBSERVED_FACTS=모델명 누락 2,835건(samasound 2,281 전체 + samamusic 554)
 MODEL_CLAIMS_NOT_INDEPENDENTLY_VERIFIED=브랜드↔제조사 대응 41종은 원본 스펙행 실측이지만 "동일 브랜드商品的 제조사가 계약상 제조사와 일치"하는지는 CGI 확인 필요
 LIMITATIONS=원본에 표기가 없는 모델명 458건은 공백 유지. 승계된 모델명 368건은 이슈 #8 confirmed 판정에 의존(변형 충돌 검사 통과 건만). 가격·재고·공급권한은 본 작업 범위 밖
 OUTPUTS=data/product_quality/product_quality_improved.json, product_quality_patch_candidates.csv, product_quality_stage2_verification.csv, product_duplicate_candidates.csv, product_quality_summary.json, product_quality_review.xlsx
-MERGED=YES (merge commit 5f5c8aa, base 9394b20 → main)
+MERGED=YES Stage1(PR #46 · merge commit 5f5c8aa, base 9394b20 → main) / Stage2(PR #51 · merge commit SHA는 #43 완료 코멘트 참조)
 STAGE2_AUTO_PROMOTED=40 (모델명 승격) / 제조사 0 / 브랜드 0
 STAGE2_INDEPENDENT_EVIDENCE=같은 brand_norm 의 명시 모델명 스펙행에서 site:product_id 기준 2개 이상; 산출물 40건 전건을 원본에서 재대조해 테스트로 고정
 STAGE2_SCHEMA=1.1.0 (Stage 1 1.0.0 → Stage 2 1.1.0), improved.json·summary.json 동기

@@ -160,9 +160,11 @@ OK
 
 | 항목 | 실측 |
 |---|---|
-| 브랜치 | `feature/issue-43-stage2-review-verify` |
-| PR | PR번호_채울예정 (base `main` @ `62cdeb9`) |
-| GitHub Actions | `.github/workflows` 없음 → 필수 체크 0건 (Stage 1과 동일) |
-| 완료된 체크 | GitGuardian Security Checks = `success` |
+| 브랜치 | `feature/issue-43-stage2-review-verify` (커밋 4개, head `2726caa`) |
+| PR | [#51](https://github.com/skerishKang/kbs261022/pull/51) (base `main` @ `62cdeb9`, changed_files 13) |
+| GitHub Actions | `.github/workflows` 없음 → 필수 체크 0건, `required_status_checks = null` (Stage 1과 동일) |
+| commit status | `statuses` 0건 |
+| 완료된 체크 | GitGuardian Security Checks = `success` (1건) |
+| 대기 중 체크 | deploy 커넥터 suite 14건 `queued` (vercel·netlify·render·cloudflare 등 실행 설정 없음, PR #46·#48·#49 와 동일) |
 | 병합 가능 | `mergeable = true`, `mergeable_state = clean` |
-| 병합 | MERGE결과_채울예정 |
+| 병합 | `merged = true` · merge 커밋 SHA는 #43 완료 코멘트에 기록(브랜치 병합 시점에 생성되는 값이라 미리 적지 않는다) |
