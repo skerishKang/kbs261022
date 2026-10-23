@@ -1,0 +1,75 @@
+{
+ "schema_version": "1.0.0",
+ "generated_at": "2026-10-23T02:14:00Z",
+ "original_products": 4575,
+ "improved_products": 4575,
+ "missing_before": {
+  "model": 2835,
+  "manufacturer": 2294,
+  "brand": 0
+ },
+ "missing_after": {
+  "model": 2467,
+  "manufacturer": 206,
+  "brand": 0
+ },
+ "auto_corrected_records": 2456,
+ "auto_corrected_fields": {
+  "model": 368,
+  "manufacturer": 2088,
+  "brand": 0
+ },
+ "patch_classification": {
+  "model": {
+   "auto_confirmed": 368,
+   "review_required": 2009,
+   "no_evidence": 458
+  },
+  "manufacturer": {
+   "auto_confirmed": 2088,
+   "review_required": 269,
+   "no_evidence": 5
+  },
+  "brand": {
+   "auto_confirmed": 0,
+   "review_required": 73,
+   "no_evidence": 0
+  }
+ },
+ "patch_rows": {
+  "total": 13725,
+  "actionable": 5270,
+  "already_source_value": {
+   "model": 1740,
+   "manufacturer": 2213,
+   "brand": 4502
+  }
+ },
+ "placeholder_values_detected": {
+  "model": 0,
+  "manufacturer": 68,
+  "brand": 73
+ },
+ "review_required_total": 2351,
+ "duplicate_candidates": {
+  "total_pairs": 1353,
+  "by_verdict": {
+   "candidate": 521,
+   "confirmed": 538,
+   "probable": 274,
+   "same_site_exact": 20
+  },
+  "auto_mergeable_pairs": 538,
+  "model_inheritance_conflicts": 0,
+  "affected_products": 2018
+ },
+ "policy": {
+  "original_master_overwritten": false,
+  "price_invented": false,
+  "stock_invented": false,
+  "wholesale_invented": false,
+  "new_scraping_performed": false,
+  "yamaha_673_recollected": false,
+  "duplicates_merged": 0
+ }
+}
