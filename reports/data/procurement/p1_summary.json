@@ -1,0 +1,266 @@
+{
+  "dataset": "cgi-local3-p1-original-verification",
+  "issue": 50,
+  "as_of": "2026-10-23T12:10:00+09:00",
+  "total_notices": 14,
+  "by_review_state": {
+    "ACTIVE": 6,
+    "EXPIRED": 4,
+    "NOT_ELIGIBLE": 1,
+    "UNVERIFIED": 3
+  },
+  "by_verification_status": {
+    "VERIFIED": 11,
+    "UNVERIFIED": 3
+  },
+  "verified_detail": 11,
+  "verified_deadline": 11,
+  "qualification_verified": 8,
+  "documents_verified": 7,
+  "quote_review_items_total": 45,
+  "active": [
+    {
+      "bid_no": "R26BK01762379",
+      "title": "정남중학교 체육관 방송장비 구매 및 설치 제안서 제출안내공고",
+      "agency": "정남중학교장",
+      "deadline": "2026-10-26T16:00:00+09:00",
+      "deadline_label": "제안서 제출 마감",
+      "estimated_price": 90817273,
+      "source_url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01762379&bidPbancOrd=000",
+      "next_action": "10/26 16:00 제안서 제출 전까지 우수조달 등록 제품·직접생산확인 요건을 확인하고 10/28 15:30 발표 자료를 준비."
+    },
+    {
+      "bid_no": "R26BK01785428",
+      "title": "울산양정초 공간재구조화 리모델링 통신공사 관급자재 방송장비 구매 및 설치(계속비)",
+      "agency": "울산광역시강북교육지원청교육장",
+      "deadline": "2026-10-28T10:00:00+09:00",
+      "deadline_label": "입찰서 제출 마감",
+      "estimated_price": 19406364,
+      "source_url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01785428&bidPbancOrd=000",
+      "next_action": "10/27 18:00 입찰참가자격 등록 전까지 직접생산확인 제조업체 요건 충족 여부를 확정. 미충족 시 제조사 협력 구조를 검토하되 공동수급 불허에 유의."
+    },
+    {
+      "bid_no": "R26BK01787191",
+      "title": "세종문화회관 대극장 노후 음향콘솔 교체 입찰 공고 (긴급)",
+      "agency": "(재)세종문화회관 사장",
+      "deadline": "2026-11-02T18:00:00+09:00",
+      "deadline_label": "입찰서 제출 마감(가격입찰)",
+      "estimated_price": 129000000,
+      "source_url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01787191&bidPbancOrd=000",
+      "next_action": "11/2 18:00 전 가격입찰과 오프라인 제안서 제출을 함께 준비. 80CH 이상 콘솔 라인업과 카드 호환성을 먼저 확인."
+    },
+    {
+      "bid_no": "R26BK01762398",
+      "title": "봉산문화회관 가온홀 음향·영상시스템 기능 보강 (긴급공고)",
+      "agency": "대한민국정부대구지방조달청장",
+      "deadline": "2026-11-06T10:00:00+09:00",
+      "deadline_label": "입찰서·규격서 제출 마감",
+      "estimated_price": 1544768182,
+      "source_url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01762398&bidPbancOrd=000",
+      "next_action": "11/4 10:00 제출 개시 전까지 공내역서·시방서 기준 모델·수량을 확정하고 11/5 18:00 등록 마감을 준수."
+    },
+    {
+      "bid_no": "R26BK01783174",
+      "title": "한국 수중발굴 50주년 기념 특별전 및 상설전시실 영상장비 구축 (긴급공고)",
+      "agency": "대한민국정부광주지방조달청장",
+      "deadline": "2026-11-06T10:00:00+09:00",
+      "deadline_label": "제안서·가격입찰서 제출 마감",
+      "estimated_price": 220400000,
+      "source_url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01783174&bidPbancOrd=000",
+      "next_action": "주력 품목 불일치로 단독 검토는 보류. 공동수급 파트너(프로젝터·렌즈) 확보 여부만 확인."
+    },
+    {
+      "bid_no": "G012605603",
+      "title": "아트센터 양지홀 영상·방송시스템 교체 자재 1식",
+      "agency": "한국전력공사 ICT운영처 인프라운영실 ICT운영총괄부",
+      "deadline": "2026-11-18T14:00:00+09:00",
+      "deadline_label": "입찰(제안)서 제출 마감",
+      "estimated_price": 497790000,
+      "source_url": "https://srm.kepco.net/index.do",
+      "next_action": "RFP PDF를 열람해 품목 구성을 확인한 뒤 11/17 18:00 입찰참가신청, 11/18 14:00 제안서 제출 일정으로 검토."
+    }
+  ],
+  "active_count": 6,
+  "expired": [
+    {
+      "bid_no": "R26BK01764645",
+      "title": "성남신흥초등학교 2026학년도 방송실 현대화사업에 따른 방송장비 구매 및 설치",
+      "agency": "성남신흥초등학교장",
+      "deadline": "2026-10-22T16:30:00+09:00",
+      "deadline_label": "제안서 제출 마감",
+      "estimated_price": 74212727,
+      "source_url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01764645&bidPbancOrd=000",
+      "next_action": "마감 — 재공고 모니터링. 유사 방송실 현대화 공고의 자격요건 템플릿으로 활용."
+    },
+    {
+      "bid_no": "R26BK01761950",
+      "title": "음악공연예술대학 계명아트센터 무대 음향시스템 및 메인스피커 드라이버 교체",
+      "agency": "계명대학교 총장",
+      "deadline": "2026-10-20T14:00:00+09:00",
+      "deadline_label": "개찰일시(직찰)",
+      "estimated_price": 191445455,
+      "source_url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01761950&bidPbancOrd=000",
+      "next_action": "마감 — 재공고 모니터링. 유사 무대 음향 교체 수요 발굴에 참고."
+    },
+    {
+      "bid_no": "R26BK01764544",
+      "title": "반송고등학교 소규모교육환경개선사업 방송장비 구매 및 설치 제안서 제출 공고",
+      "agency": "반송고등학교장",
+      "deadline": "2026-10-20T11:00:00+09:00",
+      "deadline_label": "제안서 제출 마감",
+      "estimated_price": 90909091,
+      "source_url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01764544&bidPbancOrd=000",
+      "next_action": "마감 — 재공고 모니터링. 유사 학교 방송장비 공고의 자격요건 템플릿으로 활용."
+    },
+    {
+      "bid_no": "R26BK01747535",
+      "title": "2026학년도 오현초등학교 방송장비 구매 및 설치 제안서 제출 안내 공고",
+      "agency": "오현초등학교장",
+      "deadline": "2026-10-16T13:00:00+09:00",
+      "deadline_label": "개찰일시(직찰)",
+      "estimated_price": 90467273,
+      "source_url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01747535&bidPbancOrd=000",
+      "next_action": "마감 — 재공고 모니터링. 재공고 시 공고문 첨부를 내려받아 자격요건을 확인."
+    }
+  ],
+  "expired_count": 4,
+  "not_eligible": [
+    {
+      "bid_no": "R26BK01781066",
+      "title": "청주 다목적 실내체육관 건립사업 관급자재(경기장 음향설비)",
+      "agency": "조달청장",
+      "deadline": "2026-10-23T16:00:00+09:00",
+      "deadline_label": "입찰서 제출 마감(전자시담)",
+      "estimated_price": 626267273,
+      "source_url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01781066&bidPbancOrd=000",
+      "next_action": "영업 검토 제외. 공개 경쟁 재공고 여부만 모니터링."
+    }
+  ],
+  "not_eligible_count": 1,
+  "unverified": [
+    {
+      "bid_no": "R26BK01748815",
+      "title": "고해상도 방송제작 카메라 세트(AI기반 영상확장 국책과제 연구장비) 구매",
+      "agency": "한국방송공사",
+      "deadline": "",
+      "deadline_label": "",
+      "estimated_price": "",
+      "source_url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01748815&bidPbancOrd=000",
+      "next_action": "G2B 통합검색에서 공고번호로 재조회하고, 없으면 발주기관(한국방송공사)에 공고 이력 확인. 확인 전 영업 검토 대상 확정 보류."
+    },
+    {
+      "bid_no": "R26BK01763002",
+      "title": "천장형 마이크 및 음향시스템 구축",
+      "agency": "국민대학교",
+      "deadline": "",
+      "deadline_label": "",
+      "estimated_price": "",
+      "source_url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01763002&bidPbancOrd=000",
+      "next_action": "G2B 통합검색에서 공고번호로 재조회하고, 없으면 국민대학교 구매 담당부서에 공고 이력 확인. 확인 전 영업 검토 대상 확정 보류."
+    },
+    {
+      "bid_no": "R26BK01781661",
+      "title": "지구촌교회 수지분당 채플 영상 장비 메인 카메라 및 스위처 교체 구매 입찰",
+      "agency": "지구촌교회",
+      "deadline": "",
+      "deadline_label": "",
+      "estimated_price": "",
+      "source_url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01781661&bidPbancOrd=000",
+      "next_action": "G2B 통합검색에서 공고번호로 재조회하고, 없으면 지구촌교회 구매 담당자에게 공고 이력 확인. 확인 전 영업 검토 대상 확정 보류."
+    }
+  ],
+  "unverified_count": 3,
+  "access_blockers": [
+    {
+      "bid_no": "G012605603",
+      "kind": "DOCUMENT",
+      "review_state": "ACTIVE",
+      "detail": "PDF 폰트 매핑 문제로 한국어 텍스트 추출 불가. 품목 구성은 원문 PDF 열람 필요.; 첨부 목록만 확인. 미다운로드."
+    },
+    {
+      "bid_no": "R26BK01748815",
+      "kind": "PORTAL_OR_SEARCH",
+      "review_state": "UNVERIFIED",
+      "detail": "G2B 상세 URL 접속 시 '안내 메시지 / 공고정보가 존재하지 않습니다.' 알림이 표시되어 원문을 확인할 수 없다."
+    },
+    {
+      "bid_no": "R26BK01763002",
+      "kind": "PORTAL_OR_SEARCH",
+      "review_state": "UNVERIFIED",
+      "detail": "G2B 상세 URL 접속 시 '안내 메시지 / 공고정보가 존재하지 않습니다.' 알림이 표시되어 원문을 확인할 수 없다."
+    },
+    {
+      "bid_no": "R26BK01781661",
+      "kind": "PORTAL_OR_SEARCH",
+      "review_state": "UNVERIFIED",
+      "detail": "G2B 상세 페이지가 메뉴와 '유의사항 최종변경일 : 2021/01/01 09:00'만 표시하고 공고 데이터를 로드하지 못했다. 원문 확인 불가."
+    }
+  ],
+  "cgi_catalog": {
+    "source": "data/full_catalog/product_db_compact.csv",
+    "products_total": 4575,
+    "caveat": "카테고리 단위 참고 비교다. 카탈로그 전 제품의 cgi_sale_status가 unapproved로 기록되어 있어 판매승인 필터로 사용할 수 없고, sales_status도 재고미관리·품절이 대부분이므로 실제 견적 가능 모델은 별도 공급 확인이 필요하다.",
+    "profiles": {
+      "broadcast_install": {
+        "label": "방송·음향 설치",
+        "categories": [
+          "스피커",
+          "설치용 스피커",
+          "PA 스피커",
+          "액티브 스피커",
+          "라우드 스피커",
+          "스테이지 모니터 스피커",
+          "서브우퍼",
+          "디지털 믹서",
+          "마이크",
+          "유선 마이크",
+          "무선 마이크",
+          "파워앰프"
+        ],
+        "catalog_products": 597,
+        "sales_status": {
+          "재고미관리": 277,
+          "품절(판매중지)": 273,
+          "미확인": 46,
+          "판매중": 1
+        }
+      },
+      "speaker_system": {
+        "label": "스피커 시스템",
+        "categories": [
+          "스피커",
+          "설치용 스피커",
+          "PA 스피커",
+          "액티브 스피커",
+          "라우드 스피커",
+          "스테이지 모니터 스피커",
+          "서브우퍼"
+        ],
+        "catalog_products": 408,
+        "sales_status": {
+          "재고미관리": 236,
+          "품절(판매중지)": 141,
+          "미확인": 30,
+          "판매중": 1
+        }
+      },
+      "mixer": {
+        "label": "디지털 믹서",
+        "categories": [
+          "디지털 믹서"
+        ],
+        "catalog_products": 32,
+        "sales_status": {
+          "재고미관리": 32
+        }
+      },
+      "projector": {
+        "label": "프로젝터",
+        "categories": [],
+        "catalog_products": 0,
+        "sales_status": {}
+      }
+    }
+  },
+  "policy": "실제 원문(공고 상세 또는 첨부)에서 확인된 공고만 영업 검토 대상으로 확정한다. 원문을 확인하지 못한 공고는 UNVERIFIED로 보류하며 마감일·자격을 추정하지 않는다."
+}
