@@ -1,0 +1,14 @@
+{
+  "total_items": 4575,
+  "missing_field_counts": {
+    "규격": 2835,
+    "제조사_cont4": 2294,
+    "출고단가": 2458
+  },
+  "price_available_count": 2117,
+  "price_missing_count": 2458,
+  "image_ok_count": 4575,
+  "model_present_count": 1740,
+  "brand_present_count": 4575,
+  "manufacturer_present_count": 2281
+}
