@@ -3,37 +3,74 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CGI 견적 관리</title>
+<title>견적 요청 관리 | CGI</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" href="../website/assets/img/cgi-mark-green.png">
 <link rel="stylesheet" href="assets/css/cgi-catalog.css">
 </head>
 <body>
-<header class="site-header">
+
+<a class="skip-link" href="#app">본문으로 건너뛰기</a>
+
+<header class="site-header" id="siteHeader">
   <div class="header-inner">
-    <a class="brand" href="index.html">
-      <span class="brand-mark">CGI</span>
-      <span class="brand-text"><strong>견적 관리</strong><small>CGI 담당자용</small></span>
+    <a class="brand" href="index.html" aria-label="CGI 상품 카탈로그">
+      <img src="../website/assets/img/cgi-mark-white.png" alt="CGI (주)시지아이" width="132" height="42">
+      <span class="brand-divider" aria-hidden="true"></span>
+      <span class="brand-text">
+        <strong>견적 관리</strong>
+        <small>STAFF ONLY</small>
+      </span>
     </a>
-    <nav class="header-nav">
-      <a href="index.html">카탈로그</a>
-      <a href="staff.html">견적 관리</a>
+
+    <button class="nav-toggle" type="button" data-action="toggle-nav" aria-expanded="false" aria-controls="siteNav">
+      <span class="bars" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span class="sr-only">메뉴 열기</span>
+    </button>
+
+    <nav class="header-nav" id="siteNav" aria-label="주요 메뉴">
+      <a href="index.html">상품 카탈로그</a>
+      <a href="staff.html" class="is-active" aria-current="page">견적 관리</a>
+      <a href="../website/index.html">회사 홈페이지</a>
     </nav>
   </div>
 </header>
-<main id="app" class="app">
-  <div class="detail-block">
-    <h3>견적 요청 접수 목록</h3>
-    <p class="detail-price-note">브라우저 localStorage에 저장된 요청을 표시합니다. 다른 PC의 요청은 JSON 파일로 가져오기 하세요.</p>
-    <div>
-      <input type="file" id="importFile" accept="application/json">
-      <button type="button" class="btn-search" id="importBtn">JSON 가져오기</button>
+
+<main id="app" class="app staff-app">
+  <header class="page-head">
+    <p class="page-eyebrow">STAFF</p>
+    <h1>견적 요청 관리</h1>
+    <p class="page-sub">접수된 견적 요청을 확인하고 단가와 진행 상태를 관리합니다.</p>
+  </header>
+
+  <section class="staff-toolbar" aria-label="요청 가져오기">
+    <div class="import-box">
+      <label class="file-pick" for="importFile">
+        <span>JSON 파일 선택</span>
+        <input type="file" id="importFile" accept="application/json">
+      </label>
+      <span class="file-name" id="importFileName">선택된 파일 없음</span>
+      <button type="button" class="btn btn-secondary" id="importBtn">가져오기</button>
     </div>
-    <div id="requestList"></div>
-  </div>
-  <div id="requestDetail"></div>
+    <p class="toolbar-note">서버 연결 시 접수 목록을 실시간으로 불러옵니다. 서버에 없는 요청은 JSON 파일로 가져올 수 있습니다.</p>
+  </section>
+
+  <section id="requestList" class="request-list" aria-live="polite"></section>
+
+  <section id="requestDetail"></section>
 </main>
+
+<footer class="site-footer">
+  <div class="footer-bottom staff-footer">
+    <p>© 주식회사 시지아이. All rights reserved.</p>
+    <p>담당자용 화면입니다. 견적 요청에는 고객 개인정보가 포함될 수 있으므로 취급에 주의하세요.</p>
+  </div>
+</footer>
+
 <script src="config.js"></script>
 <script src="data/products.js"></script>
 <script src="data/services.js"></script>
+<script src="assets/js/cgi-header.js"></script>
 <script src="assets/js/cgi-staff.js"></script>
 </body>
 </html>
