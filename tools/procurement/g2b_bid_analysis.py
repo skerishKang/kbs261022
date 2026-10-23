@@ -28,6 +28,8 @@ try:
 except ImportError:  # pragma: no cover
     openpyxl = None
 
+import g2b_bid_classifier as classifier
+
 REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 SAMPLE_PATH = os.path.join(REPO_ROOT, "data", "procurement", "sample_bids.json")
 KEYWORDS_PATH = os.path.join(REPO_ROOT, "tools", "procurement", "cgi_bid_keywords.json")
@@ -101,10 +103,11 @@ def normalize(bids, source):
         status = b.get("status") or b.get("bidSttusNm") or b.get("status_name")
         close_date = b.get("close_date") or b.get("bidClseDt") or b.get("bid_close_date")
         notice_date = (
-            b.get("notice_date") or b.get("bidNtceDt") or b.get("dltlPubnDt")
-            or b.get("pubnDt") or b.get("notice_date_")
+            b.get("notice_date") or b.get("post_date") or b.get("bidNtceDt")
+            or b.get("dltlPubnDt") or b.get("pubnDt") or b.get("notice_date_")
         )
         detail_url = b.get("detail_url") or b.get("bidNtceDtlUrl") or b.get("detail_link")
+        data_source_keyword = b.get("data_source_keyword")
 
         est_val = _to_number(estimated)
         win_val = _to_number(winning)
@@ -133,6 +136,7 @@ def normalize(bids, source):
             "close_date": close_date,
             "notice_date": notice_date,
             "detail_url": detail_url,
+            "data_source_keyword": data_source_keyword,
             "cgi_categories": ";".join(cgi_cats) if cgi_cats else "",
             "cgi_relevant": bool(cgi_cats),
             "data_source": source,
@@ -281,7 +285,13 @@ def write_xlsx(bids, path):
     cols = list(bids[0].keys())
     ws.append(cols)
     for b in bids:
-        ws.append([b.get(c) for c in cols])
+        row = []
+        for c in cols:
+            value = b.get(c)
+            if isinstance(value, (list, dict)):
+                value = json.dumps(value, ensure_ascii=False)
+            row.append(value)
+        ws.append(row)
     from openpyxl.styles import Font, PatternFill
     for cell in ws[1]:
         cell.font = Font(bold=True)
@@ -304,6 +314,8 @@ def main():
     parser.add_argument("--status", default=None)
     parser.add_argument("--begin", default=None, help="close_date >= (string)")
     parser.add_argument("--end", default=None, help="close_date <= (string)")
+    parser.add_argument("--enrichment", default=None, help="G2B detail enrichment JSON")
+    parser.add_argument("--as-of", default=classifier.AS_OF_DEFAULT, help="lifecycle basis date")
     args = parser.parse_args()
 
     os.makedirs(OUT_DIR, exist_ok=True)
@@ -330,7 +342,20 @@ def main():
         bids_raw = load_bids(SAMPLE_PATH)
 
     norm = normalize(bids_raw, source)
-    filtered = apply_filters(norm, args)
+
+    enrichment_map = None
+    all_records = norm
+    legacy_bids = None
+    legacy_records = None
+    stats = None
+    if args.enrichment:
+        enrichment_map = classifier.load_enrichment(args.enrichment)
+        all_records, _ = classifier.build_records(norm, enrichment_map, args.as_of)
+        legacy_bids = [b for b in norm if b["cgi_relevant"]]
+        legacy_records, _ = classifier.build_records(legacy_bids, enrichment_map, args.as_of)
+        stats = classifier.build_stats(all_records, legacy_bids, enrichment_map, args.as_of)
+
+    filtered = apply_filters(all_records, args)
 
     summary = summarize(filtered)
     summary["source"] = source
@@ -348,6 +373,23 @@ def main():
         "begin": args.begin,
         "end": args.end,
     }
+    if stats is not None:
+        summary["as_of"] = args.as_of
+        summary["enrichment_source"] = f"file:{args.enrichment}"
+        summary["valid_bids"] = stats["valid_bids"]
+        summary["av_class_counts"] = {
+            code: stats["classification"][code]["count"] for code in ("A", "B", "C")
+        }
+        summary["av_class_shares_pct"] = {
+            code: stats["classification"][code]["share_pct"] for code in ("A", "B", "C")
+        }
+        summary["lifecycle_counts"] = stats["lifecycle_counts"]
+        summary["duplicate_groups"] = stats["duplicates"]["groups"]
+        summary["duplicate_excess"] = stats["duplicates"]["excess_records"]
+        summary["detail_counts"] = stats["detail_counts"]
+        summary["legacy_356_count"] = stats["legacy"]["count"]
+        summary["legacy_excluded_count"] = stats["legacy"]["excluded_count"]
+        summary["rating_note"] = stats["rated_note"]
 
     out_json = os.path.join(OUT_DIR, "bid_analysis_report.json")
     with open(out_json, "w", encoding="utf-8") as f:
@@ -363,6 +405,11 @@ def main():
 
     out_xlsx = os.path.join(OUT_DIR, "bid_analysis.xlsx")
     write_xlsx(filtered, out_xlsx)
+
+    if stats is not None:
+        classifier.write_classification_outputs(
+            OUT_DIR, all_records, stats, legacy_records
+        )
 
     print(json.dumps(summary, ensure_ascii=False, indent=2))
     print("outputs:", out_json, out_csv, out_xlsx)
