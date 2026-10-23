@@ -51,4 +51,28 @@ Yamaha 레코드 주요 필드:
 - 기존 CGI 상품 ID, 가격, 재고, ERP 코드는 변경하지 않았습니다.
 - Yamaha 공식 이미지와 규격은 `image_urls`, `specs`에 보존되어 있습니다.
 - 불확실한 CL1 매칭은 자동 확정하지 않고 `review_required`로 남겼습니다.
+
+## 6. 쇼핑몰 연동 예시
+
+- CGI 카탈로그 로더 호환 파일: `site/data/yamaha_catalog.js`
+- 메타: `window.YAMAHA_CATALOG_META`
+- 상품 배열: `window.YAMAHA_PRODUCTS`
+- JSON: `site/data/yamaha_catalog.json`
+- 사용 예시: `index.html?data=site/data/yamaha_catalog.json`
+- 각 Yamaha 항목은 `catalog_type=manufacturer_reference`, `sale_status=current_or_unspecified|discontinued`, `price.state=inquiry`로 표시됩니다.
+- 실제 CGI 판매상품과 혼동하지 않도록 `source.site`는 `yamaha_global`/`yamaha_kr`로 구분됩니다.
 PY
+
+
+## 7. 최종 검증 결과
+
+- Yamaha 원본 상품: 673건 (Global 303, Korea 370)
+- Global/Korea 중복 모델: 248건 자동 매칭, Global-only 55건, Korea-only 122건
+- CGI 상품: 4,575건 (변경 없음)
+- CGI-Yamaha 자동 매칭: 0건
+- 수동 검토 대상: 2건 (Yamaha CL1 vs CGI Cloud CL-1)
+  - Yamaha 공식 페이지에서 CL 시리즈 디지털 믹싱 콘솔(단종) 확인
+  - CGI 상품은 Cloud CL-1 마이크 액티베이터로 브랜드/용도가 다름
+  - 자동 매칭하지 않고 review_required 상태 유지
+- 쇼핑몰 로더 호환 파일: site/data/yamaha_catalog.json, site/data/yamaha_catalog.js
+- 가격/재고/공급 권한: Yamaha는 공식 참고 상품으로 price=null, price.state=inquiry 유지
