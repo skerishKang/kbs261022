@@ -1,0 +1,1092 @@
+{
+  "base": "http://127.0.0.1:8848/site",
+  "at": "2026-10-23T19:37:46.346Z",
+  "total": 104,
+  "failed": 0,
+  "mockApiPosts": 1,
+  "results": [
+    {
+      "name": "[390] 홈: 첫 화면에 검색+추천",
+      "ok": true,
+      "detail": {
+        "heroH1": "CGI 상품 카탈로그",
+        "heroSearchVisible": true,
+        "featuredBeforeStats": true,
+        "featuredCards": 8,
+        "chipsTop": 20,
+        "chipMore": 2,
+        "statCards": 4,
+        "hasPhonelink": true
+      }
+    },
+    {
+      "name": "[390] 홈: 통계·칩 접기",
+      "ok": true,
+      "detail": {
+        "statCards": 4,
+        "chipMore": 2,
+        "chipsTop": 20
+      }
+    },
+    {
+      "name": "[390] 홈: 가로 오버플로 없음",
+      "ok": true,
+      "detail": {
+        "vw": 390,
+        "scrollWidth": 390,
+        "overflowX": false,
+        "imgTotal": 10,
+        "brokenImages": 0,
+        "brokenSample": [],
+        "fallbacks": 0
+      }
+    },
+    {
+      "name": "[390] 홈: 깨진 이미지 없음",
+      "ok": true,
+      "detail": {
+        "broken": 0,
+        "fallbacks": 0,
+        "total": 10
+      }
+    },
+    {
+      "name": "[390] 목록: 카드·패싯",
+      "ok": true,
+      "detail": {
+        "cards": 12,
+        "facets": 3,
+        "panelHidden": true,
+        "toggleVisible": true
+      }
+    },
+    {
+      "name": "[390] 목록: 필터 표시/접힘",
+      "ok": true,
+      "detail": {
+        "cards": 12,
+        "facets": 3,
+        "panelHidden": true,
+        "toggleVisible": true
+      }
+    },
+    {
+      "name": "[390] 목록: 가로 오버플로 없음",
+      "ok": true,
+      "detail": {
+        "vw": 390,
+        "scrollWidth": 390,
+        "overflowX": false,
+        "imgTotal": 14,
+        "brokenImages": 0,
+        "brokenSample": [],
+        "fallbacks": 0
+      }
+    },
+    {
+      "name": "[390] 목록: 깨진 이미지 없음",
+      "ok": true,
+      "detail": {
+        "broken": 0,
+        "fallbacks": 0,
+        "total": 14
+      }
+    },
+    {
+      "name": "[390] 목록: 모바일 필터 열기",
+      "ok": true,
+      "detail": {
+        "opened": true
+      }
+    },
+    {
+      "name": "[390] 상세: 갤러리 정리",
+      "ok": true,
+      "detail": {
+        "title": "SHURE RMCE-TW2 / 슈어 완전 무선 이어폰 어댑터 2세대",
+        "thumbs": 3,
+        "galleryBannerFree": true,
+        "galleryProductShots": true,
+        "primaryCta": true,
+        "secondaryCta": true,
+        "mobileCtaVisible": true,
+        "sourceBox": true,
+        "internalLeak": false
+      }
+    },
+    {
+      "name": "[390] 상세: CTA 위계",
+      "ok": true,
+      "detail": {
+        "title": "SHURE RMCE-TW2 / 슈어 완전 무선 이어폰 어댑터 2세대",
+        "thumbs": 3,
+        "galleryBannerFree": true,
+        "galleryProductShots": true,
+        "primaryCta": true,
+        "secondaryCta": true,
+        "mobileCtaVisible": true,
+        "sourceBox": true,
+        "internalLeak": false
+      }
+    },
+    {
+      "name": "[390] 상세: 모바일 CTA",
+      "ok": true,
+      "detail": {
+        "width": 390,
+        "visible": true
+      }
+    },
+    {
+      "name": "[390] 상세: 내부정보 미노출",
+      "ok": true,
+      "detail": {
+        "internalLeak": false,
+        "sourceBox": true
+      }
+    },
+    {
+      "name": "[390] 상세: 가로 오버플로 없음",
+      "ok": true,
+      "detail": {
+        "vw": 390,
+        "scrollWidth": 390,
+        "overflowX": false,
+        "imgTotal": 6,
+        "brokenImages": 0,
+        "brokenSample": [],
+        "fallbacks": 0
+      }
+    },
+    {
+      "name": "[390] 상세: 깨진 이미지 없음",
+      "ok": true,
+      "detail": {
+        "broken": 0,
+        "fallbacks": 0,
+        "total": 6
+      }
+    },
+    {
+      "name": "[390] 장바구니(빈): 폼 숨김",
+      "ok": true,
+      "detail": {
+        "emptyState": true,
+        "form": false,
+        "overflowX": false
+      }
+    },
+    {
+      "name": "[390] 장바구니: 상품명/가격/수량/삭제 조작 가능",
+      "ok": true,
+      "detail": {
+        "rows": 2,
+        "nameInView": true,
+        "priceInView": true,
+        "qtyInView": true,
+        "removeInView": true,
+        "form": true
+      }
+    },
+    {
+      "name": "[390] 장바구니: 가로 오버플로 없음",
+      "ok": true,
+      "detail": {
+        "vw": 390,
+        "scrollWidth": 390,
+        "overflowX": false,
+        "imgTotal": 4,
+        "brokenImages": 0,
+        "brokenSample": [],
+        "fallbacks": 0
+      }
+    },
+    {
+      "name": "[390] 장바구니: 깨진 이미지 없음",
+      "ok": true,
+      "detail": {
+        "broken": 0,
+        "fallbacks": 0,
+        "total": 4
+      }
+    },
+    {
+      "name": "[390] 장바구니: 수량 증가 반영",
+      "ok": true,
+      "detail": {
+        "qtyBefore": "1",
+        "qtyAfter": "2",
+        "storedQty": 2
+      }
+    },
+    {
+      "name": "[390] 장바구니: 삭제 후 폼 입력값 보존",
+      "ok": true,
+      "detail": {
+        "rows": 1,
+        "companyPreserved": "UIUX검증상사",
+        "phonePreserved": "010-1111-2222"
+      }
+    },
+    {
+      "name": "[390] 장바구니: 마지막 삭제 시 폼 숨김",
+      "ok": true,
+      "detail": {
+        "empty": true,
+        "form": false
+      }
+    },
+    {
+      "name": "[390] 견적 제출: 성공 응답 표시",
+      "ok": true,
+      "detail": {
+        "resultText": "견적 요청이 접수되었습니다. 접수번호: Q-UITEST-1792784231294"
+      }
+    },
+    {
+      "name": "[390] 견적 제출: Worker payload 계약 유지",
+      "ok": true,
+      "detail": {
+        "id": "Q-1792784231289",
+        "company": "UIUX E2E 상사",
+        "services": [
+          "installation"
+        ],
+        "items": [
+          {
+            "id": "samasound.co.kr:3836",
+            "qty": 2,
+            "keys": [
+              "id",
+              "name",
+              "brand",
+              "category",
+              "qty",
+              "publicPrice"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "[390] 상세: 고정 CTA 노출",
+      "ok": true,
+      "detail": {
+        "visible": true,
+        "bottom": 834,
+        "innerH": 844,
+        "text": "견적 요청"
+      }
+    },
+    {
+      "name": "[390] 상세: CTA -> 견적 목록 이동",
+      "ok": true,
+      "detail": {
+        "hash": "#/quote-cart",
+        "rows": 2
+      }
+    },
+    {
+      "name": "[390] 상세: 갤러리 오류 폴백",
+      "ok": true,
+      "detail": {
+        "mainExists": true,
+        "src": "https://www.samamusic.co.kr/web/product/small/202412/4a8872e99a6dd4b24cdfe1935f8d66a8.jpg",
+        "fallback": false
+      }
+    },
+    {
+      "name": "[390] 관리자: 요청 목록 렌더",
+      "ok": true,
+      "detail": {
+        "cards": 1,
+        "id": "Q-UIUX-STAFF-1",
+        "company": "관리자검증상사",
+        "tools": true
+      }
+    },
+    {
+      "name": "[390] 관리자: 가로 오버플로 없음",
+      "ok": true,
+      "detail": {
+        "vw": 390,
+        "scrollWidth": 390,
+        "overflowX": false,
+        "imgTotal": 1,
+        "brokenImages": 0,
+        "brokenSample": [],
+        "fallbacks": 0
+      }
+    },
+    {
+      "name": "[390] 관리자: 깨진 이미지 없음",
+      "ok": true,
+      "detail": {
+        "broken": 0
+      }
+    },
+    {
+      "name": "[390] 관리자: 상세 표 스크롤",
+      "ok": true,
+      "detail": {
+        "tableScroll": true,
+        "overflowX": false,
+        "hasItems": 2
+      }
+    },
+    {
+      "name": "[390] JS 오류 없음",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "[820] 홈: 첫 화면에 검색+추천",
+      "ok": true,
+      "detail": {
+        "heroH1": "CGI 상품 카탈로그",
+        "heroSearchVisible": true,
+        "featuredBeforeStats": true,
+        "featuredCards": 8,
+        "chipsTop": 20,
+        "chipMore": 2,
+        "statCards": 4,
+        "hasPhonelink": true
+      }
+    },
+    {
+      "name": "[820] 홈: 통계·칩 접기",
+      "ok": true,
+      "detail": {
+        "statCards": 4,
+        "chipMore": 2,
+        "chipsTop": 20
+      }
+    },
+    {
+      "name": "[820] 홈: 가로 오버플로 없음",
+      "ok": true,
+      "detail": {
+        "vw": 820,
+        "scrollWidth": 820,
+        "overflowX": false,
+        "imgTotal": 10,
+        "brokenImages": 0,
+        "brokenSample": [],
+        "fallbacks": 0
+      }
+    },
+    {
+      "name": "[820] 홈: 깨진 이미지 없음",
+      "ok": true,
+      "detail": {
+        "broken": 0,
+        "fallbacks": 0,
+        "total": 10
+      }
+    },
+    {
+      "name": "[820] 목록: 카드·패싯",
+      "ok": true,
+      "detail": {
+        "cards": 12,
+        "facets": 3,
+        "panelHidden": true,
+        "toggleVisible": true
+      }
+    },
+    {
+      "name": "[820] 목록: 필터 표시/접힘",
+      "ok": true,
+      "detail": {
+        "cards": 12,
+        "facets": 3,
+        "panelHidden": true,
+        "toggleVisible": true
+      }
+    },
+    {
+      "name": "[820] 목록: 가로 오버플로 없음",
+      "ok": true,
+      "detail": {
+        "vw": 820,
+        "scrollWidth": 820,
+        "overflowX": false,
+        "imgTotal": 14,
+        "brokenImages": 0,
+        "brokenSample": [],
+        "fallbacks": 0
+      }
+    },
+    {
+      "name": "[820] 목록: 깨진 이미지 없음",
+      "ok": true,
+      "detail": {
+        "broken": 0,
+        "fallbacks": 0,
+        "total": 14
+      }
+    },
+    {
+      "name": "[820] 목록: 모바일 필터 열기",
+      "ok": true,
+      "detail": {
+        "opened": true
+      }
+    },
+    {
+      "name": "[820] 상세: 갤러리 정리",
+      "ok": true,
+      "detail": {
+        "title": "SHURE RMCE-TW2 / 슈어 완전 무선 이어폰 어댑터 2세대",
+        "thumbs": 3,
+        "galleryBannerFree": true,
+        "galleryProductShots": true,
+        "primaryCta": true,
+        "secondaryCta": true,
+        "mobileCtaVisible": true,
+        "sourceBox": true,
+        "internalLeak": false
+      }
+    },
+    {
+      "name": "[820] 상세: CTA 위계",
+      "ok": true,
+      "detail": {
+        "title": "SHURE RMCE-TW2 / 슈어 완전 무선 이어폰 어댑터 2세대",
+        "thumbs": 3,
+        "galleryBannerFree": true,
+        "galleryProductShots": true,
+        "primaryCta": true,
+        "secondaryCta": true,
+        "mobileCtaVisible": true,
+        "sourceBox": true,
+        "internalLeak": false
+      }
+    },
+    {
+      "name": "[820] 상세: 모바일 CTA",
+      "ok": true,
+      "detail": {
+        "width": 820,
+        "visible": true
+      }
+    },
+    {
+      "name": "[820] 상세: 내부정보 미노출",
+      "ok": true,
+      "detail": {
+        "internalLeak": false,
+        "sourceBox": true
+      }
+    },
+    {
+      "name": "[820] 상세: 가로 오버플로 없음",
+      "ok": true,
+      "detail": {
+        "vw": 820,
+        "scrollWidth": 820,
+        "overflowX": false,
+        "imgTotal": 6,
+        "brokenImages": 0,
+        "brokenSample": [],
+        "fallbacks": 0
+      }
+    },
+    {
+      "name": "[820] 상세: 깨진 이미지 없음",
+      "ok": true,
+      "detail": {
+        "broken": 0,
+        "fallbacks": 0,
+        "total": 6
+      }
+    },
+    {
+      "name": "[820] 장바구니(빈): 폼 숨김",
+      "ok": true,
+      "detail": {
+        "emptyState": true,
+        "form": false,
+        "overflowX": false
+      }
+    },
+    {
+      "name": "[820] 장바구니: 상품명/가격/수량/삭제 조작 가능",
+      "ok": true,
+      "detail": {
+        "rows": 2,
+        "nameInView": true,
+        "priceInView": true,
+        "qtyInView": true,
+        "removeInView": true,
+        "form": true
+      }
+    },
+    {
+      "name": "[820] 장바구니: 가로 오버플로 없음",
+      "ok": true,
+      "detail": {
+        "vw": 820,
+        "scrollWidth": 820,
+        "overflowX": false,
+        "imgTotal": 4,
+        "brokenImages": 0,
+        "brokenSample": [],
+        "fallbacks": 0
+      }
+    },
+    {
+      "name": "[820] 장바구니: 깨진 이미지 없음",
+      "ok": true,
+      "detail": {
+        "broken": 0,
+        "fallbacks": 0,
+        "total": 4
+      }
+    },
+    {
+      "name": "[820] 관리자: 요청 목록 렌더",
+      "ok": true,
+      "detail": {
+        "cards": 1,
+        "id": "Q-UIUX-STAFF-1",
+        "company": "관리자검증상사",
+        "tools": true
+      }
+    },
+    {
+      "name": "[820] 관리자: 가로 오버플로 없음",
+      "ok": true,
+      "detail": {
+        "vw": 820,
+        "scrollWidth": 820,
+        "overflowX": false,
+        "imgTotal": 1,
+        "brokenImages": 0,
+        "brokenSample": [],
+        "fallbacks": 0
+      }
+    },
+    {
+      "name": "[820] 관리자: 깨진 이미지 없음",
+      "ok": true,
+      "detail": {
+        "broken": 0
+      }
+    },
+    {
+      "name": "[820] 관리자: 상세 표 스크롤",
+      "ok": true,
+      "detail": {
+        "tableScroll": true,
+        "overflowX": false,
+        "hasItems": 2
+      }
+    },
+    {
+      "name": "[820] JS 오류 없음",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "[1440] 홈: 첫 화면에 검색+추천",
+      "ok": true,
+      "detail": {
+        "heroH1": "CGI 상품 카탈로그",
+        "heroSearchVisible": true,
+        "featuredBeforeStats": true,
+        "featuredCards": 8,
+        "chipsTop": 20,
+        "chipMore": 2,
+        "statCards": 4,
+        "hasPhonelink": true
+      }
+    },
+    {
+      "name": "[1440] 홈: 통계·칩 접기",
+      "ok": true,
+      "detail": {
+        "statCards": 4,
+        "chipMore": 2,
+        "chipsTop": 20
+      }
+    },
+    {
+      "name": "[1440] 홈: 가로 오버플로 없음",
+      "ok": true,
+      "detail": {
+        "vw": 1440,
+        "scrollWidth": 1440,
+        "overflowX": false,
+        "imgTotal": 10,
+        "brokenImages": 0,
+        "brokenSample": [],
+        "fallbacks": 0
+      }
+    },
+    {
+      "name": "[1440] 홈: 깨진 이미지 없음",
+      "ok": true,
+      "detail": {
+        "broken": 0,
+        "fallbacks": 0,
+        "total": 10
+      }
+    },
+    {
+      "name": "[1440] 홈: 칩 전체 보기 펼침",
+      "ok": true,
+      "detail": {
+        "before": 20,
+        "after": 74
+      }
+    },
+    {
+      "name": "[1440] 목록: 카드·패싯",
+      "ok": true,
+      "detail": {
+        "cards": 12,
+        "facets": 3,
+        "panelHidden": false,
+        "toggleVisible": false
+      }
+    },
+    {
+      "name": "[1440] 목록: 필터 표시/접힘",
+      "ok": true,
+      "detail": {
+        "cards": 12,
+        "facets": 3,
+        "panelHidden": false,
+        "toggleVisible": false
+      }
+    },
+    {
+      "name": "[1440] 목록: 가로 오버플로 없음",
+      "ok": true,
+      "detail": {
+        "vw": 1440,
+        "scrollWidth": 1440,
+        "overflowX": false,
+        "imgTotal": 14,
+        "brokenImages": 0,
+        "brokenSample": [],
+        "fallbacks": 0
+      }
+    },
+    {
+      "name": "[1440] 목록: 깨진 이미지 없음",
+      "ok": true,
+      "detail": {
+        "broken": 0,
+        "fallbacks": 0,
+        "total": 14
+      }
+    },
+    {
+      "name": "[1440] 상세: 갤러리 정리",
+      "ok": true,
+      "detail": {
+        "title": "SHURE RMCE-TW2 / 슈어 완전 무선 이어폰 어댑터 2세대",
+        "thumbs": 3,
+        "galleryBannerFree": true,
+        "galleryProductShots": true,
+        "primaryCta": true,
+        "secondaryCta": true,
+        "mobileCtaVisible": false,
+        "sourceBox": true,
+        "internalLeak": false
+      }
+    },
+    {
+      "name": "[1440] 상세: CTA 위계",
+      "ok": true,
+      "detail": {
+        "title": "SHURE RMCE-TW2 / 슈어 완전 무선 이어폰 어댑터 2세대",
+        "thumbs": 3,
+        "galleryBannerFree": true,
+        "galleryProductShots": true,
+        "primaryCta": true,
+        "secondaryCta": true,
+        "mobileCtaVisible": false,
+        "sourceBox": true,
+        "internalLeak": false
+      }
+    },
+    {
+      "name": "[1440] 상세: 모바일 CTA",
+      "ok": true,
+      "detail": {
+        "width": 1440,
+        "visible": false
+      }
+    },
+    {
+      "name": "[1440] 상세: 내부정보 미노출",
+      "ok": true,
+      "detail": {
+        "internalLeak": false,
+        "sourceBox": true
+      }
+    },
+    {
+      "name": "[1440] 상세: 가로 오버플로 없음",
+      "ok": true,
+      "detail": {
+        "vw": 1440,
+        "scrollWidth": 1440,
+        "overflowX": false,
+        "imgTotal": 6,
+        "brokenImages": 0,
+        "brokenSample": [],
+        "fallbacks": 0
+      }
+    },
+    {
+      "name": "[1440] 상세: 깨진 이미지 없음",
+      "ok": true,
+      "detail": {
+        "broken": 0,
+        "fallbacks": 0,
+        "total": 6
+      }
+    },
+    {
+      "name": "[1440] 장바구니(빈): 폼 숨김",
+      "ok": true,
+      "detail": {
+        "emptyState": true,
+        "form": false,
+        "overflowX": false
+      }
+    },
+    {
+      "name": "[1440] 장바구니: 상품명/가격/수량/삭제 조작 가능",
+      "ok": true,
+      "detail": {
+        "rows": 2,
+        "nameInView": true,
+        "priceInView": true,
+        "qtyInView": true,
+        "removeInView": true,
+        "form": true
+      }
+    },
+    {
+      "name": "[1440] 장바구니: 가로 오버플로 없음",
+      "ok": true,
+      "detail": {
+        "vw": 1440,
+        "scrollWidth": 1440,
+        "overflowX": false,
+        "imgTotal": 4,
+        "brokenImages": 0,
+        "brokenSample": [],
+        "fallbacks": 0
+      }
+    },
+    {
+      "name": "[1440] 장바구니: 깨진 이미지 없음",
+      "ok": true,
+      "detail": {
+        "broken": 0,
+        "fallbacks": 0,
+        "total": 4
+      }
+    },
+    {
+      "name": "[1440] 관리자: 요청 목록 렌더",
+      "ok": true,
+      "detail": {
+        "cards": 1,
+        "id": "Q-UIUX-STAFF-1",
+        "company": "관리자검증상사",
+        "tools": true
+      }
+    },
+    {
+      "name": "[1440] 관리자: 가로 오버플로 없음",
+      "ok": true,
+      "detail": {
+        "vw": 1440,
+        "scrollWidth": 1440,
+        "overflowX": false,
+        "imgTotal": 1,
+        "brokenImages": 0,
+        "brokenSample": [],
+        "fallbacks": 0
+      }
+    },
+    {
+      "name": "[1440] 관리자: 깨진 이미지 없음",
+      "ok": true,
+      "detail": {
+        "broken": 0
+      }
+    },
+    {
+      "name": "[1440] 관리자: 상세 표 스크롤",
+      "ok": true,
+      "detail": {
+        "tableScroll": true,
+        "overflowX": false,
+        "hasItems": 2
+      }
+    },
+    {
+      "name": "[1440] JS 오류 없음",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "[1920] 홈: 첫 화면에 검색+추천",
+      "ok": true,
+      "detail": {
+        "heroH1": "CGI 상품 카탈로그",
+        "heroSearchVisible": true,
+        "featuredBeforeStats": true,
+        "featuredCards": 8,
+        "chipsTop": 20,
+        "chipMore": 2,
+        "statCards": 4,
+        "hasPhonelink": true
+      }
+    },
+    {
+      "name": "[1920] 홈: 통계·칩 접기",
+      "ok": true,
+      "detail": {
+        "statCards": 4,
+        "chipMore": 2,
+        "chipsTop": 20
+      }
+    },
+    {
+      "name": "[1920] 홈: 가로 오버플로 없음",
+      "ok": true,
+      "detail": {
+        "vw": 1920,
+        "scrollWidth": 1920,
+        "overflowX": false,
+        "imgTotal": 10,
+        "brokenImages": 0,
+        "brokenSample": [],
+        "fallbacks": 0
+      }
+    },
+    {
+      "name": "[1920] 홈: 깨진 이미지 없음",
+      "ok": true,
+      "detail": {
+        "broken": 0,
+        "fallbacks": 0,
+        "total": 10
+      }
+    },
+    {
+      "name": "[1920] 홈: 칩 전체 보기 펼침",
+      "ok": true,
+      "detail": {
+        "before": 20,
+        "after": 74
+      }
+    },
+    {
+      "name": "[1920] 목록: 카드·패싯",
+      "ok": true,
+      "detail": {
+        "cards": 12,
+        "facets": 3,
+        "panelHidden": false,
+        "toggleVisible": false
+      }
+    },
+    {
+      "name": "[1920] 목록: 필터 표시/접힘",
+      "ok": true,
+      "detail": {
+        "cards": 12,
+        "facets": 3,
+        "panelHidden": false,
+        "toggleVisible": false
+      }
+    },
+    {
+      "name": "[1920] 목록: 가로 오버플로 없음",
+      "ok": true,
+      "detail": {
+        "vw": 1920,
+        "scrollWidth": 1920,
+        "overflowX": false,
+        "imgTotal": 14,
+        "brokenImages": 0,
+        "brokenSample": [],
+        "fallbacks": 0
+      }
+    },
+    {
+      "name": "[1920] 목록: 깨진 이미지 없음",
+      "ok": true,
+      "detail": {
+        "broken": 0,
+        "fallbacks": 0,
+        "total": 14
+      }
+    },
+    {
+      "name": "[1920] 상세: 갤러리 정리",
+      "ok": true,
+      "detail": {
+        "title": "SHURE RMCE-TW2 / 슈어 완전 무선 이어폰 어댑터 2세대",
+        "thumbs": 3,
+        "galleryBannerFree": true,
+        "galleryProductShots": true,
+        "primaryCta": true,
+        "secondaryCta": true,
+        "mobileCtaVisible": false,
+        "sourceBox": true,
+        "internalLeak": false
+      }
+    },
+    {
+      "name": "[1920] 상세: CTA 위계",
+      "ok": true,
+      "detail": {
+        "title": "SHURE RMCE-TW2 / 슈어 완전 무선 이어폰 어댑터 2세대",
+        "thumbs": 3,
+        "galleryBannerFree": true,
+        "galleryProductShots": true,
+        "primaryCta": true,
+        "secondaryCta": true,
+        "mobileCtaVisible": false,
+        "sourceBox": true,
+        "internalLeak": false
+      }
+    },
+    {
+      "name": "[1920] 상세: 모바일 CTA",
+      "ok": true,
+      "detail": {
+        "width": 1920,
+        "visible": false
+      }
+    },
+    {
+      "name": "[1920] 상세: 내부정보 미노출",
+      "ok": true,
+      "detail": {
+        "internalLeak": false,
+        "sourceBox": true
+      }
+    },
+    {
+      "name": "[1920] 상세: 가로 오버플로 없음",
+      "ok": true,
+      "detail": {
+        "vw": 1920,
+        "scrollWidth": 1920,
+        "overflowX": false,
+        "imgTotal": 6,
+        "brokenImages": 0,
+        "brokenSample": [],
+        "fallbacks": 0
+      }
+    },
+    {
+      "name": "[1920] 상세: 깨진 이미지 없음",
+      "ok": true,
+      "detail": {
+        "broken": 0,
+        "fallbacks": 0,
+        "total": 6
+      }
+    },
+    {
+      "name": "[1920] 장바구니(빈): 폼 숨김",
+      "ok": true,
+      "detail": {
+        "emptyState": true,
+        "form": false,
+        "overflowX": false
+      }
+    },
+    {
+      "name": "[1920] 장바구니: 상품명/가격/수량/삭제 조작 가능",
+      "ok": true,
+      "detail": {
+        "rows": 2,
+        "nameInView": true,
+        "priceInView": true,
+        "qtyInView": true,
+        "removeInView": true,
+        "form": true
+      }
+    },
+    {
+      "name": "[1920] 장바구니: 가로 오버플로 없음",
+      "ok": true,
+      "detail": {
+        "vw": 1920,
+        "scrollWidth": 1920,
+        "overflowX": false,
+        "imgTotal": 4,
+        "brokenImages": 0,
+        "brokenSample": [],
+        "fallbacks": 0
+      }
+    },
+    {
+      "name": "[1920] 장바구니: 깨진 이미지 없음",
+      "ok": true,
+      "detail": {
+        "broken": 0,
+        "fallbacks": 0,
+        "total": 4
+      }
+    },
+    {
+      "name": "[1920] 관리자: 요청 목록 렌더",
+      "ok": true,
+      "detail": {
+        "cards": 1,
+        "id": "Q-UIUX-STAFF-1",
+        "company": "관리자검증상사",
+        "tools": true
+      }
+    },
+    {
+      "name": "[1920] 관리자: 가로 오버플로 없음",
+      "ok": true,
+      "detail": {
+        "vw": 1920,
+        "scrollWidth": 1920,
+        "overflowX": false,
+        "imgTotal": 1,
+        "brokenImages": 0,
+        "brokenSample": [],
+        "fallbacks": 0
+      }
+    },
+    {
+      "name": "[1920] 관리자: 깨진 이미지 없음",
+      "ok": true,
+      "detail": {
+        "broken": 0
+      }
+    },
+    {
+      "name": "[1920] 관리자: 상세 표 스크롤",
+      "ok": true,
+      "detail": {
+        "tableScroll": true,
+        "overflowX": false,
+        "hasItems": 2
+      }
+    },
+    {
+      "name": "[1920] JS 오류 없음",
+      "ok": true,
+      "detail": []
+    }
+  ]
+}
