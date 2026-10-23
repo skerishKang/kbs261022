@@ -401,7 +401,7 @@ def build_supplier_sheet(
                 "상세수집여부": "예" if raw.get("detail_collected") in (True, "1", "True", "true") else "아니오",
                 "canonical_url": raw.get("canonical_url") or "",
                 "목록URL": raw.get("source_list_url") or "",
-                "수집시각": raw.get("updated_at") or "",
+                "수집시각": raw.get("updated_at") or r["extraction_time"],
                 "검증상태": raw.get("verification_status") or "",
                 "출처증거": raw.get("source_evidence") or "",
             }
