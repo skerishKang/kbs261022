@@ -1,0 +1,1505 @@
+{
+ "dataset": "cgi-local3-p1-original-verification",
+ "issue": 50,
+ "p1_source": "reports/data/procurement/manual_review_bids.csv (P1 priority rows, issue #33 / PR #48)",
+ "notes": [
+  "Each notice was re-checked against the original G2B detail page or KEPCO SRM announcement. Prior classification data was not reused as proof of deadlines or qualifications.",
+  "review_state in this file is the reviewed conclusion. g2b_p1_verification.py recomputes ACTIVE/EXPIRED from deadline and as-of and fails loudly on mismatch.",
+  "UNVERIFIED notices keep only prior-classification metadata (title/agency) and are excluded from sales review until the original notice is reachable.",
+  "No bid submission, no price quoting and no purchase action was performed."
+ ],
+ "notices": [
+  {
+   "bid_no": "R26BK01781066",
+   "verification_status": "VERIFIED",
+   "review_state": "NOT_ELIGIBLE",
+   "eligibility": "NOT_ELIGIBLE",
+   "status_reason": "전자시담·수의시담 공고(조달청, 수의계약). 공개 경쟁 입찰이 아니어서 CGI가 제안서를 제출할 대상이 아니다.",
+   "source_system": "G2B",
+   "source_url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01781066&bidPbancOrd=000",
+   "portal_path": null,
+   "checked_at": "2026-10-23T11:51:01+09:00",
+   "title": "청주 다목적 실내체육관 건립사업 관급자재(경기장 음향설비)",
+   "notice_type": "실공고(등록공고)",
+   "notice_no": "R26BK01781066 - 000",
+   "ref_no": null,
+   "posted_at": "2026-10-21 17:20:54",
+   "agency": "조달청장",
+   "demand_agency": "충청북도 청주시",
+   "bid_method": "전자시담",
+   "award_method": "수의시담",
+   "contract_method": "수의계약",
+   "joint_supply": "공동수급불허",
+   "region_restriction": "해당없음",
+   "region_detail": null,
+   "license_restriction": "해당없음",
+   "license_detail": null,
+   "product_registration": "관련없음",
+   "estimated_price": 626267273,
+   "business_amount": 688894000,
+   "budget": 694439590,
+   "price_basis": "VAT 제외",
+   "deadline_kind": "submission",
+   "deadline_label": "입찰서 제출 마감(전자시담)",
+   "deadline": "2026-10-23T16:00:00+09:00",
+   "deadline_note": "G2B 입찰일정: 입찰서제출 2026/10/23 14:00~16:00, 개찰 17:00",
+   "opening": "2026-10-23T17:00:00+09:00",
+   "delivery": "2027/07/15, 현장설치도",
+   "warranty": "하자담보 2년",
+   "items": [
+    {
+     "item_name": "구내방송장치",
+     "class_no": "4511170501",
+     "spec": "구내방송장치, 아이엠피, SHA-CLA505-EP, 다목적강당용, 6.74kW",
+     "quantity": "1",
+     "unit": "식",
+     "unit_price": 688894000,
+     "delivery_place": "청주시 흥덕구 석소동 130-1번지 일원",
+     "delivery_due": "2027/07/15"
+    }
+   ],
+   "qualification_verified": false,
+   "qualifications": [],
+   "cancellation_status": "취소 공고 아님(공고 상태: 실공고(등록공고))",
+   "documents": [],
+   "documents_verified": false,
+   "quote_review_items": [],
+   "cgi_fit": {
+    "level": "LOW",
+    "category_profile": "broadcast_install",
+    "note": "특정 제조사 모델(아이엠피 SHA-CLA505-EP)이 지정된 수의시담이며, CGI 카탈로그의 음향 제품군과 직접 대응하지 않는다."
+   },
+   "next_action": "영업 검토 제외. 공개 경쟁 재공고 여부만 모니터링.",
+   "evidence_quotes": [
+    {
+     "topic": "품목·모델",
+     "quote": "구내방송장치, 아이엠피, SHA-CLA505-EP, 다목적강당용, 6.74kW",
+     "source": "G2B 품목내역"
+    },
+    {
+     "topic": "입찰방식",
+     "quote": "입찰방법: 전자시담 / 낙찰방법: 수의시담 / 계약방법: 수의계약",
+     "source": "G2B 공고일반"
+    }
+   ]
+  },
+  {
+   "bid_no": "R26BK01785428",
+   "verification_status": "VERIFIED",
+   "review_state": "ACTIVE",
+   "eligibility": "OPEN_COMPETITIVE",
+   "status_reason": null,
+   "source_system": "G2B",
+   "source_url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01785428&bidPbancOrd=000",
+   "portal_path": null,
+   "checked_at": "2026-10-23T11:51:05+09:00",
+   "title": "울산양정초 공간재구조화 리모델링 통신공사 관급자재 방송장비 구매 및 설치(계속비)",
+   "notice_type": "실공고(등록공고)",
+   "notice_no": "R26BK01785428 - 000",
+   "ref_no": "제2026-294호",
+   "posted_at": "2026-10-22 10:32:49",
+   "agency": "울산광역시강북교육지원청교육장",
+   "demand_agency": "울산광역시교육청 울산광역시강북교육지원청",
+   "bid_method": "전자입찰",
+   "award_method": "소액수의견적(2인 이상 견적 제출)",
+   "contract_method": "수의계약",
+   "joint_supply": "공동수급불허",
+   "region_restriction": "투찰제한",
+   "region_detail": "[울산광역시] 입찰 참여자의 주된 영업소재지(법인은 본사 소재지)가 울산광역시에 있어야 함",
+   "license_restriction": "투찰제한",
+   "license_detail": "[정보통신공사업(0036)] 등록 업체",
+   "product_registration": "물품분류 10자리 제한(4511170501 구내방송장치)",
+   "estimated_price": 19406364,
+   "business_amount": 21347000,
+   "budget": 21347000,
+   "price_basis": "VAT 제외",
+   "deadline_kind": "submission",
+   "deadline_label": "입찰서 제출 마감",
+   "deadline": "2026-10-28T10:00:00+09:00",
+   "deadline_note": "G2B 입찰일정: 입찰서제출 2026/10/26 10:00~10/28 10:00, 입찰참가자격등록 10/27 18:00",
+   "opening": "2026-10-28T11:00:00+09:00",
+   "delivery": "2027/02/20, 내역서에 따름(울산양정초등학교 내 설치)",
+   "warranty": null,
+   "items": [
+    {
+     "item_name": "구내방송장치",
+     "class_no": "4511170501",
+     "spec": "내역서에 따름",
+     "quantity": "1",
+     "unit": "식",
+     "unit_price": 21347000,
+     "delivery_place": "내역서에 따름",
+     "delivery_due": "2027/02/20"
+    }
+   ],
+   "qualification_verified": true,
+   "qualifications": [
+    {
+     "text": "구내방송장치(물품분류번호 4511170501)로 직접생산확인을 받은 제조업체",
+     "source": "시방서 4) 입찰참가자격"
+    },
+    {
+     "text": "정보통신공사업법 제14조 규정에 의한 정보통신공사업 등록업체",
+     "source": "시방서 4) 입찰참가자격"
+    },
+    {
+     "text": "울산광역시 본사 소재 + 정보통신공사업(0036) 등록 + 물품분류 4511170501 입찰참가 등록",
+     "source": "G2B 제한사항"
+    }
+   ],
+   "cancellation_status": "취소 공고 아님(공고 상태: 실공고(등록공고))",
+   "documents": [
+    {
+     "name": "시방서(울산양정초 방송장비).hwp",
+     "kind": "spec",
+     "size_bytes": 39424,
+     "sha256": "eefbf13cf15ceebc3a3559c7ab81dd5b8c9136bb053b2d6d38216fdfb7079ec0",
+     "text_extracted": true,
+     "extract_chars": 8026,
+     "verified_topics": [
+      "입찰참가자격",
+      "납품·설치장소",
+      "승인도서",
+      "시방사양"
+     ],
+     "extract_files": [
+      {
+       "file": "reports/data/procurement/p1_evidence/R26BK01785428_spec.txt",
+       "size_bytes": 15622,
+       "sha256": "1f33429ab2a0a2c92ccc024b0468c64e605524f31463dc5e5587aa37e87fca99"
+      }
+     ]
+    },
+    {
+     "name": "공고문 PDF",
+     "kind": "notice",
+     "size_bytes": 326842,
+     "sha256": "0041a9697402dad3afb2545851f9a11b60386bb645edf93b9aaaa74dec3ebec3",
+     "text_extracted": false,
+     "extract_chars": 0,
+     "verified_topics": [],
+     "note": "다운로드 확인. PDF 폰트 매핑 문제로 한국어 텍스트 추출 불가."
+    },
+    {
+     "name": "공내역서(울산양정초 방송장비).xls",
+     "kind": "boq",
+     "size_bytes": null,
+     "sha256": null,
+     "text_extracted": false,
+     "extract_chars": 0,
+     "verified_topics": [],
+     "note": "첨부 목록만 확인. 미다운로드."
+    }
+   ],
+   "documents_verified": true,
+   "documents_checked_at": "2026-10-23T12:05:17+09:00",
+   "quote_review_items": [
+    "구내방송장치 직접생산확인 제조업체 요건 충족 여부(시방서) — 미충족 시 입찰참가 불가",
+    "정보통신공사업(0036) 등록 및 울산광역시 본사 요건",
+    "시방서·공내역서 기준 스피커·앰프·마이크 수량과 모델 대조",
+    "기존 방송설비 철거와 선로공사 포함 설치 범위",
+    "예정가격 19,406,364원 대비 자재·설치 견적 구성",
+    "A/S·하자보증 조건(공고문 기준)"
+   ],
+   "cgi_fit": {
+    "level": "MEDIUM",
+    "category_profile": "broadcast_install",
+    "note": "CGI 음향 카테고리와 제품군은 겹치지만, 직접생산확인을 받은 제조업체 요건이 실질적인 진입 장벽이다."
+   },
+   "next_action": "10/27 18:00 입찰참가자격 등록 전까지 직접생산확인 제조업체 요건 충족 여부를 확정. 미충족 시 제조사 협력 구조를 검토하되 공동수급 불허에 유의.",
+   "evidence_quotes": [
+    {
+     "topic": "입찰참가자격",
+     "quote": "4) 입찰참가자격 (1) 구내방송장치(물품분류번호 : 4511170501)로 직접생산확인을 받은 제조업체 (2) 정보통신공사업법 제14조 규정에 의한 정보통신공사업 등록업체",
+     "source": "시방서"
+    },
+    {
+     "topic": "지역·업종 제한",
+     "quote": "[울산광역시] 입찰 참여자의 주된 영업소재지(법인인 경우 본사 소재지)가 참가가능지역에 있어야 합니다. / [정보통신공사업(0036)] 업종을 등록한 업체",
+     "source": "G2B 제한사항"
+    }
+   ]
+  },
+  {
+   "bid_no": "R26BK01787191",
+   "verification_status": "VERIFIED",
+   "review_state": "ACTIVE",
+   "eligibility": "OPEN_COMPETITIVE",
+   "status_reason": null,
+   "source_system": "G2B",
+   "source_url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01787191&bidPbancOrd=000",
+   "portal_path": null,
+   "checked_at": "2026-10-23T11:51:09+09:00",
+   "title": "세종문화회관 대극장 노후 음향콘솔 교체 입찰 공고 (긴급)",
+   "notice_type": "실공고(등록공고)",
+   "notice_no": "R26BK01787191 - 000",
+   "ref_no": "재무행정팀-4423호",
+   "posted_at": "2026-10-22 18:21:24",
+   "agency": "(재)세종문화회관 사장",
+   "demand_agency": "재단법인세종문화회관",
+   "bid_method": "전자입찰",
+   "award_method": "규격가격동시입찰(제안적격자 중 예가 내 최저가)",
+   "contract_method": "제한경쟁",
+   "joint_supply": "공동수급불허, 하도급 불허",
+   "region_restriction": "제한 없음(공고문상 지역 제한 조항 없음)",
+   "region_detail": null,
+   "license_restriction": "정보통신공사업 요구 없음",
+   "license_detail": "오디오믹서(4511170601) 입찰참가 등록이 핵심",
+   "product_registration": "오디오믹서(4511170601)를 물품으로 입찰참가 등록",
+   "estimated_price": 129000000,
+   "business_amount": 141900000,
+   "budget": 141900000,
+   "price_basis": "VAT 제외",
+   "deadline_kind": "submission",
+   "deadline_label": "입찰서 제출 마감(가격입찰)",
+   "deadline": "2026-11-02T18:00:00+09:00",
+   "deadline_note": "G2B 입찰서제출 2026/10/22 19:00~11/02 18:00. 제안서는 오프라인으로 10/29(목)·10/30(금)·11/2(월) 09:00~18:00 제출(12:00~13:00 불가).",
+   "opening": "2026-11-12T15:00:00+09:00",
+   "delivery": "계약일로부터 90일 이내",
+   "warranty": null,
+   "items": [
+    {
+     "item_name": "오디오믹서",
+     "class_no": "4511170601",
+     "spec": "1. 디지털 믹서 [80CH 이상] 2대 2. 인풋 카드 [8CH Input (32bit 이상)] 5개 3. 아웃풋 카드 [8CH Output (32bit 이상)] 4개",
+     "quantity": "1",
+     "unit": "EA",
+     "unit_price": 141900000,
+     "delivery_place": null,
+     "delivery_due": null
+    }
+   ],
+   "qualification_verified": true,
+   "qualifications": [
+    {
+     "text": "입찰서 제출 마감일 전일까지 나라장터(G2B)에 오디오믹서(세부품명번호 10자리: 4511170601)를 물품으로 입찰참가 등록한 자",
+     "source": "입찰공고문 4. 입찰참가자격"
+    },
+    {
+     "text": "「중소기업기본법」 제2조에 따른 중소기업자로서 중소기업자 확인서를 소지한 자",
+     "source": "입찰공고문 4. 입찰참가자격"
+    },
+    {
+     "text": "공동수급계약(공동이행방식)의 입찰 참여 및 하도급을 불허함",
+     "source": "입찰공고문 4.나"
+    }
+   ],
+   "cancellation_status": "취소 공고 아님(공고 상태: 실공고(등록공고))",
+   "documents": [
+    {
+     "name": "입찰공고문.hwpx",
+     "kind": "notice",
+     "size_bytes": 63816,
+     "sha256": "2de63765af9da6f34381c1137395e2292f35555f5337b4da248fd3d3ee5335ad",
+     "text_extracted": true,
+     "extract_chars": 4509,
+     "verified_topics": [
+      "공고기간·제안서 제출",
+      "입찰참가자격",
+      "제출서류",
+      "낙찰자 결정"
+     ],
+     "extract_files": [
+      {
+       "file": "reports/data/procurement/p1_evidence/R26BK01787191_notice.txt",
+       "size_bytes": 9885,
+       "sha256": "9309cdf44bd70c93532f03a3bd750398df4f4320954f7bcf087fd9f122dc297a"
+      }
+     ]
+    },
+    {
+     "name": "구매시방서.pdf, 제안요청서.pdf, 구매설명서.pdf",
+     "kind": "spec",
+     "size_bytes": null,
+     "sha256": null,
+     "text_extracted": false,
+     "extract_chars": 0,
+     "verified_topics": [],
+     "note": "첨부 목록 확인. 본문 미다운로드."
+    }
+   ],
+   "documents_verified": true,
+   "documents_checked_at": "2026-10-23T12:03:23+09:00",
+   "quote_review_items": [
+    "80CH 이상 디지털 믹서 2대와 8CH I/O 카드 9장을 충족하는 모델 구성",
+    "오디오믹서(4511170601) G2B 입찰참가 등록 가능 여부",
+    "중소기업자 확인서 유효성",
+    "제안서 평가(종합평점 85점 이상) 대응: 실적·기술지원·A/S",
+    "공동수급·하도급 불허에 따른 단독 수행 가능성",
+    "오프라인 제안서 제출 일정(10/29, 10/30, 11/2)"
+   ],
+   "cgi_fit": {
+    "level": "HIGH",
+    "category_profile": "mixer",
+    "note": "디지털 믹서가 핵심 품목으로 CGI 카탈로그와 직접 겹친다. 다만 80CH 이상·카드 구성은 카탈로그 모델별 채널 수 확인이 필요하다."
+   },
+   "next_action": "11/2 18:00 전 가격입찰과 오프라인 제안서 제출을 함께 준비. 80CH 이상 콘솔 라인업과 카드 호환성을 먼저 확인.",
+   "evidence_quotes": [
+    {
+     "topic": "공고·제출 기간",
+     "quote": "가. 공고기간 : 2026.10.22.(목) ~ 2026.11.2.(월) 18:00 나. 제안서제출기간 : 2026.10.29.(목), 10.30.(금), 11.2.(월) 중 가능일",
+     "source": "입찰공고문"
+    },
+    {
+     "topic": "입찰참가자격",
+     "quote": "1) … 나라장터(G2B)에 오디오믹서(세부품명번호 10자리: 4511170601)를 물품으로 입찰 참가 등록한 자 2) … 부정당업자 … 3) … 중소기업자 확인서를 소지한 자",
+     "source": "입찰공고문 4. 입찰참가자격"
+    }
+   ]
+  },
+  {
+   "bid_no": "R26BK01762398",
+   "verification_status": "VERIFIED",
+   "review_state": "ACTIVE",
+   "eligibility": "OPEN_COMPETITIVE",
+   "status_reason": null,
+   "source_system": "G2B",
+   "source_url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01762398&bidPbancOrd=000",
+   "portal_path": null,
+   "checked_at": "2026-10-23T11:51:13+09:00",
+   "title": "봉산문화회관 가온홀 음향·영상시스템 기능 보강 (긴급공고)",
+   "notice_type": "실공고(등록공고)",
+   "notice_no": "R26BK01762398 - 000",
+   "ref_no": null,
+   "posted_at": "2026-10-12 16:08:34",
+   "agency": "대한민국정부대구지방조달청장",
+   "demand_agency": "대구광역시 중구",
+   "bid_method": "전자입찰",
+   "award_method": "규격가격동시입찰(제안적격자 중 예가 내 최저가)",
+   "contract_method": "일반경쟁",
+   "joint_supply": "공동계약 불가",
+   "region_restriction": "제한 없음(공고문상 지역 제한 조항 없음)",
+   "region_detail": null,
+   "license_restriction": "투찰제한",
+   "license_detail": "[정보통신공사업(0036)] 등록 업체",
+   "product_registration": "스피커(5216151201)를 제조 또는 공급 물품으로 입찰참가 등록",
+   "estimated_price": 1544768182,
+   "business_amount": 1699245000,
+   "budget": 1710511370,
+   "price_basis": "VAT 제외",
+   "deadline_kind": "submission",
+   "deadline_label": "입찰서·규격서 제출 마감",
+   "deadline": "2026-11-06T10:00:00+09:00",
+   "deadline_note": "G2B 입찰일정: 규격서·입찰서 제출 2026/11/04 10:00~11/06 10:00, 입찰참가자격등록 11/05 18:00",
+   "opening": "2026-11-06T11:00:00+09:00",
+   "delivery": "2027/01/31, 수요기관 지정장소 현장설치도",
+   "warranty": "하자담보 2년",
+   "items": [
+    {
+     "item_name": "스피커",
+     "class_no": "5216151201",
+     "spec": "규격서 참조(가온홀 음향·영상시스템 기능 보강)",
+     "quantity": "1",
+     "unit": "식",
+     "unit_price": 1699245000,
+     "delivery_place": "수요기관 지정장소",
+     "delivery_due": "2027/01/31"
+    }
+   ],
+   "qualification_verified": true,
+   "qualifications": [
+    {
+     "text": "입찰참가자격등록 마감일시까지 스피커(5216151201)를 제조 또는 공급 물품으로 입찰참가 등록한 자",
+     "source": "입찰공고문 3. 입찰참가자격"
+    },
+    {
+     "text": "[정보통신공사업(0036)] 업종을 등록한 업체",
+     "source": "입찰공고문 3. 입찰참가자격"
+    },
+    {
+     "text": "공동계약 및 구성방식: 불가",
+     "source": "입찰공고문 1. 입찰개요"
+    }
+   ],
+   "cancellation_status": "취소 공고 아님(공고 상태: 실공고(등록공고))",
+   "documents": [
+    {
+     "name": "공고서(지방, 규격가격동시, 긴급).hwpx",
+     "kind": "notice",
+     "size_bytes": 129536,
+     "sha256": "d525d574e0e157bb414020af33dff1cd754688714bec0a68e521cbb4fce67d66",
+     "text_extracted": true,
+     "extract_chars": 46061,
+     "verified_topics": [
+      "입찰참가자격",
+      "입찰일정",
+      "납품기한",
+      "하자담보",
+      "공동계약"
+     ],
+     "extract_files": [
+      {
+       "file": "reports/data/procurement/p1_evidence/R26BK01762398_notice.txt",
+       "size_bytes": 46061,
+       "sha256": "887c8adbe4acf8ba59207029636d39d67e814b5110319aea35f62a4adcef9b5c"
+      }
+     ]
+    },
+    {
+     "name": "제안요청서 등.zip (제안요청서.hwpx, 시방서.hwpx, 도면.pdf, 공내역서.xlsx 포함)",
+     "kind": "rfp",
+     "size_bytes": 5453551,
+     "sha256": "ad53e307328632e14819003b7a2a60283e1ba78858c923c2eaa83d13ec721563",
+     "text_extracted": true,
+     "extract_chars": 117965,
+     "verified_topics": [
+      "과업범위",
+      "시방서",
+      "공내역서",
+      "도면"
+     ],
+     "extract_files": [
+      {
+       "file": "reports/data/procurement/p1_evidence/R26BK01762398_rfp_text.txt",
+       "size_bytes": 65319,
+       "sha256": "ee2770b9b8e8e3eda0aa3f5078b5248b49ae5a0eb984860223a9d877a7df4052"
+      },
+      {
+       "file": "reports/data/procurement/p1_evidence/R26BK01762398_spec_text.txt",
+       "size_bytes": 52646,
+       "sha256": "174dd9b7dfe767b3188a77e20984b14a6bf5d27dcb92dcc6aa90e9ef5273a38d"
+      }
+     ]
+    }
+   ],
+   "documents_verified": true,
+   "documents_checked_at": "2026-10-23T12:04:24+09:00",
+   "quote_review_items": [
+    "스피커(5216151201) 제조·공급 등록과 정보통신공사업(0036) 등록",
+    "가온홀 음향·영상시스템 구성(스피커·앰프·믹서·영상장비) 규격 대조",
+    "공내역서 기반 수량·단가와 설치 범위",
+    "기존 장비 철거·배선·도면 반영 범위",
+    "하자 2년 및 A/S 조건",
+    "공동계약 불가에 따른 단독 수행 가능성"
+   ],
+   "cgi_fit": {
+    "level": "HIGH",
+    "category_profile": "broadcast_install",
+    "note": "스피커·앰프·믹서 등 CGI 주력 음향 카테고리와 직접 겹친다. 대형 홀 영상시스템 통합과 15억원 규모 단독 수행이 관건이다."
+   },
+   "next_action": "11/4 10:00 제출 개시 전까지 공내역서·시방서 기준 모델·수량을 확정하고 11/5 18:00 등록 마감을 준수.",
+   "evidence_quotes": [
+    {
+     "topic": "입찰참가자격",
+     "quote": "입찰참가자격등록 마감일시까지 스피커(5216151201)를 제조 또는 공급 물품으로 입찰참가 등록한 자 / [정보통신공사업(0036)]업종을 등록한 업체",
+     "source": "입찰공고문 3. 입찰참가자격"
+    },
+    {
+     "topic": "공동계약",
+     "quote": "공동계약 및 구성방식: 불가",
+     "source": "입찰공고문 1. 입찰개요"
+    }
+   ]
+  },
+  {
+   "bid_no": "R26BK01783174",
+   "verification_status": "VERIFIED",
+   "review_state": "ACTIVE",
+   "eligibility": "OPEN_COMPETITIVE",
+   "status_reason": null,
+   "source_system": "G2B",
+   "source_url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01783174&bidPbancOrd=000",
+   "portal_path": null,
+   "checked_at": "2026-10-23T11:51:17+09:00",
+   "title": "한국 수중발굴 50주년 기념 특별전 및 상설전시실 영상장비 구축 (긴급공고)",
+   "notice_type": "실공고(등록공고)",
+   "notice_no": "R26BK01783174 - 000",
+   "ref_no": null,
+   "posted_at": "2026-10-21 14:25:16",
+   "agency": "대한민국정부광주지방조달청장",
+   "demand_agency": "국가유산청 국립해양유산연구소",
+   "bid_method": "전자입찰",
+   "award_method": "규격가격동시입찰(제안적격자 중 예가 내 최저가)",
+   "contract_method": "제한경쟁",
+   "joint_supply": "전자문서 공동이행(대표사 포함 5개사 이내, 구성원별 지분 10% 이상)",
+   "region_restriction": "제한 없음(공고문상 지역 제한 조항 없음)",
+   "region_detail": null,
+   "license_restriction": "투찰제한",
+   "license_detail": "[정보통신공사업(0036)] 등록 업체",
+   "product_registration": "비디오프로젝터(4511161601)를 제조 또는 공급 물품으로 입찰참가 등록",
+   "estimated_price": 220400000,
+   "business_amount": 242440000,
+   "budget": 244592540,
+   "price_basis": "VAT 제외",
+   "deadline_kind": "submission",
+   "deadline_label": "제안서·가격입찰서 제출 마감",
+   "deadline": "2026-11-06T10:00:00+09:00",
+   "deadline_note": "G2B 입찰일정: 규격서·입찰서 제출 2026/11/04 10:00~11/06 10:00, 입찰참가자격등록 11/05 18:00",
+   "opening": "2026-11-06T11:00:00+09:00",
+   "delivery": "계약 후 50일 이내, 태안수중유산박물관",
+   "warranty": "하자담보 1년(제안요청서 참조)",
+   "items": [
+    {
+     "item_name": "비디오프로젝터",
+     "class_no": "4511161601",
+     "spec": "제안요청서 및 과업내역서에 따름(3LCD 레이저 8,000 ANSI 5대, DLP 4K 12,000 ANSI 3대 등)",
+     "quantity": "1",
+     "unit": "식",
+     "unit_price": 242440000,
+     "delivery_place": "태안수중유산박물관",
+     "delivery_due": null
+    }
+   ],
+   "qualification_verified": true,
+   "qualifications": [
+    {
+     "text": "[정보통신공사업(업종코드 0036)] 업종을 등록한 업체",
+     "source": "입찰공고문 3. 입찰참가자격"
+    },
+    {
+     "text": "입찰참가자격등록 마감일시까지 비디오프로젝터(세부품명번호 4511161601)를 제조 또는 공급 물품으로 입찰참가 등록한 자",
+     "source": "입찰공고문 3. 입찰참가자격"
+    },
+    {
+     "text": "중소기업 또는 소상공인으로서 중소기업·소상공인 확인서를 소지한 자(공공기관 입찰용)",
+     "source": "입찰공고문 3. 입찰참가자격"
+    },
+    {
+     "text": "공동수급체 구성원은 대표사를 포함하여 5개사 이하, 구성원별 최소 지분율 10% 이상",
+     "source": "입찰공고문 공동수급 안내"
+    }
+   ],
+   "cancellation_status": "취소 공고 아님(공고 상태: 실공고(등록공고))",
+   "documents": [
+    {
+     "name": "공고서(규격가격동시_국가_제한).hwpx",
+     "kind": "notice",
+     "size_bytes": 146256,
+     "sha256": "8aee965536ad0b5a4b4053fd778a52dcaab4fd8f4e1b74e147df8c91e8969393",
+     "text_extracted": true,
+     "extract_chars": 46347,
+     "verified_topics": [
+      "입찰참가자격",
+      "공동수급",
+      "입찰일정",
+      "납품기한",
+      "하자담보"
+     ],
+     "extract_files": [
+      {
+       "file": "reports/data/procurement/p1_evidence/R26BK01783174_notice.txt",
+       "size_bytes": 107023,
+       "sha256": "9a71c04fd27c1f8feeb7f22cd9bfd268821f6648f8cf79704bcc300a95035e0e"
+      }
+     ]
+    },
+    {
+     "name": "1. 한국 수중발굴 50주년 기념 영상장비 구축_제안요청서 수정.hwpx",
+     "kind": "rfp",
+     "size_bytes": 398766,
+     "sha256": "5dd562f6463b4ba8a636b285c5073f4527a265add987eac737495a9b4ae247cd",
+     "text_extracted": true,
+     "extract_chars": 15449,
+     "verified_topics": [
+      "구매내역",
+      "프로젝터 상세규격",
+      "설치조건"
+     ],
+     "extract_files": [
+      {
+       "file": "reports/data/procurement/p1_evidence/R26BK01783174_rfp_text.txt",
+       "size_bytes": 34124,
+       "sha256": "fb7b5a2f34ffb5201f9559409c0437d5f28bd2ac03bede0926d9621b1f0615c7"
+      }
+     ]
+    },
+    {
+     "name": "5. 공내역서(한국 수중발굴 50주년 기념).xlsx",
+     "kind": "boq",
+     "size_bytes": null,
+     "sha256": null,
+     "text_extracted": false,
+     "extract_chars": 0,
+     "verified_topics": [],
+     "note": "첨부 목록만 확인. 미다운로드."
+    }
+   ],
+   "documents_verified": true,
+   "documents_checked_at": "2026-10-23T12:05:00+09:00",
+   "quote_review_items": [
+    "비디오프로젝터(4511161601) 등록과 정보통신공사업(0036) 등록",
+    "3LCD 레이저 8,000 ANSI 5대 + DLP 4K 12,000 ANSI 3대 + 렌즈 구성",
+    "천장·세로 설치와 HDBaseT 지원 조건",
+    "중소기업·소상공인 확인서 유효성",
+    "필요 시 공동수급 5개사 이내 구성"
+   ],
+   "cgi_fit": {
+    "level": "LOW",
+    "category_profile": "projector",
+    "note": "CGI 4,575개 카탈로그에 프로젝터 카테고리가 없어 직접 대응 품목이 없다. 영상장비 전문사와의 공동수급만 검토 가능하다."
+   },
+   "next_action": "주력 품목 불일치로 단독 검토는 보류. 공동수급 파트너(프로젝터·렌즈) 확보 여부만 확인.",
+   "evidence_quotes": [
+    {
+     "topic": "입찰참가자격",
+     "quote": "[정보통신공사업(업종코드: 0036) 업종을 등록한 업체 / 입찰참가자격등록 마감일시까지 비디오프로젝터(세부품명번호: 4511161601)를 제조 또는 공급 물품으로 입찰참가 등록한 자 / 중소기업·소상공인 확인서를 소지한 자",
+     "source": "입찰공고문 3. 입찰참가자격"
+    },
+    {
+     "topic": "공동수급",
+     "quote": "공동수급체 구성원은 대표사를 포함하여 5개사 이하로 구성하여야 하며, 구성원별 계약참여 최소 지분율은 10% 이상",
+     "source": "입찰공고문"
+    },
+    {
+     "topic": "구매내역",
+     "quote": "1 상설전시실 프로젝터 5대 2 특별전 프로젝터 3식(투사렌즈 및 설치에 필요한 부속품 포함)",
+     "source": "제안요청서"
+    }
+   ]
+  },
+  {
+   "bid_no": "G012605603",
+   "verification_status": "VERIFIED",
+   "review_state": "ACTIVE",
+   "eligibility": "OPEN_COMPETITIVE",
+   "status_reason": null,
+   "source_system": "KEPCO_SRM",
+   "source_url": "https://srm.kepco.net/index.do",
+   "portal_path": "정보공개 > 통합공고 > 공고번호 G012605603 (차수 1)",
+   "checked_at": "2026-10-23T11:57:43+09:00",
+   "title": "아트센터 양지홀 영상·방송시스템 교체 자재 1식",
+   "notice_type": "긴급공고",
+   "notice_no": "G012605603 / 1",
+   "ref_no": null,
+   "posted_at": "2026-10-08",
+   "agency": "한국전력공사 ICT운영처 인프라운영실 ICT운영총괄부",
+   "demand_agency": "한국전력공사 ICT운영처 인프라운영실 ICT운영총괄부",
+   "bid_method": "일반경쟁",
+   "award_method": "협상에 의한 계약(제안서 평가 후 우선협상대상자 결정)",
+   "contract_method": "총액계약",
+   "joint_supply": "공동이행 가능(제한업체수 3개사 이내)",
+   "region_restriction": "지역 제한 없음(공고문에 지역 제한 없음)",
+   "region_detail": "납품장소: 한전 지정 장소(서울특별시 소재)",
+   "license_restriction": "정보통신공사업 등록 필수",
+   "license_detail": "입찰참가신청 시 정보통신공사업등록증 첨부 필수, 미첨부 시 부적격",
+   "product_registration": "해당 없음(정보통신공사업 등록이 핵심)",
+   "estimated_price": 497790000,
+   "business_amount": null,
+   "budget": null,
+   "price_basis": "VAT 제외",
+   "deadline_kind": "submission",
+   "deadline_label": "입찰(제안)서 제출 마감",
+   "deadline": "2026-11-18T14:00:00+09:00",
+   "deadline_note": "KEPCO SRM 입찰진행: 입찰참가신청 마감 2026/11/17 18:00, 입찰(제안)서 제출 마감 2026/11/18 14:00, 가격입찰서 개찰 2026/11/25 14:00",
+   "opening": "2026-11-25T14:00:00+09:00",
+   "delivery": "계약 후 120일 이내(조기납품 가능조건), 한전 지정 장소(서울특별시 소재)",
+   "warranty": null,
+   "items": [
+    {
+     "item_name": "영상·방송시스템 교체 자재",
+     "class_no": null,
+     "spec": "1식(세부 구성은 제안요청서 PDF 참조)",
+     "quantity": "1",
+     "unit": "식",
+     "unit_price": null,
+     "delivery_place": "한전 지정 장소(서울특별시 소재)",
+     "delivery_due": null
+    }
+   ],
+   "qualification_verified": true,
+   "qualifications": [
+    {
+     "text": "「정보통신공사업법」 제14조에 따른 정보통신공사업을 등록한 자. 입찰참가신청 시 정보통신공사업등록증 첨부 필수, 미첨부 시 입찰참가자격 없음(부적격)",
+     "source": "KEPCO SRM 입찰참가자격"
+    },
+    {
+     "text": "계약상대자는 계약 후 착공일 전일까지 안전보건경영시스템 인증을 받고 계약기간 동안 유지",
+     "source": "KEPCO SRM 입찰참가자격"
+    },
+    {
+     "text": "입찰참가신청 마감일 전일까지 조달청 나라장터 경쟁입찰참가자격 등록 및 한전 전자조달시스템 회원등록 완료",
+     "source": "KEPCO SRM 입찰참가자격"
+    },
+    {
+     "text": "공동이행 방식, 제한업체수 3개사 이내(공동수급여부: 예)",
+     "source": "KEPCO SRM 공고일반"
+    }
+   ],
+   "cancellation_status": "취소 공고 아님(긴급공고, 공고일 2026/10/08)",
+   "documents": [
+    {
+     "name": "2. 제안요청서(아트센터 양지홀 영상방송시스템 개선).pdf",
+     "kind": "rfp",
+     "size_bytes": 1424887,
+     "sha256": "5236db68f1dc6d75d429960a709f7176b984d9e7d4df1c1639e37222f1441211",
+     "text_extracted": false,
+     "extract_chars": 0,
+     "verified_topics": [
+      "다운로드 확인"
+     ],
+     "note": "PDF 폰트 매핑 문제로 한국어 텍스트 추출 불가. 품목 구성은 원문 PDF 열람 필요."
+    },
+    {
+     "name": "물품구매(제조)계약 일반조건·입찰유의서·하자관리지침 등 18건",
+     "kind": "contract",
+     "size_bytes": null,
+     "sha256": null,
+     "text_extracted": false,
+     "extract_chars": 0,
+     "verified_topics": [],
+     "note": "첨부 목록만 확인. 미다운로드."
+    }
+   ],
+   "documents_verified": false,
+   "documents_checked_at": "2026-10-23T11:58:34+09:00",
+   "quote_review_items": [
+    "제안요청서 본문 확인(영상·방송시스템 자재 1식 구성)",
+    "정보통신공사업 등록증(입찰참가신청 시 필수)",
+    "안전보건경영시스템 인증 취득·유지 조건",
+    "하도급 불허, 공동이행 3개사 이내",
+    "납품장소 서울, 납기 120일 이내",
+    "협상 평가(제안서) 대응"
+   ],
+   "cgi_fit": {
+    "level": "MEDIUM",
+    "category_profile": "broadcast_install",
+    "note": "영상·방송시스템 자재로 음향 장비가 포함될 가능성이 있으나, 제안요청서 본문 텍스트를 확보하지 못해 품목 대조는 미완료다."
+   },
+   "next_action": "RFP PDF를 열람해 품목 구성을 확인한 뒤 11/17 18:00 입찰참가신청, 11/18 14:00 제안서 제출 일정으로 검토.",
+   "evidence_quotes": [
+    {
+     "topic": "입찰참가자격",
+     "quote": "「정보통신공사업법」제14조에 따른 정보통신공사업을 등록한 자 ▷ 입찰참가신청 시 정보통신공사업등록증 첨부 필수- 미첨부 시 입찰참가자격 없음(부적격 처리)",
+     "source": "KEPCO SRM 입찰참가자격"
+    },
+    {
+     "topic": "일정",
+     "quote": "입찰참가신청 마감 2026/11/17 18:00 / 입찰(제안)서 제출 마감 2026/11/18 14:00 / 가격입찰서 개찰 2026/11/25 14:00",
+     "source": "KEPCO SRM 입찰진행"
+    },
+    {
+     "topic": "추정가격",
+     "quote": "추정가격(VAT제외) 497,790,000원",
+     "source": "KEPCO SRM 추정정보"
+    }
+   ]
+  },
+  {
+   "bid_no": "R26BK01747535",
+   "verification_status": "VERIFIED",
+   "review_state": "EXPIRED",
+   "eligibility": "CLOSED",
+   "status_reason": "G2B 개찰일시 2026/10/16 13:00이 지나 마감됐다. 직찰 공고로 G2B에 입찰서 제출 일시가 별도 표시되지 않아 개찰일시를 마감 기준으로 사용했다.",
+   "source_system": "G2B",
+   "source_url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01747535&bidPbancOrd=000",
+   "portal_path": null,
+   "checked_at": "2026-10-23T11:59:27+09:00",
+   "title": "2026학년도 오현초등학교 방송장비 구매 및 설치 제안서 제출 안내 공고",
+   "notice_type": "실공고(등록공고)",
+   "notice_no": "R26BK01747535 - 000",
+   "ref_no": "오현초등학교 공고 제2026-23호",
+   "posted_at": "2026-09-29 09:43:17",
+   "agency": "오현초등학교장",
+   "demand_agency": "경기도교육청 경기도수원교육청 오현초등학교",
+   "bid_method": "직찰",
+   "award_method": "소액수의견적(2인 이상 견적 제출)",
+   "contract_method": "수의계약",
+   "joint_supply": "공동수급불허",
+   "region_restriction": "투찰제한",
+   "region_detail": "[경기도] 입찰 참여자의 주된 영업소재지(법인은 본사 소재지)가 경기도에 있어야 함",
+   "license_restriction": "투찰제한",
+   "license_detail": "[정보통신공사업(0036)] 등록 업체",
+   "product_registration": "관련없음",
+   "estimated_price": 90467273,
+   "business_amount": 99514000,
+   "budget": 99514000,
+   "price_basis": "VAT 제외",
+   "deadline_kind": "opening",
+   "deadline_label": "개찰일시(직찰)",
+   "deadline": "2026-10-16T13:00:00+09:00",
+   "deadline_note": "G2B 입찰일정에 입찰서 제출 일시가 없고 개찰 2026/10/16 13:00만 확인됨",
+   "opening": "2026-10-16T13:00:00+09:00",
+   "delivery": "2026/11/30, 오현초등학교 방송실·체육관·교무실·운동장 등",
+   "warranty": null,
+   "items": [
+    {
+     "item_name": "구내방송장치",
+     "class_no": "4511170501",
+     "spec": "구내 방송장치 물품 및 설치 등",
+     "quantity": "1",
+     "unit": "식",
+     "unit_price": 99514000,
+     "delivery_place": "오현초등학교 방송실, 체육관, 교무실, 운동장 등",
+     "delivery_due": "2026/11/30"
+    }
+   ],
+   "qualification_verified": false,
+   "qualifications": [
+    {
+     "text": "경기도 본사 소재 + 정보통신공사업(0036) 등록",
+     "source": "G2B 제한사항(공고문 기반 세부 자격은 미확인)"
+    }
+   ],
+   "cancellation_status": "취소 공고 아님(공고 상태: 실공고(등록공고))",
+   "documents": [
+    {
+     "name": "[붙임1] 오현초등학교 방송장비구매 및 설치 제안서 제출 안내 공고.hwp / .pdf",
+     "kind": "notice",
+     "size_bytes": null,
+     "sha256": null,
+     "text_extracted": false,
+     "extract_chars": 0,
+     "verified_topics": [],
+     "note": "첨부 목록만 확인. 미다운로드."
+    }
+   ],
+   "documents_verified": false,
+   "documents_checked_at": null,
+   "quote_review_items": [
+    "마감(2026-10-16) — 참고용. 경기도 본점·정보통신공사업(0036) 요건",
+    "방송장비 구성 참고(방송실·체육관·운동장)"
+   ],
+   "cgi_fit": {
+    "level": "MEDIUM",
+    "category_profile": "broadcast_install",
+    "note": "마감된 학교 방송장비 공고. CGI 음향 카테고리와 겹치지만 재공고 전에는 영업 대상이 아니다."
+   },
+   "next_action": "마감 — 재공고 모니터링. 재공고 시 공고문 첨부를 내려받아 자격요건을 확인.",
+   "evidence_quotes": [
+    {
+     "topic": "지역·업종 제한",
+     "quote": "[경기도] 입찰 참여자의 주된 영업소재지(법인인 경우 본사 소재지)가 참가가능지역에 있어야 합니다. / [정보통신공사업(0036)] 업종을 등록한 업체",
+     "source": "G2B 제한사항"
+    },
+    {
+     "topic": "개찰",
+     "quote": "개찰 2026/10/16 13:00:00",
+     "source": "G2B 입찰일정"
+    }
+   ]
+  },
+  {
+   "bid_no": "R26BK01748815",
+   "verification_status": "UNVERIFIED",
+   "review_state": "UNVERIFIED",
+   "eligibility": "UNKNOWN",
+   "status_reason": "G2B 상세 URL 접속 시 '안내 메시지 / 공고정보가 존재하지 않습니다.' 알림이 표시되어 원문을 확인할 수 없다.",
+   "source_system": "G2B",
+   "source_url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01748815&bidPbancOrd=000",
+   "portal_path": null,
+   "checked_at": "2026-10-23T11:59:31+09:00",
+   "title": "고해상도 방송제작 카메라 세트(AI기반 영상확장 국책과제 연구장비) 구매",
+   "notice_type": null,
+   "notice_no": null,
+   "ref_no": null,
+   "posted_at": null,
+   "agency": "한국방송공사",
+   "demand_agency": "한국방송공사",
+   "bid_method": null,
+   "award_method": null,
+   "contract_method": null,
+   "joint_supply": null,
+   "region_restriction": null,
+   "region_detail": null,
+   "license_restriction": null,
+   "license_detail": null,
+   "product_registration": null,
+   "estimated_price": null,
+   "business_amount": null,
+   "budget": null,
+   "price_basis": null,
+   "deadline_kind": null,
+   "deadline_label": null,
+   "deadline": null,
+   "deadline_note": null,
+   "opening": null,
+   "delivery": null,
+   "warranty": null,
+   "items": [],
+   "qualification_verified": false,
+   "qualifications": [],
+   "cancellation_status": "미확인",
+   "documents": [],
+   "documents_verified": false,
+   "documents_checked_at": null,
+   "quote_review_items": [],
+   "cgi_fit": {
+    "level": "UNKNOWN",
+    "category_profile": null,
+    "note": "원문 미확인. 제목상 방송제작 카메라 세트로 CGI 음향 카테고리와 직접 일치하지 않을 가능성이 높다."
+   },
+   "next_action": "G2B 통합검색에서 공고번호로 재조회하고, 없으면 발주기관(한국방송공사)에 공고 이력 확인. 확인 전 영업 검토 대상 확정 보류.",
+   "evidence_quotes": [
+    {
+     "topic": "원문 접근",
+     "quote": "안내 메시지 / 공고정보가 존재하지 않습니다.",
+     "source": "G2B 상세 페이지 알림"
+    }
+   ],
+   "prior_classification": {
+    "source": "reports/data/procurement/manual_review_bids.csv",
+    "note": "제목·발주기관만 기존 분류 결과에서 가져왔으며 원문 재검증은 되지 않았다."
+   }
+  },
+  {
+   "bid_no": "R26BK01761950",
+   "verification_status": "VERIFIED",
+   "review_state": "EXPIRED",
+   "eligibility": "CLOSED",
+   "status_reason": "G2B 개찰일시 2026/10/20 14:00이 지나 마감됐다. 직찰 공고로 입찰서 제출 일시가 없어 개찰일시를 마감 기준으로 사용했다.",
+   "source_system": "G2B",
+   "source_url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01761950&bidPbancOrd=000",
+   "portal_path": null,
+   "checked_at": "2026-10-23T11:59:35+09:00",
+   "title": "음악공연예술대학 계명아트센터 무대 음향시스템 및 메인스피커 드라이버 교체",
+   "notice_type": "실공고(등록공고)",
+   "notice_no": "R26BK01761950 - 000",
+   "ref_no": "제B202605110호",
+   "posted_at": "2026-10-08 10:26:50",
+   "agency": "계명대학교 총장",
+   "demand_agency": "계명대학교",
+   "bid_method": "직찰",
+   "award_method": "2단계경쟁입찰(가격입찰서 제출자 중 예가 내 최저가)",
+   "contract_method": "일반경쟁",
+   "joint_supply": "공동수급불허",
+   "region_restriction": "제한 없음(공고서 참조, G2B상 지역 제한 없음)",
+   "region_detail": null,
+   "license_restriction": "투찰제한",
+   "license_detail": "[정보통신공사업(0036)] 등록 업체",
+   "product_registration": "관련없음",
+   "estimated_price": 191445455,
+   "business_amount": 210590000,
+   "budget": 210590000,
+   "price_basis": "VAT 제외",
+   "deadline_kind": "opening",
+   "deadline_label": "개찰일시(직찰)",
+   "deadline": "2026-10-20T14:00:00+09:00",
+   "deadline_note": "G2B 입찰보증서 접수 2026/10/16 11:00, 개찰 2026/10/20 14:00",
+   "opening": "2026-10-20T14:00:00+09:00",
+   "delivery": "계약 후 60일, 계명대학교 지정장소 현장설치도",
+   "warranty": null,
+   "items": [
+    {
+     "item_name": "오디오앰프",
+     "class_no": "5216154701",
+     "spec": "무대 음향시스템 및 메인스피커 드라이버",
+     "quantity": "1",
+     "unit": "식",
+     "unit_price": 210590000,
+     "delivery_place": "계명대학교 지정장소",
+     "delivery_due": null
+    }
+   ],
+   "qualification_verified": false,
+   "qualifications": [
+    {
+     "text": "정보통신공사업(0036) 등록",
+     "source": "G2B 제한사항(공고문 세부 자격은 미확인)"
+    }
+   ],
+   "cancellation_status": "취소 공고 아님(공고 상태: 실공고(등록공고))",
+   "documents": [
+    {
+     "name": "0. 입찰공고문.pdf / 3-1. 규격서 및 시방서.pdf / 3-2. 규격서 및 시방서.pdf",
+     "kind": "notice+spec",
+     "size_bytes": null,
+     "sha256": null,
+     "text_extracted": false,
+     "extract_chars": 0,
+     "verified_topics": [],
+     "note": "첨부 목록만 확인. 미다운로드."
+    }
+   ],
+   "documents_verified": false,
+   "documents_checked_at": null,
+   "quote_review_items": [
+    "마감(2026-10-20) — 참고용. 정보통신공사업(0036) 요건",
+    "무대 음향시스템·메인스피커 드라이버 교체 구성 참고"
+   ],
+   "cgi_fit": {
+    "level": "HIGH",
+    "category_profile": "broadcast_install",
+    "note": "무대 음향·메인스피커 교체로 CGI 스피커·파워앰프 카테고리와 직접 겹친다. 다만 마감됐다."
+   },
+   "next_action": "마감 — 재공고 모니터링. 유사 무대 음향 교체 수요 발굴에 참고.",
+   "evidence_quotes": [
+    {
+     "topic": "업종 제한",
+     "quote": "[정보통신공사업(0036)] 업종을 등록한 업체",
+     "source": "G2B 제한사항"
+    },
+    {
+     "topic": "개찰",
+     "quote": "입찰보증서접수 2026/10/16 11:00 / 개찰 2026/10/20 14:00",
+     "source": "G2B 입찰일정"
+    }
+   ]
+  },
+  {
+   "bid_no": "R26BK01762379",
+   "verification_status": "VERIFIED",
+   "review_state": "ACTIVE",
+   "eligibility": "OPEN_COMPETITIVE",
+   "status_reason": null,
+   "source_system": "G2B",
+   "source_url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01762379&bidPbancOrd=000",
+   "portal_path": null,
+   "checked_at": "2026-10-23T11:59:39+09:00",
+   "title": "정남중학교 체육관 방송장비 구매 및 설치 제안서 제출안내공고",
+   "notice_type": "실공고(등록공고)",
+   "notice_no": "R26BK01762379 - 000",
+   "ref_no": "정남중학교 공고 2026-32호",
+   "posted_at": "2026-10-15 09:37:47",
+   "agency": "정남중학교장",
+   "demand_agency": "경기도교육청 경기도화성오산교육지원청 정남중학교",
+   "bid_method": "직찰",
+   "award_method": "소액수의견적(2인 이상 견적 제출)",
+   "contract_method": "수의계약",
+   "joint_supply": "공동수급불허",
+   "region_restriction": "투찰제한",
+   "region_detail": "[경기도] 본점 소재지가 경기도여야 함",
+   "license_restriction": "정보통신공사업 면허 보유",
+   "license_detail": "정보통신공사업 면허 보유(공고문 3.다)",
+   "product_registration": "나라장터 종합쇼핑몰 제3자단가계약 구내방송장치가 우수조달물품으로 등록된 업체",
+   "estimated_price": 90817273,
+   "business_amount": 99899000,
+   "budget": 99899000,
+   "price_basis": "VAT 제외",
+   "deadline_kind": "proposal",
+   "deadline_label": "제안서 제출 마감",
+   "deadline": "2026-10-26T16:00:00+09:00",
+   "deadline_note": "제안서 제출 2026.10.16 10:00~10.26 16:00, 평일 10:00~16:00(토·일·공휴일 불가). 제안발표 10/28 15:30, G2B 개찰 11/02 15:30.",
+   "opening": "2026-11-02T15:30:00+09:00",
+   "delivery": "2026/12/31, 정남중학교 현장설치도",
+   "warranty": "무상 A/S 기간 명시, 하자보수 이행증권 제출",
+   "items": [
+    {
+     "item_name": "구내방송장치",
+     "class_no": "4511170501",
+     "spec": "구내방송장치(체육관 방송장비)",
+     "quantity": "1",
+     "unit": "식",
+     "unit_price": 99899000,
+     "delivery_place": "정남중학교",
+     "delivery_due": "2026/12/31"
+    }
+   ],
+   "qualification_verified": true,
+   "qualifications": [
+    {
+     "text": "공고일 현재 법인등기부상 본점소재지가 경기도이며, 나라장터(G2B) 종합쇼핑몰에 제3자단가 계약이 체결되어 있는 구내방송장치가 우수조달물품으로 등록된 업체",
+     "source": "공고문 3.나"
+    },
+    {
+     "text": "정보통신공사업 면허 보유 업체",
+     "source": "공고문 3.다"
+    },
+    {
+     "text": "중소기업자로서 직접생산확인서[세부품명: 구내방송장치, 분류번호: 4511170501]를 소지한 업체",
+     "source": "공고문 3.바"
+    },
+    {
+     "text": "본사가 동일한 제품은 생산업체(본사)의 위임을 받은 대표업체 또는 본사 중 1인만 제안서 제출에 참여 가능",
+     "source": "공고문 3.아"
+    }
+   ],
+   "cancellation_status": "취소 공고 아님(공고 상태: 실공고(등록공고))",
+   "documents": [
+    {
+     "name": "(완료) 정남중 체육관 방송장비 구매 및 설치 제안서 제출 안내 공고.hwp",
+     "kind": "notice",
+     "size_bytes": 110592,
+     "sha256": "d2fb3c31362cb3c612f5262fc60d035543600916db3f29f5709072b9a07c766a",
+     "text_extracted": true,
+     "extract_chars": 17221,
+     "verified_topics": [
+      "참가자격",
+      "제출기간",
+      "제안요청사항",
+      "평가표",
+      "A/S"
+     ],
+     "extract_files": [
+      {
+       "file": "reports/data/procurement/p1_evidence/R26BK01762379_notice.txt",
+       "size_bytes": 37936,
+       "sha256": "aedb8697f5abe2b4a8bbb8925bed533b54a6fd0c2a15eabd16ebd0f086999112"
+      }
+     ]
+    }
+   ],
+   "documents_verified": true,
+   "documents_checked_at": "2026-10-23T12:05:59+09:00",
+   "quote_review_items": [
+    "경기도 본점 + G2B 종합쇼핑몰 제3자단가·우수조달 구내방송장치 등록",
+    "정보통신공사업 면허 + 직접생산확인서(4511170501)",
+    "체육관 방송장비 구성(스피커·앰프·무선마이크·케이블)",
+    "기존 장비 철거·선로공사 포함 범위",
+    "무상 A/S 기간과 하자보수 이행증권",
+    "10/28 15:30 제안 발표 준비"
+   ],
+   "cgi_fit": {
+    "level": "MEDIUM",
+    "category_profile": "broadcast_install",
+    "note": "음향 제품군은 겹치지만, G2B 우수조달 구내방송장치 등록과 직접생산확인서가 실질적인 진입 조건이다."
+   },
+   "next_action": "10/26 16:00 제안서 제출 전까지 우수조달 등록 제품·직접생산확인 요건을 확인하고 10/28 15:30 발표 자료를 준비.",
+   "evidence_quotes": [
+    {
+     "topic": "제출기간",
+     "quote": "ㅇ 제출기간: 2026.10.16.(금) 10:00 ~ 2026.10.26.(월) 16:00",
+     "source": "공고문"
+    },
+    {
+     "topic": "참가자격",
+     "quote": "나. … 본점소재지가 경기도이며, 나라장터(G2B) 종합쇼핑몰에 제3자단가 계약이 체결되어 있는 구내방송장치가 우수조달물품으로 등록된 업체 다. 정보통신공사업 면허 보유 업체 … 바. … 직접생산확인서[세부품명: 구내방송장치, 분류번호: 4511170501]를 소지한 업체",
+     "source": "공고문 3. 참가자격"
+    }
+   ]
+  },
+  {
+   "bid_no": "R26BK01763002",
+   "verification_status": "UNVERIFIED",
+   "review_state": "UNVERIFIED",
+   "eligibility": "UNKNOWN",
+   "status_reason": "G2B 상세 URL 접속 시 '안내 메시지 / 공고정보가 존재하지 않습니다.' 알림이 표시되어 원문을 확인할 수 없다.",
+   "source_system": "G2B",
+   "source_url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01763002&bidPbancOrd=000",
+   "portal_path": null,
+   "checked_at": "2026-10-23T11:59:43+09:00",
+   "title": "천장형 마이크 및 음향시스템 구축",
+   "notice_type": null,
+   "notice_no": null,
+   "ref_no": null,
+   "posted_at": null,
+   "agency": "국민대학교",
+   "demand_agency": "국민대학교",
+   "bid_method": null,
+   "award_method": null,
+   "contract_method": null,
+   "joint_supply": null,
+   "region_restriction": null,
+   "region_detail": null,
+   "license_restriction": null,
+   "license_detail": null,
+   "product_registration": null,
+   "estimated_price": null,
+   "business_amount": null,
+   "budget": null,
+   "price_basis": null,
+   "deadline_kind": null,
+   "deadline_label": null,
+   "deadline": null,
+   "deadline_note": null,
+   "opening": null,
+   "delivery": null,
+   "warranty": null,
+   "items": [],
+   "qualification_verified": false,
+   "qualifications": [],
+   "cancellation_status": "미확인",
+   "documents": [],
+   "documents_verified": false,
+   "documents_checked_at": null,
+   "quote_review_items": [],
+   "cgi_fit": {
+    "level": "UNKNOWN",
+    "category_profile": null,
+    "note": "원문 미확인. 제목상 천장형 마이크·음향시스템으로 CGI 음향 카테고리와 겹칠 수 있다."
+   },
+   "next_action": "G2B 통합검색에서 공고번호로 재조회하고, 없으면 국민대학교 구매 담당부서에 공고 이력 확인. 확인 전 영업 검토 대상 확정 보류.",
+   "evidence_quotes": [
+    {
+     "topic": "원문 접근",
+     "quote": "안내 메시지 / 공고정보가 존재하지 않습니다.",
+     "source": "G2B 상세 페이지 알림"
+    }
+   ],
+   "prior_classification": {
+    "source": "reports/data/procurement/manual_review_bids.csv",
+    "note": "제목·발주기관만 기존 분류 결과에서 가져왔으며 원문 재검증은 되지 않았다."
+   }
+  },
+  {
+   "bid_no": "R26BK01764544",
+   "verification_status": "VERIFIED",
+   "review_state": "EXPIRED",
+   "eligibility": "CLOSED",
+   "status_reason": "공고문 제안서 제출기간이 2026.10.20 11:00에 종료되어 마감됐다. G2B 개찰 10/23 15:00은 제안서 마감 이후 일정이다.",
+   "source_system": "G2B",
+   "source_url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01764544&bidPbancOrd=000",
+   "portal_path": null,
+   "checked_at": "2026-10-23T11:59:47+09:00",
+   "title": "반송고등학교 소규모교육환경개선사업 방송장비 구매 및 설치 제안서 제출 공고",
+   "notice_type": "실공고(등록공고)",
+   "notice_no": "R26BK01764544 - 000",
+   "ref_no": "반송고등학교 공고 제2026-52호",
+   "posted_at": "2026-10-12 10:30:43",
+   "agency": "반송고등학교장",
+   "demand_agency": "경기도교육청 반송고등학교",
+   "bid_method": "직찰",
+   "award_method": "협상에 의한 낙찰자 결정",
+   "contract_method": "제한경쟁",
+   "joint_supply": "공동수급불허",
+   "region_restriction": "투찰제한",
+   "region_detail": "[경기도] 본점 소재지가 경기도여야 함",
+   "license_restriction": "정보통신공사업 면허 보유",
+   "license_detail": "정보통신공사업 면허 보유(공고문 3.다)",
+   "product_registration": "나라장터 종합쇼핑몰 제3자단가계약 구내방송장치가 우수조달물품으로 등록된 업체",
+   "estimated_price": 90909091,
+   "business_amount": 100000000,
+   "budget": 100000000,
+   "price_basis": "VAT 제외",
+   "deadline_kind": "proposal",
+   "deadline_label": "제안서 제출 마감",
+   "deadline": "2026-10-20T11:00:00+09:00",
+   "deadline_note": "제안서 제출 2026.10.19 11:00~10.20 11:00. 제안설명회 10/21 15:00, 최종 선정 10/23 15:00.",
+   "opening": "2026-10-23T15:00:00+09:00",
+   "delivery": "2026/11/30, 계약 후 30일 이내 설치",
+   "warranty": "무상 A/S 기간 명시, 하자보수 이행증권 제출",
+   "items": [
+    {
+     "item_name": "구내방송장치",
+     "class_no": "4511170501",
+     "spec": "공고문 내 2. 제안요청사항 참조",
+     "quantity": "1",
+     "unit": "식",
+     "unit_price": 100000000,
+     "delivery_place": null,
+     "delivery_due": "2026/11/30"
+    }
+   ],
+   "qualification_verified": true,
+   "qualifications": [
+    {
+     "text": "공고일 현재 법인등기부상 본점소재지가 경기도이며, 나라장터(G2B) 종합쇼핑몰에 제3자단가 계약이 체결되어 있는 구내방송장치가 우수조달물품으로 등록된 업체",
+     "source": "공고문 3.나"
+    },
+    {
+     "text": "정보통신공사업 면허 보유 업체",
+     "source": "공고문 3.다"
+    },
+    {
+     "text": "중소기업자로서 직접생산확인서[세부품명: 구내방송장치, 분류번호: 4511170501]를 소지한 업체",
+     "source": "공고문 3.바"
+    }
+   ],
+   "cancellation_status": "취소 공고 아님(공고 상태: 실공고(등록공고))",
+   "documents": [
+    {
+     "name": "반송고 방송장비 구매 및 설치 제안서 제출 안내 공고.hwp",
+     "kind": "notice",
+     "size_bytes": 113664,
+     "sha256": "a34bbdad848c61e620cac0507008b357582aedb42f95d34bbf1c52dac05956bc",
+     "text_extracted": true,
+     "extract_chars": 17327,
+     "verified_topics": [
+      "참가자격",
+      "제출기간",
+      "제안요청사항",
+      "A/S"
+     ],
+     "extract_files": [
+      {
+       "file": "reports/data/procurement/p1_evidence/R26BK01764544_notice.txt",
+       "size_bytes": 38788,
+       "sha256": "cbee6fe7e163cb0a999d171fcf9dc63d482b721a72e7d0593bc6e11ed89905a7"
+      }
+     ]
+    }
+   ],
+   "documents_verified": true,
+   "documents_checked_at": "2026-10-23T12:05:59+09:00",
+   "quote_review_items": [
+    "마감(2026-10-20) — 참고용. 경기도 본점·우수조달 구내방송장치·직접생산확인 요건",
+    "방송실 전체 장비 구성과 선로공사 범위 참고",
+    "A/S 24시간 이내 방문 조건 참고"
+   ],
+   "cgi_fit": {
+    "level": "MEDIUM",
+    "category_profile": "broadcast_install",
+    "note": "마감된 학교 방송장비 공고. 자격요건과 장비 구성이 CGI 음향 카테고리와 겹친다."
+   },
+   "next_action": "마감 — 재공고 모니터링. 유사 학교 방송장비 공고의 자격요건 템플릿으로 활용.",
+   "evidence_quotes": [
+    {
+     "topic": "제출기간",
+     "quote": "ㅇ 제출기간: 2026. 10. 19.(월) 11:00 ~ 2026. 10. 20.(화) 11:00",
+     "source": "공고문"
+    },
+    {
+     "topic": "참가자격",
+     "quote": "나. … 본점소재지가 경기도이며, 나라장터(G2B) 종합쇼핑몰에 제3자단가 계약이 체결되어 있는 구내방송장치가 우수조달물품으로 등록된 업체 다. 정보통신공사업 면허 보유 업체 … 바. … 직접생산확인서[세부품명: 구내방송장치, 분류번호: 4511170501]를 소지한 업체",
+     "source": "공고문 3. 참가자격"
+    }
+   ]
+  },
+  {
+   "bid_no": "R26BK01764645",
+   "verification_status": "VERIFIED",
+   "review_state": "EXPIRED",
+   "eligibility": "CLOSED",
+   "status_reason": "공고문 제안서 제출기간이 2026.10.22 16:30에 종료되어 마감됐다. G2B 개찰 11/05 15:00은 제안서 마감 이후 일정이다.",
+   "source_system": "G2B",
+   "source_url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01764645&bidPbancOrd=000",
+   "portal_path": null,
+   "checked_at": "2026-10-23T11:59:51+09:00",
+   "title": "성남신흥초등학교 2026학년도 방송실 현대화사업에 따른 방송장비 구매 및 설치",
+   "notice_type": "실공고(등록공고)",
+   "notice_no": "R26BK01764645 - 000",
+   "ref_no": "성남신흥초등학교 공고 제2026-29호",
+   "posted_at": "2026-10-14 11:10:23",
+   "agency": "성남신흥초등학교장",
+   "demand_agency": "경기도성남교육청 성남신흥초등학교",
+   "bid_method": "직찰",
+   "award_method": "소액수의견적(2인 이상 견적 제출)",
+   "contract_method": "수의계약",
+   "joint_supply": "공동수급불허",
+   "region_restriction": "투찰제한",
+   "region_detail": "[경기도] 본점 소재지가 경기도여야 함",
+   "license_restriction": "정보통신공사업 면허 보유",
+   "license_detail": "정보통신공사업 면허 보유(공고문 3.다)",
+   "product_registration": "나라장터 종합쇼핑몰에 구내방송장치가 우수조달물품으로 등록된 업체",
+   "estimated_price": 74212727,
+   "business_amount": 81634000,
+   "budget": 81634000,
+   "price_basis": "VAT 제외",
+   "deadline_kind": "proposal",
+   "deadline_label": "제안서 제출 마감",
+   "deadline": "2026-10-22T16:30:00+09:00",
+   "deadline_note": "제안서 제출 2026.10.15~10.22 평일 08:30~16:30(토·일·공휴일 제외). 최종 선정 11/05 15:00.",
+   "opening": "2026-11-05T15:00:00+09:00",
+   "delivery": "2027/02/28, 설치 2026년 11월~2027년 2월",
+   "warranty": "무상 A/S 기간 명시, 하자보수 이행증권 제출",
+   "items": [
+    {
+     "item_name": "구내방송장치",
+     "class_no": "4511170501",
+     "spec": "공고서 참고(방송실 현대화)",
+     "quantity": "1",
+     "unit": "식",
+     "unit_price": 81634000,
+     "delivery_place": null,
+     "delivery_due": "2027/02/28"
+    }
+   ],
+   "qualification_verified": true,
+   "qualifications": [
+    {
+     "text": "공고일 현재 법인등기부상 본점소재지가 경기도이며, 공고일 현재 나라장터(G2B) 종합쇼핑몰에 구내방송장치가 우수조달물품으로 등록되어 있는 업체",
+     "source": "공고문 3.나"
+    },
+    {
+     "text": "정보통신공사업법에 의한 정보통신공사업 면허를 등록한 자",
+     "source": "공고문 3.다"
+    },
+    {
+     "text": "중소기업자로서 직접생산확인 증명서(세부품명: 구내방송장치, 분류번호: 4511170501)를 소지한 업체",
+     "source": "공고문 3.바"
+    }
+   ],
+   "cancellation_status": "취소 공고 아님(공고 상태: 실공고(등록공고))",
+   "documents": [
+    {
+     "name": "2026학년도 성남신흥초등학교 방송장비 구매 및 설치 제안서 제출 공고문.hwp",
+     "kind": "notice",
+     "size_bytes": 119296,
+     "sha256": "098a144752757d2da1999633e640f1679590d2118258a238cc01c8ba9c445306",
+     "text_extracted": true,
+     "extract_chars": 17563,
+     "verified_topics": [
+      "참가자격",
+      "제출기간",
+      "제안요청 주요내용",
+      "A/S"
+     ],
+     "extract_files": [
+      {
+       "file": "reports/data/procurement/p1_evidence/R26BK01764645_notice.txt",
+       "size_bytes": 39296,
+       "sha256": "aaeed53319a013d3a18c903d65471912434e20cfeff5eaa645a89e947a7ae8de"
+      }
+     ]
+    }
+   ],
+   "documents_verified": true,
+   "documents_checked_at": "2026-10-23T12:05:59+09:00",
+   "quote_review_items": [
+    "마감(2026-10-22) — 참고용. 경기도 본점·우수조달 구내방송장치·직접생산확인 요건",
+    "방송실 현대화 장비(리모트 마이크·PTZ 2대·시보·스크린) 구성 참고",
+    "선로 호환성·설치 범위와 A/S 조건 참고"
+   ],
+   "cgi_fit": {
+    "level": "MEDIUM",
+    "category_profile": "broadcast_install",
+    "note": "마감된 학교 방송실 현대화 공고. CGI 음향 카테고리와 겹치지만 영상·PTZ 비중이 있다."
+   },
+   "next_action": "마감 — 재공고 모니터링. 유사 방송실 현대화 공고의 자격요건 템플릿으로 활용.",
+   "evidence_quotes": [
+    {
+     "topic": "제출기간",
+     "quote": "○ 기간: 2026. 10. 15.(목)~2026. 10. 22.(목) (토,일,공휴일 제외 / 평일 08:30~16:30)",
+     "source": "공고문"
+    },
+    {
+     "topic": "참가자격",
+     "quote": "나. … 본점소재지가 경기도이며, 공고일 현재 나라장터(G2B) 종합쇼핑몰에 구내방송장치가 우수조달물품으로 등록되어 있는 업체 다. 정보통신공사업법에 의한 정보통신공사업 면허를 등록한 자 … 바. … 직접생산확인 증명서(세부품명: 구내방송장치, 분류번호: 4511170501)를 소지한 업체",
+     "source": "공고문 3. 참가자격"
+    }
+   ]
+  },
+  {
+   "bid_no": "R26BK01781661",
+   "verification_status": "UNVERIFIED",
+   "review_state": "UNVERIFIED",
+   "eligibility": "UNKNOWN",
+   "status_reason": "G2B 상세 페이지가 메뉴와 '유의사항 최종변경일 : 2021/01/01 09:00'만 표시하고 공고 데이터를 로드하지 못했다. 원문 확인 불가.",
+   "source_system": "G2B",
+   "source_url": "https://www.g2b.go.kr/link/PNPE027_01/single/?bidPbancNo=R26BK01781661&bidPbancOrd=000",
+   "portal_path": null,
+   "checked_at": "2026-10-23T11:59:55+09:00",
+   "title": "지구촌교회 수지분당 채플 영상 장비 메인 카메라 및 스위처 교체 구매 입찰",
+   "notice_type": "변경공고(기존 분류)",
+   "notice_no": null,
+   "ref_no": null,
+   "posted_at": null,
+   "agency": "지구촌교회",
+   "demand_agency": "지구촌교회",
+   "bid_method": null,
+   "award_method": null,
+   "contract_method": null,
+   "joint_supply": null,
+   "region_restriction": null,
+   "region_detail": null,
+   "license_restriction": null,
+   "license_detail": null,
+   "product_registration": null,
+   "estimated_price": null,
+   "business_amount": null,
+   "budget": null,
+   "price_basis": null,
+   "deadline_kind": null,
+   "deadline_label": null,
+   "deadline": null,
+   "deadline_note": null,
+   "opening": null,
+   "delivery": null,
+   "warranty": null,
+   "items": [],
+   "qualification_verified": false,
+   "qualifications": [],
+   "cancellation_status": "미확인",
+   "documents": [],
+   "documents_verified": false,
+   "documents_checked_at": null,
+   "quote_review_items": [],
+   "cgi_fit": {
+    "level": "UNKNOWN",
+    "category_profile": null,
+    "note": "원문 미확인. 제목상 카메라·스위처 교체로 CGI 음향 카테고리와 직접 일치하지 않을 가능성이 높다."
+   },
+   "next_action": "G2B 통합검색에서 공고번호로 재조회하고, 없으면 지구촌교회 구매 담당자에게 공고 이력 확인. 확인 전 영업 검토 대상 확정 보류.",
+   "evidence_quotes": [
+    {
+     "topic": "원문 접근",
+     "quote": "유의사항 최종변경일 : 2021/01/01 09:00 (공고 데이터 미로드)",
+     "source": "G2B 상세 페이지"
+    }
+   ],
+   "prior_classification": {
+    "source": "reports/data/procurement/manual_review_bids.csv",
+    "note": "제목·발주기관·지역 제한만 기존 분류 결과에서 가져왔으며 원문 재검증은 되지 않았다."
+   }
+  }
+ ]
+}
