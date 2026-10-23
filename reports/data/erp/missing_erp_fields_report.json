@@ -1,14 +1,25 @@
 {
   "total_items": 4575,
   "missing_field_counts": {
+    "품목명": 0,
     "규격": 2835,
-    "제조사_cont4": 2294,
-    "출고단가": 2458
+    "바코드": 2007,
+    "검색창내용": 0,
+    "출고단가": 2458,
+    "입고단가": 4575
   },
   "price_available_count": 2117,
   "price_missing_count": 2458,
-  "image_ok_count": 4575,
   "model_present_count": 1740,
   "brand_present_count": 4575,
-  "manufacturer_present_count": 2281
+  "manufacturer_present_count": 2281,
+  "image_ok_count": 4575,
+  "barcode_filled_count": 2568,
+  "stock_managed_count": 2294,
+  "stock_unmanaged_count": 2281,
+  "name_truncated": 6,
+  "spec_truncated": 0,
+  "search_truncated": 155,
+  "barcode_duplicate_skipped": 1666,
+  "unknown_site": 0
 }
