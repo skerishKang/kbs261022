@@ -1,32 +1,26 @@
-﻿erp_target_screen,erp_location,group,master_field,erp_field_key,erp_field_label,master_field_meaning,mapping_type,applicable_source,note
-erp_target_screen,품목등록 (E040103) / 신규(F2) / 저장(F8),식별자,item_master_key,prod_cd,품목코드,Cafe24 product_code (P0000…) 또는 ERP 자체 코드,direct,TRI-A/TRI-B 공통,품목코드는 20자 제한. 카페24 상품코드(P+7자리)를 그대로 쓰면 길이·형식 충돌 없음
-erp_target_screen,품목등록 > 변경항목선택 (A2),식별자,item_master_key,prod_cd,품목코드,Cafe24 product_code,direct,TRI-A/TRI-B 공통,변경 시 키로 사용
-erp_target_screen,품목등록 (E040103),표시,product_name,prod_des,품목명,product_name (Tri-A/B 공통),direct,TRI-A/TRI-B 공통,100자 제한
-erp_target_screen,품목등록 (E040103),표시,model,size_des_base,규격,model (Tri-B 모델명) / Tri-A는 상품명 파싱,partial,"TRI-B 우선, TRI-A 보완 필요",Tri-A 는 모델명 필드가 없음 → 규격(SIZE_DES) 또는 추가항목 사용
-erp_target_screen,품목등록 > 변경항목선택 (A2),분류,source_category_path,class_cd / class_cd2 / class_cd3,품목그룹1/2/3,source_category_path (리프),transform,양쪽,10단계 카테고리를 3단계로 접어야 함. 계층그룹(prod_level_group)과 병행 사용
-erp_target_screen,품목등록 > 변경항목선택 (A2),분류,source_category_path,prod_level_group,품목계층그룹,source_category_path (상위),transform,양쪽,브랜드별 하위그룹 축을 표현하는 데 적합
-erp_target_screen,품목등록 (E040103),분류,source_brand,cont2 (문자형추가항목2),문자형추가항목2,source_brand,custom,양쪽,ERP 기본 필드에 브랜드가 없음 → 확장필드 필수
-erp_target_screen,품목등록 > 변경항목선택 (A2),분류,source_brand,cont3 (문자형추가항목3),문자형추가항목3,source_brand,custom,양쪽,"규칙: cont2=브랜드, cont3=모델명, cont4=제조사, cont5=원산지, cont6=검색용 태그"
-erp_target_screen,품목등록 (E040103) / 수량 탭,수량,availability_unverified,bal_flag,재고수량관리,availability_unverified (공개 재고 표기),partial,양쪽,Tri-A 는 재고 미관리(use_stock=false) → 0/1 구분 필요
-erp_target_screen,품목등록 > 변경항목선택 (A3),수량,stock_display,safe_qty,안전재고수량,stock_display,partial,양쪽,실재고가 아니라 안전재고 기준치
-erp_target_screen,품목등록 > 변경항목선택 (A3),수량,dealer_price_unverified,min_qty,최소구매단위,dealer_price_unverified,no,-,공급가는 ERP 입력 화면(매입전표/거래처별 단가)에서만 존재. 공개 웹과 매핑 불가
-erp_target_screen,품목등록 > 변경항목선택 (A3),수량,dealer_price_unverified,in_term,조달기간,-,no,-,조달/납기 정보
-erp_target_screen,품목등록 > 변경항목선택 (A3),수량,dealer_price_unverified,cust,구매처,-,no,-,품목 기본 구매처(공급 거래처) → 공급가 확정 경로
-erp_target_screen,품목등록 (E040103) / 단가 탭,가격,published_price,out_price,출고단가,published_price (Tri-B) / Tri-A 는 미공개,partial,TRI-B,Tri-A 는 ERP 에도 공개 판매가가 없음
-erp_target_screen,품목등록 (E040103) / 단가 탭,가격,retail_list_price,out_price1..out_price10,단가A~J,retail_list_price (소비자가),partial,TRI-B,사용자별/구간별 출고단가 10단계
-erp_target_screen,품목등록 (E040103) / 단가 탭,가격,published_price,in_price,입고단가,-,partial,-,구매(매입) 전표 기본 단가. 공급가 근사 아님
-erp_target_screen,품목등록 > 변경항목선택 (A5),원가,dealer_price_unverified,material_cost / expense_cost / labor_cost / out_cost,재료비/경비/노무비/외주비 표준원가,-,partial,-,제조 원가 체계. 소매 판매가와 별개
-erp_target_screen,품목등록 (E040103),세금,published_price_state,tax,부가세율(매출),-,no,-,"vat_rate_by(매입), tax(매출)"
-erp_target_screen,품목등록 > 변경항목선택 (A6),부가정보,specs,remarks,적요,specs (원산지/구성품 등),partial,양쪽,적요는 textarea. 긴 스펙은 remarks 로
-erp_target_screen,품목등록 (E040103),부가정보,summary,remarks_win,검색창내용,summary,direct,양쪽,검색용 키워드. 100자
-erp_target_screen,품목등록 (E040103),부가정보,country_of_origin,cont4 (문자형추가항목4),문자형추가항목4,country_of_origin,custom,양쪽,확장필드
-erp_target_screen,품목등록 (E040103),부가정보,image_urls,prod_image,이미지,image_urls,partial,양쪽,ERP 품목 이미지 1건. 웹 이미지 다중 매핑은 별도 자산 필요
-erp_target_screen,품목등록 (E040103),부가정보,option_summary,SIZE_CD / SIZE_CALC_CD / SET_FLAG,규격코드 / 규격계산그룹 / 세트여부,option_summary,partial,TRI-B,ERP 규격은 1~4단 규격그룹/규격계산 구조. 웹 옵션(길이/색상)과 1:1 대응하지 않음
-erp_target_screen,품목등록 > 변경항목선택 (A2),부가정보,source_item_code,bar_code,바코드,source_item_code / 카페24 item_code,partial,양쪽,바코드는 30자. 카페24 item_code(P0000DQK000A) 매핑 가능
-erp_target_screen,품목등록 > 변경항목선택 (A6),부가정보,dealer_price_unverified,cont1,조달등록번호,-,no,-,cont1 은 이미 조달등록번호로 사용 중 → 브랜드/모델명에는 사용 불가
-erp_target_screen,품목등록 > 변경항목선택 (A6),부가정보,specs,no_user1..no_user10,숫자형추가항목1~10,specs (수치),custom,양쪽,패키지수량/무게 등 수치 속성
-erp_target_screen,품목등록 (E040103) / 부가정보 탭,부가정보,specs,ADD_TXT_01_T..ADD_TXT_10_T / ADD_NUM / ADD_LTXT / ADD_DATE,추가문자/숫자/장문/일자 형식 1~10,specs (확장),custom,양쪽,사용자정의 필드 40개. 브랜드/모델/원산지/규격문자열 등 커스텀 매핑에 적합
-erp_target_screen,쇼핑몰품목코드연결 (E041004),연동,canonical_url,om_prod_cd,쇼핑몰품목key,canonical_url (웹 상품 URL) / 카페24 product_no,partial,TRI-B,네이버 상품ID를 여기에 담는 다리 테이블. 웹자료올리기 가능
-erp_target_screen,쇼핑몰등록 (E041003),연동,source_site,OPENMARKET_CD / OPENMARKET_NM,쇼핑몰코드 / 쇼핑몰명,source_site,direct,-,스마트스토어2.0 등 34개몰 구분
-erp_target_screen,쇼핑몰품목코드연결 (E041004),연동,source_product_id,prod_cd,품목코드,source_product_id,direct,양쪽,ERP 품목코드 ↔ 쇼핑몰품목key
-erp_target_screen,API인증키발급 (E000125),연동,-,인증키 / 발급ID / IP등록,OAPI 인증키,-,no,-,ERP 읽기/쓰기 자동화는 OAPI 로. IP 화이트리스트 필요
+﻿group,erp_screen,template_column,erp_field,erp_label,cgi_field,transform,coverage,note
+식별자,품목등록 (E040103),A,prod_cd,품목코드,통합키,SS-<공급처원본ID> / SM-<공급처원본ID>,4575/4575,20자 제한. 카페24 상품코드는 중복 856건이라 ERP 키로 사용할 수 없다
+표시,품목등록 (E040103),B,prod_des,품목명,상품명,공백 정규화 후 100자 절단,4575/4575,100자 제한
+부가정보,품목등록 (E040103),C,bar_code,바코드,카페24 품목코드,데이터 전체에서 고유할 때만 채움,2568/4575,중복 바코드는 공란. 30자 제한
+규격,품목등록 (E040103),D,size_des_base,규격구분,-,1(규격명) 고정,4575/4575,2/4는 규격그룹·계산그룹 코드 필요
+규격,품목등록 (E040103),E,size_des_base,규격,모델명,100자 절단,1740/4575,삼아사운드는 모델명 미수집
+단위,품목등록 (E040103),F,unit,단위,-,EA 고정,4575/4575,운영자가 품목별로 보정 필요
+분류,품목등록 (E040103),G,prod_type,품목구분,-,3(상품) 고정,4575/4575,전 품목 판매용 상품
+분류,품목등록 (E040103),H,set_flag,세트여부,-,0(세트아님) 고정,4575/4575,-
+수량,품목등록 (E040103),I,bal_flag,재고수량관리,공급처코드,samasound→0 / samamusic→1,2294 관리 / 2281 제외,Tri-A 재고 미관리 규칙
+가격,품목등록 (E040103),J,in_price,입고단가,-,공란 유지,0/4575,공급가 아님. 매입전표에서 확정
+가격,품목등록 (E040103),K,in_price_vat,입고단가 VAT포함여부,-,0(포함안함),4575/4575,J가 공란이므로 의미 없음
+가격,품목등록 (E040103),L,out_price,출고단가,공개판매가,숫자일 때만 기입,2117/4575,공개판매가 없으면 공란(추정 금지)
+가격,품목등록 (E040103),M,out_price_vat,출고단가 VAT포함여부,-,1(포함),4575/4575,공개 소비자가는 VAT 포함으로 가정
+세금,품목등록 (E040103),N,tax,부가세율(매출),-,10,4575/4575,과세 상품 기준
+세금,품목등록 (E040103),O,vat_rate_by,부가세율(매입),-,10,4575/4575,과세 상품 기준
+검색,품목등록 (E040103),P,remarks_win,검색창내용,브랜드+모델명+상품명,중복 제거 후 100자 절단,4575/4575,검색성 향상
+공유,품목등록 (E040103),Q,cs_flag,품목공유여부,-,0(C-Portal공유안함),4575/4575,-
+확장,변경항목선택 (A6),-,cont2,문자형추가항목2,브랜드,원문 표기,4575/4575,1차 등록 후 변경 업로드
+확장,변경항목선택 (A6),-,cont3,문자형추가항목3,모델명,100자 절단,1740/4575,cont2=브랜드 규칙과 일치
+확장,변경항목선택 (A6),-,cont4,문자형추가항목4,제조사,원문 표기,2281/4575,-
+확장,변경항목선택 (A6),-,cont5,문자형추가항목5,원산지,미수집,0/4575,추가 수집 필요
+확장,변경항목선택 (A6),-,cont6,문자형추가항목6,공급처,삼아사운드/삼아스토어,4575/4575,-
+확장,품목등록 (E040103),-,prod_image,이미지,대표이미지,URL 1건,4575/4575,변경 업로드 단계
+연동,쇼핑몰품목코드연결 (E041004),-,om_prod_cd,쇼핑몰품목key,네이버 상품ID / 카페24 product_no,채널 개설 후 채움,0/4575,쇼핑몰 등록 선행 필요
+연동,API인증키발급 (E000125),-,-,OAPI 인증키,-,미발급,0,IP 등록 필수. 키 발급은 후속 단계
