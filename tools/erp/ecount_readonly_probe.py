@@ -20,6 +20,7 @@ except ImportError as exc:
     raise SystemExit("requests required") from exc
 
 LOGIN_URL = "https://login.ecount.com/Login?lan_type=ko-KR"
+REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 # base after login is determined by response redirect
 
 def main():

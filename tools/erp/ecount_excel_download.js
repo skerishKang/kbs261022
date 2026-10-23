@@ -1,14 +1,26 @@
-const { chromium } = require('D:/1022/1022-2/kbs261022/tools/playwright/node_modules/playwright');
+const { chromium } = require(process.env.PLAYWRIGHT_MODULE || 'playwright');
 const fs = require('fs');
 const path = require('path');
 
+function requireEnv(name) {
+  const value = process.env[name];
+  if (!value) {
+    console.error(`Missing required env var: ${name}`);
+    process.exit(1);
+  }
+  return value;
+}
+
 (async () => {
+  const comCode = requireEnv('ECOUNT_COM_CODE');
+  const userId = requireEnv('ECOUNT_USER_ID');
+  const password = requireEnv('ECOUNT_PASSWORD');
+  const outDir = process.env.ERP_EVIDENCE_DIR || path.join(__dirname, '..', '..', 'reports', 'data', 'erp', 'live');
+  fs.mkdirSync(outDir, { recursive: true });
+
   const browser = await chromium.launch({ headless: true });
   const context = await browser.newContext({ acceptDownloads: true });
   const page = await context.newPage();
-  const comCode = process.env.ECOUNT_COM_CODE || '54134';
-  const userId = process.env.ECOUNT_USER_ID || 'cgiinc';
-  const password = process.env.ECOUNT_PASSWORD || 'ecount-0722!';
 
   await page.goto('https://login.ecount.com/Login?lan_type=ko-KR', { waitUntil: 'networkidle' });
   await page.fill('#com_code', comCode);
@@ -35,7 +47,7 @@ const path = require('path');
   }
   console.log('Excel clicked:', clicked);
   const download = await downloadPromise;
-  const savePath = 'D:/1022/wt-g2b/reports/data/erp/ecount_item_export.xlsx';
+  const savePath = path.join(outDir, 'ecount_item_export.xlsx');
   await download.saveAs(savePath);
   console.log('Saved:', savePath);
   console.log('Suggested filename:', download.suggestedFilename());
