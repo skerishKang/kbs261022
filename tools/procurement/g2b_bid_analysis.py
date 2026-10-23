@@ -100,6 +100,10 @@ def normalize(bids, source):
             bidders = b.get("bidprcCnt") or b.get("bidder_count")
         status = b.get("status") or b.get("bidSttusNm") or b.get("status_name")
         close_date = b.get("close_date") or b.get("bidClseDt") or b.get("bid_close_date")
+        notice_date = (
+            b.get("notice_date") or b.get("bidNtceDt") or b.get("dltlPubnDt")
+            or b.get("pubnDt") or b.get("notice_date_")
+        )
         detail_url = b.get("detail_url") or b.get("bidNtceDtlUrl") or b.get("detail_link")
 
         est_val = _to_number(estimated)
@@ -127,6 +131,7 @@ def normalize(bids, source):
             "bidders": _to_int(bidders),
             "status": status,
             "close_date": close_date,
+            "notice_date": notice_date,
             "detail_url": detail_url,
             "cgi_categories": ";".join(cgi_cats) if cgi_cats else "",
             "cgi_relevant": bool(cgi_cats),

@@ -1,5 +1,5 @@
-﻿bid_no,title,agency,region,category,estimated_price,bid_amount,winning_bid,bid_rate_pct,bidders,status,close_date,detail_url,cgi_categories,cgi_relevant,data_source
-R26BK00000001-000,샘플 IT 용역 공고 A,샘플 발주기관,,용역,100000000,,89500000,89.5,5,낙찰,,,,False,file:D:\1022\wt-main\data\procurement\sample_bids.json
-R26BK00000002-000,샘플 IT 용역 공고 B,샘플 발주기관,,용역,50000000,,47200000,94.4,3,낙찰,,,,False,file:D:\1022\wt-main\data\procurement\sample_bids.json
-R26BK00000003-000,샘플 물품 공고 C,샘플 발주기관,,물품,30000000,,,,2,유찰,,,,False,file:D:\1022\wt-main\data\procurement\sample_bids.json
-R26BK00000004-000,샘플 공사 공고 D,샘플 발주기관,,공사,200000000,,178000000,89.0,7,낙찰,,,,False,file:D:\1022\wt-main\data\procurement\sample_bids.json
+﻿bid_no,title,agency,region,category,estimated_price,bid_amount,winning_bid,bid_rate_pct,bidders,status,close_date,notice_date,detail_url,cgi_categories,cgi_relevant,data_source
+CGI-001,공공기관 음향장비 납품 및 설치,샘플 공공기관,서울,물품,120000000,,108000000,90.0,4,낙찰,20260901,,,음향장비;공공방송설비;기자재납품,True,file:data/procurement/sample_cgi_bids.json
+CGI-002,학교 방송설비 유지보수 용역,샘플 교육청,경기,용역,45000000,,41400000,92.0,3,낙찰,20260915,,,방송영상장비;공공방송설비;유지보수,True,file:data/procurement/sample_cgi_bids.json
+CGI-003,공연장 무대조명 및 음향 설치공사,샘플 문화재단,부산,공사,250000000,,227500000,91.0,6,낙찰,20260920,,,음향장비;무대장비;공연장설치,True,file:data/procurement/sample_cgi_bids.json
+CGI-004,회의실 영상장비 납품,샘플 공공기관,서울,물품,30000000,,,,2,유찰,20260925,,,방송영상장비;공공방송설비;기자재납품,True,file:data/procurement/sample_cgi_bids.json
