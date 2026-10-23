@@ -52,11 +52,11 @@
 ```text
 PROJECT=CGI
 ISSUE=43
-PR=(PR 번호)
+PR=46 https://github.com/skerishKang/kbs261022/pull/46
 REPOSITORY=skerishKang/kbs261022
 WORK_DATE=2026-10-23
 AGENT=Qoder (CGI-1)
-MODEL=(세션 모델)
+MODEL=Qoder 에이전트 세션 (이전 Beam 1.0 사용량 제한 세션의 복구)
 DEVICE=CGI-1 Windows / PowerShell
 OBJECTIVE=기존 4,575건 상품 마스터의 모델명·제조사·브랜드·중복·출처 정합성을 출처 기반으로 점검하고 LOCAL2가 쓸 수 있는 보완 산출물(자동/검토 분리)을 만든다
 INPUTS=site/data/products.json(원본 4,575건), data/full_catalog/product_db.xlsx(이슈 #8 정본: 통합상품·중복후보 시트), data/full_catalog/collection_stats.json
@@ -67,7 +67,7 @@ OBSERVED_FACTS=모델명 누락 2,835건(samasound 2,281 전체 + samamusic 554)
 MODEL_CLAIMS_NOT_INDEPENDENTLY_VERIFIED=브랜드↔제조사 대응 41종은 원본 스펙행 실측이지만 "동일 브랜드商品的 제조사가 계약상 제조사와 일치"하는지는 CGI 확인 필요
 LIMITATIONS=원본에 표기가 없는 모델명 458건은 공백 유지. 승계된 모델명 368건은 이슈 #8 confirmed 판정에 의존(변형 충돌 검사 통과 건만). 가격·재고·공급권한은 본 작업 범위 밖
 OUTPUTS=data/product_quality/product_quality_improved.json, product_quality_patch_candidates.csv, product_duplicate_candidates.csv, product_quality_summary.json, product_quality_review.xlsx
-MERGED=(병합 확인 후 기재)
+MERGED=YES (merge commit 5f5c8aa, base 9394b20 → main)
 DEPLOYED=NO
 LIVE_VERIFIED=NO (데이터 산출물이라 배포 대상 아님)
 REMAINING=검토후보 2,351건 확정, 근거없음 모델명 458건은 공급처 원본 재확인 필요
