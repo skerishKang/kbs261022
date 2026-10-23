@@ -2,10 +2,13 @@
 // Deploy with: wrangler deploy
 // Required secrets: ADMIN_TOKEN
 
+const ALLOWED_ORIGIN = 'https://skerishkang.github.io';
+
 const CORS_HEADERS = {
-  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Origin': ALLOWED_ORIGIN,
   'Access-Control-Allow-Methods': 'GET,POST,PATCH,OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type,Authorization',
+  'Vary': 'Origin',
 };
 
 function json(data, status = 200) {
