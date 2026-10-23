@@ -1,0 +1,305 @@
+{
+  "generated_at": "2026-10-23T00:43:26.659893+00:00",
+  "erp_total_items": 964,
+  "cgi_total_items": 4575,
+  "exact_code_matches": 0,
+  "name_exact_matches": 1,
+  "model_exact_matches": 25,
+  "candidate_substring_matches": 80,
+  "matched_cgi_unique": 88,
+  "erp_matched_count": 84,
+  "erp_only_count": 880,
+  "cgi_only_count": 4487,
+  "erp_groups": {
+    "인건비,경비": 40,
+    "음향장비": 139,
+    "케이블": 61,
+    "전기케이블(전원케이블)": 22,
+    "커넥터": 52,
+    "잡자재": 59,
+    "": 185,
+    "CCTV,네트워크": 15,
+    "영상장비": 34,
+    "랜케이블": 16,
+    "조명스텐드": 2,
+    "일반조명등기구": 246,
+    "멀티콘센트": 3,
+    "스튜디오조명": 1,
+    "음향장비ㆍ케이블": 1,
+    "AUDIO CABLE": 31,
+    "Video Cable (비디오케이블)": 3,
+    "음향장비ㆍ잡자재": 1,
+    "LED전광판": 10,
+    "스크린및전동바텐,엘리베이션": 2,
+    "SPEAKERS(스피커)": 14,
+    "조명": 8,
+    "AUDIO": 5,
+    "스마트팜": 14
+  },
+  "erp_types": {
+    "[무형상품]": 45,
+    "[상품]": 689,
+    "[부재료]": 74,
+    "[원재료]": 65,
+    "[제품]": 88,
+    "[반제품]": 3
+  },
+  "cgi_sources": {
+    "samasound": 2281,
+    "samamusic": 2294
+  },
+  "price_comparison": "ERP export has no price columns; price differences not computable from this export",
+  "stock_comparison": "ERP export has stock management flag only; quantities not included",
+  "samples_name_matches": [
+    {
+      "erp_code": "SH-WI-6007",
+      "erp_name": "RPW120",
+      "cgi_key": "samasound:994",
+      "cgi_name": "RPW120"
+    }
+  ],
+  "samples_model_matches": [
+    {
+      "erp_code": "003512",
+      "erp_spec": "MY206SW",
+      "cgi_key": "samamusic:1948",
+      "cgi_model": "MY206SW"
+    },
+    {
+      "erp_code": "003513",
+      "erp_spec": "PW02X",
+      "cgi_key": "samamusic:2183",
+      "cgi_model": "PW02X"
+    },
+    {
+      "erp_code": "003514",
+      "erp_spec": "PW04X",
+      "cgi_key": "samamusic:2184",
+      "cgi_model": "PW04X"
+    },
+    {
+      "erp_code": "003515",
+      "erp_spec": "PW08X",
+      "cgi_key": "samamusic:2185",
+      "cgi_model": "PW08X"
+    },
+    {
+      "erp_code": "003516",
+      "erp_spec": "PW16X",
+      "cgi_key": "samamusic:2187",
+      "cgi_model": "PW16X"
+    },
+    {
+      "erp_code": "004513",
+      "erp_spec": "NP3X",
+      "cgi_key": "samamusic:2261",
+      "cgi_model": "NP3X"
+    },
+    {
+      "erp_code": "042406396738",
+      "erp_spec": "PGA 98H-TQG",
+      "cgi_key": "samamusic:5047",
+      "cgi_model": "PGA98H-TQG"
+    },
+    {
+      "erp_code": "042406473736",
+      "erp_spec": "PS24K",
+      "cgi_key": "samamusic:3945",
+      "cgi_model": "PS24K"
+    },
+    {
+      "erp_code": "80101",
+      "erp_spec": "LY225S",
+      "cgi_key": "samamusic:2153",
+      "cgi_model": "LY225S"
+    },
+    {
+      "erp_code": "80102",
+      "erp_spec": "LY240S",
+      "cgi_key": "samamusic:2154",
+      "cgi_model": "LY240S"
+    },
+    {
+      "erp_code": "80176",
+      "erp_spec": "BETA58A",
+      "cgi_key": "samamusic:1352",
+      "cgi_model": "BETA58A"
+    },
+    {
+      "erp_code": "A&H-CQ-12T",
+      "erp_spec": "CQ-12T",
+      "cgi_key": "samamusic:4060",
+      "cgi_model": "CQ-12T"
+    },
+    {
+      "erp_code": "A&H-CQ-18T",
+      "erp_spec": "CQ18T",
+      "cgi_key": "samamusic:4061",
+      "cgi_model": "CQ-18T"
+    },
+    {
+      "erp_code": "HK-POLAR12",
+      "erp_spec": "POLAR12 MK2",
+      "cgi_key": "samamusic:4964",
+      "cgi_model": "Polar 12 MK2"
+    },
+    {
+      "erp_code": "NE-AN-0006",
+      "erp_spec": "NC3FXX",
+      "cgi_key": "samamusic:2257",
+      "cgi_model": "NC3FXX"
+    },
+    {
+      "erp_code": "NE-AN-1005",
+      "erp_spec": "NP2X",
+      "cgi_key": "samamusic:2258",
+      "cgi_model": "NP2X"
+    },
+    {
+      "erp_code": "NE-DI-0005",
+      "erp_spec": "NE8MX",
+      "cgi_key": "samamusic:4794",
+      "cgi_model": "NE8MX"
+    },
+    {
+      "erp_code": "NE-RN-0011-QQ",
+      "erp_spec": "NYS231BG",
+      "cgi_key": "samamusic:2623",
+      "cgi_model": "NYS231BG"
+    },
+    {
+      "erp_code": "NE-RN-0021-QQ",
+      "erp_spec": "NYS240BG",
+      "cgi_key": "samamusic:2627",
+      "cgi_model": "NYS240BG"
+    },
+    {
+      "erp_code": "NE-RN-0060-QQ",
+      "erp_spec": "RP3C-B",
+      "cgi_key": "samamusic:2605",
+      "cgi_model": "RP3C-B"
+    }
+  ],
+  "samples_candidates": [
+    {
+      "erp_code": "000014",
+      "erp_spec": "HK PRO12XD",
+      "cgi_key": "samamusic:4968",
+      "cgi_model": "PR:O 12"
+    },
+    {
+      "erp_code": "001500",
+      "erp_spec": "SHURE WL93-X",
+      "cgi_key": "samamusic:5558",
+      "cgi_model": "WL93"
+    },
+    {
+      "erp_code": "003512",
+      "erp_spec": "MY206SW",
+      "cgi_key": "samasound:2266",
+      "cgi_model": ""
+    },
+    {
+      "erp_code": "003513",
+      "erp_spec": "PW02X",
+      "cgi_key": "samasound:2225",
+      "cgi_model": ""
+    },
+    {
+      "erp_code": "003514",
+      "erp_spec": "PW04X",
+      "cgi_key": "samasound:2224",
+      "cgi_model": ""
+    },
+    {
+      "erp_code": "003515",
+      "erp_spec": "PW08X",
+      "cgi_key": "samasound:2223",
+      "cgi_model": ""
+    },
+    {
+      "erp_code": "003516",
+      "erp_spec": "PW16X",
+      "cgi_key": "samasound:2221",
+      "cgi_model": ""
+    },
+    {
+      "erp_code": "004513",
+      "erp_spec": "NP3X",
+      "cgi_key": "samamusic:2262",
+      "cgi_model": "NP3X-B"
+    },
+    {
+      "erp_code": "042406396738",
+      "erp_spec": "PGA 98H-TQG",
+      "cgi_key": "samasound:3216",
+      "cgi_model": ""
+    },
+    {
+      "erp_code": "7613187003806",
+      "erp_spec": "NL4FC",
+      "cgi_key": "samamusic:1390",
+      "cgi_model": "BSL"
+    },
+    {
+      "erp_code": "80014",
+      "erp_spec": "TX10",
+      "cgi_key": "samasound:1090",
+      "cgi_model": ""
+    },
+    {
+      "erp_code": "80032",
+      "erp_spec": "30mm",
+      "cgi_key": "samamusic:1397",
+      "cgi_model": "GNS18"
+    },
+    {
+      "erp_code": "80070",
+      "erp_spec": "StageBug (SB-5)",
+      "cgi_key": "samamusic:191",
+      "cgi_model": ""
+    },
+    {
+      "erp_code": "80093",
+      "erp_spec": "SLXD4D",
+      "cgi_key": "samasound:3738",
+      "cgi_model": ""
+    },
+    {
+      "erp_code": "80094",
+      "erp_spec": "SLXD4",
+      "cgi_key": "samasound:3740",
+      "cgi_model": ""
+    },
+    {
+      "erp_code": "80095",
+      "erp_spec": "SLXD2/B87A",
+      "cgi_key": "samamusic:5517",
+      "cgi_model": ""
+    },
+    {
+      "erp_code": "80096",
+      "erp_spec": "SLXD1",
+      "cgi_key": "samamusic:5514",
+      "cgi_model": ""
+    },
+    {
+      "erp_code": "80098",
+      "erp_spec": "M1K1FM0300",
+      "cgi_key": "samamusic:1431",
+      "cgi_model": "M1K1FM"
+    },
+    {
+      "erp_code": "80099",
+      "erp_spec": "M1K1FM1000",
+      "cgi_key": "samamusic:1431",
+      "cgi_model": "M1K1FM"
+    },
+    {
+      "erp_code": "80101",
+      "erp_spec": "LY225S",
+      "cgi_key": "samasound:2228",
+      "cgi_model": ""
+    }
+  ]
+}

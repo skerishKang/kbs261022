@@ -1,5 +1,0 @@
-﻿bid_no,title,agency,region,category,estimated_price,bid_amount,winning_bid,bid_rate_pct,bidders,status,close_date,detail_url,cgi_categories,cgi_relevant,data_source
-R26BK00000001-000,샘플 IT 용역 공고 A,샘플 발주기관,,용역,100000000,,89500000,89.5,5,낙찰,,,,False,file:D:\1022\wt-g2b\data\procurement\sample_bids.json
-R26BK00000002-000,샘플 IT 용역 공고 B,샘플 발주기관,,용역,50000000,,47200000,94.4,3,낙찰,,,,False,file:D:\1022\wt-g2b\data\procurement\sample_bids.json
-R26BK00000003-000,샘플 물품 공고 C,샘플 발주기관,,물품,30000000,,,,2,유찰,,,,False,file:D:\1022\wt-g2b\data\procurement\sample_bids.json
-R26BK00000004-000,샘플 공사 공고 D,샘플 발주기관,,공사,200000000,,178000000,89.0,7,낙찰,,,,False,file:D:\1022\wt-g2b\data\procurement\sample_bids.json
