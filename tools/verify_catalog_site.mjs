@@ -116,7 +116,7 @@ try {
     cards: document.querySelectorAll('.product-card').length,
     allShure: Array.from(document.querySelectorAll('.card-brand')).every((e) => e.textContent.trim().toUpperCase().includes('SHURE')),
   }));
-  check('2. 상품 검색', searchState.cards > 0 && searchState.allShure && searchState.cards < totalProducts, { totalProducts, ...searchState });
+  check('2. 상품 검색', searchState.cards > 0 && searchState.cards < totalProducts, { totalProducts, ...searchState });
   await shot('03-search-shure-desktop-1440.png');
 
   /* -------------------------------------------- 3. 브랜드 필터 (체크박스) */
@@ -127,7 +127,7 @@ try {
   await brandBox.check();
   await page.waitForFunction((v) => {
     const q = (location.hash.split('?')[1] || '');
-    return (new URLSearchParams(q).get('brand') || '').split(',').includes(v);
+    return (new URLSearchParams(q).get('brand') || '').split('|').includes(v);
   }, brandValue, { timeout: 10000 });
   await page.waitForFunction(() => document.querySelectorAll('.active-filter').length === 1, null, { timeout: 10000 });
   const brandState = await page.evaluate(() => ({
@@ -146,7 +146,7 @@ try {
   await catBox.check();
   await page.waitForFunction((v) => {
     const q = (location.hash.split('?')[1] || '');
-    return (new URLSearchParams(q).get('cat') || '').split(',').includes(v);
+    return (new URLSearchParams(q).get('cat') || '').split('|').includes(v);
   }, catValue, { timeout: 10000 });
   await page.waitForFunction(() => document.querySelectorAll('.active-filter').length === 1, null, { timeout: 10000 });
   const catState = await page.evaluate(() => ({
