@@ -421,7 +421,7 @@
       if (state.products[i].id === id) { product = state.products[i]; break; }
     }
     if (!product) {
-      app.innerHTML = '<div class="empty-state"><h3>?�품??찾을 ???�습?�다</h3></div>';
+      app.innerHTML = '<div class="empty-state"><h3>상품을 찾을 수 없습니다</h3></div>';
       return;
     }
     var services = (window.CGI_SERVICES || []).filter(function (svc) {
@@ -441,7 +441,7 @@
       '※ 금액은 고객 확정 전 미표시. CGI 확인 후 안내.';
 
     app.innerHTML =
-      '<div class="breadcrumb"><a href="#/">??/a> ??<a href="#/products">?�품 목록</a> ??견적 요청</div>' +
+      '<div class="breadcrumb"><a href="#/">홈</a> › <a href="#/products">상품 목록</a> › 견적 요청</div>' +
       '<div class="detail-grid">' +
         '<div>' +
           '<h1 class="detail-title">견적 요청</h1>' +
@@ -466,7 +466,7 @@
             '<pre id="quoteText" class="quote-text">' + esc(quoteText) + '</pre>' +
             '<button type="button" class="btn-search" onclick="window.cgiCopyQuote()">요약 복사</button>' +
           '</div>' +
-          '<a class="back-link" href="#/product/' + encodeURIComponent(product.id) + '">??상품으로 ?�아가�?/a>' +
+          '<a class="back-link" href="#/product/' + encodeURIComponent(product.id) + '">← 상품으로 돌아가기</a>' +
         '</div>' +
       '</div>';
 
@@ -594,7 +594,7 @@
     var quoteText = buildQuoteCartText(items);
 
     app.innerHTML =
-      '<div class="breadcrumb"><a href="#/">??/a> ??<a href="#/products">?�품 목록</a> ??견적 요청 목록</div>' +
+      '<div class="breadcrumb"><a href="#/">홈</a> › <a href="#/products">상품 목록</a> › 견적 요청 목록</div>' +
       '<div class="detail-block"><h3>견적 요청 상품 목록</h3>' +
         (items.length ? '<table class="spec-table"><thead><tr><th>상품명</th><th>브랜드</th><th>카테고리</th><th>수량</th><th>공개가</th><th></th></tr></thead><tbody>' + rows + '</tbody></table>' : '<p>견적 목록이 비어 있습니다. 상품 상세에서 "견적 목록에 추가"를 선택하세요.</p>') +
       '</div>' +
@@ -617,7 +617,7 @@
         '<button type="button" class="btn-search" onclick="window.cgiDownloadQuoteCart()">JSON 다운로드</button> ' +
         '<button type="button" class="btn-search" onclick="window.cgiDownloadQuoteCartCsv()">CSV 다운로드</button>' +
       '</div>' +
-      '<a class="back-link" href="#/products">??목록으로 돌아가기</a>';
+      '<a class="back-link" href="#/products">← 목록으로 돌아가기</a>';
 
     // quantity change handlers
     Array.prototype.forEach.call(document.querySelectorAll('input[data-qty-id]'), function (inp) {
