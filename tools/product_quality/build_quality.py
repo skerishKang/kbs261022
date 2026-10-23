@@ -28,6 +28,7 @@ from typing import Any, Mapping, Sequence
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 from tools.product_quality import quality as Q  # noqa: E402
+from tools.product_quality import review_workflow as review  # noqa: E402
 from tools.product_quality import verify_review as verify  # noqa: E402
 
 OUT_DIR = "data/product_quality"
@@ -38,6 +39,9 @@ FILES = {
     "summary": "product_quality_summary.json",
     "review": "product_quality_review.xlsx",
     "stage2": "product_quality_stage2_verification.csv",
+    "queue": "product_quality_review_queue.xlsx",
+    "decisions": "product_review_decisions.json",
+    "decisions_csv": "product_review_decisions.csv",
 }
 
 # 정본 XLSX 중복후보 시트 → (좌측, 우측) 열 이름
@@ -336,6 +340,11 @@ def local2_contract_rows(summary: Mapping[str, Any]) -> list[dict[str, Any]]:
                                         " 및 summary.stage2.promotions".format(promoted)},
         {"항목": "검토 우선행", "내용": "verification.model.priority=1 행은 사람이 먼저 확인할 다음 후보. "
                                           "단 승격(promoted)이 아니면 적용 금지"},
+        {"항목": "Stage 3 검토", "내용": "검토후보 {a}건은 product_quality_review_queue.xlsx 에서 승인/반려/보류 로 "
+                                          "확정한다. 확정 결과는 product_review_decisions.csv·json 에 "
+                                          "classification=reviewer_confirmed 로만 기록되며, 그 행의 확정값만 "
+                                          "패치로 적용한다 (검토 0건이면 적용 0건)".format(
+                                              a=(summary.get("stage3") or {}).get("review_queue_rows", 0))},
         {"항목": "반영 금지", "내용": "classification=review_required / no_evidence 항목. "
                                        "product_quality_review.xlsx 검토후보 시트 확정 전까지 원본값 유지"},
         {"항목": "가격·재고", "내용": "price_original / price_state_original 은 원본 전달값뿐이며 "
@@ -352,6 +361,11 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("--out-dir", default=OUT_DIR)
     parser.add_argument("--no-stage2", action="store_true",
                         help="Stage 1 산출물만 생성 (회귀 비교용)")
+    parser.add_argument("--no-stage3", action="store_true",
+                        help="Stage 3 검토 대기열·결정 산출물을 생성하지 않는다")
+    parser.add_argument("--decisions", default="",
+                        help="채워진 product_quality_review_queue.xlsx 경로를 지정하면 "
+                             "검토 결과를 검증해 패치로 내보낸다")
     parser.add_argument("--quiet", action="store_true", help="요약 JSON 출력을 생략한다")
     args = parser.parse_args(argv)
 
@@ -380,6 +394,33 @@ def main(argv: Sequence[str] | None = None) -> int:
     dup_rows = write_duplicate_csv(result.duplicates, os.path.join(args.out_dir, FILES["duplicate_candidates"]))
     stage2_rows = write_stage2_csv(result.patches, stage2.verification,
                                    os.path.join(args.out_dir, FILES["stage2"])) if stage2.stats else 0
+    stage3: dict[str, Any] = {}
+    queue_rows: list[dict[str, Any]] = []
+    queue_dup_rows: list[dict[str, Any]] = []
+    if not args.no_stage2 and not args.no_stage3:
+        queue_rows = review.build_review_rows(result.patches, stage2.verification, records)
+        queue_dup_rows = review.build_dup_rows(result.duplicates)
+        fingerprint = review.queue_fingerprint(queue_rows)
+        stage3 = review.build_stage3_stats(queue_rows, queue_dup_rows, fingerprint)
+        # Stage 3 은 패치 레이어 값을 바꾸지 않는다. improved.json 의 schema_version 은 Stage 2 그대로 둔다.
+        result.summary["stage3"] = stage3
+        review.write_queue_xlsx(queue_rows, queue_dup_rows,
+                                os.path.join(args.out_dir, FILES["queue"]), fingerprint, result.summary)
+        payload = review.apply_decisions_file(
+            args.decisions or os.path.join(args.out_dir, FILES["queue"]), queue_rows,
+            args.out_dir, result.summary)
+        stage3["decisions"] = payload["counts"]
+        stage3["decision_source"] = "reviewer_workbook" if args.decisions else "빈 대기열 (검토 0건)"
+        stage3["errors"] = payload["errors"][:50]
+        if args.decisions:
+            print(json.dumps({"approved": payload["counts"]["approved"],
+                              "rejected": payload["counts"]["rejected"],
+                              "held": payload["counts"]["held"],
+                              "pending": payload["counts"]["pending"],
+                              "invalid": payload["counts"]["invalid"],
+                              "errors": len(payload["errors"])}, ensure_ascii=False))
+            return 1 if payload["errors"] else 0
+
     improved_payload = {
         "schema_version": result.summary["schema_version"],
         "generated_at": result.generated_at,

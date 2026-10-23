@@ -47,8 +47,11 @@
 - 승격 불가: 제조사 269건(교차 실측 근거 0건), 브랜드 73건 — 전부 검토 유지.
   브랜드 자리표시자 중 8건은 모델명 어휘가 단일 브랜드로 실증해 **제안 + 우선검토(P1) 표시만** 하고
   원본 표기(`자체제작`)는 바꾸지 않았습니다.
-- 남은 검토 2,311건에 우선순위를 붙였습니다:
+- 남은 검토 2,311건(모델 1,969 + 제조사 269 + 브랜드 73)에 우선순위를 붙였습니다.
+  순위는 **모델명 후보에 교차 실측 지표가 있을 때만** 붙습니다: 모델 기준
   P1 148건(실측 1건) · P2 620건(영문상품명=파생 일치) · P3 239건(상대 공급처 중복 판정) · P4 962건(링크 없음).
+  제조사 269건과 브랜드 65건은 실측 링크가 없어 P4로, 브랜드 제안 8건은 P1로 표시했습니다
+  (전 필드 합계: P1 156 · P2 620 · P3 239 · P4 1,296 = 2,311).
 - `product_quality_review.xlsx` 에 **Stage2승격** 시트를 추가하고, 검토후보 시트를 우선순위 순으로
   정렬하며 실측 독립 ID 수·실측 관찰 수·영문/파생 일치·중복 판정 등급·우선순위 열을 붙였습니다.
   별도 파일: `product_quality_stage2_verification.csv` (2,351행).
@@ -64,7 +67,8 @@ Stage 2 어휘에서 독립 ID 2건 이상으로 실측되지 못한 모델명 �
 공개 판매가가 없는 상품 2,458건(원본의 `가격 문의` 표기)은 이번 작업과 무관하게 문의 상태로 남았습니다.
 
 **다음 순서.** LOCAL2가 자동 확정 항목(2,495건)을 카탈로그·견적서에 반영하고, 검토후보 2,311건은
-`product_quality_review.xlsx` 검토후보 시트를 우선순위 P1 → P4 순으로 화면 확인하며 확정합니다.
+Stage 3 검토 워크북 `product_quality_review_queue.xlsx`(우선순위순·근거·전후값 표시)에서
+승인/반려/보류로 확정한 뒤 `build_quality.py --decisions` 로 패치화합니다. 절차는 아래 D장.
 
 ## B. AI 공동검토용 기록
 
@@ -84,16 +88,16 @@ IMPLEMENTED=tools/product_quality/quality.py(근거 규칙 엔진), tools/produc
 EXECUTION_EVIDENCE=python tools/product_quality/build_quality.py 실행 → patch_rows=5270 duplicate_rows=1353 stage2_rows=2351 promoted=40; summary 실측 출력(schema_version 1.1.0, 모델명 미확정 2,467→2,427); python -m unittest discover -t . -s tools/product_quality/tests → Ran 50 tests OK; 원본 products.json SHA-256 실행 전후 동일(테스트로 검증)
 TESTS=50/50 PASS (product_quality 집중+실마스터 회귀) + 회귀: tools/product_master 62, tools/full_catalog 18, tools/erp 12, tools/smartstore 19, tools/procurement 49 (아래 TESTLOG)
 OBSERVED_FACTS=모델명 누락 2,835건(samasound 2,281 전체 + samamusic 554), 제조사 누락 2,294건(samamusic 전체 — 이 사이트는 제조사 스펙행 자체가 없음), 브랜드 필드 누락 0건, 브랜드 표기 64종, 중복 판정 confirmed 538쌍/probable 274쌍/candidate 521쌍, 같은 사이트 브랜드+상품명 완전일치 20쌍, 자리표시자 제조사 '자체제작' 68건
-MODEL_CLAIMS_NOT_INDEPENDENTLY_VERIFIED=브랜드↔제조사 대응 41종은 원본 스펙행 실측이지만 "동일 브랜드商品的 제조사가 계약상 제조사와 일치"하는지는 CGI 확인 필요
+MODEL_CLAIMS_NOT_INDEPENDENTLY_VERIFIED=브랜드↔제조사 대응 41종은 원본 스펙행 실측이지만 "동일 브랜드 상품의 제조사가 계약상 제조사와 일치"하는지는 CGI 확인 필요
 LIMITATIONS=원본에 표기가 없는 모델명 458건은 공백 유지. 승계된 모델명 368건은 이슈 #8 confirmed 판정에 의존(변형 충돌 검사 통과 건만). 가격·재고·공급권한은 본 작업 범위 밖
 OUTPUTS=data/product_quality/product_quality_improved.json, product_quality_patch_candidates.csv, product_quality_stage2_verification.csv, product_duplicate_candidates.csv, product_quality_summary.json, product_quality_review.xlsx
-MERGED=YES Stage1(PR #46 · merge commit 5f5c8aa, base 9394b20 → main) / Stage2(PR #51 · merge commit SHA는 #43 완료 코멘트 참조)
+MERGED=YES Stage1(PR #46 · merge commit 5f5c8aa) / Stage2(PR #51 · merge commit 917db99)
 STAGE2_AUTO_PROMOTED=40 (모델명 승격) / 제조사 0 / 브랜드 0
 STAGE2_INDEPENDENT_EVIDENCE=같은 brand_norm 의 명시 모델명 스펙행에서 site:product_id 기준 2개 이상; 산출물 40건 전건을 원본에서 재대조해 테스트로 고정
 STAGE2_SCHEMA=1.1.0 (Stage 1 1.0.0 → Stage 2 1.1.0), improved.json·summary.json 동기
 DEPLOYED=NO
 LIVE_VERIFIED=NO (데이터 산출물이라 배포 대상 아님)
-REMAINING=검토후보 2,311건 확정(P1 148/P2 620/P3 239/P4 962), 근거없음 모델명 458건은 공급처 원본 재확인 필요, 제조사 검토 269건·브랜드 73건 자동화 불가
+REMAINING=검토후보 2,311건은 Stage 3 검토 워크북으로 사람 확정 대기(모델 P1 148/P2 620/P3 239/P4 962, 제조사 269·브랜드 65는 P4, 브랜드 제안 8은 P1), 근거없음 모델명 458건은 공급처 원본 재확인 필요
 NEXT=LOCAL2가 auto_confirmed 2,495건(승격 40 포함)을 카탈로그/견적 데이터에 반영, LOCAL3은 ERP 품목매핑 시 manufacturer_after 대신 원본값 병기 검토
 ```
 
@@ -122,3 +126,49 @@ python .\tools\product_quality\build_quality.py
 - `quality_flags` 로 검토후보/근거없음/자리표시자를 필터할 수 있다.
 - 사이트 표시·UI(`site/**`), 견적 백엔드, ERP·나라장터 파일은 이 PR에서 변경하지 않았다.
 - 상세 문서는 [`data/product_quality/README.md`](../data/product_quality/README.md).
+
+
+## D. Stage 3 — 검토후보 2,311건 검토 체계 (2026-10-23)
+
+**만든 것.** 사람이 화면을 보며 결정할 수 있는 검토 워크북과, 그 결과를 기계가 검증해
+패치로 바꾸는 내보내기 기능을 추가했습니다(`tools/product_quality/review_workflow.py`).
+**자동으로 확정된 값은 하나도 늘지 않았습니다** — Stage 2까지의 40건 승격이 전부이고,
+Stage 3는 승인 0건 상태로 출발합니다.
+
+**검토 워크북** `data/product_quality/product_quality_review_queue.xlsx`
+
+| 시트 | 내용 |
+|---|---|
+| 검토방법 | 사용 순서·규칙·대기열 지문(sha256) |
+| 검토후보 | 2,311행. 우선순위 P1→P4 정렬, 보완전/제안값/근거/근거URL/**원본화면URL**/신뢰도/실측독립ID/판정근거 표시, 입력란은 검토결정·확정값·검토자·검토일·비고 5열(채색·드롭다운) |
+| 중복후보판정 | 1,353쌍. 좌우 원본ID·브랜드·모델명·공통표현·유사도·변형충돌·근거 병기, 판정란은 동일상품/별도상품/보류 |
+
+**검증 규칙(어긋난 입력은 패치가 되지 않습니다).**
+
+- 결정 어휘는 승인·반려·보류뿐. 어휘 밖 값은 거부하고 오류 목록에 남깁니다.
+- 승인은 ①실측된 제안값(또는 검토자 입력 확정값) ②**검토자 기록** 필수.
+  제안값과 다른 확정값은 `비고`에 근거를 적어야 통과합니다.
+- 제안값이 없거나 자리표시자(`자체제작`·`기타`·`없음`·`-`)인 행은 승인 불가 — **근거 없는 값을 채우는 경로가 없습니다**.
+- 행지문(제안값·우선순위 해시)이 대기열과 다르면 거부. 재생성 후 제안이 바뀌면 검토가 다시 필요합니다.
+- 대기열에 없는 ID·중복 ID는 거부하고 종료코드로 알려줍니다.
+
+**내보내기.** `python tools\product_qualityuild_quality.py --decisions <검토 워크북>` →
+`product_review_decisions.json`·`.csv`. 승인 행만 `classification=reviewer_confirmed`,
+`applies_to="patch layer only"`로 기록되고, 정책 플래그(`duplicates_merged=0`,
+`original_master_overwritten=false`, `price_invented=false`, `unapproved_values_applied=false`)와
+오류 목록이 함께 나갑니다. 오류가 있으면 종료코드 1.
+
+**중복.** 판정 기록만 남깁니다. `동일상품`으로 적어도 `남길ID`가 쌍의 원본ID 중 하나일 때만 통과하고,
+어떤 경우에도 **병합은 수행하지 않습니다**(원본 4,575건 ID 전부 유효).
+
+**실측 예(임시본, 커밋 안 함).** 승인 3(모델명 360FG·MX391-X[근거비고]·제조사 K&M) ·
+반려 1 · 보류 1 · 미검토 2,304 · 거부 2(근거 없는 승인, 어휘 밖 결정) · 병합 0.
+
+**테스트.** `tools/product_quality/tests/test_review_workflow.py` 38케이스 PASS,
+product_quality 전체 88케이스, 회귀 187케이스 포함 **275케이스 PASS**
+(`docs/CGI_PRODUCT_QUALITY_TESTLOG.md` §8).
+
+**LOCAL2 적용 계약(Stage 3 추가분).**
+`product_quality_improved.json` 은 Stage 2와 값이 동일합니다(재현 확인). 확정값은
+`product_review_decisions.json` 의 `approved[].확정값` 뿐이며, 그 행만 `id`+`필드` 로 원본에 덮어씁니다
+(원본 파일이 아니라 로컬 적용 계층에서).

@@ -1,6 +1,6 @@
 {
  "schema_version": "1.1.0",
- "generated_at": "2026-10-23T02:45:44Z",
+ "generated_at": "2026-10-23T04:09:59Z",
  "original_products": 4575,
  "improved_products": 4575,
  "missing_before": {
@@ -74,7 +74,7 @@
  },
  "stage1_before_stage2": {
   "schema_version": "1.0.0",
-  "generated_at": "2026-10-23T02:45:44Z",
+  "generated_at": "2026-10-23T04:09:59Z",
   "original_products": 4575,
   "improved_products": 4575,
   "missing_before": {
@@ -823,5 +823,59 @@
     "evidence_url": "https://samastore.co.kr/product/shure-ksm8-슈어-보컬용-듀얼다인-다이나믹-마이크-블랙/5018/"
    }
   ]
+ },
+ "stage3": {
+  "stage3_version": "1.2.0",
+  "review_queue_rows": 2311,
+  "model_review": 1969,
+  "manufacturer_review": 269,
+  "brand_review": 73,
+  "priority_counts": {
+   "1": 156,
+   "2": 620,
+   "3": 239,
+   "4": 1296
+  },
+  "priority_counts_by_field": {
+   "model": {
+    "1": 148,
+    "2": 620,
+    "3": 239,
+    "4": 962
+   },
+   "manufacturer": {
+    "4": 269
+   },
+   "brand": {
+    "1": 8,
+    "4": 65
+   }
+  },
+  "decision_vocabulary": [
+   "승인",
+   "반려",
+   "보류"
+  ],
+  "duplicate_verdict_vocabulary": [
+   "동일상품",
+   "별도상품",
+   "보류"
+  ],
+  "duplicate_pairs": 1353,
+  "duplicate_merges_performed": 0,
+  "queue_fingerprint": "139e2753a89468a87f3e0c05862f3905a7bd8a4b1bf49a3bfc3204137e8bf98a",
+  "reviewer_inputs_editable": true,
+  "no_value_confirmed_without_review": true,
+  "decisions": {
+   "approved": 0,
+   "rejected": 0,
+   "held": 0,
+   "pending": 2311,
+   "invalid": 0,
+   "duplicate_pairs_recorded": 1353,
+   "duplicate_pairs_decided": 0
+  },
+  "decision_source": "빈 대기열 (검토 0건)",
+  "errors": []
  }
 }
