@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CGI 견적 관리</title>
+<link rel="stylesheet" href="assets/css/cgi-catalog.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-mark">CGI</span>
+      <span class="brand-text"><strong>견적 관리</strong><small>CGI 담당자용</small></span>
+    </a>
+    <nav class="header-nav">
+      <a href="index.html">카탈로그</a>
+      <a href="staff.html">견적 관리</a>
+    </nav>
+  </div>
+</header>
+<main id="app" class="app">
+  <div class="detail-block">
+    <h3>견적 요청 접수 목록</h3>
+    <p class="detail-price-note">브라우저 localStorage에 저장된 요청을 표시합니다. 다른 PC의 요청은 JSON 파일로 가져오기 하세요.</p>
+    <div>
+      <input type="file" id="importFile" accept="application/json">
+      <button type="button" class="btn-search" id="importBtn">JSON 가져오기</button>
+    </div>
+    <div id="requestList"></div>
+  </div>
+  <div id="requestDetail"></div>
+</main>
+<script src="config.js"></script>
+<script src="data/products.js"></script>
+<script src="data/services.js"></script>
+<script src="assets/js/cgi-staff.js"></script>
+</body>
+</html>
