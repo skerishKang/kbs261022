@@ -4,14 +4,31 @@
 > 본 문서는 **#19 산출물(XLSX)을 직접 만들기 위한 것이 아니라**, #19가 그대로 소비할 수 있는
 > 데이터·코드·규격을 인계하는 문서다. XLSX 빌더까지 제공했으므로 **중복 구현하지 말 것.**
 
+> ## ⚠ 2026-10-23 반영 현황 (main 실측으로 정정)
+>
+> 아래 §1~§3은 **인계 당시(10-22) 로컬 작업 기준** 기록이다. #19는 이후 PR #26·#27·#28 로 main 에 병합돼
+> 산출물이 저장소 안으로 들어왔고, 시트 구성도 바뀌었다. **정본은 다음 표**다.
+>
+> | 항목 | 인계 당시 문서의 값 | main 실측(2026-10-23) |
+> |---|---|---|
+> | 엑셀 정본 위치 | 로컬 `.work/full_catalog/product_master_full.xlsx` | `data/full_catalog/product_db.xlsx` (3,176,083B · sha256 `ee61ac545e51b043…`) |
+> | 시트 수 | 7 | **8** (통합상품 4,575×34 · 공급처원본 4,575×20 · 브랜드_카테고리 374 · 중복후보 1,333×19 · 누락_검증현황 4,575×20 · 네이버스토어준비 4,575×16 · 이카운트품목매핑 4,575×14 · 옵션SKU 3,541×8) |
+> | 빌더 | `tools/catalog_collection/build_xlsx_db.py` | `tools/full_catalog/build_full_catalog.py`(정본) · `build_product_db.py`(7시트 계열) · 검증 `verify_full_catalog.py` |
+> | 중복 후보 | 544건 | **세 가지 수치가 서로 다른 계산**: `reports/samples/full-catalog-duplicate-candidates.csv` 544행(10-22 판정) · 엑셀 `중복후보` 1,333행(confirmed 538 / probable 274 / candidate 521) · 이슈 #43 QA 계층 1,353쌍. 자동 병합은 **어느 판정에서도 0건** |
+> | 카테고리 목록 | 893행 | `reports/samples/category_catalog_full.csv` 845행 · `data/full_catalog/category_catalog.csv` 238행(사이트 목록 기준). 893행본은 저장소에 없다 |
+> | 스키마 | PR #12 `skills/cgi-catalog-collector/schema/product-master.schema.json`(40컬럼) | 그 경로는 main 에 없음(미병합). 통합 스키마 정본은 `schemas/product-master-record.schema.json`(필수 16컬럼) + `docs/CGI_PRODUCT_MASTER_SCHEMA.md` |
+> | Tri-A 모델명 0% | §2 표 기준 | 이슈 #43 Stage 1+2 에서 모델명 408건 자동 확정(원본 보존). 정본 엑셀 `모델명` 채움률은 1,740/4,575 |
+>
+> §4의 "해야 할 것"은 1번(XLSX 검수)·5번(#11 연계)이 끝났고, 2·3·4번은 남았다. 상세는 아래 §4 갱신분.
+
 ---
 
 ## 1. 인계물 요약
 
 | 구분 | 항목 | 경로 |
 |---|---|---|
-| 정본 데이터 | 40컬럼 상품 마스터 4,575행 (CSV/JSON) | 로컬 `.work/full_catalog/product_master_full.csv` / `.json` |
-| XLSX | 7시트 (4,575행) | 로컬 `.work/full_catalog/product_master_full.xlsx` |
+| 정본 데이터 | 40컬럼 상품 마스터 4,575행 (CSV/JSON) | (인계 당시 로컬) `.work/full_catalog/product_master_full.csv` / `.json` — main 정본은 `data/full_catalog/product_db_compact.csv` 4,575행 |
+| XLSX | 7시트 (4,575행) | (인계 당시 로컬) `.work/full_catalog/product_master_full.xlsx` — main 정본은 `data/full_catalog/product_db.xlsx` **8시트** |
 | 빌더 코드 | XLSX 생성기 | `tools/catalog_collection/build_xlsx_db.py` |
 | 수집 코드 | 전체 수집 오케스트레이터 | `tools/catalog_collection/collect_full_catalog.py` |
 | 검증 코드 | Playwright 2층 교차검증 | `tools/catalog_collection/verify_browser.py` |
@@ -82,12 +99,12 @@
 - 수집기를 다시 만들지 말 것 → PR #12 수집기를 재사용
 - `site/data/products.json` 을 직접 고치지 말 것 → PR #15 와의 충돌 위험. `build_catalog_data.py --master-csv <전체마스터.csv>` 로 재생성 후 조율
 
-**해야 할 것**
-1. XLSX 7시트 검수 (특히 `누락·검증현황` 의 NULL 항목이 의도대로인지)
-2. **CGI 공급가 · 실재고 · CGI 판매가 · 취급 승인** 을 채우는 경로 확정 (공개값 아님)
-3. **네이버 카테고리 ID 매핑** (`향후네이버·이카운트` 시트의 빈 슬롯)
-4. **Tri-A 모델명 추출 파이프라인** (상품명 → 모델). 규칙 확정 전까지 `model` 은 빈 값 유지
-5. `#11` 담당자와 `site/data/products.json` 재생성·커밋 조율
+**해야 할 것** (2026-10-23 상태 반영)
+1. ~~XLSX 7시트 검수~~ → **완료.** 8시트 정본 `data/full_catalog/product_db.xlsx` 로 검수·출처 채움률 실측 완료(출처URL·목록URL·수집시각·검증상태·출처증거 4,575/4,575). 단 `공급처원본` 시트의 `수집시각` 열은 커밋본에서 빈 칸(같은 행의 출처정보와 수집시각이 통합상품 시트에는 있음). 빌더 보완은 PR #61, 커밋본 재생성은 하지 않았다.
+2. **CGI 공급가 · 실재고 · CGI 판매가 · 취급 승인** 을 채우는 경로 확정 (공개값 아님) — **미완료.** 정본에서 `도매가`·`재고` 는 0/4,575(의도된 NULL).
+3. **네이버 카테고리 ID 매핑** (`향후네이버·이카운트` 시트의 빈 슬롯) — **미완료.** `네이버상품ID`·`ERP품목코드` 0/4,575. 필드 준비도는 이슈 #5 증분 작업(`tools/full_catalog/naver_field_readiness.py`)이 대체.
+4. **Tri-A 모델명 추출 파이프라인** (상품명 → 모델) — **부분 완료.** 이슈 #43 Stage 1 자동 368건 + Stage 2 승격 40건 = 408건. 남은 검토후보 2,311건은 사람 결정 대기.
+5. ~~`#11` 담당자와 `site/data/products.json` 재생성·커밋 조율~~ → **완료.** `site/data/products.json` 4,575건 커밋, 엑셀과 건수·식별자 일치.
 
 ---
 
@@ -101,6 +118,8 @@
 | Tri-B 제조사 0% | 사이트에 행이 없음 |
 | Tri-B item_code 공란 341건 | 상품코드 미부여 상품 |
 | 옵션 개수 정의 | `option_count` 는 **그룹 수**. 값 수는 `option_summary` JSON 참조 |
+| Tri-B 숨김 1,400건 | 상세 미수집(의도). 공개검색 API 필드만 확보 |
+| `공급처원본` 시트 `수집시각` 공란 | 2026-10-23 실측 0/4,575. 빌더(`build_full_catalog.py` 의 `build_supplier_sheet`)가 원본 레코드의 `updated_at` 만 읽는데 상세 덤프(`C:\cgi-work\catalog-data\*_detail.json`)에 그 필드가 0건이라 비었다. 통합상품 시트의 `수집시각` 은 **4,575행이 모두 `2026-10-22T05:21:38Z` 하나로, DB 생성(빌드) 시각**이다 — 상품별 갱신 시각이 아니다. 커밋본은 재생성하지 않았고, 다음 재생성부터 같은 값이 공급처원본 시트에도 적힌다(PR #61) |
 | Tri-B 숨김 1,400건 | 상세 미수집(의도). 공개검색 API 필드만 확보 |
 | 등급/권한 | PR #16 `tools/product_master/` 와 **컬럼명이 달라**(#12 40컬럼 vs #16 34컬럼). 통합 어댑터 필요 |
 

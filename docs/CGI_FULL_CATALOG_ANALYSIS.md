@@ -27,7 +27,7 @@
 | `www.samacds.co.kr` | 임웹(imweb.me) 플랫폼의 별도 도메인. sitemap 123 URL 중 **상품 URL 0**, `product/list.html` 404 | **상품 공급처 아님** (별도 서비스) |
 | `fliphtml5.com/bookcase/vndwo/` | "SAMASOUND 카탈로그 모음" — **브랜드 카탈로그 98종, 총 1,720페이지** | 판매 불가 브랜드 카탈로그 |
 | `s1forum.kr/shure_selector/` | Shure 자체 브랜드 셀렉터(`selector-data.js` 로드, select 4종) | 판매 불가 브랜드 도구 |
-| `s1forum.kr` |论坛(포럼) | 상품 공급처 아님 |
+| `s1forum.kr` | 포럼(게시판) | 상품 공급처 아님 |
 
 → **추가 상품 공급처는 확인되지 않았다.** 공개 상품 catálogo는 삼아사운드·삼아스토어 2곳이 전부이며,
 브랜드 카탈로그(fliphtml5 98종)과 브랜드 셀렉터는 "판매가 없는 카탈로그"다.
@@ -153,7 +153,7 @@ numeric/opt 569 · inquiry/noopt 71 · inquiry/opt 18 · sold_out/noopt 87 · ot
 | 가격 문의 | 2,370 (51.8%) — 추정 금지 원칙 적용 |
 | 판매완료 | 87 |
 | 가격 정보 없음 | 1 |
-| 중복 후보 | 62그룹 / 138행 (동일 master key, 자동 병합 안 함) |
+| 중복 후보 | 62그룹 / 138행 (동일 master key, 자동 병합 안 함) — **여기 숫자는 master 키 충돌 집계**다. 엑셀 `중복후보` 시트는 1,333행(confirmed 538·probable 274·candidate 521), `reports/samples/full-catalog-duplicate-candidates.csv` 는 544행(10-22 판정본), 이슈 #43 QA 계층은 1,353쌍을 센다. 세 수치는 계산 대상이 다르며, **어느 쪽도 자동 병합하지 않았다** |
 | 공급가·재고·CGI 판매가 | 전부 미확정(공급처 공개 근거 없음) |
 
 ## 8. 사용 방법(재현)
@@ -163,24 +163,29 @@ numeric/opt 569 · inquiry/noopt 71 · inquiry/opt 18 · sold_out/noopt 87 · ot
 python tools/full_catalog/run_full_collection.py --stage all \
   --cache C:/cgi-cache --out C:/cgi-work/catalog-data
 
-# 2) DB/엑셀 생성
+# 2-A) 당시 실행: 7시트 엑셀 + 로컬 JSON (산출 위치 C:\cgi-work\catalog-data\db)
 python tools/full_catalog/build_product_db.py \
   --data-dir C:/cgi-work/catalog-data --out-dir data/full_catalog \
   --xlsx C:/cgi-work/catalog-data/product_db.xlsx
 
-# 3) 브라우저 교차검증
-node tools/full_catalog/browser_verify.mjs C:/cgi-work/catalog-data/all_detail.json docs/samples/issue-19 48
+# 2-B) 정본 재현: main 에 커밋된 8시트 product_db.xlsx 를 만드는 빌더
+python tools/full_catalog/build_full_catalog.py \
+  --data-dir C:/cgi-work/catalog-data --out-dir data/full_catalog
+
+# 3) 브라우저 교차검증 (출력 경로는 실행 당시 C:\cgi-work…, 저장소 공개본은 reports/samples/)
+node tools/full_catalog/browser_verify.mjs C:/cgi-work/catalog-data/all_detail.json reports/samples 48
 
 # 4) 검색 총건수 대조(카테고리 누락 점검)
-node tools/full_catalog/search_completeness.mjs C:/cgi-work/catalog-data/list_products.json docs/samples/issue-19 999 C:/cgi-work/catalog-data/all_detail.json
+node tools/full_catalog/search_completeness.mjs C:/cgi-work/catalog-data/list_products.json reports/samples 999 C:/cgi-work/catalog-data/all_detail.json
 ```
 
-산출물(로컬 `C:\cgi-work\catalog-data\db`):
+산출물 (2026-10-23 실측 기준으로 정정):
 
-| 파일 | 내용 |
-|---|---|
-| `product_db.xlsx` | 7시트 통합 엑셀(3.2MB) — 통합상품/공급처원본/옵션SKU/브랜드·카테고리/중복후보/누락·검증현황/향후 네이버·이카운트 매핑 |
-| `catalog.full.json` | 쇼핑몰(#11) 데이터 계약 v1.0 전체 카탈로그(20MB) |
-| `product_db_compact.csv` | 핵심 필드 경량판(2.1MB) — GitHub 공개용 |
-| `options_compact.csv` | 옵션 1행 1옵션 |
-| `collection_stats.json` | 집계 통계 |
+| 파일 | 위치 | 내용 |
+|---|---|---|
+| `product_db.xlsx` **정본** | `data/full_catalog/` (커밋됨) | **8시트** / 3,176,083B / sha256 `ee61ac545e51b043…` — 통합상품 4,575×34 · 공급처원본 4,575×20 · 브랜드_카테고리 374 · 중복후보 1,333 · 누락_검증현황 4,575 · 네이버스토어준비 4,575 · 이카운트품목매핑 4,575 · 옵션SKU 3,541. 빌더 `tools/full_catalog/build_full_catalog.py` |
+| `product_db.xlsx` (당시 로컬분) | 로컬 `C:\cgi-work\catalog-data\` | **7시트** / 3,232,987B / sha256 `2d7cc08771c54e74…`. 위 정본과 다른 실행분이며 저장소에 없다. 식별 정보는 `data/full_catalog/local_artifacts_manifest.json` 에 실측으로 갱신 |
+| `catalog.full.json` | 로컬 `C:\cgi-work\catalog-data\db\` | 쇼핑몰(#11) 데이터 계약 v1.0 전체 카탈로그(20,166,800B). 대용량이라 미커밋 |
+| `product_db_compact.csv` | `data/full_catalog/` | 핵심 21필드 경량판(2,154,083B, 4,575행) — GitHub 공개용 |
+| `options_compact.csv` | `data/full_catalog/` | 옵션 1행 1옵션(696,491B, 4,233행). 엑셀 `옵션SKU` 시트는 3,541행으로 **집계 기준이 다르다** |
+| `collection_stats.json` | `data/full_catalog/` | 집계 통계 |
