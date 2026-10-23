@@ -279,6 +279,32 @@ class TestSheetBuilders(unittest.TestCase):
         self.assertEqual(by_id["5557"]["원본브랜드"], "SHURE")
         self.assertEqual(by_id["3875"]["원본제조사"], "Shure")
 
+    def test_supplier_sheet_collect_time_falls_back_to_extraction_time(self) -> None:
+        """상세 덤프에 `updated_at` 이 없으면(실측 0건) 통합상품과 같은 수집 시각을 쓴다.
+
+        커밋본 `공급처원본` 시트가 이 열을 빈 칸으로 남겼던 원인이 이 폴백 부재였다.
+        폴백 값은 상품별 갱신 시각이 아니라 DB 생성(빌드) 시각이다.
+        """
+        records = self._records()
+        rows = BFC.build_supplier_sheet(
+            records,
+            {"samasound:3875": samasound_raw(updated_at=""), "samamusic:5557": samamusic_raw(updated_at="")},
+        )
+        unified = {r["공급처원본ID"]: r for r in BFC.build_unified_sheet(records)}
+        for row in rows:
+            self.assertEqual(row["수집시각"], "2026-10-22T00:00:00Z")
+            self.assertEqual(row["수집시각"], unified[row["공급처원본ID"]]["수집시각"])
+
+    def test_supplier_sheet_prefers_source_updated_at(self) -> None:
+        rows = BFC.build_supplier_sheet(
+            self._records(),
+            {"samasound:3875": samasound_raw(updated_at="2026-09-01T00:00:00Z"),
+             "samamusic:5557": samamusic_raw()},
+        )
+        by_id = {r["공급처원본ID"]: r for r in rows}
+        self.assertEqual(by_id["3875"]["수집시각"], "2026-09-01T00:00:00Z")
+        self.assertEqual(by_id["5557"]["수집시각"], "2026-10-22T00:00:00Z")
+
 
 class TestXlsx(unittest.TestCase):
     def test_workbook_opens_with_required_sheets(self) -> None:
