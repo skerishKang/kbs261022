@@ -49,8 +49,8 @@ class ScanTextTests(unittest.TestCase):
         self.assertEqual(rules_for(marker), ["private-key-marker"])
 
     def test_github_token_is_detected(self):
-        token = "gh" + "p_" + "A" * 36
-        self.assertEqual(rules_for(token), ["github-token"])
+        sample = "gh" + "p_" + "A" * 36
+        self.assertEqual(rules_for(sample), ["github-token"])
 
     def test_aws_access_key_is_detected(self):
         key = "AK" + "IA" + "ABCDEFGHIJKLMNOP"
