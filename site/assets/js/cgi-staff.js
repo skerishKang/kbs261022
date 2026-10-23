@@ -4,6 +4,8 @@
   var services = window.CGI_SERVICES || [];
   var requests = [];
   var current = null;
+  var adminToken = null;
+  var isServerMode = false;
   var prices = {}; // productId -> unit price number
   var servicePrices = {}; // serviceId -> unit price number
 
@@ -41,6 +43,29 @@
   }
 
   function openRequest(id) {
+    if (isServerMode && apiUrl && adminToken) {
+      fetch(apiUrl + '/api/quotes/' + encodeURIComponent(id), { headers: { 'Authorization': 'Bearer ' + adminToken } })
+        .then(function (res) { if (!res.ok) throw new Error('HTTP ' + res.status); return res.json(); })
+        .then(function (row) {
+          if (typeof row.items === 'string') { try { row.items = JSON.parse(row.items || '[]'); } catch (e) { row.items = []; } }
+          if (typeof row.services === 'string') { try { row.services = JSON.parse(row.services || '[]'); } catch (e) { row.services = []; } }
+          if (typeof row.admin_prices === 'string') { try { row.admin_prices = JSON.parse(row.admin_prices || 'null'); } catch (e) { row.admin_prices = null; } }
+          prices = {}; servicePrices = {};
+          if (row.admin_prices && typeof row.admin_prices === 'object') {
+            Object.keys(row.admin_prices).forEach(function (k) {
+              if (findProduct(k)) prices[k] = row.admin_prices[k];
+              else servicePrices[k] = row.admin_prices[k];
+            });
+          }
+          for (var i = 0; i < requests.length; i++) {
+            if (requests[i].id === id) { requests[i] = row; break; }
+          }
+          current = row;
+          renderDetail();
+        })
+        .catch(function (err) { console.error(err); alert('상세 조회 실패: ' + err.message); });
+      return;
+    }
     for (var i = 0; i < requests.length; i++) {
       if (requests[i].id === id) { current = requests[i]; break; }
     }
@@ -95,6 +120,12 @@
     html += '<div style="margin-top:10px">' +
       '<button class="btn-search" id="exportCsvBtn">견적서 CSV 내보내기</button> ' +
       '<button class="btn-search" id="exportHtmlBtn">견적서 HTML 내보내기</button> ' +
+      '<label>상태 <select id="statusSelect">' +
+        '<option value="received"' + (current.status === 'received' ? ' selected' : '') + '>접수</option>' +
+        '<option value="quoted"' + (current.status === 'quoted' ? ' selected' : '') + '>견적 발송</option>' +
+        '<option value="completed"' + (current.status === 'completed' ? ' selected' : '') + '>완료</option>' +
+        '<option value="cancelled"' + (current.status === 'cancelled' ? ' selected' : '') + '>취소</option>' +
+      '</select></label> ' +
       '<button class="btn-search" id="savePriceBtn">단가 저장</button>' +
       '</div>';
     html += '</div>';
@@ -115,6 +146,40 @@
       });
     });
     document.getElementById('savePriceBtn').addEventListener('click', function () {
+      if (isServerMode && apiUrl && adminToken && current) {
+        var total = 0;
+        (current.items || []).forEach(function (it) {
+          var unit = prices[it.id];
+          if (unit !== undefined && unit !== '' && !isNaN(unit)) total += Number(unit) * (it.qty || 1);
+        });
+        (current.services || []).forEach(function (sid) {
+          var unit = servicePrices[sid];
+          if (unit !== undefined && unit !== '' && !isNaN(unit)) total += Number(unit);
+        });
+        var combined = {};
+        Object.keys(prices).forEach(function (k) { combined[k] = prices[k]; });
+        Object.keys(servicePrices).forEach(function (k) { combined[k] = servicePrices[k]; });
+        var status = (document.getElementById('statusSelect') ? document.getElementById('statusSelect').value : (current.status || 'received'));
+        fetch(apiUrl + '/api/quotes/' + encodeURIComponent(current.id), {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + adminToken },
+          body: JSON.stringify({ status: status, admin_prices: combined, total: total })
+        }).then(function (res) { if (!res.ok) throw new Error('HTTP ' + res.status); return res.json(); })
+          .then(function (data) {
+            current.status = data.status || status;
+            current.total = data.total;
+            current.admin_prices = JSON.stringify(combined);
+            current.updated_at = data.updated_at;
+            for (var i = 0; i < requests.length; i++) {
+              if (requests[i].id === current.id) { requests[i].status = current.status; requests[i].total = current.total; break; }
+            }
+            try { localStorage.setItem('cgiQuotePrices', JSON.stringify(prices)); localStorage.setItem('cgiQuoteServicePrices', JSON.stringify(servicePrices)); } catch (e) {}
+            alert('단가가 저장되었습니다.');
+            renderDetail();
+          })
+          .catch(function (err) { console.error(err); alert('저장 실패: ' + err.message); });
+        return;
+      }
       try {
         localStorage.setItem('cgiQuotePrices', JSON.stringify(prices));
         localStorage.setItem('cgiQuoteServicePrices', JSON.stringify(servicePrices));
@@ -225,11 +290,13 @@
 
   var apiUrl = (window.CGI_SITE_CONFIG && window.CGI_SITE_CONFIG.quoteApiUrl) || '';
   if (apiUrl) {
+    isServerMode = true;
     var token = localStorage.getItem('cgiAdminToken');
     if (!token) {
       token = prompt('관리자 토큰을 입력하세요');
       if (token) localStorage.setItem('cgiAdminToken', token);
     }
+    adminToken = token || null;
     if (token) {
       fetch(apiUrl + '/api/quotes', { headers: { 'Authorization': 'Bearer ' + token } })
         .then(function (res) { if (!res.ok) throw new Error('HTTP ' + res.status); return res.json(); })
