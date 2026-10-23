@@ -78,9 +78,9 @@ python tools/erp/compare_erp_cgi.py                # ERP export와 집계 대조
 
 ## 7. 보안 조치 (중요)
 
-- 과거 커밋에 ERP·네이버 자동화 스크립트의 평문 자격증명이 포함되어 있었다. 이번 브랜치에서 ERP 도구 3종과 프로브의 하드코딩을 제거하고 env 주입으로 전환했다.
-- **git 이력에는 값이 남아 있으므로 운영자 조치가 필요하다: 즉시 비밀번호 교체 + 필요 시 이력 정리(force-push) 결정.** 저장소에는 값을 재기재하지 않는다.
-- 네이버 수집기(`tools/smartstore/naver_login_probe.js`)는 LOCAL 2 수정 금지 경계에 따라 이번 브랜치에서 변경하지 않았다. 별도 후속 조치 대상.
+- 과거 커밋에 ERP·네이버 자동화 스크립트의 평문 자격증명이 포함되어 있었다. ERP 도구 3종은 이전 브랜치에서, 네이버 수집기는 보안 수정 브랜치(`fix/issue-1-plaintext-credentials`)에서 하드코딩을 제거하고 env 주입으로 전환했다.
+- **git 이력에는 값이 남아 있으므로 운영자 조치가 필요하다: 비밀번호 교체 가능 시점에 교체 + 필요 시 이력 정리(force-push) 결정.** 저장소에는 값을 재기재하지 않는다. 상세: `reports/security/plaintext-credential-exposure.md`
+- 재발 방지: `tools/security/scan_secrets.py` + `.github/workflows/secret-scan.yml` 이 추적 파일의 평문 자격증명을 검사한다. 로컬 자격증명은 저장소 밖(`~/.config/cgi-erp/`)에서 env 로 주입한다. `.env.example` 은 빈 자리표시자만 둔다.
 
 ## 8. 후속 단계 (실행 전 승인 필요)
 

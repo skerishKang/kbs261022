@@ -22,3 +22,9 @@ out/
 # ERP live evidence (real account data, never commit)
 reports/data/erp/live/
 reports/data/erp/*.csv
+
+# Local credential files and login evidence (never commit)
+*.local
+.env.local
+secrets.local.*
+reports/data/smartstore/live/

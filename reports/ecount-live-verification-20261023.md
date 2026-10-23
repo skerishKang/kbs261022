@@ -102,8 +102,8 @@ python -m unittest tools.erp.tests.test_erp_prep  # 22 OK
 
 ## 6. 보안 발견·조치
 
-1. **과거 커밋에 ERP·네이버 평문 자격증명 존재** → ERP 도구 3종·프로브에서 제거, env 주입 전환. **이력에는 남아 있으므로 비밀번호 교체 필요.**
-2. 네이버 수집기(`tools/smartstore/naver_login_probe.js`)는 LOCAL 2 수정 금지 경계로 미변경 → **별도 후속 조치 필요**.
+1. **과거 커밋에 ERP·네이버 평문 자격증명 존재** → ERP 도구 3종은 #20 브랜치에서, 네이버 수집기는 보안 수정 브랜치(`fix/issue-1-plaintext-credentials`)에서 제거하고 env 주입으로 전환. **이력에는 남아 있으므로 비밀번호 교체 가능 시점의 교체가 필요.**
+2. 재발 방지로 추적 파일 시크릿 스캐너(`tools/security/scan_secrets.py`)와 CI(`.github/workflows/secret-scan.yml`)를 추가. 상세: `reports/security/plaintext-credential-exposure.md`.
 3. live evidence·ERP export CSV `.gitignore` 처리. 보고서는 집계만 기록.
 4. `ec_req_sid` 등 세션 값은 수집 JSON에서 REDACTED.
 
