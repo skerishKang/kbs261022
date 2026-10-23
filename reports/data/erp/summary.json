@@ -1,0 +1,21 @@
+{
+  "generated_at": "2026-10-23T00:08:31.509151+00:00",
+  "source_db": "data/full_catalog/product_db.xlsx",
+  "total_items": 4575,
+  "unique_item_codes": 4575,
+  "duplicate_codes": 0,
+  "price_available_count": 2117,
+  "price_missing_count": 2458,
+  "model_present_count": 1740,
+  "brand_present_count": 4575,
+  "manufacturer_present_count": 2281,
+  "image_ok_count": 4575,
+  "live_erp_write_performed": false,
+  "erp_account_access_verified": false,
+  "outputs": {
+    "csv": "data/erp_prep/ecount_item_bulk_prep.csv",
+    "xlsx": "data/erp_prep/ecount_item_bulk_prep.xlsx",
+    "missing_erp_fields_report": "reports/data/erp/missing_erp_fields_report.json",
+    "duplicate_item_codes_report": "reports/data/erp/duplicate_item_codes_report.json"
+  }
+}
