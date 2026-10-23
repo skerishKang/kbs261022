@@ -12,6 +12,8 @@
 window.CGI_SITE_CONFIG = {
   // ── 회사 홈페이지 복귀 경로 ────────────────────────────────
   homepageUrl: '../website/index.html',
+  // 견적 API (Cloudflare Worker). 비어 있으면 localStorage 정적 시연 모드.
+  quoteApiUrl: '',
   homepageLabel: '회사 홈페이지',
 
   // ── 상품 데이터 경로 (이슈 #19 전체 마스터 반영 지점) ────────
