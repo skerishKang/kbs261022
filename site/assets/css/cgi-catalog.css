@@ -362,3 +362,14 @@ button, input, select { font: inherit; color: inherit; }
   font-weight: 700; font-size: 14px; cursor: pointer; margin-bottom: 12px;
 }
 .filter-toggle:hover { border-color: var(--cgi-primary); color: var(--cgi-primary); }
+
+.service-checks { display: grid; gap: 10px; margin: 12px 0; }
+.service-check { display: block; border: 1px solid #d7dce5; border-radius: 8px; padding: 10px; background: #f8fafc; }
+.service-check input { margin-right: 6px; }
+.service-check strong { color: #1f3a93; }
+.service-check span { color: #555; font-size: 0.9rem; }
+.quote-form { display: grid; gap: 10px; }
+.quote-form label { display: grid; gap: 4px; font-weight: 600; }
+.quote-form input, .quote-form textarea { padding: 8px; border: 1px solid #c9d0db; border-radius: 6px; font: inherit; }
+.quote-result { margin-top: 10px; }
+.quote-text { white-space: pre-wrap; background: #f4f6fa; padding: 12px; border-radius: 8px; font-size: 0.85rem; }
