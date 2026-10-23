@@ -14,7 +14,9 @@
   var state = {
     products: [],
     meta: { product_count: 0, brands: [], sources: [], supplier_catalog_totals: {}, data_origin: [] },
-    route: { view: 'home', q: '', brands: [], cats: [], sites: [], sort: 'recent', page: 1, id: null }
+    route: { view: 'home', q: '', brands: [], cats: [], sites: [], sort: 'recent', page: 1, id: null },
+    quoteCart: [],
+    quoteServices: []
   };
 
   /* ---------------------------------------------------------------- utils */
@@ -392,7 +394,8 @@
                   '<strong>' + esc(svc.name) + '</strong><br><span>' + esc(svc.description) + '</span></label>';
               }).join('') +
             '</div>' +
-            '<button type="button" class="btn-search" onclick="window.cgiRequestQuote(\'' + esc(product.id) + '\')">견적 요청</button>' +
+            '<button type="button" class="btn-search" onclick="window.cgiAddToQuoteCart(\'' + esc(product.id) + '\')">견적 목록에 추가</button> ' +
+            '<button type="button" class="btn-search" onclick="window.cgiRequestQuote(\'' + esc(product.id) + '\')">단일 견적 요청</button>' +
             '<div id="quoteResult" class="quote-result"></div>' +
           '</div>' +
           optionsHtml +
@@ -519,6 +522,244 @@
   };
 
 
+  function loadQuoteCart() {
+    try {
+      var raw = localStorage.getItem('cgiQuoteCart');
+      state.quoteCart = raw ? JSON.parse(raw) : [];
+    } catch (e) {
+      state.quoteCart = [];
+    }
+    if (!Array.isArray(state.quoteCart)) state.quoteCart = [];
+  }
+
+  function saveQuoteCart() {
+    try { localStorage.setItem('cgiQuoteCart', JSON.stringify(state.quoteCart)); } catch (e) {}
+  }
+
+  function addToQuoteCart(productId, qty) {
+    qty = Math.max(1, parseInt(qty || '1', 10) || 1);
+    var existing = null;
+    for (var i = 0; i < state.quoteCart.length; i++) {
+      if (state.quoteCart[i].id === productId) { existing = state.quoteCart[i]; break; }
+    }
+    if (existing) {
+      existing.qty += qty;
+    } else {
+      state.quoteCart.push({ id: productId, qty: qty });
+    }
+    saveQuoteCart();
+  }
+
+  function removeFromQuoteCart(productId) {
+    state.quoteCart = state.quoteCart.filter(function (x) { return x.id !== productId; });
+    saveQuoteCart();
+  }
+
+  function updateQuoteCartQty(productId, qty) {
+    qty = Math.max(1, parseInt(qty || '1', 10) || 1);
+    for (var i = 0; i < state.quoteCart.length; i++) {
+      if (state.quoteCart[i].id === productId) { state.quoteCart[i].qty = qty; break; }
+    }
+    saveQuoteCart();
+  }
+
+  function renderQuoteCart() {
+    var items = state.quoteCart.map(function (c) {
+      var p = null;
+      for (var i = 0; i < state.products.length; i++) {
+        if (state.products[i].id === c.id) { p = state.products[i]; break; }
+      }
+      return { cart: c, product: p };
+    }).filter(function (x) { return x.product; });
+
+    var services = window.CGI_SERVICES || [];
+    var serviceChecks = services.map(function (svc) {
+      return '<label class="service-check"><input type="checkbox" value="' + esc(svc.id) + '" onchange="window.cgiToggleQuoteService(\'' + esc(svc.id) + '\', this.checked)"> ' +
+        '<strong>' + esc(svc.name) + '</strong><br><span>' + esc(svc.description) + '</span></label>';
+    }).join('');
+
+    var rows = items.map(function (x) {
+      var p = x.product;
+      var priceText = (p.price && p.price.inquiry) ? '가격 문의' : (p.price ? p.price.text : '-');
+      return '<tr>' +
+        '<td>' + esc(p.name) + '</td>' +
+        '<td>' + esc(p.brand_norm || p.brand) + '</td>' +
+        '<td>' + esc(p._cat) + '</td>' +
+        '<td><input type="number" min="1" value="' + x.cart.qty + '" data-qty-id="' + esc(p.id) + '" style="width:70px"></td>' +
+        '<td>' + esc(priceText) + '</td>' +
+        '<td><button type="button" class="btn-search" data-remove-id="' + esc(p.id) + '">삭제</button></td>' +
+        '</tr>';
+    }).join('');
+
+    var quoteText = buildQuoteCartText(items);
+
+    app.innerHTML =
+      '<div class="breadcrumb"><a href="#/">??/a> ??<a href="#/products">?�품 목록</a> ??견적 요청 목록</div>' +
+      '<div class="detail-block"><h3>견적 요청 상품 목록</h3>' +
+        (items.length ? '<table class="spec-table"><thead><tr><th>상품명</th><th>브랜드</th><th>카테고리</th><th>수량</th><th>공개가</th><th></th></tr></thead><tbody>' + rows + '</tbody></table>' : '<p>견적 목록이 비어 있습니다. 상품 상세에서 "견적 목록에 추가"를 선택하세요.</p>') +
+      '</div>' +
+      '<div class="detail-block"><h3>서비스 선택</h3><div class="service-checks">' + serviceChecks + '</div></div>' +
+      '<div class="detail-block"><h3>요청 정보</h3>' +
+        '<form id="quoteCartForm" class="quote-form">' +
+          '<label>회사/기관명 <input type="text" name="company" required></label>' +
+          '<label>담당자명 <input type="text" name="name" required></label>' +
+          '<label>연락처 <input type="tel" name="phone" required></label>' +
+          '<label>이메일 <input type="email" name="email"></label>' +
+          '<label>배송/설치 장소 <input type="text" name="location"></label>' +
+          '<label>요청 사항 <textarea name="note" rows="4"></textarea></label>' +
+          '<button type="submit" class="btn-search">견적 요청 생성</button>' +
+        '</form>' +
+        '<div id="quoteCartResult" class="quote-result"></div>' +
+      '</div>' +
+      '<div class="detail-block"><h3>견적 요청 요약 (복사/다운로드)</h3>' +
+        '<pre id="quoteCartText" class="quote-text">' + esc(quoteText) + '</pre>' +
+        '<button type="button" class="btn-search" onclick="window.cgiCopyQuoteCart()">요약 복사</button> ' +
+        '<button type="button" class="btn-search" onclick="window.cgiDownloadQuoteCart()">JSON 다운로드</button> ' +
+        '<button type="button" class="btn-search" onclick="window.cgiDownloadQuoteCartCsv()">CSV 다운로드</button>' +
+      '</div>' +
+      '<a class="back-link" href="#/products">??목록으로 돌아가기</a>';
+
+    // quantity change handlers
+    Array.prototype.forEach.call(document.querySelectorAll('input[data-qty-id]'), function (inp) {
+      inp.addEventListener('change', function () {
+        updateQuoteCartQty(inp.getAttribute('data-qty-id'), inp.value);
+        renderQuoteCart();
+      });
+    });
+    Array.prototype.forEach.call(document.querySelectorAll('button[data-remove-id]'), function (btn) {
+      btn.addEventListener('click', function () {
+        removeFromQuoteCart(btn.getAttribute('data-remove-id'));
+        renderQuoteCart();
+      });
+    });
+
+    var form = document.getElementById('quoteCartForm');
+    if (form) {
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var data = new FormData(form);
+        var request = {
+          id: 'Q-' + Date.now(),
+          createdAt: new Date().toISOString(),
+          company: data.get('company') || '',
+          name: data.get('name') || '',
+          phone: data.get('phone') || '',
+          email: data.get('email') || '',
+          location: data.get('location') || '',
+          note: data.get('note') || '',
+          services: state.quoteCartServices || [],
+          items: items.map(function (x) {
+            return { id: x.product.id, name: x.product.name, brand: x.product.brand_norm || x.product.brand, category: x.product._cat, qty: x.cart.qty, publicPrice: (x.product.price && x.product.price.inquiry) ? null : (x.product.price ? x.product.price.text : null) };
+          })
+        };
+        window.cgiLastQuoteCartRequest = request;
+        // save to localStorage list of requests
+        try {
+          var list = JSON.parse(localStorage.getItem('cgiQuoteRequests') || '[]');
+          list.unshift(request);
+          localStorage.setItem('cgiQuoteRequests', JSON.stringify(list));
+        } catch (e) {}
+        var result = document.getElementById('quoteCartResult');
+        if (result) result.innerHTML = '<p class="detail-price-note">견적 요청이 저장되었습니다. JSON/CSV로 다운로드하거나 담당자에게 전달하세요.</p>';
+        var pre = document.getElementById('quoteCartText');
+        if (pre) pre.textContent = buildQuoteCartText(items, request);
+        window.cgiLastQuoteCartText = buildQuoteCartText(items, request);
+      });
+    }
+    window.cgiLastQuoteCartText = quoteText;
+  }
+
+  function buildQuoteCartText(items, request) {
+    var lines = [];
+    lines.push('[CGI 견적 요청]');
+    if (request) {
+      lines.push('요청번호: ' + request.id);
+      lines.push('요청일시: ' + request.createdAt);
+      lines.push('회사/기관: ' + request.company);
+      lines.push('담당자: ' + request.name);
+      lines.push('연락처: ' + request.phone);
+      lines.push('이메일: ' + request.email);
+      lines.push('배송/설치 장소: ' + request.location);
+      lines.push('요청 사항: ' + request.note);
+      lines.push('요청 서비스: ' + (request.services || []).join(', '));
+    }
+    lines.push('');
+    lines.push('상품 목록:');
+    items.forEach(function (x, idx) {
+      var p = x.product;
+      var priceText = (p.price && p.price.inquiry) ? '가격 문의' : (p.price ? p.price.text : '-');
+      lines.push((idx+1) + '. ' + p.name + ' | ' + (p.brand_norm || p.brand) + ' | ' + p._cat + ' | 수량 ' + x.cart.qty + ' | 공개가 ' + priceText);
+    });
+    lines.push('');
+    lines.push('※ 금액은 고객 확정 전 미표시. CGI 담당자가 견적서를 작성합니다.');
+    return lines.join('\n');
+  }
+
+  window.cgiToggleQuoteService = function (id, checked) {
+    state.quoteCartServices = state.quoteCartServices || [];
+    var idx = state.quoteCartServices.indexOf(id);
+    if (checked && idx === -1) state.quoteCartServices.push(id);
+    if (!checked && idx !== -1) state.quoteCartServices.splice(idx, 1);
+  };
+
+  window.cgiCopyQuoteCart = function () {
+    var text = window.cgiLastQuoteCartText || '';
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text);
+    } else {
+      var ta = document.createElement('textarea');
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+    }
+  };
+
+  window.cgiDownloadQuoteCart = function () {
+    var request = window.cgiLastQuoteCartRequest;
+    if (!request) {
+      alert('먼저 견적 요청을 생성하세요.');
+      return;
+    }
+    var blob = new Blob([JSON.stringify(request, null, 2)], { type: 'application/json' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = request.id + '.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
+  window.cgiDownloadQuoteCartCsv = function () {
+    var request = window.cgiLastQuoteCartRequest;
+    if (!request) {
+      alert('먼저 견적 요청을 생성하세요.');
+      return;
+    }
+    var lines = [];
+    lines.push('요청번호,요청일시,회사,담당자,연락처,이메일,장소,서비스,상품ID,상품명,브랜드,카테고리,수량,공개가');
+    request.items.forEach(function (it) {
+      lines.push([request.id,request.createdAt,request.company,request.name,request.phone,request.email,request.location,(request.services||[]).join('|'),it.id,it.name,it.brand,it.category,it.qty,it.publicPrice||''].map(function (v){return '"'+String(v).replace(/"/g,'""')+'"';}).join(','));
+    });
+    var blob = new Blob([lines.join('\n')], { type: 'text/csv;charset=utf-8' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = request.id + '.csv';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
+  window.cgiAddToQuoteCart = function (productId) {
+    addToQuoteCart(productId, 1);
+    alert('견적 목록에 추가했습니다.');
+  };
+
   function renderAbout() {
     var totals = state.meta.supplier_catalog_totals || {};
     var totalLine = Object.keys(totals).map(function (site) {
@@ -583,6 +824,8 @@
       route.view = 'quote';
       route.id = decodeURIComponent(parts[1]);
       route.services = (params.get('services') || '').split('|').filter(Boolean);
+    } else if (parts[0] === 'quote-cart') {
+      route.view = 'quote-cart';
     } else if (parts[0] === 'about') {
       route.view = 'about';
     }
@@ -601,6 +844,7 @@
     else if (state.route.view === 'list') renderList();
     else if (state.route.view === 'detail') renderDetail(state.route.id);
     else if (state.route.view === 'quote') renderQuote(state.route.id, state.route.services || []);
+    else if (state.route.view === 'quote-cart') renderQuoteCart();
     else renderAbout();
     renderFooterSources();
     if (location.hash === '#/products') window.scrollTo(0, 0);
@@ -757,6 +1001,7 @@
 
   /* ----------------------------------------------------------------- boot */
   loadProducts().then(function () {
+    loadQuoteCart();
     if (loadingBox && loadingBox.parentNode) loadingBox.parentNode.removeChild(loadingBox);
     render();
     document.body.setAttribute('data-cgi-ready', '1');
