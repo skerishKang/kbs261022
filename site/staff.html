@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ko">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CGI 견적 관리</title>
+<title>CGI 寃ъ쟻 愿由?/title>
 <link rel="stylesheet" href="assets/css/cgi-catalog.css">
 </head>
 <body>
@@ -11,21 +11,21 @@
   <div class="header-inner">
     <a class="brand" href="index.html">
       <span class="brand-mark">CGI</span>
-      <span class="brand-text"><strong>견적 관리</strong><small>CGI 담당자용</small></span>
+      <span class="brand-text"><strong>寃ъ쟻 愿由?/strong><small>CGI ?대떦?먯슜</small></span>
     </a>
     <nav class="header-nav">
-      <a href="index.html">카탈로그</a>
-      <a href="staff.html">견적 관리</a>
+      <a href="index.html">移댄깉濡쒓렇</a>
+      <a href="staff.html">寃ъ쟻 愿由?/a>
     </nav>
   </div>
 </header>
 <main id="app" class="app">
   <div class="detail-block">
-    <h3>견적 요청 접수 목록</h3>
-    <p class="detail-price-note">브라우저 localStorage에 저장된 요청을 표시합니다. 다른 PC의 요청은 JSON 파일로 가져오기 하세요.</p>
+    <h3>寃ъ쟻 ?붿껌 ?묒닔 紐⑸줉</h3>
+    <p class="detail-price-note">釉뚮씪?곗? localStorage????λ맂 ?붿껌???쒖떆?⑸땲?? ?ㅻⅨ PC???붿껌? JSON ?뚯씪濡?媛?몄삤湲??섏꽭??</p>
     <div>
       <input type="file" id="importFile" accept="application/json">
-      <button type="button" class="btn-search" id="importBtn">JSON 가져오기</button>
+      <button type="button" class="btn-search" id="importBtn">JSON 媛?몄삤湲?/button>
     </div>
     <div id="requestList"></div>
   </div>
@@ -34,6 +34,9 @@
 <script src="config.js"></script>
 <script src="data/products.js"></script>
 <script src="data/services.js"></script>
+<script src="assets/js/vendor/xlsx.full.min.js"></script>
+<script src="assets/js/vendor/html2pdf.bundle.min.js"></script>
 <script src="assets/js/cgi-staff.js"></script>
 </body>
 </html>
+

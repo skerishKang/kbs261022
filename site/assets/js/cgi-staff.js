@@ -95,6 +95,8 @@
     html += '<div style="margin-top:10px">' +
       '<button class="btn-search" id="exportCsvBtn">견적서 CSV 내보내기</button> ' +
       '<button class="btn-search" id="exportHtmlBtn">견적서 HTML 내보내기</button> ' +
+      '<button class="btn-search" id="exportXlsxBtn">견적서 XLSX 내보내기</button> ' +
+      '<button class="btn-search" id="exportPdfBtn">견적서 PDF 내보내기</button> ' +
       '<button class="btn-search" id="savePriceBtn">단가 저장</button>' +
       '</div>';
     html += '</div>';
@@ -124,6 +126,8 @@
     });
     document.getElementById('exportCsvBtn').addEventListener('click', function () { exportCsv(); });
     document.getElementById('exportHtmlBtn').addEventListener('click', function () { exportHtml(); });
+    document.getElementById('exportXlsxBtn').addEventListener('click', function () { exportXlsx(); });
+    document.getElementById('exportPdfBtn').addEventListener('click', function () { exportPdf(); });
   }
 
   function exportCsv() {
@@ -192,6 +196,205 @@
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
+  }
+
+
+  function fmtNum(v) {
+    if (v === '' || v === null || v === undefined || isNaN(v)) return '미확정';
+    return Number(v);
+  }
+
+  function buildQuoteRows() {
+    var r = current;
+    var rows = [];
+    var items = r.items || [];
+    var svcs = r.services || [];
+    // company info header
+    rows.push(['CGI 견적서']);
+    rows.push(['견적번호', r.id]);
+    rows.push(['요청일시', r.createdAt]);
+    rows.push(['회사', r.company]);
+    rows.push(['담당자', r.name]);
+    rows.push(['연락처', r.phone]);
+    rows.push(['이메일', r.email || '']);
+    rows.push(['장소', r.location || '']);
+    rows.push(['서비스 항목', (svcs || []).join(', ')]);
+    rows.push(['요청 사항', r.note || '']);
+    rows.push([]);
+    rows.push(['공급자', '주식회사 시지아이 (CGI Inc.)']);
+    rows.push(['주소', '광주광역시 광산구 하남산단천변좌로 19, 광주드림파크 111호 (오선동)']);
+    rows.push(['연락처', 'TEL 062) 576-8100  FAX 062) 576-8181']);
+    rows.push(['블로그', 'blog.naver.com/cgiinc']);
+    rows.push([]);
+    rows.push(['견적번호','구분','상품명','모델','수량','단가','공급가액','부가세','합계']);
+    var totalSupply = 0, totalVat = 0, totalAll = 0;
+    var unconfirmed = 0;
+    items.forEach(function (it) {
+      var p = findProduct(it.id);
+      var model = p ? (p.model || '') : '';
+      var unit = prices[it.id];
+      var qty = it.qty || 1;
+      var has = (unit !== undefined && unit !== '' && !isNaN(unit));
+      var supply = has ? (Number(unit) * qty) : '';
+      var vat = has ? Math.round(supply * 0.1) : '';
+      var tot = has ? (supply + vat) : '';
+      if (has) { totalSupply += supply; totalVat += vat; totalAll += tot; }
+      else unconfirmed++;
+      rows.push([
+        r.id,
+        '상품',
+        it.name,
+        model,
+        qty,
+        has ? Number(unit) : '미확정',
+        has ? supply : '미확정',
+        has ? vat : '미확정',
+        has ? tot : '미확정'
+      ]);
+    });
+    svcs.forEach(function (sid) {
+      var svc = null;
+      for (var i = 0; i < services.length; i++) if (services[i].id === sid) { svc = services[i]; break; }
+      var name = svc ? svc.name : sid;
+      var unit = servicePrices[sid];
+      var has = (unit !== undefined && unit !== '' && !isNaN(unit));
+      var supply = has ? Number(unit) : '';
+      var vat = has ? Math.round(supply * 0.1) : '';
+      var tot = has ? (supply + vat) : '';
+      if (has) { totalSupply += supply; totalVat += vat; totalAll += tot; }
+      else unconfirmed++;
+      rows.push([
+        r.id,
+        '서비스',
+        name + ' (서비스)',
+        '',
+        1,
+        has ? Number(unit) : '미확정',
+        has ? supply : '미확정',
+        has ? vat : '미확정',
+        has ? tot : '미확정'
+      ]);
+    });
+    rows.push(['','','','','','','','','']);
+    rows.push(['합계(확정분)','','','','', '', totalSupply, totalVat, totalAll]);
+    rows.push(['미확정 항목', unconfirmed + '건 (0원으로 확정하지 않음)']);
+    rows._totals = {supply: totalSupply, vat: totalVat, total: totalAll, unconfirmed: unconfirmed};
+    return rows;
+  }
+
+  function exportXlsx() {
+    if (!current) return;
+    if (typeof XLSX === 'undefined') { alert('XLSX 라이브러리를 불러오지 못했습니다.'); return; }
+    var r = current;
+    var aoa = buildQuoteRows();
+    var ws = XLSX.utils.aoa_to_sheet(aoa);
+    // column widths
+    ws['!cols'] = [{wch:14},{wch:8},{wch:34},{wch:24},{wch:6},{wch:12},{wch:14},{wch:12},{wch:14}];
+    // number formats for currency columns (F,G,H,I) rows after header
+    var wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, '견적서');
+    XLSX.writeFile(wb, r.id + '_quote.xlsx');
+  }
+
+  function exportPdf() {
+    if (!current) return;
+    if (typeof html2pdf === 'undefined') { alert('PDF 라이브러리를 불러오지 못했습니다.'); return; }
+    var r = current;
+    var totals = null;
+    var rows = buildQuoteRows();
+    // find totals from last
+    // build html
+    var items = r.items || [];
+    var svcs = r.services || [];
+    var totalSupply = 0, totalVat = 0, totalAll = 0, unconfirmed = 0;
+    var trs = '';
+    items.forEach(function (it) {
+      var p = findProduct(it.id);
+      var model = p ? (p.model || '') : '';
+      var unit = prices[it.id];
+      var qty = it.qty || 1;
+      var has = (unit !== undefined && unit !== '' && !isNaN(unit));
+      var supply = has ? (Number(unit) * qty) : null;
+      var vat = has ? Math.round(supply * 0.1) : null;
+      var tot = has ? (supply + vat) : null;
+      if (has) { totalSupply += supply; totalVat += vat; totalAll += tot; } else unconfirmed++;
+      trs += '<tr>' +
+        '<td>' + esc(it.name) + '</td>' +
+        '<td>' + esc(model) + '</td>' +
+        '<td style="text-align:center">' + qty + '</td>' +
+        '<td style="text-align:right">' + (has ? Number(unit).toLocaleString('ko-KR') : '미확정') + '</td>' +
+        '<td style="text-align:right">' + (has ? supply.toLocaleString('ko-KR') : '미확정') + '</td>' +
+        '<td style="text-align:right">' + (has ? vat.toLocaleString('ko-KR') : '미확정') + '</td>' +
+        '<td style="text-align:right">' + (has ? tot.toLocaleString('ko-KR') : '미확정') + '</td>' +
+        '</tr>';
+    });
+    svcs.forEach(function (sid) {
+      var svc = null;
+      for (var i = 0; i < services.length; i++) if (services[i].id === sid) { svc = services[i]; break; }
+      var name = svc ? svc.name : sid;
+      var unit = servicePrices[sid];
+      var has = (unit !== undefined && unit !== '' && !isNaN(unit));
+      var supply = has ? Number(unit) : null;
+      var vat = has ? Math.round(supply * 0.1) : null;
+      var tot = has ? (supply + vat) : null;
+      if (has) { totalSupply += supply; totalVat += vat; totalAll += tot; } else unconfirmed++;
+      trs += '<tr>' +
+        '<td>' + esc(name) + ' (서비스)</td>' +
+        '<td></td>' +
+        '<td style="text-align:center">1</td>' +
+        '<td style="text-align:right">' + (has ? Number(unit).toLocaleString('ko-KR') : '미확정') + '</td>' +
+        '<td style="text-align:right">' + (has ? supply.toLocaleString('ko-KR') : '미확정') + '</td>' +
+        '<td style="text-align:right">' + (has ? vat.toLocaleString('ko-KR') : '미확정') + '</td>' +
+        '<td style="text-align:right">' + (has ? tot.toLocaleString('ko-KR') : '미확정') + '</td>' +
+        '</tr>';
+    });
+    var html = '' +
+      '<div style="font-family:Malgun Gothic,Apple SD Gothic Neo,sans-serif;font-size:11px;color:#111;padding:16px;width:794px;">' +
+      '<h1 style="font-size:18px;margin:0 0 4px;">CGI 견적서</h1>' +
+      '<p style="margin:2px 0;">견적번호: ' + esc(r.id) + ' &nbsp; 요청일시: ' + esc(r.createdAt) + '</p>' +
+      '<p style="margin:2px 0;">회사: ' + esc(r.company) + ' &nbsp; 담당자: ' + esc(r.name) + ' &nbsp; 연락처: ' + esc(r.phone) + ' &nbsp; 이메일: ' + esc(r.email || '') + '</p>' +
+      '<p style="margin:2px 0;">장소: ' + esc(r.location || '') + '</p>' +
+      '<p style="margin:2px 0;">서비스 항목: ' + esc((svcs || []).join(', ')) + '</p>' +
+      '<p style="margin:2px 0;">요청 사항: ' + esc(r.note || '') + '</p>' +
+      '<hr style="margin:8px 0;">' +
+      '<p style="margin:2px 0;font-weight:bold;">공급자: 주식회사 시지아이 (CGI Inc.)</p>' +
+      '<p style="margin:2px 0;">주소: 광주광역시 광산구 하남산단천변좌로 19, 광주드림파크 111호 (오선동)</p>' +
+      '<p style="margin:2px 0;">연락처: TEL 062) 576-8100 &nbsp; FAX 062) 576-8181 &nbsp; blog.naver.com/cgiinc</p>' +
+      '<table style="width:100%;border-collapse:collapse;margin-top:10px;font-size:10px;" border="1">' +
+      '<thead><tr style="background:#eee;">' +
+      '<th style="padding:4px;">품목</th><th style="padding:4px;">모델</th><th style="padding:4px;">수량</th><th style="padding:4px;">단가</th><th style="padding:4px;">공급가액</th><th style="padding:4px;">부가세</th><th style="padding:4px;">합계</th>' +
+      '</tr></thead><tbody>' + trs +
+      '<tr style="font-weight:bold;background:#f5f5f5;">' +
+      '<td colspan="4" style="padding:4px;text-align:right;">합계(확정분)</td>' +
+      '<td style="padding:4px;text-align:right;">' + totalSupply.toLocaleString('ko-KR') + '</td>' +
+      '<td style="padding:4px;text-align:right;">' + totalVat.toLocaleString('ko-KR') + '</td>' +
+      '<td style="padding:4px;text-align:right;">' + totalAll.toLocaleString('ko-KR') + '</td>' +
+      '</tr>' +
+      '</tbody></table>' +
+      '<p style="margin-top:8px;font-size:10px;">미확정 항목: ' + unconfirmed + '건 (0원으로 임의 확정하지 않음)</p>' +
+      '<p style="margin-top:8px;font-size:9px;color:#555;">본 견적서는 CGI 견적 관리 화면에서 생성되었습니다. 미확정 항목은 0원으로 확정하지 않습니다.</p>' +
+      '</div>';
+    var container = document.createElement('div');
+    container.innerHTML = html;
+    container.style.position = 'absolute';
+    container.style.left = '-9999px';
+    container.style.top = '0';
+    document.body.appendChild(container);
+    var opt = {
+      margin: 8,
+      filename: r.id + '_quote.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2, useCORS: true },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+      pagebreak: { mode: ['css', 'legacy'] }
+    };
+    html2pdf().set(opt).from(container.firstChild).save().then(function () {
+      document.body.removeChild(container);
+    }).catch(function (e) {
+      console.error(e);
+      if (container.parentNode) document.body.removeChild(container);
+      alert('PDF 생성 실패: ' + e);
+    });
   }
 
   function esc(s) { return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
