@@ -1,0 +1,37 @@
+{
+  "ecount_template_columns": [
+    "A 품목코드 (prod_cd)",
+    "B 품목명 (prod_des)",
+    "C 규격 (size_des_base)",
+    "D 재고수량관리 (bal_flag)",
+    "E 안전재고 (safe_qty)",
+    "F 품목그룹 (class_cd)",
+    "G 출고단가 (out_price)",
+    "H 입고단가 (in_price)",
+    "I 부가세율 (tax)",
+    "J 적요 (remarks)",
+    "K 검색창내용 (remarks_win)",
+    "L 문자형추가항목2 (cont2, 브랜드)",
+    "M 문자형추가항목3 (cont3, 모델)",
+    "N 문자형추가항목4 (cont4, 제조사)",
+    "O 문자형추가항목5 (cont5, 원산지)",
+    "P 이미지 (prod_image)",
+    "Q 쇼핑몰품목key (om_prod_cd)"
+  ],
+  "cgi_erp_prep_columns": [
+    "품목코드", "품목명", "규격", "재고수량관리", "안전재고", "품목그룹",
+    "출고단가", "입고단가", "부가세율", "적요", "검색창내용", "브랜드_cont2",
+    "모델_cont3", "제조사_cont4", "원산지_cont5", "이미지URL", "쇼핑몰품목key",
+    "공급처원본ID", "출처"
+  ],
+  "mapping_status": "17 core columns mapped; 2 extra traceability columns (공급처원본ID, 출처) added",
+  "missing_for_upload": [
+    "품목그룹(class_cd): 4575 (ERP 그룹 체계 확정 후)",
+    "입고단가(in_price): 4575 (도매가 미수집)",
+    "안전재고(safe_qty): 4575",
+    "원산지(cont5): 4575",
+    "부가세율(tax): 미확정"
+  ],
+  "duplicate_prevention": "품목코드 unique (4575/4575), 길이 <=20",
+  "live_erp_write": false
+}
