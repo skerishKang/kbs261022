@@ -223,6 +223,32 @@
     if (sp && typeof sp === 'object') servicePrices = sp;
   } catch (e) {}
 
-  loadRequests();
-  renderList();
+  var apiUrl = (window.CGI_SITE_CONFIG && window.CGI_SITE_CONFIG.quoteApiUrl) || '';
+  if (apiUrl) {
+    var token = localStorage.getItem('cgiAdminToken');
+    if (!token) {
+      token = prompt('관리자 토큰을 입력하세요');
+      if (token) localStorage.setItem('cgiAdminToken', token);
+    }
+    if (token) {
+      fetch(apiUrl + '/api/quotes', { headers: { 'Authorization': 'Bearer ' + token } })
+        .then(function (res) { if (!res.ok) throw new Error('HTTP ' + res.status); return res.json(); })
+        .then(function (data) {
+          requests = data.items || [];
+          saveRequests();
+          renderList();
+        })
+        .catch(function (err) {
+          console.error(err);
+          loadRequests();
+          renderList();
+        });
+    } else {
+      loadRequests();
+      renderList();
+    }
+  } else {
+    loadRequests();
+    renderList();
+  }
 })();
