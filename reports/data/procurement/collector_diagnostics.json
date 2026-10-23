@@ -1,0 +1,22 @@
+{
+  "started_at": "2026-10-23T02:11:49.848Z",
+  "search_url": "https://www.g2b.go.kr/",
+  "final_url": "https://www.g2b.go.kr/",
+  "http_status": 200,
+  "page_errors": [],
+  "console_errors": [],
+  "load_stages": [
+    "goto",
+    "request:https://www.g2b.go.kr/",
+    "request:https://sso.g2b.go.kr/oidc/597b7826dd57ff1f/auth?scope=openid&response_type=code&state=9ceb582b-4ffa-4ae6-b03f-b34f55694",
+    "request:https://www.g2b.go.kr/?bodyDataKey=e7922af3-386f-4cd8-a4cf-e9b347677114&key=AAAABQvjm_EISBC7a5X8oy8Ql1a8CE1OXQxcsi7KoFkV",
+    "domcontentloaded",
+    "request:https://www.g2b.go.kr/websquare/_websquare_/message/processMsg.html?param=%c7%d8%b4%e7+%c0%db%be%f7%c0%bb+%c3%b3%b8%ae%c",
+    "request:https://www.g2b.go.kr/websquare/_websquare_/message/processMsg.html?param=%c7%d8%b4%e7+%c0%db%be%f7%c0%bb+%c3%b3%b8%ae%c",
+    "rows:absent(timeout)"
+  ],
+  "network_hits": 257,
+  "wait_error": "page.waitForFunction: Timeout 12000ms exceeded.",
+  "finished_at": "2026-10-23T02:12:03.042Z",
+  "rows_found": 0
+}
