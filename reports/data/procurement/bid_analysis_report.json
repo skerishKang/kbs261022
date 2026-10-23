@@ -1,44 +1,23 @@
 {
   "summary": {
-    "total_bids": 4,
-    "rated_bids": 3,
-    "unrated_bids": 1,
+    "total_bids": 0,
+    "rated_bids": 0,
+    "unrated_bids": 0,
     "cgi_relevant_bids": 0,
     "overall_rate_stats": {
-      "count": 3,
-      "min": 89.0,
-      "max": 94.4,
-      "mean": 90.97,
-      "median": 89.5
+      "count": 0
     },
-    "by_category": {
-      "용역": {
-        "count": 2,
-        "min": 89.5,
-        "max": 94.4,
-        "mean": 91.95,
-        "median": 91.95
-      },
-      "공사": {
-        "count": 1,
-        "min": 89.0,
-        "max": 89.0,
-        "mean": 89.0,
-        "median": 89.0
-      }
-    },
+    "by_category": {},
     "by_cgi_category": {},
-    "by_status": {
-      "낙찰": 3,
-      "유찰": 1
-    },
+    "by_status": {},
     "disclaimer": "Descriptive statistics only. No win-probability guarantee.",
-    "source": "file:D:\\1022\\wt-g2b\\data\\procurement\\sample_bids.json",
+    "source": "live_failed:fallback_sample",
     "raw_count": 4,
-    "filtered_count": 4,
-    "generated_at": "2026-10-23T00:19:18.831145+00:00",
+    "filtered_count": 0,
+    "live_error": "live fetch failed: HTTP Error 400: Bad Request",
+    "generated_at": "2026-10-23T00:43:30.011769+00:00",
     "filters": {
-      "cgi_only": false,
+      "cgi_only": true,
       "keyword": null,
       "region": null,
       "agency": null,
@@ -47,78 +26,5 @@
       "end": null
     }
   },
-  "bids": [
-    {
-      "bid_no": "R26BK00000001-000",
-      "title": "샘플 IT 용역 공고 A",
-      "agency": "샘플 발주기관",
-      "region": null,
-      "category": "용역",
-      "estimated_price": 100000000,
-      "bid_amount": null,
-      "winning_bid": 89500000,
-      "bid_rate_pct": 89.5,
-      "bidders": 5,
-      "status": "낙찰",
-      "close_date": null,
-      "detail_url": null,
-      "cgi_categories": "",
-      "cgi_relevant": false,
-      "data_source": "file:D:\\1022\\wt-g2b\\data\\procurement\\sample_bids.json"
-    },
-    {
-      "bid_no": "R26BK00000002-000",
-      "title": "샘플 IT 용역 공고 B",
-      "agency": "샘플 발주기관",
-      "region": null,
-      "category": "용역",
-      "estimated_price": 50000000,
-      "bid_amount": null,
-      "winning_bid": 47200000,
-      "bid_rate_pct": 94.4,
-      "bidders": 3,
-      "status": "낙찰",
-      "close_date": null,
-      "detail_url": null,
-      "cgi_categories": "",
-      "cgi_relevant": false,
-      "data_source": "file:D:\\1022\\wt-g2b\\data\\procurement\\sample_bids.json"
-    },
-    {
-      "bid_no": "R26BK00000003-000",
-      "title": "샘플 물품 공고 C",
-      "agency": "샘플 발주기관",
-      "region": null,
-      "category": "물품",
-      "estimated_price": 30000000,
-      "bid_amount": null,
-      "winning_bid": null,
-      "bid_rate_pct": null,
-      "bidders": 2,
-      "status": "유찰",
-      "close_date": null,
-      "detail_url": null,
-      "cgi_categories": "",
-      "cgi_relevant": false,
-      "data_source": "file:D:\\1022\\wt-g2b\\data\\procurement\\sample_bids.json"
-    },
-    {
-      "bid_no": "R26BK00000004-000",
-      "title": "샘플 공사 공고 D",
-      "agency": "샘플 발주기관",
-      "region": null,
-      "category": "공사",
-      "estimated_price": 200000000,
-      "bid_amount": null,
-      "winning_bid": 178000000,
-      "bid_rate_pct": 89.0,
-      "bidders": 7,
-      "status": "낙찰",
-      "close_date": null,
-      "detail_url": null,
-      "cgi_categories": "",
-      "cgi_relevant": false,
-      "data_source": "file:D:\\1022\\wt-g2b\\data\\procurement\\sample_bids.json"
-    }
-  ]
+  "bids": []
 }
