@@ -1,0 +1,39 @@
+name: ERP prep tests
+
+on:
+  push:
+    paths:
+      - "tools/erp/**"
+      - "data/full_catalog/**"
+      - "data/erp_prep/**"
+      - "reports/data/erp/**"
+      - "reports/erp-item-master-mapping.csv"
+      - ".github/workflows/erp-tests.yml"
+  pull_request:
+    paths:
+      - "tools/erp/**"
+      - "data/full_catalog/**"
+      - "data/erp_prep/**"
+      - "reports/data/erp/**"
+      - "reports/erp-item-master-mapping.csv"
+      - ".github/workflows/erp-tests.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: python -m pip install --upgrade pip openpyxl
+      - name: Build upload files
+        run: python tools/erp/build_erp_prep.py
+      - name: Validate upload files
+        run: python tools/erp/validate_erp_prep.py
+      - name: Run ERP tests
+        run: python -m unittest tools.erp.tests.test_erp_prep -v

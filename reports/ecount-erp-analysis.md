@@ -9,7 +9,7 @@
 - 대상: 김범신(CGI) 이카운트 ERP 실계정
 - 이슈: [#5 / CGI ERP 연계 준비](https://github.com/skerishKang/kbs261022/issues/5) · 관련 [#1 CGI ERP 통합](https://github.com/skerishKang/kbs261022/issues/1)
 - 브랜치: `feature/erp-ecount-account-analysis` (origin/main 기준, model-a / model-b 라인과 독립)
-- 조사 일자: 2026-10-22
+- 조사 일자: 2026-10-22 · **실계정 재검증: 2026-10-23** (§15)
 - 브라우저: Playwright(Chromium, 별도 자동화 컨텍스트) — 운영자 개인 Chrome 프로필 미사용
 
 ---
@@ -386,7 +386,7 @@ Tri-B(삼아스토어) ─┘                          │
 
 | 마스터 필드 | ERP 필드키 | 라벨 | 타입 | 비고 |
 |---|---|---|---|---|
-| `item_master_key` | `prod_cd` | 품목코드 | direct | 20자. 카페24 `product_code`(P+7) 를 그대로 사용 가능 |
+| `item_master_key` | `prod_cd` | 품목코드 | direct | 20자. **카페24 코드는 중복이라 사용 불가** → `SS-`/`SM-` 접두 + 통합키 seq 로 생성(§15.2) |
 | `product_name` | `prod_des` | 품목명 | direct | 100자 |
 | `model` | `size_des_base` | 규격 | partial | Tri-B 전용 필드. Tri-A 는 규칙 추출 필요 |
 | `source_brand` | `cont2` | 문자형추가항목2 | custom | **기본 필드 없음 → 확장필드 필수** |
@@ -397,7 +397,7 @@ Tri-B(삼아스토어) ─┘                          │
 | `summary` | `remarks_win` | 검색창내용 | direct | 100자, 웹 summary 는 잘림 가능 |
 | `specs` | `remarks` + `ADD_*` 확장 | 적요 / 추가형식1~10 | custom | 40칸 확장필드 |
 | `image_urls` | `prod_image` | 이미지 | partial | ERP 는 1건. 웹 이미지 다중은 별도 자산 관리 |
-| `source_item_code` | `bar_code` | 바코드 | partial | 카페24 `item_code` 매핑 가능 |
+| `source_item_code` | `bar_code` | 바코드 | partial | 카페24 `item_code` 가 **전체 유일일 때만** 기입(2,568/4,575). 중복 코드는 공란 |
 | `option_summary` | `SIZE_CD`/`SIZE_CALC_CD`/`SET_FLAG` | 규격코드/규격계산그룹/세트여부 | partial | 웹 옵션과 구조 불일치(§11.4) |
 
 ### 11.2 가격·재고 필드
@@ -466,7 +466,7 @@ skills/ecount-erp-browser/
 | `데이터내보내기`(C001403) 화면 | **미확인** — 메뉴 검색에서 미출현(좌측 nav 확장 필요). 프로그램 ID만 확인 |
 | `ERP전표생성(입고/출고)` 화면 | **미확인** — 메뉴 검색 미출현. 프로그램 ID만 확인 |
 | `WMS` 그룹 입고처리(E090181) | 메뉴로 진입했으나 렌더 미완(콘솔 에러). **필드 미확인** |
-| 스마트스토어2.0 의 **인증 필드 배치** | 미확정. `쇼핑몰등록` 신규 폼의 공통 필드만 확인했고, 채널별 조건부 노출 필드(네이버 OAuth 등)는 신규 화면에서 채널을 선택한 상태로 재확인 필요 |
+| 스마트스토어2.0 의 **인증 필드 배치** | 미확정. 공통 폼을 실측한 결과 `쇼핑몰코드/쇼핑몰명/수집처/거래처/LOGIN_ID/비밀번호/인증키` 계열만 노출되고 **네이버 OAuth 전용 필드는 보이지 않았다**. `수집처` 는 typeahead 로 채널을 선택하는 구조. 채널 등록 자체가 쓰기이므로 **등록 없이는 조건부 필드 확정 불가** |
 | 이카운트 **item_code(옵션코드)** | 공개 스펙 미노출. 웹자료올리기 템플릿에 없음 |
 | OAPI **엔드포인트 목록** | 매뉴얼 URL(외부 문서) 확인만. 본 화면에서 API 스펙은 미열람 |
 | 실제 일괄 등록 실행 | **미수행** (운영 데이터 생성 금지 조건). 템플릿·규격만 확보 |
@@ -504,3 +504,40 @@ node skills/ecount-erp-browser/scripts/ecount_screen_probe.js --template 품목�
 | `reports/ecount-naver-smartstore-integration.md` | 스마트스토어 연동 가능성 상세 |
 | `reports/customer-summary-ecount.md` | 고객용 작업 요약 |
 | `skills/ecount-erp-browser/` | 브라우저 작업 스킬 |
+
+---
+
+## 15. 실계정 재검증 (2026-10-23, 이슈 #20)
+
+> 조회·내보내기·빈 서식 다운로드만 수행. `저장(F8)`·`자료올리기`·`키발급`·`선택삭제` 실행 0건.
+
+### 15.1 확인된 실데이터 규모(집계)
+
+| 항목 | 값 |
+|---|---|
+| 품목 마스터 export | **964건**, 14컬럼 (`계층그룹명·품목코드·품목명·품목구분·규격명·그룹명·검색창내용·사용구분·파일관리·입고단가VAT·출고단가VAT·재고수량관리·이미지·시리얼/로트`) |
+| 품목구분 분포 | 상품 689 · 제품 88 · 부재료 74 · 원재료 65 · 무형상품 45 · 반제품 3 |
+| 재고현황 export | **351행**, 재고수량>0 **308행**, 입고단가 존재 **177행**, 품목 export와 코드 교집합 **347건** |
+| 주문서조회 | 기존 주문 **4행** 표시 확인 (내용 미기록) |
+| 매출전표 I | 입력 폼 필드·버튼 구조 확인. 전표 생성 미수행 |
+| 쇼핑몰등록 / 품목코드연결 | 각 **0행** |
+| API인증키 | **0건** (미발급) |
+
+### 15.2 품목코드 전략 수정 (중요)
+
+- 카페24 `product_code` 는 **4,234건 중 856건이 중복** → ERP `prod_cd` 로 부적합.
+- 확정 규칙: `SS-<통합키 seq>`(삼아사운드 2,281) / `SM-<통합키 seq>`(삼아뮤직 2,294). 20자 이내, 중복 0.
+- 기존 ERP 964건과의 대조: 코드 일치 0, 상품명 일치 1쌍, 모델명 일치 25쌍, 부분 후보 62쌍. **확정 매핑이 아니며**, 동일 상품 중복 등록 여부는 담당자 판단이 필요하다.
+
+### 15.3 변환 도구 (공식 17컬럼 기준)
+
+- `tools/erp/build_erp_prep.py` → `data/erp_prep/ecount_item_upload.csv` / `.xlsx` / `erp_extended_mapping.csv`
+- `tools/erp/validate_erp_prep.py` → `VALIDATION PASSED` (4,575행, 중복 0, 가격 2,117, 수량관리 2,294)
+- `tools/erp/extract_template_spec.py` → `reports/data/erp/ecount_template_spec.json` (허용값·최대길이 기계 판독)
+- `tools/erp/compare_erp_cgi.py` → `reports/data/erp/erp_readonly_report.md` (집계 전용, 행 데이터 미기록)
+- `python -m unittest tools.erp.tests.test_erp_prep` → **22 tests OK**
+
+### 15.4 보안
+
+- 과거 커밋에 남아 있던 ERP·네이버 평문 자격증명을 ERP 도구에서 제거하고 env 주입으로 전환했다. **이력에는 값이 남아 있으므로 비밀번호 교체가 필요하다.**
+- live evidence·ERP export CSV는 `.gitignore` 로 제외. 보고서는 집계만 기록한다.

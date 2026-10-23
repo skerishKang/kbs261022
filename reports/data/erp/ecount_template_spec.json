@@ -1,0 +1,187 @@
+{
+  "source": "이카운트 품목등록 > 웹자료올리기 > 엑셀서식내려받기 (빈 서식)",
+  "extracted_at": "2026-10-23T04:11:37.228794+00:00",
+  "sheet": "품목등록",
+  "columns": [
+    {
+      "column": "A",
+      "index": 1,
+      "header": "품목코드",
+      "max_length": 20,
+      "decimal_places": null,
+      "allowed": {},
+      "comment": "품목코드\n\n* 입력내용\n   - 품목코드를 입력바랍니다.\n\n* 입력글자제한\n   - 최대 20자"
+    },
+    {
+      "column": "B",
+      "index": 2,
+      "header": "품목명",
+      "max_length": 100,
+      "decimal_places": null,
+      "allowed": {},
+      "comment": "품목명\n\n* 입력내용\n   - 품목명을 입력바랍니다.\n\n* 입력글자제한\n   - 최대 100자"
+    },
+    {
+      "column": "C",
+      "index": 3,
+      "header": "바코드",
+      "max_length": 30,
+      "decimal_places": null,
+      "allowed": {},
+      "comment": "바코드\n\n* 입력내용\n   - 품목의 바코드를 입력바랍니다. \n\n* 입력글자제한\n   - 최대 30자"
+    },
+    {
+      "column": "D",
+      "index": 4,
+      "header": "규격구분",
+      "max_length": 1,
+      "decimal_places": null,
+      "allowed": {
+        "규격명": "1",
+        "규격그룹": "2",
+        "규격계산": "3",
+        "규격계산그룹": "4"
+      },
+      "comment": "규격구분\n\n* 입력내용\n   - 품목의 규격구분을 선택합니다. \n\n* 입력글자제한\n   - 최대 1자\n   - 규격명(1) / 규격그룹(2) / 규격계산(3) / 규격계산그룹(4)"
+    },
+    {
+      "column": "E",
+      "index": 5,
+      "header": "규격",
+      "max_length": 100,
+      "decimal_places": null,
+      "allowed": {},
+      "comment": "규격\n\n* 입력내용\n   - 규격구분에 따른 품목의 규격을 입력합니다. \n\n* 입력글자제한\n   - 최대 100자\n   - 규격그룹/규격계산그룹을 선택할 경우에는, 기 등록된 그룹의 코드를 입력합니다."
+    },
+    {
+      "column": "F",
+      "index": 6,
+      "header": "단위",
+      "max_length": 20,
+      "decimal_places": null,
+      "allowed": {},
+      "comment": "단위\n\n* 입력내용\n   - 품목의 단위를 입력바랍니다.\n\n* 입력글자제한\n   - 최대 20자"
+    },
+    {
+      "column": "G",
+      "index": 7,
+      "header": "품목구분",
+      "max_length": 1,
+      "decimal_places": null,
+      "allowed": {
+        "원재료": "0",
+        "제품": "1",
+        "반제품": "2",
+        "상품": "3",
+        "부재료": "4",
+        "무형상품": "7"
+      },
+      "comment": "품목구분\n\n* 입력내용\n   - 품목의 속성을 선택합니다.\n\n* 입력글자제한\n   - 최대 1자\n   - 원재료(0) / 제품(1) / 반제품(2) / 상품(3) / 부재료(4) / 무형상품(7)"
+    },
+    {
+      "column": "H",
+      "index": 8,
+      "header": "세트여부",
+      "max_length": 1,
+      "decimal_places": null,
+      "allowed": {
+        "세트아님": "0",
+        "세트": "1"
+      },
+      "comment": "세트여부\n\n* 입력내용\n   - 세트로 구성될 품목인지 선택합니다. (품목구분이 상품, 제품일 때만 선택 가능)\n\n* 입력글자제한\n   - 최대 1자\n   - 세트아님(0) / 세트(1)"
+    },
+    {
+      "column": "I",
+      "index": 9,
+      "header": "재고수량관리",
+      "max_length": 1,
+      "decimal_places": null,
+      "allowed": {
+        "수량관리제외": "0",
+        "수량관리대상": "1"
+      },
+      "comment": "재고수량관리\n\n* 입력내용\n   - 품목의 수량관리 여부를 선택합니다.\n   - 입력하지 않을 경우, 기본양식의 기본값이 적용됩니다.\n\n* 입력글자제한\n   - 최대 1자\n   - 수량관리제외(0) / 수량관리대상(1)"
+    },
+    {
+      "column": "J",
+      "index": 10,
+      "header": "입고단가",
+      "max_length": 12,
+      "decimal_places": 6,
+      "allowed": {},
+      "comment": "입고단가\n* 입력내용\n   -  구매입력시 기본으로 불러올 단가입니다.\n\n* 입력글자제한\n   - 최대 12자(정수), 최대 6자(소수)"
+    },
+    {
+      "column": "K",
+      "index": 11,
+      "header": "입고단가 VAT포함여부",
+      "max_length": 1,
+      "decimal_places": null,
+      "allowed": {
+        "포함안함": "0",
+        "포함": "1"
+      },
+      "comment": "입고단가Vat포함여부\n\n* 입력내용\n   -  단가의 부가세포함여부에 대해 선택합니다.\n\n* 입력글자제한\n   - 최대 1자\n   - 포함안함(0) / 포함(1)"
+    },
+    {
+      "column": "L",
+      "index": 12,
+      "header": "출고단가",
+      "max_length": 12,
+      "decimal_places": 6,
+      "allowed": {},
+      "comment": "출고단가\n\n* 입력내용\n   -  판매입력시 기본으로 불러올 단가입니다.\n\n* 입력글자제한\n   - 최대 12자(정수), 최대 6자(소수)"
+    },
+    {
+      "column": "M",
+      "index": 13,
+      "header": "출고단가 VAT포함여부",
+      "max_length": 1,
+      "decimal_places": null,
+      "allowed": {
+        "포함안함": "0",
+        "포함": "1"
+      },
+      "comment": "출고단가Vat포함여부\n\n* 입력내용\n   -  단가의 부가세포함여부에 대해 선택합니다.\n\n* 입력글자제한\n   - 최대 1자\n   - 포함안함(0) / 포함(1)"
+    },
+    {
+      "column": "N",
+      "index": 14,
+      "header": "부가세율(매출)",
+      "max_length": 3,
+      "decimal_places": 3,
+      "allowed": {},
+      "comment": "부가세율(매출)\n\n* 입력내용\n   -  판매 전표입력 시 반영될 부가세율을 입력합니다.\n\n* 입력글자제한\n   - 최대 3자(정수), 최대 3자(소수)"
+    },
+    {
+      "column": "O",
+      "index": 15,
+      "header": "부가세율(매입)",
+      "max_length": 3,
+      "decimal_places": 3,
+      "allowed": {},
+      "comment": "부가세율(매입)\n\n* 입력내용\n   -  구매 전표입력 시 반영될 부가세율을 입력합니다.\n\n* 입력글자제한\n   - 최대 3자(정수), 최대 3자(소수)"
+    },
+    {
+      "column": "P",
+      "index": 16,
+      "header": "검색창내용",
+      "max_length": 100,
+      "decimal_places": null,
+      "allowed": {},
+      "comment": "검색창내용\n\n* 입력내용\n   - 품목을 조회할 검색 키워드를 입력바랍니다.\n\n* 입력글자제한\n   - 최대 100자"
+    },
+    {
+      "column": "Q",
+      "index": 17,
+      "header": "품목공유여부",
+      "max_length": 1,
+      "decimal_places": null,
+      "allowed": {
+        "C-Portal공유안함": "0",
+        "C-Portal공유": "1"
+      },
+      "comment": "품목공유여부\n\n* 입력내용\n   - Customer Portal 및 이메일거래에서 품목의 공유여부를 설정합니다.\n\n* 입력글자제한\n   - 최대 1자\n   - C-Portal공유안함[0) / C-Portal공유(1)"
+    }
+  ]
+}
