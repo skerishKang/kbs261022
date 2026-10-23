@@ -72,7 +72,20 @@ python -m unittest tools.smartstore.tests.test_smartstore_prep   # Ran 19 tests 
 | 가격·재고 | `price_original` 분포 = 원본 분포 (테스트) | 동일 |
 | Yamaha 재수집 | 코드에서 `yamaha_catalog.json` 참조 없음, 네트워크 호출 없음 | 확인 |
 
-## 5. 미실행 항목
+## 5. PR·CI·병합 실행 근거
+
+| 항목 | 실측 |
+|---|---|
+| 브랜치 | `feature/issue-43-product-quality` @ `4c1dcf4` |
+| PR | [#46](https://github.com/skerishKang/kbs261022/pull/46) (base `main` @ `9394b20`) |
+| GitHub Actions | 저장소에 `.github/workflows` 없음 → 필수 체크 0건, `required_status_checks = null` |
+| commit status | `statuses` 0건 |
+| 완료된 체크 | GitGuardian Security Checks = `success` (1건) |
+| 대기 중 체크 | deploy 커넥터 suite 14건 `queued` (vercel·netlify·render·cloudflare 등 실행 설정 없음, PR #41·#44 와 동일) |
+| 병합 가능 | `mergeable = true`, `mergeable_state = clean` |
+| 병합 | `merged = true` · merge commit `5f5c8aa` |
+
+## 6. 미실행 항목
 
 - 브라우저 실화면 재대조(검토후보 2,351건) — 사람 확정 전이므로 미수행.
 - 원본 덮어쓰기·중복 병합·사이트 배포 — 의도적으로 수행하지 않음.
