@@ -1,0 +1,107 @@
+﻿match_type,erp_code,erp_name,erp_spec,erp_group,cgi_key,cgi_name,cgi_brand,cgi_model,cgi_source
+name_exact,SH-WI-6007,RPW120,RPW120,음향장비,samasound:994,RPW120,SHURE,,samasound
+model_exact,003512,오디오 케이블,MY206SW,케이블,samamusic:1948,KLOTZ MY206SW 클로츠 프로페셔널 마이크 케이블,KLOTZ,MY206SW,samamusic
+model_exact,003513,오디오 케이블,PW02X,케이블,samamusic:2183,KLOTZ PW02X 클로츠 PolyWIRE XLPE 스튜디오 멀티코어 케이블 (2채널),KLOTZ,PW02X,samamusic
+model_exact,003514,오디오 케이블,PW04X,케이블,samamusic:2184,KLOTZ PW04X 클로츠 PolyWIRE XLPE 스튜디오 멀티코어 케이블 (4채널),KLOTZ,PW04X,samamusic
+model_exact,003515,오디오 케이블,PW08X,케이블,samamusic:2185,KLOTZ PW08X 클로츠 PolyWIRE XLPE 스튜디오 멀티코어 케이블 (8채널),KLOTZ,PW08X,samamusic
+model_exact,003516,오디오 케이블,PW16X,케이블,samamusic:2187,KLOTZ PW16X 클로츠 PolyWIRE XLPE 스튜디오 멀티코어 케이블 (16채널),KLOTZ,PW16X,samamusic
+model_exact,004513,55 스테레오 커넥터(NEUTRIK),NP3X,커넥터,samamusic:2261,NEUTRIK NP3X / 뉴트릭 55 TRS 커넥터 실버,NEUTRIK,NP3X,samamusic
+model_exact,042406396738,MICROPHONE,PGA 98H-TQG,음향장비,samamusic:5047,SHURE PGA98H -TQG 슈어 단일지향성 컨덴서 구즈넥 악기용 클립 마이크 + TA4F 커넥터(무선 시스템 용),SHURE,PGA98H-TQG,samamusic
+model_exact,042406473736,AC ADAPTER,PS24K,,samamusic:3945,Shure PS24K 슈어 SVX/PGX/PG/BLX/PGX/SLX/QLXD/P3T/GLXD/GLXD+ 용 파워 서플라이 (어댑터),SHURE,PS24K,samamusic
+model_exact,80101,SPEAKERS CABLE,LY225S,AUDIO CABLE,samamusic:2153,KLOTZ LY225S 클로츠 Twinaxial 스피커 케이블,KLOTZ,LY225S,samamusic
+model_exact,80102,SPEAKERS CABLE,LY240S,AUDIO CABLE,samamusic:2154,KLOTZ LY240S 클로츠 Twinaxial 스피커 케이블,KLOTZ,LY240S,samamusic
+model_exact,80176,유선마이크 (MICROPHONE),BETA58A,,samamusic:1352,SHURE BETA58 A 슈어 보컬용 유선 마이크,SHURE,BETA58A,samamusic
+model_exact,A&H-CQ-12T,AUDIO MIXER(오디오믹서),CQ-12T,음향장비,samamusic:4060,A&H CQ-12T 알렌히스 컴팩트 디지털 믹서,ALLEN&HEATH,CQ-12T,samamusic
+model_exact,A&H-CQ-18T,AUDIO MIXER(오디오믹서),CQ18T,음향장비,samamusic:4061,A&H CQ-18T 알렌히스 컴팩트 디지털 믹서,ALLEN&HEATH,CQ-18T,samamusic
+model_exact,HK-POLAR12,컬럼어레이(COLUMN ARRAY),POLAR12 MK2,,samamusic:4964,HK AUDIO Polar 12 MK2 HK오디오 12타입 우퍼 컬럼 어레이 스피커,HK AUDIO,Polar 12 MK2,samamusic
+model_exact,NE-AN-0006,XLR CONNECTER,NC3FXX,커넥터,samamusic:2257,NEUTRIK NC3FXX / 뉴트릭 XLR (암) 커넥터 실버,NEUTRIK,NC3FXX,samamusic
+model_exact,NE-AN-1005,음향커넥터,NP2X,커넥터,samamusic:2258,NEUTRIK NP2X / 뉴트릭 55 TS 커넥터 실버,NEUTRIK,NP2X,samamusic
+model_exact,NE-DI-0005,커넥터,NE8MX,커넥터,samamusic:4794,Neutrik NE8MX / 뉴트릭 이더콘 커넥터 실버,NEUTRIK,NE8MX,samamusic
+model_exact,NE-RN-0011-QQ,3.5스테레오 숫 컨넥터(블랙),NYS231BG,커넥터,samamusic:2623,REAN NYS231BG / 리안 3.5mm TRS 커넥터 블랙,REAN,NYS231BG,samamusic
+model_exact,NE-RN-0021-QQ,3.5스테레오 암 커넥터(블랙),NYS240BG,커넥터,samamusic:2627,REAN NYS240BG / 리안 3.5mm TRS 케이블잭 블랙,REAN,NYS240BG,samamusic
+model_exact,NE-RN-0060-QQ,TRS 숫 컨넥터(블랙),RP3C-B,커넥터,samamusic:2605,REAN RP3C-B / 리안 TRS 커넥터 블랙,REAN,RP3C-B,samamusic
+model_exact,NE-XLR-0003-3M,XLR CONNECTER,NC3MXX,커넥터,samamusic:2255,NEUTRIK NC3MXX / 뉴트릭 XLR (수) 커넥터 실버,NEUTRIK,NC3MXX,samamusic
+model_exact,NE-XLR-0003-3MRX,XLR CONNECTER,NC3MRX,커넥터,samamusic:2243,NEUTRIK NC3MRX / 뉴트릭 XLR (수) 직각형 커넥터 실버,NEUTRIK,NC3MRX,samamusic
+model_exact,SH-MI-1034-QQ,드럼마이크세트(SHURE),PGADRUMKIT6,음향장비,samamusic:2651,SHURE PGA DRUM KIT 6 슈어 드럼 마이킹용 유선 마이크 세트,SHURE,PGA DRUM KIT 6,samamusic
+model_exact,SH-MI-1517-QQ,마이크(SHURE),SM58SK,음향장비,samamusic:1300,SHURE SM58 SK 슈어 보컬용 유선 마이크 (스위치있음),SHURE,SM58SK,samamusic
+model_exact,SH-WI-5508,Headset Microphone,SM35-TQG,음향장비,samamusic:5563,"SHURE 헤드셋 단일지향성 컨덴서 마이크, 윈드스크린 및 TA4F 커넥터 포함 SM35-TQG",SHURE,SM35-TQG,samamusic
+substring,000014,스피커,HK PRO12XD,음향장비,samamusic:4968,HK AUDIO PR:O 12 HK오디오 12타입 패시브 스피커,HK AUDIO,PR:O 12,samamusic
+substring,001500,마이크,SHURE WL93-X,음향장비,samamusic:5558,SHURE 무선용 전지향성 소형 컨덴서 핀마이크 블랙 WL93,SHURE,WL93,samamusic
+substring,003512,오디오 케이블,MY206SW,케이블,samasound:2266,MY206SW 프로페셔널 마이크 케이블,KLOTZ,,samasound
+substring,003513,오디오 케이블,PW02X,케이블,samasound:2225,PW02X PolyWIRE XLPE 스튜디오 멀티코어 케이블 (2채널),KLOTZ,,samasound
+substring,003514,오디오 케이블,PW04X,케이블,samasound:2224,PW04X PolyWIRE XLPE 스튜디오 멀티코어 케이블 (4채널),KLOTZ,,samasound
+substring,003515,오디오 케이블,PW08X,케이블,samasound:2223,PW08X PolyWIRE XLPE 스튜디오 멀티코어 케이블 (8채널),KLOTZ,,samasound
+substring,003516,오디오 케이블,PW16X,케이블,samasound:2221,PW16X PolyWIRE XLPE 스튜디오 멀티코어 케이블 (16채널),KLOTZ,,samasound
+substring,004513,55 스테레오 커넥터(NEUTRIK),NP3X,커넥터,samamusic:2262,NEUTRIK NP3X-B / 뉴트릭 55 TRS 커넥터 블랙,NEUTRIK,NP3X-B,samamusic
+substring,042406396738,MICROPHONE,PGA 98H-TQG,음향장비,samasound:3216,PGA98H -TQG + TA4F,SHURE,,samasound
+substring,7613187003806,SPEAKON CONNECTOR,NL4FC,커넥터,samamusic:1390,NEUTRIK BSL / 뉴트릭 NL4FC 컬러 부싱,NEUTRIK,BSL,samamusic
+substring,80014,Powerd Speakers,TX10,,samasound:1090,ETX-10P,EV,,samasound
+substring,80032,휴즈홀더,30mm,,samamusic:1397,"NEUTRIK GNS18 / 뉴트릭 구즈넥 세트, 230MM",NEUTRIK,GNS18,samamusic
+substring,80070,DIRECT BOX,StageBug (SB-5),,samamusic:191,RADIAL Stage Bug SB-5 레디알 랩탑 다이렉트 박스,RADIAL,,samamusic
+substring,80093,Dual Channel Receiver,SLXD4D,음향장비,samasound:3738,SLXD4D+,SHURE,,samasound
+substring,80094,Digital Wireless Receiver 1ch,SLXD4,음향장비,samasound:3740,SLXD4QDAN+,SHURE,,samasound
+substring,80095,TRANSMITTER,SLXD2/B87A,음향장비,samamusic:5517,"SHURE SLXD2+/B87A 핸드헬드 송신기, BETA 87A 마이크 장착",SHURE,,samamusic
+substring,80096,Transmitter,SLXD1,음향장비,samamusic:5514,SHURE SLXD14D+ 듀얼바디팩 시스템,SHURE,,samamusic
+substring,80098,M1 Mic Cahle 3m,M1K1FM0300,음향장비ㆍ케이블,samamusic:1431,"KLOTZ M1 PRIME 클로츠 마이크 케이블 (XLR to XLR, KLOTZ 커넥터) 블랙",KLOTZ,M1K1FM,samamusic
+substring,80099,audio cable,M1K1FM1000,AUDIO CABLE,samamusic:1431,"KLOTZ M1 PRIME 클로츠 마이크 케이블 (XLR to XLR, KLOTZ 커넥터) 블랙",KLOTZ,M1K1FM,samamusic
+substring,80101,SPEAKERS CABLE,LY225S,AUDIO CABLE,samasound:2228,LY225S Twinaxial 스피커 케이블,KLOTZ,,samasound
+substring,80102,SPEAKERS CABLE,LY240S,AUDIO CABLE,samasound:2227,LY240S Twinaxial 스피커 케이블,KLOTZ,,samasound
+substring,80106,PTZ CAMERA,ST-20,"CCTV,네트워크",samasound:1984,컴플라이 폼팁 IsolationTM - Comply Series T200 (3 pair),COMPLY,,samasound
+substring,80109,랜케이블,CAT5E,랜케이블,samasound:2180,"RCBRR RamCAT SF/UTP 네트워크 케이블 (CAT5e, RJ45 to RJ45)",KLOTZ,,samasound
+substring,80160,I/O RACK (아이오랙),GX4816,음향장비,samasound:251,GX4816,자체제작,,samasound
+substring,80166,ptz카메라,ST20,영상장비,samasound:1984,컴플라이 폼팁 IsolationTM - Comply Series T200 (3 pair),COMPLY,,samasound
+substring,80176,유선마이크 (MICROPHONE),BETA58A,,samasound:1045,BETA58A,SHURE,,samasound
+substring,80178,컬럼어레이스피커,POLAR12,,samasound:3262,Polar 12 MK2 컬럼 어레이 스피커 (화이트),HK AUDIO,,samasound
+substring,A&H-CQ-12T,AUDIO MIXER(오디오믹서),CQ-12T,음향장비,samamusic:4113,A&H CQ12T Case 알렌히스 CQ-12T 용 소프트 케이스 휴대용 가방,ALLEN&HEATH,CQ12T Case,samamusic
+substring,A&H-CQ-18T,AUDIO MIXER(오디오믹서),CQ18T,음향장비,samamusic:4115,A&H CQ18T Case 알렌히스 CQ-18T 용 소프트 케이스 휴대용 가방,ALLEN&HEATH,CQ18T-CASE,samamusic
+substring,A&H-QU-5D,AUDIO MIXER(오디오믹서) DANTE(단테),QU-5D,음향장비,samamusic:5318,A&H QU-5 / QU-5D 알렌앤히스 컴팩트 디지털 믹서,ALLEN&HEATH,QU-5|QU-5D,samamusic
+substring,A&H-SQ-SLINK,SQ OPTIONS CARD( SLINK 옵션카드),SLINK,,samasound:261,SQ SLink,자체제작,,samasound
+substring,CD-16-난연,CD관 16mm 난연,100m,잡자재,samasound:3728,OW15Y 100m(2채널),KLOTZ,,samasound
+substring,CD-22-난연,CD관 22mm 난연,100m,잡자재,samasound:3728,OW15Y 100m(2채널),KLOTZ,,samasound
+substring,C찬넬행거-400L,C찬넬행거,400L,,samamusic:3484,SHURE RPM400LEMO / 슈어 인라인 프리앰프,SHURE,RPM400LEMO,samamusic
+substring,EW-KSR8U,E&W KSR8U 슬라이딩커버렉케이스,"8U, 530*430*600",AUDIO,samamusic:2410,[Mercuriall] U530 머큐리얼 플러그인 (전자배송),MERCURIALL,U530,samamusic
+substring,HK-FO5-WHITE,HK AUDIO FO 5 WHITE/RAL,100 W,SPEAKERS(스피커),samasound:770,A100WS,SHURE,,samasound
+substring,HK-POLAR12,컬럼어레이(COLUMN ARRAY),POLAR12 MK2,,samasound:3262,Polar 12 MK2 컬럼 어레이 스피커 (화이트),HK AUDIO,,samasound
+substring,KLOTZ-55/35-3M,AUDIO CABLE 55/35 연장(KLOTZ 3M),AS-EX60300,AUDIO CABLE,samamusic:3481,KLOTZ AS-EX6 클로츠 헤드폰 연장 케이블 (5.5 TRS to 3.5mm소켓),KLOTZ,AS-EX6,samamusic
+substring,KLOTZ-55/35-6M,AUDIO CABLE 55/35 연장(KLOTZ 6M),AS-EX60600,AUDIO CABLE,samamusic:3481,KLOTZ AS-EX6 클로츠 헤드폰 연장 케이블 (5.5 TRS to 3.5mm소켓),KLOTZ,AS-EX6,samamusic
+substring,KLOTZ-55/55(X2)-3M,AUDIO CABLE 55/55(2X TS TO 2X TS) 3M,KMPP0300,AUDIO CABLE,samamusic:2941,KLOTZ KMPP 클로츠 프로 스테레오 키보드 케이블 (2x TS to 2x TS),KLOTZ,KMPP,samamusic
+substring,KLOTZ-55/55(X2)-6M,AUDIO CABLE 55/55(2X TS TO 2X TS) 6M,KMPP0600,AUDIO CABLE,samamusic:2941,KLOTZ KMPP 클로츠 프로 스테레오 키보드 케이블 (2x TS to 2x TS),KLOTZ,KMPP,samamusic
+substring,KLOTZ-C5PSY,KLOTZ C5PSY CAT5e SF/UTP,C5PSY CAT5e,케이블,samasound:2175,C5PSY CAT5e SF/UTP 네트워크 패치 케이블,KLOTZ,,samasound
+substring,KLOTZ-MIC-001,MIC CABLE (KLOTZ 1M),M1K1FM0100,AUDIO CABLE,samamusic:1431,"KLOTZ M1 PRIME 클로츠 마이크 케이블 (XLR to XLR, KLOTZ 커넥터) 블랙",KLOTZ,M1K1FM,samamusic
+substring,KLOTZ-MIC-003,MIC CABLE (KLOTZ 3M),M1K1FM0300,AUDIO CABLE,samamusic:1431,"KLOTZ M1 PRIME 클로츠 마이크 케이블 (XLR to XLR, KLOTZ 커넥터) 블랙",KLOTZ,M1K1FM,samamusic
+substring,KLOTZ-MIC-005,MIC CABLE (KLOTZ 5M),M1K1FM0500,AUDIO CABLE,samamusic:1431,"KLOTZ M1 PRIME 클로츠 마이크 케이블 (XLR to XLR, KLOTZ 커넥터) 블랙",KLOTZ,M1K1FM,samamusic
+substring,KLOTZ-MIC-M1000,MIC CABLE (KLOTZ 10M),M1K1FM1000,AUDIO CABLE,samamusic:1431,"KLOTZ M1 PRIME 클로츠 마이크 케이블 (XLR to XLR, KLOTZ 커넥터) 블랙",KLOTZ,M1K1FM,samamusic
+substring,KLOTZ-RCA/RCA,AUDIO CABLE(RCA/RCA 1M),AT-CC0100,AUDIO CABLE,samamusic:2940,KLOTZ AT-CC 클로츠 프로 스테레오 Twin RCA 케이블 (2x RCA to 2x RCA),KLOTZ,AT-CC,samamusic
+substring,KLOTZ-REC-Y3MA,AUDIO CABLE 3.5ㄱ자/55 Y(KLOTZ 3M),AY5A0300,AUDIO CABLE,samamusic:1636,KLOTZ AY5A 클로츠 Lightweight Y 케이블 (3.5 TRS ᄀ자 to 2x TS ᅳ자),KLOTZ,AY5A,samamusic
+substring,NE-AN-0006,XLR CONNECTER,NC3FXX,커넥터,samasound:3604,NC3FXX,NEUTRIK,,samasound
+substring,NE-AN-1005,음향커넥터,NP2X,커넥터,samasound:3679,NP2X-50,NEUTRIK,,samasound
+substring,NE-AN-3004,커넥터,NL4FX,커넥터,samasound:3663,NL4FXX-W-S,NEUTRIK,,samasound
+substring,NE-DI-0005,커넥터,NE8MX,커넥터,samasound:3678,NE8MX-B,NEUTRIK,,samasound
+substring,NE-RN-0011-QQ,3.5스테레오 숫 컨넥터(블랙),NYS231BG,커넥터,samasound:461,NYS231BG,REAN,,samasound
+substring,NE-RN-0021-QQ,3.5스테레오 암 커넥터(블랙),NYS240BG,커넥터,samasound:457,NYS240BG,REAN,,samasound
+substring,NE-RN-0060-QQ,TRS 숫 컨넥터(블랙),RP3C-B,커넥터,samamusic:2604,REAN RP3C / 리안 TRS 커넥터 실버,REAN,RP3C,samamusic
+substring,NE-XLR-0003-3M,XLR CONNECTER,NC3MXX,커넥터,samasound:3602,NC3MXX,NEUTRIK,,samasound
+substring,NE-XLR-0003-3MRX,XLR CONNECTER,NC3MRX,커넥터,samasound:3591,NC3MRX-B,NEUTRIK,,samasound
+substring,NETmatenMC-HQ01Z,8K 60Hz HDMI 2.0 Gold Metal 케이블 1M,8K 60Hz HDMI 2.0 Gold Metal 케이블 1M,케이블,samamusic:3506,Waves Gold Bundle 웨이브즈 골드 번들,WAVES,Gold,samamusic
+substring,NETmatenMC-HQ03Z,8K 60Hz HDMI 2.0 Gold Metal 케이블 3M,8K 60Hz HDMI 2.0 Gold Metal 케이블 3M,케이블,samamusic:3506,Waves Gold Bundle 웨이브즈 골드 번들,WAVES,Gold,samamusic
+substring,NETmatenMC-HQ05Z,8K 60Hz HDMI 2.0 Gold Metal 케이블 5M,8K 60Hz HDMI 2.0 Gold Metal 케이블 5M,케이블,samamusic:3506,Waves Gold Bundle 웨이브즈 골드 번들,WAVES,Gold,samamusic
+substring,NETmatenMC-HQ10Z,8K 60Hz HDMI 2.0 Gold Metal 케이블 10m,8K 60Hz HDMI 2.0 Gold Metal 케이블 10m,케이블,samamusic:3506,Waves Gold Bundle 웨이브즈 골드 번들,WAVES,Gold,samamusic
+substring,SH-AC-3525,SHURE BETA87용 망 그릴,RK312,음향장비,samamusic:448,SHURE RK312 / 슈어 BETA87 마이크 그릴,SHURE,,samamusic
+substring,SH-BLX14K_P31,SHURE BLX14K/P31 무선마이크수신기 밸트팩,BLX14K/P31,음향장비,samamusic:4269,SHURE BLX1 슈어 무선 마이크 BLX 바디팩 송신기 단품,SHURE,BLX1,samamusic
+substring,SH-BLX14K_SM35,SHURE BLX14K/SM35 무선마이크 수신기 벨트팩,BLX14K/SM35,음향장비,samamusic:4269,SHURE BLX1 슈어 무선 마이크 BLX 바디팩 송신기 단품,SHURE,BLX1,samamusic
+substring,SH-MIC-0057-LC,Dynamic Microphone(SHURE),SM57-LC-X,음향장비,samamusic:1302,SHURE SM57-LC 슈어 악기용 유선 마이크,SHURE,SM57-LC,samamusic
+substring,SH-MIC-0058-KL,Dynamic Microphone,SHURE SM58K-LC,음향장비,samamusic:1299,SHURE SM58 K-LC 슈어 보컬용 유선 마이크 (스위치없음),SHURE,SM58K-LC,samamusic
+substring,SH-PSM300,인이어 무선 모니터링 시스템,PSM300,,samamusic:4445,SHURE P3T 슈어 PSM300 무선 송신기,SHURE,P3T,samamusic
+substring,SH-SVX14K_PGA31,SHURE SVX14K/PGA31 무선마이크 수신기 벨트팩,SVX14K/PGA31,음향장비,samamusic:4240,SHURE SVX1 슈어 무선 마이크 SVX 바디팩 송신기 단품,SHURE,SVX1,samamusic
+substring,SH-ULXD1,SHURE ULXD1 Digital Bodypack Transmitter,ULXD1,음향장비,samamusic:3938,Shure 44A12449 슈어 P9R/P9RA/P10RA/ULXD1/QLXD1 용 벨트 클립,SHURE,44A12449,samamusic
+substring,SH-WI-2505,무선마이크(SHURE),QLXD2/BETA87AX-X51,음향장비,samamusic:1353,SHURE BETA87 A 슈어 보컬용 컨덴서 마이크,SHURE,BETA87A,samamusic
+substring,SH-WI-3007,무선마이크,SLX2/BETA87AX-X7,음향장비,samamusic:1353,SHURE BETA87 A 슈어 보컬용 컨덴서 마이크,SHURE,BETA87A,samamusic
+substring,SH-WI-5022,무선마이크 연결 케이블(SHURE),UA825,음향장비,samasound:1016,UA825 (7.5m),SHURE,,samasound
+substring,SH-WI-5050,무선마이크 안테나분배기(SHURE),UA844+SWB-K,음향장비,samasound:1017,UA844SWB-K,SHURE,,samasound
+substring,SH-WI-5508,Headset Microphone,SM35-TQG,음향장비,samasound:3873,SM35-TQG,SHURE,,samasound
+substring,SH-WI-6006,Wireless Microphone,RPW118,음향장비,samasound:993,RPW118,SHURE,,samasound
+substring,SH-WI-SLXD2-B87A,SHURE 무선마이크 SLXD2/B87A,SLXD2/B87A,음향장비,samamusic:5517,"SHURE SLXD2+/B87A 핸드헬드 송신기, BETA 87A 마이크 장착",SHURE,,samamusic
+substring,SH-WI-SLXD4Q,무선마이크수신기(Quad Digitale Wirless Receiver),SLXD4Q,,samasound:3740,SLXD4QDAN+,SHURE,,samasound
+substring,SH-WI-UL-ULXD2/B87,Digital Wireless Handheld Transmitter( 무선 핸드마이크),ULXD2/BETA87A,,samamusic:1353,SHURE BETA87 A 슈어 보컬용 컨덴서 마이크,SHURE,BETA87A,samamusic
+substring,SH-WI-UL-ULXD4D,Digital Wireless Receiver (무선마이크 수신기),ULXD4D,,samasound:1053,ULXD4D,SHURE,,samasound
+substring,SHURE_A85WS,윈드,SHURE_A85WS,음향장비,samamusic:524,SHURE A85WS / 슈어 마이크 윈드스크린,SHURE,,samamusic
