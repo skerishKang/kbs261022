@@ -1,7 +1,7 @@
-# data/product_quality — 이슈 #43 상품 DB 품질 개선 산출물 (Stage 1 + Stage 2)
+# data/product_quality — 이슈 #43 상품 DB 품질 개선 산출물 (Stage 1 + Stage 2 + Stage 3)
 
 **원본 마스터는 이 디렉터리에 없습니다.** `site/data/products.json` 4,575건은 그대로이며,
-여기 있는 파일은 모두 **패치 레이어(제안)** 입니다. 원본을 덮어쓰거나 병합하지 않았습니다.
+여기 있는 파일은 모두 **패치 레이어(제안)** 이고, Stage 3 검토 파일은 사람 확정의 결과만 담습니다. 원본을 덮어쓰거나 병합하지 않았습니다.
 
 - Stage 1: 원본 스펙행(제조사/모델명)과 이슈 #8 `confirmed` 중복 승계만 자동 보완.
 - Stage 2: 검토로 남긴 모델명 후보를 이미 수집된 모델명 어휘로 교차 실측해,
@@ -50,3 +50,21 @@ python -m unittest discover -t . -s tools\product_quality\tests -v
 
 입력: `site/data/products.json`, `data/full_catalog/product_db.xlsx`(이슈 #8 정본).
 네트워크 접근 없음 — Stage 2 승격 근거도 이미 수집된 원본 `모델명` 스펙행에서 나왔다.
+
+## Stage 3 — 검토후보 확정 절차
+
+```powershell
+# 1) 검토 워크북을 열어 검토후보 시트에서 우선순위 순으로 확인한다.
+#    검토결정(승인/반려/보류) · 필요하면 확정값 · 검토자(필수) · 비고(근거) 를 입력하고 저장한다.
+# 2) 결과를 패치로 내보낸다.
+python .	ools\product_qualityuild_quality.py --decisions data\product_quality\product_quality_review_queue.xlsx
+#    → product_review_decisions.json / .csv (오류가 있으면 종료코드 1, 오류 목록 참고해 재검토)
+```
+
+- 승인은 **실측된 제안값 또는 검토자가 근거(비고)와 함께 입력한 확정값**만 통과한다.
+  제안값이 없거나 `자체제작`·`기타`·`없음`·`-` 같은 자리표시자는 승인할 수 없다.
+- `검토자` 없는 승인, 어휘 밖 결정, 대기열에 없는 ID, 행지문 불일치(재생성 후 제안 변경)는 거부된다.
+- `product_review_decisions.json` 의 `approved[].확정값` 이 LOCAL2의 적용 대상이고,
+  나머지(반려·보류·미검토)는 원본 표기를 유지한다.
+- 중복 시트에서 `동일상품`으로 판정해도 **병합은 수행되지 않는다**(병합 0건 고정, 원본 ID 전부 유효).
+- Stage 3 는 `product_quality_improved.json` 의 값을 바꾸지 않는다(승격 40건 = Stage 2까지).
