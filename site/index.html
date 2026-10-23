@@ -3,35 +3,43 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CGI 상품 카탈로그</title>
-<meta name="description" content="CGI가 공급처 공개 수집 데이터로 구성한 상품 카탈로그. 가격·재고는 원본 확인이 필요합니다.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231f3a93'/%3E%3Ctext x='16' y='22' font-family='Arial' font-size='13' font-weight='bold' fill='%23fff' text-anchor='middle'%3ECGI%3C/text%3E%3C/svg%3E">
+<title>CGI 상품 카탈로그 | (주)시지아이</title>
+<meta name="description" content="㈜시지아이(CGI) B2B 상품 카탈로그. 음향·영상·조명 장비를 브랜드·카테고리로 찾고 견적을 요청하세요.">
+<meta name="theme-color" content="#07913A">
+<link rel="icon" href="../website/assets/img/cgi-mark-green.png">
 <link rel="stylesheet" href="assets/css/cgi-catalog.css">
 </head>
 <body>
+
 <a class="skip-link" href="#app">본문으로 건너뛰기</a>
 
 <header class="site-header" id="siteHeader">
   <div class="header-inner">
     <a class="brand" href="#/" aria-label="CGI 상품 카탈로그 홈">
-      <span class="brand-mark" aria-hidden="true">CGI</span>
+      <img src="../website/assets/img/cgi-mark-white.png" alt="CGI (주)시지아이" width="132" height="42">
+      <span class="brand-divider" aria-hidden="true"></span>
       <span class="brand-text">
         <strong>상품 카탈로그</strong>
-        <small>CGI · 공급처 공개 정보 기반</small>
+        <small>B2B QUOTE CATALOG</small>
       </span>
     </a>
 
+    <button class="nav-toggle" type="button" data-action="toggle-nav" aria-expanded="false" aria-controls="siteNav">
+      <span class="bars" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span class="sr-only">메뉴 열기</span>
+    </button>
+
     <form class="search-form" id="searchForm" role="search">
       <label class="sr-only" for="headerSearch">상품 검색</label>
-      <input type="search" id="headerSearch" name="q" placeholder="상품명·모델명·브랜드·카테고리 검색" autocomplete="off">
+      <input type="search" id="headerSearch" name="q" placeholder="상품명·모델명·브랜드 검색" autocomplete="off">
       <button type="submit" class="btn-search" aria-label="검색">검색</button>
     </form>
 
-    <nav class="header-nav" aria-label="주요 메뉴">
+    <nav class="header-nav" id="siteNav" aria-label="주요 메뉴">
       <a href="#/" data-nav="home">홈</a>
       <a href="#/products" data-nav="list">전체 상품</a>
       <a href="#/quote-cart" data-nav="quote">견적 목록</a>
-      <a href="#/about" data-nav="about">안내</a>
+      <a href="#/about" data-nav="about">이용 안내</a>
       <a href="../website/index.html" data-home-link data-nav="company">회사 홈페이지</a>
     </nav>
   </div>
@@ -39,7 +47,7 @@
 
 <div class="notice-bar" role="note">
   <span class="notice-dot" aria-hidden="true"></span>
-  <span id="noticeText">공급처 공개 수집 데이터 기반 미리보기입니다. 표시 수량은 공급처 공개 수집 기준이며 CGI 판매 가능 수량이 아닙니다.</span>
+  <span id="noticeText">공개 판매가는 공급처 공개 정보 기준입니다. 최종 견적은 CGI 담당자 확인 후 안내드립니다.</span>
 </div>
 
 <main id="app" class="app" tabindex="-1">
@@ -48,29 +56,38 @@
 
 <footer class="site-footer">
   <div class="footer-inner">
-    <div class="footer-col">
-      <h2>CGI 상품 카탈로그</h2>
-      <p>공급처 공개 페이지에서 수집한 공개 정보만으로 구성한 미리보기 카탈로그입니다. 삼아스토어·삼아사운드 등 원본 사이트의 상표·화면·데이터를 복제하지 않으며, 해당 Sites의 공식 사이트가 아닙니다.</p>
+    <div class="footer-brand">
+      <img src="../website/assets/img/cgi-mark-white.png" alt="CGI (주)시지아이" width="132" height="42" loading="lazy">
+      <p>방송·음향·영상·조명 토탈 솔루션<br>㈜시지아이</p>
     </div>
-    <div class="footer-col">
-      <h3>데이터 출처</h3>
-      <ul id="footerSources"><li>수집 샘플 로드 중…</li></ul>
+    <div class="footer-contact">
+      <h2>상품·견적 문의</h2>
+      <p><a href="tel:0625768100">TEL 062) 576-8100</a></p>
+      <p>FAX 062) 576-8181</p>
+      <p>광주광역시 광산구 하남산단천변좌로 19<br>광주드림파크 111호</p>
     </div>
-    <div class="footer-col">
-      <h3>안내</h3>
+    <div class="footer-links">
+      <h2>바로가기</h2>
       <ul>
-        <li>가격·재고는 공급처 공개 정보 기준이며 변동될 수 있습니다.</li>
-        <li>미공개 가격은 추정하지 않고 <em>가격 문의</em>로 표시합니다.</li>
-        <li>네이버 스마트스토어 개설 전 단계로, 주문·결제 기능은 제공하지 않습니다.</li>
-        <li><a href="../website/index.html" data-home-link>㈜시지아이 회사 홈페이지로 이동 →</a></li>
+        <li><a href="#/products">전체 상품</a></li>
+        <li><a href="#/quote-cart">견적 목록</a></li>
+        <li><a href="#/about">이용 안내</a></li>
+        <li><a href="../website/index.html" data-home-link>회사 홈페이지</a></li>
       </ul>
     </div>
   </div>
+  <div class="footer-bottom">
+    <p>© 주식회사 시지아이. All rights reserved.</p>
+    <p>공개 판매가는 참고 정보이며, 재고·배송·최종 판매가는 CGI 확인 후 안내됩니다.</p>
+  </div>
 </footer>
+
+<div id="cgiToast" class="toast" role="status" aria-live="polite"></div>
 
 <script src="config.js"></script>
 <script src="data/products.js"></script>
 <script src="data/services.js"></script>
+<script src="assets/js/cgi-header.js"></script>
 <script src="assets/js/cgi-catalog.js"></script>
 </body>
 </html>
