@@ -97,4 +97,4 @@ window.CGI_CONFIG = {
 ## 검증
 
 `website/docs/screenshots/` 에 실제 브라우저(Tabbit Chromium, BrowserSkill 0.3.3) 캡처가 있습니다.
-검증 항목과 결과는 저장소 `reports/cgi-company-website-work-report.md` 를 참고하세요.
+검증 항목과 결과는 내부 비공개 Governance(고객협력/고객코드/고객A)에 보관된 원본 보고서를 참고하세요.
