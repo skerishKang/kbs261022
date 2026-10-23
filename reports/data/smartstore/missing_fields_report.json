@@ -1,0 +1,20 @@
+{
+  "total_products": 4575,
+  "required_field_missing_counts": {
+    "ASTemplateCode": 4575,
+    "배송비": 4575,
+    "상세설명": 323,
+    "원산지코드": 4575,
+    "재고수량": 4575,
+    "카테고리번호": 4575,
+    "판매가": 2458
+  },
+  "ready_classification_counts": {
+    "partial": 4575
+  },
+  "price_available_count": 2117,
+  "price_missing_count": 2458,
+  "image_ok_count": 4575,
+  "description_present_count": 4252,
+  "option_products_count": 580
+}
