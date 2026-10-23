@@ -1,0 +1,83 @@
+{
+  "summary": {
+    "total_bids": 4,
+    "rated_bids": 3,
+    "unrated_bids": 1,
+    "overall_rate_stats": {
+      "count": 3,
+      "min": 89.0,
+      "max": 94.4,
+      "mean": 90.97,
+      "median": 89.5
+    },
+    "by_category": {
+      "용역": {
+        "count": 2,
+        "min": 89.5,
+        "max": 94.4,
+        "mean": 91.95,
+        "median": 91.95
+      },
+      "공사": {
+        "count": 1,
+        "min": 89.0,
+        "max": 89.0,
+        "mean": 89.0,
+        "median": 89.0
+      }
+    },
+    "by_status": {
+      "낙찰": 3,
+      "유찰": 1
+    },
+    "disclaimer": "Descriptive statistics only. No win-probability guarantee.",
+    "source": "D:\\1022\\wt-proc\\data\\procurement\\sample_bids.json",
+    "generated_at": "2026-10-23T00:11:39.885262+00:00"
+  },
+  "bids": [
+    {
+      "bid_no": "R26BK00000001-000",
+      "title": "샘플 IT 용역 공고 A",
+      "agency": "샘플 발주기관",
+      "category": "용역",
+      "estimated_price": 100000000,
+      "winning_bid": 89500000,
+      "bid_rate_pct": 89.5,
+      "bidders": 5,
+      "status": "낙찰"
+    },
+    {
+      "bid_no": "R26BK00000002-000",
+      "title": "샘플 IT 용역 공고 B",
+      "agency": "샘플 발주기관",
+      "category": "용역",
+      "estimated_price": 50000000,
+      "winning_bid": 47200000,
+      "bid_rate_pct": 94.4,
+      "bidders": 3,
+      "status": "낙찰"
+    },
+    {
+      "bid_no": "R26BK00000003-000",
+      "title": "샘플 물품 공고 C",
+      "agency": "샘플 발주기관",
+      "category": "물품",
+      "estimated_price": 30000000,
+      "winning_bid": null,
+      "bid_rate_pct": null,
+      "bidders": 2,
+      "status": "유찰"
+    },
+    {
+      "bid_no": "R26BK00000004-000",
+      "title": "샘플 공사 공고 D",
+      "agency": "샘플 발주기관",
+      "category": "공사",
+      "estimated_price": 200000000,
+      "winning_bid": 178000000,
+      "bid_rate_pct": 89.0,
+      "bidders": 7,
+      "status": "낙찰"
+    }
+  ]
+}
