@@ -216,6 +216,7 @@ class TestRealMaster(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         from tools.product_quality import build_quality as B
+        from tools.product_quality import verify_review as V
 
         cls.master_path = os.path.join(ROOT, "site", "data", "products.json")
         with io.open(cls.master_path, "rb") as handle:
@@ -225,9 +226,11 @@ class TestRealMaster(unittest.TestCase):
             os.path.join(ROOT, "data", "full_catalog", "product_db.xlsx")
         )
         cls.result = Q.build_result(cls.master, cls.confirmed_pairs, cls.master_pairs)
+        cls.stage2_result = Q.build_result(cls.master, cls.confirmed_pairs, cls.master_pairs)
+        cls.stage2 = V.apply(cls.stage2_result, cls.master)
         cls.tmp = tempfile.mkdtemp(prefix="pq43-")
         cls.out = os.path.join(cls.tmp, "product_quality")
-        B.main(["--out-dir", cls.out])
+        B.main(["--out-dir", cls.out, "--quiet"])
         with io.open(cls.master_path, "rb") as handle:
             cls.sha_after = hashlib.sha256(handle.read()).hexdigest()
 
@@ -273,6 +276,7 @@ B_FILES = [
     "product_quality_improved.json",
     "product_quality_summary.json",
     "product_quality_review.xlsx",
+    "product_quality_stage2_verification.csv",
 ]
 
 if __name__ == "__main__":
