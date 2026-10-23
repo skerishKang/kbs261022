@@ -653,14 +653,37 @@
           })
         };
         window.cgiLastQuoteCartRequest = request;
-        // save to localStorage list of requests
-        try {
-          var list = JSON.parse(localStorage.getItem('cgiQuoteRequests') || '[]');
-          list.unshift(request);
-          localStorage.setItem('cgiQuoteRequests', JSON.stringify(list));
-        } catch (e) {}
         var result = document.getElementById('quoteCartResult');
-        if (result) result.innerHTML = '<p class="detail-price-note">견적 요청이 저장되었습니다. JSON/CSV로 다운로드하거나 담당자에게 전달하세요.</p>';
+        var apiUrl = (window.CGI_SITE_CONFIG && window.CGI_SITE_CONFIG.quoteApiUrl) || '';
+        if (apiUrl) {
+          fetch(apiUrl + '/api/quotes', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(request)
+          }).then(function (res) {
+            if (!res.ok) throw new Error('HTTP ' + res.status);
+            return res.json();
+          }).then(function (data) {
+            request.id = data.id || request.id;
+            window.cgiLastQuoteCartRequest = request;
+            if (result) result.innerHTML = '<p class="detail-price-note">견적 요청이 접수되었습니다. 접수번호: ' + esc(request.id) + '</p>';
+          }).catch(function (err) {
+            // fallback to localStorage
+            try {
+              var list = JSON.parse(localStorage.getItem('cgiQuoteRequests') || '[]');
+              list.unshift(request);
+              localStorage.setItem('cgiQuoteRequests', JSON.stringify(list));
+            } catch (e) {}
+            if (result) result.innerHTML = '<p class="detail-price-note">서버 접수 실패, 로컬에 저장했습니다. (' + esc(err.message) + ')</p>';
+          });
+        } else {
+          try {
+            var list = JSON.parse(localStorage.getItem('cgiQuoteRequests') || '[]');
+            list.unshift(request);
+            localStorage.setItem('cgiQuoteRequests', JSON.stringify(list));
+          } catch (e) {}
+          if (result) result.innerHTML = '<p class="detail-price-note">견적 요청이 저장되었습니다. JSON/CSV로 다운로드하거나 담당자에게 전달하세요.</p>';
+        }
         var pre = document.getElementById('quoteCartText');
         if (pre) pre.textContent = buildQuoteCartText(items, request);
         window.cgiLastQuoteCartText = buildQuoteCartText(items, request);
