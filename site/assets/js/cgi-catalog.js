@@ -54,9 +54,9 @@
     var sites = overrides && 'sites' in overrides ? overrides.sites : r.sites;
     var sort = overrides && 'sort' in overrides ? overrides.sort : r.sort;
     if (q) params.push('q=' + encodeURIComponent(q));
-    if (brands && brands.length) params.push('brand=' + encodeURIComponent(brands.join(',')));
-    if (cats && cats.length) params.push('cat=' + encodeURIComponent(cats.join(',')));
-    if (sites && sites.length) params.push('site=' + encodeURIComponent(sites.join(',')));
+    if (brands && brands.length) params.push('brand=' + encodeURIComponent(brands.join('|')));
+    if (cats && cats.length) params.push('cat=' + encodeURIComponent(cats.join('|')));
+    if (sites && sites.length) params.push('site=' + encodeURIComponent(sites.join('|')));
     if (sort && sort !== 'recent') params.push('sort=' + encodeURIComponent(sort));
     return '#/products' + (params.length ? '?' + params.join('&') : '');
   }
@@ -329,6 +329,7 @@
   }
 
   function renderDetail(id) {
+    state.quoteServices = [];
     var product = null;
     for (var i = 0; i < state.products.length; i++) {
       if (state.products[i].id === id) { product = state.products[i]; break; }
@@ -383,6 +384,18 @@
             return '<tr><th>' + esc(s.label) + '</th><td>' + esc(s.value) + '</td></tr>';
           }).join('') + '</tbody></table>' : '') +
           optionsHtml +
+          '<div class="detail-block"><h3>서비스 선택 (견적 요청)</h3>' +
+            '<p class="detail-price-note">고객 확정 전 금액은 표시하지 않습니다. 필요한 서비스를 선택한 뒤 견적을 요청하세요.</p>' +
+            '<div class="service-checks">' +
+              (window.CGI_SERVICES || []).map(function (svc) {
+                return '<label class="service-check"><input type="checkbox" value="' + esc(svc.id) + '" onchange="window.cgiToggleService(\'' + esc(svc.id) + '\', this.checked)"> ' +
+                  '<strong>' + esc(svc.name) + '</strong><br><span>' + esc(svc.description) + '</span></label>';
+              }).join('') +
+            '</div>' +
+            '<button type="button" class="btn-search" onclick="window.cgiRequestQuote(\'' + esc(product.id) + '\')">견적 요청</button>' +
+            '<div id="quoteResult" class="quote-result"></div>' +
+          '</div>' +
+          optionsHtml +
           '<div class="detail-block"><h3>원본 상품 정보 출처</h3><div class="source-box"><dl>' +
             '<dt>공급처</dt><dd>' + esc(siteLabel(product)) + ' (' + esc(product.source.site) + ')</dd>' +
             '<dt>원본 상품 ID</dt><dd>' + esc(product.source.product_id) + '</dd>' +
@@ -397,6 +410,114 @@
         '</div>' +
       '</div>';
   }
+
+
+  function renderQuote(id, serviceIds) {
+    var product = null;
+    for (var i = 0; i < state.products.length; i++) {
+      if (state.products[i].id === id) { product = state.products[i]; break; }
+    }
+    if (!product) {
+      app.innerHTML = '<div class="empty-state"><h3>?�품??찾을 ???�습?�다</h3></div>';
+      return;
+    }
+    var services = (window.CGI_SERVICES || []).filter(function (svc) {
+      return serviceIds.indexOf(svc.id) !== -1;
+    });
+    if (!services.length) services = window.CGI_SERVICES || [];
+    var serviceNames = services.map(function (s) { return s.name; }).join(', ');
+    var quoteText =
+      '[CGI 견적 요청]\n' +
+      '상품: ' + product.name + ' (' + product.id + ')\n' +
+      '브랜드: ' + (product.brand_norm || product.brand) + '\n' +
+      '모델: ' + (product.model || '-') + '\n' +
+      '카테고리: ' + (product._cat || '-') + '\n' +
+      '공개 판매가: ' + (product.price && product.price.inquiry ? '가격 문의' : (product.price ? product.price.text : '-')) + '\n' +
+      '요청 서비스: ' + serviceNames + '\n' +
+      '공급처 원본: ' + (product.source ? product.source.url : '-') + '\n' +
+      '※ 금액은 고객 확정 전 미표시. CGI 확인 후 안내.';
+
+    app.innerHTML =
+      '<div class="breadcrumb"><a href="#/">??/a> ??<a href="#/products">?�품 목록</a> ??견적 요청</div>' +
+      '<div class="detail-grid">' +
+        '<div>' +
+          '<h1 class="detail-title">견적 요청</h1>' +
+          '<p class="detail-sub">' + esc(product.name) + ' · ' + esc(product._cat) + '</p>' +
+          '<div class="detail-block"><h3>선택 서비스</h3><ul>' +
+            services.map(function (s) { return '<li><strong>' + esc(s.name) + '</strong> - ' + esc(s.description) + '</li>'; }).join('') +
+          '</ul></div>' +
+          '<div class="detail-block"><h3>요청자 정보</h3>' +
+            '<form id="quoteForm" class="quote-form">' +
+              '<label>회사/기관명 <input type="text" name="company" required></label>' +
+              '<label>담당자명 <input type="text" name="name" required></label>' +
+              '<label>연락처 <input type="tel" name="phone" required></label>' +
+              '<label>이메일 <input type="email" name="email"></label>' +
+              '<label>요청 내용 <textarea name="note" rows="4" placeholder="설치 환경, 일정, 수량 등을 입력하세요."></textarea></label>' +
+              '<button type="submit" class="btn-search">견적 요청 보내기</button>' +
+            '</form>' +
+            '<div id="quoteResult" class="quote-result"></div>' +
+          '</div>' +
+        '</div>' +
+        '<div>' +
+          '<div class="detail-block"><h3>요청 요약 (복사용)</h3>' +
+            '<pre id="quoteText" class="quote-text">' + esc(quoteText) + '</pre>' +
+            '<button type="button" class="btn-search" onclick="window.cgiCopyQuote()">요약 복사</button>' +
+          '</div>' +
+          '<a class="back-link" href="#/product/' + encodeURIComponent(product.id) + '">??상품으로 ?�아가�?/a>' +
+        '</div>' +
+      '</div>';
+
+    var form = document.getElementById('quoteForm');
+    if (form) {
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var data = new FormData(form);
+        var body = quoteText + '\n\n[요청자 정보]\n' +
+          '회사/기관: ' + (data.get('company') || '') + '\n' +
+          '담당자: ' + (data.get('name') || '') + '\n' +
+          '연락처: ' + (data.get('phone') || '') + '\n' +
+          '이메일: ' + (data.get('email') || '') + '\n' +
+          '요청 내용: ' + (data.get('note') || '');
+        var result = document.getElementById('quoteResult');
+        if (result) result.innerHTML = '<p class="detail-price-note">견적 요청이 준비되었습니다. 아래 내용을 복사해 CGI 담당자에게 전달하세요.</p>';
+        var pre = document.getElementById('quoteText');
+        if (pre) pre.textContent = body;
+        window.cgiLastQuote = body;
+      });
+    }
+    window.cgiLastQuote = quoteText;
+  }
+
+  window.cgiToggleService = function (id, checked) {
+    state.quoteServices = state.quoteServices || [];
+    var idx = state.quoteServices.indexOf(id);
+    if (checked && idx === -1) state.quoteServices.push(id);
+    if (!checked && idx !== -1) state.quoteServices.splice(idx, 1);
+  };
+
+  window.cgiRequestQuote = function (productId) {
+    var services = state.quoteServices && state.quoteServices.length ? state.quoteServices : [];
+    if (!services.length) {
+      alert('최소 1개의 서비스를 선택하세요.');
+      return;
+    }
+    location.hash = '#/quote/' + encodeURIComponent(productId) + '?services=' + encodeURIComponent(services.join('|'));
+  };
+
+  window.cgiCopyQuote = function () {
+    var text = window.cgiLastQuote || '';
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text);
+    } else {
+      var ta = document.createElement('textarea');
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+    }
+  };
+
 
   function renderAbout() {
     var totals = state.meta.supplier_catalog_totals || {};
@@ -450,14 +571,18 @@
     if (parts[0] === 'products') {
       route.view = 'list';
       route.q = params.get('q') || '';
-      route.brands = (params.get('brand') || '').split(',').filter(Boolean);
-      route.cats = (params.get('cat') || '').split(',').filter(Boolean);
-      route.sites = (params.get('site') || '').split(',').filter(Boolean);
+      route.brands = (params.get('brand') || '').split('|').filter(Boolean);
+      route.cats = (params.get('cat') || '').split('|').filter(Boolean);
+      route.sites = (params.get('site') || '').split('|').filter(Boolean);
       route.sort = params.get('sort') || 'recent';
       route.page = Math.max(1, parseInt(params.get('page') || '1', 10) || 1);
     } else if (parts[0] === 'product' && parts[1]) {
       route.view = 'detail';
       route.id = decodeURIComponent(parts[1]);
+    } else if (parts[0] === 'quote' && parts[1]) {
+      route.view = 'quote';
+      route.id = decodeURIComponent(parts[1]);
+      route.services = (params.get('services') || '').split('|').filter(Boolean);
     } else if (parts[0] === 'about') {
       route.view = 'about';
     }
@@ -475,6 +600,7 @@
     if (state.route.view === 'home') renderHome();
     else if (state.route.view === 'list') renderList();
     else if (state.route.view === 'detail') renderDetail(state.route.id);
+    else if (state.route.view === 'quote') renderQuote(state.route.id, state.route.services || []);
     else renderAbout();
     renderFooterSources();
     if (location.hash === '#/products') window.scrollTo(0, 0);
@@ -550,9 +676,9 @@
       var params = new URLSearchParams();
       var r = state.route;
       if (r.q) params.set('q', r.q);
-      if (r.brands.length) params.set('brand', r.brands.join(','));
-      if (r.cats.length) params.set('cat', r.cats.join(','));
-      if (r.sites.length) params.set('site', r.sites.join(','));
+      if (r.brands.length) params.set('brand', r.brands.join('|'));
+      if (r.cats.length) params.set('cat', r.cats.join('|'));
+      if (r.sites.length) params.set('site', r.sites.join('|'));
       if (r.sort && r.sort !== 'recent') params.set('sort', r.sort);
       params.set('page', page);
       navigate('#/products?' + params.toString());
@@ -568,9 +694,9 @@
       next.page = 1;
       var q = next.q ? '?q=' + encodeURIComponent(next.q) : '';
       var extra = [];
-      if (next.brands.length) extra.push('brand=' + encodeURIComponent(next.brands.join(',')));
-      if (next.cats.length) extra.push('cat=' + encodeURIComponent(next.cats.join(',')));
-      if (next.sites.length) extra.push('site=' + encodeURIComponent(next.sites.join(',')));
+      if (next.brands.length) extra.push('brand=' + encodeURIComponent(next.brands.join('|')));
+      if (next.cats.length) extra.push('cat=' + encodeURIComponent(next.cats.join('|')));
+      if (next.sites.length) extra.push('site=' + encodeURIComponent(next.sites.join('|')));
       navigate('#/products' + q + (extra.length ? '&' + extra.join('&') : ''));
       return;
     }
@@ -600,9 +726,9 @@
       var params = new URLSearchParams();
       var r = state.route;
       if (r.q) params.set('q', r.q);
-      if (r.brands.length) params.set('brand', r.brands.join(','));
-      if (r.cats.length) params.set('cat', r.cats.join(','));
-      if (r.sites.length) params.set('site', r.sites.join(','));
+      if (r.brands.length) params.set('brand', r.brands.join('|'));
+      if (r.cats.length) params.set('cat', r.cats.join('|'));
+      if (r.sites.length) params.set('site', r.sites.join('|'));
       if (el.value && el.value !== 'recent') params.set('sort', el.value);
       navigate('#/products' + (params.toString() ? '?' + params.toString() : ''));
       return;
@@ -619,9 +745,9 @@
       next.page = 1;
       var p2 = new URLSearchParams();
       if (next.q) p2.set('q', next.q);
-      if (next.brands.length) p2.set('brand', next.brands.join(','));
-      if (next.cats.length) p2.set('cat', next.cats.join(','));
-      if (next.sites.length) p2.set('site', next.sites.join(','));
+      if (next.brands.length) p2.set('brand', next.brands.join('|'));
+      if (next.cats.length) p2.set('cat', next.cats.join('|'));
+      if (next.sites.length) p2.set('site', next.sites.join('|'));
       if (next.sort && next.sort !== 'recent') p2.set('sort', next.sort);
       navigate('#/products' + (p2.toString() ? '?' + p2.toString() : ''));
     }
