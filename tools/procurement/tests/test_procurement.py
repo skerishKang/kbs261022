@@ -3,6 +3,7 @@ import json
 import argparse
 import os
 import sys
+import tempfile
 import unittest
 
 REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", ".."))
@@ -52,19 +53,32 @@ class TestProcurement(unittest.TestCase):
         self.assertEqual(unrated[0]["status"], "유찰")
 
     def test_run_main(self):
-        # run main with sample input, ensure report written
+        # main() 은 샘플 입력으로 돌리되 저장된 나라장터 산출물을 건드리면 안 된다.
+        # OUT_DIR 을 임시 디렉터리로 돌리지 않으면 384건 보고서가 샘플 4건으로 덮어써진다.
         import io
+        import hashlib
         from contextlib import redirect_stdout
+        tracked = os.path.join(REPO_ROOT, "reports", "data", "procurement", "bid_analysis_report.json")
+        before = hashlib.sha256(open(tracked, "rb").read()).hexdigest() if os.path.exists(tracked) else None
         buf = io.StringIO()
         old_argv = sys.argv
-        sys.argv = ["g2b_bid_analysis.py", "--input", SAMPLE]
-        try:
-            with redirect_stdout(buf):
-                gba.main()
-        finally:
-            sys.argv = old_argv
-        out_json = os.path.join(REPO_ROOT, "reports", "data", "procurement", "bid_analysis_report.json")
-        self.assertTrue(os.path.exists(out_json))
+        old_out_dir = gba.OUT_DIR
+        with tempfile.TemporaryDirectory() as tmp:
+            sys.argv = ["g2b_bid_analysis.py", "--input", SAMPLE]
+            gba.OUT_DIR = tmp
+            try:
+                with redirect_stdout(buf):
+                    gba.main()
+            finally:
+                sys.argv = old_argv
+                gba.OUT_DIR = old_out_dir
+            out_json = os.path.join(tmp, "bid_analysis_report.json")
+            self.assertTrue(os.path.exists(out_json))
+            summary = json.load(open(out_json, encoding="utf-8"))["summary"]
+            self.assertEqual(summary["total_bids"], 4)
+        if before is not None:
+            after = hashlib.sha256(open(tracked, "rb").read()).hexdigest()
+            self.assertEqual(before, after, "테스트가 저장소 산출물을 덮어썼습니다")
 
     def test_live_fetch_without_key_returns_error(self):
         # ensure no crash when no key
@@ -115,11 +129,11 @@ class TestProcurementNew(unittest.TestCase):
     def test_xlsx_written(self):
         bids = gba.load_bids(SAMPLE)
         norm = gba.normalize(bids, "sample:test")
-        path = os.path.join(REPO_ROOT, "reports", "data", "procurement", "_test.xlsx")
-        ok = gba.write_xlsx(norm, path)
-        self.assertTrue(ok)
-        self.assertTrue(os.path.exists(path))
-        os.remove(path)
+        with tempfile.TemporaryDirectory() as tmp:
+            path = os.path.join(tmp, "_test.xlsx")
+            ok = gba.write_xlsx(norm, path)
+            self.assertTrue(ok)
+            self.assertTrue(os.path.exists(path))
 
     def test_live_fetch_no_key(self):
         os.environ.pop("G2B_API_KEY", None)
