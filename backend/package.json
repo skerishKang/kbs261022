@@ -1,0 +1,16 @@
+{
+  "name": "cgi-storefront-backend",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Cloudflare Worker + D1 backend for CGI quote, order, payment and ERP-sync pipelines",
+  "scripts": {
+    "test": "node --test --experimental-sqlite \"test/unit/*.test.mjs\" \"test/e2e/*.test.mjs\"",
+    "test:unit": "node --test --experimental-sqlite \"test/unit/*.test.mjs\"",
+    "test:e2e": "node --test --experimental-sqlite \"test/e2e/*.test.mjs\"",
+    "smoke": "node --experimental-sqlite test/smoke.mjs"
+  },
+  "devDependencies": {
+    "wrangler": "^4.0.0"
+  }
+}

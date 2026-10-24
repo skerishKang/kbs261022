@@ -1,4 +1,19 @@
--- CGI quote requests
+-- ============================================================
+-- CGI storefront backend schema (D1)
+--
+-- Part 1: quote_requests  (existing, unchanged — issue #37/#39)
+-- Part 2: orders / order_items / payments / order_events / erp_sync
+--         (order + payment + ERP-sync pipeline, issue #67)
+--
+-- Every statement is idempotent (CREATE TABLE IF NOT EXISTS /
+-- CREATE INDEX IF NOT EXISTS) so the whole file can be executed
+-- against a live database without breaking existing rows.
+-- Amounts are stored as INTEGER KRW. Timestamps are ISO-8601 UTC.
+-- ============================================================
+
+-- ------------------------------------------------------------
+-- Part 1. Quote requests (existing)
+-- ------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS quote_requests (
   id TEXT PRIMARY KEY,
   created_at TEXT NOT NULL,
@@ -18,3 +33,145 @@ CREATE TABLE IF NOT EXISTS quote_requests (
 
 CREATE INDEX IF NOT EXISTS idx_quote_requests_created_at ON quote_requests(created_at);
 CREATE INDEX IF NOT EXISTS idx_quote_requests_status ON quote_requests(status);
+
+-- ------------------------------------------------------------
+-- Part 2. Orders
+--
+-- kind='purchase' : every item has a confirmed public price -> payment possible
+-- kind='quote'     : at least one item price is unconfirmed  -> payment forbidden
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS orders (
+  id TEXT PRIMARY KEY,                -- e.g. ORD-20261024-A1B2C (also used as PG orderId)
+  kind TEXT NOT NULL CHECK (kind IN ('purchase','quote')),
+  idempotency_key TEXT UNIQUE,        -- client generated; duplicate order prevention
+  cart_hash TEXT,                     -- fingerprint of items+qty (duplicate detection)
+  status TEXT NOT NULL,               -- see ORDER_TRANSITIONS in lib/orders.mjs
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL,
+
+  customer_company TEXT NOT NULL,
+  customer_name TEXT NOT NULL,
+  customer_phone TEXT NOT NULL,
+  customer_email TEXT,
+  customer_addr TEXT,
+  customer_addr_detail TEXT,
+  customer_note TEXT,
+  services TEXT,                      -- JSON array of service ids
+
+  item_total INTEGER NOT NULL DEFAULT 0,
+  shipping_fee INTEGER NOT NULL DEFAULT 0,
+  total_amount INTEGER NOT NULL DEFAULT 0,
+  supplied_amount INTEGER NOT NULL DEFAULT 0,  -- total / (1+vatRate), VAT-exclusive
+  vat_amount INTEGER NOT NULL DEFAULT 0,
+
+  payment_status TEXT NOT NULL DEFAULT 'none', -- none|pending|paid|failed|expired|partial_refunded|refunded
+  payment_method TEXT,
+  payment_key TEXT,
+  paid_at TEXT,
+  refunded_amount INTEGER NOT NULL DEFAULT 0,
+
+  delivery_status TEXT NOT NULL DEFAULT 'pending', -- pending|processing|shipped|delivered|returned
+  delivery_tracking TEXT,
+
+  admin_prices TEXT,                  -- JSON object productId -> confirmed unit price
+  admin_note TEXT,
+  erp_status TEXT NOT NULL DEFAULT 'not_sent', -- not_sent|sent|confirmed|failed|skipped
+  erp_sent_at TEXT,
+  source_quote_id TEXT                -- link to quote_requests.id when converted
+);
+
+CREATE INDEX IF NOT EXISTS idx_orders_created_at ON orders(created_at);
+CREATE INDEX IF NOT EXISTS idx_orders_status ON orders(status);
+CREATE INDEX IF NOT EXISTS idx_orders_kind ON orders(kind);
+CREATE INDEX IF NOT EXISTS idx_orders_payment_status ON orders(payment_status);
+CREATE INDEX IF NOT EXISTS idx_orders_customer_company ON orders(customer_company);
+CREATE INDEX IF NOT EXISTS idx_orders_cart_hash ON orders(cart_hash);
+
+-- ------------------------------------------------------------
+-- Part 2. Order line items
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS order_items (
+  order_id TEXT NOT NULL,
+  seq INTEGER NOT NULL,
+  product_id TEXT NOT NULL,
+  product_name TEXT NOT NULL,
+  brand TEXT,
+  category TEXT,
+  option_label TEXT,
+  price_state TEXT NOT NULL,          -- public|inquiry|unknown
+  unit_price INTEGER,                 -- null when price_state != 'public'
+  qty INTEGER NOT NULL,
+  line_total INTEGER NOT NULL,        -- 0 when unit_price is null
+  erp_code TEXT,                      -- Ecount item code (SS-3836 / SM-2574 / ...)
+  PRIMARY KEY (order_id, seq)
+);
+
+CREATE INDEX IF NOT EXISTS idx_order_items_product_id ON order_items(product_id);
+
+-- ------------------------------------------------------------
+-- Part 2. Payments (one row per paymentKey)
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS payments (
+  id INTEGER PRIMARY KEY,
+  order_id TEXT NOT NULL,
+  payment_key TEXT UNIQUE NOT NULL,
+  provider TEXT NOT NULL DEFAULT 'tosspayments',
+  provider_mode TEXT NOT NULL DEFAULT 'test', -- test|mock|live
+  pg_order_id TEXT NOT NULL,
+  amount INTEGER NOT NULL,
+  supplied_amount INTEGER NOT NULL DEFAULT 0,
+  vat INTEGER NOT NULL DEFAULT 0,
+  method TEXT,
+  status TEXT NOT NULL,               -- pending|paid|failed|cancelled|partial_cancelled|expired|aborted
+  requested_at TEXT,
+  approved_at TEXT,
+  balance_amount INTEGER NOT NULL DEFAULT 0,
+  cancel_amount INTEGER NOT NULL DEFAULT 0,
+  failure_code TEXT,
+  failure_message TEXT,
+  raw TEXT,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_payments_order_id ON payments(order_id);
+CREATE INDEX IF NOT EXISTS idx_payments_status ON payments(status);
+
+-- ------------------------------------------------------------
+-- Part 2. Order event ledger (audit trail: status/payment/erp/admin)
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS order_events (
+  id INTEGER PRIMARY KEY,
+  order_id TEXT NOT NULL,
+  type TEXT NOT NULL,                 -- created|status_changed|payment_confirmed|payment_failed|...
+  actor TEXT NOT NULL DEFAULT 'system',
+  from_status TEXT,
+  to_status TEXT,
+  meta TEXT,
+  error TEXT,
+  created_at TEXT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_order_events_order_id ON order_events(order_id);
+CREATE INDEX IF NOT EXISTS idx_order_events_type ON order_events(type);
+
+-- ------------------------------------------------------------
+-- Part 2. ERP sync queue (test adapter first, live later)
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS erp_sync (
+  id INTEGER PRIMARY KEY,
+  order_id TEXT NOT NULL,
+  adapter TEXT NOT NULL DEFAULT 'ecount-test',
+  mode TEXT NOT NULL DEFAULT 'test',  -- test|live  (ERP_LIVE_WRITE=NO until Ecount OAPI is enabled)
+  action TEXT NOT NULL DEFAULT 'sales_slip_create',
+  dedupe_key TEXT UNIQUE NOT NULL,    -- duplicate transmission prevention
+  payload TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'pending', -- pending|sent|confirmed|failed|skipped
+  attempts INTEGER NOT NULL DEFAULT 0,
+  last_error TEXT,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_erp_sync_order_id ON erp_sync(order_id);
+CREATE INDEX IF NOT EXISTS idx_erp_sync_status ON erp_sync(status);
