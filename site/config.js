@@ -14,6 +14,12 @@ window.CGI_SITE_CONFIG = {
   homepageUrl: '../website/index.html',
   // 견적 API (Cloudflare Worker). 비어 있으면 localStorage 정적 시연 모드.
   quoteApiUrl: 'https://cgi-quote-api.charliekant.workers.dev',
+  // 주문·결제 API. 비어 있으면 quoteApiUrl 을 재사용한다.
+  orderApiUrl: 'https://cgi-quote-api.charliekant.workers.dev',
+  // 토스페이먼츠 client key (test_gck_...). 비어 있으면 결제 화면이
+  // "테스트 결제" 모의 승인 모드로 동작한다. secret key 는 절대 여기에 넣지 않는다.
+  tossClientId: '',
+  tossJsUrl: 'https://js.tosspayments.com/v2/standard',
   homepageLabel: '회사 홈페이지',
 
   // ── 상품 데이터 경로 (이슈 #19 전체 마스터 반영 지점) ────────
