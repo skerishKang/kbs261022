@@ -668,6 +668,20 @@
   function cartItemCount(items) {
     return items.reduce(function (sum, x) { return sum + (x.cart.qty || 1); }, 0);
   }
+  /* ---- 주문·결제 분기 (issue #67): 모든 상품이 공개가이면 결제 주문 가능 ---- */
+  function isPublicPriced(product) {
+    return !!(product && product.price && product.price.state === 'public' &&
+      product.price.value !== null && product.price.value !== undefined);
+  }
+  function allPublicPrice(items) {
+    return !!items && items.length > 0 && items.every(function (x) { return isPublicPriced(x.product); });
+  }
+  function cartTotal(items) {
+    return items.reduce(function (sum, x) {
+      return isPublicPriced(x.product) ? sum + Number(x.product.price.value) * (x.cart.qty || 1) : sum;
+    }, 0);
+  }
+  function money(n) { return Number(n || 0).toLocaleString('ko-KR') + '원'; }
   function snapshotCartForm() {
     var form = document.getElementById('quoteCartForm');
     if (!form) return null;
@@ -767,7 +781,11 @@
                 '</div>' +
               '</div>' +
             '</details>' +
-            '<div class="cart-total-line"><span>최종 금액</span><strong>담당자 확인 후 안내</strong></div>' +
+            (allPublicPrice(items)
+              ? '<div class="cart-total-line"><span>주문 금액</span><strong>' + money(cartTotal(items)) + '</strong></div>' +
+                '<a class="btn btn-primary btn-block" href="#/checkout" style="margin-top:12px">결제 주문으로 계속</a>'
+              : '<div class="cart-total-line"><span>최종 금액</span><strong>담당자 확인 후 안내</strong></div>' +
+                '<p class="form-note">일부 상품이 판매가 미확정 상태라 결제 대신 견적 요청으로 접수됩니다.</p>') +
           '</section>' +
         '</div>' +
         '<aside class="cart-request">' +
@@ -980,6 +998,11 @@
       route.services = (params.get('services') || '').split('|').filter(Boolean);
     } else if (parts[0] === 'quote-cart') {
       route.view = 'quote-cart';
+    } else if (parts[0] === 'checkout') {
+      route.view = 'checkout';
+    } else if (parts[0] === 'order' && parts[1]) {
+      route.view = 'order';
+      route.id = decodeURIComponent(parts[1]);
     } else if (parts[0] === 'about') {
       route.view = 'about';
     }
@@ -1009,8 +1032,10 @@
     else if (view === 'detail') {
       var p = findProduct(state.route.id);
       title = (p ? p.name : '상품') + ' | CGI 상품 카탈로그';
-    } else if (view === 'quote-cart') title = '견적 목록 | CGI';
+    }     else if (view === 'quote-cart') title = '견적 목록 | CGI';
     else if (view === 'quote') title = '견적 요청 | CGI';
+    else if (view === 'checkout') title = '주문 접수 | CGI';
+    else if (view === 'order') title = '주문 상세 | CGI';
     else if (view === 'about') title = '이용 안내 | CGI';
     document.title = title;
   }
@@ -1024,6 +1049,8 @@
     else if (state.route.view === 'detail') renderDetail(state.route.id);
     else if (state.route.view === 'quote') renderQuote(state.route.id, state.route.services || []);
     else if (state.route.view === 'quote-cart') renderQuoteCart();
+    else if (state.route.view === 'checkout' && window.CGI_ORDER) window.CGI_ORDER.renderCheckout(app);
+    else if (state.route.view === 'order' && window.CGI_ORDER) window.CGI_ORDER.renderOrderDetail(app, state.route.id);
     else renderAbout();
     updateTitle();
     document.body.setAttribute('data-view', state.route.view);

@@ -1,8 +1,32 @@
 name = "cgi-quote-api"
 main = "worker.js"
 compatibility_date = "2026-10-23"
+compatibility_flags = ["nodejs_compat"]
 
 [[d1_databases]]
 binding = "DB"
 database_name = "cgi_quotes"
 database_id = "602346ac-b0f3-4503-befd-b921a6a5cfd9"
+
+# ------------------------------------------------------------
+# Secrets — set with `wrangler secret put <NAME>` (NEVER commit).
+#
+#   ADMIN_TOKEN               staff/admin API bearer token (existing)
+#   TOSS_WIDGET_SECRET_KEY    test_gsk_... / live_gsk_...  (order-form widget confirm)
+#   TOSS_API_SECRET_KEY       test_sk_...  / live_sk_...   (core API: query / cancel)
+#
+# Optional variables (defaults are safe):
+#   PG_PROVIDER_MODE          "auto" | "mock" | "live"   (default "auto": live keys -> live, none -> mock)
+#   PG_PUBLIC_BASE_URL        https://api.tosspayments.com
+#   ERP_LIVE_WRITE            "NO" | "YES"                (default "NO": Ecount OAPI is not enabled)
+#   ERP_MODE                  "test" | "live"             (default "test")
+#   ALLOWED_ORIGINS           comma separated extra origins for CORS
+#   SHIPPING_FEE_DEFAULT      default shipping fee in KRW  (default 0)
+#   MIN_PARTIAL_REFUND        smallest accepted partial refund in KRW (default 1000)
+# ------------------------------------------------------------
+[vars]
+PG_PROVIDER_MODE = "auto"
+PG_PUBLIC_BASE_URL = "https://api.tosspayments.com"
+ERP_LIVE_WRITE = "NO"
+ERP_MODE = "test"
+SHIPPING_FEE_DEFAULT = "0"
