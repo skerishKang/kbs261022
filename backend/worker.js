@@ -754,26 +754,29 @@ async function cancelPayment(db, env, order, paymentKey, body, pg) {
   }
   const cancelAmount = Math.min(requested, refundable);
 
+  // A retry for the same (payment, reason) returns the recorded outcome instead
+  // of refunding twice. Exact JSON match, so "환불" never shadows "부분 환불".
+  const prior = await db
+    .prepare("SELECT meta FROM order_events WHERE order_id = ? AND type = 'payment_cancelled' AND json_extract(meta, '$.payment_key') = ? AND json_extract(meta, '$.reason') = ? ORDER BY created_at DESC LIMIT 1")
+    .bind(order.id, paymentKey, reason)
+    .first();
+  if (prior) {
+    let meta = {};
+    try { meta = JSON.parse(prior.meta) || {}; } catch (e) { meta = {}; }
+    return {
+      status: 200,
+      body: {
+        idempotent: true,
+        payment_key: paymentKey,
+        cancel_amount: toNonNegInt(meta.cancel_amount),
+        refunded_amount: toNonNegInt(order.refunded_amount),
+        payment_status: order.payment_status,
+        order_status: order.status,
+      },
+    };
+  }
+
   if (refundable <= 0 || cancelAmount <= 0) {
-    // Replaying an already recorded refund returns that result; a new refund
-    // request against an exhausted balance is a conflict.
-    const replay = await db
-      .prepare("SELECT 1 FROM order_events WHERE order_id = ? AND type = 'payment_cancelled' AND meta LIKE ? AND meta LIKE ? ORDER BY created_at DESC LIMIT 1")
-      .bind(order.id, `%${paymentKey}%`, `%${reason}%`)
-      .first();
-    if (replay) {
-      return {
-        status: 200,
-        body: {
-          idempotent: true,
-          payment_key: paymentKey,
-          cancel_amount: toNonNegInt(payment.cancel_amount),
-          refunded_amount: toNonNegInt(order.refunded_amount),
-          payment_status: order.payment_status,
-          order_status: order.status,
-        },
-      };
-    }
     return { status: 409, body: { error: 'nothing refundable', detail: { balance_amount: refundable } } };
   }
 

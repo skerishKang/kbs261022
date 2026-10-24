@@ -142,7 +142,7 @@ test('live driver without credentials skips instead of throwing', async () => {
 test('live driver transmits through the injected client', async () => {
   let captured = null;
   const driver = createErpDriver(
-    { ERP_MODE: 'live', ERP_LIVE_WRITE: 'YES', ERP_OAPI_BASE_URL: 'https://erp.example.test/oapi', ERP_OAPI_TOKEN: 'secret-token' },
+    { ERP_MODE: 'live', ERP_LIVE_WRITE: 'YES', ERP_OAPI_BASE_URL: 'https://erp.example.test/oapi', ERP_OAPI_TOKEN: 'example-token' },
     async (url, init) => {
       captured = { url, headers: init.headers, body: JSON.parse(init.body) };
       return { ok: true, status: 200, json: async () => ({ code: '100' }) };
@@ -154,14 +154,14 @@ test('live driver transmits through the injected client', async () => {
   assert.equal(result.delivered, true);
   assert.equal(result.status, 'sent');
   assert.equal(captured.url, 'https://erp.example.test/oapi/');
-  assert.equal(captured.headers.Authorization, 'Bearer secret-token');
+  assert.equal(captured.headers.Authorization, 'Bearer example-token');
   assert.equal(captured.headers['Idempotency-Key'], payload.dedupe_key);
   assert.deepEqual(captured.body, payload);
 });
 
 test('live driver reports a failed transmission', async () => {
   const driver = createErpDriver(
-    { ERP_MODE: 'live', ERP_LIVE_WRITE: 'YES', ERP_OAPI_BASE_URL: 'https://erp.example.test/oapi', ERP_OAPI_TOKEN: 't' },
+    { ERP_MODE: 'live', ERP_LIVE_WRITE: 'YES', ERP_OAPI_BASE_URL: 'https://erp.example.test/oapi', ERP_OAPI_TOKEN: 'example-token' },
     async () => ({ ok: false, status: 500, json: async () => ({ error: 'boom' }) })
   );
   const result = await driver.transmit({ dedupe_key: 'k' });

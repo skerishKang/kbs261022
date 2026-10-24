@@ -11,7 +11,7 @@ import { PRICE_INDEX } from '../data/price_index.mjs';
 
 const ORIGIN = 'https://skerishkang.github.io';
 const EVIL = 'http://evil.example.com';
-const TOKEN = 'smoke-admin-token';
+const TOKEN = 'example-smoke-token';
 
 const env = {
   DB: openD1(),

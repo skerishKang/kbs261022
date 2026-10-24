@@ -116,7 +116,7 @@ test('createPgAdapter returns a mock when no key is configured', () => {
 test('live adapter is built with auth and injectable fetch', async () => {
   const calls = [];
   const pg = createPgAdapter({
-    secretKey: 'test_sk_x',
+    secretKey: 'example-sk-x',
     mode: 'auto',
     baseUrl: 'https://api.example.test',
     fetchFn: async (url, init) => {
@@ -137,7 +137,7 @@ test('live adapter is built with auth and injectable fetch', async () => {
 
 test('live adapter surfaces PG errors as PgError', async () => {
   const pg = createPgAdapter({
-    secretKey: 'test_sk_x',
+    secretKey: 'example-sk-x',
     baseUrl: 'https://api.example.test',
     fetchFn: async () => ({ ok: false, status: 403, json: async () => ({ code: 'UNAUTHORIZED_KEY', message: '잘못된 키' }) }),
   });
@@ -150,7 +150,7 @@ test('live adapter surfaces PG errors as PgError', async () => {
 test('live adapter cancel endpoint passes amount and reason', async () => {
   let captured = null;
   const pg = createPgAdapter({
-    secretKey: 'test_sk_x',
+    secretKey: 'example-sk-x',
     baseUrl: 'https://api.example.test',
     fetchFn: async (url, init) => {
       captured = { url, body: JSON.parse(init.body) };

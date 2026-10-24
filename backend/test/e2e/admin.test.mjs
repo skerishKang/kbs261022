@@ -260,7 +260,7 @@ test('ERP sync requires admin auth', async () => {
 });
 
 test('health reports the active modes without leaking secrets', async () => {
-  const env = makeEnv({ PG_PROVIDER_MODE: 'auto', TOSS_WIDGET_SECRET_KEY: 'test_gsk_DOCS_SECRET_DO_NOT_LEAK' });
+  const env = makeEnv({ PG_PROVIDER_MODE: 'auto', TOSS_WIDGET_SECRET_KEY: 'example_gsk_DOCS_SECRET_DO_NOT_LEAK' });
   const res = await call(env, 'GET', '/api/admin/health');
   assert.equal(res.status, 200);
   const body = res.json;

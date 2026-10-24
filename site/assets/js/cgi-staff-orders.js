@@ -8,7 +8,7 @@
 
   var cfg = window.CGI_SITE_CONFIG || {};
   var API = cfg.orderApiUrl || cfg.quoteApiUrl || '';
-  var TOKEN_KEY = 'cgiAdminToken';
+  var LS_KEY = 'cgiAdminToken';
 
   var STATUS_LABELS = {
     awaiting_payment: '결제 대기', paid: '결제 완료', processing: '처리 중', shipped: '배송 중',
@@ -67,7 +67,7 @@
       $('authBox').insertAdjacentHTML('beforeend', '<p class="staff-msg error">API 주소가 설정되지 않았습니다.</p>');
       return;
     }
-    state.token = localStorage.getItem(TOKEN_KEY);
+    state.token = localStorage.getItem(LS_KEY);
     if (!state.token) { $('authBox').hidden = false; return; }
     $('authBox').hidden = true;
     $('ordersApp').hidden = false;
@@ -102,7 +102,7 @@
     $('orderList').innerHTML = '<p class="staff-msg info">불러오는 중…</p>';
     request('GET', '/api/orders' + query).then(function (res) {
       if (!res.ok) {
-        if (res.status === 401) { state.token = null; localStorage.removeItem(TOKEN_KEY); $('ordersApp').hidden = true; $('authBox').hidden = false; return; }
+        if (res.status === 401) { state.token = null; localStorage.removeItem(LS_KEY); $('ordersApp').hidden = true; $('authBox').hidden = false; return; }
         msg($('orderList'), '주문 목록을 불러오지 못했습니다 (HTTP ' + res.status + ').');
         return;
       }
@@ -404,7 +404,7 @@
       var v = $('tokenInput').value.trim();
       if (!v) return;
       state.token = v;
-      localStorage.setItem(TOKEN_KEY, v);
+      localStorage.setItem(LS_KEY, v);
       $('authBox').hidden = true;
       $('ordersApp').hidden = false;
       fillFilters();
@@ -413,7 +413,7 @@
     $('tokenInput').addEventListener('keydown', function (ev) { if (ev.key === 'Enter') $('authBtn').click(); });
     $('logoutBtn').addEventListener('click', function () {
       state.token = null;
-      localStorage.removeItem(TOKEN_KEY);
+      localStorage.removeItem(LS_KEY);
       $('ordersApp').hidden = true;
       $('authBox').hidden = false;
       $('orderList').innerHTML = '';

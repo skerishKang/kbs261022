@@ -6,7 +6,7 @@ import { PRICE_INDEX } from '../data/price_index.mjs';
 
 export const ORIGIN = 'https://skerishkang.github.io';
 export const EVIL_ORIGIN = 'http://evil.example.com';
-export const ADMIN_TOKEN = 'test-admin-token';
+export const ADMIN_TOKEN = 'example-admin-token';
 
 export function makeEnv(overrides = {}) {
   return {

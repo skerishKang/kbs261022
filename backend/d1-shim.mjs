@@ -5,7 +5,7 @@
 // the local HTTP preview. No Cloudflare dependency, no network.
 //
 //   import { openD1 } from './d1-shim.mjs';
-//   const env = { DB: openD1(), ADMIN_TOKEN: 'test-admin' };
+//   const env = { DB: openD1(), ADMIN_TOKEN: 'example-admin' };
 //   const response = await worker.fetch(new Request('http://x/api/orders', {...}), env);
 //
 // Requires: node --experimental-sqlite

@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 
 import { PRICE_INDEX } from '../../data/price_index.mjs';
-import { makeEnv, call, CUSTOMER, purchaseCart, mixedCart, pricedProductIds } from '../helpers.mjs';
+import { makeEnv, call, auth, CUSTOMER, purchaseCart, mixedCart, pricedProductIds } from '../helpers.mjs';
 
 const [PA, PB] = pricedProductIds(2);
 const PRICE_A = PRICE_INDEX[PA].p;
@@ -76,7 +76,7 @@ test('creates a quote order when any item price is unconfirmed', async () => {
   assert.ok(order.items.some((i) => i.unit_price === null && i.price_state === 'inquiry'));
   assert.ok(order.linked_quote_id, 'links to the legacy quote_requests row');
 
-  const listed = await call(env, 'GET', '/api/quotes', undefined, { Authorization: 'Bearer test-admin-token' });
+  const listed = await call(env, 'GET', '/api/quotes', undefined, auth());
   assert.equal(listed.status, 200);
   assert.ok(listed.json.items.some((q) => q.id === order.linked_quote_id), 'mirrored into quote_requests');
 });
