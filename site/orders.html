@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>주문 관리 | CGI</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" href="../website/assets/img/cgi-mark-green.png">
+<link rel="stylesheet" href="assets/css/cgi-catalog.css">
+<link rel="stylesheet" href="assets/css/cgi-staff-orders.css">
+</head>
+<body>
+
+<a class="skip-link" href="#app">본문으로 건너뛰기</a>
+
+<header class="site-header" id="siteHeader">
+  <div class="header-inner">
+    <a class="brand" href="index.html" aria-label="CGI 상품 카탈로그">
+      <img src="../website/assets/img/cgi-mark-white.png" alt="CGI (주)시지아이" width="132" height="42">
+      <span class="brand-divider" aria-hidden="true"></span>
+      <span class="brand-text">
+        <strong>주문 관리</strong>
+        <small>STAFF ONLY</small>
+      </span>
+    </a>
+
+    <nav class="header-nav" id="siteNav" aria-label="주요 메뉴">
+      <a href="index.html">상품 카탈로그</a>
+      <a href="staff.html">견적 관리</a>
+      <a href="orders.html" class="is-active" aria-current="page">주문 관리</a>
+      <a href="../website/index.html">회사 홈페이지</a>
+    </nav>
+  </div>
+</header>
+
+<main id="app" class="app staff-app">
+  <header class="page-head">
+    <p class="page-eyebrow">ORDERS</p>
+    <h1>주문 관리</h1>
+    <p class="page-sub">주문·결제·환불·ERP 동기화 상태를 확인합니다. 관리자 토큰이 필요해요.</p>
+  </header>
+
+  <section id="authBox" class="auth-box" hidden>
+    <label>관리자 토큰
+      <input type="password" id="tokenInput" autocomplete="off" placeholder="Bearer 토큰 입력">
+    </label>
+    <button type="button" class="btn" id="authBtn">접속</button>
+    <p class="form-note">토큰은 이 브라우저에만 저장됩니다. 서버에 없으면 주문 목록을 볼 수 없어요.</p>
+  </section>
+
+  <section id="ordersApp" hidden>
+    <section class="order-toolbar" aria-label="주문 필터">
+      <label>검색<input type="search" id="filterQ" placeholder="주문번호 · 회사 · 연락처"></label>
+      <label>유형
+        <select id="filterKind">
+          <option value="">전체</option>
+          <option value="purchase">결제 주문</option>
+          <option value="quote">견적 주문</option>
+        </select>
+      </label>
+      <label>상태
+        <select id="filterStatus"><option value="">전체</option></select>
+      </label>
+      <label>결제
+        <select id="filterPayment"><option value="">전체</option></select>
+      </label>
+      <button type="button" class="btn btn-secondary" id="refreshBtn">새로고침</button>
+      <button type="button" class="btn btn-secondary" id="logoutBtn">로그아웃</button>
+    </section>
+
+    <div id="orderList"></div>
+  </section>
+
+  <section id="orderDrawer" class="order-drawer" hidden>
+    <button type="button" class="drawer-close" id="drawerClose" aria-label="닫기">✕</button>
+    <div id="drawerBody"></div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-bottom">
+    <p>© 주식회사 시지아이. All rights reserved.</p>
+  </div>
+</footer>
+
+<script src="config.js"></script>
+<script src="data/products.js"></script>
+<script src="data/services.js"></script>
+<script src="assets/js/cgi-staff-orders.js"></script>
+</body>
+</html>

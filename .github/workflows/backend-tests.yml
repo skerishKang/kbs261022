@@ -1,0 +1,41 @@
+name: Backend tests
+
+on:
+  push:
+    paths:
+      - "backend/**"
+      - ".github/workflows/backend-tests.yml"
+  pull_request:
+    paths:
+      - "backend/**"
+      - ".github/workflows/backend-tests.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [22, 24]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Unit tests
+        working-directory: backend
+        run: npm run test:unit
+      - name: E2E tests
+        working-directory: backend
+        run: npm run test:e2e
+      - name: Worker smoke test
+        working-directory: backend
+        run: npm run smoke
+      - name: Verify no secret keys in source
+        run: |
+          if grep -rInE 'sk_live_|sk_test_|gsk_live_|gck_live_|Bearer[[:space:]]+[A-Za-z0-9_-]{20,}' backend site tools 2>/dev/null; then
+            echo "::error::a live secret key looks committed"; exit 1
+          fi
