@@ -210,9 +210,11 @@
 
   function renderPayment(app, order) {
     var testMode = !TOSS_CLIENT_ID;
+    var sandboxMode = !!TOSS_CLIENT_ID && String(TOSS_CLIENT_ID).indexOf('test_') === 0;
     app.innerHTML = shell(
       '<div class="page-head"><p class="page-eyebrow">PAYMENT</p><h1>결제</h1></div>' +
       '<div class="payment-card">' +
+        (sandboxMode ? '<p class="test-payment-badge">TEST 결제 — 토스페이먼츠 테스트 환경 (실제 청구 없음)</p>' : '') +
         '<div class="payment-order">' +
           '<p><strong>' + esc(order.id) + '</strong></p>' +
           '<p class="order-total">주문 금액 <strong>' + money(order.totals.total_amount) + '</strong></p>' +
@@ -266,21 +268,23 @@
         statusBox.innerHTML = flash('결제 모듈을 불러오지 못했습니다. 서버에서 테스트 결제 모드로 전환해 주세요.', 'flash-error');
         return;
       }
-      var client = window.TossPayments(TOSS_CLIENT_ID);
+      var tossPayments = window.TossPayments(TOSS_CLIENT_ID);
       payBtn.addEventListener('click', function () {
         var method = (app.querySelector('input[name="method"]:checked') || {}).value || '카드';
+        var tossMethod = method === '휴대폰' ? 'MOBILE_PHONE' : 'CARD';
         statusBox.innerHTML = '';
-        client.requestPayment({
+        payBtn.disabled = true;
+        payBtn.textContent = '결제창 이동 중…';
+        tossPayments.requestPayment(tossMethod, {
+          amount: order.totals.total_amount,
           orderId: order.id,
           orderName: 'CGI 상품 주문',
-          success: function (data) { run(data.paymentKey); },
-          fail: function (err) {
-            statusBox.innerHTML = flash('결제 프로세스를 끝까지 마치지 못했습니다. (' + esc(err.message || 'fail') + ')', 'flash-error');
-            payBtn.disabled = false;
-            payBtn.textContent = '결제 다시 시도';
-          },
-          method: method === '휴대폰' ? 'PHONE' : (method === '간편결제' ? 'CARD' : 'CARD'),
-          amount: order.totals.total_amount
+          successUrl: window.location.origin + window.location.pathname + '?toss=success#/order/' + encodeURIComponent(order.id),
+          failUrl: window.location.origin + window.location.pathname + '?toss=fail#/order/' + encodeURIComponent(order.id)
+        }).catch(function (err) {
+          statusBox.innerHTML = flash('결제 프로세스를 끝까지 마치지 못했습니다. (' + esc((err && err.message) || 'fail') + ')', 'flash-error');
+          payBtn.disabled = false;
+          payBtn.textContent = '결제 다시 시도';
         });
       });
     };
@@ -322,6 +326,39 @@
     });
   }
 
+  function handleTossRedirect(app) {
+    var params = new URLSearchParams(window.location.search || '');
+    var toss = params.get('toss');
+    if (!toss) return false;
+    var paymentKey = params.get('paymentKey');
+    var orderId = params.get('orderId');
+    var amount = params.get('amount');
+    // clean query string so a reload does not re-trigger
+    try {
+      var cleanUrl = window.location.pathname + (location.hash || '');
+      window.history.replaceState({}, document.title, cleanUrl);
+    } catch (e) {}
+    if (toss === 'fail') {
+      var code = params.get('code') || '';
+      var message = params.get('message') || '결제가 취소되었거나 실패했습니다.';
+      app.innerHTML = shell('<div class="page-head"><p class="page-eyebrow">PAYMENT</p><h1>결제 실패</h1></div>' + flash(message + (code ? ' (' + esc(code) + ')' : ''), 'flash-error') + '<p><a class="btn" href="#/checkout">다시 시도</a></p>');
+      return true;
+    }
+    if (!paymentKey || !orderId || !amount) return false;
+    app.innerHTML = shell('<div class="page-head"><p class="page-eyebrow">PAYMENT</p><h1>결제 승인 중</h1></div><p class="muted">토스페이먼츠 승인 결과를 확인하고 있습니다…</p>');
+    api('POST', '/api/payments/confirm', { orderId: orderId, paymentKey: paymentKey, amount: Number(amount) }).then(function (res) {
+      if (!res.ok) {
+        app.innerHTML = shell('<div class="page-head"><p class="page-eyebrow">PAYMENT</p><h1>결제 승인 실패</h1></div>' + flash('결제 승인에 실패했습니다. (' + esc(res.data && res.data.error || ('HTTP ' + res.status)) + ')', 'flash-error') + '<p><a class="btn" href="#/checkout">다시 시도</a></p>');
+        return;
+      }
+      api('GET', '/api/orders/' + encodeURIComponent(orderId)).then(function (r) {
+        if (!r.ok) { app.innerHTML = shell(flash('주문 조회 실패', 'flash-error')); return; }
+        renderComplete(app, r.data, res.data);
+      });
+    });
+    return true;
+  }
+
   /* ----------------------------------------------------- public interface */
   window.CGI_ORDER = {
     api: api,
@@ -331,6 +368,7 @@
     clearCart: function () { try { localStorage.removeItem('cgiQuoteCart'); } catch (e) {} },
     renderCheckout: renderCheckout,
     renderOrderDetail: renderOrderDetail,
+    handleTossRedirect: handleTossRedirect,
     statusLabel: statusLabel,
     config: { api: API, tossClientId: !!TOSS_CLIENT_ID }
   };

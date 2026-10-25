@@ -1041,6 +1041,12 @@
   }
 
   function render() {
+    if (window.CGI_ORDER && typeof window.CGI_ORDER.handleTossRedirect === 'function' && window.CGI_ORDER.handleTossRedirect(app)) {
+      applySiteConfig();
+      updateHeader();
+      updateTitle();
+      return;
+    }
     state.route = parseHash();
     applySiteConfig();
     updateHeader();
