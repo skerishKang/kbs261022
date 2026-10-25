@@ -70,6 +70,7 @@ RULES = [
 TEST_PATH = re.compile(
     r"(?:^|/)(?:tests?|spec|specs|__tests__)(?:/|$)|"
     r"[_-]test(?:s|ing)?\.[A-Za-z0-9]+$|"
+    r"\.test\.[A-Za-z0-9]+$|"
     r"(?:^|/)test_[A-Za-z0-9_.]+$",
     re.IGNORECASE,
 )
