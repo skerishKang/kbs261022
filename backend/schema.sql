@@ -206,6 +206,7 @@ CREATE TABLE IF NOT EXISTS members (
   phone TEXT,
   company TEXT,
   email_verified_at TEXT,
+  role TEXT NOT NULL DEFAULT 'member',  -- member|admin|superadmin
   status TEXT NOT NULL DEFAULT 'active',  -- active|suspended|deleted
   created_at TEXT NOT NULL,
   updated_at TEXT NOT NULL,

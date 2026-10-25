@@ -170,7 +170,7 @@ test('health reports the auth posture without leaking secrets', async () => {
   const environment = env({ ADMIN_TOKEN: 'super-secret-admin-token', MAIL_MODE: 'console' });
   const res = await call(environment, 'GET', '/api/admin/health');
   assert.equal(res.status, 200);
-  assert.equal(res.json.version, '1.2.0');
+  assert.equal(res.json.version, '1.3.0');
   assert.equal(res.json.auth.enabled, true);
   assert.equal(res.json.auth.mail_mode, 'console');
   assert.equal(res.json.auth.email_verify_required, false);
