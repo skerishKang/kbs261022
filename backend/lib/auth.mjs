@@ -149,9 +149,21 @@ export function validateEmail(email) {
   return { ok: true, email: value };
 }
 
+/**
+ * U+FFFD is what a UTF-8 decoder leaves behind when the request body was not
+ * valid UTF-8. Once stored it is irreversible — the original bytes are gone and
+ * the admin screens show garbage — so such a value is refused at the boundary.
+ */
+function isUndecodable(value) {
+  return String(value == null ? '' : value).includes('\uFFFD');
+}
+
 export function validateName(name) {
   const value = String(name || '').trim();
   if (!value) return { ok: false, error: 'name required', detail: 'name is required' };
+  if (isUndecodable(value)) {
+    return { ok: false, error: 'invalid name encoding', detail: 'name must be sent as UTF-8' };
+  }
   if (value.length > 60) return { ok: false, error: 'name too long', detail: 'name is at most 60 characters' };
   return { ok: true, name: value };
 }
@@ -168,6 +180,9 @@ export function validatePhone(phone) {
 /** Optional free text: trims, enforces a length cap, returns null when empty. */
 export function validateOptionalText(value, field, max) {
   const text = value == null ? '' : String(value).trim();
+  if (isUndecodable(text)) {
+    return { error: `invalid ${field} encoding`, detail: `${field} must be sent as UTF-8` };
+  }
   if (text.length > max) {
     return { error: `${field} too long`, detail: `${field} is at most ${max} characters` };
   }
@@ -178,6 +193,9 @@ export function validateOptionalText(value, field, max) {
 export function validateText(value, field, max) {
   const text = value == null ? '' : String(value).trim();
   if (!text) return { ok: false, error: `${field} required`, detail: `${field} is required` };
+  if (isUndecodable(text)) {
+    return { ok: false, error: `invalid ${field} encoding`, detail: `${field} must be sent as UTF-8` };
+  }
   if (text.length > max) {
     return { ok: false, error: `${field} too long`, detail: `${field} is at most ${max} characters` };
   }

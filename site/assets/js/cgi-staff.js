@@ -352,6 +352,10 @@
     var token = localStorage.getItem('cgiAdminToken');
     function setAuthMessage(text) { if (authMsg) authMsg.textContent = text || ''; }
     function memberHeaders() { return { 'X-CSRF-Token': window.location.origin || '' }; }
+    function showLogout() {
+      var btn = document.getElementById('logoutBtn');
+      if (btn) btn.hidden = false;
+    }
     function loadQuotes(headers, opts) {
       fetch(apiUrl + '/api/quotes', Object.assign({ headers: headers }, opts || {}))
         .then(function (res) { if (!res.ok) throw new Error('HTTP ' + res.status); return res.json(); })
@@ -387,9 +391,30 @@
             return;
           }
           memberMode = true; member = m; adminToken = null;
+          showLogout();
           loadQuotes(memberHeaders(), { credentials: 'include' });
         });
       });
+    });
+    // 총관리자(charliekant@gmail.com)는 CGI 비밀번호가 없는 Google 전용 계정이다.
+    // 기존 OAuth 시작 경로를 그대로 사용하고, 인증 후 이 화면으로 복귀한다.
+    var googleBtn = document.getElementById('memberGoogleBtn');
+    if (googleBtn) googleBtn.addEventListener('click', function () {
+      if (!window.CGI_AUTH) { setAuthMessage('인증 모듈을 불러오지 못했습니다.'); return; }
+      googleBtn.disabled = true;
+      setAuthMessage('Google 로그인 중…');
+      window.CGI_AUTH.googleLogin('staff');
+    });
+    var logoutBtn = document.getElementById('logoutBtn');
+    if (logoutBtn) logoutBtn.addEventListener('click', function () {
+      memberMode = false; member = null; adminToken = null;
+      logoutBtn.hidden = true;
+      localStorage.removeItem('cgiAdminToken');
+      if (window.CGI_AUTH) window.CGI_AUTH.logout();
+      // 고객 정보가 화면과 localStorage에 남지 않도록 목록·상세·캐시를 함께 비운다.
+      requests = []; current = null; saveRequests();
+      renderList(); renderDetail();
+      if (authBox) authBox.hidden = false;
     });
     if (token) {
       adminToken = token;
@@ -398,6 +423,7 @@
       window.CGI_AUTH.refresh().then(function (m) {
         if (m && (m.role === 'admin' || m.role === 'superadmin' || m.is_admin)) {
           memberMode = true; member = m;
+          showLogout();
           loadQuotes(memberHeaders(), { credentials: 'include' });
         } else {
           if (authBox) authBox.hidden = false;
