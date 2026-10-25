@@ -37,6 +37,7 @@
 //   GET    /api/me/orders             my orders
 //   GET    /api/me/orders/:id         my order detail
 //   POST   /api/me/orders/:id/cancel  cancel an awaiting_payment order
+//   POST   /api/me/orders/:id/repay   re-open PG payment for an unpaid order
 //   POST   /api/me/orders/:id/refund/request  request a refund
 //   GET    /api/me/quotes             my quote requests
 //   GET    /api/me/quotes/:id         my quote detail
@@ -886,11 +887,16 @@ async function cancelPayment(db, env, order, paymentKey, body, pg) {
       refundReceiveAccount: body.refundReceiveAccount || null,
       idempotencyKey: `cgi:cancel:${order.id}:${paymentKey}:${cancelAmount}`,
     });
+    const transactions = Array.isArray(result.cancels) ? result.cancels : [];
+    const lastCancel = transactions.length ? transactions[transactions.length - 1] : null;
     outcome = {
       ok: true,
       status: result.status || 'CANCELED',
       balanceAmount: toNonNegInt(result.balanceAmount),
-      cancelAmount: toNonNegInt(result.cancel_amount, cancelAmount),
+      // The provider reports the amount refunded SO FAR on this payment, so adding
+      // it to the stored refunded_amount would count every earlier refund twice.
+      // Only the newest transaction belongs in the ledger.
+      cancelAmount: toNonNegInt(lastCancel && lastCancel.cancelAmount, cancelAmount),
       raw: JSON.stringify(result),
     };
   } catch (e) {
@@ -1995,6 +2001,45 @@ async function handleMeRoute(pathname, method, url, request, db, env) {
     if (result.error) return authJson({ error: result.error, detail: result.detail }, 409);
     const updated = await getOrderFull(db, id);
     return authJson({ changed: true, id, order: publicOrderView(updated, updated.items) });
+  }
+
+  const repayMatch = pathname.match(/^\/api\/me\/orders\/([^/]+)\/repay$/);
+  if (repayMatch && method === 'POST') {
+    // Re-open payment for an order that was created but never approved. The
+    // client must bind the PG widget to THIS orderId, so the server — not the
+    // browser — decides payability and the amount. No new order is ever made.
+    const id = decodeURIComponent(repayMatch[1]);
+    const row = await getOrder(db, id);
+    if (!row || String(row.customer_id) !== String(member.id)) return authJson({ error: 'order not found' }, 404);
+    if (row.kind !== 'purchase') {
+      return authJson({ error: 'not payable', detail: { reason: 'quote_order_not_payable', kind: row.kind } }, 409);
+    }
+    if (row.payment_status === 'paid') {
+      return authJson({ error: 'already_paid', detail: { status: row.status, refunded_amount: row.refunded_amount } }, 409);
+    }
+    if (row.status !== 'awaiting_payment') {
+      return authJson({ error: 'not payable', detail: { status: row.status, payment_status: row.payment_status } }, 409);
+    }
+    if (!Number.isInteger(row.total_amount) || row.total_amount <= 0) {
+      return authJson({ error: 'invalid amount', detail: { total_amount: row.total_amount } }, 409);
+    }
+    const retryAt = nowIso();
+    await db.batch([
+      db.prepare('INSERT INTO order_events (order_id, type, actor, from_status, to_status, meta, created_at) VALUES (?,?,?,?,?,?,?)')
+        .bind(id, 'payment_retry_requested', 'customer', row.status, row.status, JSON.stringify({ amount: row.total_amount }), retryAt),
+      db.prepare('INSERT INTO member_events (member_id, type, meta, created_at) VALUES (?, ?, ?, ?)')
+        .bind(member.id, 'payment_retry_requested', JSON.stringify({ order_id: id }), retryAt),
+    ]);
+    return authJson({
+      payable: true,
+      payment: {
+        order_id: row.id,
+        order_name: 'CGI 상품 주문',
+        amount: row.total_amount,
+        status: row.status,
+        payment_status: row.payment_status,
+      },
+    });
   }
 
   const refundMatch = pathname.match(/^\/api\/me\/orders\/([^/]+)\/refund\/request$/);

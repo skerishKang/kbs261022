@@ -324,10 +324,113 @@
           return '<tr><td>' + esc(i.product_name) + '</td><td>' + i.qty + '</td><td>' + money(i.unit_price) + '</td><td>' + money(i.line_total) + '</td></tr>';
         }).join('') +
         '</tbody></table>' +
+        (order.status === 'awaiting_payment'
+          ? '<div class="order-actions">' +
+              '<button type="button" class="btn" id="repayBtn">결제 다시 진행</button>' +
+              '<span class="muted">아직 결제되지 않은 주문입니다. 같은 주문번호로 결제를 이어갑니다(새 주문을 만들지 않습니다).</span>' +
+            '</div><div id="repayHost"></div>'
+          : '') +
         '<p class="muted">주문 내역은 담당자가 확인 후 배송 일정을 연락드립니다.</p>' +
         '<p><a class="btn" href="#/order/' + encodeURIComponent(order.id) + '">주문 상세 보기</a> <a class="btn btn-secondary" href="#/products">다시 쇼핑하기</a></p>' +
       '</div>'
     );
+
+    var repayBtn = app.querySelector('#repayBtn');
+    if (repayBtn) repayBtn.addEventListener('click', function () { startRepay(app, order.id, repayBtn); });
+  }
+
+  /**
+   * 기존 주문 재결제. payability 와 금액은 서버가 판정한다
+   * (POST /api/me/orders/:id/repay — 소유자·kind·status·payment_status·amount).
+   */
+  function startRepay(app, orderId, btn) {
+    var host = app.querySelector('#repayHost');
+    if (!host) return;
+    if (!(window.CGI_AUTH && window.CGI_AUTH.isLoggedIn())) {
+      host.innerHTML = flash('재결제는 로그인한 회원의 주문에서만 가능합니다. 회원 로그인 후 다시 시도해 주세요.', 'flash-error');
+      return;
+    }
+    btn.disabled = true;
+    btn.textContent = '주문 확인 중…';
+    host.innerHTML = '';
+    window.CGI_AUTH.api('POST', '/api/me/orders/' + encodeURIComponent(orderId) + '/repay', {}).then(function (res) {
+      btn.disabled = false;
+      btn.textContent = '결제 다시 진행';
+      if (!res.ok) {
+        var d = res.data || {};
+        host.innerHTML = flash('다시 결제할 수 없습니다: ' + esc(d.error || ('HTTP ' + res.status)) +
+          (d.detail && d.detail.status ? ' (현재 상태 ' + esc(statusLabel(d.detail.status)) + ')' : ''), 'flash-error');
+        return;
+      }
+      renderRepayPayment(host, res.data.payment || {});
+    });
+  }
+
+  function renderRepayPayment(host, pay) {
+    if (!TOSS_CLIENT_ID) {
+      host.innerHTML = flash('결제 키가 설정되어 있지 않아 재결제를 진행할 수 없습니다. 관리자에게 문의해 주세요.', 'flash-error');
+      return;
+    }
+    var sandboxBadge = String(TOSS_CLIENT_ID).indexOf('test_') === 0 ? ' (테스트 환경 — 실제 청구 없음)' : '';
+    host.innerHTML =
+      '<div class="payment-card">' +
+        '<p class="test-payment-badge">재결제 — ' + esc(pay.order_id) + esc(sandboxBadge) + '</p>' +
+        '<p class="order-total">결제 금액 <strong>' + money(pay.amount) + '</strong></p>' +
+        '<div id="repayMethods"></div><div id="repayAgreement"></div>' +
+        '<div id="repayStatus"></div>' +
+        '<div class="order-actions"><button type="button" class="btn" id="repayPayBtn">결제 창 열기</button></div>' +
+      '</div>';
+
+    var statusBox = host.querySelector('#repayStatus');
+    var payBtn = host.querySelector('#repayPayBtn');
+
+    function mount() {
+      if (!window.TossPayments) {
+        statusBox.innerHTML = flash('결제 모듈을 불러오지 못했습니다.', 'flash-error');
+        payBtn.disabled = false;
+        payBtn.textContent = '결제 창 열기';
+        return;
+      }
+      var widgets = window.TossPayments(TOSS_CLIENT_ID).widgets({ customerKey: 'ANONYMOUS' });
+      widgets.setAmount({ currency: 'KRW', value: pay.amount })
+        .then(function () {
+          return Promise.all([
+            widgets.renderPaymentMethods({ selector: '#repayMethods', variantKey: 'DEFAULT' }),
+            widgets.renderAgreement({ selector: '#repayAgreement', variantKey: 'AGREEMENT' })
+          ]);
+        })
+        .catch(function (e) {
+          statusBox.innerHTML = flash('결제 수단을 불러오지 못했습니다. (' + esc((e && e.message) || 'fail') + ')', 'flash-error');
+          payBtn.disabled = false;
+          payBtn.textContent = '결제 창 열기';
+        });
+      payBtn.addEventListener('click', function () {
+        statusBox.innerHTML = '';
+        payBtn.disabled = true;
+        payBtn.textContent = '결제창 이동 중…';
+        widgets.requestPayment({
+          orderId: pay.order_id,
+          orderName: pay.order_name || 'CGI 상품 주문',
+          successUrl: window.location.origin + window.location.pathname + '?toss=success#/order/' + encodeURIComponent(pay.order_id),
+          failUrl: window.location.origin + window.location.pathname + '?toss=fail#/order/' + encodeURIComponent(pay.order_id)
+        }).catch(function (err) {
+          statusBox.innerHTML = flash('결제창을 열지 못했습니다. (' + esc((err && err.message) || 'fail') + ')', 'flash-error');
+          payBtn.disabled = false;
+          payBtn.textContent = '결제 창 열기';
+        });
+      });
+    }
+
+    if (window.TossPayments) { mount(); return; }
+    var script = document.createElement('script');
+    script.src = TOSS_JS_URL;
+    script.onload = mount;
+    script.onerror = function () {
+      statusBox.innerHTML = flash('결제 모듈 로드 실패', 'flash-error');
+      payBtn.disabled = false;
+      payBtn.textContent = '결제 창 열기';
+    };
+    document.head.appendChild(script);
   }
 
   function renderOrderDetail(app, id) {
@@ -339,6 +442,14 @@
       }
       renderComplete(app, res.data, null);
     });
+  }
+
+  /* 재시도는 항상 기존 주문으로 되돌린다. #/checkout 으로 보내면 같은 장바구니로
+     새 주문이 중복 생성된다. */
+  function retryLink(orderId) {
+    return orderId
+      ? '<p><a class="btn" href="#/order/' + encodeURIComponent(orderId) + '">주문 상세에서 다시 결제</a></p>'
+      : '<p><a class="btn" href="#/checkout">다시 시도</a></p>';
   }
 
   function handleTossRedirect(app) {
@@ -356,14 +467,14 @@
     if (toss === 'fail') {
       var code = params.get('code') || '';
       var message = params.get('message') || '결제가 취소되었거나 실패했습니다.';
-      app.innerHTML = shell('<div class="page-head"><p class="page-eyebrow">PAYMENT</p><h1>결제 실패</h1></div>' + flash(message + (code ? ' (' + esc(code) + ')' : ''), 'flash-error') + '<p><a class="btn" href="#/checkout">다시 시도</a></p>');
+      app.innerHTML = shell('<div class="page-head"><p class="page-eyebrow">PAYMENT</p><h1>결제 실패</h1></div>' + flash(message + (code ? ' (' + esc(code) + ')' : ''), 'flash-error') + retryLink(orderId));
       return true;
     }
     if (!paymentKey || !orderId || !amount) return false;
     app.innerHTML = shell('<div class="page-head"><p class="page-eyebrow">PAYMENT</p><h1>결제 승인 중</h1></div><p class="muted">토스페이먼츠 승인 결과를 확인하고 있습니다…</p>');
     api('POST', '/api/payments/confirm', { orderId: orderId, paymentKey: paymentKey, amount: Number(amount) }).then(function (res) {
       if (!res.ok) {
-        app.innerHTML = shell('<div class="page-head"><p class="page-eyebrow">PAYMENT</p><h1>결제 승인 실패</h1></div>' + flash('결제 승인에 실패했습니다. (' + esc(res.data && res.data.error || ('HTTP ' + res.status)) + ')', 'flash-error') + '<p><a class="btn" href="#/checkout">다시 시도</a></p>');
+        app.innerHTML = shell('<div class="page-head"><p class="page-eyebrow">PAYMENT</p><h1>결제 승인 실패</h1></div>' + flash('결제 승인에 실패했습니다. (' + esc(res.data && res.data.error || ('HTTP ' + res.status)) + ')', 'flash-error') + retryLink(orderId));
         return;
       }
       api('GET', '/api/orders/' + encodeURIComponent(orderId)).then(function (r) {

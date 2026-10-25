@@ -723,6 +723,200 @@ test('a member can cancel an unpaid order, not a paid one', async () => {
   assert.equal(paidCancel.status, 409);
 });
 
+/* ------------------------------------------------------------------ re-pay */
+
+async function unpaidOrder(environment, cookie, idempotencyKey, qty = 1) {
+  const created = await call(environment, 'POST', '/api/orders', {
+    items: [{ product_id: priced[0], qty }],
+    company: '[E2E] 회사', name: '[E2E] 김회원', phone: '010-1111-2222',
+    idempotency_key: idempotencyKey,
+  }, { ...csrf, Cookie: cookie });
+  assert.equal(created.status, 201, created.text);
+  assert.equal(created.json.status, 'awaiting_payment');
+  return created.json;
+}
+
+const repay = (environment, cookie, id, body = {}) =>
+  call(environment, 'POST', `/api/me/orders/${id}/repay`, body, { ...csrf, Cookie: cookie });
+
+test('an unpaid order can be re-opened for payment at the server-declared amount', async () => {
+  const environment = env();
+  const { cookie } = await verifiedSession(environment);
+  const order = await unpaidOrder(environment, cookie, 'e2e-repay-1');
+
+  const res = await repay(environment, cookie, order.id);
+  assert.equal(res.status, 200, res.text);
+  assert.equal(res.json.payable, true);
+  assert.equal(res.json.payment.order_id, order.id, 'the SAME order number goes back to the widget');
+  assert.equal(res.json.payment.amount, order.totals.total_amount, 'the amount comes from the server row');
+  assert.equal(res.json.payment.status, 'awaiting_payment');
+  assert.equal(res.json.payment.payment_status, 'pending');
+
+  const after = await call(environment, 'GET', `/api/me/orders/${order.id}`, undefined, { ...csrf, Cookie: cookie });
+  assert.equal(after.json.order.status, 'awaiting_payment', 'repay must not mutate the order');
+
+  const list = await call(environment, 'GET', '/api/me/orders', undefined, { ...csrf, Cookie: cookie });
+  assert.equal(list.json.items.length, 1, 're-paying never mints a second order');
+});
+
+test('a client-sent amount in the repay body is ignored', async () => {
+  const environment = env();
+  const { cookie } = await verifiedSession(environment);
+  const order = await unpaidOrder(environment, cookie, 'e2e-repay-tamper');
+
+  const res = await repay(environment, cookie, order.id, { amount: 1 });
+  assert.equal(res.status, 200, res.text);
+  assert.equal(res.json.payment.amount, order.totals.total_amount);
+
+  const cheap = await call(environment, 'POST', '/api/payments/confirm', {
+    orderId: order.id, paymentKey: 'e2e_repay_cheap', amount: 1,
+  }, csrf);
+  assert.equal(cheap.status, 400);
+  assert.equal(cheap.json.error, 'amount mismatch');
+});
+
+test('the repaid order then confirms normally and is paid exactly once', async () => {
+  const environment = env();
+  const { cookie } = await verifiedSession(environment);
+  const order = await unpaidOrder(environment, cookie, 'e2e-repay-confirm');
+  const opened = await repay(environment, cookie, order.id);
+
+  const paid = await call(environment, 'POST', '/api/payments/confirm', {
+    orderId: opened.json.payment.order_id,
+    paymentKey: 'e2e_repay_ok',
+    amount: opened.json.payment.amount,
+    paymentMethod: '카드',
+  }, csrf);
+  assert.equal(paid.status, 200, paid.text);
+  assert.equal(paid.json.order.status, 'paid');
+
+  const list = await call(environment, 'GET', '/api/me/orders', undefined, { ...csrf, Cookie: cookie });
+  assert.equal(list.json.items.length, 1, 'a completed re-payment still adds no order');
+
+  const late = await repay(environment, cookie, order.id);
+  assert.equal(late.status, 409);
+  assert.equal(late.json.error, 'already_paid', 'double payment on a paid order is blocked');
+});
+
+test('every repay attempt is recorded as an order and member event', async () => {
+  const environment = env();
+  const { cookie } = await verifiedSession(environment);
+  const order = await unpaidOrder(environment, cookie, 'e2e-repay-events');
+  await repay(environment, cookie, order.id);
+  await repay(environment, cookie, order.id);
+
+  const events = await environment.DB.prepare('SELECT type, actor, from_status, to_status, meta FROM order_events WHERE order_id = ?')
+    .bind(order.id).all();
+  const retries = events.results.filter((row) => row.type === 'payment_retry_requested');
+  assert.equal(retries.length, 2);
+  assert.equal(retries[0].actor, 'customer');
+  assert.equal(retries[0].from_status, 'awaiting_payment');
+  assert.equal(retries[0].to_status, 'awaiting_payment', 'the status is not faked as changed');
+  assert.ok(retries[0].meta.includes(String(order.totals.total_amount)));
+
+  const memberEvents = await environment.DB.prepare('SELECT type FROM member_events WHERE type = ?').bind('payment_retry_requested').all();
+  assert.equal(memberEvents.results.length, 2);
+});
+
+test('repay requires a member session', async () => {
+  const environment = env();
+  const { cookie } = await verifiedSession(environment);
+  const order = await unpaidOrder(environment, cookie, 'e2e-repay-auth');
+
+  const anonymous = await call(environment, 'POST', `/api/me/orders/${order.id}/repay`, {}, csrf);
+  assert.equal(anonymous.status, 401);
+  assert.equal(anonymous.json.error, 'unauthorized');
+
+  const evil = await call(environment, 'POST', `/api/me/orders/${order.id}/repay`, {}, {
+    Origin: EVIL, 'X-CSRF-Token': EVIL, Cookie: cookie,
+  });
+  assert.equal(evil.status, 403);
+  assert.equal(evil.json.error, 'origin not allowed');
+});
+
+test("someone else's order cannot be re-opened", async () => {
+  const environment = env();
+  const { cookie } = await verifiedSession(environment);
+  const order = await unpaidOrder(environment, cookie, 'e2e-repay-owner');
+
+  await signUp(environment, { email: 'thief@example.com' });
+  const thief = await login(environment, { email: 'thief@example.com' });
+  const res = await repay(environment, thief.cookie, order.id);
+  assert.equal(res.status, 404);
+  assert.equal(res.json.error, 'order not found', 'ownership is checked on the server, not in the browser');
+
+  const guest = await call(environment, 'POST', '/api/orders', {
+    items: [{ product_id: priced[1], qty: 3 }],
+    company: '[E2E] 업체', name: '[E2E] 김고객', phone: '010-5555-6666',
+    idempotency_key: 'e2e-repay-guest',
+  }, csrf);
+  assert.equal(guest.status, 201, guest.text);
+  assert.equal(guest.json.customer_id, null);
+  const guestRepay = await repay(environment, thief.cookie, guest.json.id);
+  assert.equal(guestRepay.status, 404, 'a guest order has no owner to re-pay it');
+
+  const missing = await repay(environment, cookie, 'ORD-19990101-ABCDE');
+  assert.equal(missing.status, 404);
+  assert.equal(missing.json.error, 'order not found');
+});
+
+test('a quote order is never payable', async () => {
+  const environment = env();
+  const { cookie } = await verifiedSession(environment);
+  const created = await call(environment, 'POST', '/api/orders', {
+    items: [{ product_id: priced[0], qty: 1 }, { product_id: 'no-such-product-id', qty: 1 }],
+    company: '[E2E] 회사', name: '[E2E] 김회원', phone: '010-1111-2222',
+    idempotency_key: 'e2e-repay-quote',
+  }, { ...csrf, Cookie: cookie });
+  assert.equal(created.status, 201, created.text);
+  assert.equal(created.json.kind, 'quote');
+
+  const res = await repay(environment, cookie, created.json.id);
+  assert.equal(res.status, 409);
+  assert.equal(res.json.error, 'not payable');
+  assert.equal(res.json.detail.reason, 'quote_order_not_payable');
+});
+
+test('an order that is no longer awaiting payment cannot be re-paid', async () => {
+  const environment = env();
+  const { cookie } = await verifiedSession(environment);
+  const order = await unpaidOrder(environment, cookie, 'e2e-repay-cancelled');
+
+  const cancelled = await call(environment, 'POST', `/api/me/orders/${order.id}/cancel`, {}, { ...csrf, Cookie: cookie });
+  assert.equal(cancelled.status, 200, cancelled.text);
+
+  const res = await repay(environment, cookie, order.id);
+  assert.equal(res.status, 409);
+  assert.equal(res.json.error, 'not payable');
+  assert.equal(res.json.detail.status, 'cancelled');
+});
+
+test('a failed payment stays repayable with the original amount', async () => {
+  const environment = env();
+  const { cookie } = await verifiedSession(environment);
+  const order = await unpaidOrder(environment, cookie, 'e2e-repay-failed');
+
+  const failed = await call(environment, 'POST', '/api/payments/confirm', {
+    orderId: order.id, paymentKey: 'e2e_fail_card_declined', amount: order.totals.total_amount,
+  }, csrf);
+  assert.equal(failed.status, 402);
+  assert.equal(failed.json.payment_status, 'failed');
+
+  const res = await repay(environment, cookie, order.id);
+  assert.equal(res.status, 200, res.text);
+  assert.equal(res.json.payment.payment_status, 'failed');
+  assert.equal(res.json.payment.amount, order.totals.total_amount);
+
+  const retry = await call(environment, 'POST', '/api/payments/confirm', {
+    orderId: order.id, paymentKey: 'e2e_repay_approved', amount: res.json.payment.amount,
+  }, csrf);
+  assert.equal(retry.status, 200, retry.text);
+  assert.equal(retry.json.order.status, 'paid');
+
+  const list = await call(environment, 'GET', '/api/me/orders', undefined, { ...csrf, Cookie: cookie });
+  assert.equal(list.json.items.length, 1);
+});
+
 test('a member can request a refund on their own paid order', async () => {
   const environment = env();
   const { cookie } = await verifiedSession(environment);

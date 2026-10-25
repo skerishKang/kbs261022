@@ -74,15 +74,18 @@
       $('authBox').insertAdjacentHTML('beforeend', '<p class="staff-msg error">API 주소가 설정되지 않았습니다.</p>');
       return;
     }
-    state.token = localStorage.getItem(LS_KEY);
-    if (state.token) {
+    /* 정식 경로는 CGI 회원 세션(관리자·총관리자 role)이다. localStorage 의
+       cgiAdminToken 은 세션이 없을 때만 쓰는 레거시 폴백이므로 먼저 시도하지
+       않는다 — 총관리자 계정 관리 UI 는 회원 세션에서만 열린다. */
+    function legacyTokenFallback() {
+      var token = localStorage.getItem(LS_KEY);
+      if (!token) { $('authBox').hidden = false; return; }
+      state.token = token;
       $('authBox').hidden = true;
       $('ordersApp').hidden = false;
       fillFilters();
       load();
-      return;
     }
-    // try CGI member session
     if (window.CGI_AUTH) {
       window.CGI_AUTH.refresh().then(function (member) {
         if (member && (member.role === 'admin' || member.role === 'superadmin' || member.is_admin)) {
@@ -94,11 +97,11 @@
           fillFilters();
           load();
         } else {
-          $('authBox').hidden = false;
+          legacyTokenFallback();
         }
-      }).catch(function () { $('authBox').hidden = false; });
+      }).catch(legacyTokenFallback);
     } else {
-      $('authBox').hidden = false;
+      legacyTokenFallback();
     }
   }
 
@@ -256,14 +259,16 @@
 
     var refundable = Math.max(0, (t.total_amount || 0) - (t.refunded_amount || 0));
     var canRefund = o.payment_key && refundable > 0;
+    var minPartial = (window.CGI_REFUND && window.CGI_REFUND.MIN_PARTIAL_REFUND) || 1000;
     html += '<section class="drawer-section"><h3>환불</h3>' +
       (canRefund
         ? '<p>환불 가능 잔액: <strong>' + money(refundable) + '</strong></p>' +
           '<form id="refundForm" class="inline-form">' +
-            '<label>환불 금액<input name="cancelAmount" type="number" min="1000" step="100" value="' + refundable + '"></label>' +
+            '<label>환불 금액(비우면 전액)<input name="cancelAmount" type="number" min="1" step="1" placeholder="전액 환불"></label>' +
             '<label>사유<input name="cancelReason" maxlength="200" placeholder="고객 요청 취소/환불"></label>' +
             '<button type="submit" class="btn btn-secondary">환불 처리</button>' +
-          '</form>'
+          '</form>' +
+          '<p class="muted">금액을 비우면 잔액 전액(' + money(refundable) + ')을 환불합니다. 부분 환불은 ' + money(minPartial) + ' 이상부터 가능합니다.</p>'
         : '<p class="muted">환불할 결제가 없거나 잔액이 소진되었습니다.</p>') +
       '<p>ERP 동기화 상태: <span class="pill">' + esc(ERP_LABELS[o.erp_status] || o.erp_status) + '</span>' +
         (o.erp_sent_at ? ' · ' + esc(fmtDate(o.erp_sent_at)) : '') + '</p>' +
@@ -370,14 +375,19 @@
     var rf = $('refundForm');
     if (rf) rf.addEventListener('submit', function (ev) {
       ev.preventDefault();
-      var amount = parseInt(rf.querySelector('[name="cancelAmount"]').value, 10);
-      var reason = rf.querySelector('[name="cancelReason"]').value.trim() || '고객 요청 취소/환불';
-      if (!amount || amount < 1000) { msg($('actionMsg'), '환불 금액은 1,000원 이상이어야 합니다.', 'error'); return; }
-      if (amount > refundable) { msg($('actionMsg'), '환불 금액이 잔액(' + money(refundable) + ')을 초과합니다.', 'error'); return; }
-      msg($('actionMsg'), '환불 처리 중…');
-      request('POST', '/api/orders/' + encodeURIComponent(o.id) + '/payments/' + encodeURIComponent(o.payment_key) + '/cancel', { cancelAmount: amount, cancelReason: reason })
+      var amount = rf.querySelector('[name="cancelAmount"]').value;
+      var reason = rf.querySelector('[name="cancelReason"]').value;
+      var built = window.CGI_REFUND.buildRefundRequest(amount, refundable, reason);
+      if (!built.ok) { msg($('actionMsg'), built.error, 'error'); return; }
+      msg($('actionMsg'), built.mode === 'full' ? '전액 환불 처리 중…' : '부분 환불 처리 중…');
+      request('POST', '/api/orders/' + encodeURIComponent(o.id) + '/payments/' + encodeURIComponent(o.payment_key) + '/cancel', built.body)
         .then(function (res) {
-          if (!res.ok) { msg($('actionMsg'), '환불 실패: ' + (res.data.error || ('HTTP ' + res.status)), 'error'); return; }
+          if (!res.ok) {
+            var detail = res.data && res.data.detail;
+            var extra = detail && detail.min ? ' (서버 최소금액 ' + money(detail.min) + ')' : '';
+            msg($('actionMsg'), '환불 실패: ' + ((res.data && res.data.error) || ('HTTP ' + res.status)) + extra, 'error');
+            return;
+          }
           msg($('actionMsg'), '환불 처리했습니다. 환불액 ' + money(res.data.cancel_amount), 'ok');
           load();
           openDrawer(o.id);
