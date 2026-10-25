@@ -717,6 +717,20 @@ p:last-child { margin-bottom: 0; }
 .btn-secondary:hover { border-color: var(--cgi-primary); color: var(--cgi-primary-dark); background: var(--cgi-primary-soft); }
 .btn-danger { background: #fff; color: var(--cgi-danger); border-color: #f0b4ae; }
 .btn-danger:hover { background: var(--cgi-danger-soft); }
+.btn-google {
+  background: #fff; color: #3c4043; border-color: #dadce0;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.btn-google:hover { background: #f7f8fa; border-color: #c7c8cc; }
+.btn-google svg { width: 16px; height: 16px; }
+.auth-divider {
+  display: flex; align-items: center; margin: 16px 0;
+  color: var(--cgi-muted); font-size: 12px;
+}
+.auth-divider::before, .auth-divider::after {
+  content: ''; flex: 1; height: 1px; background: #e8e8e8;
+}
+.auth-divider span { padding: 0 12px; }
 .btn-lg { min-height: 52px; padding: 0 26px; font-size: 14.5px; }
 .btn-block { width: 100%; }
 .btn:disabled { opacity: .55; cursor: wait; }

@@ -81,6 +81,7 @@ import {
 } from './lib/auth.mjs';
 import { ensureColumns, COLUMN_UPGRADES } from './lib/migrate.mjs';
 import { createMailAdapter } from './lib/mail.mjs';
+import { createOAuthState, verifyOAuthState, buildAuthorizationUrl, exchangeCode, fetchUserInfo, OAUTH_STATE_COOKIE, oauthStateCookieOptions } from './lib/google-oauth.mjs';
 
 const ALLOWED_ORIGIN = 'https://skerishkang.github.io';
 const MAX_BODY_BYTES = 64 * 1024;
@@ -1370,7 +1371,146 @@ async function requireMember(request, db, env) {
   return member;
 }
 
+// ---------------------------------------------------------------------------
+// Google OAuth (issue #79)
+// ---------------------------------------------------------------------------
+
+function authRedirect(url) {
+  return new Response(null, { status: 302, headers: { Location: url } });
+}
+
+async function getMemberByGoogleId(db, googleId) {
+  try {
+    const { results } = await db.prepare('SELECT * FROM members WHERE google_id = ? LIMIT 1').bind(googleId).all();
+    return results && results[0] ? results[0] : null;
+  } catch (e) {
+    return null;
+  }
+}
+
+async function handleGoogleStart(request, db, env) {
+  const clientId = env.GOOGLE_CLIENT_ID || env.GOOGLE_OAUTH_CLIENT_ID;
+  const clientSecret = env.GOOGLE_CLIENT_SECRET || env.GOOGLE_OAUTH_CLIENT_SECRET;
+  if (!clientId || !clientSecret) {
+    return authJson({ error: 'google oauth not configured' }, 503);
+  }
+
+  const redirectUri = new URL('/api/auth/google/callback', request.url).toString();
+  const state = await createOAuthState(env.AUTH_SESSION_SECRET || 'cgi-dev-secret');
+
+  const authUrl = buildAuthorizationUrl({ clientId, redirectUri }, state);
+  if (!authUrl) return authJson({ error: 'google oauth not configured' }, 503);
+
+  const cookieOpts = oauthStateCookieOptions();
+  const cookieAttrs = [];
+  if (cookieOpts.httpOnly) cookieAttrs.push('HttpOnly');
+  if (cookieOpts.secure) cookieAttrs.push('Secure');
+  if (cookieOpts.sameSite) cookieAttrs.push(`SameSite=${cookieOpts.sameSite}`);
+  if (cookieOpts.path) cookieAttrs.push(`Path=${cookieOpts.path}`);
+  if (cookieOpts.maxAge != null) cookieAttrs.push(`Max-Age=${cookieOpts.maxAge}`);
+  return new Response(null, {
+    status: 302,
+    headers: {
+      Location: authUrl,
+      'Set-Cookie': `${OAUTH_STATE_COOKIE}=${state}; ${cookieAttrs.join('; ')}`,
+    },
+  });
+}
+
+async function handleGoogleCallback(request, db, env) {
+  const url = new URL(request.url);
+  const error = url.searchParams.get('error');
+  if (error) {
+    return authJson({ error: 'google auth failed', detail: error }, 400);
+  }
+
+  const code = url.searchParams.get('code');
+  const state = url.searchParams.get('state');
+  if (!code || !state) {
+    return authJson({ error: 'missing code or state' }, 400);
+  }
+
+  // Verify CSRF state from cookie
+  const cookieState = request.headers.get('Cookie')?.match(new RegExp(OAUTH_STATE_COOKIE + '=([^;]+)'))?.[1];
+  if (!cookieState || cookieState !== state) {
+    return authJson({ error: 'invalid state', detail: 'CSRF state mismatch' }, 400);
+  }
+  // Verify the state token's signature and expiry
+  const stateSecret = env.AUTH_SESSION_SECRET || 'cgi-dev-secret';
+  if (!(await verifyOAuthState(stateSecret, state))) {
+    return authJson({ error: 'invalid state', detail: 'state expired or tampered' }, 400);
+  }
+
+  const clientId = env.GOOGLE_CLIENT_ID || env.GOOGLE_OAUTH_CLIENT_ID;
+  const clientSecret = env.GOOGLE_CLIENT_SECRET || env.GOOGLE_OAUTH_CLIENT_SECRET;
+  const redirectUri = new URL('/api/auth/google/callback', request.url).toString();
+
+  // Clear state cookie
+  const clearCookie = `${OAUTH_STATE_COOKIE}=; Max-Age=0; Path=/; HttpOnly; Secure; SameSite=Lax`;
+
+  try {
+    // Exchange code for access token
+    const accessToken = await exchangeCode({ clientId, clientSecret }, code, redirectUri);
+
+    // Fetch user info
+    const userInfo = await fetchUserInfo(accessToken);
+
+    // Find existing member by Google ID
+    let member = await getMemberByGoogleId(db, userInfo.subject);
+
+    if (!member) {
+      // Find by email (account linking)
+      member = await getMemberByEmail(db, userInfo.email);
+      if (member) {
+        // Link Google ID to existing account
+        const now = nowIso();
+        await db.prepare('UPDATE members SET google_id = ?, updated_at = ? WHERE id = ?')
+          .bind(userInfo.subject, now, member.id).run();
+        member = { ...member, google_id: userInfo.subject };
+        await db.prepare('INSERT INTO member_events (member_id, type, meta, created_at) VALUES (?, ?, ?, ?)')
+          .bind(member.id, 'google_linked', JSON.stringify({ google_id: userInfo.subject }), now).run();
+      } else {
+        // Create new member
+        const now = nowIso();
+        const passwordHash = await hashPassword('google-oauth-no-password', authPolicy(env));
+        const result = await db.prepare(
+          'INSERT INTO members (email, password_hash, name, google_id, status, email_verified_at, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)'
+        ).bind(userInfo.email, passwordHash, userInfo.name || userInfo.email.split('@')[0], userInfo.subject, 'active', now, now, now).run();
+        const memberId = result.meta.last_row_id ?? result.meta.last_rowid ?? 0;
+        member = await getMember(db, memberId);
+        await db.prepare('INSERT INTO member_events (member_id, type, meta, created_at) VALUES (?, ?, ?, ?)')
+          .bind(memberId, 'google_signup', JSON.stringify({ google_id: userInfo.subject }), now).run();
+      }
+    }
+
+    // Issue session and redirect back to the site
+    const session = await issueSession(db, env, member);
+    const redirectUrl = env.SITE_BASE_URL || 'https://skerishkang.github.io/kbs261022/site/#/login';
+    const headers = new Headers();
+    headers.set('Location', redirectUrl);
+    headers.append('Set-Cookie', session.cookie);
+    headers.append('Set-Cookie', clearCookie);
+    return new Response(null, { status: 302, headers });
+
+  } catch (e) {
+    return authJson({ error: 'google auth failed', detail: e.message }, 400);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// auth routes
+// ---------------------------------------------------------------------------
+
 async function handleAuthRoute(pathname, method, request, db, env) {
+  // Google OAuth endpoints are GET redirects that don't require CSRF token
+  // (browser navigation via window.location.href doesn't send custom headers)
+  if (pathname === '/api/auth/google/start' && method === 'GET') {
+    return handleGoogleStart(request, db, env);
+  }
+  if (pathname === '/api/auth/google/callback' && method === 'GET') {
+    return handleGoogleCallback(request, db, env);
+  }
+
   const guard = guardAuth(request, env);
   if (guard) return guard;
   const mail = createMailAdapter(env, console.log);
@@ -2132,9 +2272,9 @@ export default {
       return json(result.body, result.status);
     }
 
-const memberRoleMatch = url.pathname.match(/^\/api\/admin\/members\/([^/]+)\/role$/) && request.method === 'PATCH';
-if (memberRoleMatch) {
-  if (!(await isSuperAdmin(request, env, env.DB))) return unauthorized();
+const memberRoleMatch = url.pathname.match(/^\/api\/admin\/members\/([^/]+)\/role$/);
+if (memberRoleMatch && request.method === 'PATCH') {
+  if (!(await isSuperAdmin(request, env.DB, env))) return unauthorized();
   const id = Number(decodeURIComponent(memberRoleMatch[1]));
   if (!Number.isInteger(id) || id <= 0) return badRequest('invalid member id');
   const parsed = await readJson(request);
@@ -2151,13 +2291,17 @@ if (memberRoleMatch) {
 }
 
 if (url.pathname === '/api/admin/members' && request.method === 'GET') {
-  if (!(await isSuperAdmin(request, env, env.DB))) return unauthorized();
+  if (!(await isSuperAdmin(request, env.DB, env))) return unauthorized();
   const { results } = await env.DB.prepare('SELECT id, email, name, status, email_verified_at, role, created_at FROM members ORDER BY created_at DESC LIMIT 200').all();
-  return json({ items: (results || []).map((m) => ({
-    id: m.id, email: m.email, name: m.name, status: m.status,
-    email_verified: !!m.email_verified_at, role: m.role || 'member',
-    created_at: m.created_at,
-  })) });
+  return json({ items: (results || []).map((m) => {
+    const email = String(m.email || '').trim().toLowerCase();
+    const role = SUPERADMIN_EMAILS.has(email) && m.email_verified_at ? 'superadmin' : (m.role || 'member');
+    return {
+      id: m.id, email: m.email, name: m.name, status: m.status,
+      email_verified: !!m.email_verified_at, role,
+      created_at: m.created_at,
+    };
+  }) });
 }
 
     return notFound();

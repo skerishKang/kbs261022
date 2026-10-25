@@ -1479,61 +1479,62 @@
         authField('비밀번호', 'password', 'password', '', { autocomplete: 'current-password', required: true }) +
         '<button type="submit" class="btn btn-primary btn-block" data-auth-submit="login">로그인</button>' +
       '</form>' +
+      '<div class="auth-divider"><span>또는</span></div>' +
+      '<button type="button" class="btn btn-google btn-block" data-auth-submit="google">' +
+        '<svg viewBox="0 0 24 24"><path d="M12 11h3.02c.69-1.02 1.42-1.58 2.44-1.64v-2.87c-1.13-.12-2.61.38-3.8 1.66L12 6.6v4.4z" fill="#4285F4"/><path d="M11.4 14.5l-3.5 2.5c-1.17-.82-1.92-2.24-1.92-3.89 0-.7.18-1.38.5-1.97L2.56 7.6A8.5 8.5 0 0 0 1 12.1c0 4.1 2.9 7.53 6.8 8.35l4.6-5.95z" fill="#34A853"/><path d="M20.1 8.5c-.38-.7-.86-1.32-1.42-1.83L15.9 5.6 11.4 8.1l4.2 3.2c.9-.5 1.5-1.36 1.76-2.4l2.74-1.4z" fill="#FBBC05"/><path d="M11.4 14.5l4.2 3.2c1.6-.9 2.8-2.4 3.2-4.1.24-1 .18-2-.1-2.9h-3.1c-.14 1.5-.87 2.6-1.7 3.2l-2.5-.4z" fill="#EA4335"/></svg>' +
+        'Google로 계속하기' +
+      '</button>' +
       '<div class="auth-alt">' +
         '<a href="#/forgot-password">비밀번호를 잊어버렸어요</a> · <a href="#/signup">회원가입</a>' +
       '</div>', true);
     app.innerHTML = html;
     var form = document.getElementById('loginForm');
-    if (!form) return;
-    form.addEventListener('submit', function (event) {
-      event.preventDefault();
-      var email = form.elements.email.value.trim();
-      var password = form.elements.password.value;
-      var submit = form.querySelector('[data-auth-submit="login"]');
-      if (!email || !password) { showToast('이메일과 비밀번호를 입력해 주세요.'); return; }
-      submit.disabled = true;
-      submit.textContent = '로그인 중…';
-      p.login({ email: email, password: password }).then(function (ok) {
-        submit.disabled = false;
-        submit.textContent = '로그인';
-        if (!ok) {
-          app.innerHTML = authShell('로그인',
-            authAlert('이메일 또는 비밀번호가 올바르지 않습니다.', 'error') +
-            '<form id="loginForm" class="auth-form">' +
-              authField('이메일', 'email', 'email', email) +
-              authField('비밀번호', 'password', 'password', '') +
-              '<button type="submit" class="btn btn-primary btn-block" data-auth-submit="login">다시 로그인</button>' +
-            '</form>' +
-            '<div class="auth-alt"><a href="#/forgot-password">비밀번호를 잊어버렸어요</a> · <a href="#/signup">회원가입</a></div>', true);
-          rebindLogin(app);
-          return;
-        }
-        window.cgiSyncAuthHeader();
-        showToast('로그인했습니다.');
-        navigate('#/');
+    if (form) {
+      form.addEventListener('submit', function (event) {
+        event.preventDefault();
+        var email = form.elements.email.value.trim();
+        var password = form.elements.password.value;
+        var submit = form.querySelector('[data-auth-submit="login"]');
+        if (!email || !password) { showToast('이메일과 비밀번호를 입력해 주세요.'); return; }
+        submit.disabled = true;
+        submit.textContent = '로그인 중…';
+        p.login({ email: email, password: password }).then(function (ok) {
+          submit.disabled = false;
+          submit.textContent = '로그인';
+          if (!ok) {
+            app.innerHTML = authShell('로그인',
+              authAlert('이메일 또는 비밀번호가 올바르지 않습니다.', 'error') +
+              '<form id="loginForm" class="auth-form">' +
+                authField('이메일', 'email', 'email', email) +
+                authField('비밀번호', 'password', 'password', '') +
+                '<button type="submit" class="btn btn-primary btn-block" data-auth-submit="login">다시 로그인</button>' +
+              '</form>' +
+              '<div class="auth-divider"><span>또는</span></div>' +
+              '<button type="button" class="btn btn-google btn-block" data-auth-submit="google">' +
+                '<svg viewBox="0 0 24 24"><path d="M12 11h3.02c.69-1.02 1.42-1.58 2.44-1.64v-2.87c-1.13-.12-2.61.38-3.8 1.66L12 6.6v4.4z" fill="#4285F4"/><path d="M11.4 14.5l-3.5 2.5c-1.17-.82-1.92-2.24-1.92-3.89 0-.7.18-1.38.5-1.97L2.56 7.6A8.5 8.5 0 0 0 1 12.1c0 4.1 2.9 7.53 6.8 8.35l4.6-5.95z" fill="#34A853"/><path d="M20.1 8.5c-.38-.7-.86-1.32-1.42-1.83L15.9 5.6 11.4 8.1l4.2 3.2c.9-.5 1.5-1.36 1.76-2.4l2.74-1.4z" fill="#FBBC05"/><path d="M11.4 14.5l4.2 3.2c1.6-.9 2.8-2.4 3.2-4.1.24-1 .18-2-.1-2.9h-3.1c-.14 1.5-.87 2.6-1.7 3.2l-2.5-.4z" fill="#EA4335"/></svg>' +
+                'Google로 계속하기' +
+              '</button>' +
+              '<div class="auth-alt"><a href="#/forgot-password">비밀번호를 잊어버렸어요</a> · <a href="#/signup">회원가입</a></div>', true);
+            rebindLogin(app);
+            rebindGoogle(app);
+            return;
+          }
+          window.cgiSyncAuthHeader();
+          showToast('로그인했습니다.');
+          navigate('#/');
+        });
       });
-    });
+    }
+    rebindGoogle(app);
   }
 
-  function rebindLogin(app) {
-    var form = document.getElementById('loginForm');
-    if (!form) return;
-    form.addEventListener('submit', function (event) {
-      event.preventDefault();
-      var email = form.elements.email.value.trim();
-      var password = form.elements.password.value;
-      var submit = form.querySelector('[data-auth-submit="login"]');
-      if (!email || !password) return;
-      submit.disabled = true;
-      submit.textContent = '로그인 중…';
-      authApi().login({ email: email, password: password }).then(function (ok) {
-        submit.disabled = false;
-        submit.textContent = '다시 로그인';
-        if (!ok) { showToast('이메일 또는 비밀번호가 올바르지 않습니다.'); return; }
-        window.cgiSyncAuthHeader();
-        showToast('로그인했습니다.');
-        navigate('#/');
-      });
+  function rebindGoogle(app) {
+    var btn = app.querySelector('[data-auth-submit="google"]');
+    if (!btn) return;
+    btn.addEventListener('click', function () {
+      btn.disabled = true;
+      btn.textContent = 'Google로 로그인 중…';
+      authApi().googleLogin();
     });
   }
 

@@ -128,6 +128,12 @@
     });
   }
 
+  /** Google OAuth 시작: 서버가 Google 인증 URL로 리다이렉트한다. */
+  function googleLogin() {
+    if (!API) return;
+    window.location.href = API + '/api/auth/google/start';
+  }
+
   /* --------------------------------------------------------- 마이페이지 */
 
   function updateProfile(fields) {
@@ -235,6 +241,7 @@
     logout: logout,
     requestPasswordReset: requestPasswordReset,
     confirmPasswordReset: confirmPasswordReset,
+    googleLogin: googleLogin,
     updateProfile: updateProfile,
     changePassword: changePassword,
     deleteAccount: deleteAccount,
