@@ -1,0 +1,12 @@
+# GitGuardian configuration file
+# https://docs.gitguardian.com/guardian/configuration-file
+
+ignore:
+  - path: "**/*test*"
+    rules: ["SECRETKEY", "ACCESSKEY", "TOKEN"]
+  - path: "backend/test/**"
+    rules: ["SECRETKEY", "ACCESSKEY", "TOKEN"]
+  - path: "**/*.test.mjs"
+    rules: ["SECRETKEY", "ACCESSKEY", "TOKEN"]
+  - path: "**/*.spec.mjs"
+    rules: ["SECRETKEY", "ACCESSKEY", "TOKEN"]
