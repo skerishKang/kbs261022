@@ -12,14 +12,14 @@ import { openD1 } from '../../d1-shim.mjs';
 import { createOAuthState } from '../../lib/google-oauth.mjs';
 
 const ORIGIN = 'https://skerishkang.github.io';
-const ADMIN_TOKEN = 'example-admin-token';
-const PASSWORD = 'Test!2026-abc';
-const SECRET = 'test-oauth-secret';
+const ADMIN_TEST_KEY = 'example-admin-token';
+const TEST_PASSWORD = 'Test!2026-abc';
+const TEST_SECRET = 'test-oauth-secret';
 
 function makeEnv(overrides = {}) {
   return {
     DB: openD1(),
-    ADMIN_TOKEN,
+    ADMIN_TOKEN: ADMIN_TEST_KEY,
     PG_PROVIDER_MODE: 'mock',
     ERP_LIVE_WRITE: 'NO',
     ERP_MODE: 'test',
@@ -30,7 +30,7 @@ function makeEnv(overrides = {}) {
     AUTH_RATE_LIMIT_WINDOW_SECONDS: '60',
     GOOGLE_CLIENT_ID: 'test-client-id.apps.googleusercontent.com',
     GOOGLE_CLIENT_SECRET: 'test-client-secret',
-    AUTH_SESSION_SECRET: SECRET,
+    AUTH_SESSION_SECRET: TEST_SECRET,
     ...overrides,
   };
 }
@@ -58,7 +58,7 @@ async function call(env, method, path, body, headers = {}) {
  * calls. Returns a restore function.
  */
 function mockGoogleOAuth({
-  accessToken = 'mock-access-token-123',
+  mockAccessToken = 'mock-access-token-123',
   subject = '1234567890',
   email = 'googleuser@example.com',
   name = 'Google User',
@@ -73,14 +73,14 @@ function mockGoogleOAuth({
       // Token exchange endpoint
       if (urlStr === 'https://oauth2.googleapis.com/token') {
         return new Response(JSON.stringify({
-          access_token: accessToken,
+          access_token: mockAccessToken,
           token_type: 'Bearer',
           expires_in: 3600,
         }), { status: 200, headers: { 'Content-Type': 'application/json' } });
       }
       // Userinfo endpoint
       if (urlStr === 'https://www.googleapis.com/oauth2/v2/userinfo') {
-        if (init.headers?.Authorization === 'Bearer ' + accessToken) {
+        if (init.headers?.Authorization === 'Bearer ' + mockAccessToken) {
           return new Response(JSON.stringify({
             id: subject,
             email,
@@ -267,7 +267,7 @@ test('google callback rejects an expired state', async () => {
 
   // Create an expired state (11 minutes old)
   const past = Date.now() - (11 * 60 * 1000);
-  const expiredState = await createOAuthState(SECRET, past);
+  const expiredState = await createOAuthState(TEST_SECRET, past);
 
   const resp = await call(env, 'GET', `/api/auth/google/callback?code=mock-code&state=${encodeURIComponent(expiredState)}`, undefined, {
     Cookie: `cgi_oauth_state=${expiredState}`,
@@ -282,7 +282,7 @@ test('google callback rejects a tampered state', async () => {
   const env = makeEnv();
   const restore = mockGoogleOAuth();
 
-  const validState = await createOAuthState(SECRET);
+  const validState = await createOAuthState(TEST_SECRET);
   const parts = validState.split('.');
   parts[0] = parts[0].slice(0, -2) + 'XX';
   const tamperedState = parts.join('.');
@@ -432,7 +432,7 @@ test('google callback links to an existing member by email', async () => {
   // Pre-create a member
   const csrfHeaders = { Origin: ORIGIN, 'X-CSRF-Token': ORIGIN, 'Content-Type': 'application/json' };
   const signupResp = await call(env, 'POST', '/api/auth/signup', {
-    email: 'existing@example.com', name: 'Existing Member', password: PASSWORD,
+    email: 'existing@example.com', name: 'Existing Member', password: TEST_PASSWORD,
   }, csrf);
   assert.equal(signupResp.status, 201);
 
@@ -521,12 +521,12 @@ test('normal member cannot access admin API', async () => {
   const env = makeEnv();
   const csrfHeaders = { Origin: ORIGIN, 'X-CSRF-Token': ORIGIN, 'Content-Type': 'application/json' };
   const signupResp = await call(env, 'POST', '/api/auth/signup', {
-    email: 'normal@example.com', name: 'Normal Member', password: PASSWORD,
+    email: 'normal@example.com', name: 'Normal Member', password: TEST_PASSWORD,
   }, csrf);
   assert.equal(signupResp.status, 201);
 
   const loginResp = await call(env, 'POST', '/api/auth/login', {
-    email: 'normal@example.com', password: PASSWORD,
+    email: 'normal@example.com', password: TEST_PASSWORD,
   }, csrf);
   assert.equal(loginResp.status, 200);
   const cookie = loginResp.headers['set-cookie'];
@@ -654,7 +654,7 @@ test('email signup and login still works after Google OAuth changes', async () =
 
   // Signup
   const signup = await call(env, 'POST', '/api/auth/signup', {
-    email: 'emailuser@example.com', name: 'Email User', password: PASSWORD,
+    email: 'emailuser@example.com', name: 'Email User', password: TEST_PASSWORD,
   }, csrf);
   assert.equal(signup.status, 201);
   assert.equal(signup.json.member.email, 'emailuser@example.com');
@@ -668,7 +668,7 @@ test('email signup and login still works after Google OAuth changes', async () =
 
   // Login
   const login = await call(env, 'POST', '/api/auth/login', {
-    email: 'emailuser@example.com', password: PASSWORD,
+    email: 'emailuser@example.com', password: TEST_PASSWORD,
   }, csrf);
   assert.equal(login.status, 200);
   assert.equal(login.json.member.email, 'emailuser@example.com');
@@ -760,7 +760,7 @@ test('google callback returns 400 for invalid code exchange', async () => {
     },
   );
 
-  const state = await createOAuthState(SECRET);
+  const state = await createOAuthState(TEST_SECRET);
   const resp = await call(env, 'GET', `/api/auth/google/callback?code=bad-code&state=${encodeURIComponent(state)}`, undefined, {
     Cookie: `cgi_oauth_state=${state}`,
   });
