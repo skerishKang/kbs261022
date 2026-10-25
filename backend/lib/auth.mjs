@@ -39,6 +39,8 @@ export const AUTH_POLICY = {
     'email-check': { max: 30, windowSeconds: 60 },
     'password-reset': { max: 5, windowSeconds: 24 * 3600 },
     'email-verify': { max: 10, windowSeconds: 24 * 3600 },
+    'resend-verify': { max: 5, windowSeconds: 24 * 3600 },
+    'resend-verify-cooldown': { max: 1, windowSeconds: 60 },
     'password-change': { max: 5, windowSeconds: 60 * 60 },
   },
 };

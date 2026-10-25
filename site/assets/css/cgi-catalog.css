@@ -1098,6 +1098,22 @@ p:last-child { margin-bottom: 0; }
 .auth-alert-ok { background: var(--cgi-ok-soft); border-color: #a8e6c1; color: var(--cgi-ok); }
 .auth-alert-info { background: var(--cgi-primary-soft); border-color: var(--cgi-primary-line); color: #225c39; }
 
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* email verification badge in header */
+.auth-badge-verified {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 10.5px; font-weight: 700; letter-spacing: .04em;
+  background: var(--cgi-ok-soft); color: var(--cgi-ok);
+  border: 1px solid #a8e6c1; border-radius: 10px; padding: 2px 8px;
+}
+.auth-badge-unverified {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 10.5px; font-weight: 700; letter-spacing: .04em;
+  background: #fff3e0; color: #e65100;
+  border: 1px solid #ffcc80; border-radius: 10px; padding: 2px 8px;
+}
+
 /* -------------------------------- my page -------------------------------- */
 .mypage { padding: 4px 0 30px; }
 .mypage-head {

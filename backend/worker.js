@@ -1126,11 +1126,21 @@ function authPolicy(env) {
   const maxAddresses = Number.parseInt(env.AUTH_MAX_ADDRESSES, 10);
   const rateMax = Number.parseInt(env.AUTH_RATE_LIMIT_MAX, 10);
   const rateWindow = Number.parseInt(env.AUTH_RATE_LIMIT_WINDOW_SECONDS, 10);
+  const cooldownSec = Number.parseInt(env.AUTH_RESEND_COOLDOWN_SECONDS, 10);
   const policy = { ...AUTH_POLICY, rateLimit: { ...AUTH_POLICY.rateLimit } };
   if (Number.isFinite(iterations) && iterations > 0) policy.pbkdf2Iterations = iterations;
   if (Number.isFinite(sessionDays) && sessionDays > 0) policy.sessionTtlSeconds = Math.floor(sessionDays * 24 * 3600);
   if (Number.isFinite(maxAddresses) && maxAddresses > 0) policy.maxAddressesPerMember = maxAddresses;
+  // Buckets that must keep their own max/window and are not overridden by the
+  // global AUTH_RATE_LIMIT_MAX / AUTH_RATE_LIMIT_WINDOW_SECONDS.
+  const protectedBuckets = new Set(['resend-verify-cooldown']);
   for (const name of Object.keys(policy.rateLimit)) {
+    if (protectedBuckets.has(name)) {
+      if (name === 'resend-verify-cooldown' && Number.isFinite(cooldownSec) && cooldownSec >= 0) {
+        policy.rateLimit[name] = { ...policy.rateLimit[name], windowSeconds: cooldownSec };
+      }
+      continue;
+    }
     const bucket = { ...policy.rateLimit[name] };
     if (Number.isFinite(rateMax) && rateMax > 0) bucket.max = rateMax;
     if (Number.isFinite(rateWindow) && rateWindow >= 0) bucket.windowSeconds = rateWindow;
@@ -1253,6 +1263,14 @@ async function issueToken(db, env, mail, member, kind, path, subject, text) {
     ? policy.sessionTtlSeconds
     : kind === 'password_reset' ? policy.passwordResetTtlSeconds : policy.verifyEmailTtlSeconds;
   const expiresAt = shiftIso(now, ttlSeconds);
+
+  // Revoke any previous pending token of the same kind so only the newest
+  // verification / reset link is valid. Sessions are exempt.
+  if (kind !== 'session') {
+    await db.prepare("UPDATE auth_tokens SET status = 'revoked', revoked_at = ? WHERE member_id = ? AND kind = ? AND status = 'pending'")
+      .bind(now, member.id, kind).run();
+  }
+
   const rawToken = randomToken();
   const url = mail.urlFor(path, rawToken);
   await db.prepare(
@@ -1439,11 +1457,15 @@ async function handleAuthRoute(pathname, method, request, db, env) {
     const member = await requireMember(request, db, env);
     if (!member) return authJson({ error: 'unauthorized', detail: 'sign in to resend the verification email' }, 401);
     const policy = authPolicy(env);
-    const limit = await rateLimitCheck(db, policy, 'email-verify', member.email);
+    const cooldownLimit = await rateLimitCheck(db, policy, 'resend-verify-cooldown', member.email);
+    if (cooldownLimit.error) {
+      return authJson({ error: cooldownLimit.error, detail: cooldownLimit.detail, retry_after_seconds: 60 }, 429);
+    }
+    const limit = await rateLimitCheck(db, policy, 'resend-verify', member.email);
     if (limit.error) return authJson({ error: limit.error, detail: limit.detail }, 429);
     if (member.email_verified_at) return authJson({ email_verified: true, already_verified: true });
     const issued = await issueToken(db, env, mail, member, 'verify_email', '/auth/verify', 'CGI 이메일 인증', '아래 링크에서 이메일 인증을 완료하세요.');
-    return authJson({ email_verified: false, email_verify_required: emailVerifyRequired(env), mail: issued.mail });
+    return authJson({ email_verified: false, email_verify_required: emailVerifyRequired(env), mail: issued.mail, resend_cooldown_seconds: 60 });
   }
 
   // ---------------- login ----------------
