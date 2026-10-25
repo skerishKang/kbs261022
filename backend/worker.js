@@ -47,7 +47,7 @@ const DUPLICATE_WINDOW_SECONDS = 120;
 // Smallest partial refund the backend will accept (KRW). Anything below this is
 // rounding dust rather than a refund; override with the MIN_PARTIAL_REFUND var.
 const MIN_PARTIAL_REFUND = 1000;
-const BACKEND_VERSION = '1.1.0';
+const BACKEND_VERSION = '1.2.0';
 
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': ALLOWED_ORIGIN,

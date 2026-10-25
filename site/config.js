@@ -18,7 +18,7 @@ window.CGI_SITE_CONFIG = {
   orderApiUrl: 'https://cgi-quote-api.charliekant.workers.dev',
   // 토스페이먼츠 client key (test_gck_...). 비어 있으면 결제 화면이
   // "테스트 결제" 모의 승인 모드로 동작한다. secret key 는 절대 여기에 넣지 않는다.
-  tossClientId: '',
+  tossClientId: 'test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm',
   tossJsUrl: 'https://js.tosspayments.com/v2/standard',
   homepageLabel: '회사 홈페이지',
 
