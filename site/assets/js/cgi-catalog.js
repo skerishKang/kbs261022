@@ -1408,6 +1408,14 @@
       var adminLinks = document.querySelectorAll('[data-auth-admin]');
       var isAdmin = !!(u && (u.role === 'admin' || u.role === 'superadmin' || u.is_admin));
       for (var a = 0; a < adminLinks.length; a++) adminLinks[a].hidden = !isAdmin;
+      var badgeEl = document.querySelector('[data-auth-verified-badge]');
+      if (badgeEl && u) {
+        var verified = u.email_verified;
+        badgeEl.textContent = verified ? '인증됨' : '인증 대기';
+        badgeEl.className = verified ? 'auth-badge-verified' : 'auth-badge-unverified';
+        badgeEl.hidden = false;
+        badgeEl.href = verified ? '#/my-page/profile' : '#/auth/verify';
+      }
       var navLinks = document.querySelectorAll('.header-nav a[data-nav="my-page"]');
       for (var n = 0; n < navLinks.length; n++) {
         navLinks[n].hidden = false;
@@ -1418,6 +1426,8 @@
       for (var l = 0; l < loggedOut.length; l++) loggedOut[l].hidden = false;
       var memberHidden = document.querySelector('.auth-links-member');
       if (memberHidden) memberHidden.hidden = true;
+      var badgeHidden = document.querySelector('[data-auth-verified-badge]');
+      if (badgeHidden) badgeHidden.hidden = true;
       var myNav = document.querySelectorAll('.header-nav a[data-nav="my-page"]');
       for (var m = 0; m < myNav.length; m++) { myNav[m].hidden = true; myNav[m].classList.remove('is-active'); }
     }
