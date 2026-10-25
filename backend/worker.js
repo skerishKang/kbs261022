@@ -1483,6 +1483,19 @@ async function handleGoogleCallback(request, db, env) {
       }
     }
 
+    // Google has already verified this address, so an existing member matched
+    // by Google ID or email must be marked verified as well. Without this, the
+    // two designated superadmin accounts stay unverified (and therefore lose
+    // admin access) whenever they first log in through Google.
+    if (!member.email_verified_at) {
+      const now = nowIso();
+      await db.prepare('UPDATE members SET email_verified_at = ?, updated_at = ? WHERE id = ?')
+        .bind(now, now, member.id).run();
+      await db.prepare('INSERT INTO member_events (member_id, type, meta, created_at) VALUES (?, ?, ?, ?)')
+        .bind(member.id, 'email_verified', JSON.stringify({ source: 'google' }), now).run();
+      member = { ...member, email_verified_at: now };
+    }
+
     // Issue session and redirect back to the site
     const session = await issueSession(db, env, member);
     const redirectUrl = env.SITE_BASE_URL || 'https://skerishkang.github.io/kbs261022/site/#/login';

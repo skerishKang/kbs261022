@@ -1192,4 +1192,4 @@ p:last-child { margin-bottom: 0; }
 
 /* The hidden attribute loses to the class-level display: rules above, so it
    has to be re-asserted explicitly for the auth switcher. */
-.auth-links-guest[hidden], .auth-links-member[hidden], .header-nav a[hidden] { display: none !important; }
+.auth-links-guest[hidden], .auth-links-guest a[hidden], .auth-links-member[hidden], .header-nav a[hidden] { display: none !important; }
