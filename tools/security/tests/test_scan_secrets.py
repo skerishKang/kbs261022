@@ -67,12 +67,65 @@ class ScanTextTests(unittest.TestCase):
     def test_empty_placeholder_is_allowed(self):
         self.assertEqual(rules_for(f"{ENV_VAR_NAME}="), [])
 
+    def test_empty_python_env_fallback_is_allowed(self):
+        self.assertEqual(
+            rules_for(f"{ENV_VAR_NAME} = os.environ.get('{ENV_VAR_NAME}', '')"), []
+        )
+
+    def test_nonempty_python_env_fallback_reads_the_value_not_the_quote(self):
+        line = f"pw = os.environ.get('{ENV_VAR_NAME}', 'some real secret value here')"
+        self.assertEqual(rules_for(line), ["python-env-fallback-credential"])
+
     def test_redaction_line_is_allowed(self):
         line = "url.replace(/ec_req_sid=[^&]*/gi, 'ec_req_sid=REDACTED')"
         self.assertEqual(rules_for(line), [])
 
     def test_selector_value_is_allowed(self):
         self.assertEqual(rules_for("PASSWORD = '#passwd'"), [])
+
+    def test_identifier_reference_is_allowed(self):
+        # A header-name constant is a reference to another value, not a secret.
+        self.assertEqual(rules_for("var X_CSRF_TOKEN = ORIGIN"), [])
+        self.assertEqual(rules_for("headers = {'X-CSRF-Token': ORIGIN}"), [])
+        self.assertEqual(rules_for("headers = {'X-CSRF-Token': csrfToken}"), [])
+
+    def test_hardcoded_assignment_is_allowed_in_test_files(self):
+        line = f"const {ENV_VAR_NAME} = '{FAKE_VALUE}';"
+        self.assertEqual(rules_for(line), ["hardcoded-credential-assignment"])
+        self.assertEqual(ss.scan_text(line, test_file=True), [])
+
+    def test_real_secret_patterns_still_flagged_in_test_files(self):
+        text = f"https://loginca.ecount.com/ec5/view?ec_req_sid={OPAQUE_LONG_VALUE}\n"
+        text += "Authorization: Bearer " + OPAQUE_LONG_VALUE + "\n"
+        text += "gh" + "p_" + "A" * 36 + "\n"
+        text += "AK" + "IA" + "ABCDEFGHIJKLMNOP" + "\n"
+        self.assertEqual(
+            [rule for rule, _ in ss.scan_text(text, test_file=True)],
+            ["session-token-in-url", "bearer-token", "github-token", "aws-access-key"],
+        )
+
+    def test_test_path_detection(self):
+        for rel in [
+            "backend/test/e2e/customer-auth.test.mjs",
+            "backend/test/unit/auth.test.mjs",
+            "backend/tests/mail.mjs",
+            "tools/security/tests/test_scan_secrets.py",
+            "tests/spec.js",
+            "site/__tests__/page.mjs",
+        ]:
+            self.assertIsNotNone(ss.TEST_PATH.search(rel), rel)
+        for rel in ["backend/lib/auth.mjs", "site/assets/app.js", "src/auth.mjs"]:
+            self.assertIsNone(ss.TEST_PATH.search(rel), rel)
+
+    def test_scan_file_uses_relative_path_for_test_exemption(self):
+        tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(tmp.cleanup)
+        text = f"const {ENV_VAR_NAME} = '{FAKE_VALUE}';\n"
+        probe = Path(tmp.name) / "probe.test.mjs"
+        probe.write_text(text, encoding="utf-8")
+        self.assertEqual(ss.scan_file(probe, "backend/test/unit/probe.test.mjs"), [])
+        self.assertEqual(ss.scan_file(probe, "backend/lib/probe.mjs"),
+                         [("hardcoded-credential-assignment", 1)])
 
     def test_scan_text_never_returns_values(self):
         line = f"const {ENV_VAR_NAME} = '{FAKE_VALUE}';"

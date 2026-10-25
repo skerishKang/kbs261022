@@ -4,11 +4,17 @@
 -- Part 1: quote_requests  (existing, unchanged — issue #37/#39)
 -- Part 2: orders / order_items / payments / order_events / erp_sync
 --         (order + payment + ERP-sync pipeline, issue #67)
+-- Part 3: members / member_addresses / auth_tokens / auth_attempts / member_events
+--         (customer account system, issue #69 — isolated from PADIEM)
 --
 -- Every statement is idempotent (CREATE TABLE IF NOT EXISTS /
 -- CREATE INDEX IF NOT EXISTS) so the whole file can be executed
 -- against a live database without breaking existing rows.
 -- Amounts are stored as INTEGER KRW. Timestamps are ISO-8601 UTC.
+--
+-- Columns added to pre-existing tables (orders.customer_id,
+-- quote_requests.member_id) are declared here for fresh databases; for existing
+-- databases backend/lib/migrate.mjs applies the guarded ALTER TABLE.
 -- ============================================================
 
 -- ------------------------------------------------------------
@@ -28,11 +34,13 @@ CREATE TABLE IF NOT EXISTS quote_requests (
   status TEXT NOT NULL DEFAULT 'received',
   admin_prices TEXT, -- JSON object
   total REAL,
+  member_id INTEGER,              -- null for guest submissions (issue #69)
   updated_at TEXT
 );
 
 CREATE INDEX IF NOT EXISTS idx_quote_requests_created_at ON quote_requests(created_at);
 CREATE INDEX IF NOT EXISTS idx_quote_requests_status ON quote_requests(status);
+CREATE INDEX IF NOT EXISTS idx_quote_requests_member_id ON quote_requests(member_id);
 
 -- ------------------------------------------------------------
 -- Part 2. Orders
@@ -75,9 +83,10 @@ CREATE TABLE IF NOT EXISTS orders (
 
   admin_prices TEXT,                  -- JSON object productId -> confirmed unit price
   admin_note TEXT,
-  erp_status TEXT NOT NULL DEFAULT 'not_sent', -- not_sent|sent|confirmed|failed|skipped
-  erp_sent_at TEXT,
-  source_quote_id TEXT                -- link to quote_requests.id when converted
+   erp_status TEXT NOT NULL DEFAULT 'not_sent', -- not_sent|sent|confirmed|failed|skipped
+   erp_sent_at TEXT,
+   source_quote_id TEXT,                -- link to quote_requests.id when converted
+   customer_id INTEGER                  -- null for guest checkout (issue #69)
 );
 
 CREATE INDEX IF NOT EXISTS idx_orders_created_at ON orders(created_at);
@@ -86,6 +95,7 @@ CREATE INDEX IF NOT EXISTS idx_orders_kind ON orders(kind);
 CREATE INDEX IF NOT EXISTS idx_orders_payment_status ON orders(payment_status);
 CREATE INDEX IF NOT EXISTS idx_orders_customer_company ON orders(customer_company);
 CREATE INDEX IF NOT EXISTS idx_orders_cart_hash ON orders(cart_hash);
+CREATE INDEX IF NOT EXISTS idx_orders_customer_id ON orders(customer_id);
 
 -- ------------------------------------------------------------
 -- Part 2. Order line items
@@ -175,3 +185,88 @@ CREATE TABLE IF NOT EXISTS erp_sync (
 
 CREATE INDEX IF NOT EXISTS idx_erp_sync_order_id ON erp_sync(order_id);
 CREATE INDEX IF NOT EXISTS idx_erp_sync_status ON erp_sync(status);
+
+-- ============================================================
+-- Part 3. Customer accounts (issue #69)
+--
+-- CGI members live in this database, isolated from every PADIEM.NET
+-- account system. These tables are never shared with the staff ADMIN_TOKEN
+-- path: admin endpoints authenticate with a bearer token only, and a valid
+-- customer session is explicitly rejected at those endpoints (role_denied).
+--
+-- auth_tokens stores a SHA-256 digest of each token, so a leaked database
+-- cannot mint sessions, verification links or reset links.
+-- ============================================================
+
+CREATE TABLE IF NOT EXISTS members (
+  id INTEGER PRIMARY KEY,
+  email TEXT NOT NULL UNIQUE,
+  password_hash TEXT NOT NULL,
+  name TEXT NOT NULL,
+  phone TEXT,
+  company TEXT,
+  email_verified_at TEXT,
+  status TEXT NOT NULL DEFAULT 'active',  -- active|suspended|deleted
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL,
+  deleted_at TEXT
+);
+
+CREATE INDEX IF NOT EXISTS idx_members_status ON members(status);
+CREATE INDEX IF NOT EXISTS idx_members_created_at ON members(created_at);
+
+CREATE TABLE IF NOT EXISTS member_addresses (
+  id INTEGER PRIMARY KEY,
+  member_id INTEGER NOT NULL,
+  label TEXT NOT NULL,
+  recipient_name TEXT NOT NULL,
+  phone TEXT NOT NULL,
+  addr TEXT NOT NULL,
+  addr_detail TEXT,
+  company TEXT,
+  is_default INTEGER NOT NULL DEFAULT 0,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_member_addresses_member_id ON member_addresses(member_id);
+
+CREATE TABLE IF NOT EXISTS auth_tokens (
+  id INTEGER PRIMARY KEY,
+  member_id INTEGER,
+  kind TEXT NOT NULL,              -- verify_email|password_reset|session|logout
+  token_hash TEXT NOT NULL UNIQUE,
+  email TEXT,
+  status TEXT NOT NULL DEFAULT 'pending',  -- pending|consumed|revoked|expired
+  expires_at TEXT NOT NULL,
+  consumed_at TEXT,
+  revoked_at TEXT,
+  created_at TEXT NOT NULL,
+  meta TEXT
+);
+
+CREATE INDEX IF NOT EXISTS idx_auth_tokens_member_kind ON auth_tokens(member_id, kind);
+CREATE INDEX IF NOT EXISTS idx_auth_tokens_expires_at ON auth_tokens(expires_at);
+
+CREATE TABLE IF NOT EXISTS auth_attempts (
+  kind TEXT NOT NULL,              -- login|signup|email-check|password-reset|email-verify|password-change
+  key TEXT NOT NULL,
+  count INTEGER NOT NULL DEFAULT 1,
+  first_at TEXT NOT NULL,
+  last_at TEXT NOT NULL,
+  locked_until TEXT,
+  PRIMARY KEY (kind, key)
+);
+
+CREATE INDEX IF NOT EXISTS idx_auth_attempts_last_at ON auth_attempts(last_at);
+
+CREATE TABLE IF NOT EXISTS member_events (
+  id INTEGER PRIMARY KEY,
+  member_id INTEGER,
+  type TEXT NOT NULL,              -- signup|email_verified|login|login_failed|logout|password_reset|...
+  meta TEXT,
+  created_at TEXT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_member_events_member_id ON member_events(member_id);
+CREATE INDEX IF NOT EXISTS idx_member_events_type ON member_events(type);

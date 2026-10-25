@@ -196,7 +196,11 @@
 
       var payload = orderPayload(customer);
       payload.idempotency_key = requestKey();
-      api('POST', '/api/orders', payload).then(function (res) {
+      var member = window.CGI_AUTH && window.CGI_AUTH.isLoggedIn();
+      var send = member
+        ? function (path, body) { return window.CGI_AUTH.api('POST', path, body); }
+        : function (path, body) { return api('POST', path, body); };
+      send(member ? '/api/me/orders' : '/api/orders', payload).then(function (res) {
         if (!res.ok) {
           status.innerHTML = flash('주문 생성 실패: ' + (res.data.error || ('HTTP ' + res.status)), 'flash-error');
           btn.disabled = false;
