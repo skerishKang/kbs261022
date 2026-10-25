@@ -164,6 +164,24 @@ test('auth routes advertise credentials and DELETE, legacy routes grant none', a
   const adminResponse = await call(environment, 'GET', '/api/orders', undefined, adminHeaders);
   assert.equal(adminResponse.status, 200);
   assert.equal(adminResponse.headers['access-control-allow-credentials'], undefined);
+
+  // The browser admin console uses the member cookie on the same legacy order
+  // and quote routes. A CSRF-bearing preflight opts into credentialed CORS, and
+  // a response to a cookie-bearing request carries the credential flag too.
+  const cookiePreflight = await call(environment, 'OPTIONS', '/api/orders', undefined, {
+    Origin: ORIGIN,
+    'Access-Control-Request-Method': 'GET',
+    'Access-Control-Request-Headers': 'content-type,x-csrf-token',
+  });
+  assert.equal(cookiePreflight.status, 204);
+  assert.equal(cookiePreflight.headers['access-control-allow-credentials'], 'true');
+
+  const cookieResponse = await call(environment, 'GET', '/api/orders', undefined, {
+    ...adminHeaders,
+    Cookie: 'cgi_member=test-session',
+  });
+  assert.equal(cookieResponse.status, 200);
+  assert.equal(cookieResponse.headers['access-control-allow-credentials'], 'true');
 });
 
 test('health reports the auth posture without leaking secrets', async () => {

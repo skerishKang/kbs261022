@@ -115,8 +115,18 @@ export function isAuthPath(pathname) {
   return pathname === '/api/auth' || pathname.startsWith('/api/auth/') || pathname === '/api/me' || pathname.startsWith('/api/me/');
 }
 
-function corsHeadersFor(pathname) {
-  return isAuthPath(pathname) ? CORS_HEADERS_CREDENTIALS : CORS_HEADERS;
+// A cookie-authenticated admin request always carries the custom CSRF header,
+// so the preflight can opt into credentialed CORS without widening every
+// legacy route. Public guest calls keep the credential-free response.
+function preflightWantsCredentials(request) {
+  const requested = String(request.headers.get('Access-Control-Request-Headers') || '').toLowerCase();
+  return requested.split(',').map((h) => h.trim()).includes('x-csrf-token');
+}
+
+function corsHeadersFor(pathname, request) {
+  return isAuthPath(pathname) || (request && preflightWantsCredentials(request))
+    ? CORS_HEADERS_CREDENTIALS
+    : CORS_HEADERS;
 }
 
 // ---------------------------------------------------------------------------
@@ -2042,11 +2052,11 @@ async function handleMeRoute(pathname, method, url, request, db, env) {
 // worker
 // ---------------------------------------------------------------------------
 
-export default {
+const worker = {
   async fetch(request, env) {
     const url = new URL(request.url);
     if (request.method === 'OPTIONS') {
-      return new Response(null, { status: 204, headers: corsHeadersFor(url.pathname) });
+      return new Response(null, { status: 204, headers: corsHeadersFor(url.pathname, request) });
     }
 
     const pg = createPgAdapter({ secretKey: env.TOSS_WIDGET_SECRET_KEY, mode: env.PG_PROVIDER_MODE || 'auto' });
@@ -2317,6 +2327,33 @@ if (url.pathname === '/api/admin/members' && request.method === 'GET') {
   }) });
 }
 
-    return notFound();
+return notFound();
+  },
+};
+
+// A browser request that carries the session cookie is an admin/member call
+// even when its path is a legacy route (for example GET /api/orders). Those
+// responses must advertise credentials or the browser discards them. The
+// origin stays pinned to the production site; only the credential flag is added.
+export default {
+  async fetch(request, env) {
+    const response = await worker.fetch(request, env);
+    const contentType = response.headers.get('Content-Type') || '';
+    if (
+      request.method !== 'OPTIONS'
+      && request.headers.get('Cookie')
+      && contentType.includes('application/json')
+      && response.headers.get('Access-Control-Allow-Origin') === ALLOWED_ORIGIN
+      && !response.headers.has('Access-Control-Allow-Credentials')
+    ) {
+      const headers = new Headers(response.headers);
+      headers.set('Access-Control-Allow-Credentials', 'true');
+      return new Response(response.body, {
+        status: response.status,
+        statusText: response.statusText,
+        headers,
+      });
+    }
+    return response;
   },
 };
