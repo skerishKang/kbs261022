@@ -141,6 +141,22 @@ test('validateName trims, caps and rejects empty values', () => {
   assert.equal(validateName('a'.repeat(60)).ok, true);
 });
 
+test('validateName accepts Hangul but refuses a lossily decoded body', () => {
+  // A body that was not valid UTF-8 arrives with U+FFFD substituted. Storing it
+  // is permanent — the admin member list then shows a garbled name forever.
+  assert.deepEqual(validateName('테스트유저'), { ok: true, name: '테스트유저' });
+  assert.equal(validateName('Ʃ\uFFFDon').error, 'invalid name encoding');
+  assert.equal(validateName('\uFFFD').error, 'invalid name encoding');
+  assert.equal(validateName('  \uFFFD  ').error, 'invalid name encoding');
+});
+
+test('text validators refuse undecodable values', () => {
+  assert.equal(validateText('서울시 \uFFFD\uFFFD 테스트구', 'addr', 120).error, 'invalid addr encoding');
+  assert.equal(validateText('서울시 테스트구', 'addr', 120).ok, true);
+  assert.equal(validateOptionalText('\uFFFD\uFFFD', 'company', 100).error, 'invalid company encoding');
+  assert.equal(validateOptionalText('', 'company', 100).ok, true);
+});
+
 test('validatePhone accepts Korean mobile formats and rejects junk', () => {
   for (const phone of ['010-1111-2222', '010-1111-2222', '01011112222', '+82-10-1111-2222', '010.1111.2222', '010 1111 2222']) {
     assert.ok(validatePhone(phone).ok, phone);

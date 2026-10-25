@@ -863,3 +863,112 @@ test('google callback does not require CSRF token (top-level navigation)', async
   restoreAfter();
   restore();
 });
+
+// ---------------------------------------------------------------------------
+// 8. Return-to-page after Google login (admin consoles)
+// ---------------------------------------------------------------------------
+
+/** start(?return=…) → callback, returning the final Location. */
+async function googleReturnFlow(env, returnParam, extraCallbackQuery = '') {
+  const startResp = await worker.fetch(
+    new Request(`http://cgi.local/api/auth/google/start${returnParam === undefined ? '' : `?return=${returnParam}`}`,
+      { method: 'GET', headers: { Origin: ORIGIN } }),
+    env,
+  );
+  const stateValue = startResp.headers.get('set-cookie').match(/cgi_oauth_state=([^;]+)/)[1];
+  const restore = mockGoogleOAuth();
+  const callbackResp = await worker.fetch(
+    new Request(`http://cgi.local/api/auth/google/callback?code=mock-code&state=${encodeURIComponent(stateValue)}${extraCallbackQuery}`, {
+      headers: { Cookie: `cgi_oauth_state=${stateValue}` },
+    }),
+    env,
+  );
+  restore();
+  return { status: callbackResp.status, location: callbackResp.headers.get('location') };
+}
+
+const SITE_DIR = 'https://skerishkang.github.io/kbs261022/site/';
+
+test('google login from staff.html returns to staff.html', async () => {
+  const flow = await googleReturnFlow(makeEnv(), 'staff');
+  assert.equal(flow.status, 302);
+  assert.equal(flow.location, `${SITE_DIR}staff.html`);
+});
+
+test('google login from orders.html returns to orders.html', async () => {
+  const flow = await googleReturnFlow(makeEnv(), 'orders');
+  assert.equal(flow.status, 302);
+  assert.equal(flow.location, `${SITE_DIR}orders.html`);
+});
+
+test('google login without a return target lands on the site login page', async () => {
+  const flow = await googleReturnFlow(makeEnv());
+  assert.equal(flow.status, 302);
+  assert.equal(flow.location, `${SITE_DIR}#/login`);
+});
+
+test('an unknown return target falls back to the site login page', async () => {
+  for (const bad of ['evil', 'Staff', '', 'SITE']) {
+    const flow = await googleReturnFlow(makeEnv(), bad);
+    assert.equal(flow.status, 302, `return=${bad} should still complete`);
+    assert.equal(flow.location, `${SITE_DIR}#/login`, `return=${bad} must not escape the allowlist`);
+  }
+});
+
+test('path traversal in the return target cannot inject a page', async () => {
+  for (const bad of ['..%2Fevil', '../../../etc/passwd', 'https://evil.example/staff', '//evil.example']) {
+    const flow = await googleReturnFlow(makeEnv(), encodeURIComponent(bad));
+    assert.equal(flow.status, 302);
+    assert.equal(flow.location, `${SITE_DIR}#/login`);
+    assert.ok(!flow.location.includes('evil'), flow.location);
+  }
+});
+
+test('a return param on the callback URL is ignored in favour of the signed state', async () => {
+  // The state was signed for staff.html; the attacker-appended query must not win.
+  const flow = await googleReturnFlow(makeEnv(), 'staff', '&return=orders');
+  assert.equal(flow.status, 302);
+  assert.equal(flow.location, `${SITE_DIR}staff.html`);
+});
+
+test('a forged state carrying a return target fails signature verification', async () => {
+  const env = makeEnv();
+  const foreign = await createOAuthState('attacker-secret', Date.now(), 'staff');
+  const resp = await call(env, 'GET', `/api/auth/google/callback?code=mock-code&state=${encodeURIComponent(foreign)}`, undefined, {
+    Cookie: `cgi_oauth_state=${foreign}`,
+  });
+  assert.equal(resp.status, 400);
+  assert.equal(resp.json.error, 'invalid state');
+});
+
+test('return target survives alongside the session and state-clear cookies', async () => {
+  const env = makeEnv();
+  const startResp = await worker.fetch(
+    new Request('http://cgi.local/api/auth/google/start?return=staff', { method: 'GET', headers: { Origin: ORIGIN } }),
+    env,
+  );
+  const stateValue = startResp.headers.get('set-cookie').match(/cgi_oauth_state=([^;]+)/)[1];
+  const restore = mockGoogleOAuth({ subject: 'staff-return-id', email: 'charliekant@gmail.com', name: 'Charlie Kang' });
+  const callbackResp = await worker.fetch(
+    new Request(`http://cgi.local/api/auth/google/callback?code=mock-code&state=${encodeURIComponent(stateValue)}`, {
+      headers: { Cookie: `cgi_oauth_state=${stateValue}` },
+    }),
+    env,
+  );
+  assert.equal(callbackResp.status, 302);
+  assert.equal(callbackResp.headers.get('location'), `${SITE_DIR}staff.html`);
+
+  const cookies = [];
+  callbackResp.headers.forEach((v, k) => { if (k.toLowerCase() === 'set-cookie') cookies.push(v); });
+  assert.equal(cookies.length, 2);
+  assert.match(cookies[0], /cgi_member=/);
+  assert.match(cookies[1], /cgi_oauth_state=;/);
+
+  // The Google-only superadmin now has a working member session on the admin API.
+  const meResp = await call(env, 'GET', '/api/me', undefined, { ...csrf, Cookie: cookies[0] });
+  assert.equal(meResp.status, 200);
+  assert.equal(meResp.json.member.role, 'superadmin');
+  const quotesResp = await call(env, 'GET', '/api/quotes', undefined, { ...csrf, Cookie: cookies[0] });
+  assert.equal(quotesResp.status, 200);
+  restore();
+});

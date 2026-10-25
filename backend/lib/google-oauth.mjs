@@ -14,15 +14,28 @@ const GOOGLE_USERINFO_URL = 'https://www.googleapis.com/oauth2/v2/userinfo';
 
 const MAX_RESPONSE_BYTES = 64 * 1024;
 
+/** Where a finished Google login lands. Only these targets are ever emitted. */
+const OAUTH_RETURN_TARGETS = {
+  site: { page: '', hash: '#/login' },
+  staff: { page: 'staff.html', hash: '' },
+  orders: { page: 'orders.html', hash: '' },
+};
+const OAUTH_DEFAULT_RETURN = 'site';
+const DEFAULT_SITE_BASE_URL = 'https://skerishkang.github.io/kbs261022/site/#/login';
+
 /**
  * Create an OAuth state token (signed, time-limited).
  * Format: base64(json) + '.' + hmac-sha256(base64(json), secret)
+ *
+ * `returnTo` is folded into the signed payload so the callback can trust the
+ * caller's origin page without re-reading an attacker-controlled query string.
  */
-export async function createOAuthState(secret, now = Date.now()) {
+export async function createOAuthState(secret, now = Date.now(), returnTo = OAUTH_DEFAULT_RETURN) {
   const payload = {
     n: now,
     e: now + OAUTH_STATE_TTL_SECONDS * 1000,
     r: crypto.getRandomValues(new Uint8Array(16)).reduce((a, b) => a + b.toString(16).padStart(2, '0'), ''),
+    u: normalizeOAuthReturn(returnTo),
   };
   const json = JSON.stringify(payload);
   const encoded = btoa(unescape(encodeURIComponent(json)));
@@ -30,27 +43,61 @@ export async function createOAuthState(secret, now = Date.now()) {
   return encoded + '.' + hex;
 }
 
+/** Read and validate a state token. Returns the payload, or null if unsigned/expired/tampered. */
+async function readOAuthState(secret, state, now = Date.now()) {
+  try {
+    const parts = String(state || '').split('.');
+    if (parts.length !== 2) return null;
+    const [encoded, signature] = parts;
+    const { hex } = await hmacSha256(encoded, secret);
+    if (hex !== signature) return null;
+
+    const json = decodeURIComponent(escape(atob(encoded)));
+    const payload = JSON.parse(json);
+    if (!payload.n || !payload.e) return null;
+    if (now < payload.n - 60000) return null; // 1 minute clock skew tolerance
+    if (now > payload.e) return null;
+
+    return payload;
+  } catch (e) {
+    return null;
+  }
+}
+
 /**
  * Verify an OAuth state token. Returns true if valid and not expired.
  */
 export async function verifyOAuthState(secret, state, now = Date.now()) {
+  return (await readOAuthState(secret, state, now)) !== null;
+}
+
+/**
+ * Verify an OAuth state token and return its payload (including `u`).
+ */
+export async function decodeOAuthState(secret, state, now = Date.now()) {
+  return await readOAuthState(secret, state, now);
+}
+
+/** Clamp any caller-supplied value to the allowlist. */
+export function normalizeOAuthReturn(value) {
+  const key = String(value || '');
+  return Object.prototype.hasOwnProperty.call(OAUTH_RETURN_TARGETS, key) ? key : OAUTH_DEFAULT_RETURN;
+}
+
+/**
+ * Build the post-login Location from the site base and an allowlisted target.
+ * The base contributes only its origin + directory; the page name always comes
+ * from OAUTH_RETURN_TARGETS, so nothing user-supplied reaches the header.
+ */
+export function resolveOAuthRedirect(siteBaseUrl, returnTo) {
+  const target = OAUTH_RETURN_TARGETS[normalizeOAuthReturn(returnTo)];
+  let dir;
   try {
-    const parts = String(state || '').split('.');
-    if (parts.length !== 2) return false;
-    const [encoded, signature] = parts;
-    const { hex } = await hmacSha256(encoded, secret);
-    if (hex !== signature) return false;
-
-    const json = decodeURIComponent(escape(atob(encoded)));
-    const payload = JSON.parse(json);
-    if (!payload.n || !payload.e) return false;
-    if (now < payload.n - 60000) return false; // 1 minute clock skew tolerance
-    if (now > payload.e) return false;
-
-    return true;
+    dir = new URL('.', siteBaseUrl || DEFAULT_SITE_BASE_URL).href;
   } catch (e) {
-    return false;
+    dir = new URL('.', DEFAULT_SITE_BASE_URL).href;
   }
+  return dir + target.page + target.hash;
 }
 
 /**

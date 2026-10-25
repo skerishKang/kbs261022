@@ -4,6 +4,9 @@ import assert from 'node:assert/strict';
 import {
   createOAuthState,
   verifyOAuthState,
+  decodeOAuthState,
+  normalizeOAuthReturn,
+  resolveOAuthRedirect,
   buildAuthorizationUrl,
   OAUTH_STATE_COOKIE,
   OAUTH_STATE_TTL_SECONDS,
@@ -128,4 +131,61 @@ test('OAUTH_STATE_COOKIE is a string constant', () => {
 
 test('OAUTH_STATE_TTL_SECONDS is 10 minutes', () => {
   assert.equal(OAUTH_STATE_TTL_SECONDS, 600);
+});
+
+test('createOAuthState defaults the return target to the site login page', async () => {
+  const state = await createOAuthState(SECRET);
+  const payload = await decodeOAuthState(SECRET, state);
+  assert.equal(payload.u, 'site');
+});
+
+test('createOAuthState signs the return target into the payload', async () => {
+  const state = await createOAuthState(SECRET, Date.now(), 'staff');
+  const payload = await decodeOAuthState(SECRET, state);
+  assert.equal(payload.u, 'staff');
+});
+
+test('decodeOAuthState normalises an unknown target before signing', async () => {
+  const state = await createOAuthState(SECRET, Date.now(), '../../evil');
+  const payload = await decodeOAuthState(SECRET, state);
+  assert.equal(payload.u, 'site');
+});
+
+test('decodeOAuthState rejects tampered, foreign-signed and expired states', async () => {
+  const state = await createOAuthState(SECRET, Date.now(), 'orders');
+  const parts = state.split('.');
+  parts[0] = parts[0].slice(0, -2) + 'XX';
+  assert.equal(await decodeOAuthState(SECRET, parts.join('.')), null);
+  assert.equal(await decodeOAuthState('other-secret', state), null);
+  assert.equal(await decodeOAuthState(SECRET, await createOAuthState(SECRET, Date.now() - 700000, 'orders')), null);
+  assert.equal(await decodeOAuthState(SECRET, ''), null);
+});
+
+test('normalizeOAuthReturn only accepts the allowlist', () => {
+  assert.equal(normalizeOAuthReturn('staff'), 'staff');
+  assert.equal(normalizeOAuthReturn('orders'), 'orders');
+  assert.equal(normalizeOAuthReturn('site'), 'site');
+  for (const bad of ['', undefined, null, 'STAFF', 'staff.html', '../staff', 'https://x/staff', 'orders;rm']) {
+    assert.equal(normalizeOAuthReturn(bad), 'site', String(bad));
+  }
+});
+
+test('resolveOAuthRedirect rebuilds the location from the base directory plus an allowlisted page', () => {
+  const base = 'https://skerishkang.github.io/kbs261022/site/#/login';
+  assert.equal(resolveOAuthRedirect(base, 'site'), 'https://skerishkang.github.io/kbs261022/site/#/login');
+  assert.equal(resolveOAuthRedirect(base, 'staff'), 'https://skerishkang.github.io/kbs261022/site/staff.html');
+  assert.equal(resolveOAuthRedirect(base, 'orders'), 'https://skerishkang.github.io/kbs261022/site/orders.html');
+  assert.equal(resolveOAuthRedirect(base, 'evil'), 'https://skerishkang.github.io/kbs261022/site/#/login');
+});
+
+test('resolveOAuthRedirect honours a custom site base and never leaks the target string', () => {
+  const base = 'https://custom.example.com/app/';
+  assert.equal(resolveOAuthRedirect(base, 'staff'), 'https://custom.example.com/app/staff.html');
+  assert.equal(resolveOAuthRedirect(base, 'orders'), 'https://custom.example.com/app/orders.html');
+  assert.equal(resolveOAuthRedirect(base, '../../../../etc/passwd'), 'https://custom.example.com/app/#/login');
+});
+
+test('resolveOAuthRedirect falls back to the production default for a broken base', () => {
+  assert.equal(resolveOAuthRedirect('not a url', 'staff'), 'https://skerishkang.github.io/kbs261022/site/staff.html');
+  assert.equal(resolveOAuthRedirect('', 'orders'), 'https://skerishkang.github.io/kbs261022/site/orders.html');
 });

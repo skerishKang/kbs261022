@@ -36,6 +36,11 @@
       .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
   }
   function money(n) { return Number(n || 0).toLocaleString('ko-KR') + '원'; }
+  /** U+FFFD 는 UTF-8 아닌 본문이 저장될 때 남는 흔적. 복원 불가라 표시로 대체한다. */
+  function displayName(s) {
+    var v = String(s == null ? '' : s);
+    return v.indexOf('\uFFFD') >= 0 ? '(이름 손상 · 재입력 필요)' : v;
+  }
   function fmtDate(v) {
     if (!v) return '—';
     var d = new Date(v);
@@ -89,13 +94,7 @@
     if (window.CGI_AUTH) {
       window.CGI_AUTH.refresh().then(function (member) {
         if (member && (member.role === 'admin' || member.role === 'superadmin' || member.is_admin)) {
-          state.memberMode = true;
-          state.member = member;
-          $('authBox').hidden = true;
-          $('ordersApp').hidden = false;
-          if (member.role === 'superadmin') { $('adminManageBox').hidden = false; loadMembers(); }
-          fillFilters();
-          load();
+          enterAsAdmin(member);
         } else {
           legacyTokenFallback();
         }
@@ -105,7 +104,24 @@
     }
   }
 
+  /* 관리자 세션 진입. 부팅·비밀번호 로그인·Google 로그인 복귀가 모두 이 경로로
+     같은 화면 상태를 만든다. */
+  function enterAsAdmin(member) {
+    state.memberMode = true;
+    state.member = member;
+    state.token = null;
+    $('authBox').hidden = true;
+    $('ordersApp').hidden = false;
+    if (member.role === 'superadmin') { $('adminManageBox').hidden = false; loadMembers(); }
+    else { $('adminManageBox').hidden = true; }
+    fillFilters();
+    load();
+  }
+
+  var filtersFilled = false;
   function fillFilters() {
+    if (filtersFilled) return;
+    filtersFilled = true;
     var statusSel = $('filterStatus');
     Object.keys(STATUS_LABELS).forEach(function (k) {
       var o = document.createElement('option');
@@ -444,7 +460,7 @@
       items.forEach(function (m) {
         var canPromote = m.role === 'member' && m.email_verified;
         var canDemote = m.role === 'admin';
-        html += '<tr><td>' + esc(m.email) + '</td><td>' + esc(m.name) + '</td><td>' + esc(m.status) + '</td><td>' + (m.email_verified ? '완료' : '미완료') + '</td><td>' + esc(m.role) + '</td><td>' +
+        html += '<tr><td>' + esc(m.email) + '</td><td>' + esc(displayName(m.name)) + '</td><td>' + esc(m.status) + '</td><td>' + (m.email_verified ? '완료' : '미완료') + '</td><td>' + esc(m.role) + '</td><td>' +
           (canPromote ? '<button type="button" class="btn btn-secondary" data-promote="' + m.id + '">관리자 지정</button> ' : '') +
           (canDemote ? '<button type="button" class="btn btn-secondary" data-demote="' + m.id + '">해제</button>' : '') +
           '</td></tr>';
@@ -488,27 +504,30 @@
             window.CGI_AUTH.logout();
             return;
           }
-          state.memberMode = true;
-          state.member = member;
-          state.token = null;
-          $('authBox').hidden = true;
-          $('ordersApp').hidden = false;
-          if (member.role === 'superadmin') { $('adminManageBox').hidden = false; loadMembers(); }
-          fillFilters();
-          load();
+          enterAsAdmin(member);
         });
       });
+    });
+    /* 비밀번호가 없는 총관리자(Google 전용) 계정을 위한 기존 OAuth 경로. */
+    var googleBtn = $('memberGoogleBtn');
+    if (googleBtn) googleBtn.addEventListener('click', function () {
+      if (!window.CGI_AUTH) { $('authMsg').innerHTML = '<p class="staff-msg error">인증 모듈을 불러오지 못했습니다.</p>'; return; }
+      googleBtn.disabled = true;
+      $('authMsg').innerHTML = '<p class="staff-msg info">Google 로그인 중…</p>';
+      window.CGI_AUTH.googleLogin('orders');
     });
     $('logoutBtn').addEventListener('click', function () {
       state.token = null;
       state.memberMode = false;
       state.member = null;
+      state.orders = [];
       localStorage.removeItem(LS_KEY);
       if (window.CGI_AUTH) window.CGI_AUTH.logout();
       $('ordersApp').hidden = true;
       $('adminManageBox').hidden = true;
       $('authBox').hidden = false;
       $('orderList').innerHTML = '';
+      $('memberList').innerHTML = '';
     });
     $('refreshBtn').addEventListener('click', load);
     ['filterKind', 'filterStatus', 'filterPayment'].forEach(function (id) {
