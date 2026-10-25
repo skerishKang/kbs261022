@@ -8,8 +8,6 @@
   var isServerMode = false;
   var memberMode = false;
   var member = null;
-  var memberMode = false;
-  var member = null;
   var prices = {}; // productId -> unit price number
   var servicePrices = {}; // serviceId -> unit price number
 
@@ -211,10 +209,10 @@
         Object.keys(prices).forEach(function (k) { combined[k] = prices[k]; });
         Object.keys(servicePrices).forEach(function (k) { combined[k] = servicePrices[k]; });
         var status = (document.getElementById('statusSelect') ? document.getElementById('statusSelect').value : (current.status || 'received'));
-         fetch(apiUrl + '/api/quotes/' + encodeURIComponent(current.id), (memberMode
-           ? { method: 'PATCH', credentials: 'include', headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': window.location.origin || '' }, body: JSON.stringify({ status: status, admin_prices: combined, total: total }) }
-           : { method: 'PATCH', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + adminToken }, body: JSON.stringify({ status: status, admin_prices: combined, total: total }) }))
-        }).then(function (res) { if (!res.ok) throw new Error('HTTP ' + res.status); return res.json(); })
+          fetch(apiUrl + '/api/quotes/' + encodeURIComponent(current.id), memberMode
+            ? { method: 'PATCH', credentials: 'include', headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': window.location.origin || '' }, body: JSON.stringify({ status: status, admin_prices: combined, total: total }) }
+            : { method: 'PATCH', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + adminToken }, body: JSON.stringify({ status: status, admin_prices: combined, total: total }) })
+        .then(function (res) { if (!res.ok) throw new Error('HTTP ' + res.status); return res.json(); })
           .then(function (data) {
             current.status = data.status || status;
             current.total = data.total;
@@ -387,9 +385,5 @@
     }
   } else {
     loadRequests(); renderList();
-  }
-  } else {
-    loadRequests();
-    renderList();
   }
 })();
