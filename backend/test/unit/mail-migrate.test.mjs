@@ -112,6 +112,86 @@ test('sendgrid mode reports network errors', async () => {
   }
 });
 
+test('resend mode without API key returns unconfigured', async () => {
+  const mail = createMailAdapter({ MAIL_MODE: 'resend' });
+  const out = await mail.deliver(MESSAGE);
+  assert.equal(out.delivered, false);
+  assert.equal(out.channel, 'unconfigured');
+  assert.match(out.note, /CGI_RESEND_API_KEY/);
+  assert.equal(out.token, undefined);
+});
+
+test('resend mode with API key sends the message and returns delivered', async () => {
+  const origFetch = globalThis.fetch;
+  let captured = null;
+  globalThis.fetch = async (url, init) => {
+    captured = { url, init };
+    return { ok: true, status: 200, text: async () => JSON.stringify({ id: 'resend_msg_1' }) };
+  };
+  try {
+    const mail = createMailAdapter({
+      MAIL_MODE: 'resend',
+      CGI_RESEND_API_KEY: 're_test_key_abc12345',
+      MAIL_FROM: 'CGI <noreply@test.com>',
+    });
+    const out = await mail.deliver(MESSAGE);
+    assert.equal(out.delivered, true);
+    assert.equal(out.channel, 'resend');
+    assert.ok(captured);
+    assert.match(captured.url, /api\.resend\.com/);
+    assert.match(captured.init.headers.Authorization, /Bearer re_test_key_abc12345/);
+    const body = JSON.parse(captured.init.body);
+    assert.equal(body.from, 'noreply@test.com');
+    assert.deepEqual(body.to, [MESSAGE.to]);
+    assert.equal(body.subject, MESSAGE.subject);
+    assert.ok(body.text);
+    assert.ok(body.html);
+    assert.ok(body.html.includes('CGI'));
+    // The API key must never appear in the body
+    assert.ok(!body.text.includes('re_test_key'));
+    assert.ok(!body.html.includes('re_test_key'));
+  } finally {
+    globalThis.fetch = origFetch;
+  }
+});
+
+test('resend mode reports API errors', async () => {
+  const origFetch = globalThis.fetch;
+  globalThis.fetch = async () => {
+    return { ok: false, status: 401, text: async () => JSON.stringify({ message: 'Unauthorized' }) };
+  };
+  try {
+    const mail = createMailAdapter({
+      MAIL_MODE: 'resend',
+      CGI_RESEND_API_KEY: 're_bad_key_12345',
+    });
+    const out = await mail.deliver(MESSAGE);
+    assert.equal(out.delivered, false);
+    assert.equal(out.channel, 'resend');
+    assert.match(out.note, /401/);
+    assert.match(out.note, /Unauthorized/);
+  } finally {
+    globalThis.fetch = origFetch;
+  }
+});
+
+test('resend mode reports network errors', async () => {
+  const origFetch = globalThis.fetch;
+  globalThis.fetch = async () => { throw new Error('ECONNREFUSED'); };
+  try {
+    const mail = createMailAdapter({
+      MAIL_MODE: 'resend',
+      CGI_RESEND_API_KEY: 're_test_key_abc12345',
+    });
+    const out = await mail.deliver(MESSAGE);
+    assert.equal(out.delivered, false);
+    assert.equal(out.channel, 'resend');
+    assert.match(out.note, /ECONNREFUSED/);
+  } finally {
+    globalThis.fetch = origFetch;
+  }
+});
+
 test('an unknown mode falls back to console and is logged as such', async () => {
   const logs = [];
   const mail = createMailAdapter({ MAIL_MODE: 'postmark' }, (line) => logs.push(line));

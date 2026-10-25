@@ -1,4 +1,4 @@
-// CGI customer mail adapter (issue #69, #72).
+// CGI customer mail adapter (issue #69, #72, #79).
 //
 // Selected by the MAIL_MODE worker variable:
 //
@@ -10,6 +10,9 @@
 //                       email verification without an external provider. Never
 //                       use in production: it is equivalent to publishing the
 //                       verification token to the caller.
+//   resend            Sends via the Resend v1 API using CGI_RESEND_API_KEY.
+//                       Reuses the same Resend infrastructure as PADIEM.NET
+//                       but with a separate CGI Worker Secret.
 //   sendgrid            Sends via the SendGrid v3 API using SENDGRID_API_KEY.
 //                       Requires a verified sending domain and the API key
 //                       stored as a Worker Secret.
@@ -17,7 +20,7 @@
 // This adapter NEVER marks an account as verified. Verification only happens
 // when a client presents a valid, unexpired token.
 
-export const MAIL_MODES = ['console', 'echo', 'sendgrid'];
+export const MAIL_MODES = ['console', 'echo', 'resend', 'sendgrid'];
 
 /** Parse "Name <email>" into { name, email }. Falls back to the raw string. */
 function parseFrom(fromStr) {
@@ -58,6 +61,8 @@ export function createMailAdapter(env, log = () => {}) {
   const siteBase = String(env.SITE_BASE_URL || base || 'https://skerishkang.github.io/kbs261022/site').replace(/\/+$/, '');
   const apiKey = String(env.SENDGRID_API_KEY || '').trim();
   const sgEndpoint = String(env.SENDGRID_API_URL || 'https://api.sendgrid.com/v3/mail/send').replace(/\/+$/, '');
+  const resendKey = String(env.CGI_RESEND_API_KEY || '').trim();
+  const resendEndpoint = String(env.RESEND_API_URL || 'https://api.resend.com/emails').replace(/\/+$/, '');
 
   const fromParts = parseFrom(from);
 
@@ -91,6 +96,63 @@ export function createMailAdapter(env, log = () => {}) {
           token: token || null,
           url: url || null,
         };
+      }
+      if (this.mode === 'resend') {
+        if (!resendKey) {
+          return {
+            delivered: false,
+            channel: 'unconfigured',
+            note: 'MAIL_MODE=resend but CGI_RESEND_API_KEY is not configured; nothing was sent',
+          };
+        }
+        if (!to) {
+          return {
+            delivered: false,
+            channel: 'resend',
+            note: 'resend: missing recipient',
+          };
+        }
+        try {
+          // Resend API: POST https://api.resend.com/emails
+          // Auth: Authorization: Bearer <key>
+          // Body: { from, to: [email], subject, text, html? }
+          const fromValue = fromParts.email || from;
+          const payload = {
+            from: fromValue,
+            to: [to],
+            subject: subject || 'CGI',
+            text: `${text}\n\n${url}`,
+            html: htmlBody(message),
+          };
+          const resp = await fetch(resendEndpoint, {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${resendKey}`,
+              'Content-Type': 'application/json',
+              'Accept': 'application/json',
+            },
+            body: JSON.stringify(payload),
+          });
+          const responseBody = await resp.text();
+          if (resp.ok) {
+            return { delivered: true, channel: 'resend' };
+          }
+          let detail = responseBody.slice(0, 300);
+          try { const parsed = JSON.parse(responseBody); detail = parsed.message || detail; } catch (e) { /* keep raw */ }
+          log(`[MAIL:resend] API error ${resp.status}: ${detail}`);
+          return {
+            delivered: false,
+            channel: 'resend',
+            note: `resend API ${resp.status}: ${detail}`,
+          };
+        } catch (e) {
+          log(`[MAIL:resend] fetch error: ${e && e.message || e}`);
+          return {
+            delivered: false,
+            channel: 'resend',
+            note: `resend fetch error: ${e && e.message || e}`,
+          };
+        }
       }
       if (this.mode === 'sendgrid') {
         if (!apiKey) {
