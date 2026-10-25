@@ -83,6 +83,12 @@ class ScanTextTests(unittest.TestCase):
     def test_selector_value_is_allowed(self):
         self.assertEqual(rules_for("PASSWORD = '#passwd'"), [])
 
+    def test_identifier_reference_is_allowed(self):
+        # A header-name constant is a reference to another value, not a secret.
+        self.assertEqual(rules_for("var X_CSRF_TOKEN = ORIGIN"), [])
+        self.assertEqual(rules_for("headers = {'X-CSRF-Token': ORIGIN}"), [])
+        self.assertEqual(rules_for("headers = {'X-CSRF-Token': csrfToken}"), [])
+
     def test_hardcoded_assignment_is_allowed_in_test_files(self):
         line = f"const {ENV_VAR_NAME} = '{FAKE_VALUE}';"
         self.assertEqual(rules_for(line), ["hardcoded-credential-assignment"])

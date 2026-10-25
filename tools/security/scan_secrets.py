@@ -30,10 +30,11 @@ SECRETISH_NAME = re.compile(
 )
 
 # Values that are selectors, paths, placeholders or documentation markers are
-# not credentials on their own.
+# not credentials on their own. A bare identifier (X-CSRF-Token = ORIGIN) is
+# also a reference, not a secret.
 BENIGN_VALUE = re.compile(
     r"^(?:[#.][\w-]*|[/~].*|[A-Za-z]:[\\/].*|.*[\\/].*|<.*>|\$\{.*\}|%\(.*\)s|"
-    r"YOUR[_-].*|CHANGE[_-]?ME|example.*|placeholder.*|REDACTED|\*+)$",
+    r"YOUR[_-].*|CHANGE[_-]?ME|example.*|placeholder.*|REDACTED|\*+|[A-Za-z_$][\w$]*)$",
     re.IGNORECASE,
 )
 
