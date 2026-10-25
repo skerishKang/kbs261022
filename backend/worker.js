@@ -88,7 +88,7 @@ const DUPLICATE_WINDOW_SECONDS = 120;
 // Smallest partial refund the backend will accept (KRW). Anything below this is
 // rounding dust rather than a refund; override with the MIN_PARTIAL_REFUND var.
 const MIN_PARTIAL_REFUND = 1000;
-const BACKEND_VERSION = '1.3.0';
+const BACKEND_VERSION = '1.4.0';
 const SUPERADMIN_EMAILS = new Set(['charliekant@gmail.com', 'skerish@naver.com']);
 
 // Legacy credential-free header set: quote intake, order, payment and admin
@@ -148,6 +148,14 @@ function isAdmin(request, env) {
   const auth = request.headers.get('Authorization') || '';
   const token = auth.replace(/^Bearer\s+/i, '');
   return !!env.ADMIN_TOKEN && token === env.ADMIN_TOKEN;
+}
+
+async function isSuperAdmin(request, db, env) {
+  if (isAdmin(request, env)) return true;
+  const member = await requireMember(request, db, env);
+  if (!member || member.status !== 'active' || !member.email_verified_at) return false;
+  const email = String(member.email || '').trim().toLowerCase();
+  return SUPERADMIN_EMAILS.has(email) || member.role === 'superadmin';
 }
 
 async function isAdminOrMember(request, db, env) {
@@ -2101,6 +2109,34 @@ export default {
       const result = await cancelPayment(env.DB, env, order, paymentKey, parsed.body || {}, pg);
       return json(result.body, result.status);
     }
+
+const memberRoleMatch = url.pathname.match(/^\/api\/admin\/members\/([^/]+)\/role$/) && request.method === 'PATCH';
+if (memberRoleMatch) {
+  if (!(await isSuperAdmin(request, env, env.DB))) return unauthorized();
+  const id = Number(decodeURIComponent(memberRoleMatch[1]));
+  if (!Number.isInteger(id) || id <= 0) return badRequest('invalid member id');
+  const parsed = await readJson(request);
+  if (parsed.error) return badRequest(parsed.error);
+  const role = String((parsed.body || {}).role || '').trim().toLowerCase();
+  if (role !== 'admin' && role !== 'member') return badRequest('role must be admin or member');
+  const member = await getMember(env.DB, id);
+  if (!member) return notFound();
+  const email = String(member.email || '').trim().toLowerCase();
+  if (SUPERADMIN_EMAILS.has(email)) return conflict('superadmin_role_immutable', { detail: 'superadmin role is fixed by verified email' });
+  await env.DB.prepare('UPDATE members SET role = ?, updated_at = ? WHERE id = ?').bind(role, nowIso(), id).run();
+  const updated = await getMember(env.DB, id);
+  return json({ ok: true, member: memberView(updated) });
+}
+
+if (url.pathname === '/api/admin/members' && request.method === 'GET') {
+  if (!(await isSuperAdmin(request, env, env.DB))) return unauthorized();
+  const { results } = await env.DB.prepare('SELECT id, email, name, status, email_verified_at, role, created_at FROM members ORDER BY created_at DESC LIMIT 200').all();
+  return json({ items: (results || []).map((m) => ({
+    id: m.id, email: m.email, name: m.name, status: m.status,
+    email_verified: !!m.email_verified_at, role: m.role || 'member',
+    created_at: m.created_at,
+  })) });
+}
 
     return notFound();
   },
