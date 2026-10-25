@@ -1045,3 +1045,121 @@ p:last-child { margin-bottom: 0; }
   .order-summary, .order-fieldset, .payment-card, .complete-card { padding: 14px 14px 16px; }
   .order-items th, .order-items td { padding: 8px 5px; font-size: 12.5px; }
 }
+
+/* --------------------------- customer account (#69) --------------------------- */
+.header-auth {
+  display: flex; align-items: center; gap: 8px; flex: 0 0 auto; margin-left: 4px;
+  padding-left: 14px; border-left: 1px solid #2f2f2f;
+}
+.auth-links-guest { display: flex; align-items: center; gap: 10px; }
+.auth-links-member { display: flex; align-items: center; gap: 8px; }
+.auth-links-guest a:not(.btn) { color: #cfcfcf; font-size: 13px; font-weight: 600; }
+.auth-links-guest a:not(.btn):hover { color: #fff; }
+.auth-links-member a { color: #fff; font-size: 13px; font-weight: 700; }
+.auth-name { max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.btn-small { min-height: 34px; padding: 0 14px; font-size: 13px; }
+.btn-ghost { background: transparent; color: #cfcfcf; border-color: #3a3a3a; }
+.btn-ghost:hover { background: #1f1f1f; color: #fff; border-color: #4a4a4a; }
+.btn-small.btn-ghost { min-height: 30px; padding: 0 10px; font-size: 12.5px; }
+
+.auth-page { padding: 6px 0 30px; }
+.auth-card {
+  background: var(--cgi-card); border: 1px solid var(--cgi-line); border-radius: var(--radius);
+  box-shadow: var(--shadow-sm); padding: 30px 28px 32px; max-width: 480px; margin: 0 auto;
+}
+.auth-wide .auth-card { max-width: 640px; }
+.auth-card h2 { font-size: 22px; margin-bottom: 6px; }
+.auth-card > h2 + .auth-muted { margin-bottom: 18px; }
+
+.auth-form { display: flex; flex-direction: column; gap: 13px; margin-top: 4px; }
+.auth-field { display: flex; flex-direction: column; gap: 5px; }
+.auth-field-row { flex-direction: row; align-items: center; gap: 8px; }
+.auth-label { font-size: 13px; font-weight: 700; color: var(--cgi-ink); }
+.auth-input {
+  width: 100%; height: 44px; padding: 0 13px;
+  border: 1px solid #cfcfcf; border-radius: var(--radius-sm); background: #fff;
+  color: var(--cgi-ink); font-size: 14.5px;
+}
+.auth-input:focus { outline: none; border-color: var(--cgi-primary); box-shadow: inset 0 0 0 2px rgba(7,145,58,.18); }
+.auth-input::placeholder { color: #9a9a9a; }
+.auth-hint { font-size: 12px; color: var(--cgi-muted); line-height: 1.5; }
+.auth-muted { font-size: 13.5px; color: var(--cgi-muted); margin: 0 0 14px; }
+.auth-warn { color: var(--cgi-warn); font-weight: 700; }
+.auth-alt { margin-top: 16px; font-size: 13.5px; color: var(--cgi-muted); text-align: center; }
+.auth-alt a { color: var(--cgi-primary-dark); font-weight: 700; }
+.auth-alt a:hover { text-decoration: underline; }
+
+.auth-alert {
+  border-radius: var(--radius-sm); padding: 11px 13px; font-size: 13.5px; font-weight: 600;
+  margin: 12px 0 0; border: 1px solid var(--cgi-line);
+}
+.auth-alert-error { background: var(--cgi-danger-soft); border-color: #f0b4ae; color: var(--cgi-danger); }
+.auth-alert-ok { background: var(--cgi-ok-soft); border-color: #a8e6c1; color: var(--cgi-ok); }
+.auth-alert-info { background: var(--cgi-primary-soft); border-color: var(--cgi-primary-line); color: #225c39; }
+
+/* -------------------------------- my page -------------------------------- */
+.mypage { padding: 4px 0 30px; }
+.mypage-head {
+  display: flex; flex-wrap: wrap; align-items: flex-end; gap: 16px;
+  background: var(--cgi-card); border: 1px solid var(--cgi-line);
+  border-radius: var(--radius); padding: 18px 20px; margin-bottom: 16px; box-shadow: var(--shadow-sm);
+}
+.mypage-head h2 { font-size: 20px; }
+.mypage-tabs { display: flex; flex-wrap: wrap; gap: 4px; margin-left: auto; }
+.mypage-tab {
+  padding: 8px 14px; border-radius: var(--radius-sm); font-size: 13.5px; font-weight: 700;
+  color: var(--cgi-muted); border: 1px solid transparent;
+}
+.mypage-tab:hover { color: var(--cgi-primary-dark); background: var(--cgi-primary-soft); }
+.mypage-tab.is-active { color: var(--cgi-primary-dark); background: var(--cgi-primary-soft); border-color: var(--cgi-primary-line); }
+
+.mypage-form {
+  background: var(--cgi-card); border: 1px solid var(--cgi-line); border-radius: var(--radius);
+  box-shadow: var(--shadow-sm); padding: 20px 20px 22px; margin-bottom: 16px;
+}
+.mypage-form h3 { font-size: 15.5px; margin-bottom: 14px; }
+.mypage-danger { border-color: #f0b4ae; }
+.mypage-danger h3 { color: var(--cgi-danger); }
+
+.address-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; margin-top: 4px; }
+.address-card {
+  background: var(--cgi-card); border: 1px solid var(--cgi-line); border-radius: var(--radius);
+  box-shadow: var(--shadow-sm); padding: 15px 16px;
+}
+.address-head { display: flex; align-items: center; gap: 8px; margin-bottom: 7px; }
+.address-head strong { font-size: 14.5px; }
+.address-badge {
+  font-size: 10.5px; font-weight: 700; letter-spacing: .06em;
+  background: var(--cgi-primary); color: #fff; border-radius: 4px; padding: 2px 7px;
+}
+.address-card p { font-size: 13.5px; margin-bottom: 5px; }
+.address-card .btn { margin-top: 9px; }
+
+.order-list { display: flex; flex-direction: column; gap: 12px; }
+.order-card {
+  background: var(--cgi-card); border: 1px solid var(--cgi-line); border-radius: var(--radius);
+  box-shadow: var(--shadow-sm); padding: 16px 18px;
+}
+.order-card-head { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
+.order-id { font-weight: 700; font-size: 14.5px; color: var(--cgi-primary-dark); }
+.order-status { font-size: 12px; font-weight: 700; background: var(--cgi-primary-soft); color: var(--cgi-primary-dark); border-radius: 4px; padding: 3px 9px; }
+.order-total { font-size: 15.5px; font-weight: 800; margin-top: 7px; }
+
+@media (max-width: 899px) {
+  .header-auth { order: 5; width: 100%; border-left: 0; border-top: 1px solid #2a2a2a; padding: 10px 4px 12px; }
+  .site-header:not(.nav-open) .header-auth { border-top: 0; padding: 0 0 4px; }
+  .auth-links-guest a:not(.btn) { font-size: 13.5px; }
+  .auth-card { padding: 22px 18px 24px; }
+  .mypage-head { padding: 15px 16px; }
+  .mypage-tabs { margin-left: 0; width: 100%; }
+  .mypage-form { padding: 16px 15px 18px; }
+}
+@media (max-width: 399px) {
+  .auth-card { padding: 18px 14px 20px; }
+  .auth-input { height: 42px; }
+}
+
+/* The hidden attribute loses to the class-level display: rules above, so it
+   has to be re-asserted explicitly for the auth switcher. */
+.auth-links-guest[hidden], .auth-links-member[hidden], .header-nav a[hidden] { display: none !important; }
