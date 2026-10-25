@@ -82,7 +82,7 @@ import {
 } from './lib/auth.mjs';
 import { ensureColumns, COLUMN_UPGRADES } from './lib/migrate.mjs';
 import { createMailAdapter } from './lib/mail.mjs';
-import { createOAuthState, verifyOAuthState, buildAuthorizationUrl, exchangeCode, fetchUserInfo, OAUTH_STATE_COOKIE, oauthStateCookieOptions } from './lib/google-oauth.mjs';
+import { createOAuthState, decodeOAuthState, normalizeOAuthReturn, resolveOAuthRedirect, buildAuthorizationUrl, exchangeCode, fetchUserInfo, OAUTH_STATE_COOKIE, oauthStateCookieOptions } from './lib/google-oauth.mjs';
 
 const ALLOWED_ORIGIN = 'https://skerishkang.github.io';
 const MAX_BODY_BYTES = 64 * 1024;
@@ -1412,7 +1412,8 @@ async function handleGoogleStart(request, db, env) {
   }
 
   const redirectUri = new URL('/api/auth/google/callback', request.url).toString();
-  const state = await createOAuthState(env.AUTH_SESSION_SECRET || 'cgi-dev-secret');
+  const returnTo = normalizeOAuthReturn(new URL(request.url).searchParams.get('return'));
+  const state = await createOAuthState(env.AUTH_SESSION_SECRET || 'cgi-dev-secret', Date.now(), returnTo);
 
   const authUrl = buildAuthorizationUrl({ clientId, redirectUri }, state);
   if (!authUrl) return authJson({ error: 'google oauth not configured' }, 503);
@@ -1451,9 +1452,12 @@ async function handleGoogleCallback(request, db, env) {
   if (!cookieState || cookieState !== state) {
     return authJson({ error: 'invalid state', detail: 'CSRF state mismatch' }, 400);
   }
-  // Verify the state token's signature and expiry
+  // Verify the state token's signature and expiry, and read the origin page it
+  // carries. The return target comes from the signed payload — never the query
+  // string — and is clamped to the allowlist inside resolveOAuthRedirect.
   const stateSecret = env.AUTH_SESSION_SECRET || 'cgi-dev-secret';
-  if (!(await verifyOAuthState(stateSecret, state))) {
+  const statePayload = await decodeOAuthState(stateSecret, state);
+  if (!statePayload) {
     return authJson({ error: 'invalid state', detail: 'state expired or tampered' }, 400);
   }
 
@@ -1514,7 +1518,7 @@ async function handleGoogleCallback(request, db, env) {
 
     // Issue session and redirect back to the site
     const session = await issueSession(db, env, member);
-    const redirectUrl = env.SITE_BASE_URL || 'https://skerishkang.github.io/kbs261022/site/#/login';
+    const redirectUrl = resolveOAuthRedirect(env.SITE_BASE_URL, statePayload.u);
     const headers = new Headers();
     headers.set('Location', redirectUrl);
     headers.append('Set-Cookie', session.cookie);

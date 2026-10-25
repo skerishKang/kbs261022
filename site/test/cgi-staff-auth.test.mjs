@@ -62,9 +62,16 @@ function makeElement(id) {
 
 function makeDocument() {
   const elements = new Map();
+  // Mirrors the `hidden` attributes in staff.html: #authBox and #logoutBtn are
+  // written away in the markup and only revealed by the console's own code.
+  const hiddenAtBoot = new Set(['authBox', 'logoutBtn']);
   return {
     getElementById(id) {
-      if (!elements.has(id)) elements.set(id, makeElement(id));
+      if (!elements.has(id)) {
+        const el = makeElement(id);
+        if (hiddenAtBoot.has(id)) el.hidden = true;
+        elements.set(id, el);
+      }
       return elements.get(id);
     },
     createElement(tag) { return makeElement('<' + tag + '>'); },
@@ -120,6 +127,10 @@ async function boot(options) {
         return Promise.resolve(opts.session === undefined ? null : opts.session);
       },
       logout() { authCalls.push({ kind: 'logout' }); return Promise.resolve(true); },
+      googleLogin(returnTo) {
+        authCalls.push({ kind: 'googleLogin', returnTo });
+        window.location.href = API + '/api/auth/google/start' + (returnTo ? '?return=' + encodeURIComponent(returnTo) : '');
+      },
     };
   }
 
@@ -238,3 +249,68 @@ test('the legacy Bearer token path still reaches the server', async () => {
   assert.ok(detail);
   assert.equal(detail.init.headers.Authorization, 'Bearer legacy-token');
 });
+
+// ---------------------------------------------------------------------------
+// Google login (the superadmin account has no CGI password at all)
+// ---------------------------------------------------------------------------
+
+test('the Google button starts the existing OAuth flow aimed at staff.html', async () => {
+  const env = await boot({ refreshError: true });
+  const btn = env.document.getElementById('memberGoogleBtn');
+  assert.equal(btn.dispatch('click'), 1, '#memberGoogleBtn has no click handler — the Google login is dead');
+  await new Promise((resolve) => setTimeout(resolve, 0));
+
+  const call = env.authCalls.find((c) => c.kind === 'googleLogin');
+  assert.ok(call, 'clicking Google로 계속하기 must call CGI_AUTH.googleLogin');
+  assert.equal(call.returnTo, 'staff', 'the flow has to come back to the quote console');
+  assert.equal(env.window.location.href, API + '/api/auth/google/start?return=staff');
+  assert.equal(btn.disabled, true, 'the button must not be clickable twice mid-navigation');
+  assert.equal(env.quotesCalls().length, 0, 'navigation is not a substitute for a session');
+});
+
+test('a missing auth module is reported for the Google button too', async () => {
+  const env = await boot({ refreshError: true });
+  env.window.CGI_AUTH = null;
+  env.document.getElementById('memberGoogleBtn').dispatch('click');
+  await new Promise((resolve) => setTimeout(resolve, 0));
+  assert.match(env.message(), /인증 모듈/);
+});
+
+test('returning from Google re-opens the console over the member session and offers logout', async () => {
+  const env = await boot({ session: ADMIN });
+  assert.equal(env.quotesCalls().length, 1, 'the cookie session alone must load the console');
+  assert.equal(env.document.getElementById('authBox').hidden, true);
+  assert.equal(env.document.getElementById('logoutBtn').hidden, false, 'a signed-in operator needs a way out');
+  const quotes = env.quotesCalls()[0];
+  assert.equal(quotes.init.credentials, 'include');
+  assert.equal(quotes.init.headers.Authorization, undefined, 'no manual cgiAdminToken is involved');
+});
+
+test('logging out drops the session and wipes the cached quote requests', async () => {
+  const env = await boot({ session: ADMIN });
+  const card = env.document.getElementById('requestList').querySelectorAll('button[data-open]')[0];
+  card.dispatch('click');
+  await new Promise((resolve) => setTimeout(resolve, 0));
+  assert.notEqual(env.document.getElementById('requestDetail').innerHTML, '', 'the detail panel holds customer PII');
+
+  const logoutBtn = env.document.getElementById('logoutBtn');
+  assert.equal(logoutBtn.dispatch('click'), 1, '#logoutBtn has no click handler');
+  await new Promise((resolve) => setTimeout(resolve, 0));
+
+  assert.equal(env.authCalls.filter((c) => c.kind === 'logout').length, 1);
+  assert.equal(env.storage.getItem('cgiAdminToken'), null);
+  assert.equal(env.document.getElementById('authBox').hidden, false, 'logout must bring the login form back');
+  assert.equal(logoutBtn.hidden, true);
+  assert.deepEqual(JSON.parse(env.storage.getItem('cgiQuoteRequests')), [], 'customer PII may not survive in the cache');
+  assert.equal(env.document.getElementById('requestDetail').innerHTML, '', 'an open detail must not stay on screen');
+  assert.doesNotMatch(env.document.getElementById('requestList').innerHTML, /강사장|CGI/);
+
+  const detailCalls = env.fetches.filter((f) => /\/api\/quotes\//.test(f.url)).length;
+  assert.equal(detailCalls, 1, 'only the pre-logout click may have read a detail');
+});
+
+test('a signed-out operator sees no logout button', async () => {
+  const env = await boot({ refreshError: true, session: null });
+  assert.equal(env.document.getElementById('logoutBtn').hidden, true);
+});
+
