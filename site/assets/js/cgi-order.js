@@ -228,7 +228,7 @@
         (testMode
           ? '<div class="test-payment"><p class="test-payment-badge">테스트 결제</p>' +
             '<p>토스페이먼츠 키가 서버에 등록되어 있지 않아 실제 결제 대신 <strong>모의 승인</strong>이 수행됩니다. 실제 결제가 진행되지 않습니다.</p></div>'
-          : '<div id="tossPayment"></div>') +
+          : '<div id="tossPayment"></div><div id="tossAgreement"></div>') +
         '<div id="paymentStatus"></div>' +
         '<div class="order-actions">' +
           '<button type="button" class="btn" id="payBtn">결제 승인</button>' +
@@ -269,23 +269,34 @@
         return;
       }
       var tossPayments = window.TossPayments(TOSS_CLIENT_ID);
-      payBtn.addEventListener('click', function () {
-        var method = (app.querySelector('input[name="method"]:checked') || {}).value || '카드';
-        var tossMethod = method === '휴대폰' ? 'MOBILE_PHONE' : 'CARD';
+      var widgets = tossPayments.widgets({ customerKey: 'ANONYMOUS' });
+      (async function () {
+        try {
+          await widgets.setAmount({ currency: 'KRW', value: order.totals.total_amount });
+          await Promise.all([
+            widgets.renderPaymentMethods({ selector: '#tossPayment', variantKey: 'DEFAULT' }),
+            widgets.renderAgreement({ selector: '#tossAgreement', variantKey: 'AGREEMENT' })
+          ]);
+        } catch (e) {
+          statusBox.innerHTML = flash('결제 모듈 렌더링 실패. (' + esc((e && e.message) || 'fail') + ')', 'flash-error');
+        }
+      })();
+      payBtn.addEventListener('click', async function () {
         statusBox.innerHTML = '';
         payBtn.disabled = true;
         payBtn.textContent = '결제창 이동 중…';
-        tossPayments.requestPayment(tossMethod, {
-          amount: order.totals.total_amount,
-          orderId: order.id,
-          orderName: 'CGI 상품 주문',
-          successUrl: window.location.origin + window.location.pathname + '?toss=success#/order/' + encodeURIComponent(order.id),
-          failUrl: window.location.origin + window.location.pathname + '?toss=fail#/order/' + encodeURIComponent(order.id)
-        }).catch(function (err) {
+        try {
+          await widgets.requestPayment({
+            orderId: order.id,
+            orderName: 'CGI 상품 주문',
+            successUrl: window.location.origin + window.location.pathname + '?toss=success#/order/' + encodeURIComponent(order.id),
+            failUrl: window.location.origin + window.location.pathname + '?toss=fail#/order/' + encodeURIComponent(order.id)
+          });
+        } catch (err) {
           statusBox.innerHTML = flash('결제 프로세스를 끝까지 마치지 못했습니다. (' + esc((err && err.message) || 'fail') + ')', 'flash-error');
           payBtn.disabled = false;
           payBtn.textContent = '결제 다시 시도';
-        });
+        }
       });
     };
     script.onerror = function () {
