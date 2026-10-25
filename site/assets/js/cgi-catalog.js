@@ -1039,6 +1039,14 @@
       var user = window.CGI_AUTH.me();
       var nameEl = document.querySelector('[data-auth-name]');
       if (nameEl && user) nameEl.textContent = user.name || user.email || '회원';
+      var badgeEl = document.querySelector('[data-auth-verified-badge]');
+      if (badgeEl && user) {
+        var verified = user.email_verified;
+        badgeEl.textContent = verified ? '인증됨' : '인증 대기';
+        badgeEl.className = verified ? 'auth-badge-verified' : 'auth-badge-unverified';
+        badgeEl.hidden = false;
+        badgeEl.href = verified ? '#/my-page/profile' : '#/auth/verify';
+      }
     }
     return logged;
   }
@@ -1579,37 +1587,135 @@
     var params = new URLSearchParams((location.hash || '').split('?')[1] || '');
     var token = params.get('token');
     if (token) {
-      app.innerHTML = authShell('이메일 인증 중…', '<p class="auth-muted">링크로 넘어온 토큰을 확인하고 있어요.</p>', true);
+      app.innerHTML = authShell('이메일 인증 중…',
+        '<div style="text-align:center;padding:24px 0">' +
+          '<div style="width:48px;height:48px;border:4px solid #e8eaf6;border-top-color:#1a73e8;border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 16px"></div>' +
+          '<p class="auth-muted">링크로 넘어온 토큰을 확인하고 있어요.</p>' +
+        '</div>', true);
       p.verifyEmail(token).then(function (ok) {
         if (ok) {
+          app.innerHTML = authShell('인증 완료',
+            '<div style="text-align:center;padding:24px 0">' +
+              '<div style="width:56px;height:56px;border-radius:50%;background:#4caf50;display:flex;align-items:center;justify-content:center;margin:0 auto 16px">' +
+                '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>' +
+              '</div>' +
+              '<h2 style="color:#4caf50;margin:0 0 8px;font-size:20px">이메일 인증 완료</h2>' +
+              '<p class="auth-muted">계정이 활성화되었어요. 이제 모든 기능을 사용할 수 있어요.</p>' +
+              '<a class="btn btn-primary btn-block" href="#/">쇼핑몰로 돌아가기</a>' +
+            '</div>', true);
           window.cgiSyncAuthHeader();
           showToast('이메일 인증이 완료됐어요.');
-          navigate('#/');
         } else {
           app.innerHTML = authShell('인증 오류',
-            authAlert('인증 링크가 유효하지 않거나 이미 사용됐어요.', 'error') +
-            '<p class="auth-muted">로그인한 회원이면 재전송할 수 있어요.</p>' +
-            '<a class="btn btn-primary btn-block" href="#/login">로그인</a>', true);
+            '<div style="text-align:center;padding:16px 0">' +
+              '<div style="width:56px;height:56px;border-radius:50%;background:#f44336;display:flex;align-items:center;justify-content:center;margin:0 auto 16px">' +
+                '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>' +
+              '</div>' +
+              '<h2 style="color:#f44336;margin:0 0 8px;font-size:20px">인증 실패</h2>' +
+              '<p class="auth-muted">인증 링크가 유효하지 않거나 이미 사용되었거나 만료되었어요.</p>' +
+              '<p class="auth-muted">로그인한 상태라면 새 인증 메일을 재전송할 수 있어요.</p>' +
+              '<a class="btn btn-primary btn-block" href="#/login">로그인</a>' +
+              '<a class="btn btn-block" style="margin-top:8px;background:#fff;color:#333;border:1px solid #e0e0e0" href="#/auth/verify">재전송하기</a>' +
+            '</div>', true);
         }
       });
       return;
     }
-    app.innerHTML = authShell('이메일 인증 필요해요',
-      (p.isLoggedIn() && !p.emailVerified())
-        ? '<p class="auth-muted">가입하신 이메일로 인증 링크를 보내 드릴게요.</p>' +
-          '<button type="button" class="btn btn-primary btn-block" data-action="resend-verification">인증 메일 재전송</button>'
-        : '<p class="auth-muted">가입이 완료됐어요. 이메일을 확인하고 인증 링크를 눌러 주세요.</p>' +
-          '<p class="auth-muted">개발 환경(MAIL_MODE=echo)이라면 API 응답에 토큰이 그대로 담겨요.</p>' +
-          '<a class="btn btn-primary btn-block" href="#/login">로그인하러 가기</a>', true);
+    // No token: show the resend / status screen
+    var user = p.isLoggedIn() ? p.me() : null;
+    var email = user ? user.email : '';
+    var verified = p.isLoggedIn() && p.emailVerified();
+    var html;
+    if (verified) {
+      html = authShell('이메일 인증 상태',
+        '<div style="text-align:center;padding:16px 0">' +
+          '<div style="width:56px;height:56px;border-radius:50%;background:#4caf50;display:flex;align-items:center;justify-content:center;margin:0 auto 16px">' +
+            '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>' +
+          '</div>' +
+          '<h2 style="color:#4caf50;margin:0 0 8px;font-size:20px">이메일 인증 완료</h2>' +
+          '<p class="auth-muted">' + esc(email) + ' 계정은 인증된 상태예요.</p>' +
+          '<a class="btn btn-primary btn-block" href="#/">쇼핑몰로 돌아가기</a>' +
+        '</div>', true);
+    } else if (p.isLoggedIn() && !p.emailVerified()) {
+      html = authShell('이메일 인증 필요해요',
+        '<div style="text-align:center;padding:16px 0">' +
+          '<div style="width:56px;height:56px;border-radius:50%;background:#ff9800;display:flex;align-items:center;justify-content:center;margin:0 auto 16px">' +
+            '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 6l-10 7L2 6"/></svg>' +
+          '</div>' +
+          '<h2 style="margin:0 0 8px;font-size:20px">이메일 인증을 완료해주세요</h2>' +
+          '<p class="auth-muted">' + esc(email) + ' 으로 인증 메일을 보냈어요.</p>' +
+          '<p class="auth-muted">메일함과 스팸 폴더를 확인해 주세요.</p>' +
+          '<button type="button" class="btn btn-primary btn-block" data-action="resend-verification" style="margin-top:16px">인증 메일 재전송</button>' +
+          '<p class="auth-hint" data-resend-info style="margin-top:8px;min-height:1.2em"></p>' +
+        '</div>', true);
+    } else {
+      html = authShell('이메일 인증 필요해요',
+        '<div style="text-align:center;padding:16px 0">' +
+          '<div style="width:56px;height:56px;border-radius:50%;background:#ff9800;display:flex;align-items:center;justify-content:center;margin:0 auto 16px">' +
+            '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 6l-10 7L2 6"/></svg>' +
+          '</div>' +
+          '<h2 style="margin:0 0 8px;font-size:20px">이메일 인증을 완료해주세요</h2>' +
+          '<p class="auth-muted">가입이 완료됐어요. 이메일을 확인하고 인증 링크를 눌러 주세요.</p>' +
+          '<p class="auth-muted">메일함과 스팸 폴더를 확인해 주세요.</p>' +
+          '<a class="btn btn-primary btn-block" href="#/login" style="margin-top:16px">로그인하고 재전송하기</a>' +
+        '</div>', true);
+    }
+    app.innerHTML = html;
     var resend = app.querySelector('[data-action="resend-verification"]');
     if (resend) {
+      var resendInfo = app.querySelector('[data-resend-info]');
       resend.addEventListener('click', function () {
         resend.disabled = true;
         resend.textContent = '전송 중…';
         p.resendVerification().then(function (res) {
+          if (!res) {
+            resend.disabled = false;
+            resend.textContent = '인증 메일 재전송';
+            showToast('재전송에 실패했어요. 나중에 다시 시도해 주세요.');
+            return;
+          }
+          if (res.retry_after_seconds) {
+            var wait = res.retry_after_seconds;
+            resendInfo.textContent = wait + '초 후 재전송할 수 있어요.';
+            var interval = setInterval(function () {
+              wait--;
+              if (wait <= 0) {
+                clearInterval(interval);
+                resend.disabled = false;
+                resend.textContent = '인증 메일 재전송';
+                resendInfo.textContent = '';
+              } else {
+                resendInfo.textContent = wait + '초 후 재전송할 수 있어요.';
+              }
+            }, 1000);
+            return;
+          }
           resend.disabled = false;
           resend.textContent = '인증 메일 재전송';
-          showToast(res && res.mail && res.mail.echo_token ? '토큰이 API 응답에 담겼어요.' : '인증 메일을 재전송했어요.');
+          if (res.mail && res.mail.echo_token) {
+            showToast('토큰이 API 응답에 담겼어요 (개발 환경).');
+          } else if (res.mail && res.mail.delivered) {
+            showToast('인증 메일을 보냈어요. 메일함을 확인해 주세요.');
+          } else {
+            showToast('인증 메일을 전송했어요. 메일함을 확인해 주세요.');
+          }
+          if (res.resend_cooldown_seconds) {
+            var cd = res.resend_cooldown_seconds;
+            resendInfo.textContent = cd + '초 후 재전송할 수 있어요.';
+            var cdInterval = setInterval(function () {
+              cd--;
+              if (cd <= 0) {
+                clearInterval(cdInterval);
+                resend.disabled = false;
+                resend.textContent = '인증 메일 재전송';
+                resendInfo.textContent = '';
+              } else {
+                resend.disabled = true;
+                resendInfo.textContent = cd + '초 후 재전송할 수 있어요.';
+              }
+            }, 1000);
+            resend.disabled = true;
+          }
         });
       });
     }

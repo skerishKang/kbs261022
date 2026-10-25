@@ -985,3 +985,70 @@ test('resend-verification requires a session and is a no-op once verified', asyn
   }, csrf);
   assert.equal(duplicate.status, 409, 'the same email cannot be registered twice');
 });
+
+test('issuing a new verification token revokes the previous pending one', async () => {
+  const environment = env({ MAIL_MODE: 'echo', AUTH_RESEND_COOLDOWN_SECONDS: '0' });
+  await signUp(environment);
+  const { cookie } = await login(environment);
+
+  // First resend issues token A
+  const first = await call(environment, 'POST', '/api/auth/resend-verification', {}, { ...csrf, Cookie: cookie });
+  assert.equal(first.status, 200);
+  const tokenA = first.json.mail.echo_token;
+
+  // Second resend issues token B and revokes A
+  const second = await call(environment, 'POST', '/api/auth/resend-verification', {}, { ...csrf, Cookie: cookie });
+  assert.equal(second.status, 200);
+  const tokenB = second.json.mail.echo_token;
+  assert.notEqual(tokenA, tokenB);
+
+  // Token A is now revoked — verify with it should fail
+  const verifyA = await call(environment, 'POST', '/api/auth/verify-email', { token: tokenA }, csrf);
+  assert.equal(verifyA.status, 400, 'revoked token should be rejected');
+
+  // Token B still works
+  const verifyB = await call(environment, 'POST', '/api/auth/verify-email', { token: tokenB }, csrf);
+  assert.equal(verifyB.status, 200);
+  assert.equal(verifyB.json.email_verified, true);
+});
+
+test('resend-verification enforces a 60-second cooldown', async () => {
+  const environment = env({ MAIL_MODE: 'echo' });
+  await signUp(environment);
+  const { cookie } = await login(environment);
+
+  // First resend should succeed
+  const first = await call(environment, 'POST', '/api/auth/resend-verification', {}, { ...csrf, Cookie: cookie });
+  assert.equal(first.status, 200, first.text);
+
+  // Second resend immediately after should be rate-limited
+  const second = await call(environment, 'POST', '/api/auth/resend-verification', {}, { ...csrf, Cookie: cookie });
+  assert.equal(second.status, 429);
+  assert.equal(second.json.error, 'rate limited');
+  assert.ok(second.json.retry_after_seconds);
+});
+
+test('password reset token is single-use and previous tokens are revoked', async () => {
+  const environment = env({ MAIL_MODE: 'echo' });
+  await signUp(environment);
+
+  // Request first reset
+  const req1 = await call(environment, 'POST', '/api/auth/password-reset/request', { email: 'kim@example.com' }, csrf);
+  assert.equal(req1.status, 200);
+  const token1 = req1.json.mail.echo_token;
+
+  // Request second reset — revokes token1
+  const req2 = await call(environment, 'POST', '/api/auth/password-reset/request', { email: 'kim@example.com' }, csrf);
+  assert.equal(req2.status, 200);
+  const token2 = req2.json.mail.echo_token;
+  assert.notEqual(token1, token2);
+
+  // Token1 should be revoked
+  const confirm1 = await call(environment, 'POST', '/api/auth/password-reset/confirm', { token: token1, password: 'NewPass!2026' }, csrf);
+  assert.equal(confirm1.status, 400, 'revoked reset token should fail');
+
+  // Token2 should work
+  const confirm2 = await call(environment, 'POST', '/api/auth/password-reset/confirm', { token: token2, password: 'NewPass!2026' }, csrf);
+  assert.equal(confirm2.status, 200);
+  assert.equal(confirm2.json.ok, true);
+});
