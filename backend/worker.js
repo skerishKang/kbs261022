@@ -1402,11 +1402,17 @@ async function handleGoogleStart(request, db, env) {
   if (!authUrl) return authJson({ error: 'google oauth not configured' }, 503);
 
   const cookieOpts = oauthStateCookieOptions();
+  const cookieAttrs = [];
+  if (cookieOpts.httpOnly) cookieAttrs.push('HttpOnly');
+  if (cookieOpts.secure) cookieAttrs.push('Secure');
+  if (cookieOpts.sameSite) cookieAttrs.push(`SameSite=${cookieOpts.sameSite}`);
+  if (cookieOpts.path) cookieAttrs.push(`Path=${cookieOpts.path}`);
+  if (cookieOpts.maxAge != null) cookieAttrs.push(`Max-Age=${cookieOpts.maxAge}`);
   return new Response(null, {
     status: 302,
     headers: {
       Location: authUrl,
-      'Set-Cookie': `${OAUTH_STATE_COOKIE}=${state}; ${Object.entries(cookieOpts).map(([k, v]) => `${k}=${v}`).join('; ')}`,
+      'Set-Cookie': `${OAUTH_STATE_COOKIE}=${state}; ${cookieAttrs.join('; ')}`,
     },
   });
 }
@@ -1429,10 +1435,15 @@ async function handleGoogleCallback(request, db, env) {
   if (!cookieState || cookieState !== state) {
     return authJson({ error: 'invalid state', detail: 'CSRF state mismatch' }, 400);
   }
+  // Verify the state token's signature and expiry
+  const stateSecret = env.AUTH_SESSION_SECRET || 'cgi-dev-secret';
+  if (!(await verifyOAuthState(stateSecret, state))) {
+    return authJson({ error: 'invalid state', detail: 'state expired or tampered' }, 400);
+  }
 
   const clientId = env.GOOGLE_CLIENT_ID || env.GOOGLE_OAUTH_CLIENT_ID;
   const clientSecret = env.GOOGLE_CLIENT_SECRET || env.GOOGLE_OAUTH_CLIENT_SECRET;
-  const redirectUri = url.toString();
+  const redirectUri = new URL('/api/auth/google/callback', request.url).toString();
 
   // Clear state cookie
   const clearCookie = `${OAUTH_STATE_COOKIE}=; Max-Age=0; Path=/; HttpOnly; Secure; SameSite=Lax`;
@@ -1472,13 +1483,14 @@ async function handleGoogleCallback(request, db, env) {
       }
     }
 
-    // Issue session
+    // Issue session and redirect back to the site
     const session = await issueSession(db, env, member);
-    return authJson({
-      member: memberView(member),
-      email_verified: !!member.email_verified_at,
-      auth_provider: 'google',
-    }, 200, { 'Set-Cookie': session.cookie + '; ' + clearCookie });
+    const redirectUrl = env.SITE_BASE_URL || 'https://skerishkang.github.io/kbs261022/site/#/login';
+    const headers = new Headers();
+    headers.set('Location', redirectUrl);
+    headers.append('Set-Cookie', session.cookie);
+    headers.append('Set-Cookie', clearCookie);
+    return new Response(null, { status: 302, headers });
 
   } catch (e) {
     return authJson({ error: 'google auth failed', detail: e.message }, 400);
@@ -1490,6 +1502,15 @@ async function handleGoogleCallback(request, db, env) {
 // ---------------------------------------------------------------------------
 
 async function handleAuthRoute(pathname, method, request, db, env) {
+  // Google OAuth endpoints are GET redirects that don't require CSRF token
+  // (browser navigation via window.location.href doesn't send custom headers)
+  if (pathname === '/api/auth/google/start' && method === 'GET') {
+    return handleGoogleStart(request, db, env);
+  }
+  if (pathname === '/api/auth/google/callback' && method === 'GET') {
+    return handleGoogleCallback(request, db, env);
+  }
+
   const guard = guardAuth(request, env);
   if (guard) return guard;
   const mail = createMailAdapter(env, console.log);
@@ -1705,16 +1726,6 @@ async function handleAuthRoute(pathname, method, request, db, env) {
     await revokeMemberSessions(db, member.id);
     const session = await issueSession(db, env, member);
     return authJson({ ok: true, member: memberView({ ...member, updated_at: now }) }, 200, { 'Set-Cookie': session.cookie });
-  }
-
-  // ---------------- Google OAuth (issue #79) ----------------
-
-  if (pathname === '/api/auth/google/start' && method === 'GET') {
-    return handleGoogleStart(request, db, env);
-  }
-
-  if (pathname === '/api/auth/google/callback' && method === 'GET') {
-    return handleGoogleCallback(request, db, env);
   }
 
   return null;
