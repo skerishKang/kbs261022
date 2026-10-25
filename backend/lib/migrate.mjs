@@ -11,6 +11,7 @@ export const COLUMN_UPGRADES = [
   { table: 'orders', column: 'customer_id', ddl: 'ALTER TABLE orders ADD COLUMN customer_id INTEGER' },
   { table: 'quote_requests', column: 'member_id', ddl: 'ALTER TABLE quote_requests ADD COLUMN member_id INTEGER' },
   { table: 'members', column: 'role', ddl: "ALTER TABLE members ADD COLUMN role TEXT NOT NULL DEFAULT 'member'" },
+  { table: 'members', column: 'google_id', ddl: 'ALTER TABLE members ADD COLUMN google_id TEXT' },
 ];
 
 /** Return the column names of a table, or [] when the table does not exist. */

@@ -10,9 +10,9 @@
 //                       email verification without an external provider. Never
 //                       use in production: it is equivalent to publishing the
 //                       verification token to the caller.
-//   resend            Sends via the Resend v1 API using CGI_RESEND_API_KEY.
+//   resend            Sends via the Resend v1 API using B66_ALERT_RESEND_API_KEY.
 //                       Reuses the same Resend infrastructure as PADIEM.NET
-//                       but with a separate CGI Worker Secret.
+//                       via Cloudflare Secrets Store binding.
 //   sendgrid            Sends via the SendGrid v3 API using SENDGRID_API_KEY.
 //                       Requires a verified sending domain and the API key
 //                       stored as a Worker Secret.
@@ -54,14 +54,24 @@ function htmlBody(message) {
   ].join('\n');
 }
 
+/** Read a secret value, handling both plain Worker Secrets and Secrets Store bindings. */
+async function readSecret(env, name, fallback = '') {
+  const val = env[name];
+  if (val === undefined || val === null) return fallback;
+  // Secrets Store bindings are objects with a .get() method returning a Promise
+  if (typeof val === 'object' && typeof val.get === 'function') {
+    return await val.get();
+  }
+  // Plain Worker Secret is a string
+  return String(val);
+}
+
 export function createMailAdapter(env, log = () => {}) {
   const mode = String(env.MAIL_MODE || 'console').toLowerCase();
   const from = String(env.MAIL_FROM || 'CGI no-reply <no-reply@cgi.example>');
   const base = String(env.MAIL_BASE_URL || '').replace(/\/+$/, '');
   const siteBase = String(env.SITE_BASE_URL || base || 'https://skerishkang.github.io/kbs261022/site').replace(/\/+$/, '');
-  const apiKey = String(env.SENDGRID_API_KEY || '').trim();
   const sgEndpoint = String(env.SENDGRID_API_URL || 'https://api.sendgrid.com/v3/mail/send').replace(/\/+$/, '');
-  const resendKey = String(env.CGI_RESEND_API_KEY || '').trim();
   const resendEndpoint = String(env.RESEND_API_URL || 'https://api.resend.com/emails').replace(/\/+$/, '');
 
   const fromParts = parseFrom(from);
@@ -98,11 +108,22 @@ export function createMailAdapter(env, log = () => {}) {
         };
       }
       if (this.mode === 'resend') {
+        // Read the Resend API key, handling both Secrets Store bindings and plain secrets
+        const resendKey = (await readSecret(env, 'B66_ALERT_RESEND_API_KEY')).trim();
         if (!resendKey) {
           return {
             delivered: false,
             channel: 'unconfigured',
-            note: 'MAIL_MODE=resend but CGI_RESEND_API_KEY is not configured; nothing was sent',
+            note: 'MAIL_MODE=resend but B66_ALERT_RESEND_API_KEY is not configured; nothing was sent',
+          };
+        }
+        // Validate key format (Resend keys start with 're_') before calling the API
+        if (!resendKey.startsWith('re_')) {
+          log('[MAIL:resend] invalid key format, blocking API call');
+          return {
+            delivered: false,
+            channel: 'resend',
+            note: 'resend: API key format is invalid (expected re_... prefix)',
           };
         }
         if (!to) {
@@ -155,6 +176,8 @@ export function createMailAdapter(env, log = () => {}) {
         }
       }
       if (this.mode === 'sendgrid') {
+        // Read the SendGrid API key, handling both Secrets Store bindings and plain secrets
+        const apiKey = (await readSecret(env, 'SENDGRID_API_KEY')).trim();
         if (!apiKey) {
           return {
             delivered: false,

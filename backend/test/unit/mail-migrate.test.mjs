@@ -117,8 +117,67 @@ test('resend mode without API key returns unconfigured', async () => {
   const out = await mail.deliver(MESSAGE);
   assert.equal(out.delivered, false);
   assert.equal(out.channel, 'unconfigured');
-  assert.match(out.note, /CGI_RESEND_API_KEY/);
+  assert.match(out.note, /B66_ALERT_RESEND_API_KEY/);
   assert.equal(out.token, undefined);
+});
+
+test('resend mode rejects invalid key format before API call', async () => {
+  const origFetch = globalThis.fetch;
+  let fetchCalled = false;
+  globalThis.fetch = async () => {
+    fetchCalled = true;
+    return { ok: true, status: 200, text: async () => '' };
+  };
+  try {
+    const mail = createMailAdapter({
+      MAIL_MODE: 'resend',
+      B66_ALERT_RESEND_API_KEY: 'invalid_key_format',
+      MAIL_FROM: 'CGI <noreply@test.com>',
+    });
+    const out = await mail.deliver(MESSAGE);
+    assert.equal(out.delivered, false);
+    assert.equal(out.channel, 'resend');
+    assert.match(out.note, /invalid.*format|expected.*re_/);
+    assert.equal(fetchCalled, false, 'fetch should not be called for invalid key');
+  } finally {
+    globalThis.fetch = origFetch;
+  }
+});
+
+test('resend mode reads Secrets Store binding with .get() method', async () => {
+  const origFetch = globalThis.fetch;
+  let captured = null;
+  globalThis.fetch = async (url, init) => {
+    captured = { url, init };
+    return { ok: true, status: 200, text: async () => JSON.stringify({ id: 'resend_msg_1' }) };
+  };
+  try {
+    // Simulate a Secrets Store binding object
+    const secretBinding = { get: async () => 're_test_key_abc12345' };
+    const mail = createMailAdapter({
+      MAIL_MODE: 'resend',
+      B66_ALERT_RESEND_API_KEY: secretBinding,
+      MAIL_FROM: 'CGI <noreply@test.com>',
+    });
+    const out = await mail.deliver(MESSAGE);
+    assert.equal(out.delivered, true);
+    assert.equal(out.channel, 'resend');
+    assert.ok(captured);
+    assert.match(captured.url, /api\.resend\.com/);
+    assert.match(captured.init.headers.Authorization, /Bearer re_test_key_abc12345/);
+    const body = JSON.parse(captured.init.body);
+    assert.equal(body.from, 'noreply@test.com');
+    assert.deepEqual(body.to, [MESSAGE.to]);
+    assert.equal(body.subject, MESSAGE.subject);
+    assert.ok(body.text);
+    assert.ok(body.html);
+    assert.ok(body.html.includes('CGI'));
+    // The API key must never appear in the body
+    assert.ok(!body.text.includes('re_test_key'));
+    assert.ok(!body.html.includes('re_test_key'));
+  } finally {
+    globalThis.fetch = origFetch;
+  }
 });
 
 test('resend mode with API key sends the message and returns delivered', async () => {
@@ -131,7 +190,7 @@ test('resend mode with API key sends the message and returns delivered', async (
   try {
     const mail = createMailAdapter({
       MAIL_MODE: 'resend',
-      CGI_RESEND_API_KEY: 're_test_key_abc12345',
+      B66_ALERT_RESEND_API_KEY: 're_test_key_abc12345',
       MAIL_FROM: 'CGI <noreply@test.com>',
     });
     const out = await mail.deliver(MESSAGE);
@@ -163,7 +222,7 @@ test('resend mode reports API errors', async () => {
   try {
     const mail = createMailAdapter({
       MAIL_MODE: 'resend',
-      CGI_RESEND_API_KEY: 're_bad_key_12345',
+      B66_ALERT_RESEND_API_KEY: 're_bad_key_12345',
     });
     const out = await mail.deliver(MESSAGE);
     assert.equal(out.delivered, false);
@@ -181,7 +240,7 @@ test('resend mode reports network errors', async () => {
   try {
     const mail = createMailAdapter({
       MAIL_MODE: 'resend',
-      CGI_RESEND_API_KEY: 're_test_key_abc12345',
+      B66_ALERT_RESEND_API_KEY: 're_test_key_abc12345',
     });
     const out = await mail.deliver(MESSAGE);
     assert.equal(out.delivered, false);
@@ -232,7 +291,7 @@ test('from is configurable and has a safe default', () => {
 test('COLUMN_UPGRADES lists every member link and role', () => {
   assert.deepEqual(
     COLUMN_UPGRADES.map((upgrade) => `${upgrade.table}.${upgrade.column}`),
-    ['orders.customer_id', 'quote_requests.member_id', 'members.role'],
+    ['orders.customer_id', 'quote_requests.member_id', 'members.role', 'members.google_id'],
   );
   for (const upgrade of COLUMN_UPGRADES) {
     assert.match(upgrade.ddl, new RegExp(`ADD COLUMN ${upgrade.column}`));
@@ -243,7 +302,7 @@ test('tableColumns returns the column names or an empty list for a missing table
   const db = openD1();
   assert.deepEqual(await tableColumns(db, 'members'), [
     'id', 'email', 'password_hash', 'name', 'phone', 'company',
-    'email_verified_at', 'role', 'status', 'created_at', 'updated_at', 'deleted_at',
+    'email_verified_at', 'role', 'google_id', 'status', 'created_at', 'updated_at', 'deleted_at',
   ]);
   assert.deepEqual(await tableColumns(db, 'no_such_table'), []);
 });

@@ -81,6 +81,7 @@ import {
 } from './lib/auth.mjs';
 import { ensureColumns, COLUMN_UPGRADES } from './lib/migrate.mjs';
 import { createMailAdapter } from './lib/mail.mjs';
+import { createOAuthState, verifyOAuthState, buildAuthorizationUrl, exchangeCode, fetchUserInfo, OAUTH_STATE_COOKIE, oauthStateCookieOptions } from './lib/google-oauth.mjs';
 
 const ALLOWED_ORIGIN = 'https://skerishkang.github.io';
 const MAX_BODY_BYTES = 64 * 1024;
@@ -1370,6 +1371,124 @@ async function requireMember(request, db, env) {
   return member;
 }
 
+// ---------------------------------------------------------------------------
+// Google OAuth (issue #79)
+// ---------------------------------------------------------------------------
+
+function authRedirect(url) {
+  return new Response(null, { status: 302, headers: { Location: url } });
+}
+
+async function getMemberByGoogleId(db, googleId) {
+  try {
+    const { results } = await db.prepare('SELECT * FROM members WHERE google_id = ? LIMIT 1').bind(googleId).all();
+    return results && results[0] ? results[0] : null;
+  } catch (e) {
+    return null;
+  }
+}
+
+async function handleGoogleStart(request, db, env) {
+  const clientId = env.GOOGLE_CLIENT_ID || env.GOOGLE_OAUTH_CLIENT_ID;
+  const clientSecret = env.GOOGLE_CLIENT_SECRET || env.GOOGLE_OAUTH_CLIENT_SECRET;
+  if (!clientId || !clientSecret) {
+    return authJson({ error: 'google oauth not configured' }, 503);
+  }
+
+  const redirectUri = new URL('/api/auth/google/callback', request.url).toString();
+  const state = createOAuthState(env.AUTH_SESSION_SECRET || 'cgi-dev-secret');
+
+  const authUrl = buildAuthorizationUrl({ clientId, redirectUri }, state);
+  if (!authUrl) return authJson({ error: 'google oauth not configured' }, 503);
+
+  const cookieOpts = oauthStateCookieOptions();
+  return new Response(null, {
+    status: 302,
+    headers: {
+      Location: authUrl,
+      'Set-Cookie': `${OAUTH_STATE_COOKIE}=${state}; ${Object.entries(cookieOpts).map(([k, v]) => `${k}=${v}`).join('; ')}`,
+    },
+  });
+}
+
+async function handleGoogleCallback(request, db, env) {
+  const url = new URL(request.url);
+  const error = url.searchParams.get('error');
+  if (error) {
+    return authJson({ error: 'google auth failed', detail: error }, 400);
+  }
+
+  const code = url.searchParams.get('code');
+  const state = url.searchParams.get('state');
+  if (!code || !state) {
+    return authJson({ error: 'missing code or state' }, 400);
+  }
+
+  // Verify CSRF state from cookie
+  const cookieState = request.headers.get('Cookie')?.match(new RegExp(OAUTH_STATE_COOKIE + '=([^;]+)'))?.[1];
+  if (!cookieState || cookieState !== state) {
+    return authJson({ error: 'invalid state', detail: 'CSRF state mismatch' }, 400);
+  }
+
+  const clientId = env.GOOGLE_CLIENT_ID || env.GOOGLE_OAUTH_CLIENT_ID;
+  const clientSecret = env.GOOGLE_CLIENT_SECRET || env.GOOGLE_OAUTH_CLIENT_SECRET;
+  const redirectUri = url.toString();
+
+  // Clear state cookie
+  const clearCookie = `${OAUTH_STATE_COOKIE}=; Max-Age=0; Path=/; HttpOnly; Secure; SameSite=Lax`;
+
+  try {
+    // Exchange code for access token
+    const accessToken = await exchangeCode({ clientId, clientSecret }, code, redirectUri);
+
+    // Fetch user info
+    const userInfo = await fetchUserInfo(accessToken);
+
+    // Find existing member by Google ID
+    let member = await getMemberByGoogleId(db, userInfo.subject);
+
+    if (!member) {
+      // Find by email (account linking)
+      member = await getMemberByEmail(db, userInfo.email);
+      if (member) {
+        // Link Google ID to existing account
+        const now = nowIso();
+        await db.prepare('UPDATE members SET google_id = ?, updated_at = ? WHERE id = ?')
+          .bind(userInfo.subject, now, member.id).run();
+        member = { ...member, google_id: userInfo.subject };
+        await db.prepare('INSERT INTO member_events (member_id, type, meta, created_at) VALUES (?, ?, ?, ?)')
+          .bind(member.id, 'google_linked', JSON.stringify({ google_id: userInfo.subject }), now).run();
+      } else {
+        // Create new member
+        const now = nowIso();
+        const passwordHash = await hashPassword('google-oauth-no-password', authPolicy(env));
+        const result = await db.prepare(
+          'INSERT INTO members (email, password_hash, name, google_id, status, email_verified_at, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)'
+        ).bind(userInfo.email, passwordHash, userInfo.name || userInfo.email.split('@')[0], userInfo.subject, 'active', now, now, now).run();
+        const memberId = result.meta.last_row_id ?? result.meta.last_rowid ?? 0;
+        member = await getMember(db, memberId);
+        await db.prepare('INSERT INTO member_events (member_id, type, meta, created_at) VALUES (?, ?, ?, ?)')
+          .bind(memberId, 'google_signup', JSON.stringify({ google_id: userInfo.subject }), now).run();
+      }
+    }
+
+    // Issue session
+    const session = await issueSession(db, env, member);
+    return authJson({
+      member: memberView(member),
+      email_verified: !!member.email_verified_at,
+      auth_provider: 'google',
+    }, 200, { 'Set-Cookie': session.cookie + '; ' + clearCookie });
+
+  } catch (e) {
+    return authJson({ error: 'google auth failed', detail: e.message }, 400);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// auth routes
+// ---------------------------------------------------------------------------
+
 async function handleAuthRoute(pathname, method, request, db, env) {
   const guard = guardAuth(request, env);
   if (guard) return guard;
@@ -1586,6 +1705,16 @@ async function handleAuthRoute(pathname, method, request, db, env) {
     await revokeMemberSessions(db, member.id);
     const session = await issueSession(db, env, member);
     return authJson({ ok: true, member: memberView({ ...member, updated_at: now }) }, 200, { 'Set-Cookie': session.cookie });
+  }
+
+  // ---------------- Google OAuth (issue #79) ----------------
+
+  if (pathname === '/api/auth/google/start' && method === 'GET') {
+    return handleGoogleStart(request, db, env);
+  }
+
+  if (pathname === '/api/auth/google/callback' && method === 'GET') {
+    return handleGoogleCallback(request, db, env);
   }
 
   return null;
