@@ -8,6 +8,7 @@
     "test": "node --test --experimental-sqlite \"test/unit/*.test.mjs\" \"test/e2e/*.test.mjs\"",
     "test:unit": "node --test --experimental-sqlite \"test/unit/*.test.mjs\"",
     "test:e2e": "node --test --experimental-sqlite \"test/e2e/*.test.mjs\"",
+    "dry-run": "node tools/erp-naver-dry-run.mjs",
     "smoke": "node --experimental-sqlite test/smoke.mjs"
   },
   "devDependencies": {
