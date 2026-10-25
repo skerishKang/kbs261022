@@ -15,6 +15,8 @@ import { readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
+import { COLUMN_UPGRADES } from './lib/migrate.mjs';
+
 const HERE = dirname(fileURLToPath(import.meta.url));
 
 function normalizeParam(value) {
@@ -87,6 +89,7 @@ export function openD1({ schemaPath = join(HERE, 'schema.sql'), applySchema = tr
   const db = new DatabaseSync(':memory:');
   if (applySchema) {
     db.exec(readFileSync(schemaPath, 'utf-8'));
+    applyColumnUpgrades(db);
   }
   return toD1(db);
 }
@@ -94,6 +97,22 @@ export function openD1({ schemaPath = join(HERE, 'schema.sql'), applySchema = tr
 /** Open a D1 shim on a file (handy for inspecting state after a run). */
 export function openD1File(filePath, { applySchema = true } = {}) {
   const db = new DatabaseSync(filePath);
-  if (applySchema) db.exec(readFileSync(join(HERE, 'schema.sql'), 'utf-8'));
+  if (applySchema) {
+    db.exec(readFileSync(join(HERE, 'schema.sql'), 'utf-8'));
+    applyColumnUpgrades(db);
+  }
   return toD1(db);
+}
+
+/**
+ * SQLite has no "ADD COLUMN IF NOT EXISTS", so columns that were introduced by
+ * a migration are guarded here the same way lib/migrate.mjs guards them for the
+ * Worker. Keeps the shim's shape identical to a migrated production database.
+ */
+export function applyColumnUpgrades(db) {
+  for (const upgrade of COLUMN_UPGRADES) {
+    const columns = db.prepare(`PRAGMA table_info(${upgrade.table})`).all().map((row) => row.name);
+    if (columns.length && columns.includes(upgrade.column)) continue;
+    db.exec(upgrade.ddl);
+  }
 }

@@ -19,9 +19,35 @@
 //   POST   /api/admin/schema/init    (admin)   apply schema.sql to D1
 //   GET    /api/admin/health         (public)  mode readout, no secrets
 //
+// Customer accounts (issue #69) - cookie session + X-CSRF-Token, origin pinned:
+//   POST   /api/auth/signup
+//   POST   /api/auth/email-available
+//   POST   /api/auth/verify-email
+//   POST   /api/auth/resend-verification
+//   POST   /api/auth/login
+//   POST   /api/auth/logout
+//   POST   /api/auth/password-reset/request
+//   POST   /api/auth/password-reset/confirm
+//   GET    /api/me                    profile
+//   PATCH  /api/me                    update name / phone / company
+//   DELETE /api/me                    delete account
+//   POST   /api/me/password           change password
+//   GET|POST   /api/me/addresses
+//   PATCH|DELETE /api/me/addresses/:id
+//   GET    /api/me/orders             my orders
+//   GET    /api/me/orders/:id         my order detail
+//   POST   /api/me/orders/:id/cancel  cancel an awaiting_payment order
+//   POST   /api/me/orders/:id/refund/request  request a refund
+//   GET    /api/me/quotes             my quote requests
+//   GET    /api/me/quotes/:id         my quote detail
+//
 // Required secrets: ADMIN_TOKEN
 // Optional secrets: TOSS_WIDGET_SECRET_KEY, TOSS_API_SECRET_KEY,
 //                   ERP_OAPI_BASE_URL, ERP_OAPI_TOKEN
+// Optional auth vars: AUTH_SESSION_COOKIE, AUTH_COOKIE_SECURE, AUTH_ORIGIN_STRICT,
+//                     AUTH_CSRF_TOKEN, AUTH_PBKDF2_ITERATIONS, AUTH_SESSION_TTL_DAYS,
+//                     AUTH_RATE_LIMIT_MAX, AUTH_RATE_LIMIT_WINDOW_SECONDS,
+//                     EMAIL_VERIFY_REQUIRED, MAIL_MODE, MAIL_BASE_URL
 
 import { computeTotals, cartHash, nextOrderId, toNonNegInt, isValidPgOrderId } from './lib/pricing.mjs';
 import {
@@ -40,6 +66,21 @@ import {
 import { createPgAdapter } from './lib/pg.mjs';
 import { buildEcountSalesSlip, erpCodeFor, createErpDriver, erpModeFromEnv, ERP_ADAPTER } from './lib/erp.mjs';
 import { PRICE_INDEX, PRICE_INDEX_META } from './data/price_index.mjs';
+import {
+  AUTH_POLICY,
+  hashPassword,
+  verifyPassword,
+  randomToken,
+  tokenDigest,
+  validateEmail,
+  validateName,
+  validatePhone,
+  validateOptionalText,
+  validateText,
+  validatePassword,
+} from './lib/auth.mjs';
+import { ensureColumns, COLUMN_UPGRADES } from './lib/migrate.mjs';
+import { createMailAdapter } from './lib/mail.mjs';
 
 const ALLOWED_ORIGIN = 'https://skerishkang.github.io';
 const MAX_BODY_BYTES = 64 * 1024;
@@ -47,14 +88,34 @@ const DUPLICATE_WINDOW_SECONDS = 120;
 // Smallest partial refund the backend will accept (KRW). Anything below this is
 // rounding dust rather than a refund; override with the MIN_PARTIAL_REFUND var.
 const MIN_PARTIAL_REFUND = 1000;
-const BACKEND_VERSION = '1.1.0';
+const BACKEND_VERSION = '1.2.0';
 
+// Legacy credential-free header set: quote intake, order, payment and admin
+// routes. Kept exactly as it is because they are not cookie-based, and because
+// the CORS regression test asserts that these routes never grant credentials.
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': ALLOWED_ORIGIN,
   'Access-Control-Allow-Methods': 'GET,POST,PATCH,OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type,Authorization,Idempotency-Key',
   'Vary': 'Origin',
 };
+
+// Customer account routes (/api/auth/*, /api/me/*) authenticate with a session
+// cookie, so they additionally advertise DELETE and credentials. ACAO stays
+// pinned to the single production origin and is never echoed.
+const CORS_HEADERS_CREDENTIALS = {
+  ...CORS_HEADERS,
+  'Access-Control-Allow-Methods': 'GET,POST,PATCH,DELETE,OPTIONS',
+  'Access-Control-Allow-Credentials': 'true',
+};
+
+export function isAuthPath(pathname) {
+  return pathname === '/api/auth' || pathname.startsWith('/api/auth/') || pathname === '/api/me' || pathname.startsWith('/api/me/');
+}
+
+function corsHeadersFor(pathname) {
+  return isAuthPath(pathname) ? CORS_HEADERS_CREDENTIALS : CORS_HEADERS;
+}
 
 // ---------------------------------------------------------------------------
 // helpers
@@ -184,7 +245,8 @@ const ORDER_COLUMNS = `id, kind, idempotency_key, cart_hash, status, created_at,
   customer_company, customer_name, customer_phone, customer_email, customer_addr, customer_addr_detail,
   customer_note, services, item_total, shipping_fee, total_amount, supplied_amount, vat_amount,
   payment_status, payment_method, payment_key, paid_at, refunded_amount,
-  delivery_status, delivery_tracking, admin_prices, admin_note, erp_status, erp_sent_at, source_quote_id`;
+  delivery_status, delivery_tracking, admin_prices, admin_note, erp_status, erp_sent_at, source_quote_id,
+  customer_id`;
 
 async function getOrder(db, id) {
   const row = await db.prepare(`SELECT ${ORDER_COLUMNS} FROM orders WHERE id = ?`).bind(id).first();
@@ -245,6 +307,7 @@ function publicOrderView(order, items) {
     erp_status: order.erp_status,
     erp_sent_at: order.erp_sent_at,
     source_quote_id: order.source_quote_id,
+    customer_id: order.customer_id == null ? null : Number(order.customer_id),
     items: (items || order.items || []).map((item) => ({
       product_id: item.product_id,
       product_name: item.product_name,
@@ -337,6 +400,7 @@ async function createOrder(db, body, env, options = {}) {
     created_at: createdAt,
     updated_at: createdAt,
     ...customer,
+    customer_id: options.customerId == null ? null : Number(options.customerId),
     services: JSON.stringify(services),
     item_total: totals.item_total,
     shipping_fee: totals.shipping_fee,
@@ -359,19 +423,20 @@ async function createOrder(db, body, env, options = {}) {
 
   try {
     await db.batch([
-      db.prepare(
-        `INSERT INTO orders (id, kind, idempotency_key, cart_hash, status, created_at, updated_at,
-          customer_company, customer_name, customer_phone, customer_email, customer_addr, customer_addr_detail,
-          customer_note, services, item_total, shipping_fee, total_amount, supplied_amount, vat_amount,
-          payment_status, erp_status, source_quote_id)
-         VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
-      ).bind(
-        orderRow.id, orderRow.kind, orderRow.idempotency_key, orderRow.cart_hash, orderRow.status,
-        orderRow.created_at, orderRow.updated_at, orderRow.customer_company, orderRow.customer_name,
-        orderRow.customer_phone, orderRow.customer_email, orderRow.customer_addr, orderRow.customer_addr_detail,
-        orderRow.customer_note, orderRow.services, orderRow.item_total, orderRow.shipping_fee, orderRow.total_amount,
-        orderRow.supplied_amount, orderRow.vat_amount, orderRow.payment_status, orderRow.erp_status, orderRow.source_quote_id
-      ),
+       db.prepare(
+         `INSERT INTO orders (id, kind, idempotency_key, cart_hash, status, created_at, updated_at,
+           customer_company, customer_name, customer_phone, customer_email, customer_addr, customer_addr_detail,
+           customer_note, services, item_total, shipping_fee, total_amount, supplied_amount, vat_amount,
+           payment_status, erp_status, source_quote_id, customer_id)
+          VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
+       ).bind(
+         orderRow.id, orderRow.kind, orderRow.idempotency_key, orderRow.cart_hash, orderRow.status,
+         orderRow.created_at, orderRow.updated_at, orderRow.customer_company, orderRow.customer_name,
+         orderRow.customer_phone, orderRow.customer_email, orderRow.customer_addr, orderRow.customer_addr_detail,
+         orderRow.customer_note, orderRow.services, orderRow.item_total, orderRow.shipping_fee, orderRow.total_amount,
+         orderRow.supplied_amount, orderRow.vat_amount, orderRow.payment_status, orderRow.erp_status, orderRow.source_quote_id,
+         orderRow.customer_id
+       ),
       db.prepare(
         'INSERT INTO order_events (order_id, type, actor, from_status, to_status, meta, created_at) VALUES (?,?,?,?,?,?,?)'
       ).bind(orderRow.id, 'created', 'customer', null, orderRow.status, JSON.stringify({ kind, total: orderRow.total_amount }), orderRow.created_at),
@@ -419,12 +484,13 @@ async function mirrorQuoteRequest(db, orderRow, items, services) {
   const createdAt = orderRow.created_at;
   try {
     await db.prepare(
-      `INSERT INTO quote_requests (id, created_at, company, contact_name, phone, email, location, note, services, items, status, updated_at)
-       VALUES (?,?,?,?,?,?,?,?,?,?,?,?)`
+      `INSERT INTO quote_requests (id, created_at, company, contact_name, phone, email, location, note, services, items, status, member_id, updated_at)
+       VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)`
     ).bind(
       quoteId, createdAt, orderRow.customer_company, orderRow.customer_name, orderRow.customer_phone,
       orderRow.customer_email, orderRow.customer_addr, orderRow.customer_note,
-      JSON.stringify(services), JSON.stringify(quoteItems), 'received', createdAt
+      JSON.stringify(services), JSON.stringify(quoteItems), 'received',
+      orderRow.customer_id == null ? null : Number(orderRow.customer_id), createdAt
     ).run();
     return { id: quoteId };
   } catch (e) {
@@ -606,7 +672,7 @@ async function recordPaymentOutcome(db, { order, paymentKey, amount, status, fai
 // admin order operations
 // ---------------------------------------------------------------------------
 
-async function updateOrder(db, order, body) {
+async function updateOrder(db, order, body, actor = 'admin') {
   const ts = nowIso();
   const stmts = [];
   const events = [];
@@ -661,7 +727,7 @@ async function updateOrder(db, order, body) {
   for (const event of events) {
     stmts.push(
       db.prepare('INSERT INTO order_events (order_id, type, actor, from_status, to_status, meta, created_at) VALUES (?,?,?,?,?,?,?)')
-        .bind(order.id, event.type, 'admin', event.from || null, event.to || null, JSON.stringify(event), ts)
+        .bind(order.id, event.type, actor, event.from || null, event.to || null, JSON.stringify(event), ts)
     );
   }
 
@@ -940,7 +1006,7 @@ const SCHEMA_STATEMENTS = `CREATE TABLE IF NOT EXISTS orders (
   refunded_amount INTEGER NOT NULL DEFAULT 0,
   delivery_status TEXT NOT NULL DEFAULT 'pending', delivery_tracking TEXT,
   admin_prices TEXT, admin_note TEXT, erp_status TEXT NOT NULL DEFAULT 'not_sent', erp_sent_at TEXT,
-  source_quote_id TEXT
+  source_quote_id TEXT, customer_id INTEGER
 );
 CREATE INDEX IF NOT EXISTS idx_orders_created_at ON orders(created_at);
 CREATE INDEX IF NOT EXISTS idx_orders_status ON orders(status);
@@ -948,6 +1014,7 @@ CREATE INDEX IF NOT EXISTS idx_orders_kind ON orders(kind);
 CREATE INDEX IF NOT EXISTS idx_orders_payment_status ON orders(payment_status);
 CREATE INDEX IF NOT EXISTS idx_orders_customer_company ON orders(customer_company);
 CREATE INDEX IF NOT EXISTS idx_orders_cart_hash ON orders(cart_hash);
+CREATE INDEX IF NOT EXISTS idx_orders_customer_id ON orders(customer_id);
 CREATE TABLE IF NOT EXISTS order_items (
   order_id TEXT NOT NULL, seq INTEGER NOT NULL, product_id TEXT NOT NULL, product_name TEXT NOT NULL,
   brand TEXT, category TEXT, option_label TEXT, price_state TEXT NOT NULL, unit_price INTEGER,
@@ -978,16 +1045,748 @@ CREATE TABLE IF NOT EXISTS erp_sync (
   attempts INTEGER NOT NULL DEFAULT 0, last_error TEXT, created_at TEXT NOT NULL, updated_at TEXT NOT NULL
 );
 CREATE INDEX IF NOT EXISTS idx_erp_sync_order_id ON erp_sync(order_id);
-CREATE INDEX IF NOT EXISTS idx_erp_sync_status ON erp_sync(status);`;
+CREATE INDEX IF NOT EXISTS idx_erp_sync_status ON erp_sync(status);
+CREATE TABLE IF NOT EXISTS members (
+  id INTEGER PRIMARY KEY, email TEXT NOT NULL UNIQUE, password_hash TEXT NOT NULL, name TEXT NOT NULL,
+  phone TEXT, company TEXT, email_verified_at TEXT, status TEXT NOT NULL DEFAULT 'active',
+  created_at TEXT NOT NULL, updated_at TEXT NOT NULL, deleted_at TEXT
+);
+CREATE INDEX IF NOT EXISTS idx_members_status ON members(status);
+CREATE INDEX IF NOT EXISTS idx_members_created_at ON members(created_at);
+CREATE TABLE IF NOT EXISTS member_addresses (
+  id INTEGER PRIMARY KEY, member_id INTEGER NOT NULL, label TEXT NOT NULL, recipient_name TEXT NOT NULL,
+  phone TEXT NOT NULL, addr TEXT NOT NULL, addr_detail TEXT, company TEXT,
+  is_default INTEGER NOT NULL DEFAULT 0, created_at TEXT NOT NULL, updated_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_member_addresses_member_id ON member_addresses(member_id);
+CREATE TABLE IF NOT EXISTS auth_tokens (
+  id INTEGER PRIMARY KEY, member_id INTEGER, kind TEXT NOT NULL, token_hash TEXT NOT NULL UNIQUE,
+  email TEXT, status TEXT NOT NULL DEFAULT 'pending', expires_at TEXT NOT NULL,
+  consumed_at TEXT, revoked_at TEXT, created_at TEXT NOT NULL, meta TEXT
+);
+CREATE INDEX IF NOT EXISTS idx_auth_tokens_member_kind ON auth_tokens(member_id, kind);
+CREATE INDEX IF NOT EXISTS idx_auth_tokens_expires_at ON auth_tokens(expires_at);
+CREATE TABLE IF NOT EXISTS auth_attempts (
+  kind TEXT NOT NULL, key TEXT NOT NULL, count INTEGER NOT NULL DEFAULT 1,
+  first_at TEXT NOT NULL, last_at TEXT NOT NULL, locked_until TEXT, PRIMARY KEY (kind, key)
+);
+CREATE INDEX IF NOT EXISTS idx_auth_attempts_last_at ON auth_attempts(last_at);
+CREATE TABLE IF NOT EXISTS member_events (
+  id INTEGER PRIMARY KEY, member_id INTEGER, type TEXT NOT NULL, meta TEXT, created_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_member_events_member_id ON member_events(member_id);
+CREATE INDEX IF NOT EXISTS idx_member_events_type ON member_events(type);`;
 
 async function initSchema(db) {
   await db.exec(SCHEMA_STATEMENTS);
+  const columns = await ensureColumns(db, COLUMN_UPGRADES);
   const tables = [];
-  for (const name of ['orders', 'order_items', 'payments', 'order_events', 'erp_sync', 'quote_requests']) {
+  for (const name of [
+    'orders', 'order_items', 'payments', 'order_events', 'erp_sync', 'quote_requests',
+    'members', 'member_addresses', 'auth_tokens', 'auth_attempts', 'member_events',
+  ]) {
     const row = await db.prepare("SELECT name FROM sqlite_master WHERE type = 'table' AND name = ?").bind(name).first();
     if (row) tables.push(name);
   }
-  return { ok: true, tables };
+  return { ok: true, tables, upgraded_columns: columns };
+}
+
+// ---------------------------------------------------------------------------
+// customer accounts (issue #69)
+//
+// /api/auth/* and /api/me/* are the only cookie-based routes. Each one is
+// guarded twice: a pinned-Origin check (no echo, same policy as the legacy
+// CORS layer) and a custom X-CSRF-Token that must match the Origin.
+//
+// Isolation from the staff API: /api/* endpoints that need ADMIN_TOKEN still
+// read only the Authorization header. A customer session cookie is never
+// inspected there, so it cannot grant admin access, and no admin surface reads
+// the members tables.
+// ---------------------------------------------------------------------------
+
+function authCookieName(env) {
+  return String(env.AUTH_SESSION_COOKIE || 'cgi_member');
+}
+
+function authCookieSecure(env) {
+  return String(env.AUTH_COOKIE_SECURE || 'YES').toUpperCase() !== 'NO';
+}
+
+function originStrict(env) {
+  return String(env.AUTH_ORIGIN_STRICT || 'YES').toUpperCase() !== 'NO';
+}
+
+function emailVerifyRequired(env) {
+  return String(env.EMAIL_VERIFY_REQUIRED || 'NO').toUpperCase() === 'YES';
+}
+
+function authPolicy(env) {
+  const iterations = Number.parseInt(env.AUTH_PBKDF2_ITERATIONS, 10);
+  const sessionDays = Number.parseInt(env.AUTH_SESSION_TTL_DAYS, 10);
+  const maxAddresses = Number.parseInt(env.AUTH_MAX_ADDRESSES, 10);
+  const rateMax = Number.parseInt(env.AUTH_RATE_LIMIT_MAX, 10);
+  const rateWindow = Number.parseInt(env.AUTH_RATE_LIMIT_WINDOW_SECONDS, 10);
+  const policy = { ...AUTH_POLICY, rateLimit: { ...AUTH_POLICY.rateLimit } };
+  if (Number.isFinite(iterations) && iterations > 0) policy.pbkdf2Iterations = iterations;
+  if (Number.isFinite(sessionDays) && sessionDays > 0) policy.sessionTtlSeconds = Math.floor(sessionDays * 24 * 3600);
+  if (Number.isFinite(maxAddresses) && maxAddresses > 0) policy.maxAddressesPerMember = maxAddresses;
+  for (const name of Object.keys(policy.rateLimit)) {
+    const bucket = { ...policy.rateLimit[name] };
+    if (Number.isFinite(rateMax) && rateMax > 0) bucket.max = rateMax;
+    if (Number.isFinite(rateWindow) && rateWindow >= 0) bucket.windowSeconds = rateWindow;
+    policy.rateLimit[name] = bucket;
+  }
+  return policy;
+}
+
+function authJson(data, status, extra) {
+  return json(data, status, { ...CORS_HEADERS_CREDENTIALS, ...(extra || {}) });
+}
+
+/** Same-origin gate for cookie routes. A missing Origin (CLI, cron) is rejected. */
+function originOk(request, env) {
+  const origin = request.headers.get('Origin');
+  if (!origin) return false;
+  if (origin === ALLOWED_ORIGIN) return true;
+  const list = String(env.CORS_ALLOWED_ORIGINS || '').split(',').map((s) => s.trim()).filter(Boolean);
+  if (!list.length) return false;
+  if (!originStrict(env) && /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)) return true;
+  return list.includes(origin);
+}
+
+/** CSRF: the token must equal the request Origin, or a configured constant. */
+function csrfOk(request, env) {
+  const token = request.headers.get('X-CSRF-Token');
+  if (!token) return false;
+  if (token === request.headers.get('Origin')) return true;
+  const expected = String(env.AUTH_CSRF_TOKEN || '').trim();
+  return !!expected && token === expected;
+}
+
+function guardAuth(request, env) {
+  if (!originOk(request, env)) {
+    return authJson({ error: 'origin not allowed', detail: { expected: ALLOWED_ORIGIN } }, 403);
+  }
+  if (!csrfOk(request, env)) {
+    return authJson({ error: 'csrf token required', detail: 'X-CSRF-Token must equal the request Origin' }, 403);
+  }
+  return null;
+}
+
+function getMember(db, id) {
+  return db.prepare('SELECT * FROM members WHERE id = ?').bind(id).first();
+}
+
+function getMemberByEmail(db, email) {
+  return db.prepare('SELECT * FROM members WHERE email = ?').bind(String(email || '').trim().toLowerCase()).first();
+}
+
+function memberView(member) {
+  if (!member) return null;
+  return {
+    id: member.id,
+    email: member.email,
+    name: member.name,
+    phone: member.phone,
+    company: member.company,
+    email_verified: !!member.email_verified_at,
+    email_verified_at: member.email_verified_at,
+    status: member.status,
+    created_at: member.created_at,
+    updated_at: member.updated_at,
+  };
+}
+
+function memberQuoteView(row) {
+  if (!row) return null;
+  return {
+    id: row.id,
+    created_at: row.created_at,
+    status: row.status,
+    total: row.total,
+    company: row.company,
+    contact_name: row.contact_name,
+    phone: row.phone,
+    location: row.location,
+    note: row.note,
+    services: JSON.parse(row.services || '[]'),
+    items: JSON.parse(row.items || '[]'),
+  };
+}
+
+/** Sliding-window rate limit over auth_attempts(kind, key). */
+async function rateLimitCheck(db, policy, kind, key) {
+  const bucket = policy.rateLimit[kind];
+  if (!bucket || !key) return { ok: true };
+  const now = nowIso();
+  const row = await db.prepare('SELECT * FROM auth_attempts WHERE kind = ? AND key = ?').bind(kind, key).first();
+  if (row) {
+    if (row.locked_until && String(row.locked_until) > now) {
+      return { error: 'rate limited', detail: { retry_after: String(row.locked_until) } };
+    }
+    const inWindow = bucket.windowSeconds > 0 && shiftIso(now, -bucket.windowSeconds) <= String(row.last_at);
+    if (inWindow && Number(row.count) >= bucket.max) {
+      const lockedUntil = shiftIso(now, bucket.windowSeconds);
+      await db.prepare('UPDATE auth_attempts SET count = count + 1, last_at = ?, locked_until = ? WHERE kind = ? AND key = ?')
+        .bind(now, lockedUntil, kind, key).run();
+      return { error: 'rate limited', detail: { retry_after: lockedUntil } };
+    }
+    await db.prepare('UPDATE auth_attempts SET count = ?, first_at = ?, last_at = ?, locked_until = ? WHERE kind = ? AND key = ?')
+      .bind(inWindow ? Number(row.count) + 1 : 1, inWindow ? row.first_at : now, now, null, kind, key).run();
+    return { ok: true };
+  }
+  try {
+    await db.prepare('INSERT INTO auth_attempts (kind, key, count, first_at, last_at) VALUES (?, ?, 1, ?, ?)')
+      .bind(kind, key, now, now).run();
+  } catch (e) {
+    await db.prepare('UPDATE auth_attempts SET count = count + 1, last_at = ? WHERE kind = ? AND key = ?')
+      .bind(now, kind, key).run();
+  }
+  return { ok: true };
+}
+
+/** Insert a token by digest only, then deliver the matching mail message. */
+async function issueToken(db, env, mail, member, kind, path, subject, text) {
+  const policy = authPolicy(env);
+  const now = nowIso();
+  const ttlSeconds = kind === 'session'
+    ? policy.sessionTtlSeconds
+    : kind === 'password_reset' ? policy.passwordResetTtlSeconds : policy.verifyEmailTtlSeconds;
+  const expiresAt = shiftIso(now, ttlSeconds);
+  const rawToken = randomToken();
+  const url = mail.urlFor(path, rawToken);
+  await db.prepare(
+    'INSERT INTO auth_tokens (member_id, kind, token_hash, email, status, expires_at, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)'
+  ).bind(member.id, kind, await tokenDigest(rawToken), member.email, 'pending', expiresAt, now).run();
+  const delivered = await mail.deliver({ to: member.email, subject, text, url, token: rawToken });
+  return {
+    token: rawToken,
+    url,
+    expires_at: expiresAt,
+    mail: {
+      delivered: !!delivered.delivered,
+      channel: delivered.channel || mail.mode,
+      note: delivered.note || null,
+      echo_token: delivered.token || undefined,
+      echo_url: delivered.url || undefined,
+    },
+  };
+}
+
+async function getAuthToken(db, token) {
+  const row = await db.prepare('SELECT * FROM auth_tokens WHERE token_hash = ?').bind(await tokenDigest(token)).first();
+  return row || null;
+}
+
+async function revokeMemberSessions(db, memberId) {
+  const now = nowIso();
+  await db.prepare("UPDATE auth_tokens SET status = 'revoked', revoked_at = ? WHERE member_id = ? AND kind = 'session' AND status = 'pending'")
+    .bind(now, memberId).run();
+}
+
+/** Insert a session token and build the Set-Cookie value for it. */
+async function issueSession(db, env, member) {
+  const policy = authPolicy(env);
+  const now = nowIso();
+  const token = randomToken();
+  const expiresAt = shiftIso(now, policy.sessionTtlSeconds);
+  await db.prepare(
+    'INSERT INTO auth_tokens (member_id, kind, token_hash, email, status, expires_at, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)'
+  ).bind(member.id, 'session', await tokenDigest(token), member.email, 'pending', expiresAt, now).run();
+  const secure = authCookieSecure(env) ? 'Secure; ' : '';
+  return { token, expires_at: expiresAt, cookie: `${authCookieName(env)}=${token}; HttpOnly; SameSite=None; ${secure}Path=/; Max-Age=${policy.sessionTtlSeconds}` };
+}
+
+async function loadSession(request, db, env) {
+  const name = authCookieName(env);
+  const raw = request.headers.get('Cookie') || '';
+  const part = raw.split(/;\s*/).find((piece) => piece.startsWith(`${name}=`));
+  if (!part) return null;
+  const value = decodeURIComponent(part.slice(name.length + 1));
+  if (!value) return null;
+  const row = await getAuthToken(db, value);
+  if (!row || row.kind !== 'session' || row.status !== 'pending') return null;
+  if (String(row.expires_at) <= nowIso()) return null;
+  return row;
+}
+
+async function requireMember(request, db, env) {
+  const session = await loadSession(request, db, env);
+  if (!session) return null;
+  const member = await getMember(db, session.member_id);
+  if (!member) return null;
+  if (member.status === 'deleted') {
+    await db.prepare("UPDATE auth_tokens SET status = 'revoked', revoked_at = ? WHERE id = ?").bind(nowIso(), session.id).run();
+    return null;
+  }
+  return member;
+}
+
+async function handleAuthRoute(pathname, method, request, db, env) {
+  const guard = guardAuth(request, env);
+  if (guard) return guard;
+  const mail = createMailAdapter(env, console.log);
+  const parsed = await readJson(request);
+  const body = parsed.body && typeof parsed.body === 'object' ? parsed.body : {};
+
+  // ---------------- signup ----------------
+
+  if (pathname === '/api/auth/signup' && method === 'POST') {
+    const email = validateEmail(body.email);
+    if (!email.ok) return authJson({ error: email.error, detail: email.detail }, 400);
+    const name = validateName(body.name);
+    if (!name.ok) return authJson({ error: name.error, detail: name.detail }, 400);
+    const phone = body.phone == null || String(body.phone).trim() === '' ? { ok: true, phone: null } : validatePhone(body.phone);
+    if (!phone.ok) return authJson({ error: phone.error, detail: phone.detail }, 400);
+    const company = validateOptionalText(body.company, 'company', 100);
+    if (company.error) return authJson({ error: company.error, detail: company.detail }, 400);
+    const policy = authPolicy(env);
+    const password = validatePassword(body.password, { email: email.email, policy });
+    if (!password.ok) return authJson({ error: password.error, detail: password.detail }, 400);
+
+    const limit = await rateLimitCheck(db, policy, 'signup', email.email);
+    if (limit.error) return authJson({ error: limit.error, detail: limit.detail }, 429);
+    if (await getMemberByEmail(db, email.email)) {
+      return authJson({ error: 'email already used', detail: 'this email address is already registered' }, 409);
+    }
+
+    const now = nowIso();
+    const passwordHash = await hashPassword(password.password, policy);
+    let memberId;
+    try {
+      const result = await db.prepare(
+        'INSERT INTO members (email, password_hash, name, phone, company, status, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)'
+      ).bind(email.email, passwordHash, name.name, phone.phone, company.value, 'active', now, now).run();
+      memberId = result.meta.last_row_id ?? result.meta.last_rowid ?? 0;
+    } catch (e) {
+      return authJson({ error: 'email already used', detail: 'this email address is already registered' }, 409);
+    }
+
+    await db.prepare('INSERT INTO member_events (member_id, type, meta, created_at) VALUES (?, ?, ?, ?)')
+      .bind(memberId, 'signup', JSON.stringify({ verified: false }), now).run();
+    const member = await getMember(db, memberId);
+    const issued = await issueToken(db, env, mail, member, 'verify_email', '/auth/verify', 'CGI 이메일 인증', '아래 링크에서 이메일 인증을 완료하세요.');
+    return authJson({
+      member: memberView(member),
+      email_verified: false,
+      email_verify_required: emailVerifyRequired(env),
+      mail: issued.mail,
+    }, 201);
+  }
+
+  // ---------------- email availability ----------------
+
+  if (pathname === '/api/auth/email-available' && method === 'POST') {
+    const email = validateEmail(body.email);
+    if (!email.ok) return authJson({ error: email.error, detail: email.detail }, 400);
+    const policy = authPolicy(env);
+    const limit = await rateLimitCheck(db, policy, 'email-check', email.email);
+    if (limit.error) return authJson({ error: limit.error, detail: limit.detail }, 429);
+    const exists = !!(await getMemberByEmail(db, email.email));
+    return authJson({ available: !exists });
+  }
+
+  // ---------------- email verification ----------------
+
+  if (pathname === '/api/auth/verify-email' && method === 'POST') {
+    const memberId = Number(body.member_id);
+    if (!Number.isInteger(memberId) || memberId <= 0) return authJson({ error: 'member_id required' }, 400);
+    if (!body.token) return authJson({ error: 'token required' }, 400);
+    const policy = authPolicy(env);
+    const limit = await rateLimitCheck(db, policy, 'email-verify', String(memberId));
+    if (limit.error) return authJson({ error: limit.error, detail: limit.detail }, 429);
+
+    const member = await getMember(db, memberId);
+    if (!member || member.status === 'deleted') return authJson({ error: 'member not found' }, 404);
+    if (member.email_verified_at) return authJson({ email_verified: true, already_verified: true });
+
+    const row = await getAuthToken(db, body.token);
+    if (!row || row.member_id !== memberId || row.kind !== 'verify_email' || row.status !== 'pending') {
+      return authJson({ error: 'invalid token', detail: 'verification token is invalid or already used' }, 400);
+    }
+    if (String(row.expires_at) <= nowIso()) {
+      await db.prepare("UPDATE auth_tokens SET status = 'expired', revoked_at = ? WHERE id = ?").bind(nowIso(), row.id).run();
+      return authJson({ error: 'token expired', detail: 'request a new verification email' }, 400);
+    }
+    if (row.email && row.email !== member.email) {
+      return authJson({ error: 'invalid token', detail: 'token does not match the account email' }, 400);
+    }
+
+    const now = nowIso();
+    await db.batch([
+      db.prepare("UPDATE auth_tokens SET status = 'consumed', consumed_at = ? WHERE id = ?").bind(now, row.id),
+      db.prepare('UPDATE members SET email_verified_at = ?, updated_at = ? WHERE id = ?').bind(now, now, memberId),
+      db.prepare('INSERT INTO member_events (member_id, type, created_at) VALUES (?, ?, ?)').bind(memberId, 'email_verified', now),
+    ]);
+    return authJson({ email_verified: true, verified_at: now });
+  }
+
+  // ---------------- resend verification ----------------
+
+  if (pathname === '/api/auth/resend-verification' && method === 'POST') {
+    const member = await requireMember(request, db, env);
+    if (!member) return authJson({ error: 'unauthorized', detail: 'sign in to resend the verification email' }, 401);
+    const policy = authPolicy(env);
+    const limit = await rateLimitCheck(db, policy, 'email-verify', member.email);
+    if (limit.error) return authJson({ error: limit.error, detail: limit.detail }, 429);
+    if (member.email_verified_at) return authJson({ email_verified: true, already_verified: true });
+    const issued = await issueToken(db, env, mail, member, 'verify_email', '/auth/verify', 'CGI 이메일 인증', '아래 링크에서 이메일 인증을 완료하세요.');
+    return authJson({ email_verified: false, email_verify_required: emailVerifyRequired(env), mail: issued.mail });
+  }
+
+  // ---------------- login ----------------
+
+  if (pathname === '/api/auth/login' && method === 'POST') {
+    const email = validateEmail(body.email);
+    if (!email.ok) return authJson({ error: email.error, detail: email.detail }, 400);
+    const policy = authPolicy(env);
+    const limit = await rateLimitCheck(db, policy, 'login', email.email);
+    if (limit.error) return authJson({ error: limit.error, detail: limit.detail }, 429);
+    if (!body.password) return authJson({ error: 'password required' }, 400);
+
+    const member = await getMemberByEmail(db, email.email);
+    if (!member) return authJson({ error: 'invalid credentials', detail: 'email address or password is wrong' }, 401);
+    if (member.status === 'deleted') return authJson({ error: 'account deleted', detail: 'this account has been deleted' }, 403);
+    if (member.status === 'suspended') return authJson({ error: 'account suspended', detail: 'this account has been suspended' }, 403);
+
+    const ok = await verifyPassword(body.password, member.password_hash, policy);
+    if (!ok) return authJson({ error: 'invalid credentials', detail: 'email address or password is wrong' }, 401);
+    if (emailVerifyRequired(env) && !member.email_verified_at) {
+      return authJson({ error: 'email not verified', detail: 'verify the email address before signing in' }, 403);
+    }
+
+    const session = await issueSession(db, env, member);
+    await db.prepare('INSERT INTO member_events (member_id, type, created_at) VALUES (?, ?, ?)')
+      .bind(member.id, 'login', nowIso()).run();
+    return authJson({ member: memberView(member), email_verified: !!member.email_verified_at }, 200, { 'Set-Cookie': session.cookie });
+  }
+
+  // ---------------- logout ----------------
+
+  if (pathname === '/api/auth/logout' && method === 'POST') {
+    const session = await loadSession(request, db, env);
+    if (session) {
+      await db.prepare("UPDATE auth_tokens SET status = 'revoked', revoked_at = ? WHERE id = ?").bind(nowIso(), session.id).run();
+      await db.prepare('INSERT INTO member_events (member_id, type, created_at) VALUES (?, ?, ?)')
+        .bind(session.member_id, 'logout', nowIso()).run();
+    }
+    const secure = authCookieSecure(env) ? 'Secure; ' : '';
+    return authJson({ ok: true }, 200, {
+      'Set-Cookie': `${authCookieName(env)}=; HttpOnly; SameSite=None; ${secure}Path=/; Max-Age=0`,
+    });
+  }
+
+  // ---------------- password reset ----------------
+
+  if (pathname === '/api/auth/password-reset/request' && method === 'POST') {
+    const email = validateEmail(body.email);
+    if (!email.ok) return authJson({ error: email.error, detail: email.detail }, 400);
+    const policy = authPolicy(env);
+    const limit = await rateLimitCheck(db, policy, 'password-reset', email.email);
+    if (limit.error) return authJson({ error: limit.error, detail: limit.detail }, 429);
+
+    const member = await getMemberByEmail(db, email.email);
+    if (member && member.status !== 'deleted') {
+      const issued = await issueToken(db, env, mail, member, 'password_reset', '/auth/reset', 'CGI 비밀번호 재설정', '아래 링크에서 새 비밀번호를 설정하세요.');
+      return authJson({ ok: true, requested: true, mail: issued.mail });
+    }
+    // Do not leak whether the address exists.
+    return authJson({ ok: true, requested: true, mail: { delivered: false, channel: mail.mode } });
+  }
+
+  if (pathname === '/api/auth/password-reset/confirm' && method === 'POST') {
+    if (!body.token) return authJson({ error: 'token required' }, 400);
+    const policy = authPolicy(env);
+    const row = await getAuthToken(db, body.token);
+    if (!row || row.kind !== 'password_reset' || row.status !== 'pending') {
+      return authJson({ error: 'invalid token', detail: 'reset token is invalid or already used' }, 400);
+    }
+    if (String(row.expires_at) <= nowIso()) {
+      await db.prepare("UPDATE auth_tokens SET status = 'expired', revoked_at = ? WHERE id = ?").bind(nowIso(), row.id).run();
+      return authJson({ error: 'token expired', detail: 'request a new reset email' }, 400);
+    }
+    const member = await getMember(db, row.member_id);
+    if (!member || member.status === 'deleted') {
+      return authJson({ error: 'invalid token', detail: 'account no longer exists' }, 400);
+    }
+    const password = validatePassword(body.password, { email: member.email, policy });
+    if (!password.ok) return authJson({ error: password.error, detail: password.detail }, 400);
+
+    const now = nowIso();
+    const passwordHash = await hashPassword(password.password, policy);
+    await db.batch([
+      db.prepare('UPDATE members SET password_hash = ?, updated_at = ? WHERE id = ?').bind(passwordHash, now, member.id),
+      db.prepare("UPDATE auth_tokens SET status = 'consumed', consumed_at = ? WHERE id = ?").bind(now, row.id),
+      db.prepare('INSERT INTO member_events (member_id, type, created_at) VALUES (?, ?, ?)').bind(member.id, 'password_reset', now),
+    ]);
+    await revokeMemberSessions(db, member.id);
+    const session = await issueSession(db, env, member);
+    return authJson({ ok: true, member: memberView({ ...member, updated_at: now }) }, 200, { 'Set-Cookie': session.cookie });
+  }
+
+  return null;
+}
+
+// ---------------------------------------------------------------------------
+// my page (issue #69)
+// ---------------------------------------------------------------------------
+
+async function handleMeRoute(pathname, method, url, request, db, env) {
+  const guard = guardAuth(request, env);
+  if (guard) return guard;
+  const member = await requireMember(request, db, env);
+  if (!member) return authJson({ error: 'unauthorized', detail: 'sign in first' }, 401);
+  const parsed = await readJson(request);
+  const body = parsed.body && typeof parsed.body === 'object' ? parsed.body : {};
+  const policy = authPolicy(env);
+
+  // ---------------- profile ----------------
+
+  if (pathname === '/api/me') {
+    if (method === 'GET') return authJson({ member: memberView(member) });
+
+    if (method === 'PATCH') {
+      const fields = {};
+      if (body.name !== undefined) {
+        const name = validateName(body.name);
+        if (!name.ok) return authJson({ error: name.error, detail: name.detail }, 400);
+        fields.name = name.name;
+      }
+      if (body.phone !== undefined) {
+        if (body.phone == null || String(body.phone).trim() === '') {
+          fields.phone = null;
+        } else {
+          const phone = validatePhone(body.phone);
+          if (!phone.ok) return authJson({ error: phone.error, detail: phone.detail }, 400);
+          fields.phone = phone.phone;
+        }
+      }
+      if (body.company !== undefined) {
+        const company = validateOptionalText(body.company, 'company', 100);
+        if (company.error) return authJson({ error: company.error, detail: company.detail }, 400);
+        fields.company = company.value;
+      }
+      if (body.email !== undefined) {
+        const email = validateEmail(body.email);
+        if (!email.ok) return authJson({ error: email.error, detail: email.detail }, 400);
+        if (email.email !== member.email) return authJson({ error: 'email change not supported', detail: 'register a new account to change the email address' }, 400);
+        fields.email = email.email;
+      }
+      if (Object.keys(fields).length === 0) return authJson({ error: 'no changes', detail: 'nothing to update' }, 400);
+      const now = nowIso();
+      const sets = Object.keys(fields).map((key) => `${key} = ?`);
+      sets.push('updated_at = ?');
+      const params = Object.values(fields).concat([now, member.id]);
+      await db.prepare(`UPDATE members SET ${sets.join(', ')} WHERE id = ?`).bind(...params).run();
+      const updated = await getMember(db, member.id);
+      await db.prepare('INSERT INTO member_events (member_id, type, meta, created_at) VALUES (?, ?, ?, ?)')
+        .bind(member.id, 'profile_updated', JSON.stringify(Object.keys(fields)), now).run();
+      return authJson({ member: memberView(updated) });
+    }
+
+    if (method === 'DELETE') {
+      const confirm = String(body.confirm || '').trim();
+      if (confirm !== 'delete-member') {
+        return authJson({ error: 'confirmation required', detail: 'send confirm="delete-member" to delete the account' }, 400);
+      }
+      const openCount = await db.prepare('SELECT COUNT(*) AS c FROM orders WHERE customer_id = ? AND status NOT IN (?, ?, ?)')
+        .bind(member.id, 'cancelled', 'expired', 'refunded').first();
+      if (openCount && Number(openCount.c) > 0) {
+        return authJson({ error: 'open orders', detail: { count: Number(openCount.c) } }, 409);
+      }
+      const now = nowIso();
+      await db.batch([
+        db.prepare("UPDATE members SET status = 'deleted', deleted_at = ?, name = '탈퇴회원', phone = NULL, company = NULL, email = ?, updated_at = ? WHERE id = ?")
+          .bind(now, `deleted-${member.id}-${nowIso().slice(0, 10)}@cgi.invalid`, now, member.id),
+        db.prepare("UPDATE auth_tokens SET status = 'revoked', revoked_at = ? WHERE member_id = ?").bind(now, member.id),
+        db.prepare('DELETE FROM member_addresses WHERE member_id = ?').bind(member.id),
+        db.prepare('INSERT INTO member_events (member_id, type, created_at) VALUES (?, ?, ?)').bind(member.id, 'deleted', now),
+      ]);
+      const secure = authCookieSecure(env) ? 'Secure; ' : '';
+      return authJson({ ok: true, deleted: true }, 200, {
+        'Set-Cookie': `${authCookieName(env)}=; HttpOnly; SameSite=None; ${secure}Path=/; Max-Age=0`,
+      });
+    }
+    return authJson({ error: 'method not allowed' }, 405);
+  }
+
+  // ---------------- password ----------------
+
+  if (pathname === '/api/me/password' && method === 'POST') {
+    const limit = await rateLimitCheck(db, policy, 'password-change', member.id);
+    if (limit.error) return authJson({ error: limit.error, detail: limit.detail }, 429);
+    const current = String(body.current_password || '');
+    if (!current) return authJson({ error: 'current password required' }, 400);
+    const ok = await verifyPassword(current, member.password_hash, policy);
+    if (!ok) return authJson({ error: 'invalid credentials', detail: 'current password is wrong' }, 401);
+    const password = validatePassword(body.password, { email: member.email, policy });
+    if (!password.ok) return authJson({ error: password.error, detail: password.detail }, 400);
+    const now = nowIso();
+    await db.prepare('UPDATE members SET password_hash = ?, updated_at = ? WHERE id = ?')
+      .bind(await hashPassword(password.password, policy), now, member.id).run();
+    await revokeMemberSessions(db, member.id);
+    const session = await issueSession(db, env, member);
+    await db.prepare('INSERT INTO member_events (member_id, type, created_at) VALUES (?, ?, ?)')
+      .bind(member.id, 'password_changed', now).run();
+    return authJson({ ok: true }, 200, { 'Set-Cookie': session.cookie });
+  }
+
+  // ---------------- addresses ----------------
+
+  if (pathname === '/api/me/addresses' && method === 'GET') {
+    const { results } = await db.prepare('SELECT * FROM member_addresses WHERE member_id = ? ORDER BY is_default DESC, id DESC').bind(member.id).all();
+    return authJson({ items: results || [] });
+  }
+
+  if (pathname === '/api/me/addresses' && method === 'POST') {
+    const countRow = await db.prepare('SELECT COUNT(*) AS c FROM member_addresses WHERE member_id = ?').bind(member.id).first();
+    if (countRow && Number(countRow.c) >= policy.maxAddressesPerMember) {
+      return authJson({ error: 'too many addresses', detail: { max: policy.maxAddressesPerMember } }, 409);
+    }
+    const label = validateText(body.label, 'label', 40);
+    if (!label.ok) return authJson({ error: label.error, detail: label.detail }, 400);
+    const recipient = validateName(body.recipient_name);
+    if (!recipient.ok) return authJson({ error: recipient.error, detail: recipient.detail }, 400);
+    const phone = validatePhone(body.phone);
+    if (!phone.ok) return authJson({ error: phone.error, detail: phone.detail }, 400);
+    const addr = validateText(body.addr, 'addr', 120);
+    if (!addr.ok) return authJson({ error: addr.error, detail: addr.detail }, 400);
+    const addrDetail = validateOptionalText(body.addr_detail, 'addr_detail', 100);
+    if (addrDetail.error) return authJson({ error: addrDetail.error, detail: addrDetail.detail }, 400);
+    const company = validateOptionalText(body.company, 'company', 100);
+    if (company.error) return authJson({ error: company.error, detail: company.detail }, 400);
+    const now = nowIso();
+    const isDefault = body.is_default ? 1 : 0;
+    const stmts = [];
+    if (isDefault) stmts.push(db.prepare('UPDATE member_addresses SET is_default = 0 WHERE member_id = ?').bind(member.id));
+    await db.batch([
+      ...stmts,
+      db.prepare('INSERT INTO member_addresses (member_id, label, recipient_name, phone, addr, addr_detail, company, is_default, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)')
+        .bind(member.id, label.value, recipient.name, phone.phone, addr.value, addrDetail.value, company.value, isDefault, now, now),
+    ]);
+    const inserted = await db.prepare('SELECT * FROM member_addresses WHERE member_id = ? ORDER BY id DESC LIMIT 1').bind(member.id).first();
+    return authJson({ address: inserted }, 201);
+  }
+
+  const addressMatch = pathname.match(/^\/api\/me\/addresses\/(\d+)$/);
+  if (addressMatch) {
+    const id = Number(addressMatch[1]);
+    const address = await db.prepare('SELECT * FROM member_addresses WHERE id = ?').bind(id).first();
+    if (!address || Number(address.member_id) !== Number(member.id)) return authJson({ error: 'address not found' }, 404);
+
+    if (method === 'PATCH') {
+      const label = validateText(body.label, 'label', 40);
+      if (!label.ok) return authJson({ error: label.error, detail: label.detail }, 400);
+      const recipient = validateName(body.recipient_name);
+      if (!recipient.ok) return authJson({ error: recipient.error, detail: recipient.detail }, 400);
+      const phone = validatePhone(body.phone);
+      if (!phone.ok) return authJson({ error: phone.error, detail: phone.detail }, 400);
+      const addr = validateText(body.addr, 'addr', 120);
+      if (!addr.ok) return authJson({ error: addr.error, detail: addr.detail }, 400);
+      const addrDetail = validateOptionalText(body.addr_detail, 'addr_detail', 100);
+      if (addrDetail.error) return authJson({ error: addrDetail.error, detail: addrDetail.detail }, 400);
+      const company = validateOptionalText(body.company, 'company', 100);
+      if (company.error) return authJson({ error: company.error, detail: company.detail }, 400);
+      const now = nowIso();
+      const isDefault = body.is_default ? 1 : 0;
+      if (isDefault) await db.prepare('UPDATE member_addresses SET is_default = 0 WHERE member_id = ?').bind(member.id).run();
+      await db.prepare('UPDATE member_addresses SET label = ?, recipient_name = ?, phone = ?, addr = ?, addr_detail = ?, company = ?, is_default = ?, updated_at = ? WHERE id = ?')
+        .bind(label.value, recipient.name, phone.phone, addr.value, addrDetail.value, company.value, isDefault, now, id).run();
+      return authJson({ address: await db.prepare('SELECT * FROM member_addresses WHERE id = ?').bind(id).first() });
+    }
+
+    if (method === 'DELETE') {
+      await db.prepare('DELETE FROM member_addresses WHERE id = ?').bind(id).run();
+      const remaining = await db.prepare('SELECT COUNT(*) AS c FROM member_addresses WHERE member_id = ?').bind(member.id).first();
+      if (remaining && Number(remaining.c) > 0 && address.is_default) {
+        await db.prepare('UPDATE member_addresses SET is_default = 1 WHERE member_id = ? LIMIT 1').bind(member.id).run();
+      }
+      return authJson({ ok: true });
+    }
+    return authJson({ error: 'method not allowed' }, 405);
+  }
+
+  // ---------------- my orders ----------------
+
+  if (pathname === '/api/me/orders' && method === 'GET') {
+    const { results } = await db.prepare(`SELECT ${ORDER_COLUMNS} FROM orders WHERE customer_id = ? ORDER BY created_at DESC LIMIT ?`)
+      .bind(member.id, 100).all();
+    return authJson({ items: (results || []).map((row) => publicOrderView(row, null)) });
+  }
+
+  const myOrderMatch = pathname.match(/^\/api\/me\/orders\/([^/]+)$/);
+  if (myOrderMatch && method === 'GET') {
+    const id = decodeURIComponent(myOrderMatch[1]);
+    const row = await getOrder(db, id);
+    if (!row || String(row.customer_id) !== String(member.id)) return authJson({ error: 'order not found' }, 404);
+    const items = await getOrderItems(db, id);
+    return authJson({ order: publicOrderView(row, items) });
+  }
+
+  const cancelMatch = pathname.match(/^\/api\/me\/orders\/([^/]+)\/cancel$/);
+  if (cancelMatch && method === 'POST') {
+    const id = decodeURIComponent(cancelMatch[1]);
+    const row = await getOrder(db, id);
+    if (!row || String(row.customer_id) !== String(member.id)) return authJson({ error: 'order not found' }, 404);
+    if (row.status !== 'awaiting_payment') {
+      return authJson({ error: 'not cancellable', detail: { status: row.status } }, 409);
+    }
+    const result = await updateOrder(db, row, { status: 'cancelled' }, 'customer');
+    if (result.noChange) return authJson({ changed: false, id });
+    if (result.error) return authJson({ error: result.error, detail: result.detail }, 409);
+    const updated = await getOrderFull(db, id);
+    return authJson({ changed: true, id, order: publicOrderView(updated, updated.items) });
+  }
+
+  const refundMatch = pathname.match(/^\/api\/me\/orders\/([^/]+)\/refund\/request$/);
+  if (refundMatch && method === 'POST') {
+    const id = decodeURIComponent(refundMatch[1]);
+    const row = await getOrder(db, id);
+    if (!row || String(row.customer_id) !== String(member.id)) return authJson({ error: 'order not found' }, 404);
+    if (row.payment_status !== 'paid') {
+      return authJson({ error: 'not payable', detail: { payment_status: row.payment_status } }, 409);
+    }
+    if (!['paid', 'processing', 'shipped', 'delivered'].includes(row.status)) {
+      return authJson({ error: 'not refundable', detail: { status: row.status } }, 409);
+    }
+    if (row.refunded_amount >= row.total_amount) {
+      return authJson({ error: 'fully refunded' }, 409);
+    }
+    const requested = body.amount == null || body.amount === '' ? null : toNonNegInt(body.amount);
+    if (requested !== null && (requested <= 0 || requested > row.total_amount - row.refunded_amount)) {
+      return authJson({ error: 'invalid amount', detail: { max: row.total_amount - row.refunded_amount } }, 400);
+    }
+    const reason = String(body.reason || '고객 환불 요청').slice(0, 200);
+    const now = nowIso();
+    await db.batch([
+      db.prepare("UPDATE orders SET status = 'refunding', updated_at = ?, admin_note = ? WHERE id = ?")
+        .bind(now, `[고객 환불 요청] ${reason}`.slice(0, 2000), id),
+      db.prepare('INSERT INTO order_events (order_id, type, actor, from_status, to_status, meta, created_at) VALUES (?,?,?,?,?,?,?)')
+        .bind(id, 'refund_requested', 'customer', row.status, 'refunding', JSON.stringify({ reason, amount: requested }), now),
+      db.prepare('INSERT INTO member_events (member_id, type, meta, created_at) VALUES (?, ?, ?, ?)')
+        .bind(member.id, 'refund_requested', JSON.stringify({ order_id: id, amount: requested }), now),
+    ]);
+    const updated = await getOrderFull(db, id);
+    return authJson({ ok: true, order: publicOrderView(updated, updated.items) });
+  }
+
+  // ---------------- my quote requests ----------------
+
+  if (pathname === '/api/me/quotes' && method === 'GET') {
+    const { results } = await db.prepare('SELECT * FROM quote_requests WHERE member_id = ? ORDER BY created_at DESC LIMIT 100')
+      .bind(member.id).all();
+    return authJson({ items: (results || []).map(memberQuoteView) });
+  }
+
+  const myQuoteMatch = pathname.match(/^\/api\/me\/quotes\/([^/]+)$/);
+  if (myQuoteMatch && method === 'GET') {
+    const id = decodeURIComponent(myQuoteMatch[1]);
+    const row = await db.prepare('SELECT * FROM quote_requests WHERE id = ?').bind(id).first();
+    if (!row || String(row.member_id) !== String(member.id)) return authJson({ error: 'quote not found' }, 404);
+    return authJson({ quote: memberQuoteView(row) });
+  }
+
+  return authJson({ error: 'not found' }, 404);
 }
 
 // ---------------------------------------------------------------------------
@@ -998,10 +1797,26 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
     if (request.method === 'OPTIONS') {
-      return new Response(null, { status: 204, headers: CORS_HEADERS });
+      return new Response(null, { status: 204, headers: corsHeadersFor(url.pathname) });
     }
 
     const pg = createPgAdapter({ secretKey: env.TOSS_WIDGET_SECRET_KEY, mode: env.PG_PROVIDER_MODE || 'auto' });
+
+    // ---------------- customer accounts (cookie + CSRF guarded) ----------------
+
+    if (url.pathname.startsWith('/api/auth')) {
+      return handleAuthRoute(url.pathname, request.method, request, env.DB, env);
+    }
+    if (url.pathname === '/api/me' || url.pathname.startsWith('/api/me/')) {
+      return handleMeRoute(url.pathname, request.method, url, request, env.DB, env);
+    }
+
+    // A signed-in member checks out on their own account so /api/me/orders can
+    // see the order. Guests keep the original customer_id-less behaviour.
+    async function customerContext() {
+      if (request.method === 'GET' || request.method === 'HEAD') return null;
+      return requireMember(request, env.DB, env);
+    }
 
     // ---------------- existing quote routes ----------------
 
@@ -1017,14 +1832,21 @@ export default {
       }
       const id = 'Q-' + Date.now() + '-' + Math.random().toString(36).slice(2, 8);
       const createdAt = nowIso();
+      // A signed-in member is linked only when the request also clears the
+      // Origin + CSRF gate; otherwise the legacy guest submission is unchanged.
+      let quoteMemberId = null;
+      if (request.headers.get('Origin') && csrfOk(request, env)) {
+        const quoteMember = await requireMember(request, env.DB, env);
+        if (quoteMember) quoteMemberId = quoteMember.id;
+      }
       await env.DB.prepare(
-        `INSERT INTO quote_requests (id, created_at, company, contact_name, phone, email, location, note, services, items, status, updated_at)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'received', ?)`
+        `INSERT INTO quote_requests (id, created_at, company, contact_name, phone, email, location, note, services, items, status, member_id, updated_at)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'received', ?, ?)`
       ).bind(
         id, createdAt, body.company, body.name, body.phone, body.email || null, body.location || null, body.note || null,
-        JSON.stringify(body.services || []), JSON.stringify(body.items), createdAt
+        JSON.stringify(body.services || []), JSON.stringify(body.items), quoteMemberId, createdAt
       ).run();
-      return json({ id, created_at: createdAt, status: 'received' }, 201);
+      return json({ id, created_at: createdAt, status: 'received', member_id: quoteMemberId }, 201);
     }
 
     if (url.pathname === '/api/quotes' && request.method === 'GET') {
@@ -1065,6 +1887,8 @@ export default {
     // ---------------- health ----------------
 
     if (url.pathname === '/api/admin/health' && request.method === 'GET') {
+      const policy = authPolicy(env);
+      const mail = createMailAdapter(env, () => {});
       return json({
         version: BACKEND_VERSION,
         ok: true,
@@ -1073,6 +1897,19 @@ export default {
         shipping_fee_default: toNonNegInt(env.SHIPPING_FEE_DEFAULT, 0),
         price_index: { products_total: PRICE_INDEX_META.products_total, products_with_price: PRICE_INDEX_META.products_with_price },
         cors_origin: ALLOWED_ORIGIN,
+        auth: {
+          enabled: true,
+          cookie_name: authCookieName(env),
+          cookie_secure: authCookieSecure(env),
+          origin_strict: originStrict(env),
+          csrf_configured: !!String(env.AUTH_CSRF_TOKEN || '').trim(),
+          mail_mode: mail.mode,
+          email_verify_required: emailVerifyRequired(env),
+          pbkdf2_iterations: policy.pbkdf2Iterations,
+          session_ttl_seconds: policy.sessionTtlSeconds,
+          password_min: policy.passwordMin,
+          password_max: policy.passwordMax,
+        },
       });
     }
 
@@ -1091,8 +1928,10 @@ export default {
     if (url.pathname === '/api/orders' && request.method === 'POST') {
       const parsed = await readJson(request);
       if (parsed.error) return badRequest(parsed.error);
+      const orderMember = await customerContext();
       const result = await createOrder(env.DB, parsed.body || {}, env, {
         idempotencyKey: request.headers.get('Idempotency-Key') || '',
+        customerId: orderMember ? orderMember.id : null,
       });
       return json(result.body, result.status);
     }
