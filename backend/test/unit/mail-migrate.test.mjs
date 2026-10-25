@@ -149,13 +149,13 @@ test('from is configurable and has a safe default', () => {
 // migrations
 // ---------------------------------------------------------------------------
 
-test('COLUMN_UPGRADES lists every nullable member link', () => {
+test('COLUMN_UPGRADES lists every member link and role', () => {
   assert.deepEqual(
     COLUMN_UPGRADES.map((upgrade) => `${upgrade.table}.${upgrade.column}`),
-    ['orders.customer_id', 'quote_requests.member_id'],
+    ['orders.customer_id', 'quote_requests.member_id', 'members.role'],
   );
   for (const upgrade of COLUMN_UPGRADES) {
-    assert.match(upgrade.ddl, new RegExp(`ADD COLUMN ${upgrade.column} INTEGER`));
+    assert.match(upgrade.ddl, new RegExp(`ADD COLUMN ${upgrade.column}`));
   }
 });
 
@@ -163,7 +163,7 @@ test('tableColumns returns the column names or an empty list for a missing table
   const db = openD1();
   assert.deepEqual(await tableColumns(db, 'members'), [
     'id', 'email', 'password_hash', 'name', 'phone', 'company',
-    'email_verified_at', 'status', 'created_at', 'updated_at', 'deleted_at',
+    'email_verified_at', 'role', 'status', 'created_at', 'updated_at', 'deleted_at',
   ]);
   assert.deepEqual(await tableColumns(db, 'no_such_table'), []);
 });

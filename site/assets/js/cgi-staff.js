@@ -6,6 +6,10 @@
   var current = null;
   var adminToken = null;
   var isServerMode = false;
+  var memberMode = false;
+  var member = null;
+  var memberMode = false;
+  var member = null;
   var prices = {}; // productId -> unit price number
   var servicePrices = {}; // serviceId -> unit price number
 
@@ -72,7 +76,7 @@
 
   function openRequest(id) {
     if (isServerMode && apiUrl && adminToken) {
-      fetch(apiUrl + '/api/quotes/' + encodeURIComponent(id), { headers: { 'Authorization': 'Bearer ' + adminToken } })
+      fetch(apiUrl + '/api/quotes/' + encodeURIComponent(id), memberMode ? { credentials: 'include', headers: { 'X-CSRF-Token': window.location.origin || '' } } : { headers: { 'Authorization': 'Bearer ' + adminToken } })
         .then(function (res) { if (!res.ok) throw new Error('HTTP ' + res.status); return res.json(); })
         .then(function (row) {
           if (!row || !row.id) throw new Error('응답에 요청 정보가 없습니다.');
@@ -193,7 +197,7 @@
       });
     });
     document.getElementById('savePriceBtn').addEventListener('click', function () {
-      if (isServerMode && apiUrl && adminToken && current) {
+        if (isServerMode && apiUrl && (adminToken || memberMode) && current) {
         var total = 0;
         (current.items || []).forEach(function (it) {
           var unit = prices[it.id];
@@ -207,10 +211,9 @@
         Object.keys(prices).forEach(function (k) { combined[k] = prices[k]; });
         Object.keys(servicePrices).forEach(function (k) { combined[k] = servicePrices[k]; });
         var status = (document.getElementById('statusSelect') ? document.getElementById('statusSelect').value : (current.status || 'received'));
-        fetch(apiUrl + '/api/quotes/' + encodeURIComponent(current.id), {
-          method: 'PATCH',
-          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + adminToken },
-          body: JSON.stringify({ status: status, admin_prices: combined, total: total })
+         fetch(apiUrl + '/api/quotes/' + encodeURIComponent(current.id), (memberMode
+           ? { method: 'PATCH', credentials: 'include', headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': window.location.origin || '' }, body: JSON.stringify({ status: status, admin_prices: combined, total: total }) }
+           : { method: 'PATCH', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + adminToken }, body: JSON.stringify({ status: status, admin_prices: combined, total: total }) }))
         }).then(function (res) { if (!res.ok) throw new Error('HTTP ' + res.status); return res.json(); })
           .then(function (data) {
             current.status = data.status || status;
@@ -346,29 +349,46 @@
   var apiUrl = (window.CGI_SITE_CONFIG && window.CGI_SITE_CONFIG.quoteApiUrl) || '';
   if (apiUrl) {
     isServerMode = true;
+    var authBox = document.getElementById('authBox');
     var token = localStorage.getItem('cgiAdminToken');
-    if (!token) {
-      token = prompt('관리자 토큰을 입력하세요');
-      if (token) localStorage.setItem('cgiAdminToken', token);
-    }
-    adminToken = token || null;
-    if (token) {
-      fetch(apiUrl + '/api/quotes', { headers: { 'Authorization': 'Bearer ' + token } })
+    function loadQuotes(headers, opts) {
+      fetch(apiUrl + '/api/quotes', Object.assign({ headers: headers }, opts || {}))
         .then(function (res) { if (!res.ok) throw new Error('HTTP ' + res.status); return res.json(); })
         .then(function (data) {
           requests = data.items || [];
           saveRequests();
           renderList();
+          if (authBox) authBox.hidden = true;
         })
         .catch(function (err) {
           console.error(err);
-          loadRequests();
-          renderList();
+          if (authBox) authBox.hidden = false;
+          loadRequests(); renderList();
         });
-    } else {
-      loadRequests();
-      renderList();
     }
+    if (token) {
+      adminToken = token;
+      loadQuotes({ 'Authorization': 'Bearer ' + token });
+    } else if (window.CGI_AUTH) {
+      window.CGI_AUTH.refresh().then(function (m) {
+        if (m && (m.role === 'admin' || m.role === 'superadmin' || m.is_admin)) {
+          memberMode = true; member = m;
+          loadQuotes({ 'X-CSRF-Token': window.location.origin || '' }, { credentials: 'include' });
+        } else {
+          if (authBox) authBox.hidden = false;
+          loadRequests(); renderList();
+        }
+      }).catch(function () {
+        if (authBox) authBox.hidden = false;
+        loadRequests(); renderList();
+      });
+    } else {
+      if (authBox) authBox.hidden = false;
+      loadRequests(); renderList();
+    }
+  } else {
+    loadRequests(); renderList();
+  }
   } else {
     loadRequests();
     renderList();

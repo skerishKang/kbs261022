@@ -27,7 +27,7 @@
     failed: '실패', skipped: '건너뜀(테스트)'
   };
 
-  var state = { token: null, orders: [], drawer: null, events: [] };
+  var state = { token: null, memberMode: false, member: null, orders: [], drawer: null, events: [] };
 
   function $(id) { return document.getElementById(id); }
   function esc(s) {
@@ -52,9 +52,16 @@
   }
 
   function request(method, path, body) {
-    if (!state.token) return Promise.reject(new Error('token'));
-    var headers = { 'Content-Type': 'application/json', Authorization: 'Bearer ' + state.token };
-    return fetch(API + path, { method: method, headers: headers, body: body ? JSON.stringify(body) : undefined })
+    if (!state.token && !state.memberMode) return Promise.reject(new Error('token'));
+    var headers = { 'Content-Type': 'application/json' };
+    var init = { method: method, headers: headers, body: body ? JSON.stringify(body) : undefined };
+    if (state.token) {
+      headers.Authorization = 'Bearer ' + state.token;
+    } else {
+      init.credentials = 'include';
+      headers['X-CSRF-Token'] = window.location.origin || '';
+    }
+    return fetch(API + path, init)
       .then(function (res) {
         return res.json().then(function (data) { return { ok: res.ok, status: res.status, data: data }; });
       });
@@ -68,11 +75,31 @@
       return;
     }
     state.token = localStorage.getItem(LS_KEY);
-    if (!state.token) { $('authBox').hidden = false; return; }
-    $('authBox').hidden = true;
-    $('ordersApp').hidden = false;
-    fillFilters();
-    load();
+    if (state.token) {
+      $('authBox').hidden = true;
+      $('ordersApp').hidden = false;
+      fillFilters();
+      load();
+      return;
+    }
+    // try CGI member session
+    if (window.CGI_AUTH) {
+      window.CGI_AUTH.refresh().then(function (member) {
+        if (member && (member.role === 'admin' || member.role === 'superadmin' || member.is_admin)) {
+          state.memberMode = true;
+          state.member = member;
+          $('authBox').hidden = true;
+          $('ordersApp').hidden = false;
+          if (member.role === 'superadmin') { $('adminManageBox').hidden = false; loadMembers(); }
+          fillFilters();
+          load();
+        } else {
+          $('authBox').hidden = false;
+        }
+      }).catch(function () { $('authBox').hidden = false; });
+    } else {
+      $('authBox').hidden = false;
+    }
   }
 
   function fillFilters() {
@@ -397,6 +424,44 @@
     }
   }
 
+  function loadMembers() {
+    var box = $('memberList');
+    if (!box) return;
+    request('GET', '/api/admin/members').then(function (res) {
+      if (!res.ok) { box.innerHTML = '<p class="staff-msg error">회원 목록을 불러오지 못했습니다.</p>'; return; }
+      var items = res.data.items || [];
+      var html = '<table class="order-table"><thead><tr><th>이메일</th><th>이름</th><th>상태</th><th>인증</th><th>권한</th><th></th></tr></thead><tbody>';
+      items.forEach(function (m) {
+        var canPromote = m.role === 'member' && m.email_verified;
+        var canDemote = m.role === 'admin';
+        html += '<tr><td>' + esc(m.email) + '</td><td>' + esc(m.name) + '</td><td>' + esc(m.status) + '</td><td>' + (m.email_verified ? '완료' : '미완료') + '</td><td>' + esc(m.role) + '</td><td>' +
+          (canPromote ? '<button type="button" class="btn btn-secondary" data-promote="' + m.id + '">관리자 지정</button> ' : '') +
+          (canDemote ? '<button type="button" class="btn btn-secondary" data-demote="' + m.id + '">해제</button>' : '') +
+          '</td></tr>';
+      });
+      html += '</tbody></table>';
+      box.innerHTML = html;
+      box.querySelectorAll('[data-promote]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var id = btn.getAttribute('data-promote');
+          request('PATCH', '/api/admin/members/' + id + '/role', { role: 'admin' }).then(function (r) {
+            if (!r.ok) { alert('실패: ' + (r.data && r.data.error)); return; }
+            loadMembers();
+          });
+        });
+      });
+      box.querySelectorAll('[data-demote]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var id = btn.getAttribute('data-demote');
+          request('PATCH', '/api/admin/members/' + id + '/role', { role: 'member' }).then(function (r) {
+            if (!r.ok) { alert('실패: ' + (r.data && r.data.error)); return; }
+            loadMembers();
+          });
+        });
+      });
+    });
+  }
+
   /* ---------------------------------------------------------- wiring */
   document.addEventListener('DOMContentLoaded', function () {
     $('drawerClose').addEventListener('click', function () { $('drawer').hidden = true; state.drawer = null; });
@@ -410,11 +475,51 @@
       fillFilters();
       load();
     });
+    var memberLoginBtn = $('memberLoginBtn');
+    if (memberLoginBtn) memberLoginBtn.addEventListener('click', function () {
+      var email = $('memberEmail').value.trim();
+      var pw = $('memberPassword').value;
+      if (!window.CGI_AUTH) { $('authMsg').innerHTML = '<p class="staff-msg error">인증 모듈을 불러오지 못했습니다.</p>'; return; }
+      window.CGI_AUTH.login({ email: email, password: pw }).then(function (ok) {
+        if (!ok) { $('authMsg').innerHTML = '<p class="staff-msg error">로그인에 실패했습니다.</p>'; return; }
+        window.CGI_AUTH.refresh().then(function (member) {
+          if (!member || !(member.role === 'admin' || member.role === 'superadmin' || member.is_admin)) {
+            $('authMsg').innerHTML = '<p class="staff-msg error">관리자 권한이 없는 계정입니다.</p>';
+            window.CGI_AUTH.logout();
+            return;
+          }
+          state.memberMode = true;
+          state.member = member;
+          state.token = null;
+          $('authBox').hidden = true;
+          $('ordersApp').hidden = false;
+          if (member.role === 'superadmin') { $('adminManageBox').hidden = false; loadMembers(); }
+          fillFilters();
+          load();
+        });
+      });
+    });
+    var tokenTabBtn = $('tokenTabBtn');
+    var memberTabBtn = $('memberTabBtn');
+    if (tokenTabBtn && memberTabBtn) {
+      tokenTabBtn.addEventListener('click', function () {
+        $('tokenPanel').hidden = false;
+        $('memberPanel').hidden = true;
+      });
+      memberTabBtn.addEventListener('click', function () {
+        $('tokenPanel').hidden = true;
+        $('memberPanel').hidden = false;
+      });
+    }
     $('tokenInput').addEventListener('keydown', function (ev) { if (ev.key === 'Enter') $('authBtn').click(); });
     $('logoutBtn').addEventListener('click', function () {
       state.token = null;
+      state.memberMode = false;
+      state.member = null;
       localStorage.removeItem(LS_KEY);
+      if (window.CGI_AUTH) window.CGI_AUTH.logout();
       $('ordersApp').hidden = true;
+      $('adminManageBox').hidden = true;
       $('authBox').hidden = false;
       $('orderList').innerHTML = '';
     });

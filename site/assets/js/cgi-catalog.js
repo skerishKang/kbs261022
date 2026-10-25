@@ -1405,6 +1405,9 @@
       var u = authApi().me();
       var nameEl = document.querySelector('[data-auth-name]');
       if (nameEl && u) nameEl.textContent = u.name || u.email || '회원';
+      var adminLinks = document.querySelectorAll('[data-auth-admin]');
+      var isAdmin = !!(u && (u.role === 'admin' || u.role === 'superadmin' || u.is_admin));
+      for (var a = 0; a < adminLinks.length; a++) adminLinks[a].hidden = !isAdmin;
       var navLinks = document.querySelectorAll('.header-nav a[data-nav="my-page"]');
       for (var n = 0; n < navLinks.length; n++) {
         navLinks[n].hidden = false;
