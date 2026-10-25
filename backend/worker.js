@@ -185,7 +185,14 @@ async function readJson(request) {
   if (length > MAX_BODY_BYTES) return { error: 'body too large' };
   const buffer = await request.arrayBuffer();
   if (buffer.byteLength > MAX_BODY_BYTES) return { error: 'body too large' };
-  const text = new TextDecoder().decode(buffer);
+  let text;
+  try {
+    text = new TextDecoder('utf-8', { fatal: true }).decode(buffer);
+  } catch (e) {
+    // A body that is not valid UTF-8 decodes to U+FFFD, and that substitution is
+    // irreversible once stored. Refuse it here rather than per field.
+    return { error: 'body must be valid utf-8' };
+  }
   if (!text.trim()) return { body: {} };
   try {
     return { body: JSON.parse(text) };
@@ -1548,6 +1555,7 @@ async function handleAuthRoute(pathname, method, request, db, env) {
   if (guard) return guard;
   const mail = createMailAdapter(env, console.log);
   const parsed = await readJson(request);
+  if (parsed.error) return authJson({ error: parsed.error, detail: 'send the body encoded as UTF-8' }, 400);
   const body = parsed.body && typeof parsed.body === 'object' ? parsed.body : {};
 
   // ---------------- signup ----------------
@@ -1774,6 +1782,7 @@ async function handleMeRoute(pathname, method, url, request, db, env) {
   const member = await requireMember(request, db, env);
   if (!member) return authJson({ error: 'unauthorized', detail: 'sign in first' }, 401);
   const parsed = await readJson(request);
+  if (parsed.error) return authJson({ error: parsed.error, detail: 'send the body encoded as UTF-8' }, 400);
   const body = parsed.body && typeof parsed.body === 'object' ? parsed.body : {};
   const policy = authPolicy(env);
 
