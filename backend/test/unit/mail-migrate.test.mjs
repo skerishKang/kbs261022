@@ -260,14 +260,21 @@ test('an unknown mode falls back to console and is logged as such', async () => 
   assert.match(logs[0], /MAIL:console/);
 });
 
-test('urlFor builds a stable link with a token query parameter', () => {
+test('urlFor builds a stable hash-routed link with a token query parameter', () => {
   const mail = createMailAdapter({ MAIL_BASE_URL: 'https://site.example/kbs' });
-  assert.equal(mail.urlFor('/auth/verify', 'tok_1'), 'https://site.example/kbs/auth/verify?token=tok_1');
-  assert.equal(mail.urlFor('auth/verify', 'tok_1'), 'https://site.example/kbs/auth/verify?token=tok_1');
-  assert.equal(mail.urlFor('/auth/verify?step=1', 'tok_1'), 'https://site.example/kbs/auth/verify?step=1&token=tok_1');
-  assert.equal(mail.urlFor('/auth/verify', ''), 'https://site.example/kbs/auth/verify');
-  assert.equal(mail.urlFor('/auth/verify', null), 'https://site.example/kbs/auth/verify');
-  assert.equal(mail.urlFor('/auth/verify?x=%2F', 'tok_1'), 'https://site.example/kbs/auth/verify?x=%2F&token=tok_1');
+  assert.equal(mail.urlFor('/auth/verify', 'tok_1'), 'https://site.example/kbs/#/auth/verify?token=tok_1');
+  assert.equal(mail.urlFor('auth/verify', 'tok_1'), 'https://site.example/kbs/#/auth/verify?token=tok_1');
+  assert.equal(mail.urlFor('/auth/verify?step=1', 'tok_1'), 'https://site.example/kbs/#/auth/verify?step=1&token=tok_1');
+  assert.equal(mail.urlFor('/auth/verify', ''), 'https://site.example/kbs/#/auth/verify');
+  assert.equal(mail.urlFor('/auth/verify', null), 'https://site.example/kbs/#/auth/verify');
+  assert.equal(mail.urlFor('/auth/verify?x=%2F', 'tok_1'), 'https://site.example/kbs/#/auth/verify?x=%2F&token=tok_1');
+});
+
+test('urlFor keeps the GitHub Pages route inside the hash so it never 404s', () => {
+  const mail = createMailAdapter({});
+  const url = mail.urlFor('/auth/verify', 'tok_1');
+  assert.equal(url, 'https://skerishkang.github.io/kbs261022/site/#/auth/verify?token=tok_1');
+  assert.match(url, /\/site\/#\/auth\/verify\?token=/);
 });
 
 test('the adapter never marks anything verified by itself', async () => {

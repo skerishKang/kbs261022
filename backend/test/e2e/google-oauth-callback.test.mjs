@@ -462,15 +462,65 @@ test('google callback links to an existing member by email', async () => {
   );
   assert.equal(callbackResp.status, 302);
 
-  // Verify the google_id was linked
-  const { results } = await env.DB.prepare('SELECT email, google_id FROM members').all();
+  // Verify the google_id was linked and Google verification was propagated
+  const { results } = await env.DB.prepare('SELECT email, google_id, email_verified_at FROM members').all();
   assert.equal(results.length, 1);
   assert.equal(results[0].email, 'existing@example.com');
   assert.equal(results[0].google_id, 'link-google-id-456');
+  assert.ok(results[0].email_verified_at, 'an existing member linked to Google becomes email-verified');
 
-  // Verify a member event was recorded
-  const { results: events } = await env.DB.prepare("SELECT type FROM member_events WHERE type = 'google_linked'").all();
-  assert.equal(events.length, 1);
+  // Verify member events were recorded
+  const { results: events } = await env.DB.prepare("SELECT type FROM member_events WHERE type IN ('google_linked', 'email_verified') ORDER BY type").all();
+  assert.deepEqual(events.map((row) => row.type), ['email_verified', 'google_linked']);
+
+  restoreAfter();
+  restore();
+});
+
+test('google callback verifies an existing google-linked superadmin member on login', async () => {
+  const env = makeEnv();
+  const now = new Date().toISOString();
+  await env.DB.prepare(
+    "INSERT INTO members (email, password_hash, name, google_id, status, role, email_verified_at, created_at, updated_at) VALUES (?, 'unusable-google-only-hash', ?, ?, 'active', 'member', NULL, ?, ?)"
+  ).bind('charliekant@gmail.com', 'Charlie Kang', 'already-linked-google-id', now, now).run();
+
+  const restore = mockGoogleOAuth({
+    subject: 'already-linked-google-id',
+    email: 'charliekant@gmail.com',
+    name: 'Charlie Kang',
+  });
+
+  const startResp = await worker.fetch(
+    new Request('http://cgi.local/api/auth/google/start', { method: 'GET', headers: { Origin: ORIGIN } }),
+    env,
+  );
+  const stateValue = startResp.headers.get('set-cookie').match(/cgi_oauth_state=([^;]+)/)[1];
+
+  const restoreAfter = mockGoogleOAuth({
+    subject: 'already-linked-google-id',
+    email: 'charliekant@gmail.com',
+    name: 'Charlie Kang',
+  });
+  const callbackResp = await worker.fetch(
+    new Request(`http://cgi.local/api/auth/google/callback?code=mock-code&state=${encodeURIComponent(stateValue)}`, {
+      method: 'GET',
+      headers: { Origin: ORIGIN, Cookie: `cgi_oauth_state=${stateValue}` },
+    }),
+    env,
+  );
+  assert.equal(callbackResp.status, 302);
+
+  const member = await env.DB.prepare('SELECT email, google_id, email_verified_at, role FROM members WHERE email = ?')
+    .bind('charliekant@gmail.com').first();
+  assert.ok(member.email_verified_at, 'a google-linked member is marked verified on the next Google login');
+
+  const cookies = [];
+  callbackResp.headers.forEach((v, k) => { if (k.toLowerCase() === 'set-cookie') cookies.push(v); });
+  const meResp = await call(env, 'GET', '/api/me', undefined, { ...csrf, Cookie: cookies[0] });
+  assert.equal(meResp.status, 200);
+  assert.equal(meResp.json.member.email_verified, true);
+  assert.equal(meResp.json.member.role, 'superadmin');
+  assert.equal(meResp.json.member.is_admin, true);
 
   restoreAfter();
   restore();
