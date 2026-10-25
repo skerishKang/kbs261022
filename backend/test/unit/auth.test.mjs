@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 
 import {
   AUTH_POLICY,
-  PASSWORD_ALGO,
+  HASH_ALGO,
   randomHex,
   bytesToHex,
   hexToBytes,
@@ -30,7 +30,7 @@ test('hashPassword produces the documented self-describing format', async () => 
   assert.match(stored, /^pbkdf2-sha512\$200\$/);
   const parts = stored.split('$');
   assert.equal(parts.length, 4);
-  assert.equal(parts[0], PASSWORD_ALGO);
+  assert.equal(parts[0], HASH_ALGO);
   assert.equal(parts[1], '200');
   assert.match(parts[2], /^[0-9a-f]{32}$/, '16 random salt bytes');
   assert.match(parts[3], /^[0-9a-f]{64}$/, '256-bit PBKDF2 output');

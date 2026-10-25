@@ -2,6 +2,11 @@
 
 Scans files known to Git (never untracked local env files) and reports only
 rule id plus path:line. Matched values are never printed.
+
+Test files and fixtures are exempt from the hardcoded-credential-assignment
+rule only: validators and login suites need known passwords, and those
+literals are not secrets. Real credential patterns (bearer token, GitHub and
+AWS keys, private key markers, session sids) are still enforced everywhere.
 """
 import argparse
 import re
@@ -56,18 +61,32 @@ RULES = [
     ("google-api-key", re.compile(r"\bAIza[0-9A-Za-z\-_]{35}")),
 ]
 
+# Test files legitimately hold fake credentials: validators need a known-correct
+# and a known-weak password, login suites need a password to authenticate with,
+# and token fixtures are minted inline. Those literals carry no secret value, so
+# the assignment rule is skipped for them. Every real-secret pattern above
+# (bearer token, GitHub/AWS key, private key, session sid) still applies.
+TEST_PATH = re.compile(
+    r"(?:^|/)(?:tests?|spec|specs|__tests__)(?:/|$)|"
+    r"[_-]test(?:s|ing)?\.[A-Za-z0-9]+$|"
+    r"(?:^|/)test_[A-Za-z0-9_.]+$",
+    re.IGNORECASE,
+)
+
 
 def _benign(value):
     return not value or bool(BENIGN_VALUE.match(value.strip()))
 
 
-def scan_text(text):
+def scan_text(text, test_file=False):
     """Return (rule_id, line_number) findings for a single file's text."""
     findings = []
     for lineno, line in enumerate(text.splitlines(), start=1):
         redaction_line = "REDACTED" in line or "replace(" in line
         for rule_id, pattern in RULES:
             if rule_id == "session-token-in-url" and redaction_line:
+                continue
+            if rule_id == "hardcoded-credential-assignment" and test_file:
                 continue
             match = pattern.search(line)
             if not match:
@@ -92,14 +111,14 @@ def scan_text(text):
     return findings
 
 
-def scan_file(path):
+def scan_file(path, rel=None):
     try:
         data = path.read_bytes()
     except OSError:
         return []
     if b"\x00" in data[:4096]:
         return []
-    return scan_text(data.decode("utf-8", errors="replace"))
+    return scan_text(data.decode("utf-8", errors="replace"), test_file=TEST_PATH.search(rel or "") is not None)
 
 
 def tracked_files(root):
@@ -128,7 +147,7 @@ def main(argv=None):
 
     total = 0
     for path, rel in tracked_files(root):
-        for rule_id, lineno in scan_file(path):
+        for rule_id, lineno in scan_file(path, rel):
             total += 1
             print(f"{rule_id}\t{rel}:{lineno}")
     if total:

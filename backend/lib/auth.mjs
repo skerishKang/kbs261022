@@ -15,7 +15,7 @@
 
 const TEXT = new TextEncoder();
 
-export const PASSWORD_ALGO = 'pbkdf2-sha512';
+export const HASH_ALGO = 'pbkdf2-sha512';
 
 /** Defaults. Every numeric field is overridable through worker env vars. */
 export const AUTH_POLICY = {
@@ -85,7 +85,7 @@ async function deriveBits(password, salt, iterations, keyBits) {
 export async function hashPassword(password, policy = AUTH_POLICY) {
   const salt = crypto.getRandomValues(new Uint8Array(policy.saltBytes));
   const hashHex = await deriveBits(password, salt, policy.pbkdf2Iterations, policy.pbkdf2KeyBits);
-  return `${PASSWORD_ALGO}$${policy.pbkdf2Iterations}$${bytesToHex(salt)}$${hashHex}`;
+  return `${HASH_ALGO}$${policy.pbkdf2Iterations}$${bytesToHex(salt)}$${hashHex}`;
 }
 
 /** Constant-shape verify. Returns false, never throws, for unknown formats. */
@@ -102,7 +102,7 @@ export async function verifyPassword(password, stored, policy = AUTH_POLICY) {
 
 export function parseStoredPassword(stored) {
   const parts = String(stored || '').split('$');
-  if (parts.length !== 4 || parts[0] !== PASSWORD_ALGO) return null;
+  if (parts.length !== 4 || parts[0] !== HASH_ALGO) return null;
   const iterations = Number.parseInt(parts[1], 10);
   if (!Number.isFinite(iterations) || iterations < 1) return null;
   if (!parts[2] || !parts[3]) return null;
