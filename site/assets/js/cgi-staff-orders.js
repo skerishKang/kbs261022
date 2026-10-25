@@ -27,7 +27,7 @@
     failed: '실패', skipped: '건너뜀(테스트)'
   };
 
-  var state = { token: null, memberMode: false, member: null, orders: [], drawer: null, events: [] };
+  var state = { token: null, memberMode: false, member: null, orders: [], drawer: null, events: [], feedback: null };
 
   function $(id) { return document.getElementById(id); }
   function esc(s) {
@@ -49,6 +49,12 @@
   function kindLabel(k) { return k === 'quote' ? '견적' : '결제'; }
   function msg(el, text, kind) {
     el.innerHTML = text ? '<p class="staff-msg ' + (kind || 'info') + '">' + esc(text) + '</p>' : '';
+  }
+  // 성공·실패 안내는 드로어를 다시 그려도 남아야 하므로 상태에 보관한다.
+  function setMsg(text, kind) {
+    state.feedback = { id: state.drawer ? state.drawer.id : null, text: text, kind: kind || 'info' };
+    var el = $('actionMsg');
+    if (el) msg(el, text, kind);
   }
   function parseJson(s) {
     if (s == null) return null;
@@ -342,6 +348,7 @@
     html += '<section class="drawer-section"><h3>이력</h3><div id="drawerEvents"></div></section>';
 
     $('drawerBody').innerHTML = html;
+    if (state.feedback && state.feedback.id === o.id) msg($('actionMsg'), state.feedback.text, state.feedback.kind);
     bindDrawer(o, refundable);
   }
 
@@ -362,10 +369,10 @@
 
   function bindDrawer(o, refundable) {
     function patch(body, cb) {
-      msg($('actionMsg'), '처리 중…');
+      setMsg('처리 중…');
       request('PATCH', '/api/orders/' + encodeURIComponent(o.id), body).then(function (res) {
-        if (!res.ok) { msg($('actionMsg'), '실패: ' + (res.data.error || ('HTTP ' + res.status)), 'error'); return; }
-        msg($('actionMsg'), res.data.changed === false ? '변경할 항목이 없습니다.' : '변경했습니다.', 'ok');
+        if (!res.ok) { setMsg('실패: ' + (res.data.error || ('HTTP ' + res.status)), 'error'); return; }
+        setMsg(res.data.changed === false ? '변경할 항목이 없습니다.' : '변경했습니다.', 'ok');
         if (cb) cb(); else openDrawer(o.id);
       });
     }
@@ -389,7 +396,7 @@
       st.addEventListener('submit', function (ev) {
         ev.preventDefault();
         var v = sel.value;
-        if (v === o.status) { msg($('actionMsg'), '현재와 같은 상태입니다.', 'info'); return; }
+        if (v === o.status) { setMsg('현재와 같은 상태입니다.', 'info'); return; }
         patch({ status: v });
       });
     }
@@ -424,29 +431,29 @@
       var amount = rf.querySelector('[name="cancelAmount"]').value;
       var reason = rf.querySelector('[name="cancelReason"]').value;
       var built = window.CGI_REFUND.buildRefundRequest(amount, refundable, reason);
-      if (!built.ok) { msg($('actionMsg'), built.error, 'error'); return; }
-      msg($('actionMsg'), built.mode === 'full' ? '전액 환불 처리 중…' : '부분 환불 처리 중…');
+      if (!built.ok) { setMsg(built.error, 'error'); return; }
+      setMsg(built.mode === 'full' ? '전액 환불 처리 중…' : '부분 환불 처리 중…');
       request('POST', '/api/orders/' + encodeURIComponent(o.id) + '/payments/' + encodeURIComponent(o.payment_key) + '/cancel', built.body)
         .then(function (res) {
           if (!res.ok) {
             var detail = res.data && res.data.detail;
             var extra = detail && detail.min ? ' (서버 최소금액 ' + money(detail.min) + ')' : '';
-            msg($('actionMsg'), '환불 실패: ' + ((res.data && res.data.error) || ('HTTP ' + res.status)) + extra, 'error');
+            setMsg('환불 실패: ' + ((res.data && res.data.error) || ('HTTP ' + res.status)) + extra, 'error');
             return;
           }
-          msg($('actionMsg'), '환불 처리했습니다. 환불액 ' + money(res.data.cancel_amount), 'ok');
+          setMsg('환불 처리했습니다. 환불액 ' + money(res.data.cancel_amount), 'ok');
           load();
           openDrawer(o.id);
         });
     });
 
     function erp(retry) {
-      msg($('actionMsg'), 'ERP 동기화 시도 중…');
+      setMsg('ERP 동기화 시도 중…');
       request('POST', '/api/orders/' + encodeURIComponent(o.id) + '/erp' + (retry ? '/retry' : ''), {})
         .then(function (res) {
-          if (!res.ok) { msg($('actionMsg'), 'ERP 동기화 실패 (HTTP ' + res.status + '), ' + ' ' + (res.data.error || ''), 'error'); return; }
+          if (!res.ok) { setMsg('ERP 동기화 실패 (HTTP ' + res.status + '), ' + ' ' + (res.data.error || ''), 'error'); return; }
           var d = res.data;
-          msg($('actionMsg'), 'ERP: ' + esc(String(d.status)) + (d.mode ? ' · 모드 ' + esc(String(d.mode)) : '') + (d.sent ? ' · 전송됨' : ' · 미전송(테스트 모드)') + (d.note ? ' · ' + esc(String(d.note)) : ''), d.sent ? 'ok' : 'info');
+          setMsg('ERP: ' + esc(String(d.status)) + (d.mode ? ' · 모드 ' + esc(String(d.mode)) : '') + (d.sent ? ' · 전송됨' : ' · 미전송(테스트 모드)') + (d.note ? ' · ' + esc(String(d.note)) : ''), d.sent ? 'ok' : 'info');
           load();
           openDrawer(o.id);
         });
@@ -465,12 +472,12 @@
           if (!v || v <= 0) { bad = true; return; }
           prices[it.product_id] = v;
         });
-        if (bad) { msg($('actionMsg'), '모든 항목에 유효한 공급가를 입력해 주세요.', 'error'); return; }
-        msg($('actionMsg'), '가격 확정 중…');
+        if (bad) { setMsg('모든 항목에 유효한 공급가를 입력해 주세요.', 'error'); return; }
+        setMsg('가격 확정 중…');
         request('POST', '/api/orders/' + encodeURIComponent(o.id) + '/quote/prices', { admin_prices: prices, convert: !!convert })
           .then(function (res) {
-            if (!res.ok) { msg($('actionMsg'), '확정 실패: ' + (res.data.error || ('HTTP ' + res.status)), 'error'); return; }
-            msg($('actionMsg'), convert ? '가격 확정 및 결제 주문 전환했습니다.' : '가격을 확정했습니다.', 'ok');
+            if (!res.ok) { setMsg('확정 실패: ' + (res.data.error || ('HTTP ' + res.status)), 'error'); return; }
+            setMsg(convert ? '가격 확정 및 결제 주문 전환했습니다.' : '가격을 확정했습니다.', 'ok');
             load();
             openDrawer(o.id);
           });
@@ -520,7 +527,7 @@
 
   /* ---------------------------------------------------------- wiring */
   document.addEventListener('DOMContentLoaded', function () {
-    $('drawerClose').addEventListener('click', function () { $('orderDrawer').hidden = true; state.drawer = null; });
+    $('drawerClose').addEventListener('click', function () { $('orderDrawer').hidden = true; state.drawer = null; state.feedback = null; });
     var memberLoginBtn = $('memberLoginBtn');
     if (memberLoginBtn) memberLoginBtn.addEventListener('click', function () {
       var email = $('memberEmail').value.trim();
