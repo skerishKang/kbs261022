@@ -1396,7 +1396,7 @@ async function handleGoogleStart(request, db, env) {
   }
 
   const redirectUri = new URL('/api/auth/google/callback', request.url).toString();
-  const state = createOAuthState(env.AUTH_SESSION_SECRET || 'cgi-dev-secret');
+  const state = await createOAuthState(env.AUTH_SESSION_SECRET || 'cgi-dev-secret');
 
   const authUrl = buildAuthorizationUrl({ clientId, redirectUri }, state);
   if (!authUrl) return authJson({ error: 'google oauth not configured' }, 503);
