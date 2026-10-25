@@ -9,12 +9,23 @@ database_name = "cgi_quotes"
 database_id = "602346ac-b0f3-4503-befd-b921a6a5cfd9"
 
 # ------------------------------------------------------------
+# Secrets Store bindings (issue #79)
+# Reuses the existing PADIEM Resend API key from the shared
+# Cloudflare Secrets Store. The value stays encrypted in the
+# store and is never committed or exposed to the browser.
+# ------------------------------------------------------------
+[[secrets_store_secrets]]
+binding = "B66_ALERT_RESEND_API_KEY"
+store_id = "f0b09ca04a7b43248154c773704a5616"
+secret_name = "B66_ALERT_RESEND_API_KEY"
+
+# ------------------------------------------------------------
 # Secrets — set with `wrangler secret put <NAME>` (NEVER commit).
 #
 #   ADMIN_TOKEN               staff/admin API bearer token (existing)
 #   TOSS_WIDGET_SECRET_KEY    test_gsk_... / live_gsk_...  (order-form widget confirm)
 #   TOSS_API_SECRET_KEY       test_sk_...  / live_sk_...   (core API: query / cancel)
-#   CGI_RESEND_API_KEY        Resend API key for email delivery (issue #79)
+#   B66_ALERT_RESEND_API_KEY  Resend API key (from Secrets Store, issue #79)
 #   SENDGRID_API_KEY          SendGrid API key for email delivery (issue #72)
 #
 # Optional variables (defaults are safe):
@@ -32,13 +43,18 @@ database_id = "602346ac-b0f3-4503-befd-b921a6a5cfd9"
 #   MAIL_BASE_URL             base URL for verification links   (defaults to SITE_BASE_URL)
 #   EMAIL_VERIFY_REQUIRED     "YES" | "NO"                     (default "NO": verification not enforced)
 #
-# Resend setup (recommended, reuses PADIEM.NET infrastructure):
-#   1. Use existing PADIEM Resend domain (already verified)
-#   2. Create a separate API key for CGI in Resend dashboard
-#   3. Set CGI_RESEND_API_KEY as Worker Secret
-#   4. Set MAIL_FROM to the Resend verified sender address
-#   5. Set MAIL_MODE=resend
-#   6. Set EMAIL_VERIFY_REQUIRED=YES to enforce verification
+# Resend setup (reuses PADIEM.NET Secrets Store):
+#   1. Existing PADIEM Resend domain is already verified
+#   2. B66_ALERT_RESEND_API_KEY is bound from Cloudflare Secrets Store
+#   3. MAIL_FROM is set to the verified sender address (noreply@padiem.net)
+#   4. MAIL_MODE=resend enables live delivery
+#   5. Set EMAIL_VERIFY_REQUIRED=YES to enforce verification
+#
+# Google OAuth (issue #79):
+#   1. Create OAuth credentials at https://console.cloud.google.com/apis/credentials
+#   2. Add authorized redirect URI: https://cgi-quote-api.skerishkang.workers.dev/api/auth/google/callback
+#   3. Set GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET via `wrangler secret put`
+#   4. When unset, Google login returns 503
 # ------------------------------------------------------------
 [vars]
 PG_PROVIDER_MODE = "auto"
@@ -46,6 +62,8 @@ PG_PUBLIC_BASE_URL = "https://api.tosspayments.com"
 ERP_LIVE_WRITE = "NO"
 ERP_MODE = "test"
 SHIPPING_FEE_DEFAULT = "0"
-MAIL_MODE = "console"
-MAIL_FROM = "CGI <noreply@cgi.example>"
-EMAIL_VERIFY_REQUIRED = "NO"
+MAIL_MODE = "resend"
+MAIL_FROM = "CGI <noreply@notify.padiem.net>"
+EMAIL_VERIFY_REQUIRED = "YES"
+GOOGLE_CLIENT_ID = ""
+GOOGLE_CLIENT_SECRET = ""
