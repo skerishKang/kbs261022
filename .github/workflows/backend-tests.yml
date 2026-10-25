@@ -2,12 +2,16 @@ name: Backend tests
 
 on:
   push:
+    # site/** is here because test/e2e/refund-console-contract.test.mjs drives the
+    # Worker with the real site helper; without it a site-only PR never runs it.
     paths:
       - "backend/**"
+      - "site/**"
       - ".github/workflows/backend-tests.yml"
   pull_request:
     paths:
       - "backend/**"
+      - "site/**"
       - ".github/workflows/backend-tests.yml"
 
 permissions:
