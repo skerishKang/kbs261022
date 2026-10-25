@@ -1473,6 +1473,7 @@
 
   function renderLogin(app) {
     var p = authApi();
+    if (p && p.isLoggedIn()) { navigate('#/'); return; }
     var html = authShell('로그인',
       '<form id="loginForm" class="auth-form" novalidate>' +
         authField('이메일', 'email', 'email', '', { autocomplete: 'email', required: true }) +
