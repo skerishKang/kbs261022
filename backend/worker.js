@@ -2272,9 +2272,9 @@ export default {
       return json(result.body, result.status);
     }
 
-const memberRoleMatch = url.pathname.match(/^\/api\/admin\/members\/([^/]+)\/role$/) && request.method === 'PATCH';
-if (memberRoleMatch) {
-  if (!(await isSuperAdmin(request, env, env.DB))) return unauthorized();
+const memberRoleMatch = url.pathname.match(/^\/api\/admin\/members\/([^/]+)\/role$/);
+if (memberRoleMatch && request.method === 'PATCH') {
+  if (!(await isSuperAdmin(request, env.DB, env))) return unauthorized();
   const id = Number(decodeURIComponent(memberRoleMatch[1]));
   if (!Number.isInteger(id) || id <= 0) return badRequest('invalid member id');
   const parsed = await readJson(request);
@@ -2291,13 +2291,17 @@ if (memberRoleMatch) {
 }
 
 if (url.pathname === '/api/admin/members' && request.method === 'GET') {
-  if (!(await isSuperAdmin(request, env, env.DB))) return unauthorized();
+  if (!(await isSuperAdmin(request, env.DB, env))) return unauthorized();
   const { results } = await env.DB.prepare('SELECT id, email, name, status, email_verified_at, role, created_at FROM members ORDER BY created_at DESC LIMIT 200').all();
-  return json({ items: (results || []).map((m) => ({
-    id: m.id, email: m.email, name: m.name, status: m.status,
-    email_verified: !!m.email_verified_at, role: m.role || 'member',
-    created_at: m.created_at,
-  })) });
+  return json({ items: (results || []).map((m) => {
+    const email = String(m.email || '').trim().toLowerCase();
+    const role = SUPERADMIN_EMAILS.has(email) && m.email_verified_at ? 'superadmin' : (m.role || 'member');
+    return {
+      id: m.id, email: m.email, name: m.name, status: m.status,
+      email_verified: !!m.email_verified_at, role,
+      created_at: m.created_at,
+    };
+  }) });
 }
 
     return notFound();
