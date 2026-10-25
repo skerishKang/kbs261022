@@ -18,7 +18,7 @@ const MAX_RESPONSE_BYTES = 64 * 1024;
  * Create an OAuth state token (signed, time-limited).
  * Format: base64(json) + '.' + hmac-sha256(base64(json), secret)
  */
-export function createOAuthState(secret, now = Date.now()) {
+export async function createOAuthState(secret, now = Date.now()) {
   const payload = {
     n: now,
     e: now + OAUTH_STATE_TTL_SECONDS * 1000,
@@ -26,7 +26,7 @@ export function createOAuthState(secret, now = Date.now()) {
   };
   const json = JSON.stringify(payload);
   const encoded = btoa(unescape(encodeURIComponent(json)));
-  const { hex } = hmacSha256(encoded, secret);
+  const { hex } = await hmacSha256(encoded, secret);
   return encoded + '.' + hex;
 }
 
@@ -58,8 +58,14 @@ export async function verifyOAuthState(secret, state, now = Date.now()) {
  */
 async function hmacSha256(message, secret) {
   const enc = new TextEncoder();
-  const key = await crypto.subtle.importKey('raw', enc.encode(secret), 'HMAC', false, ['sign']);
-  const sig = await crypto.subtle.sign('HMAC', key, enc.encode(message));
+  const key = await crypto.subtle.importKey(
+    'raw',
+    enc.encode(secret),
+    { name: 'HMAC', hash: 'SHA-256' },
+    false,
+    ['sign']
+  );
+  const sig = await crypto.subtle.sign({ name: 'HMAC' }, key, enc.encode(message));
   const hex = Array.from(new Uint8Array(sig)).map(b => b.toString(16).padStart(2, '0')).join('');
   return { hex, sig };
 }
