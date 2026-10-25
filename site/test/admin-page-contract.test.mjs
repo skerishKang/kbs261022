@@ -65,6 +65,14 @@ for (const [page, cfg] of Object.entries(PAGES)) {
   });
 }
 
+test('the stylesheet keeps the hidden attribute winning over .btn display', () => {
+  // .btn is `display: inline-flex`, which outranks the UA [hidden] rule, so a
+  // console button written away in the markup renders anyway.
+  const css = read('assets/css/cgi-catalog.css');
+  assert.match(css, /\.btn\w*\[hidden\][^{]*\{[^}]*display:\s*none\s*!important/,
+    'cgi-catalog.css must nullify .btn display for [hidden], as the header rules already do');
+});
+
 test('the shared auth helper is cache-busted identically on every page', () => {
   const versions = Object.keys(PAGES).concat(['index.html']).map((page) => {
     const m = read(page).match(/cgi-auth\.js\?v=([0-9a-z]+)/);
