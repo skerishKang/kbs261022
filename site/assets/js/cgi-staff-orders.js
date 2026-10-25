@@ -172,7 +172,7 @@
 
   /* ----------------------------------------------------------- drawer */
   function openDrawer(id) {
-    $('drawer').hidden = false;
+    $('orderDrawer').hidden = false;
     $('drawerBody').innerHTML = '<p class="staff-msg info">불러오는 중…</p>';
     var body = '';
     request('GET', '/api/orders/' + encodeURIComponent(id)).then(function (res) {
@@ -464,7 +464,7 @@
 
   /* ---------------------------------------------------------- wiring */
   document.addEventListener('DOMContentLoaded', function () {
-    $('drawerClose').addEventListener('click', function () { $('drawer').hidden = true; state.drawer = null; });
+    $('drawerClose').addEventListener('click', function () { $('orderDrawer').hidden = true; state.drawer = null; });
     var memberLoginBtn = $('memberLoginBtn');
     if (memberLoginBtn) memberLoginBtn.addEventListener('click', function () {
       var email = $('memberEmail').value.trim();

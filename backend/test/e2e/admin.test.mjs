@@ -2,7 +2,12 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 
 import { PRICE_INDEX } from '../../data/price_index.mjs';
+import { openD1 } from '../../d1-shim.mjs';
 import { makeEnv, call, auth, CUSTOMER, purchaseCart, pricedProductIds } from '../helpers.mjs';
+
+const ORIGIN = 'https://skerishkang.github.io';
+const PASSWORD = 'Test!2026-abc';
+const csrf = { 'X-CSRF-Token': ORIGIN };
 
 const [PA, PB] = pricedProductIds(3);
 const TOTAL = PRICE_INDEX[PA].p * 2 + PRICE_INDEX[PB].p;
@@ -298,4 +303,169 @@ test('schema init is admin only and idempotent', async () => {
 test('PATCH on an unknown order returns 404', async () => {
   const env = makeEnv();
   assert.equal((await call(env, 'PATCH', '/api/orders/ORD-19990101-ABCDE', { status: 'paid' }, auth())).status, 404);
+});
+
+// ---------------------------------------------------------------------------
+// Admin member management (issue #76)
+// ---------------------------------------------------------------------------
+
+async function signUpAndVerify(env, { email = 'kim@example.com', name = '김회원' } = {}) {
+  const res = await call(env, 'POST', '/api/auth/signup', {
+    email, name, password: PASSWORD, phone: '010-1111-2222', company: '[E2E] 회사',
+  }, csrf);
+  assert.equal(res.status, 201, `signup failed: ${res.text}`);
+  const verified = await call(env, 'POST', '/api/auth/verify-email', {
+    member_id: res.json.member.id, token: res.json.mail.echo_token,
+  }, csrf);
+  assert.equal(verified.status, 200, verified.text);
+  return res.json.member.id;
+}
+
+async function login(env, email = 'kim@example.com') {
+  const res = await call(env, 'POST', '/api/auth/login', { email, password: PASSWORD }, csrf);
+  assert.equal(res.status, 200, `login failed: ${res.text}`);
+  return res.headers['set-cookie'];
+}
+
+async function superadminCookie(env) {
+  await signUpAndVerify(env, { email: 'charliekant@gmail.com', name: 'Charlie Kang' });
+  return login(env, 'charliekant@gmail.com');
+}
+
+async function adminCookie(env) {
+  const memberId = await signUpAndVerify(env, { email: 'admin1@example.com', name: 'Admin Member' });
+  await env.DB.prepare("UPDATE members SET role = 'admin' WHERE id = ?").bind(memberId).run();
+  return login(env, 'admin1@example.com');
+}
+
+test('admin member endpoints require superadmin auth', async () => {
+  const env = makeEnv({ MAIL_MODE: 'echo', AUTH_PBKDF2_ITERATIONS: '1000' });
+
+  // Anonymous -> 401
+  assert.equal((await call(env, 'GET', '/api/admin/members')).status, 401);
+  assert.equal((await call(env, 'PATCH', '/api/admin/members/1/role', { role: 'admin' })).status, 401);
+
+  // ADMIN_TOKEN works
+  const tokenList = await call(env, 'GET', '/api/admin/members', undefined, auth());
+  assert.equal(tokenList.status, 200);
+  assert.ok(Array.isArray(tokenList.json.items));
+
+  // Ordinary member session -> 401
+  await signUpAndVerify(env, { email: 'member1@example.com' });
+  const memberCookie = await login(env, 'member1@example.com');
+  const memberList = await call(env, 'GET', '/api/admin/members', undefined, { ...csrf, Cookie: memberCookie });
+  assert.equal(memberList.status, 401, 'ordinary member cannot list members');
+
+  const memberPatch = await call(env, 'PATCH', '/api/admin/members/1/role', { role: 'admin' }, { ...csrf, Cookie: memberCookie });
+  assert.equal(memberPatch.status, 401, 'ordinary member cannot change roles');
+});
+
+test('ordinary admin cannot manage members (superadmin only)', async () => {
+  const env = makeEnv({ MAIL_MODE: 'echo', AUTH_PBKDF2_ITERATIONS: '1000' });
+
+  const cookie = await adminCookie(env);
+  const list = await call(env, 'GET', '/api/admin/members', undefined, { ...csrf, Cookie: cookie });
+  assert.equal(list.status, 401, 'ordinary admin cannot list members');
+
+  const patch = await call(env, 'PATCH', '/api/admin/members/1/role', { role: 'admin' }, { ...csrf, Cookie: cookie });
+  assert.equal(patch.status, 401, 'ordinary admin cannot change roles');
+});
+
+test('superadmin can list members and see roles', async () => {
+  const env = makeEnv({ MAIL_MODE: 'echo', AUTH_PBKDF2_ITERATIONS: '1000' });
+
+  await signUpAndVerify(env, { email: 'kim@example.com', name: '김회원' });
+  const superCookie = await superadminCookie(env);
+
+  const list = await call(env, 'GET', '/api/admin/members', undefined, { ...csrf, Cookie: superCookie });
+  assert.equal(list.status, 200);
+  assert.equal(list.json.items.length, 2);
+
+  const charlie = list.json.items.find((m) => m.email === 'charliekant@gmail.com');
+  assert.equal(charlie.role, 'superadmin', 'hardcoded email is superadmin');
+
+  const kim = list.json.items.find((m) => m.email === 'kim@example.com');
+  assert.equal(kim.role, 'member', 'default role is member');
+});
+
+test('superadmin can promote a member to admin', async () => {
+  const env = makeEnv({ MAIL_MODE: 'echo', AUTH_PBKDF2_ITERATIONS: '1000' });
+
+  await signUpAndVerify(env, { email: 'worker@example.com', name: 'Worker' });
+  const superCookie = await superadminCookie(env);
+
+  const list = await call(env, 'GET', '/api/admin/members', undefined, { ...csrf, Cookie: superCookie });
+  const worker = list.json.items.find((m) => m.email === 'worker@example.com');
+
+  const promoted = await call(env, 'PATCH', `/api/admin/members/${worker.id}/role`, { role: 'admin' }, { ...csrf, Cookie: superCookie });
+  assert.equal(promoted.status, 200, promoted.text);
+  assert.equal(promoted.json.member.role, 'admin');
+});
+
+test('superadmin can demote an admin back to member', async () => {
+  const env = makeEnv({ MAIL_MODE: 'echo', AUTH_PBKDF2_ITERATIONS: '1000' });
+
+  await signUpAndVerify(env, { email: 'worker@example.com', name: 'Worker' });
+  const superCookie = await superadminCookie(env);
+
+  const list = await call(env, 'GET', '/api/admin/members', undefined, { ...csrf, Cookie: superCookie });
+  const worker = list.json.items.find((m) => m.email === 'worker@example.com');
+
+  // Promote then demote
+  await call(env, 'PATCH', `/api/admin/members/${worker.id}/role`, { role: 'admin' }, { ...csrf, Cookie: superCookie });
+  const demoted = await call(env, 'PATCH', `/api/admin/members/${worker.id}/role`, { role: 'member' }, { ...csrf, Cookie: superCookie });
+  assert.equal(demoted.status, 200);
+  assert.equal(demoted.json.member.role, 'member');
+});
+
+test('superadmin role is immutable for the two hardcoded emails', async () => {
+  const env = makeEnv({ MAIL_MODE: 'echo', AUTH_PBKDF2_ITERATIONS: '1000' });
+
+  await signUpAndVerify(env, { email: 'skerish@naver.com', name: 'Skerish' });
+  const superCookie = await superadminCookie(env);
+
+  const list = await call(env, 'GET', '/api/admin/members', undefined, { ...csrf, Cookie: superCookie });
+
+  for (const email of ['charliekant@gmail.com', 'skerish@naver.com']) {
+    const member = list.json.items.find((m) => m.email === email);
+    const result = await call(env, 'PATCH', `/api/admin/members/${member.id}/role`, { role: 'member' }, { ...csrf, Cookie: superCookie });
+    assert.equal(result.status, 409, `immutable: ${email}`);
+    assert.equal(result.json.error, 'superadmin_role_immutable');
+  }
+});
+
+test('role PATCH rejects invalid role values', async () => {
+  const env = makeEnv({ MAIL_MODE: 'echo', AUTH_PBKDF2_ITERATIONS: '1000' });
+
+  await signUpAndVerify(env, { email: 'worker@example.com', name: 'Worker' });
+  const superCookie = await superadminCookie(env);
+
+  const list = await call(env, 'GET', '/api/admin/members', undefined, { ...csrf, Cookie: superCookie });
+  const worker = list.json.items.find((m) => m.email === 'worker@example.com');
+
+  for (const badRole of ['superadmin', 'owner', 'admin2', '']) {
+    const result = await call(env, 'PATCH', `/api/admin/members/${worker.id}/role`, { role: badRole }, { ...csrf, Cookie: superCookie });
+    assert.equal(result.status, 400, `bad role: ${badRole}`);
+    assert.equal(result.json.error, 'role must be admin or member');
+  }
+});
+
+test('role PATCH on non-existent member returns 404', async () => {
+  const env = makeEnv({ MAIL_MODE: 'echo', AUTH_PBKDF2_ITERATIONS: '1000' });
+
+  const superCookie = await superadminCookie(env);
+
+  const result = await call(env, 'PATCH', '/api/admin/members/99999/role', { role: 'admin' }, { ...csrf, Cookie: superCookie });
+  assert.equal(result.status, 404);
+});
+
+test('role PATCH with invalid member id returns 400', async () => {
+  const env = makeEnv({ MAIL_MODE: 'echo', AUTH_PBKDF2_ITERATIONS: '1000' });
+
+  const superCookie = await superadminCookie(env);
+
+  for (const badId of ['0', '-1', 'abc', '1.5']) {
+    const result = await call(env, 'PATCH', `/api/admin/members/${badId}/role`, { role: 'admin' }, { ...csrf, Cookie: superCookie });
+    assert.equal(result.status, 400, `bad id: ${badId}`);
+  }
 });
