@@ -79,9 +79,25 @@ const DRAWER_CHILDREN = ['statusForm', 'deliveryForm', 'noteForm', 'refundForm',
 
 const tick = () => new Promise((resolve) => setTimeout(resolve, 0));
 
+/**
+ * Rows 20/21 stand in for the two stored accounts whose name is the residue of a
+ * non-UTF-8 body: U+022B and U+6D7F around an irreversible U+FFFD. Escapes only, so
+ * this file can never itself carry a corrupted literal.
+ */
+const DAMAGED_NAME = '\u022B\uFFFD\u6D7F';
+const DAMAGED_ROWS = [
+  { id: 20, email: 'member20@example.test', name: DAMAGED_NAME, status: 'active', email_verified: true, role: 'member' },
+  { id: 21, email: 'member21@example.test', name: '\u022B' + DAMAGED_NAME, status: 'active', email_verified: true, role: 'member' },
+];
+/** The shipped marker, transcribed from cgi-staff-orders.js by codepoint. */
+const DAMAGE_MARKER = '(\uC774\uB984 \uC190\uC0C1 \u00B7 \uC7AC\uC785\uB825 \uD544\uC694)';
+
 /* ------------------------------------------------------------ stub DOM */
 
-function makeElement(id, onWrite) {
+/** Slots the drawer renders empty and repaints afterwards (#actionMsg, #drawerEvents). */
+const SLOT_RE = /<(p|div|form) id="([A-Za-z]+)"[^>]*>/g;
+
+function makeElement(id, write) {
   const listeners = {};
   const children = new Map();
   let card = null;
@@ -96,9 +112,15 @@ function makeElement(id, onWrite) {
     listeners,
     get innerHTML() { return html; },
     set innerHTML(value) {
-      html = value;
-      if (onWrite) onWrite(id);
+      html = String(value);
+      // A markup write detaches every node queried from it, so a previously handed
+      // out button must not keep collecting handlers across renders.
+      card = null;
+      if (write) write(id, html);
     },
+    // A child slot's repaint has to show up in the parent markup too, otherwise a
+    // test could read a painted #actionMsg that no longer exists in #drawerBody.
+    patch(pattern, replacement) { html = String(html).replace(pattern, () => replacement); },
     addEventListener(type, fn) { (listeners[type] = listeners[type] || []).push(fn); },
     dispatch(type, event) {
       const fns = listeners[type] || [];
@@ -129,13 +151,35 @@ function makeElement(id, onWrite) {
 
 function makeDocument() {
   const elements = new Map();
+  const slots = new Map();
   const listeners = {};
-  // Only #drawerBody replaces the rendered forms, so only its write may drop
-  // their elements; #drawerEvents/.order-list writes must leave them bound.
-  const onWrite = () => DRAWER_CHILDREN.forEach((kid) => elements.delete(kid));
+
+  function write(id, value) {
+    const slot = slots.get(id);
+    if (slot) { slot.parent.patch(slot.pattern, slot.open + value + slot.close); return; }
+    if (id !== 'drawerBody') return;
+    // #drawerBody owns the rendered forms, so its write detaches them: the next
+    // lookup must hand back a fresh element, never the one the old markup bound.
+    DRAWER_CHILDREN.forEach((kid) => { elements.delete(kid); slots.delete(kid); });
+    SLOT_RE.lastIndex = 0;
+    let match;
+    while ((match = SLOT_RE.exec(value))) {
+      const tag = match[1];
+      const kid = match[2];
+      if (!DRAWER_CHILDREN.includes(kid)) continue;
+      if (!elements.has(kid)) elements.set(kid, makeElement(kid, write));
+      slots.set(kid, {
+        parent: elements.get(id),
+        open: match[0],
+        close: '</' + tag + '>',
+        pattern: new RegExp('<' + tag + ' id="' + kid + '"[^>]*>[\\s\\S]*?</' + tag + '>'),
+      });
+    }
+  }
+
   return {
     getElementById(id) {
-      if (!elements.has(id)) elements.set(id, makeElement(id, id === 'drawerBody' ? onWrite : null));
+      if (!elements.has(id)) elements.set(id, makeElement(id, write));
       return elements.get(id);
     },
     createElement(tag) { return makeElement('<' + tag + '>'); },
@@ -155,6 +199,7 @@ function makeDocument() {
 function makeServer() {
   const calls = [];
   let refunded = 0;
+  const row = Object.assign({}, LIST_ROW);
   const total = LIVE_DETAIL.totals.total_amount;
   return {
     calls,
@@ -162,7 +207,7 @@ function makeServer() {
     handle(path, init) {
       calls.push({ path, init: init || {} });
       if (path === '/api/orders') {
-        return { items: [Object.assign({}, LIST_ROW, { refunded_amount: refunded })] };
+        return { items: [Object.assign({}, row, { refunded_amount: refunded })] };
       }
       const cancel = path.match(/^\/api\/orders\/([^/]+)\/payments\/([^/]+)\/cancel$/);
       if (cancel) {
@@ -176,12 +221,16 @@ function makeServer() {
       }
       if (/^\/api\/orders\/[^/]+\/events$/.test(path)) return { items: [] };
       if (/^\/api\/orders\/[^/]+$/.test(path)) {
+        if ((init.method || 'GET') === 'PATCH') {
+          Object.assign(row, JSON.parse(init.body));
+          return { changed: true };
+        }
         return JSON.parse(JSON.stringify(Object.assign({}, LIVE_DETAIL, {
           totals: Object.assign({}, LIVE_DETAIL.totals, { refunded_amount: refunded }),
         })));
       }
       if (path === '/api/admin/members') {
-        return { items: [{ id: 14, email: 'charliekant@gmail.com', name: '강사장', status: 'active', email_verified: true, role: 'superadmin' }] };
+        return { items: [{ id: 14, email: 'charliekant@gmail.com', name: '강사장', status: 'active', email_verified: true, role: 'superadmin' }].concat(DAMAGED_ROWS) };
       }
       return {};
     },
@@ -230,6 +279,7 @@ async function bootConsole() {
 
   return {
     window, document, server, alerts,
+    el: (id) => document.getElementById(id),
     drawerBody: () => document.getElementById('drawerBody').innerHTML,
     actionMsg: () => document.getElementById('actionMsg').innerHTML,
     openDrawer: async () => {
@@ -313,6 +363,51 @@ test('a detail without an id falls back to the row instead of wiping the drawer'
   assert.equal(drawerOrder(null, {}), null);
 });
 
+test('a confirmation stays on screen through the re-render it triggers', async () => {
+  // Refunding reloads the list and reopens the drawer, and #actionMsg lives inside
+  // the markup that write replaces — so the message the operator needs most was the
+  // one that vanished. The assertion reads #drawerBody's markup, not a cached node.
+  const env = await bootConsole();
+  await env.openDrawer();
+  assert.match(env.drawerBody(), /<p id="actionMsg"><\/p>/, 'the drawer renders an empty feedback slot');
+
+  await env.refund(100000, '부분 환불 — 촬영 일정 변경');
+
+  assert.match(env.drawerBody(), /환불 가능 잔액:\s*<strong>268,000원<\/strong>/, 'the balance refreshed');
+  assert.match(env.drawerBody(), /<p id="actionMsg"><p class="staff-msg ok">환불 처리했습니다\. 환불액 100,000원<\/p><\/p>/,
+    'the confirmation must survive the re-render');
+});
+
+test('every drawer action keeps its feedback, not just the refund', async () => {
+  const env = await bootConsole();
+  await env.openDrawer();
+
+  const form = env.el('noteForm');
+  assert.equal(form.listeners.submit ? form.listeners.submit.length : 0, 1,
+    'the rendered note form must be bound exactly once');
+  form.querySelector('[name="admin_note"]').value = '촬영 일정 변경 — 부분 환불 1건 접수';
+  form.dispatch('submit');
+  await tick(); await tick(); await tick();
+
+  assert.match(env.drawerBody(), /<p id="actionMsg"><p class="staff-msg ok">변경했습니다\.<\/p><\/p>/);
+  const patches = env.server.calls.filter((c) => (c.init.method || '') === 'PATCH');
+  assert.equal(patches.length, 1, 'one write per save');
+  assert.deepEqual(JSON.parse(patches[0].init.body), { admin_note: '촬영 일정 변경 — 부분 환불 1건 접수' });
+});
+
+test('closing the drawer drops the feedback with it', async () => {
+  const env = await bootConsole();
+  await env.openDrawer();
+  await env.refund(100000, '부분 환불 — 촬영 일정 변경');
+  assert.match(env.drawerBody(), /환불 처리했습니다\./);
+
+  env.el('drawerClose').dispatch('click');
+  await env.openDrawer();
+
+  assert.match(env.drawerBody(), /<p id="actionMsg"><\/p>/, 'a reopened drawer starts with no verdict');
+  assert.doesNotMatch(env.drawerBody(), /환불 처리했습니다\./);
+});
+
 /* --------------------------------------------------------- live drawer run */
 
 test('the drawer of a paid order renders the refund form and the admin-only note', async () => {
@@ -382,4 +477,20 @@ test('the console runs on the member session, with no Bearer token involved', as
   assert.equal(list.init.credentials, 'include');
   assert.equal(list.init.headers.Authorization, undefined);
   assert.match(list.init.headers['X-CSRF-Token'], /skerishkang\.github\.io/);
+});
+
+/* ------------------------------------------------ damaged member names (#92-3) */
+
+test('the two damaged member rows are flagged for re-entry and never guessed', async () => {
+  const env = await bootConsole();
+  const rows = env.document.getElementById('memberList').innerHTML;
+  assert.ok(rows.includes('<table'), 'the superadmin boot must render the member table');
+  assert.equal(rows.split('<tr>').length - 1, 4, 'header plus the three listed accounts');
+  assert.ok(rows.includes('member20@example.test') && rows.includes('member21@example.test'),
+    'the damaged accounts stay listed so they can be followed up');
+  assert.equal(rows.split(DAMAGE_MARKER).length - 1, 2,
+    'both damaged names render the restore marker and the readable one does not');
+  assert.ok(!rows.includes('\uFFFD'), 'no U+FFFD residue may reach the screen');
+  assert.ok(!rows.includes('\u022B') && !rows.includes('\u6D7F'),
+    'the unreadable name is not half-restored and printed');
 });
