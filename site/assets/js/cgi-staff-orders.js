@@ -190,13 +190,43 @@
   }
 
   /* ----------------------------------------------------------- drawer */
+  /**
+   * 목록(GET /api/orders)은 ORDER_COLUMNS 평면 행을, 상세(GET /api/orders/:id)는
+   * publicOrderView 중첩 객체를 돌려준다. 드로어는 평면 필드를 그리므로 상세 응답만
+   * 쓰면 payment_key·고객 정보가 비고, 그 결과 환불 폼이 사라진다. admin_note·
+   * admin_prices 는 상세 응답에 없으니 같은 화면의 목록 행을 받침으로 깔고 얹는다.
+   */
+  function drawerOrder(row, detail) {
+    var d = detail || {};
+    var c = d.customer || {};
+    var t = d.totals || {};
+    var p = d.payment || {};
+    var v = d.delivery || {};
+    var flat = {
+      customer_company: c.company, customer_name: c.name, customer_phone: c.phone,
+      customer_email: c.email, customer_addr: c.addr, customer_addr_detail: c.addr_detail,
+      customer_note: c.note,
+      item_total: t.item_total, shipping_fee: t.shipping_fee, total_amount: t.total_amount,
+      supplied_amount: t.supplied_amount, vat_amount: t.vat_amount, refunded_amount: t.refunded_amount,
+      payment_method: p.method, payment_key: p.payment_key, paid_at: p.paid_at,
+      delivery_tracking: v.tracking
+    };
+    if (!d.id) return row || null;
+    return Object.assign({}, row || {}, d, flat);
+  }
+
+  function findRow(id) {
+    var found = null;
+    (state.orders || []).forEach(function (r) { if (r && r.id === id) found = r; });
+    return found;
+  }
+
   function openDrawer(id) {
     $('orderDrawer').hidden = false;
     $('drawerBody').innerHTML = '<p class="staff-msg info">불러오는 중…</p>';
-    var body = '';
     request('GET', '/api/orders/' + encodeURIComponent(id)).then(function (res) {
       if (!res.ok) { msg($('drawerBody'), '주문을 불러오지 못했습니다 (HTTP ' + res.status + ').'); return; }
-      state.drawer = res.data;
+      state.drawer = drawerOrder(findRow(id), res.data);
       renderDrawer();
       return request('GET', '/api/orders/' + encodeURIComponent(id) + '/events');
     }).then(function (res) {
@@ -540,4 +570,6 @@
     });
     boot();
   });
+
+  window.CGI_STAFF_ORDERS = { drawerOrder: drawerOrder };
 })();
