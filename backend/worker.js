@@ -1435,6 +1435,11 @@ async function handleGoogleCallback(request, db, env) {
   if (!cookieState || cookieState !== state) {
     return authJson({ error: 'invalid state', detail: 'CSRF state mismatch' }, 400);
   }
+  // Verify the state token's signature and expiry
+  const stateSecret = env.AUTH_SESSION_SECRET || 'cgi-dev-secret';
+  if (!(await verifyOAuthState(stateSecret, state))) {
+    return authJson({ error: 'invalid state', detail: 'state expired or tampered' }, 400);
+  }
 
   const clientId = env.GOOGLE_CLIENT_ID || env.GOOGLE_OAUTH_CLIENT_ID;
   const clientSecret = env.GOOGLE_CLIENT_SECRET || env.GOOGLE_OAUTH_CLIENT_SECRET;
