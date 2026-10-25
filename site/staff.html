@@ -36,12 +36,33 @@
   </div>
 </header>
 
-<main id="app" class="app staff-app">
-  <header class="page-head">
-    <p class="page-eyebrow">STAFF</p>
-    <h1>견적 요청 관리</h1>
-    <p class="page-sub">접수된 견적 요청을 확인하고 단가와 진행 상태를 관리합니다.</p>
-  </header>
+  <main id="app" class="app staff-app">
+    <header class="page-head">
+      <p class="page-eyebrow">STAFF</p>
+      <h1>견적 요청 관리</h1>
+      <p class="page-sub">접수된 견적 요청을 확인하고 단가와 진행 상태를 관리합니다.</p>
+    </header>
+
+    <section id="authBox" class="auth-box" hidden>
+      <div class="auth-tabs">
+        <button type="button" class="btn btn-secondary" id="tokenTabBtn">관리자 토큰</button>
+        <button type="button" class="btn btn-secondary" id="memberTabBtn">CGI 회원 로그인</button>
+      </div>
+      <div id="tokenPanel">
+        <label>관리자 토큰
+          <input type="password" id="tokenInput" autocomplete="off" placeholder="Bearer 토큰 입력">
+        </label>
+        <button type="button" class="btn" id="authBtn">접속</button>
+        <p class="form-note">토큰은 이 브라우저에만 저장됩니다.</p>
+      </div>
+      <div id="memberPanel" hidden>
+        <label>이메일 <input type="email" id="memberEmail" autocomplete="username"></label>
+        <label>비밀번호 <input type="password" id="memberPassword" autocomplete="current-password"></label>
+        <button type="button" class="btn" id="memberLoginBtn">로그인</button>
+        <p class="form-note">CGI 회원 계정으로 로그인합니다. 총관리자·일반 관리자만 접근할 수 있어요.</p>
+      </div>
+      <p id="authMsg" class="staff-msg"></p>
+    </section>
 
   <section class="staff-toolbar" aria-label="요청 가져오기">
     <div class="import-box">
