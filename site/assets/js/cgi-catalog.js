@@ -668,6 +668,9 @@
   function cartItemCount(items) {
     return items.reduce(function (sum, x) { return sum + (x.cart.qty || 1); }, 0);
   }
+  function cartSummaryText(items) {
+    return items.length.toLocaleString('ko-KR') + '개 상품 · 총 ' + cartItemCount(items) + '점';
+  }
   /* ---- 주문·결제 분기 (issue #67): 모든 상품이 공개가이면 결제 주문 가능 ---- */
   function isPublicPriced(product) {
     return !!(product && product.price && product.price.state === 'public' &&
@@ -760,7 +763,7 @@
       '<header class="page-head">' +
         '<p class="page-eyebrow">Quote</p>' +
         '<h1>견적 목록</h1>' +
-        '<p class="page-sub">' + items.length.toLocaleString('ko-KR') + '개 상품 · 총 ' + cartItemCount(items) + '점</p>' +
+        '<p class="page-sub" id="cartSummary">' + cartSummaryText(items) + '</p>' +
       '</header>' +
       '<div class="cart-layout">' +
         '<div>' +
@@ -782,7 +785,7 @@
               '</div>' +
             '</details>' +
             (allPublicPrice(items)
-              ? '<div class="cart-total-line"><span>주문 금액</span><strong>' + money(cartTotal(items)) + '</strong></div>' +
+              ? '<div class="cart-total-line"><span>주문 금액</span><strong id="cartTotalValue">' + money(cartTotal(items)) + '</strong></div>' +
                 '<a class="btn btn-primary btn-block" href="#/checkout" style="margin-top:12px">결제 주문으로 계속</a>'
               : '<div class="cart-total-line"><span>최종 금액</span><strong>담당자 확인 후 안내</strong></div>' +
                 '<p class="form-note">일부 상품이 판매가 미확정 상태라 결제 대신 견적 요청으로 접수됩니다.</p>') +
@@ -1321,11 +1324,16 @@
   });
 
   function refreshCartPreview() {
+    // 미리보기·헤더 집계·주문 금액은 모두 같은 상태에서 계산해 함께 그려야 한다.
     var items = cartItems();
     var text = buildQuoteCartText(items);
     var pre = document.getElementById('quoteCartText');
     if (pre) pre.textContent = text;
     window.cgiLastQuoteCartText = text;
+    var summary = document.getElementById('cartSummary');
+    if (summary) summary.textContent = cartSummaryText(items);
+    var total = document.getElementById('cartTotalValue');
+    if (total) total.textContent = money(cartTotal(items));
   }
 
   /* ---------------------------------------------------- image error fallback */
