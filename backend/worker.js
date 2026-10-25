@@ -88,7 +88,8 @@ const DUPLICATE_WINDOW_SECONDS = 120;
 // Smallest partial refund the backend will accept (KRW). Anything below this is
 // rounding dust rather than a refund; override with the MIN_PARTIAL_REFUND var.
 const MIN_PARTIAL_REFUND = 1000;
-const BACKEND_VERSION = '1.2.0';
+const BACKEND_VERSION = '1.3.0';
+const SUPERADMIN_EMAILS = new Set(['charliekant@gmail.com', 'skerish@naver.com']);
 
 // Legacy credential-free header set: quote intake, order, payment and admin
 // routes. Kept exactly as it is because they are not cookie-based, and because
@@ -147,6 +148,16 @@ function isAdmin(request, env) {
   const auth = request.headers.get('Authorization') || '';
   const token = auth.replace(/^Bearer\s+/i, '');
   return !!env.ADMIN_TOKEN && token === env.ADMIN_TOKEN;
+}
+
+async function isAdminOrMember(request, db, env) {
+  if (isAdmin(request, env)) return true;
+  const member = await requireMember(request, db, env);
+  if (!member) return false;
+  if (member.status !== 'active') return false;
+  if (!member.email_verified_at) return false;
+  const role = member.role || (SUPERADMIN_EMAILS.has(String(member.email || '').trim().toLowerCase()) ? 'superadmin' : 'member');
+  return role === 'admin' || role === 'superadmin';
 }
 
 async function readJson(request) {
@@ -1048,11 +1059,12 @@ CREATE INDEX IF NOT EXISTS idx_erp_sync_order_id ON erp_sync(order_id);
 CREATE INDEX IF NOT EXISTS idx_erp_sync_status ON erp_sync(status);
 CREATE TABLE IF NOT EXISTS members (
   id INTEGER PRIMARY KEY, email TEXT NOT NULL UNIQUE, password_hash TEXT NOT NULL, name TEXT NOT NULL,
-  phone TEXT, company TEXT, email_verified_at TEXT, status TEXT NOT NULL DEFAULT 'active',
-  created_at TEXT NOT NULL, updated_at TEXT NOT NULL, deleted_at TEXT
+  phone TEXT, company TEXT, email_verified_at TEXT, role TEXT NOT NULL DEFAULT 'member',
+  status TEXT NOT NULL DEFAULT 'active', created_at TEXT NOT NULL, updated_at TEXT NOT NULL, deleted_at TEXT
 );
 CREATE INDEX IF NOT EXISTS idx_members_status ON members(status);
 CREATE INDEX IF NOT EXISTS idx_members_created_at ON members(created_at);
+CREATE INDEX IF NOT EXISTS idx_members_role ON members(role);
 CREATE TABLE IF NOT EXISTS member_addresses (
   id INTEGER PRIMARY KEY, member_id INTEGER NOT NULL, label TEXT NOT NULL, recipient_name TEXT NOT NULL,
   phone TEXT NOT NULL, addr TEXT NOT NULL, addr_detail TEXT, company TEXT,
@@ -1183,6 +1195,9 @@ function getMemberByEmail(db, email) {
 
 function memberView(member) {
   if (!member) return null;
+  const email = String(member.email || '').trim().toLowerCase();
+  const superadmin = SUPERADMIN_EMAILS.has(email) && !!member.email_verified_at;
+  const role = superadmin ? 'superadmin' : (member.role || 'member');
   return {
     id: member.id,
     email: member.email,
@@ -1191,6 +1206,8 @@ function memberView(member) {
     company: member.company,
     email_verified: !!member.email_verified_at,
     email_verified_at: member.email_verified_at,
+    role,
+    is_admin: role === 'admin' || role === 'superadmin',
     status: member.status,
     created_at: member.created_at,
     updated_at: member.updated_at,
@@ -1315,6 +1332,11 @@ async function requireMember(request, db, env) {
   if (!session) return null;
   const member = await getMember(db, session.member_id);
   if (!member) return null;
+  if (SUPERADMIN_EMAILS.has(String(member.email || '').trim().toLowerCase()) && member.email_verified_at) {
+    member.role = 'superadmin';
+  } else if (!member.role) {
+    member.role = 'member';
+  }
   if (member.status === 'deleted') {
     await db.prepare("UPDATE auth_tokens SET status = 'revoked', revoked_at = ? WHERE id = ?").bind(nowIso(), session.id).run();
     return null;
@@ -1893,7 +1915,7 @@ export default {
     }
 
     if (url.pathname === '/api/quotes' && request.method === 'GET') {
-      if (!isAdmin(request, env)) return unauthorized();
+      if (!(await isAdminOrMember(request, env.DB, env))) return unauthorized();
       const status = url.searchParams.get('status');
       let stmt = env.DB.prepare('SELECT id, created_at, company, contact_name, phone, status, total FROM quote_requests ORDER BY created_at DESC');
       if (status) stmt = env.DB.prepare('SELECT id, created_at, company, contact_name, phone, status, total FROM quote_requests WHERE status = ? ORDER BY created_at DESC').bind(status);
@@ -1903,7 +1925,7 @@ export default {
 
     const getMatch = url.pathname.match(/^\/api\/quotes\/([^/]+)$/);
     if (getMatch && request.method === 'GET') {
-      if (!isAdmin(request, env)) return unauthorized();
+      if (!(await isAdminOrMember(request, env.DB, env))) return unauthorized();
       const id = decodeURIComponent(getMatch[1]);
       const row = await env.DB.prepare('SELECT * FROM quote_requests WHERE id = ?').bind(id).first();
       if (!row) return notFound();
@@ -1911,7 +1933,7 @@ export default {
     }
 
     if (getMatch && request.method === 'PATCH') {
-      if (!isAdmin(request, env)) return unauthorized();
+      if (!(await isAdminOrMember(request, env.DB, env))) return unauthorized();
       const id = decodeURIComponent(getMatch[1]);
       const parsed = await readJson(request);
       if (parsed.error) return badRequest(parsed.error);
@@ -1957,7 +1979,7 @@ export default {
     }
 
     if (url.pathname === '/api/admin/schema/init' && request.method === 'POST') {
-      if (!isAdmin(request, env)) return unauthorized();
+      if (!(await isAdminOrMember(request, env.DB, env))) return unauthorized();
       try {
         const result = await initSchema(env.DB);
         return json(result, 200);
@@ -1998,7 +2020,7 @@ export default {
     // ---------------- orders (admin) ----------------
 
     if (url.pathname === '/api/orders' && request.method === 'GET') {
-      if (!isAdmin(request, env)) return unauthorized();
+      if (!(await isAdminOrMember(request, env.DB, env))) return unauthorized();
       const q = url.searchParams.get('q');
       const kind = url.searchParams.get('kind');
       const status = url.searchParams.get('status');
@@ -2021,7 +2043,7 @@ export default {
     }
 
     if (orderMatch && request.method === 'PATCH') {
-      if (!isAdmin(request, env)) return unauthorized();
+      if (!(await isAdminOrMember(request, env.DB, env))) return unauthorized();
       const id = decodeURIComponent(orderMatch[1]);
       const parsed = await readJson(request);
       if (parsed.error) return badRequest(parsed.error);
@@ -2036,7 +2058,7 @@ export default {
 
     const eventsMatch = url.pathname.match(/^\/api\/orders\/([^/]+)\/events$/);
     if (eventsMatch && request.method === 'GET') {
-      if (!isAdmin(request, env)) return unauthorized();
+      if (!(await isAdminOrMember(request, env.DB, env))) return unauthorized();
       const { results } = await env.DB.prepare('SELECT * FROM order_events WHERE order_id = ? ORDER BY created_at ASC, id ASC')
         .bind(decodeURIComponent(eventsMatch[1])).all();
       return json({ items: results || [] });
@@ -2044,7 +2066,7 @@ export default {
 
     const pricesMatch = url.pathname.match(/^\/api\/orders\/([^/]+)\/quote\/prices$/);
     if (pricesMatch && request.method === 'POST') {
-      if (!isAdmin(request, env)) return unauthorized();
+      if (!(await isAdminOrMember(request, env.DB, env))) return unauthorized();
       const id = decodeURIComponent(pricesMatch[1]);
       const parsed = await readJson(request);
       if (parsed.error) return badRequest(parsed.error);
@@ -2057,7 +2079,7 @@ export default {
 
     const erpMatch = url.pathname.match(/^\/api\/orders\/([^/]+)\/erp(?:\/retry)?$/);
     if (erpMatch && request.method === 'POST') {
-      if (!isAdmin(request, env)) return unauthorized();
+      if (!(await isAdminOrMember(request, env.DB, env))) return unauthorized();
       const id = decodeURIComponent(erpMatch[1]);
       const force = url.pathname.endsWith('/retry');
       const order = await getOrderFull(env.DB, id);
@@ -2068,7 +2090,7 @@ export default {
 
     const cancelMatch = url.pathname.match(/^\/api\/orders\/([^/]+)\/payments\/([^/]+)\/cancel$/);
     if (cancelMatch && request.method === 'POST') {
-      if (!isAdmin(request, env)) return unauthorized();
+      if (!(await isAdminOrMember(request, env.DB, env))) return unauthorized();
       const id = decodeURIComponent(cancelMatch[1]);
       const paymentKey = decodeURIComponent(cancelMatch[2]);
       const parsed = await readJson(request);
