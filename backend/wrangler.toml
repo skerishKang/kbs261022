@@ -14,6 +14,7 @@ database_id = "602346ac-b0f3-4503-befd-b921a6a5cfd9"
 #   ADMIN_TOKEN               staff/admin API bearer token (existing)
 #   TOSS_WIDGET_SECRET_KEY    test_gsk_... / live_gsk_...  (order-form widget confirm)
 #   TOSS_API_SECRET_KEY       test_sk_...  / live_sk_...   (core API: query / cancel)
+#   CGI_RESEND_API_KEY        Resend API key for email delivery (issue #79)
 #   SENDGRID_API_KEY          SendGrid API key for email delivery (issue #72)
 #
 # Optional variables (defaults are safe):
@@ -25,18 +26,18 @@ database_id = "602346ac-b0f3-4503-befd-b921a6a5cfd9"
 #   SHIPPING_FEE_DEFAULT      default shipping fee in KRW  (default 0)
 #   MIN_PARTIAL_REFUND        smallest accepted partial refund in KRW (default 1000)
 #
-# Mail (issue #72):
-#   MAIL_MODE                 "console" | "echo" | "sendgrid"  (default "console")
+# Mail (issue #72, #79):
+#   MAIL_MODE                 "console" | "echo" | "resend" | "sendgrid"  (default "console")
 #   MAIL_FROM                 "CGI <noreply@yourdomain.com>"   (default uses placeholder)
 #   MAIL_BASE_URL             base URL for verification links   (defaults to SITE_BASE_URL)
 #   EMAIL_VERIFY_REQUIRED     "YES" | "NO"                     (default "NO": verification not enforced)
 #
-# Domain setup required for production mail:
-#   1. Register a custom domain (e.g. cgi.co.kr)
-#   2. Add SendGrid: DNS records (SPF, DKIM, DMARC)
-#   3. Verify domain in SendGrid dashboard
-#   4. Set SENDGRID_API_KEY as Worker Secret
-#   5. Set MAIL_FROM to verified domain address
+# Resend setup (recommended, reuses PADIEM.NET infrastructure):
+#   1. Use existing PADIEM Resend domain (already verified)
+#   2. Create a separate API key for CGI in Resend dashboard
+#   3. Set CGI_RESEND_API_KEY as Worker Secret
+#   4. Set MAIL_FROM to the Resend verified sender address
+#   5. Set MAIL_MODE=resend
 #   6. Set EMAIL_VERIFY_REQUIRED=YES to enforce verification
 # ------------------------------------------------------------
 [vars]
