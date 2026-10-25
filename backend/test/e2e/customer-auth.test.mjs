@@ -252,10 +252,16 @@ test('signup validates inputs and stores a PBKDF2 hash plus a digested token', a
   assert.equal(results.length, 1);
   assert.match(results[0].password_hash, /^pbkdf2-sha512\$1000\$/);
 
-  const { results: tokenRows } = await environment.DB.prepare('SELECT token_hash FROM auth_tokens').all();
-  assert.equal(tokenRows.length, 1);
-  assert.notEqual(tokenRows[0].token_hash, token, 'the raw token is never stored');
-  assert.match(tokenRows[0].token_hash, /^[a-f0-9]{64}$/, 'only a SHA-256 digest is stored');
+  const { results: tokenRows } = await environment.DB.prepare('SELECT kind, token_hash FROM auth_tokens').all();
+  assert.equal(tokenRows.length, 2, 'signup creates a verify_email token and a session token');
+  const sessionRow = tokenRows.find((r) => r.kind === 'session');
+  const verifyRow = tokenRows.find((r) => r.kind === 'verify_email');
+  assert.ok(sessionRow, 'a session token is issued at signup');
+  assert.ok(verifyRow, 'a verify_email token is issued at signup');
+  for (const row of [sessionRow, verifyRow]) {
+    assert.notEqual(row.token_hash, token, 'the raw token is never stored');
+    assert.match(row.token_hash, /^[a-f0-9]{64}$/, 'only a SHA-256 digest is stored');
+  }
 
   const duplicate = await call(environment, 'POST', '/api/auth/signup', {
     email: 'KIM@example.com', name: '다른 사람', password: PASSWORD,
@@ -403,7 +409,8 @@ test('logout revokes the session and clears the cookie', async () => {
   assert.equal(after.status, 401);
 
   const { results } = await environment.DB.prepare("SELECT status FROM auth_tokens WHERE kind = 'session'").all();
-  assert.equal(results[0].status, 'revoked');
+  const revoked = results.filter((r) => r.status === 'revoked');
+  assert.equal(revoked.length, 1, 'exactly one session token is revoked on logout');
   assert.ok(value.length === 64, '32 random bytes -> 64 hex chars');
 });
 

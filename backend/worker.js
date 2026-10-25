@@ -1366,12 +1366,13 @@ async function handleAuthRoute(pathname, method, request, db, env) {
       .bind(memberId, 'signup', JSON.stringify({ verified: false }), now).run();
     const member = await getMember(db, memberId);
     const issued = await issueToken(db, env, mail, member, 'verify_email', '/auth/verify', 'CGI 이메일 인증', '아래 링크에서 이메일 인증을 완료하세요.');
+    const session = await issueSession(db, env, member);
     return authJson({
       member: memberView(member),
       email_verified: false,
       email_verify_required: emailVerifyRequired(env),
       mail: issued.mail,
-    }, 201);
+    }, 201, { 'Set-Cookie': session.cookie });
   }
 
   // ---------------- email availability ----------------
