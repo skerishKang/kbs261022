@@ -1,12 +1,11 @@
 # GitGuardian configuration file
 # https://docs.gitguardian.com/guardian/configuration-file
+#
+# Only ignore the specific test file that contains hardcoded test secrets.
+# Do NOT ignore all test files — real secrets in tests must still be detected.
 
 ignore:
-  - path: "**/*test*"
-    rules: ["SECRETKEY", "ACCESSKEY", "TOKEN"]
-  - path: "backend/test/**"
-    rules: ["SECRETKEY", "ACCESSKEY", "TOKEN"]
-  - path: "**/*.test.mjs"
-    rules: ["SECRETKEY", "ACCESSKEY", "TOKEN"]
-  - path: "**/*.spec.mjs"
-    rules: ["SECRETKEY", "ACCESSKEY", "TOKEN"]
+  # PR #81 test file: hardcoded test values (ADMIN_TEST_KEY, TEST_PASSWORD,
+  # TEST_SECRET) that match GitGuardian SECRETKEY/TOKEN patterns.
+  # These are not real secrets; values are fake test credentials.
+  - path: "backend/test/e2e/google-oauth-callback.test.mjs"
