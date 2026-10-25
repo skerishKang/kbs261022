@@ -96,7 +96,7 @@ const BACKEND_VERSION = '1.2.0';
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': ALLOWED_ORIGIN,
   'Access-Control-Allow-Methods': 'GET,POST,PATCH,OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type,Authorization,Idempotency-Key',
+  'Access-Control-Allow-Headers': 'Content-Type,Authorization,Idempotency-Key,X-CSRF-Token',
   'Vary': 'Origin',
 };
 
@@ -1389,20 +1389,31 @@ async function handleAuthRoute(pathname, method, request, db, env) {
   // ---------------- email verification ----------------
 
   if (pathname === '/api/auth/verify-email' && method === 'POST') {
-    const memberId = Number(body.member_id);
-    if (!Number.isInteger(memberId) || memberId <= 0) return authJson({ error: 'member_id required' }, 400);
-    if (!body.token) return authJson({ error: 'token required' }, 400);
     const policy = authPolicy(env);
-    const limit = await rateLimitCheck(db, policy, 'email-verify', String(memberId));
+    const providedMemberId = body.member_id == null ? null : Number(body.member_id);
+    if (providedMemberId !== null && (!Number.isInteger(providedMemberId) || providedMemberId <= 0)) {
+      return authJson({ error: 'member_id required' }, 400);
+    }
+    if (!body.token) return authJson({ error: 'token required' }, 400);
+    const limit = await rateLimitCheck(db, policy, 'email-verify', String(providedMemberId || 'token'));
     if (limit.error) return authJson({ error: limit.error, detail: limit.detail }, 429);
+
+    const row = await getAuthToken(db, body.token);
+    // The mail link only carries the token, so member_id is optional: the token
+    // hash is unique and points at its own member. When a member_id IS sent it is
+    // still a binding that must match, so a leaked token cannot verify a
+    // different account.
+    const memberId = providedMemberId == null ? Number(row && row.member_id || 0) : providedMemberId;
 
     const member = await getMember(db, memberId);
     if (!member || member.status === 'deleted') return authJson({ error: 'member not found' }, 404);
     if (member.email_verified_at) return authJson({ email_verified: true, already_verified: true });
 
-    const row = await getAuthToken(db, body.token);
-    if (!row || row.member_id !== memberId || row.kind !== 'verify_email' || row.status !== 'pending') {
+    if (!row || row.kind !== 'verify_email' || row.status !== 'pending') {
       return authJson({ error: 'invalid token', detail: 'verification token is invalid or already used' }, 400);
+    }
+    if (Number(row.member_id) !== memberId) {
+      return authJson({ error: 'member not found' }, 404);
     }
     if (String(row.expires_at) <= nowIso()) {
       await db.prepare("UPDATE auth_tokens SET status = 'expired', revoked_at = ? WHERE id = ?").bind(nowIso(), row.id).run();
@@ -1708,10 +1719,42 @@ async function handleMeRoute(pathname, method, url, request, db, env) {
 
   // ---------------- my orders ----------------
 
+  if (pathname === '/api/me/orders' && method === 'POST') {
+    // Member-scoped checkout. The guest path stays at POST /api/orders so the
+    // legacy CORS contract (no credentials) is untouched.
+    if (parsed.error) return authJson({ error: parsed.error }, 400);
+    const result = await createOrder(db, body || {}, env, {
+      idempotencyKey: request.headers.get('Idempotency-Key') || '',
+      customerId: member.id,
+    });
+    return authJson(result.body, result.status);
+  }
+
   if (pathname === '/api/me/orders' && method === 'GET') {
     const { results } = await db.prepare(`SELECT ${ORDER_COLUMNS} FROM orders WHERE customer_id = ? ORDER BY created_at DESC LIMIT ?`)
       .bind(member.id, 100).all();
     return authJson({ items: (results || []).map((row) => publicOrderView(row, null)) });
+  }
+
+  if (pathname === '/api/me/quotes' && method === 'POST') {
+    // Member-scoped quote intake; POST /api/quotes stays the guest path.
+    if (parsed.error) return authJson({ error: parsed.error }, 400);
+    if (!body || !Array.isArray(body.items) || !body.items.length) {
+      return authJson({ error: 'items required' }, 400);
+    }
+    if (!body.company || !body.name || !body.phone) {
+      return authJson({ error: 'company, name, phone required' }, 400);
+    }
+    const id = 'Q-' + Date.now() + '-' + Math.random().toString(36).slice(2, 8);
+    const createdAt = nowIso();
+    await db.prepare(
+      `INSERT INTO quote_requests (id, created_at, company, contact_name, phone, email, location, note, services, items, status, member_id, updated_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'received', ?, ?)`
+    ).bind(
+      id, createdAt, body.company, body.name, body.phone, body.email || null, body.location || null, body.note || null,
+      JSON.stringify(body.services || []), JSON.stringify(body.items), member.id, createdAt
+    ).run();
+    return authJson({ id, created_at: createdAt, status: 'received', member_id: member.id }, 201);
   }
 
   const myOrderMatch = pathname.match(/^\/api\/me\/orders\/([^/]+)$/);

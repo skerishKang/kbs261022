@@ -864,11 +864,17 @@
 
     if (apiUrl) {
       setBusy(true);
-      fetch(apiUrl + '/api/quotes', {
+      // 로그인 회원은 /api/me/quotes 로 접수해 회원 계정에 연결된다.
+      var isMember = !!(window.CGI_AUTH && window.CGI_AUTH.isLoggedIn());
+      var quoteInit = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: isMember
+          ? { 'Content-Type': 'application/json', 'X-CSRF-Token': window.location.origin }
+          : { 'Content-Type': 'application/json' },
         body: JSON.stringify(request)
-      }).then(function (res) {
+      };
+      if (isMember) quoteInit.credentials = 'include';
+      fetch(apiUrl + (isMember ? '/api/me/quotes' : '/api/quotes'), quoteInit).then(function (res) {
         if (!res.ok) throw new Error('HTTP ' + res.status);
         return res.json();
       }).then(function (response) {
@@ -1005,8 +1011,36 @@
       route.id = decodeURIComponent(parts[1]);
     } else if (parts[0] === 'about') {
       route.view = 'about';
+    } else if (parts[0] === 'login') {
+      route.view = 'login';
+    } else if (parts[0] === 'signup') {
+      route.view = 'signup';
+    } else if (parts[0] === 'forgot-password') {
+      route.view = 'forgot-password';
+    } else if (parts[0] === 'my-page') {
+      route.view = 'my-page';
+      route.tab = parts[1] || 'profile';
+    } else if (parts[0] === 'auth' && parts[1] === 'verify') {
+      route.view = 'auth-verify';
+    } else if (parts[0] === 'auth' && parts[1] === 'reset') {
+      route.view = 'auth-reset';
     }
     return route;
+  }
+
+  function authHeaderEl() {
+    var guest = document.querySelector('[data-auth-guest]');
+    var member = document.querySelector('.auth-links-member');
+    var logged = !!(window.CGI_AUTH && window.CGI_AUTH.isLoggedIn());
+    var nodes = document.querySelectorAll('[data-auth-guest]');
+    for (var i = 0; i < nodes.length; i++) nodes[i].hidden = logged;
+    if (member) member.hidden = !logged;
+    if (logged) {
+      var user = window.CGI_AUTH.me();
+      var nameEl = document.querySelector('[data-auth-name]');
+      if (nameEl && user) nameEl.textContent = user.name || user.email || '회원';
+    }
+    return logged;
   }
 
   function updateHeader() {
@@ -1044,19 +1078,27 @@
     state.route = parseHash();
     applySiteConfig();
     updateHeader();
-    if (state.route.view === 'home') renderHome();
-    else if (state.route.view === 'list') renderList();
-    else if (state.route.view === 'detail') renderDetail(state.route.id);
-    else if (state.route.view === 'quote') renderQuote(state.route.id, state.route.services || []);
-    else if (state.route.view === 'quote-cart') renderQuoteCart();
-    else if (state.route.view === 'checkout' && window.CGI_ORDER) window.CGI_ORDER.renderCheckout(app);
-    else if (state.route.view === 'order' && window.CGI_ORDER) window.CGI_ORDER.renderOrderDetail(app, state.route.id);
+    var view = state.route.view;
+    if (view === 'home') renderHome();
+    else if (view === 'list') renderList();
+    else if (view === 'detail') renderDetail(state.route.id);
+    else if (view === 'quote') renderQuote(state.route.id, state.route.services || []);
+    else if (view === 'quote-cart') renderQuoteCart();
+    else if (view === 'checkout' && window.CGI_ORDER) window.CGI_ORDER.renderCheckout(app);
+    else if (view === 'order' && window.CGI_ORDER) window.CGI_ORDER.renderOrderDetail(app, state.route.id);
+    else if (view === 'login') renderLogin(app);
+    else if (view === 'signup') renderSignup(app);
+    else if (view === 'forgot-password') renderForgotPassword(app);
+    else if (view === 'auth-verify') renderAuthVerify(app);
+    else if (view === 'auth-reset') renderAuthReset(app);
+    else if (view === 'my-page') renderMyPage(app);
     else renderAbout();
+    if (view !== 'login' && view !== 'signup') window.cgiSyncAuthHeader && window.cgiSyncAuthHeader();
     updateTitle();
-    document.body.setAttribute('data-view', state.route.view);
-    if (lastView !== state.route.view) {
+    document.body.setAttribute('data-view', view);
+    if (lastView !== view) {
       window.scrollTo(0, 0);
-      lastView = state.route.view;
+      lastView = view;
     }
   }
 
@@ -1113,6 +1155,27 @@
 
     if (target.hasAttribute('data-action')) {
       var action = target.getAttribute('data-action');
+      if (action === 'logout') {
+        (window.CGI_AUTH ? window.CGI_AUTH.logout() : Promise.resolve(true)).then(function () {
+          window.cgiSyncAuthHeader && window.cgiSyncAuthHeader();
+          showToast('로그아웃했습니다.');
+          navigate('#/');
+        });
+        return;
+      }
+      if (action === 'delete-account') {
+        if (!window.confirm('정말 계정을 삭제할까요? 모든 배송지와 세션이 함께 삭제됩니다.')) return;
+        (window.CGI_AUTH ? window.CGI_AUTH.deleteAccount() : Promise.resolve(false)).then(function (ok) {
+          if (ok) {
+            window.cgiSyncAuthHeader && window.cgiSyncAuthHeader();
+            showToast('계정이 삭제되었습니다.');
+            navigate('#/');
+          } else {
+            showToast('계정 삭제에 실패했습니다. 진행 중인 주문이 있는지 확인하세요.');
+          }
+        });
+        return;
+      }
       if (action === 'reset-filters') {
         navigate('#/products');
         return;
@@ -1306,6 +1369,503 @@
     }
   }
 
+  /* ------------------------------------------- customer account views (#69) */
+  var AUTH = window.CGI_AUTH || null;
+
+  function authApi() { return AUTH; }
+
+  window.cgiSyncAuthHeader = function () {
+    if (!authApi()) return;
+    var headerNav = document.querySelector('#siteNav');
+    var current = state.route.view;
+    if (current === 'login' || current === 'signup') {
+      var links = document.querySelectorAll('[data-auth-guest], .auth-links-member');
+      for (var i = 0; i < links.length; i++) links[i].hidden = true;
+      return;
+    }
+    if (authApi().isLoggedIn()) {
+      var guest = document.querySelectorAll('[data-auth-guest]');
+      for (var g = 0; g < guest.length; g++) guest[g].hidden = true;
+      var member = document.querySelector('.auth-links-member');
+      if (member) member.hidden = false;
+      var u = authApi().me();
+      var nameEl = document.querySelector('[data-auth-name]');
+      if (nameEl && u) nameEl.textContent = u.name || u.email || '회원';
+      var navLinks = document.querySelectorAll('.header-nav a[data-nav="my-page"]');
+      for (var n = 0; n < navLinks.length; n++) {
+        navLinks[n].hidden = false;
+        navLinks[n].classList.toggle('is-active', current === 'my-page');
+      }
+    } else {
+      var loggedOut = document.querySelectorAll('[data-auth-guest]');
+      for (var l = 0; l < loggedOut.length; l++) loggedOut[l].hidden = false;
+      var memberHidden = document.querySelector('.auth-links-member');
+      if (memberHidden) memberHidden.hidden = true;
+      var myNav = document.querySelectorAll('.header-nav a[data-nav="my-page"]');
+      for (var m = 0; m < myNav.length; m++) { myNav[m].hidden = true; myNav[m].classList.remove('is-active'); }
+    }
+  };
+
+  function authShell(title, inner, wide) {
+    return '<section class="auth-page' + (wide ? ' auth-wide' : '') + '">' +
+      '<div class="auth-card">' +
+        '<h2>' + esc(title) + '</h2>' +
+        inner +
+      '</div>' +
+    '</section>';
+  }
+
+  function authAlert(message, type) {
+    if (!message) return '';
+    return '<p class="auth-alert auth-alert-' + (type || 'error') + '">' + esc(message) + '</p>';
+  }
+
+  function authField(labelText, name, type, value, opts) {
+    opts = opts || {};
+    var attrs = 'name="' + esc(name) + '" type="' + esc(type) + '"';
+    if (value) attrs += ' value="' + esc(value) + '"';
+    if (opts.required !== false) attrs += ' required';
+    if (opts.autocomplete) attrs += ' autocomplete="' + esc(opts.autocomplete) + '"';
+    if (opts.placeholder) attrs += ' placeholder="' + esc(opts.placeholder) + '"';
+    if (opts.maxLength) attrs += ' maxlength="' + esc(opts.maxLength) + '"';
+    if (opts.min) attrs += ' minlength="' + esc(opts.min) + '"';
+    return '<label class="auth-field">' +
+      '<span class="auth-label">' + esc(labelText) + '</span>' +
+      '<input class="auth-input" ' + attrs + '>' +
+      (opts.hint ? '<small class="auth-hint">' + (opts.hint.charAt(0) === '<' ? opts.hint : esc(opts.hint)) + '</small>' : '') +
+    '</label>';
+  }
+
+  function renderAuthPage(app) {
+    var p = authApi();
+    app.innerHTML = authShell('로그인',
+      authAlert(!p ? '로그인 서비스를 사용할 수 없습니다. API 주소를 확인하세요.' : '') +
+      '<p class="auth-muted">회원가입이 필요해요. 로그인하시면 주문 내역과 배송지를 관리할 수 있어요.</p>' +
+      '<a class="btn btn-primary btn-block" href="#/signup">회원가입</a>', true);
+  }
+
+  function renderLogin(app) {
+    var p = authApi();
+    var html = authShell('로그인',
+      '<form id="loginForm" class="auth-form" novalidate>' +
+        authField('이메일', 'email', 'email', '', { autocomplete: 'email', required: true }) +
+        authField('비밀번호', 'password', 'password', '', { autocomplete: 'current-password', required: true }) +
+        '<button type="submit" class="btn btn-primary btn-block" data-auth-submit="login">로그인</button>' +
+      '</form>' +
+      '<div class="auth-alt">' +
+        '<a href="#/forgot-password">비밀번호를 잊어버렸어요</a> · <a href="#/signup">회원가입</a>' +
+      '</div>', true);
+    app.innerHTML = html;
+    var form = document.getElementById('loginForm');
+    if (!form) return;
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();
+      var email = form.elements.email.value.trim();
+      var password = form.elements.password.value;
+      var submit = form.querySelector('[data-auth-submit="login"]');
+      if (!email || !password) { showToast('이메일과 비밀번호를 입력해 주세요.'); return; }
+      submit.disabled = true;
+      submit.textContent = '로그인 중…';
+      p.login({ email: email, password: password }).then(function (ok) {
+        submit.disabled = false;
+        submit.textContent = '로그인';
+        if (!ok) {
+          app.innerHTML = authShell('로그인',
+            authAlert('이메일 또는 비밀번호가 올바르지 않습니다.', 'error') +
+            '<form id="loginForm" class="auth-form">' +
+              authField('이메일', 'email', 'email', email) +
+              authField('비밀번호', 'password', 'password', '') +
+              '<button type="submit" class="btn btn-primary btn-block" data-auth-submit="login">다시 로그인</button>' +
+            '</form>' +
+            '<div class="auth-alt"><a href="#/forgot-password">비밀번호를 잊어버렸어요</a> · <a href="#/signup">회원가입</a></div>', true);
+          rebindLogin(app);
+          return;
+        }
+        window.cgiSyncAuthHeader();
+        showToast('로그인했습니다.');
+        navigate('#/');
+      });
+    });
+  }
+
+  function rebindLogin(app) {
+    var form = document.getElementById('loginForm');
+    if (!form) return;
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();
+      var email = form.elements.email.value.trim();
+      var password = form.elements.password.value;
+      var submit = form.querySelector('[data-auth-submit="login"]');
+      if (!email || !password) return;
+      submit.disabled = true;
+      submit.textContent = '로그인 중…';
+      authApi().login({ email: email, password: password }).then(function (ok) {
+        submit.disabled = false;
+        submit.textContent = '다시 로그인';
+        if (!ok) { showToast('이메일 또는 비밀번호가 올바르지 않습니다.'); return; }
+        window.cgiSyncAuthHeader();
+        showToast('로그인했습니다.');
+        navigate('#/');
+      });
+    });
+  }
+
+  function renderSignup(app) {
+    var p = authApi();
+    app.innerHTML = authShell('회원가입',
+      '<form id="signupForm" class="auth-form" novalidate>' +
+        authField('이메일', 'email', 'email', '', { autocomplete: 'email', hint: '<span data-email-check></span>' }) +
+        authField('성명', 'name', 'text', '', { autocomplete: 'name', maxLength: 40 }) +
+        authField('연락처', 'phone', 'tel', '', { autocomplete: 'tel', required: false, placeholder: '010-0000-0000' }) +
+        authField('회사명 (선택)', 'company', 'text', '', { autocomplete: 'organization', required: false, maxLength: 100 }) +
+        authField('비밀번호', 'password', 'password', '', { autocomplete: 'new-password', min: 8 }) +
+        authField('비밀번호 확인', 'password2', 'password', '', { autocomplete: 'new-password' }) +
+        '<p class="auth-hint">8자 이상, 영문과 숫자와 기호가 모두 들어가야 해요.</p>' +
+        '<button type="submit" class="btn btn-primary btn-block" data-auth-submit="signup">회원가입</button>' +
+      '</form>', true);
+    var form = document.getElementById('signupForm');
+    if (!form) return;
+    var emailInput = form.elements.email;
+    var checkEl = form.querySelector('[data-email-check]');
+    var timer = null;
+    emailInput.addEventListener('input', function () {
+      clearTimeout(timer);
+      var value = emailInput.value.trim();
+      if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(value)) { checkEl.textContent = ''; return; }
+      timer = setTimeout(function () {
+        p.emailAvailable(value).then(function (available) {
+          if (emailInput.value.trim() !== value) return;
+          checkEl.textContent = available === null ? '' : (available ? '사용 가능한 이메일이에요.' : '이미 가입된 이메일이에요.');
+        });
+      }, 500);
+    });
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();
+      var submit = form.querySelector('[data-auth-submit="signup"]');
+      var password = form.elements.password.value;
+      if (password !== form.elements.password2.value) {
+        showToast('비밀번호가 서로 일치하지 않습니다.');
+        return;
+      }
+      submit.disabled = true;
+      submit.textContent = '가입 처리 중…';
+      p.signUp({
+        email: form.elements.email.value.trim(),
+        name: form.elements.name.value.trim(),
+        phone: form.elements.phone.value.trim(),
+        company: form.elements.company.value.trim(),
+        password: password
+      }).then(function (member) {
+        submit.disabled = false;
+        submit.textContent = '회원가입';
+        if (!member) { showToast('가입에 실패했습니다. 이메일이 이미 사용되었는지 확인하세요.'); return; }
+        window.cgiSyncAuthHeader();
+        navigate('#/auth/verify');
+      });
+    });
+  }
+
+  function renderAuthVerify(app) {
+    var p = authApi();
+    var params = new URLSearchParams((location.hash || '').split('?')[1] || '');
+    var token = params.get('token');
+    if (token) {
+      app.innerHTML = authShell('이메일 인증 중…', '<p class="auth-muted">링크로 넘어온 토큰을 확인하고 있어요.</p>', true);
+      p.verifyEmail(token).then(function (ok) {
+        if (ok) {
+          window.cgiSyncAuthHeader();
+          showToast('이메일 인증이 완료됐어요.');
+          navigate('#/');
+        } else {
+          app.innerHTML = authShell('인증 오류',
+            authAlert('인증 링크가 유효하지 않거나 이미 사용됐어요.', 'error') +
+            '<p class="auth-muted">로그인한 회원이면 재전송할 수 있어요.</p>' +
+            '<a class="btn btn-primary btn-block" href="#/login">로그인</a>', true);
+        }
+      });
+      return;
+    }
+    app.innerHTML = authShell('이메일 인증 필요해요',
+      (p.isLoggedIn() && !p.emailVerified())
+        ? '<p class="auth-muted">가입하신 이메일로 인증 링크를 보내 드릴게요.</p>' +
+          '<button type="button" class="btn btn-primary btn-block" data-action="resend-verification">인증 메일 재전송</button>'
+        : '<p class="auth-muted">가입이 완료됐어요. 이메일을 확인하고 인증 링크를 눌러 주세요.</p>' +
+          '<p class="auth-muted">개발 환경(MAIL_MODE=echo)이라면 API 응답에 토큰이 그대로 담겨요.</p>' +
+          '<a class="btn btn-primary btn-block" href="#/login">로그인하러 가기</a>', true);
+    var resend = app.querySelector('[data-action="resend-verification"]');
+    if (resend) {
+      resend.addEventListener('click', function () {
+        resend.disabled = true;
+        resend.textContent = '전송 중…';
+        p.resendVerification().then(function (res) {
+          resend.disabled = false;
+          resend.textContent = '인증 메일 재전송';
+          showToast(res && res.mail && res.mail.echo_token ? '토큰이 API 응답에 담겼어요.' : '인증 메일을 재전송했어요.');
+        });
+      });
+    }
+  }
+
+  function renderAuthReset(app) {
+    var p = authApi();
+    var params = new URLSearchParams((location.hash || '').split('?')[1] || '');
+    var token = params.get('token');
+    if (!token) {
+      app.innerHTML = authShell('비밀번호 재설정', authAlert('유효하지 않은 링크예요.', 'error'), true);
+      return;
+    }
+    app.innerHTML = authShell('새 비밀번호 설정',
+      '<form id="resetForm" class="auth-form" novalidate>' +
+        authField('새 비밀번호', 'password', 'password', '', { autocomplete: 'new-password', min: 8 }) +
+        authField('새 비밀번호 확인', 'password2', 'password', '', { autocomplete: 'new-password' }) +
+        '<p class="auth-hint">8자 이상, 영문과 숫자와 기호가 모두 들어가야 해요.</p>' +
+        '<button type="submit" class="btn btn-primary btn-block">확인</button>' +
+      '</form>', true);
+    var form = document.getElementById('resetForm');
+    if (!form) return;
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();
+      var password = form.elements.password.value;
+      if (password !== form.elements.password2.value) { showToast('비밀번호가 서로 일치하지 않습니다.'); return; }
+      p.confirmPasswordReset(token, password).then(function (ok) {
+        if (ok) {
+          window.cgiSyncAuthHeader();
+          showToast('비밀번호가 변경됐어요. 로그인 상태예요.');
+          navigate('#/');
+        } else {
+          showToast('토큰이 유효하지 않거나 이미 사용됐어요. 재설정을 다시 요청하세요.');
+        }
+      });
+    });
+  }
+
+  function renderForgotPassword(app) {
+    var p = authApi();
+    app.innerHTML = authShell('비밀번호 재설정 요청',
+      '<p class="auth-muted">가입하신 이메일을 입력하면 재설정 링크를 보내 드려요. 이메일이 존재하지 않아도 같은 메시지를 보여요.</p>' +
+      '<form id="forgotForm" class="auth-form" novalidate>' +
+        authField('이메일', 'email', 'email', '', { autocomplete: 'email' }) +
+        '<button type="submit" class="btn btn-primary btn-block">재설정 메일 받기</button>' +
+      '</form>' +
+      '<div class="auth-alt"><a href="#/login">로그인으로 돌아가기</a></div>', true);
+    var form = document.getElementById('forgotForm');
+    if (!form) return;
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();
+      var submit = form.querySelector('button[type="submit"]');
+      submit.disabled = true;
+      submit.textContent = '전송 중…';
+      p.requestPasswordReset(form.elements.email.value.trim()).then(function (ok) {
+        submit.disabled = false;
+        submit.textContent = '재설정 메일 받기';
+        if (ok) {
+          app.innerHTML = authShell('요청 완료',
+            '<p class="auth-muted">가입하신 계정이 있다면 이메일로 재설정 링크를 보냈어요. 스팸 folder도 확인해 주세요.</p>' +
+            '<div class="auth-alt"><a href="#/login">로그인으로 돌아가기</a></div>', true);
+        } else {
+          showToast('요청에 실패했어요. 나중에 다시 시도해 주세요.');
+        }
+      });
+    });
+  }
+
+  function renderMyPage(app) {
+    var p = authApi();
+    if (!p.isLoggedIn()) {
+      app.innerHTML = authShell('로그인이 필요해요',
+        '<p class="auth-muted">마이페이지는 로그인한 회원만 볼 수 있어요.</p>' +
+        '<a class="btn btn-primary btn-block" href="#/login">로그인</a>' +
+        '<div class="auth-alt"><a href="#/signup">회원가입</a></div>', true);
+      return;
+    }
+    var tab = (state.route.tab || 'profile');
+    var allowed = ['profile', 'addresses', 'orders'].indexOf(tab) === -1 ? 'profile' : tab;
+    var user = p.me();
+    var tabs = [
+      ['profile', '회원 정보'],
+      ['addresses', '배송지'],
+      ['orders', '주문 내역']
+    ];
+    var html = '<section class="mypage">' +
+      '<header class="mypage-head">' +
+        '<div><h2>마이페이지</h2><p class="auth-muted">' + esc(user.email) +
+          (user.email_verified ? ' · 이메일 인증됨' : ' · <span class="auth-warn">이메일 미인증</span>') + '</p></div>' +
+        '<nav class="mypage-tabs">' +
+          tabs.map(function (t) {
+            return '<a href="#/my-page/' + t[0] + '" class="mypage-tab' + (t[0] === allowed ? ' is-active' : '') + '">' + t[1] + '</a>';
+          }).join('') +
+        '</nav>' +
+      '</header>' +
+      '<div class="mypage-body" id="myPageBody"></div>' +
+    '</section>';
+    app.innerHTML = html;
+    var body = document.getElementById('myPageBody');
+    if (allowed === 'profile') renderMyProfile(body);
+    else if (allowed === 'addresses') renderMyAddresses(body);
+    else renderMyOrders(body);
+  }
+
+  function renderMyProfile(body) {
+    var p = authApi();
+    var u = p.me();
+    body.innerHTML = '<form id="profileForm" class="auth-form mypage-form">' +
+      authField('이메일', 'email', 'email', u.email, { autocomplete: 'email' }) +
+      '<p class="auth-hint">이메일 주소는 변경할 수 없어요. 새 계정으로 가입해야 해요.</p>' +
+      authField('성명', 'name', 'text', u.name || '', { maxLength: 40 }) +
+      authField('연락처', 'phone', 'tel', u.phone || '', { required: false, placeholder: '010-0000-0000' }) +
+      authField('회사명', 'company', 'text', u.company || '', { required: false, maxLength: 100 }) +
+      '<button type="submit" class="btn btn-primary">저장</button>' +
+    '</form>' +
+    '<form id="passwordForm" class="auth-form mypage-form" novalidate>' +
+      '<h3>비밀번호 변경</h3>' +
+      authField('현재 비밀번호', 'current_password', 'password', '', { autocomplete: 'current-password' }) +
+      authField('새 비밀번호', 'password', 'password', '', { autocomplete: 'new-password', min: 8 }) +
+      authField('새 비밀번호 확인', 'password2', 'password', '', { autocomplete: 'new-password' }) +
+      '<button type="submit" class="btn btn-secondary">변경</button>' +
+    '</form>' +
+    '<form class="mypage-form mypage-danger">' +
+      '<h3>계정 삭제</h3>' +
+      '<p class="auth-muted">진행 중인 주문이 있으면 삭제할 수 없어요.</p>' +
+      '<button type="button" class="btn btn-danger" data-action="delete-account">계정 삭제</button>' +
+    '</form>';
+    var profileForm = document.getElementById('profileForm');
+    profileForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+      var submit = profileForm.querySelector('button[type="submit"]');
+      submit.disabled = true;
+      submit.textContent = '저장 중…';
+      p.updateProfile({
+        name: profileForm.elements.name.value.trim(),
+        phone: profileForm.elements.phone.value.trim(),
+        company: profileForm.elements.company.value.trim()
+      }).then(function (result) {
+        submit.disabled = false;
+        if (result && result.id) {
+          window.cgiSyncAuthHeader();
+          showToast('회원 정보를 저장했어요.');
+          renderMyPage(document.getElementById('app'));
+        } else {
+          submit.textContent = '저장';
+          showToast(result && result.data && result.data.error ? result.data.error : '저장에 실패했어요.');
+        }
+      });
+    });
+    var passwordForm = document.getElementById('passwordForm');
+    passwordForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+      var submit = passwordForm.querySelector('button[type="submit"]');
+      var password = passwordForm.elements.password.value;
+      if (password !== passwordForm.elements.password2.value) { showToast('비밀번호가 서로 일치하지 않습니다.'); return; }
+      submit.disabled = true;
+      submit.textContent = '변경 중…';
+      p.changePassword({ current_password: passwordForm.elements.current_password.value, password: password }).then(function (ok) {
+        submit.disabled = false;
+        submit.textContent = '변경';
+        if (ok) { showToast('비밀번호가 변경됐어요.'); passwordForm.reset(); }
+        else { showToast('변경에 실패했어요. 현재 비밀번호를 확인하세요.'); }
+      });
+    });
+  }
+
+  function renderMyAddresses(body) {
+    var p = authApi();
+    body.innerHTML = '<p class="auth-muted">배송지를 불러오는 중…</p>';
+    p.addresses().then(function (items) {
+      if (items === null) { body.innerHTML = authAlert('배송지를 불러오지 못했어요.', 'error'); return; }
+      var list = items.map(function (a) {
+        return '<article class="address-card">' +
+          '<div class="address-head">' +
+            '<strong>' + esc(a.label) + '</strong>' +
+            (a.is_default ? '<span class="address-badge">기본</span>' : '') +
+          '</div>' +
+          '<p><strong>' + esc(a.recipient_name) + '</strong> · ' + esc(a.phone) + '</p>' +
+          '<p>' + esc(a.addr) + (a.addr_detail ? ' ' + esc(a.addr_detail) : '') + '</p>' +
+          (a.company ? '<p class="auth-muted">' + esc(a.company) + '</p>' : '') +
+          '<button type="button" class="btn btn-small btn-danger" data-address-delete="' + esc(a.id) + '">삭제</button>' +
+        '</article>';
+      }).join('');
+      body.innerHTML = '<form id="addressForm" class="auth-form mypage-form" novalidate>' +
+        '<h3>배송지 추가</h3>' +
+        authField('라벨', 'label', 'text', '', { placeholder: '집 / 사무실', maxLength: 40 }) +
+        authField('수취인', 'recipient_name', 'text', '', { maxLength: 40 }) +
+        authField('연락처', 'phone', 'tel', '', { placeholder: '010-0000-0000' }) +
+        authField('주소', 'addr', 'text', '', { maxLength: 120 }) +
+        authField('상세 주소', 'addr_detail', 'text', '', { required: false, maxLength: 100 }) +
+        authField('회사명', 'company', 'text', '', { required: false, maxLength: 100 }) +
+        '<label class="auth-field auth-field-row"><input type="checkbox" name="is_default"><span class="auth-label">기본 배송지로 저장</span></label>' +
+        '<button type="submit" class="btn btn-primary">추가</button>' +
+      '</form>' +
+      '<div class="address-list">' + (list || '<p class="auth-muted">저장된 배송지가 없어요.</p>') + '</div>';
+      bindAddressHandlers();
+    });
+  }
+
+  function bindAddressHandlers() {
+    var form = document.getElementById('addressForm');
+    if (form) {
+      form.addEventListener('submit', function (event) {
+        event.preventDefault();
+        var submit = form.querySelector('button[type="submit"]');
+        submit.disabled = true;
+        submit.textContent = '추가 중…';
+        AUTH.addAddress({
+          label: form.elements.label.value.trim(),
+          recipient_name: form.elements.recipient_name.value.trim(),
+          phone: form.elements.phone.value.trim(),
+          addr: form.elements.addr.value.trim(),
+          addr_detail: form.elements.addr_detail.value.trim(),
+          company: form.elements.company.value.trim(),
+          is_default: form.elements.is_default.checked
+        }).then(function (result) {
+          submit.disabled = false;
+          submit.textContent = '추가';
+          if (result && result.id) {
+            showToast('배송지를 추가했어요.');
+            renderMyAddresses(document.getElementById('myPageBody'));
+          } else {
+            showToast(result && result.data && result.data.error ? result.data.error : '추가에 실패했어요.');
+          }
+        });
+      });
+    }
+    var deletes = document.querySelectorAll('[data-address-delete]');
+    for (var i = 0; i < deletes.length; i++) {
+      (function (btn) {
+        btn.addEventListener('click', function () {
+          if (!window.confirm('이 배송지를 삭제할까요?')) return;
+          AUTH.removeAddress(btn.getAttribute('data-address-delete')).then(function (ok) {
+            showToast(ok ? '배송지를 삭제했어요.' : '삭제에 실패했어요.');
+            renderMyAddresses(document.getElementById('myPageBody'));
+          });
+        });
+      })(deletes[i]);
+    }
+  }
+
+  function renderMyOrders(body) {
+    var p = authApi();
+    body.innerHTML = '<p class="auth-muted">주문 내역을 불러오는 중…</p>';
+    p.orders().then(function (items) {
+      if (items === null) { body.innerHTML = authAlert('주문 내역을 불러오지 못했어요.', 'error'); return; }
+      if (!items.length) {
+        body.innerHTML = '<p class="auth-muted">로그인 상태로 한 주문만 여기에 보여요. 비회원 주문은 고객센터에 문의해 주세요.</p>' +
+          '<a class="btn btn-primary" href="#/products">상품 보러 가기</a>';
+        return;
+      }
+      body.innerHTML = '<div class="order-list">' + items.map(function (o) {
+        var first = o.items && o.items[0] ? o.items[0].name : '상품';
+        return '<article class="order-card">' +
+          '<header class="order-card-head">' +
+            '<a href="#/my-page/orders" class="order-id">' + esc(o.id) + '</a>' +
+            '<span class="order-status">' + esc(o.status || '대기') + '</span>' +
+          '</header>' +
+          '<p class="auth-muted">' + esc(o.created_at || '') + ' · ' + esc(first) + (o.items && o.items.length > 1 ? ' 외 ' + (o.items.length - 1) + '건' : '') + '</p>' +
+          '<p class="order-total">' + (o.totals && o.totals.total_amount != null ? Number(o.totals.total_amount).toLocaleString('ko-KR') + '원' : '금액 미확정') + '</p>' +
+        '</article>';
+      }).join('') + '</div>';
+    });
+  }
+
   /* ------------------------------------------------------------ public API */
   window.cgiToggleService = function (id, checked) {
     state.quoteServices = state.quoteServices || [];
@@ -1408,12 +1968,17 @@
   window.addEventListener('hashchange', render);
 
   /* ----------------------------------------------------------------- boot */
+  if (window.CGI_AUTH) window.CGI_AUTH.rewriteMailLink();
+
   loadProducts().then(function () {
     loadQuoteCart();
     loadQuoteCartServices();
+    var session = window.CGI_AUTH ? window.CGI_AUTH.refresh() : Promise.resolve(null);
     if (loadingBox && loadingBox.parentNode) loadingBox.parentNode.removeChild(loadingBox);
-    render();
-    document.body.setAttribute('data-cgi-ready', '1');
+    return session.then(function () {
+      render();
+      document.body.setAttribute('data-cgi-ready', '1');
+    });
   }).catch(function (error) {
     if (loadingBox) loadingBox.textContent = '상품 데이터를 불러오지 못했습니다: ' + error.message;
     document.body.setAttribute('data-cgi-ready', 'error');

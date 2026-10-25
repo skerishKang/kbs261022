@@ -136,8 +136,11 @@ test('auth routes advertise credentials and DELETE, legacy routes grant none', a
   });
   assert.equal(authPreflight.status, 204);
   assert.equal(authPreflight.headers['access-control-allow-origin'], ORIGIN);
-  assert.equal(authPreflight.headers['access-control-allow-credentials'], 'true');
-  assert.match(authPreflight.headers['access-control-allow-methods'], /DELETE/);
+    assert.equal(authPreflight.headers['access-control-allow-credentials'], 'true');
+    assert.match(authPreflight.headers['access-control-allow-methods'], /DELETE/);
+    // The custom CSRF header has to be preflight-approved or the browser drops
+    // the real request before the guard runs.
+    assert.match(authPreflight.headers['access-control-allow-headers'], /x-csrf-token/i);
 
   const mePreflight = await call(environment, 'OPTIONS', '/api/me', undefined, {
     Origin: ORIGIN,
@@ -326,6 +329,25 @@ test('the token is single-use and cannot be replayed for a second session', asyn
   ).all();
   assert.equal(results[0].status, 'consumed');
   assert.ok(results[0].consumed_at);
+});
+
+test('the mail link token alone verifies the account without a member_id', async () => {
+  const environment = env({ MAIL_MODE: 'echo', EMAIL_VERIFY_REQUIRED: 'YES' });
+  const { res, token } = await signUp(environment);
+  const mail = res.json.mail;
+  assert.ok(mail.echo_url.includes('/auth/verify?token='), 'the link carries only the token');
+
+  const verified = await call(environment, 'POST', '/api/auth/verify-email', { token }, csrf);
+  assert.equal(verified.status, 200, verified.text);
+  assert.equal(verified.json.email_verified, true);
+
+  // The mail link opens through the site, so a token for a deleted account
+  // still has to fail closed.
+  const second = await signUp(environment, { email: 'second@example.com' });
+  await environment.DB.prepare("UPDATE members SET status = 'deleted' WHERE id = ?")
+    .bind(second.memberId).run();
+  const deleted = await call(environment, 'POST', '/api/auth/verify-email', { token: second.token }, csrf);
+  assert.equal(deleted.status, 404);
 });
 
 // ---------------------------------------------------------------------------
@@ -600,6 +622,54 @@ test('guest checkout is unchanged and has no member link', async () => {
   assert.equal(created.json.customer_id, null);
   const list = await call(environment, 'GET', '/api/me/orders', undefined, csrf);
   assert.equal(list.status, 401);
+});
+
+test('member-scoped checkout and quote intake link the member without touching the legacy routes', async () => {
+  const environment = env();
+  const { cookie } = await verifiedSession(environment);
+  const memberId = (await call(environment, 'GET', '/api/me', undefined, { ...csrf, Cookie: cookie })).json.member.id;
+
+  const created = await call(environment, 'POST', '/api/me/orders', {
+    items: [{ product_id: priced[0], qty: 2 }],
+    company: '[E2E] 회사', name: '[E2E] 김회원', phone: '010-1111-2222',
+    idempotency_key: 'e2e-memberscoped-1',
+  }, { ...csrf, Cookie: cookie, 'Idempotency-Key': 'e2e-memberscoped-1' });
+  assert.equal(created.status, 201, created.text);
+  assert.equal(created.json.customer_id, memberId);
+
+  const list = await call(environment, 'GET', '/api/me/orders', undefined, { ...csrf, Cookie: cookie });
+  assert.equal(list.json.items.length, 1);
+  assert.equal(list.json.items[0].id, created.json.id);
+
+  const quote = await call(environment, 'POST', '/api/me/quotes', {
+    company: '[E2E] 회사', name: '[E2E] 김회원', phone: '010-1111-2222',
+    items: [{ id: priced[0], qty: 1 }],
+  }, { ...csrf, Cookie: cookie });
+  assert.equal(quote.status, 201, quote.text);
+  assert.equal(quote.json.member_id, memberId);
+
+  // Neither member route is reachable without a session, and neither returns a
+  // session cookie to a guest.
+  assert.equal((await call(environment, 'POST', '/api/me/orders', {}, csrf)).status, 401);
+  assert.equal((await call(environment, 'POST', '/api/me/quotes', { company: 'a', name: 'b', phone: '010-1111-2222', items: [{ id: priced[0], qty: 1 }] }, csrf)).status, 401);
+
+  // The legacy guest paths stay credential-free in their CORS response.
+  const guestOrder = await call(environment, 'POST', '/api/orders', {
+    items: [{ product_id: priced[0], qty: 1 }],
+    company: '[E2E] 업체', name: '[E2E] 김고객', phone: '010-5555-6666',
+    idempotency_key: 'e2e-guest-scoped',
+  }, csrf);
+  assert.equal(guestOrder.status, 201);
+  assert.equal(guestOrder.json.customer_id, null);
+  assert.equal(guestOrder.headers['access-control-allow-credentials'], undefined);
+
+  const scoped = await call(environment, 'POST', '/api/me/orders', {
+    items: [{ product_id: priced[0], qty: 1 }],
+    company: '[E2E] 회사', name: '[E2E] 김회원', phone: '010-1111-2222',
+    idempotency_key: 'e2e-memberscoped-2',
+  }, { ...csrf, Cookie: cookie });
+  assert.equal(scoped.status, 201);
+  assert.equal(scoped.headers['access-control-allow-credentials'], 'true');
 });
 
 test('a member can cancel an unpaid order, not a paid one', async () => {

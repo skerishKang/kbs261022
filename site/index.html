@@ -40,9 +40,23 @@
       <a href="#/products" data-nav="list">전체 상품</a>
       <a href="#/quote-cart" data-nav="quote">견적 목록</a>
       <a href="#/checkout" data-nav="checkout">주문·결제</a>
+      <a href="#/my-page" data-nav="my-page">마이페이지</a>
       <a href="#/about" data-nav="about">이용 안내</a>
       <a href="../website/index.html" data-home-link data-nav="company">회사 홈페이지</a>
     </nav>
+
+    <div class="header-auth">
+      <div class="auth-links-guest">
+        <a href="#/login" data-auth-guest>로그인</a>
+        <a href="#/signup" class="btn btn-small btn-primary" data-auth-guest>회원가입</a>
+      </div>
+      <div class="auth-links-member" hidden>
+        <a href="#/my-page" data-auth-member>
+          <span class="auth-name" data-auth-name>회원님</span>
+        </a>
+        <button type="button" class="btn btn-small btn-ghost" data-action="logout">로그아웃</button>
+      </div>
+    </div>
   </div>
 </header>
 
@@ -89,6 +103,7 @@
 <script src="data/products.js"></script>
 <script src="data/services.js"></script>
 <script src="assets/js/cgi-header.js"></script>
+<script src="assets/js/cgi-auth.js"></script>
 <script src="assets/js/cgi-order.js"></script>
 <script src="assets/js/cgi-catalog.js"></script>
 </body>
