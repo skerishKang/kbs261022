@@ -465,16 +465,6 @@
   /* ---------------------------------------------------------- wiring */
   document.addEventListener('DOMContentLoaded', function () {
     $('drawerClose').addEventListener('click', function () { $('drawer').hidden = true; state.drawer = null; });
-    $('authBtn').addEventListener('click', function () {
-      var v = $('tokenInput').value.trim();
-      if (!v) return;
-      state.token = v;
-      localStorage.setItem(LS_KEY, v);
-      $('authBox').hidden = true;
-      $('ordersApp').hidden = false;
-      fillFilters();
-      load();
-    });
     var memberLoginBtn = $('memberLoginBtn');
     if (memberLoginBtn) memberLoginBtn.addEventListener('click', function () {
       var email = $('memberEmail').value.trim();
@@ -499,19 +489,6 @@
         });
       });
     });
-    var tokenTabBtn = $('tokenTabBtn');
-    var memberTabBtn = $('memberTabBtn');
-    if (tokenTabBtn && memberTabBtn) {
-      tokenTabBtn.addEventListener('click', function () {
-        $('tokenPanel').hidden = false;
-        $('memberPanel').hidden = true;
-      });
-      memberTabBtn.addEventListener('click', function () {
-        $('tokenPanel').hidden = true;
-        $('memberPanel').hidden = false;
-      });
-    }
-    $('tokenInput').addEventListener('keydown', function (ev) { if (ev.key === 'Enter') $('authBtn').click(); });
     $('logoutBtn').addEventListener('click', function () {
       state.token = null;
       state.memberMode = false;

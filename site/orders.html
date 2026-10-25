@@ -41,18 +41,7 @@
   </header>
 
   <section id="authBox" class="auth-box" hidden>
-    <div class="auth-tabs">
-      <button type="button" class="btn btn-secondary" id="tokenTabBtn">관리자 토큰</button>
-      <button type="button" class="btn btn-secondary" id="memberTabBtn">CGI 회원 로그인</button>
-    </div>
-    <div id="tokenPanel">
-      <label>관리자 토큰
-        <input type="password" id="tokenInput" autocomplete="off" placeholder="Bearer 토큰 입력">
-      </label>
-      <button type="button" class="btn" id="authBtn">접속</button>
-      <p class="form-note">토큰은 이 브라우저에만 저장됩니다.</p>
-    </div>
-    <div id="memberPanel" hidden>
+    <div id="memberPanel">
       <label>이메일 <input type="email" id="memberEmail" autocomplete="username"></label>
       <label>비밀번호 <input type="password" id="memberPassword" autocomplete="current-password"></label>
       <button type="button" class="btn" id="memberLoginBtn">로그인</button>
