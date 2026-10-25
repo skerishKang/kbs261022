@@ -383,8 +383,7 @@
         loadRequests(); renderList();
       });
     } else {
-      if (authBox) authBox.hidden = false;
-      loadRequests(); renderList();
+      window.location.href = 'index.html#/login';
     }
   } else {
     loadRequests(); renderList();
