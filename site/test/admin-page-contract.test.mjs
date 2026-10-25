@@ -60,10 +60,26 @@ for (const [page, cfg] of Object.entries(PAGES)) {
 
   test(`${page} loads the staff stylesheet that styles .auth-box and .staff-msg`, () => {
     const html = read(page);
-    assert.match(html, /<link rel="stylesheet" href="assets\/css\/cgi-staff-orders\.css">/);
-    assert.match(html, /<link rel="stylesheet" href="assets\/css\/cgi-catalog\.css">/);
+    assert.match(html, /<link rel="stylesheet" href="assets\/css\/cgi-staff-orders\.css\?v=/);
+    assert.match(html, /<link rel="stylesheet" href="assets\/css\/cgi-catalog\.css\?v=/);
   });
 }
+
+test('the two admin consoles load the shared stylesheets at one version', () => {
+  // Both consoles render .auth-box/.btn/.staff-msg from cgi-catalog.css, and the
+  // .btn[hidden] repair rides in it, so a console left on an older query would
+  // show a different login panel than its sibling.
+  const css = ['cgi-catalog.css', 'cgi-staff-orders.css'];
+  for (const file of css) {
+    const versions = Object.keys(PAGES).map((page) => {
+      const m = read(page).match(new RegExp('<link rel="stylesheet" href="assets/css/' +
+        file.replace('.', '\\.') + '\\?v=([0-9a-z]+)"'));
+      assert.ok(m, `${page} loads ${file} without a cache-buster`);
+      return m[1];
+    });
+    assert.equal(new Set(versions).size, 1, `${file} versions diverge across consoles: ${versions.join(', ')}`);
+  }
+});
 
 test('the stylesheet keeps the hidden attribute winning over .btn display', () => {
   // .btn is `display: inline-flex`, which outranks the UA [hidden] rule, so a
