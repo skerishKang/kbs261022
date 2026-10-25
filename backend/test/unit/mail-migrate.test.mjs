@@ -37,13 +37,79 @@ test('echo mode returns the token so a local environment can verify', async () =
   assert.equal(out.url, MESSAGE.url);
 });
 
-test('sendgrid mode is an explicit no-op placeholder', async () => {
+test('sendgrid mode without API key returns unconfigured', async () => {
   const mail = createMailAdapter({ MAIL_MODE: 'sendgrid' });
   const out = await mail.deliver(MESSAGE);
   assert.equal(out.delivered, false);
   assert.equal(out.channel, 'unconfigured');
-  assert.match(out.note, /no provider credential/);
+  assert.match(out.note, /SENDGRID_API_KEY/);
   assert.equal(out.token, undefined);
+});
+
+test('sendgrid mode with API key sends the message and returns delivered', async () => {
+  const origFetch = globalThis.fetch;
+  let captured = null;
+  globalThis.fetch = async (url, init) => {
+    captured = { url, init };
+    return { ok: true, status: 200, text: async () => '' };
+  };
+  try {
+    const mail = createMailAdapter({
+      MAIL_MODE: 'sendgrid',
+      SENDGRID_API_KEY: 'SG.test_key',
+      MAIL_FROM: 'CGI <noreply@test.com>',
+    });
+    const out = await mail.deliver(MESSAGE);
+    assert.equal(out.delivered, true);
+    assert.equal(out.channel, 'sendgrid');
+    assert.ok(captured);
+    assert.match(captured.url, /api\.sendgrid\.com/);
+    assert.match(captured.init.headers.Authorization, /Bearer SG\.test_key/);
+    const body = JSON.parse(captured.init.body);
+    assert.equal(body.personalizations[0].to[0].email, MESSAGE.to);
+    assert.equal(body.from.email, 'noreply@test.com');
+    assert.equal(body.content.length, 2);
+    assert.ok(body.content[1].value.includes('CGI'));
+  } finally {
+    globalThis.fetch = origFetch;
+  }
+});
+
+test('sendgrid mode reports API errors', async () => {
+  const origFetch = globalThis.fetch;
+  globalThis.fetch = async () => {
+    return { ok: false, status: 403, text: async () => JSON.stringify({ errors: [{ message: 'bad key' }] }) };
+  };
+  try {
+    const mail = createMailAdapter({
+      MAIL_MODE: 'sendgrid',
+      SENDGRID_API_KEY: 'SG.bad_key',
+    });
+    const out = await mail.deliver(MESSAGE);
+    assert.equal(out.delivered, false);
+    assert.equal(out.channel, 'sendgrid');
+    assert.match(out.note, /403/);
+    assert.match(out.note, /bad key/);
+  } finally {
+    globalThis.fetch = origFetch;
+  }
+});
+
+test('sendgrid mode reports network errors', async () => {
+  const origFetch = globalThis.fetch;
+  globalThis.fetch = async () => { throw new Error('ECONNREFUSED'); };
+  try {
+    const mail = createMailAdapter({
+      MAIL_MODE: 'sendgrid',
+      SENDGRID_API_KEY: 'SG.test_key',
+    });
+    const out = await mail.deliver(MESSAGE);
+    assert.equal(out.delivered, false);
+    assert.equal(out.channel, 'sendgrid');
+    assert.match(out.note, /ECONNREFUSED/);
+  } finally {
+    globalThis.fetch = origFetch;
+  }
 });
 
 test('an unknown mode falls back to console and is logged as such', async () => {
