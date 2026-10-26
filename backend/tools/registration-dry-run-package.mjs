@@ -285,7 +285,7 @@ if (SUMMARY) {
     },
     failure_rows: failureRows.map((row) => ({ field: row.field, reason: row.reason, products: row.products, owner: row.owner })),
     gate_vocabulary: Object.keys(REGISTER_GATE_DOC).sort(),
-    option_plans: { emittable_products: emittable, children_emitted: content.rows.reduce((sum, row) => sum + (row.optionPlan.emittable ? row.optionPlan.children.length : 0), 0) },
+    option_plans: { emittable_products: emittable, children_in_option_bodies: content.rows.reduce((sum, row) => sum + (row.optionPlan.emittable ? row.optionPlan.children.length : 0), 0) },
     rule: census.rule,
   };
   fs.mkdirSync(path.dirname(target), { recursive: true });
