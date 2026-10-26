@@ -1,0 +1,37 @@
+name: Website content tests
+
+on:
+  push:
+    # site/** is here because the mall footer renders from website/assets/company.js;
+    # without it a site-only PR could silently break the shared company facts.
+    paths:
+      - "website/**"
+      - "site/**"
+      - ".github/workflows/website-tests.yml"
+  pull_request:
+    paths:
+      - "website/**"
+      - "site/**"
+      - ".github/workflows/website-tests.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [22, 24]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Company profile regression tests
+        run: node --test "website/test/"*.test.mjs
+      - name: Every website script still parses
+        run: |
+          shopt -s nullglob
+          for f in website/assets/*.js; do node --check "$f" || exit 1; done
