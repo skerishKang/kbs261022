@@ -18,6 +18,7 @@ import {
   REASONS, REASON_KINDS, STOREWIDE_POLICY_FIELDS, STOREWIDE_DECISION_CODES,
 } from '../../lib/registration-readiness.mjs';
 import { parseCsv, buildMappingSet } from '../../lib/product-mapping.mjs';
+import { joinImageEvidence, probeKey } from '../../lib/naver-images.mjs';
 
 const PREP_COLUMNS = ['공급처원본ID', '네이버상품ID', '상품명', '판매가', '가격확인필요', '재고수량', '대표이미지URL',
   '상세이미지수', '상세설명', '옵션수', '옵션SKU요약', '카테고리경로_CGI', '스마트스토어카테고리번호', '판매자코드',
@@ -36,6 +37,35 @@ const LEDGER = {
   2: { representative: 'https://prd-phinf.pstatic.net/mock/2.png', additional: [] },
 };
 const ledgerFor = (ids) => ({ imageLedger: new Map(ids.map((id) => [`samasound.co.kr:${id}`, LEDGER[id]])) });
+
+/**
+ * Image evidence in the exact column shape of the committed join table
+ * (reports/data/naver/image_measurements.csv). Fixtures build it through
+ * joinImageEvidence — the same function production reads those files with — so a
+ * test that claims "measured 440x440" cannot pass on a field name the CSV does
+ * not carry.
+ */
+const representativeUrl = (site) => `https://www.${site}.co.kr/web/product/small/202607/abc.jpg`;
+const measurementRow = (url, over = {}) => ({
+  probe_key: probeKey(url), http_status: '200', container: 'jpeg', width: '1200', height: '1200', bytes: '180000',
+  format_allowed: 'yes', meets_recommended_pixels: 'yes', reason_codes: 'image_bytes_measured;image_meets_recommended_pixels',
+  header_variant: '', animation_indicator: 'no', ...over,
+});
+const variantRow = (url, over = {}) => ({
+  probe_key: probeKey(url), base_width: '500', base_height: '500', variants_planned: '5', variants_attempted: '5',
+  variants_answered: 'yes', variants_found: '0', variants_404: '5', larger_available: 'no', best_segment: 'representative',
+  best_width: '500', best_height: '500', best_bytes: '9000', meets_recommended_now: 'no', ...over,
+});
+const DEFAULT_IMAGE = { width: '1200', height: '1200', meets_recommended_pixels: 'yes' };
+/** `variant` present means the size-segment sweep ran for these URLs. */
+const evidenceForPrep = (smartstoreRows, { measurement = {}, variant = null } = {}) => {
+  const urls = [...new Set(smartstoreRows.map((row) => String(row.대표이미지URL || '').trim()).filter(Boolean))];
+  const base = { ...DEFAULT_IMAGE, ...measurement };
+  return joinImageEvidence(
+    urls.map((url) => measurementRow(url, base)),
+    variant ? urls.map((url) => variantRow(url, { base_width: base.width, base_height: base.height, ...variant })) : []
+  );
+};
 
 const aliased = (rows, columns) => parseCsv(toCsv(rows, columns));
 
@@ -70,7 +100,7 @@ const master = ({ site = 'samasound', id = '1', name = '테스트', brand = 'B',
 const prep = ({ site = 'samasound', id = '1', name = '테스트', price = '100000', inquiry = '아니오', stock = '',
   detail = '48채널 44버스 17페이더 디지털 믹서', images = '2', options = '0', category = '', naverItemId = '',
   regStatus = '미등록', policy = false,
-  representative = `https://www.${site}.co.kr/web/product/small/202607/abc.jpg` } = {}) => ({
+  representative = representativeUrl(site) } = {}) => ({
   공급처원본ID: `${site}:${id}`,
   네이버상품ID: naverItemId,
   상품명: name,
@@ -153,14 +183,24 @@ const completeFixture = (over = {}) => fixture({
   extendedFields: { cafe24: 'C24-1', ...over.extendedFields },
 });
 
-const run = (input, extra = {}) => classifyCatalog({
-  optionRows: [],
-  duplicateRows: [],
-  comparison: COMPARISON,
-  summary: { unique_item_codes: 1, duplicate_codes: 0 },
-  ...input,
-  ...extra,
-});
+/**
+ * Fixtures are measured by default, the way production rows are: the committed
+ * join table covers every supplier URL in the catalogue. "Never measured" is a
+ * real state the classifier has to report, so a test opts into it explicitly with
+ * `{ imageEvidence: new Map() }` instead of getting it by accident.
+ */
+const run = (input, extra = {}) => {
+  const { evidence, ...rest } = extra;
+  return classifyCatalog({
+    optionRows: [],
+    duplicateRows: [],
+    comparison: COMPARISON,
+    summary: { unique_item_codes: 1, duplicate_codes: 0 },
+    imageEvidence: evidenceForPrep(input.smartstoreRows, evidence || {}),
+    ...input,
+    ...rest,
+  });
+};
 
 /** Classify a complete product with its images already uploaded, return its row. */
 const complete = (over = {}, extra = {}) => run(completeFixture(over), { ...ledgerFor([1]), ...extra }).rows[0];
@@ -206,9 +246,26 @@ test('a genuinely complete product reaches ready with no API problem', () => {
 test('without the image-upload ledger the same product still demands the upload call', () => {
   const row = complete({}, { imageLedger: new Map() });
   assert.match(row.missing_codes, /image_external_host_upload_required/);
-  assert.match(row.missing_codes, /image_thumbnail_variant_only/);
+  assert.match(row.gap_codes, /image_meets_recommended_pixels/, 'the resolution claim has to come from bytes that were read');
+  assert.equal(row.image_measured_state, 'ok');
   assert.match(row.naver_register_problems, /images\.representative:required/, 'no transmittable image exists before the upload call');
   assert.equal(row.bucket, 'supplement', 'an upload is a live call, so this is not a business decision');
+});
+
+test('a /small/ URL is not a thumbnail verdict — only the measured bytes are', () => {
+  // Production measured the same /web/product/small/ shape at both 1000x1000 and
+  // 440x440, so the path the classifier used to read is not evidence of anything.
+  const sameUrl = complete({}, {}).representative_image_url;
+  const adequate = complete({}, { evidence: { measurement: { width: '1000', height: '1000', bytes: '45561' } } });
+  const short = complete({}, { evidence: { measurement: { width: '440', height: '440', meets_recommended_pixels: 'no', bytes: '18637' } } });
+  assert.equal(adequate.representative_image_url, sameUrl);
+  assert.equal(short.representative_image_url, sameUrl);
+  assert.equal(short.image_measured_state, 'below_recommended', 'the same path measures short, so the note follows the bytes');
+  assert.ok(!adequate.gap_codes.split(';').includes('image_below_recommended_pixels'));
+  assert.match(short.missing_codes, /image_below_recommended_pixels/);
+  for (const row of [adequate, short]) {
+    assert.ok(!row.gap_codes.split(';').includes('image_thumbnail_variant_only'), 'the path-shape code must stay gone');
+  }
 });
 
 test('removing only the ERP master match moves the row out of ready', () => {
@@ -321,7 +378,7 @@ test('stock reasons separate displayed-unverified, zero, unmanaged and absent', 
   }
 });
 
-test('image reasons: thumbnail variant, 9-image cap, count divergence, ledger removal', () => {
+test('image reasons: 9-image cap, count divergence, ledger removal', () => {
   const overCap = complete({ masterFields: { images: '20' }, prepFields: { images: '5' } });
   assert.match(overCap.missing_codes, /image_extra_over_api_max/, '20 images cannot fit 1 representative + 9 additional');
   assert.match(overCap.missing_codes, /image_count_delta_not_one/, 'master 20 vs prep 5 is a pipeline inconsistency');
@@ -331,8 +388,71 @@ test('image reasons: thumbnail variant, 9-image cap, count divergence, ledger re
   assert.match(detailZero.missing_codes, /image_detail_count_zero/);
 
   const uploaded = complete();
-  assert.ok(!uploaded.gap_codes.includes('image_external_host_upload_required'), 'an uploaded product drops the upload reason');
-  assert.ok(!uploaded.gap_codes.includes('image_thumbnail_variant_only'), 'the ledger URL is not the thumbnail path');
+  assert.ok(!uploaded.gap_codes.split(';').includes('image_external_host_upload_required'), 'an uploaded product drops the upload reason');
+});
+
+test('every image verdict comes from the measured bytes, and each state has its own code', () => {
+  const rescued = complete({}, { evidence: {
+    measurement: { width: '440', height: '440', meets_recommended_pixels: 'no' },
+    variant: { variants_found: '2', variants_404: '3', larger_available: 'yes', best_segment: 'big', best_width: '1000', best_height: '1000', best_bytes: '45561', meets_recommended_now: 'yes' },
+  } });
+  assert.match(rescued.gap_codes, /image_larger_segment_meets/);
+  assert.ok(!rescued.gap_codes.split(';').includes('image_below_recommended_pixels'), 'a rescued segment must not keep the short note');
+  assert.equal(rescued.image_measured_state, 'ok_via_segment');
+  assert.equal(rescued.image_best_segment, 'big');
+  assert.equal(rescued.image_width_measured, 1000);
+  assert.equal(rescued.image_size_bytes_measured, 45561);
+
+  const stillShort = complete({}, { evidence: {
+    measurement: { width: '500', height: '500', meets_recommended_pixels: 'no' },
+    variant: { variants_found: '1', variants_404: '4', larger_available: 'yes', best_segment: 'big', best_width: '800', best_height: '800', meets_recommended_now: 'no' },
+  } });
+  assert.match(stillShort.missing_codes, /image_larger_segment_still_small/);
+  assert.equal(stillShort.image_width_measured, 800, 'the largest file that exists is what the operator gets to choose from');
+
+  const noLarger = complete({}, { evidence: {
+    measurement: { width: '500', height: '500', meets_recommended_pixels: 'no' },
+    variant: {},
+  } });
+  assert.match(noLarger.missing_codes, /image_no_larger_segment_measured/, 'every bigger segment answered 404, so the supplier has nothing larger');
+  assert.equal(REASONS.image_no_larger_segment_measured.kind, 'not_published_by_source', 'a supplier limit is not our data defect');
+
+  const partial = complete({}, { evidence: {
+    measurement: { width: '500', height: '500', meets_recommended_pixels: 'no' },
+    variant: { variants_answered: 'no', larger_available: 'not_measured', meets_recommended_now: 'not_measured' },
+  } });
+  assert.match(partial.missing_codes, /image_size_segment_not_fully_measured/, 'an unfinished sweep is withheld, never read as a negative');
+  assert.ok(!partial.gap_codes.split(';').includes('image_no_larger_segment_measured'), 'a partial run may not claim the supplier has nothing bigger');
+
+  const nonSquare = complete({}, { evidence: { measurement: { width: '1538', height: '1537', meets_recommended_pixels: 'no' } } });
+  assert.match(nonSquare.gap_codes, /image_non_square_measured/);
+  assert.equal(nonSquare.image_measured_state, 'below_recommended');
+
+  const webp = complete({}, { evidence: { measurement: { container: 'webp', format_allowed: 'yes' } } });
+  assert.match(webp.missing_codes, /image_format_not_allowed/, 'the allow-list is recomputed from the container, so a yes flag cannot fake a pass');
+  assert.equal(webp.image_measured_state, 'format_rejected');
+
+  const animated = complete({}, { evidence: { measurement: { container: 'gif', animation_indicator: 'yes' } } });
+  assert.match(animated.missing_codes, /image_gif_animation_indicator/);
+});
+
+test('an image that was never measured, unreachable, or answered 404 is each stated separately', () => {
+  const unmeasured = complete({}, { imageEvidence: new Map() });
+  assert.match(unmeasured.missing_codes, /image_measurement_missing/);
+  assert.equal(unmeasured.image_measured_state, 'unmeasured');
+  assert.ok(!unmeasured.gap_codes.split(';').includes('image_below_recommended_pixels'), 'no measurement may borrow a neighbour verdict');
+
+  const unreachable = complete({}, { evidence: { measurement: { http_status: '0', container: '', width: '', height: '', bytes: '', format_allowed: '' } } });
+  assert.match(unreachable.missing_codes, /image_probe_not_fetched/);
+  assert.equal(unreachable.image_measured_state, 'unreachable');
+
+  const gone = complete({}, { evidence: { measurement: { http_status: '404', container: '', width: '', height: '', bytes: '', format_allowed: '' } } });
+  assert.match(gone.missing_codes, /image_probe_http_error/);
+  assert.equal(gone.image_measured_state, 'http_error');
+
+  const html = complete({}, { evidence: { measurement: { container: '', width: '1200', height: '1200' } } });
+  assert.match(html.missing_codes, /image_bytes_unreadable/, 'a 200 whose body is not an image header is a defect, not a 1200x1200 file');
+  assert.equal(html.image_measured_state, 'unreadable');
 });
 
 test('상세설명 is judged on its content, not assumed missing', () => {
