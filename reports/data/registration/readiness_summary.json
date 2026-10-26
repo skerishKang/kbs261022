@@ -64,8 +64,29 @@
    "png": 115,
    "jpeg": 3
   },
+  "by_measured_state": {
+   "ok": 3894,
+   "ok_via_segment": 1,
+   "below_recommended": 680
+  },
+  "bytes_measured": 4575,
+  "by_container": {
+   "jpeg": 4458,
+   "png": 117
+  },
+  "meets_recommended": 3894,
+  "below_recommended": 680,
+  "non_square": 11,
+  "larger_segment_meets": 1,
+  "larger_segment_still_small": 38,
+  "no_larger_segment_measured": 642,
+  "segment_partial": 0,
+  "not_measured": 0,
+  "unreachable": 0,
+  "http_error": 0,
+  "unreadable": 0,
+  "format_rejected": 0,
   "upload_required": 4575,
-  "thumbnail_variant": 4575,
   "over_extra_limit": 2561,
   "detail_zero": 5
  },
@@ -81,7 +102,7 @@
   "storewide_policy": {
    "supplier_category_not_mapped_to_naver": 4575,
    "naver_leaf_category_absent": 4575,
-   "naver_category_lookup_endpoint_not_implemented": 4575,
+   "naver_category_corpus_absent": 4575,
    "origin_code_absent": 4575,
    "kc_info_absent": 4575,
    "as_template_absent": 4575,
@@ -96,7 +117,6 @@
    "stock_requires_erp_balance_read": 4575,
    "stock_displayed_but_supplier_unmanaged": 2621,
    "image_external_host_upload_required": 4575,
-   "image_thumbnail_variant_only": 4575,
    "image_extra_over_api_max": 2561,
    "detail_content_absent": 323,
    "erp_code_proposed_only": 4575,
@@ -120,6 +140,8 @@
    "stock_displayed_positive_unverified": 1151,
    "price_inquiry_only": 2370,
    "erp_out_price_absent": 2458,
+   "image_below_recommended_pixels": 680,
+   "image_larger_segment_still_small": 38,
    "duplicate_pair_same_site_exact": 27,
    "availability_fields_absent": 341,
    "erp_barcode_absent": 341,
@@ -130,6 +152,8 @@
    "price_value_untrusted_parse_artifact": 1,
    "product_name_at_100_char_cap": 5,
    "price_absent_no_published_value": 1,
+   "image_no_larger_segment_measured": 642,
+   "image_non_square_measured": 11,
    "image_detail_count_zero": 5,
    "image_count_delta_not_one": 5
   }
@@ -192,12 +216,11 @@
   "stock_requires_erp_balance_read": 4575,
   "stock_displayed_but_supplier_unmanaged": 2621,
   "image_external_host_upload_required": 4575,
-  "image_thumbnail_variant_only": 4575,
   "image_extra_over_api_max": 2561,
   "detail_content_absent": 323,
   "supplier_category_not_mapped_to_naver": 4575,
   "naver_leaf_category_absent": 4575,
-  "naver_category_lookup_endpoint_not_implemented": 4575,
+  "naver_category_corpus_absent": 4575,
   "origin_code_absent": 4575,
   "kc_info_absent": 4575,
   "as_template_absent": 4575,
@@ -225,6 +248,8 @@
   "stock_displayed_positive_unverified": 1151,
   "price_inquiry_only": 2370,
   "erp_out_price_absent": 2458,
+  "image_below_recommended_pixels": 680,
+  "image_larger_segment_still_small": 38,
   "duplicate_pair_same_site_exact": 27,
   "availability_fields_absent": 341,
   "erp_barcode_absent": 341,
@@ -235,25 +260,27 @@
   "price_value_untrusted_parse_artifact": 1,
   "product_name_at_100_char_cap": 5,
   "price_absent_no_published_value": 1,
+  "image_no_larger_segment_measured": 642,
+  "image_non_square_measured": 11,
   "image_detail_count_zero": 5,
   "image_count_delta_not_one": 5
  },
  "reason_kinds": {
-  "not_published_by_source": 10046,
+  "not_published_by_source": 10688,
   "requires_live_read": 22875,
-  "requires_confirm": 25714,
+  "requires_confirm": 21868,
   "requires_business_decision": 48727,
   "requires_content_authoring": 4575,
   "data_defect": 920
  },
  "owners": {
-  "supplier public page": 5471,
-  "our data pipeline": 12007,
+  "supplier public page": 6842,
+  "our data pipeline": 7432,
   "ecount ERP read": 22534,
   "Naver 커머스API read": 9150,
   "CGI (customer) operator": 63695
  },
- "missing_entries": 112857,
+ "missing_entries": 109653,
  "dry_run": {
   "transmitted": false,
   "erp_requests": 0,
@@ -445,11 +472,95 @@
    "owner": "Naver 커머스API read",
    "meaning": "외부 호스트 링크는 거부됨 — POST /v1/product-images/upload 응답 URL만 사용 가능"
   },
-  "image_thumbnail_variant_only": {
+  "image_bytes_measured": {
+   "field": "images",
+   "kind": "usable",
+   "owner": "supplier public page",
+   "meaning": "URL 본문을 GET하여 컨테이너·가로·세로·바이트 실측 완료"
+  },
+  "image_probe_http_error": {
+   "field": "images",
+   "kind": "data_defect",
+   "owner": "supplier public page",
+   "meaning": "공급처가 200이 아닌 HTTP 응답을 반환 — 상태코드는 실측 테이블 http_status 열에 그대로 기록됨"
+  },
+  "image_size_segment_measured": {
+   "field": "images.representative",
+   "kind": "usable",
+   "owner": "supplier public page",
+   "meaning": "큰 크기 세그먼트(big/large/medium/original) 존재 여부 실측 완료"
+  },
+  "image_size_segment_not_fully_measured": {
+   "field": "images.representative",
+   "kind": "requires_confirm",
+   "owner": "our data pipeline",
+   "meaning": "세그먼트 실측이 일부만 수행 — 판정 유보(부재를 증명하지 않음)"
+  },
+  "image_meets_recommended_pixels": {
+   "field": "images.representative",
+   "kind": "usable",
+   "owner": "supplier public page",
+   "meaning": "실측 정사각이고 한 변이 1000px 이상(네이버 권장 충족)"
+  },
+  "image_below_recommended_pixels": {
+   "field": "images.representative",
+   "kind": "requires_confirm",
+   "owner": "supplier public page",
+   "meaning": "실측이 1000x1000 권장 미만 — 문서에 최소 해상도 규정은 없어 등록 차단 사유는 아님"
+  },
+  "image_non_square_measured": {
+   "field": "images.representative",
+   "kind": "requires_confirm",
+   "owner": "supplier public page",
+   "meaning": "가로≠세로 실측 — 권장(1000x1000)과 모양이 다름"
+  },
+  "image_format_not_allowed": {
+   "field": "images.representative",
+   "kind": "data_defect",
+   "owner": "supplier public page",
+   "meaning": "측정 컨테이너가 네이버 허용 형식(JPG/GIF/PNG/BMP) 밖"
+  },
+  "image_gif_animation_indicator": {
+   "field": "images.representative",
+   "kind": "requires_confirm",
+   "owner": "Naver 커머스API read",
+   "meaning": "NETSCAPE2.0 루프 확장 있음 — 애니메이션 정책은 문서화되지 않음"
+  },
+  "image_no_larger_segment_measured": {
+   "field": "images.representative",
+   "kind": "not_published_by_source",
+   "owner": "supplier public page",
+   "meaning": "big/large/medium/original 세그먼트 전부 404 — 공급처에 더 큰 파일 없음, 원본 재수급 필요"
+  },
+  "image_larger_segment_still_small": {
+   "field": "images.representative",
+   "kind": "requires_confirm",
+   "owner": "supplier public page",
+   "meaning": "더 큰 세그먼트가 실측되나 권장 해상도 미달"
+  },
+  "image_larger_segment_meets": {
+   "field": "images.representative",
+   "kind": "usable",
+   "owner": "supplier public page",
+   "meaning": "세그먼트 실측 결과가 권장 해상도 충족 — 업로드 시 그 URL 사용"
+  },
+  "image_probe_not_fetched": {
+   "field": "images",
+   "kind": "data_defect",
+   "owner": "our data pipeline",
+   "meaning": "전송 실패로 HTTP 응답 자체를 못 받음 — 실측 없음"
+  },
+  "image_bytes_unreadable": {
+   "field": "images",
+   "kind": "data_defect",
+   "owner": "our data pipeline",
+   "meaning": "200 응답 본문이 이미지 헤더가 아님(HTML/오리진 오류 페이지)"
+  },
+  "image_measurement_missing": {
    "field": "images",
    "kind": "requires_confirm",
    "owner": "our data pipeline",
-   "meaning": "URL이 /web/product/small/ 썸네일 변형 — 원본 크기 변형 URL 확인 필요"
+   "meaning": "실측 테이블에 이 URL 없음 — 측정 미수행(추정 코드 발동 금지)"
   },
   "image_extra_over_api_max": {
    "field": "images.additional",
@@ -505,11 +616,11 @@
    "owner": "CGI (customer) operator",
    "meaning": "네이버 카테고리번호 미확정 — 임의 배정 금지"
   },
-  "naver_category_lookup_endpoint_not_implemented": {
+  "naver_category_corpus_absent": {
    "field": "leafCategoryId",
    "kind": "requires_live_read",
    "owner": "Naver 커머스API read",
-   "meaning": "네이버 카테고리 조회 API가 PR #94 계약에 없음(인증 직전 범위 밖)"
+   "meaning": "네이버 공식 분류체계 코퍼스 이 저장소에 0건 — GET /v1/categories는 판매자 Bearer 토큰 필요(본 레인 로그인 금지), 토큰 전 임의 leaf ID 발행 금지"
   },
   "origin_code_absent": {
    "field": "원산지",

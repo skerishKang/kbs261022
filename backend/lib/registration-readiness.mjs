@@ -18,6 +18,7 @@
 import { normalizeCgiId } from './product-mapping.mjs';
 import { productRow, validateRow } from './erp-plan.mjs';
 import { buildRegisterBody, NCOM_LIMITS } from './ncommerce.mjs';
+import { assessMeasuredImage } from './naver-images.mjs';
 
 /** Why a field is not fillable right now. `bucket` precedence follows this order. */
 export const REASON_KINDS = [
@@ -83,12 +84,28 @@ export const REASONS = {
   stock_displayed_absent: { field: 'stockQuantity', kind: SOURCE, owner: OWNER.source, meaning: '표시 수량 필드 없음' },
   availability_fields_absent: { field: 'availability', kind: DEFECT, owner: OWNER.pipeline, meaning: 'availability JSON 4개 키 모두 없음 — 판매·재고 상태 판정 근거 상실' },
   stock_requires_erp_balance_read: { field: 'stockQuantity', kind: LIVE, owner: OWNER.erp, meaning: 'GetListInventoryBalanceStatus -> BAL_QTY 읽어야 확정(본 lane 금지)' },
+  stock_numeric_partial: { field: 'stockQuantity', kind: CONFIRM, owner: OWNER.pipeline, meaning: '일부 행에만 숫자 재고 — 전수 확보 전에는 등록 재고 확정 불가' },
 
   // 이미지
+  // 이미지 — 실측(4,505개 URL 전수 GET, tools/supplier-image-probe.mjs)
   image_representative_present: { field: 'images.representative', kind: OK, owner: OWNER.source, meaning: '대표 이미지 URL 존재' },
   image_representative_blank: { field: 'images.representative', kind: DEFECT, owner: OWNER.pipeline, meaning: '대표 이미지 없음' },
   image_external_host_upload_required: { field: 'images', kind: LIVE, owner: OWNER.naver, meaning: '외부 호스트 링크는 거부됨 — POST /v1/product-images/upload 응답 URL만 사용 가능' },
-  image_thumbnail_variant_only: { field: 'images', kind: CONFIRM, owner: OWNER.pipeline, meaning: 'URL이 /web/product/small/ 썸네일 변형 — 원본 크기 변형 URL 확인 필요' },
+  image_bytes_measured: { field: 'images', kind: OK, owner: OWNER.source, meaning: 'URL 본문을 GET하여 컨테이너·가로·세로·바이트 실측 완료' },
+  image_probe_http_error: { field: 'images', kind: DEFECT, owner: OWNER.source, meaning: '공급처가 200이 아닌 HTTP 응답을 반환 — 상태코드는 실측 테이블 http_status 열에 그대로 기록됨' },
+  image_size_segment_measured: { field: 'images.representative', kind: OK, owner: OWNER.source, meaning: '큰 크기 세그먼트(big/large/medium/original) 존재 여부 실측 완료' },
+  image_size_segment_not_fully_measured: { field: 'images.representative', kind: CONFIRM, owner: OWNER.pipeline, meaning: '세그먼트 실측이 일부만 수행 — 판정 유보(부재를 증명하지 않음)' },
+  image_meets_recommended_pixels: { field: 'images.representative', kind: OK, owner: OWNER.source, meaning: '실측 정사각이고 한 변이 1000px 이상(네이버 권장 충족)' },
+  image_below_recommended_pixels: { field: 'images.representative', kind: CONFIRM, owner: OWNER.source, meaning: '실측이 1000x1000 권장 미만 — 문서에 최소 해상도 규정은 없어 등록 차단 사유는 아님' },
+  image_non_square_measured: { field: 'images.representative', kind: CONFIRM, owner: OWNER.source, meaning: '가로≠세로 실측 — 권장(1000x1000)과 모양이 다름' },
+  image_format_not_allowed: { field: 'images.representative', kind: DEFECT, owner: OWNER.source, meaning: '측정 컨테이너가 네이버 허용 형식(JPG/GIF/PNG/BMP) 밖' },
+  image_gif_animation_indicator: { field: 'images.representative', kind: CONFIRM, owner: OWNER.naver, meaning: 'NETSCAPE2.0 루프 확장 있음 — 애니메이션 정책은 문서화되지 않음' },
+  image_no_larger_segment_measured: { field: 'images.representative', kind: SOURCE, owner: OWNER.source, meaning: 'big/large/medium/original 세그먼트 전부 404 — 공급처에 더 큰 파일 없음, 원본 재수급 필요' },
+  image_larger_segment_still_small: { field: 'images.representative', kind: CONFIRM, owner: OWNER.source, meaning: '더 큰 세그먼트가 실측되나 권장 해상도 미달' },
+  image_larger_segment_meets: { field: 'images.representative', kind: OK, owner: OWNER.source, meaning: '세그먼트 실측 결과가 권장 해상도 충족 — 업로드 시 그 URL 사용' },
+  image_probe_not_fetched: { field: 'images', kind: DEFECT, owner: OWNER.pipeline, meaning: '전송 실패로 HTTP 응답 자체를 못 받음 — 실측 없음' },
+  image_bytes_unreadable: { field: 'images', kind: DEFECT, owner: OWNER.pipeline, meaning: '200 응답 본문이 이미지 헤더가 아님(HTML/오리진 오류 페이지)' },
+  image_measurement_missing: { field: 'images', kind: CONFIRM, owner: OWNER.pipeline, meaning: '실측 테이블에 이 URL 없음 — 측정 미수행(추정 코드 발동 금지)' },
   image_extra_over_api_max: { field: 'images.additional', kind: DECISION, owner: OWNER.cgi, meaning: '추가 이미지 수가 9장 상한 초과 — 어떤 장면을 남길지 선택 필요' },
   image_detail_count_zero: { field: 'images.additional', kind: CONFIRM, owner: OWNER.cgi, meaning: '상세 이미지 0장(대표 이미지만)' },
   image_count_delta_not_one: { field: 'image_count', kind: DEFECT, owner: OWNER.pipeline, meaning: '마스터 image_count와 준비파일 상세이미지수 차이가 1이 아님' },
@@ -102,7 +119,7 @@ export const REASONS = {
   supplier_category_present: { field: '카테고리', kind: OK, owner: OWNER.source, meaning: '공급처 카테고리ID/명 존재' },
   supplier_category_not_mapped_to_naver: { field: 'leafCategoryId', kind: DECISION, owner: OWNER.cgi, meaning: '공급처 카테고리->네이버 leaf 카테고리 대응표 없음(저장소에 네이버 카테고리 자료 0건)' },
   naver_leaf_category_absent: { field: 'leafCategoryId', kind: DECISION, owner: OWNER.cgi, meaning: '네이버 카테고리번호 미확정 — 임의 배정 금지' },
-  naver_category_lookup_endpoint_not_implemented: { field: 'leafCategoryId', kind: LIVE, owner: OWNER.naver, meaning: '네이버 카테고리 조회 API가 PR #94 계약에 없음(인증 직전 범위 밖)' },
+  naver_category_corpus_absent: { field: 'leafCategoryId', kind: LIVE, owner: OWNER.naver, meaning: '네이버 공식 분류체계 코퍼스 이 저장소에 0건 — GET /v1/categories는 판매자 Bearer 토큰 필요(본 레인 로그인 금지), 토큰 전 임의 leaf ID 발행 금지' },
 
   // 정책류(스토어 단위 일괄 확정 가능)
   origin_code_absent: { field: '원산지', kind: DECISION, owner: OWNER.cgi, meaning: '원산지코드 미확보(저장소 전량 공란)' },
@@ -118,6 +135,16 @@ export const REASONS = {
   option_price_undifferentiated: { field: 'option price', kind: CONFIRM, owner: OWNER.cgi, meaning: '옵션별 추가가격 공란 — 동일 가격 여부 확인 필요' },
   option_item_code_absent: { field: 'option sellerCode', kind: CONFIRM, owner: OWNER.cgi, meaning: '옵션별 판매자 관리코드 없음 — 재고·주문 조인 불가' },
   option_count_columns_diverge: { field: '옵션수', kind: DEFECT, owner: OWNER.pipeline, meaning: '마스터 option_value_count와 준비파일 옵션수 불일치' },
+  // 등록 내용(plan) 레인 — tools/registration-content-plan.mjs 가 출력하는 코드
+  option_source_absent: { field: 'optionInfo', kind: CONFIRM, owner: OWNER.source, meaning: '공급처 옵션 요약·옵션 테이블 모두 빈 칸 — 옵션 없음과 미수집을 구분할 수 없음' },
+  option_children_absent: { field: 'optionInfo', kind: DEFECT, owner: OWNER.pipeline, meaning: '옵션 테이블에 그룹명만 있고 자식 옵션명이 없음 — 그룹명으로 자식을 만들지 않는다' },
+  option_group_labels_only: { field: 'optionInfo', kind: CONFIRM, owner: OWNER.pipeline, meaning: '사용 가능한 정보가 옵션 그룹 라벨뿐 — 등록용 옵션 목록 미완성' },
+  option_children_truncated_in_source: { field: 'optionInfo', kind: DEFECT, owner: OWNER.pipeline, meaning: '수집된 옵션 문자열이 (+N more)로 잘림 — 부분 목록을 등록하면 실제 판매 옵션보다 적게 게시됨' },
+  option_entries_unparsed: { field: 'optionInfo', kind: DEFECT, owner: OWNER.pipeline, meaning: '옵션SKU요약 항목을 그룹/자식으로 분리할 수 없음 — 파싱 규칙 밖의 형태' },
+  option_group_children_ambiguous: { field: 'optionInfo', kind: CONFIRM, owner: OWNER.source, meaning: '한 그룹 안에 같은 이름의 옵션이 중복 — 어느 항목의 가격이 맞는지 근거가 없어 그룹 제외' },
+  option_count_disagrees_with_summary: { field: '옵션수', kind: DEFECT, owner: OWNER.pipeline, meaning: '준비파일 옵션수와 요약 항목 수가 다름(잘림 아님) — 어느 쪽이 참인지 확인 필요' },
+  option_children_incomplete: { field: 'optionInfo', kind: CONFIRM, owner: OWNER.cgi, meaning: '등록 가능한 옵션 목록이 미완성 — 자식 옵션 실데이터 확보 필요' },
+  option_price_over_documented_sale_price_max: { field: 'option price', kind: DEFECT, owner: OWNER.pipeline, meaning: '옵션 추가금액이 판매가 상한(999999990) 초과 — 옵션가 상한은 문서에 없지만 명백한 오류' },
 
   // ERP 매핑
   erp_wire_ok: { field: 'SaveBasicProduct', kind: OK, owner: OWNER.pipeline, meaning: '품목등록 행이 벤더 컬럼 규칙 통과' },
@@ -152,6 +179,8 @@ export const REASONS = {
   duplicate_pair_same_site_exact: { field: 'dedupe', kind: DEFECT, owner: OWNER.pipeline, meaning: '동일 공급처 내 완전 중복 — 그대로 등록하면 품목 2건·네이버 상품 2건' },
   duplicate_variant_conflict: { field: 'dedupe', kind: DECISION, owner: OWNER.cgi, meaning: '변형 서명 충돌 — 자동 병합 금지 대상' },
   duplicate_action_pending: { field: 'dedupe', kind: CONFIRM, owner: OWNER.cgi, meaning: '조치 컬럼 검토 대기 — 병합 적용 0건' },
+  seller_code_duplicated_in_catalogue: { field: 'sellerManagementCode', kind: DEFECT, owner: OWNER.pipeline, meaning: '우리 카탈로그 안에서 판매자관리코드 중복 — 검색 선행 중복방지가 성립하지 않음' },
+  duplicate_search_not_executed: { field: 'dedupe', kind: LIVE, owner: OWNER.naver, meaning: '등록 전 SELLER_CODE 검색을 이 레인에서 실행할 수 없음(로그인 금지) — 요청 설계만 산출' },
   no_duplicate_pair: { field: 'dedupe', kind: OK, owner: OWNER.pipeline, meaning: '중복 후보 쌍 없음' },
 };
 
@@ -226,7 +255,7 @@ export const STOREWIDE_DECISION_CODES = [
   ...POLICY_COLUMNS.map(([, code]) => code),
   'supplier_category_not_mapped_to_naver',
   'naver_leaf_category_absent',
-  'naver_category_lookup_endpoint_not_implemented',
+  'naver_category_corpus_absent',
 ];
 
 const isStorewide = (code) => STOREWIDE_DECISION_CODES.includes(code);
@@ -294,25 +323,27 @@ function stockAssessment(master, prep, record) {
 }
 
 /**
- * `imageLedger` holds the 네이버 upload URLs already obtained for a product. It is
- * empty in this lane because the upload is a live call, so every row keeps the
- * upload requirement — and a caller that has really uploaded can prove the row
- * moves out of it.
+ * Two separate facts, deliberately not merged:
+ *   - `ledger` holds 네이버 upload URLs already returned by POST /v1/product-images/upload.
+ *     It is empty in this lane because that is a live call, so every row keeps the
+ *     upload requirement — and a caller that really uploaded proves the row moves out.
+ *   - `imageEvidence` holds what we measured by GETting the supplier URL itself.
+ *     It replaces the old path-shape guess: nothing here reads `/small/` anymore,
+ *     because the measurement showed the same URL shape serving both 1000x1000 and
+ *     500x500 files. An unmeasured URL stays unmeasured (`image_measurement_missing`)
+ *     rather than inheriting a neighbour's verdict.
  */
-function imageAssessment(master, prep, ledger) {
+function imageAssessment(master, prep, ledger, imageEvidence) {
   const url = String(prep.대표이미지URL || '').trim();
-  const codes = [];
-  codes.push(url ? 'image_representative_present' : 'image_representative_blank');
-  if (url && !ledger) {
-    codes.push('image_external_host_upload_required');
-    if (/\/web\/product\/small\//.test(url)) codes.push('image_thumbnail_variant_only');
-  }
+  const measured = assessMeasuredImage({ url, evidence: imageEvidence });
+  const codes = url ? ['image_representative_present', ...measured.codes] : measured.codes;
+  if (url && !ledger) codes.push('image_external_host_upload_required');
   const total = asInt(master.image_count) ?? 0;
   if (total - 1 > NCOM_LIMITS.extraImagesMax) codes.push('image_extra_over_api_max');
   const detail = asInt(prep.상세이미지수) ?? 0;
   if (detail === 0) codes.push('image_detail_count_zero');
   if (total - detail !== 1) codes.push('image_count_delta_not_one');
-  return codes;
+  return { codes, measured };
 }
 
 function optionAssessment(cgiId, optionRowsByProduct, master, prep) {
@@ -357,7 +388,7 @@ const groupBy = (rows, keyOf) => {
  * (measured-good facts included, so the per-row code count is auditable);
  * `missing` is the subset whose kind is not `usable`.
  */
-export function classifyCatalog({ masterRows = [], extendedRows = [], smartstoreRows = [], optionRows = [], duplicateRows = [], records = [], comparison = {}, summary = {}, imageLedger = new Map() } = {}) {
+export function classifyCatalog({ masterRows = [], extendedRows = [], smartstoreRows = [], optionRows = [], duplicateRows = [], records = [], comparison = {}, summary = {}, imageLedger = new Map(), imageEvidence = new Map() } = {}) {
   const masterByKey = new Map(masterRows.map((row) => [cgiIdOfMaster(row), row]));
   const prepByKey = new Map(smartstoreRows.map((row) => [normalizeCgiId(row.공급처원본ID || row.sourceId), row]));
   const extendedByKey = new Map(extendedRows.map((row) => [normalizeCgiId(row.공급처원본ID || row.sourceId), row]));
@@ -441,13 +472,14 @@ export function classifyCatalog({ masterRows = [], extendedRows = [], smartstore
     for (const code of priceCodes) push(code, `${master.public_price_text || ''}|${record.price.value ?? ''}`);
     if (record.price.value != null && !vat.ok) push(vat.reason, `price=${record.price.value} rate=${record.taxRate}`);
     for (const code of stockAssessment(master, prep, record)) push(code, master.availability || '');
-    for (const code of imageAssessment(master, prep, uploaded)) push(code, prep.대표이미지URL || '');
+    const image = imageAssessment(master, prep, uploaded, imageEvidence);
+    for (const code of image.codes) push(code, prep.대표이미지URL || '');
     for (const code of detailAssessment(prep)) push(code, String(prep.상세설명 || '').length);
     push(blank(master.category_id) ? 'supplier_category_not_mapped_to_naver' : 'supplier_category_present', `${master.category_id}|${master.category_name}`);
     if (blank(record.naverCategoryNo)) {
       push('supplier_category_not_mapped_to_naver', master.category_name);
       push('naver_leaf_category_absent', '');
-      push('naver_category_lookup_endpoint_not_implemented', '');
+      push('naver_category_corpus_absent', '');
     }
     for (const [column, code] of POLICY_COLUMNS) if (blank(prep[column])) push(code, '');
     for (const code of optionAssessment(cgiId, optionRowsByProduct, master, prep)) push(code, options.length ? `${options.length}행` : '');
@@ -508,6 +540,12 @@ export function classifyCatalog({ masterRows = [], extendedRows = [], smartstore
       representative_image_url: prep.대표이미지URL || '',
       image_extension: extensionOf(prep.대표이미지URL),
       naver_uploaded_image: uploaded?.representative || '',
+      image_measured_state: image.measured.state,
+      image_container_measured: image.measured.container || '',
+      image_width_measured: image.measured.width ?? '',
+      image_height_measured: image.measured.height ?? '',
+      image_size_bytes_measured: image.measured.bytes ?? '',
+      image_best_segment: image.measured.bestSegment || '',
       detail_content_chars: String(prep.상세설명 || '').length,
       option_value_count_master: master.option_value_count || '',
       option_count_prep: prep.옵션수 || '',
@@ -584,6 +622,9 @@ function tally(values) {
 
 export function summarizeClassification({ rows = [], missing = [], inputs = {}, comparison = {}, summary = {} }) {
   const counts = (key) => tally(rows.map((row) => row[key]));
+  // gap_codes is a ';'-joined string, so a plain substring test would let one code
+  // match inside another. Membership is the question being asked, so ask it that way.
+  const hasCode = (row, code) => String(row.gap_codes || '').split(';').includes(code);
   const usablePrice = rows.filter((row) => row.price_usable === 'yes').length;
   return {
     scope: 'offline classification only — no ERP login, no Naver call, no write',
@@ -621,10 +662,27 @@ export function summarizeClassification({ rows = [], missing = [], inputs = {}, 
     images: {
       representative_present: rows.filter((r) => r.representative_image_url).length,
       by_extension: counts('image_extension'),
-      upload_required: rows.filter((r) => r.gap_codes.includes('image_external_host_upload_required')).length,
-      thumbnail_variant: rows.filter((r) => r.gap_codes.includes('image_thumbnail_variant_only')).length,
-      over_extra_limit: rows.filter((r) => r.gap_codes.includes('image_extra_over_api_max')).length,
-      detail_zero: rows.filter((r) => r.gap_codes.includes('image_detail_count_zero')).length,
+      by_measured_state: counts('image_measured_state'),
+      bytes_measured: rows.filter((r) => hasCode(r, 'image_bytes_measured')).length,
+      by_container: tally(rows.filter((r) => r.image_container_measured).map((r) => r.image_container_measured)),
+      meets_recommended: rows.filter((r) => hasCode(r, 'image_meets_recommended_pixels')).length,
+      below_recommended: rows.filter((r) => hasCode(r, 'image_below_recommended_pixels')).length,
+      non_square: rows.filter((r) => hasCode(r, 'image_non_square_measured')).length,
+      larger_segment_meets: rows.filter((r) => hasCode(r, 'image_larger_segment_meets')).length,
+      larger_segment_still_small: rows.filter((r) => hasCode(r, 'image_larger_segment_still_small')).length,
+      no_larger_segment_measured: rows.filter((r) => hasCode(r, 'image_no_larger_segment_measured')).length,
+      segment_partial: rows.filter((r) => hasCode(r, 'image_size_segment_not_fully_measured')).length,
+      not_measured: rows.filter((r) => hasCode(r, 'image_measurement_missing')).length,
+      unreachable: rows.filter((r) => hasCode(r, 'image_probe_not_fetched')).length,
+      http_error: rows.filter((r) => hasCode(r, 'image_probe_http_error')).length,
+      // Fetched, answered 200, and still not an image. Without its own counter the
+      // four census numbers would not sum to the rows, and a supplier that starts
+      // serving an error page at a 200 would vanish from the report.
+      unreadable: rows.filter((r) => hasCode(r, 'image_bytes_unreadable')).length,
+      format_rejected: rows.filter((r) => hasCode(r, 'image_format_not_allowed')).length,
+      upload_required: rows.filter((r) => hasCode(r, 'image_external_host_upload_required')).length,
+      over_extra_limit: rows.filter((r) => hasCode(r, 'image_extra_over_api_max')).length,
+      detail_zero: rows.filter((r) => hasCode(r, 'image_detail_count_zero')).length,
     },
     detail_content: {
       present: rows.filter((r) => r.detail_content_chars > 0).length,

@@ -29,6 +29,7 @@ import { parseCsv, buildMappingSet } from '../lib/product-mapping.mjs';
 import { planProductSync, OAPI_FIELD_LIMITS } from '../lib/erp-plan.mjs';
 import { ERP_OAPI_ENDPOINTS } from '../lib/erp-oapi.mjs';
 import { NCOM_ENDPOINTS, NCOM_LIMITS, NCOM_AUTH_GAP, NCOM_UNCONFIRMED } from '../lib/ncommerce.mjs';
+import { joinImageEvidence, NAVER_IMAGE_DOC } from '../lib/naver-images.mjs';
 import { classifyCatalog, missingEntries, summarizeClassification, toCsv, REASONS } from '../lib/registration-readiness.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
@@ -45,6 +46,8 @@ const SOURCES = {
   smartstore: 'data/smartstore_prep/smartstore_registration_prep.csv',
   options: 'data/full_catalog/options_compact.csv',
   duplicates: 'data/product_quality/product_duplicate_candidates.csv',
+  imageMeasurements: 'reports/data/naver/image_measurements.csv',
+  imageVariantMeasurements: 'reports/data/naver/image_variant_measurements.csv',
   comparison: 'reports/data/erp/erp_readonly_comparison.json',
   summary: 'reports/data/erp/summary.json',
 };
@@ -59,11 +62,18 @@ const uploadRows = readCsv(SOURCES.upload);
 const smartstoreRows = readCsv(SOURCES.smartstore);
 const optionRows = readCsv(SOURCES.options);
 const duplicateRows = readCsv(SOURCES.duplicates);
+const imageMeasurementRows = readCsv(SOURCES.imageMeasurements);
+const imageVariantRows = readCsv(SOURCES.imageVariantMeasurements);
 const comparison = readJson(SOURCES.comparison);
 const erpSummary = readJson(SOURCES.summary);
 
+// The measured evidence index is keyed by sha256(URL), so a product whose supplier
+// URL was never fetched comes back as `image_measurement_missing` rather than
+// borrowing the verdict of a product that shares its image.
+const imageEvidence = joinImageEvidence(imageMeasurementRows, imageVariantRows);
+
 const records = buildMappingSet({ extendedRows, uploadRows, smartstoreRows, erpMasterRows: [] });
-const { rows } = classifyCatalog({ masterRows, extendedRows, smartstoreRows, optionRows, duplicateRows, records, comparison, summary: erpSummary });
+const { rows } = classifyCatalog({ masterRows, extendedRows, smartstoreRows, optionRows, duplicateRows, records, comparison, summary: erpSummary, imageEvidence });
 const missing = missingEntries(rows);
 const stats = summarizeClassification({
   rows,
@@ -116,6 +126,8 @@ const dryRun = {
     options: optionRows.length,
     duplicate_pairs: duplicateRows.length,
     mapping_records: records.length,
+    image_measurements: imageMeasurementRows.length,
+    image_variant_verdicts: imageVariantRows.length,
   },
   conservation: stats.conservation,
   buckets: stats.buckets,
@@ -173,6 +185,15 @@ const dryRun = {
     image_upload_calls_required: imageUploadCalls,
     images_per_upload_call_limit: NCOM_LIMITS.imagesPerUploadCall,
     products_over_extra_image_max: stats.images.over_extra_limit,
+    image_evidence: {
+      measurements_csv: SOURCES.imageMeasurements,
+      variant_csv: SOURCES.imageVariantMeasurements,
+      urls_in_evidence_index: imageEvidence.size,
+      products_by_measured_state: stats.images.by_measured_state,
+      byte_size_limit: NAVER_IMAGE_DOC.byteSizeLimit,
+      minimum_resolution: NAVER_IMAGE_DOC.minimumResolution,
+      note: '네이버 문서는 바이트 상한과 최소 해상도를 규정하지 않는다(null). 권장 1000x1000 미달은 등록 차단 사유가 아니라 운영 판단.',
+    },
     auth_gap: NCOM_AUTH_GAP,
     unconfirmed: NCOM_UNCONFIRMED,
   },
@@ -188,6 +209,8 @@ const ARTIFACT_COLUMNS = {
     'public_price_state', 'public_price_text', 'sale_price', 'price_usable', 'vat_rate_percent', 'vat_base', 'vat_amount',
     'supplier_sales_status', 'supplier_use_stock', 'stock_displayed', 'stock_quantity_confirmed',
     'image_count_master', 'detail_image_count_prep', 'representative_image_url', 'image_extension',
+    'image_measured_state', 'image_container_measured', 'image_width_measured', 'image_height_measured',
+    'image_size_bytes_measured', 'image_best_segment',
     'detail_content_chars', 'option_value_count_master', 'option_count_prep', 'option_rows',
     'option_rows_missing_price', 'option_rows_missing_item_code',
     'erp_prod_cd_proposed', 'erp_code_source', 'erp_master_match', 'erp_register_required', 'erp_wire_validation',
@@ -400,7 +423,7 @@ function buildReadme({ stats: s, dryRun: d, rows: r, written: w, comparison: c }
   add('## 5. 스마트스토어 등록 준비');
   add('');
   add(`- 등록 게이트 문제 필드: ${Object.entries(d.naver.register_problems_by_field).map(([k, v]) => `${k} ${v}건`).join(', ')}`);
-  add(`- 이미지: 대표 ${n(s.images.representative_present)}건 중 외부 호스트 URL이 ${n(s.images.upload_required)}건(그중 썸네일 /small/ ${n(s.images.thumbnail_variant)}건) → 업로드 API 최소 ${n(d.naver.image_upload_calls_required)}회. 추가 이미지 9장 초과 ${n(s.images.over_extra_limit)}건은 남길 장면 선택이 필요합니다.`);
+  add(`- 이미지: 대표 URL ${n(s.images.representative_present)}건 중 본문 실측 ${n(s.images.bytes_measured)}건(미실측 ${n(s.images.not_measured)}건, 응답 없음 ${n(s.images.unreachable)}건, 200 외 응답 ${n(s.images.http_error)}건, 200 본문이 이미지 아님 ${n(s.images.unreadable)}건). 컨테이너 ${Object.entries(s.images.by_container).map(([k, v]) => `${k} ${v}건`).join(', ')}, 네이버 허용 형식 밖 ${n(s.images.format_rejected)}건. 권장 1000x1000 충족 ${n(s.images.meets_recommended)}건 / 미달 ${n(s.images.below_recommended)}건 — 미달분 중 공급처에 더 큰 파일 없음 ${n(s.images.no_larger_segment_measured)}건, 큰 세그먼트로 충족 ${n(s.images.larger_segment_meets)}건, 세그먼트 실측 부분적 ${n(s.images.segment_partial)}건. 해상도 미달은 등록 차단 사유가 아니라 운영 판단 항목입니다(문서에 최소 해상도·바이트 상한 규정 없음). 외부 호스트 링크는 전부 업로드 API 경유 필요 → 최소 ${n(d.naver.image_upload_calls_required)}회. 추가 이미지 9장 초과 ${n(s.images.over_extra_limit)}건은 남길 장면 선택이 필요합니다.`);
   add(`- 상세설명: 본문으로 인정된 ${s.detail_content.authored_body}건, 한 줄 스펙 요약 ${s.detail_content.summary_only}건(실측 최장 ${s.detail_content.max_chars}자, 마크업 0건), 공란 ${s.detail_content.absent}건. 요약문은 contract의 presence 검사만 통과하므로 내용 저작(requires_content_authoring)이 필요하다고 분류했습니다. 본문 인정 기준은 ${s.detail_content.judged_at_or_above_chars}자 이상 또는 HTML 마크업입니다.`);
   add(`- 인증: Workers 런타임에 bcrypt가 없어 서명 생성 불가 — ${d.naver.auth_gap.reason}`);
   add('- 미확정 항목(임의 값 금지): 네이버 leaf 카테고리번호, 원산지코드, KC 고시정보, AS 템플릿, 배송비, 반품·교환 정책, 수입사, 확정 재고수량, CGI 판매 승인 목록.');
