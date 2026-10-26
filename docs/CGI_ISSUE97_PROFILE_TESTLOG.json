@@ -1,6 +1,6 @@
 {
   "base": "http://127.0.0.1:8849",
-  "ranAt": "2026-10-26T00:32:02.844Z",
+  "ranAt": "2026-10-26T00:39:12.577Z",
   "views": {
     "desktop": {
       "counts": {
@@ -46,7 +46,8 @@
     "products": 4575,
     "footerText": "상품·견적 문의\n\nTEL 062) 576-8100  ·  061) 801-8100\n\nFAX 062) 576-8181\n\n[57248] 전라남도 장성군 남면\n나노산단로 102 (삼태리)",
     "ready": "1",
-    "errors": []
+    "errors": [],
+    "apiStatus": []
   },
   "results": [
     {
@@ -644,9 +645,17 @@
       "detail": null
     },
     {
-      "name": "[mall] 런타임 오류 0",
+      "name": "[mall] 정적 자산·런타임 오류 0",
       "ok": true,
       "detail": []
+    },
+    {
+      "name": "[mall] API 응답은 비로그인 /api/me 401 뿐",
+      "ok": true,
+      "detail": {
+        "apiStatus": [],
+        "corsBlocked": true
+      }
     },
     {
       "name": "[mall] company.js 연동",
@@ -684,6 +693,16 @@
       "detail": {
         "cards": 12
       }
+    },
+    {
+      "name": "[mall] brand=SHURE 결과 실제 필터링",
+      "ok": true,
+      "detail": "본문으로 건너뛰기\n상품 카탈로그\nB2B QUOTE CATALOG\n상품 검색\n검색\n홈\n전체 상품\n견적 목록\n주문·결제\n이용 안내\n회사 홈페이지\n로그인\n회원가입\n 공개 판매가는 공급처 공개 정보 기준입니다. 최종 견적은"
+    },
+    {
+      "name": "[mall] 세션 전체 정적 자산 오류 0",
+      "ok": true,
+      "detail": []
     }
   ],
   "screenshots": [
@@ -696,7 +715,7 @@
     "mall-about.png"
   ],
   "summary": {
-    "total": 80,
+    "total": 83,
     "failed": 0
   }
 }

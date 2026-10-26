@@ -71,3 +71,17 @@
 ## 6. 도메인 이전 준비
 
 읽기 전용 감사: `docs/domain-migration/cgiinc-dns-audit-20261026.md` (DNS/호스팅/TLS/콘텐츠 구조, 이전 체크리스트 §7, 롤백 경로 §8). **DNS 변경·실제 이전은 미실행.**
+
+## 7. 검증 결과
+
+| 실행 | 대상 | 결과 |
+|---|---|---|
+| `node --test website/test/*.test.mjs` | 데이터·정본 계약 12건 | 12/12 |
+| `node --test site/test/*.test.mjs` | 쇼핑몰 회귀 51건 | 51/51 |
+| `cd backend && npm test` | 주문·결제 포함 366건 | 366/366 |
+| `node tools/verify_website_profile.mjs` (로컬) | 렌더된 DOM 83건 | 83/83 |
+| `node tools/verify_website_profile.mjs --base https://skerishkang.github.io/kbs261022` | **라이브 GitHub Pages** 83건 | 83/83 |
+
+라이브 실행 로그: `docs/CGI_ISSUE97_LIVE_TESTLOG.json`. 로컬 로그: `docs/CGI_ISSUE97_PROFILE_TESTLOG.json`, 캡처: `docs/screenshots/issue97/`.
+
+두 실행의 유일한 차이: 쇼핑몰의 비로그인 세션 복원 `GET /api/me`가 라이브(origin 허용)에서는 `401`, 로컬(CORS 미허용)에서는 응답 없이 차단된다. 앱은 양쪽 모두 `res.ok=false → user=null`로 정상 처리하므로 검증 항목에서는 "401 /api/me 이외의 API 응답 금지"로 판정한다.
