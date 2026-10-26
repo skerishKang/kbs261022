@@ -222,10 +222,182 @@
     });
   }
 
+  /* ══════════════════════════════════ 2025년 지명원 회사정보 렌더링 */
+  var CO = window.CGI_COMPANY || null;
+
+  function el(tag, cls, text) {
+    var n = document.createElement(tag);
+    if (cls) { n.className = cls; }
+    if (text !== undefined && text !== null) { n.textContent = text; }
+    return n;
+  }
+
+  function renderOrg() {
+    var host = document.getElementById('orgChart');
+    if (!host) { return; }
+    host.innerHTML = '';
+    CO.org.divisions.forEach(function (div) {
+      var li = el('li', 'org-branch');
+      li.appendChild(el('strong', 'org-div-name', div.name));
+      var sub = el('ul', 'org-sub');
+      div.units.forEach(function (u) {
+        var unit = el('li');
+        if (typeof u === 'string') {
+          unit.textContent = u;
+        } else {
+          unit.appendChild(el('span', 'org-team-name', u.team));
+          var roles = el('ul', 'org-roles');
+          u.roles.forEach(function (r) { roles.appendChild(el('li', null, r)); });
+          unit.appendChild(roles);
+        }
+        sub.appendChild(unit);
+      });
+      li.appendChild(sub);
+      host.appendChild(li);
+    });
+  }
+
+  function renderHistory() {
+    var host = document.getElementById('historyList');
+    if (!host) { return; }
+    host.innerHTML = '';
+    CO.history.forEach(function (row) {
+      var li = el('li', 'tl-row');
+      li.appendChild(el('span', 'year', row.year));
+      var ul = el('ul', 'tl-items');
+      row.items.forEach(function (it) { ul.appendChild(el('li', null, it)); });
+      li.appendChild(ul);
+      host.appendChild(li);
+    });
+  }
+
+  function renderKeywords() {
+    var host = document.getElementById('bizKeywords');
+    if (!host) { return; }
+    host.innerHTML = '';
+    CO.keywords.forEach(function (k) { host.appendChild(el('li', 'kw', k)); });
+  }
+
+  function renderBusiness() {
+    var host = document.getElementById('bizGrid');
+    if (!host) { return; }
+    host.innerHTML = '';
+    CO.business.forEach(function (b) {
+      var art = el('article', 'biz biz-card');
+      art.appendChild(el('span', 'biz-no', b.no));
+      var img = el('img');
+      img.src = b.img; img.alt = b.alt; img.loading = 'lazy'; img.width = 800; img.height = 500;
+      art.appendChild(img);
+      var h = el('h3', null, b.name);
+      h.appendChild(el('span', 'en', ' ' + b.en));
+      art.appendChild(h);
+      var ul = el('ul');
+      b.items.forEach(function (it) { ul.appendChild(el('li', null, it)); });
+      art.appendChild(ul);
+      host.appendChild(art);
+    });
+  }
+
+  function renderAgencies() {
+    var host = document.getElementById('agencyList');
+    if (!host) { return; }
+    host.innerHTML = '';
+    CO.agencies.forEach(function (a) {
+      var li = el('li');
+      li.appendChild(el('span', 'ag-year', a.year));
+      li.appendChild(el('strong', 'ag-name', a.name));
+      li.appendChild(el('span', 'ag-type', a.type));
+      if (a.note) { li.appendChild(el('span', 'ag-note', a.note)); }
+      host.appendChild(li);
+    });
+  }
+
+  function renderReferences() {
+    var host = document.getElementById('refGrid');
+    if (!host) { return; }
+    host.innerHTML = '';
+    var byCat = {};
+    CO.references.forEach(function (r) {
+      (byCat[r.cat] = byCat[r.cat] || []).push(r);
+    });
+    Object.keys(byCat).forEach(function (cat) {
+      var box = el('div', 'ref-cat');
+      box.appendChild(el('h4', 'ref-cat-name', cat));
+      var ul = el('ul', 'ref-cards');
+      byCat[cat].forEach(function (r) {
+        var li = el('li', 'ref-card');
+        li.appendChild(el('strong', 'ref-place', r.place));
+        li.appendChild(el('span', 'ref-spec', r.spec));
+        li.appendChild(el('span', 'ref-gear', r.gear));
+        ul.appendChild(li);
+      });
+      box.appendChild(ul);
+      host.appendChild(box);
+    });
+  }
+
+  function renderRecords() {
+    var host = document.getElementById('recordList');
+    if (!host) { return; }
+    host.innerHTML = '';
+    CO.records.forEach(function (row) {
+      var det = el('details', 'rec-year');
+      var sum = el('summary');
+      sum.appendChild(el('span', 'rec-badge', row.year));
+      sum.appendChild(el('span', 'rec-count', '지명원 기재 ' + row.count + '건'));
+      det.appendChild(sum);
+      var ul = el('ul', 'rec-samples');
+      row.samples.forEach(function (s) { ul.appendChild(el('li', null, s)); });
+      det.appendChild(ul);
+      host.appendChild(det);
+    });
+  }
+
+  function renderMaintenance() {
+    var host = document.getElementById('maintList');
+    if (!host) { return; }
+    host.innerHTML = '';
+    CO.maintenanceCases.forEach(function (m) {
+      var li = el('li');
+      li.appendChild(el('strong', 'mt-place', m.place));
+      li.appendChild(el('span', 'mt-period', m.period));
+      li.appendChild(el('span', 'mt-scope', m.scope));
+      host.appendChild(li);
+    });
+  }
+
+  function renderCredentials() {
+    var host = document.getElementById('credList');
+    if (!host) { return; }
+    host.innerHTML = '';
+    CO.credentials.groups.forEach(function (g) {
+      var box = el('div', 'cred-group');
+      box.appendChild(el('h4', 'cred-title', g.title));
+      var ul = el('ul', 'cred-items');
+      g.items.forEach(function (it) { ul.appendChild(el('li', null, it)); });
+      box.appendChild(ul);
+      host.appendChild(box);
+    });
+  }
+
+  function renderCompany() {
+    if (!CO) { return; }
+    renderOrg();
+    renderHistory();
+    renderKeywords();
+    renderBusiness();
+    renderAgencies();
+    renderReferences();
+    renderRecords();
+    renderMaintenance();
+    renderCredentials();
+  }
+
   /* ------------------------------------------------------ 시작 */
   function boot() {
     applyMallLinks();
     loadMasterBrands();
+    renderCompany();
     initNav();
     initScrollSpy();
     initRefTabs();
