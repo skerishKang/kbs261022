@@ -4,9 +4,10 @@
 // generator (`backend/tools/product-registration-readiness.mjs`) as a child
 // process over the committed 4,575-row inputs, and compares what it prints and
 // what it writes against (a) an in-process classification of the same files and
-// (b) three committed authorities that were produced by other work
+// (b) committed authorities that were produced by other work
 // (reports/data/erp/summary.json, reports/data/erp/erp_readonly_comparison.json,
-// data/product_quality/product_duplicate_candidates.csv).
+// data/product_quality/product_duplicate_candidates.csv, and the two measured
+// image tables under reports/data/naver/).
 //
 // Nothing here restates the generator's own expectations: a number is either
 // cross-checked against an independent authority or asserted as a property
@@ -24,6 +25,7 @@ import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 
 import { parseCsv, buildMappingSet } from '../../lib/product-mapping.mjs';
+import { joinImageEvidence } from '../../lib/naver-images.mjs';
 import {
   classifyCatalog, missingEntries, summarizeClassification,
   REASONS, REASON_KINDS, STOREWIDE_DECISION_CODES,
@@ -47,10 +49,21 @@ const AUTHORITIES = {
   comparison: 'reports/data/erp/erp_readonly_comparison.json',
   summary: 'reports/data/erp/summary.json',
 };
+// The two measured-image tables are the only authority for a resolution claim.
+// They join by sha256(이미지URL), so this test must derive the same key the
+// generator derives, from the same prep column, or the cross-check is fiction.
+const IMAGE_SOURCES = {
+  measurements: 'reports/data/naver/image_measurements.csv',
+  variants: 'reports/data/naver/image_variant_measurements.csv',
+};
 
 const inputs = Object.fromEntries(Object.entries(SOURCES).map(([key, rel]) => [key, parseCsv(read(rel))]));
 const comparison = json(AUTHORITIES.comparison);
 const erpSummary = json(AUTHORITIES.summary);
+const imageEvidence = joinImageEvidence(
+  parseCsv(read(IMAGE_SOURCES.measurements)),
+  parseCsv(read(IMAGE_SOURCES.variants)),
+);
 const records = buildMappingSet({
   extendedRows: inputs.extendedRows,
   uploadRows: inputs.uploadRows,
@@ -58,7 +71,7 @@ const records = buildMappingSet({
   erpMasterRows: [],
 });
 
-const classified = classifyCatalog({ ...inputs, records, comparison, summary: erpSummary });
+const classified = classifyCatalog({ ...inputs, records, comparison, summary: erpSummary, imageEvidence });
 const rows = classified.rows;
 const missing = missingEntries(rows);
 const stats = summarizeClassification({
@@ -91,7 +104,7 @@ const csvOf = (dir, name) => parseCsv(fs.readFileSync(path.join(dir, name), 'utf
 
 test('the committed inputs are the ones the generator reads, unpinned and unmodified', () => {
   const tool = read('backend/tools/product-registration-readiness.mjs');
-  for (const rel of [...Object.values(SOURCES), ...Object.values(AUTHORITIES)]) {
+  for (const rel of [...Object.values(SOURCES), ...Object.values(AUTHORITIES), ...Object.values(IMAGE_SOURCES)]) {
     assert.ok(tool.includes(`'${rel}'`), `the generator must read the same authority this test reads: ${rel}`);
   }
   assert.equal(inputs.masterRows.length, 4575, 'the order of magnitude is the collected catalogue size');
@@ -301,6 +314,108 @@ test('the classifier never performs a live call, by construction', () => {
   assert.ok(dryRun.naver.auth_gap.reason.length > 0, 'the auth gap must be stated, not hidden');
   assert.ok(Array.isArray(dryRun.naver.unconfirmed) && dryRun.naver.unconfirmed.length > 0, 'unconfirmed contract items must be listed');
   assert.equal(dryRun.conservation.input_equals_output, true);
+});
+
+test('every image verdict is the measured bytes of that exact URL, row by row', () => {
+  const measurements = parseCsv(read(IMAGE_SOURCES.measurements));
+  const variants = parseCsv(read(IMAGE_SOURCES.variants));
+  const byKey = new Map(measurements.map((row) => [row.probe_key, row]));
+  const variantByKey = new Map(variants.map((row) => [row.probe_key, row]));
+  assert.equal(byKey.size, measurements.length, 'one probe key identifies one URL, so a measurement cannot join twice');
+  assert.equal(variantByKey.size, variants.length, 'one probe key carries one sweep verdict');
+
+  // The segment sweep is defined as "run for every URL measured below the
+  // recommendation", so the two committed files must agree on exactly that set:
+  // an extra verdict would claim a sweep nobody ran, a missing one would leave a
+  // shortfall unexplained. This is a property of the pair of files, not of the code.
+  const belowKeys = new Set(measurements.filter((row) => row.meets_recommended_pixels === 'no').map((row) => row.probe_key));
+  const sweptKeys = new Set(variants.map((row) => row.probe_key));
+  assert.deepEqual([...sweptKeys].sort(), [...belowKeys].sort(), 'the sweep covers exactly the URLs measured below the recommendation');
+
+  const withUrl = rows.filter((row) => row.representative_image_url);
+  assert.equal(withUrl.length, stats.images.representative_present);
+  for (const row of withUrl) {
+    // Recomputed from the URL that reached the row rather than read from the shared
+    // helper: a join that silently keys on something else must not be able to agree
+    // with itself.
+    const key = crypto.createHash('sha256').update(row.representative_image_url).digest('hex');
+    const hit = byKey.get(key);
+    const codes = String(row.gap_codes).split(';');
+    if (!hit) {
+      assert.ok(codes.includes('image_measurement_missing'), `${row.cgi_id}: a URL with no measurement must say so`);
+      assert.equal(row.image_width_measured, '', `${row.cgi_id}: an unmeasured URL cannot carry a width`);
+      continue;
+    }
+    assert.notEqual(codes.includes('image_measurement_missing'), true, `${row.cgi_id}: this URL was measured`);
+    assert.equal(row.image_container_measured, hit.container, `${row.cgi_id}: the container must be the measured one`);
+    // A tripwire on the committed evidence, not a property of the classifier: if a
+    // re-probe ever answers 404 or serves an HTML body at 200, the census below has
+    // to name it and this file has to be extended rather than quietly go green.
+    assert.equal(Number(hit.http_status), 200, `${row.cgi_id}: this evidence table holds only 200 answers`);
+    assert.ok(hit.container, `${row.cgi_id}: every 200 body here parsed as an image header`);
+
+    const sweep = variantByKey.get(key);
+    const swept = sweep && sweep.variants_answered === 'yes' ? sweep : null;
+    // The row reports the largest file that was actually fetched for this URL: the
+    // representative bytes, or the size segment that beat them. A number that is
+    // neither of those is stale or invented.
+    assert.equal(Number(row.image_width_measured), Math.max(Number(hit.width), swept ? Number(swept.best_width) : 0),
+      `${row.cgi_id}: the width must be the largest measured for this URL`);
+    assert.equal(Number(row.image_height_measured), Math.max(Number(hit.height), swept ? Number(swept.best_height) : 0),
+      `${row.cgi_id}: the height must be the largest measured for this URL`);
+    const fetchedBytes = [Number(hit.bytes), swept ? Number(swept.best_bytes) : NaN];
+    assert.ok(fetchedBytes.includes(Number(row.image_size_bytes_measured)), `${row.cgi_id}: the byte count must be a file that was fetched`);
+    if (!swept) assert.equal(Number(row.image_size_bytes_measured), Number(hit.bytes), `${row.cgi_id}: unswept rows report the representative bytes`);
+
+    // 1000x1000 is the recommendation as written in the vendor document, restated
+    // here so a drift in the library constant is a finding rather than an agreement.
+    const square = Number(hit.width) > 0 && Number(hit.width) === Number(hit.height);
+    const meets = square && Number(hit.width) >= 1000;
+    const rescued = row.image_measured_state === 'ok_via_segment';
+    assert.equal(codes.includes('image_meets_recommended_pixels'), meets, `${row.cgi_id}: the resolution verdict must follow the measured pixels`);
+    assert.equal(codes.includes('image_below_recommended_pixels'), !(meets || rescued), `${row.cgi_id}: only an unmet shortfall carries the below code`);
+    assert.equal(codes.includes('image_non_square_measured'), !square && !rescued, `${row.cgi_id}: the shape verdict must follow the measured pixels`);
+    assert.equal(rescued, Boolean(swept && swept.meets_recommended_now === 'yes'), `${row.cgi_id}: only a swept file that reaches the recommendation may rescue`);
+    if (rescued) {
+      assert.ok(codes.includes('image_larger_segment_meets'), `${row.cgi_id}: rescued without the rescue code`);
+      assert.equal(row.image_best_segment, swept.best_segment, `${row.cgi_id}: the rescued file must be named`);
+      assert.equal(codes.includes('image_size_segment_measured'), true, `${row.cgi_id}: a rescue is a segment measurement`);
+    } else if (swept) {
+      assert.equal(row.image_best_segment, Number(swept.best_width) > Number(hit.width) ? swept.best_segment : 'representative',
+        `${row.cgi_id}: the best segment must be the largest file actually measured`);
+    }
+  }
+
+  // The join is by URL, so two products sharing one image must reach one verdict.
+  const statesByURL = new Map();
+  for (const row of withUrl) {
+    const seen = statesByURL.get(row.representative_image_url);
+    if (seen) assert.equal(seen, row.image_measured_state, 'products sharing a representative URL must share its measurement');
+    else statesByURL.set(row.representative_image_url, row.image_measured_state);
+  }
+  assert.ok(statesByURL.size < withUrl.length, 'the catalogue reuses representative URLs, which is why the evidence index is keyed by URL');
+
+  const hasCode = (row, code) => String(row.gap_codes).split(';').includes(code);
+  assert.equal(withUrl.filter((row) => hasCode(row, 'image_thumbnail_variant_only')).length, 0,
+    'the URL-shape guess is gone: a /small/ path is not a verdict about resolution');
+  assert.equal(REASONS.image_thumbnail_variant_only, undefined, 'and the retired code must not be declared again');
+  assert.equal(new Set(rows.map((row) => row.image_measured_state)).size, Object.keys(stats.images.by_measured_state).length,
+    'the state census must be the states the rows actually carry');
+  assert.equal(Object.values(stats.images.by_measured_state).reduce((a, b) => a + b, 0), rows.length);
+  assert.equal(stats.images.meets_recommended + stats.images.below_recommended + stats.images.larger_segment_meets, stats.images.bytes_measured,
+    'a measured body carries exactly one resolution verdict: meets, below, or rescued by a larger segment');
+  assert.equal(
+    stats.images.bytes_measured + stats.images.not_measured + stats.images.unreachable + stats.images.http_error + stats.images.unreadable
+    + (rows.length - stats.images.representative_present),
+    rows.length,
+    'every row is either measured or named by why it is not: no URL, never fetched, refused, or a 200 that is not an image',
+  );
+
+  // The census has to survive into the artifact the operator reads, not only memory.
+  const readiness = csvOf(runA.outDir, 'cgi_product_registration_readiness.csv');
+  const artifactStates = {};
+  for (const row of readiness) artifactStates[row.image_measured_state] = (artifactStates[row.image_measured_state] || 0) + 1;
+  assert.deepEqual(artifactStates, stats.images.by_measured_state, 'the CSV must carry the same measured states as the summary');
 });
 
 test('row order is the restart contract: cgi_id ascending and unique', () => {

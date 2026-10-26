@@ -1,0 +1,234 @@
+{
+  "kind": "cgi-registration-content-plan",
+  "generated_by": "backend/tools/registration-content-plan.mjs",
+  "inputs": {
+    "prep": {
+      "path": "data/smartstore_prep/smartstore_registration_prep.csv",
+      "sha256": "1110be226bc7add9d84a065ad0794c1c3714d82f7f1acc9caa6d0f1974ffdf65"
+    },
+    "options": {
+      "path": "data/full_catalog/options_compact.csv",
+      "sha256": "772fa53cab91739f11ee30e7c3cbe471676c86491043a0c0eda1d8de69e17cad"
+    },
+    "extended": {
+      "path": "data/erp_prep/erp_extended_mapping.csv",
+      "sha256": "cf31a9ab5b1fd5cc30aa5f2bb32cad09e71024a23fbb691a5d57cac831aa3c11"
+    },
+    "upload": {
+      "path": "data/erp_prep/ecount_item_upload.csv",
+      "sha256": "4dc06701d5d4560ff095c0f77d8d3a18185caf5bec479e61f3088c524969d8f8"
+    }
+  },
+  "input_row_counts": {
+    "prep": 4575,
+    "option_rows": 4233,
+    "option_products": 587,
+    "mapping_records": 4575
+  },
+  "census": {
+    "products": 4575,
+    "options": {
+      "status_by_products": {
+        "no_options": 3988,
+        "complete": 367,
+        "partial": 181,
+        "ambiguous": 32,
+        "no_children": 7
+      },
+      "type_by_products": {
+        "NONE": 4027,
+        "SINGLE": 276,
+        "COMBINATION": 272
+      },
+      "emittable_products": 367,
+      "option_children_emitted": 1971,
+      "children_with_known_usable": 1971,
+      "children_marked_sold_out": 531,
+      "children_with_add_price": 795,
+      "groups_dropped_for_duplicate_children": 34,
+      "truncated_entries": 213,
+      "unparsed_entries": 0,
+      "reason_counts": {
+        "option_source_absent": 3988,
+        "option_children_truncated_in_source": 213,
+        "option_group_children_ambiguous": 34,
+        "option_children_absent": 7,
+        "option_group_labels_only": 7
+      }
+    },
+    "detail": {
+      "drafts": 4575,
+      "counts_as_detail_content": 0,
+      "operator_approval_required": 4575,
+      "reason_counts": {
+        "kc_info_absent": 4575,
+        "origin_code_absent": 4575,
+        "importer_absent": 4575,
+        "detail_content_absent": 323
+      }
+    },
+    "stock": {
+      "numeric_in_catalogue": 0,
+      "item_codes": 4575,
+      "batches_planned": 46,
+      "requests_executed": 0,
+      "quantities_invented": false
+    },
+    "duplicates": {
+      "distinct_seller_codes": 4575,
+      "duplicated_codes": 0,
+      "searched": 0,
+      "already_on_naver": 0,
+      "reasons": [
+        "seller_code_present",
+        "duplicate_search_not_executed"
+      ]
+    },
+    "price": {
+      "with_numeric_price": 2117,
+      "inquiry_only": 2458,
+      "over_documented_max": 0,
+      "reasons": [
+        "price_inquiry_only"
+      ]
+    },
+    "transmitted": false,
+    "account_login": "NO",
+    "naver_requests": 0,
+    "erp_requests": 0,
+    "live_writes": 0,
+    "rule": "옵션 자식은 공급처 옵션SKU요약에서 파싱되고 잘린 목록은 등록 후보로 내지 않는다. 상세설명 초안은 counts_as_detail_content=false 이며 운영자 승인 없이는 required 를 해소하지 않는다. 재고 수량은 읽지 않은 값이 0건이며, 판매자코드는 카탈로그 내부 고유성만 확인했다."
+  },
+  "stock_read_plan": {
+    "endpoint_key": "listInventoryBalance",
+    "oapi_path": "/OAPI/V2/InventoryBalance/GetListInventoryBalanceStatus",
+    "authed": true,
+    "min_interval_ms": 600000,
+    "batches_planned": 46,
+    "requests": [],
+    "reasons": [
+      "stock_quantity_column_absent",
+      "stock_requires_erp_balance_read"
+    ],
+    "note": "requests 가 비어 있는 것이 정상 — 인증된 ERP 재고현황 읽기가 끝난 뒤 채워진다. 읽지 않은 수량을 등록 본문에 넣지 않는다."
+  },
+  "duplicate_guard": {
+    "records": 4575,
+    "distinctCodes": 4575,
+    "missingCode": 0,
+    "duplicatedCodes": 0,
+    "duplicatedExamples": [],
+    "codeLengthMin": 12,
+    "codeLengthMax": 14,
+    "nonAsciiCodes": 0,
+    "searchedRecords": 0,
+    "alreadyOnNaver": 0,
+    "unsearched": 4575,
+    "reasons": [
+      "seller_code_present",
+      "duplicate_search_not_executed"
+    ],
+    "note": "공식 문서: 판매자관리코드는 고유성을 보장하지 않는다 — 자 catalog 검사(여기)와 등록 전 검색(실행 안 함), 두 쪽이 다 맞아야 중복 등록을 막을 수 있다.",
+    "execute": false,
+    "transmitted": false,
+    "naverRequests": 0
+  },
+  "price_check": {
+    "records": 4575,
+    "withNumericPrice": 2117,
+    "inquiryOnly": 2458,
+    "unknown": 0,
+    "min": 340,
+    "max": 68960000,
+    "overDocumentedSalePriceMax": 0,
+    "negative": 0,
+    "salePriceMax": 999999990,
+    "documentedVatRule": "공급처 데이터에 VAT 포함 여부에 대한 근거가 없어 공급처 수치를 그대로 사용 — 네이버 최종 표시가 어떻게 되는지 첫 실등록 시 확인 필요",
+    "reasons": [
+      "price_inquiry_only"
+    ]
+  },
+  "documented_bounds": {
+    "sale_price_max": 999999990,
+    "stock_quantity_max": 99999999,
+    "standard_option_auto_stock": 9999,
+    "option_types": {
+      "SINGLE": {
+        "field": "optionSimple",
+        "docType": "단독형(단순형)",
+        "childKeys": [
+          "groupName",
+          "id",
+          "name",
+          "usable"
+        ],
+        "docUrl": "https://apicenter.commerce.naver.com/llms/post-v2-products.md"
+      },
+      "COMBINATION": {
+        "field": "optionCombinations",
+        "docType": "조합형",
+        "childKeys": [
+          "id",
+          "optionName1",
+          "optionName2",
+          "price",
+          "stockQuantity",
+          "usable"
+        ],
+        "docUrl": "https://apicenter.commerce.naver.com/llms/post-v2-products.md"
+      },
+      "CUSTOM": {
+        "field": "optionCustom",
+        "docType": "입력형",
+        "childKeys": [
+          "groupName",
+          "id",
+          "usable"
+        ],
+        "docUrl": "https://apicenter.commerce.naver.com/llms/post-v2-products.md"
+      },
+      "STANDARD": {
+        "field": "optionStandards",
+        "docType": "표준형",
+        "childKeys": [
+          "optionName1",
+          "optionName2"
+        ],
+        "docUrl": "https://apicenter.commerce.naver.com/llms/post-v2-products.md",
+        "note": "price/stockQuantity/usable 은 option-stock 표의 유추 — 문서에 자식 키로 인쇄되지 않음"
+      },
+      "NONE": {
+        "field": null,
+        "docType": "옵션 없음",
+        "childKeys": [],
+        "docUrl": null,
+        "note": "옵션 없는 상품은 표준형 단일 옵션 처리 — 상세 문서에 예시 없음"
+      },
+      "sortTypes": [
+        "CREATE",
+        "ABC",
+        "LOW_PRICE",
+        "HIGH_PRICE"
+      ],
+      "stockSwitch": "useStockManagement (false 시 표준형 재고 9,999 자동 — 실측 재고가 아니다)"
+    }
+  },
+  "unconfirmed": [
+    "optionInfo 그룹명/옵션명의 문자 수 제한",
+    "단독형 그룹 개수 상한과 그룹당 자식 개수 상한",
+    "옵션 단위 price/stockQuantity 상한",
+    "detailContent 최소 길이·필수 구조",
+    "sellerManagementCode 최대 길이",
+    "옵션 없는 상품의 표준 처리(문서에 예시 없음)"
+  ],
+  "detail_content_contract": {
+    "required": "POST /v2/products — originProduct.detailContent 필수",
+    "overwriteExemption": "PUT(수정)은 전체 덮어쓰기지만 detailContent 는 예외 3개 중 하나 — 보내지 않으면 기존 값이 유지된다",
+    "format": "문서는 HTML 문자열을 받는다. 어떤 편집기/이미지 API 에서 만들어야 하는지에 대한 최소 길이·필수 구조는 인쇄되어 있지 않다."
+  },
+  "seller_code_contract": {
+    "uniqueness": "문서 원문: 판매자관리코드는 사용자가 직접 값을 정하며 식별자로서의 고유성을 보장하지 않는다. 여러 상품에 동일한 코드를 입력할 수 있다.",
+    "duplicateGuard": "이 API 에는 idempotency key 가 없다 — 검색(SELLER_CODE) 후 미스일 때만 등록하는 쪽이 중복 방지책이다."
+  },
+  "rule": "옵션 자식은 공급처 옵션SKU요약 문자열에 실제로 있는 항목만 담고, 잘린 목록의 상품은 등록 후보로 내지 않는다. 상세설명 초안은 counts_as_detail_content=false 로 운영자 승인을 요구한다. 재고 수량과 검색 결과는 읽지 않은 값이 0건이며 임의 생성하지 않는다."
+}
