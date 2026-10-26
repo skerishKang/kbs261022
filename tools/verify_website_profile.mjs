@@ -220,9 +220,19 @@ async function survey(page) {
     const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
     const page = await ctx.newPage();
     const errors = [];
+    const apiStatus = [];
     page.on('pageerror', (e) => errors.push('pageerror: ' + e.message));
+    page.on('requestfailed', (e) => { if (!e.url().includes('/api/')) errors.push('requestfailed: ' + e.url()); });
     page.on('response', (r) => {
-      if (r.status() >= 400) { errors.push(`http ${r.status()}: ${r.url()}`); log.requests.push({ status: r.status(), url: r.url() }); }
+      const u = r.url();
+      if (u.includes('/api/')) {
+        // 비로그인 세션 복원 probes 는 401 이 정상 응답이다(앱이 res.ok=false 로 처리).
+        // 그 외 API 상태코드는 결함으로 본다.
+        apiStatus.push(r.status() + ' ' + u.split('/api/')[1].split('?')[0]);
+      } else if (r.status() >= 400) {
+        errors.push(`http ${r.status()}: ${u}`);
+        log.requests.push({ status: r.status(), url: u });
+      }
     });
     await page.goto(MALL_URL + '#/', { waitUntil: 'load' });
     await page.waitForFunction(() => document.body.hasAttribute('data-cgi-ready'), null, { timeout: 20000 });
@@ -232,8 +242,12 @@ async function survey(page) {
       footerText: (document.querySelector('.footer-contact') || {}).innerText || '',
       ready: document.body.getAttribute('data-cgi-ready')
     }));
-    log.mall = { ...mall, errors };
-    check('[mall] 런타임 오류 0', errors.length === 0, errors.slice(0, 4));
+    log.mall = { ...mall, errors, apiStatus };
+    check('[mall] 정적 자산·런타임 오류 0', errors.length === 0, errors.slice(0, 4));
+    // 허용된 origin(라이브)에서는 /api/me 401 이 관측되고, 로컬은 CORS 로 응답 자체를 보지 못한다.
+    // 어느 쪽이든 "401 /api/me 이외의 API 응답"은 결함으로 판정한다.
+    const unexpectedApi = apiStatus.filter((s) => !/^401 me$/.test(s));
+    check('[mall] API 응답은 비로그인 /api/me 401 뿐', unexpectedApi.length === 0, { apiStatus, corsBlocked: apiStatus.length === 0 });
     check('[mall] company.js 연동', mall.company === true);
     check('[mall] 상품 4,575건 유지', mall.products === 4575, mall.products);
     check('[mall] 푸터 장성 주소', mall.footerText.includes('장성'), mall.footerText.slice(0, 80));
@@ -253,9 +267,11 @@ async function survey(page) {
     await page.waitForTimeout(2500);
     const list = await page.evaluate(() => ({
       cards: document.querySelectorAll('[data-product-card], .product-card, li.card, .card').length,
-      text: document.body.innerText.slice(0, 400)
+      text: document.body.innerText
     }));
     check('[mall] 브랜드 필터 라우팅 작동', list.cards > 0, { cards: list.cards });
+    check('[mall] brand=SHURE 결과 실제 필터링', /SHURE/i.test(list.text), list.text.slice(0, 120));
+    check('[mall] 세션 전체 정적 자산 오류 0', errors.length === 0, errors.slice(0, 4));
     await ctx.close();
   }
 
