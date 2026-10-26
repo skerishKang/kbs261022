@@ -26,6 +26,36 @@
   };
 
   /* ---------------------------------------------------------------- utils */
+  /* 회사정보는 website/assets/company.js(2025년 지명원 기준)를 우선 읽고,
+     파일이 없거나 배포 경로가 다를 때만 아래 값으로 대체한다. */
+  var CO = window.CGI_COMPANY || null;
+
+  function cVal(path, fallback) {
+    var cur = CO;
+    if (!cur) { return fallback; }
+    path.split('.').forEach(function (k) { cur = (cur && typeof cur === 'object') ? cur[k] : undefined; });
+    return (cur === undefined || cur === null || cur === '') ? fallback : cur;
+  }
+
+  function companyTels() {
+    var t = CO && CO.contact && CO.contact.tels;
+    return (Array.isArray(t) && t.length) ? t : [{ num: '062) 576-8100', dial: '0625768100' }];
+  }
+
+  function companyContactHtml() {
+    var telHtml = companyTels().map(function (t) {
+      return '<a href="tel:' + esc(t.dial) + '">' + esc(t.num) + '</a>';
+    }).join(' &nbsp;·&nbsp; ');
+    var zip = cVal('hq.zip', '57248');
+    return '<dl class="about-contact">' +
+      '<div><dt>전화</dt><dd>' + telHtml + '</dd></div>' +
+      '<div><dt>팩스</dt><dd>' + esc(cVal('contact.fax', '062) 576-8181')) + '</dd></div>' +
+      '<div><dt>본사</dt><dd>[' + esc(zip) + '] ' + esc(cVal('hq.addrFull', '전라남도 장성군 남면 나노산단로 102 (삼태리)')) + '</dd></div>' +
+      '<div><dt>회사</dt><dd>' + esc(cVal('identity.nameKo', '주식회사 시지아이')) +
+        ' (' + esc(cVal('identity.nameEn', 'CGI Inc.')) + ')</dd></div>' +
+      '</dl>';
+  }
+
   function esc(value) {
     if (value === null || value === undefined) return '';
     return String(value)
@@ -418,7 +448,7 @@
 
       '<section class="home-cta">' +
         '<div><h2>원하는 상품을 찾지 못하셨나요?</h2><p>상품명·모델명으로 검색하거나 CGI 담당자에게 문의해 주세요.</p></div>' +
-        '<a class="btn btn-primary" href="tel:0625768100">062) 576-8100</a>' +
+        '<a class="btn btn-primary" href="tel:' + esc(companyTels()[0].dial) + '">' + esc(companyTels()[0].num) + '</a>' +
       '</section>';
   }
 
@@ -967,12 +997,7 @@
           '<li>담당자가 내용을 확인한 뒤 연락드립니다.</li>' +
         '</ul>' +
         '<h2>문의</h2>' +
-        '<dl class="about-contact">' +
-          '<div><dt>전화</dt><dd><a href="tel:0625768100">062) 576-8100</a></dd></div>' +
-          '<div><dt>팩스</dt><dd>062) 576-8181</dd></div>' +
-          '<div><dt>주소</dt><dd>광주광역시 광산구 하남산단천변좌로 19, 광주드림파크 111호</dd></div>' +
-          '<div><dt>회사</dt><dd>주식회사 시지아이 (CGI Inc.)</dd></div>' +
-        '</dl>' +
+        companyContactHtml() +
         '<div class="about-actions">' +
           '<a class="btn btn-primary" href="#/products">상품 보기</a>' +
           '<a class="btn btn-secondary" href="../website/index.html" data-home-link>회사 홈페이지</a>' +
