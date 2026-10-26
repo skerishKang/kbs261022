@@ -1,0 +1,33 @@
+{
+ "scope": "read-only GET of supplier size-segment variants for representatives measured below the documented 1000x1000 recommendation — no login, no credential, no upload",
+ "recommended_pixels": {
+  "width": 1000,
+  "height": 1000,
+  "wording": "권장(recommended, not a stated floor)"
+ },
+ "representatives_below_recommendation": 677,
+ "variant_urls_planned": 3385,
+ "variant_urls_observed": 3385,
+ "variant_urls_tried": 0,
+ "run_complete": true,
+ "variants_found_200": 78,
+ "variants_404": 3307,
+ "variants_other_status": 0,
+ "by_variant_status": {
+  "200": 78,
+  "404": 3307
+ },
+ "representatives_fully_answered": 677,
+ "representatives_partially_answered": 0,
+ "representatives_with_any_variant": 39,
+ "representatives_with_larger_variant": 39,
+ "representatives_no_larger_variant": 638,
+ "representatives_not_measured": 0,
+ "representatives_resolved_to_recommended": 1,
+ "representatives_still_short": 676,
+ "best_segment_counts": {
+  "representative": 638,
+  "big": 39
+ },
+ "stopped": null
+}

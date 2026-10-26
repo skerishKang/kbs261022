@@ -1,0 +1,97 @@
+{
+ "products": 4575,
+ "distinct_image_urls": 4505,
+ "products_without_url": 0,
+ "urls_with_url": 4575,
+ "not_probed": 0,
+ "allowed_formats": [
+  "jpg",
+  "jpeg",
+  "gif",
+  "png",
+  "bmp"
+ ],
+ "documented_limits": {
+  "source": "apicenter.commerce.naver.com v2.90.x transcriptions",
+  "allowedFormats": [
+   "jpg",
+   "jpeg",
+   "gif",
+   "png",
+   "bmp"
+  ],
+  "representativePixels": {
+   "width": 1000,
+   "height": 1000,
+   "wording": "권장(recommended, not a stated floor)"
+  },
+  "extraImagesMax": 9,
+  "imagesPerUploadCall": 10,
+  "byteSizeLimit": null,
+  "minimumResolution": null,
+  "unconfirmed": [
+   "max image file size in bytes — not documented",
+   "minimum or maximum pixel resolution — only a 1000x1000 recommendation exists",
+   "animated GIF policy — not documented",
+   "whether a non-square representative is accepted — the recommendation is square"
+  ]
+ },
+ "urls_probed": 4505,
+ "fetched_ok": 4505,
+ "by_status": {
+  "200": 4505
+ },
+ "by_format": {
+  "jpeg": 4388,
+  "png": 117
+ },
+ "by_header_variant": {},
+ "format_allowed": 4505,
+ "format_rejected": 0,
+ "unreadable_bytes": 0,
+ "square": 4494,
+ "non_square": 11,
+ "meets_recommended_1000": 3828,
+ "dimensions_measured": 4505,
+ "distinct_dimensions": {
+  "1000x1000": 3818,
+  "500x500": 269,
+  "700x700": 21,
+  "600x600": 83,
+  "800x800": 202,
+  "399x399": 34,
+  "1066x1066": 1,
+  "625x625": 1,
+  "250x250": 1,
+  "2835x2835": 1,
+  "1538x1537": 1,
+  "1200x1200": 2,
+  "500x534": 1,
+  "1080x1080": 2,
+  "542x542": 1,
+  "1417x1417": 1,
+  "750x750": 1,
+  "1326x1326": 1,
+  "900x900": 4,
+  "416x416": 1,
+  "400x400": 2,
+  "583x527": 1,
+  "748x658": 1,
+  "480x689": 1,
+  "660x660": 4,
+  "571x437": 1,
+  "1327x1327": 1,
+  "450x450": 1,
+  "900x877": 1,
+  "3877x3225": 1,
+  "1000x667": 3,
+  "950x950": 2,
+  "3000x3000": 1,
+  "220x220": 38,
+  "440x440": 1
+ },
+ "bytes_min": 3377,
+ "bytes_p50": 74535,
+ "bytes_max": 1639538,
+ "bytes_over_1mb": 15
+}
