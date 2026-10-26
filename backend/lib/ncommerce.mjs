@@ -33,9 +33,35 @@ export const NCOM_ENDPOINTS = {
   productSearch: { method: 'POST', path: '/v1/products/search', body: true },
   optionStock: { method: 'PUT', path: '/v1/products/origin-products/{originProductNo}/option-stock', body: true },
   imageUpload: { method: 'POST', path: '/v1/product-images/upload', multipart: true },
+  // Category metadata is the only documented source of leafCategoryId and of the
+  // exceptionalCategories/certificationInfos a leaf demands. All three are read
+  // with a seller Bearer token, so none of them can be called while the seller
+  // account is under 가입심사 and this lane is forbidden to authenticate.
+  categoryList: { method: 'GET', path: '/v1/categories', query: ['last'] },
+  categoryGet: { method: 'GET', path: '/v1/categories/{categoryId}' },
+  categorySub: { method: 'GET', path: '/v1/categories/{categoryId}/sub-categories' },
   orderLastChanged: { method: 'GET', path: '/v1/pay-order/seller/product-orders/last-changed-statuses' },
   orderList: { method: 'GET', path: '/v1/pay-order/seller/product-orders' },
   orderQuery: { method: 'POST', path: '/v1/pay-order/seller/product-orders/query', body: true },
+  // 카테고리별 표준형 옵션 조회 — optionStandards/standardOptionGroups 의 attributeId·
+  // attributeValueId·attributeValueName 은 이 응답에서만 나온다 (카테고리 코퍼스처럼
+  // 판매자 토큰이 필요하므로 본 레인에서 호출하지 않는다).
+  standardOptions: { method: 'GET', path: '/v1/options/standard-options', query: ['categoryId'] },
+};
+
+/**
+ * optionInfo 의 옵션 타입별 필드와 문서에 인쇄된 자식 키. 문서가 자식 키를 인쇄하지
+ * 않은 곳은 null 로 두고 UNCONFIRMED 로 남긴다 — 조합형 price/stockQuantity 는 표의
+ * 유추값이지 스키마가 아니다.
+ */
+export const NAVER_OPTION_TYPES = {
+  SINGLE: { field: 'optionSimple', docType: '단독형(단순형)', childKeys: ['groupName', 'id', 'name', 'usable'], docUrl: 'https://apicenter.commerce.naver.com/llms/post-v2-products.md' },
+  COMBINATION: { field: 'optionCombinations', docType: '조합형', childKeys: ['id', 'optionName1', 'optionName2', 'price', 'stockQuantity', 'usable'], docUrl: 'https://apicenter.commerce.naver.com/llms/post-v2-products.md' },
+  CUSTOM: { field: 'optionCustom', docType: '입력형', childKeys: ['groupName', 'id', 'usable'], docUrl: 'https://apicenter.commerce.naver.com/llms/post-v2-products.md' },
+  STANDARD: { field: 'optionStandards', docType: '표준형', childKeys: ['optionName1', 'optionName2'], docUrl: 'https://apicenter.commerce.naver.com/llms/post-v2-products.md', note: 'price/stockQuantity/usable 은 option-stock 표의 유추 — 문서에 자식 키로 인쇄되지 않음' },
+  NONE: { field: null, docType: '옵션 없음', childKeys: [], docUrl: null, note: '옵션 없는 상품은 표준형 단일 옵션 처리 — 상세 문서에 예시 없음' },
+  sortTypes: ['CREATE', 'ABC', 'LOW_PRICE', 'HIGH_PRICE'],
+  stockSwitch: 'useStockManagement (false 시 표준형 재고 9,999 자동 — 실측 재고가 아니다)',
 };
 
 /** Documented numbers only. Anything the docs never printed stays in UNCONFIRMED. */
