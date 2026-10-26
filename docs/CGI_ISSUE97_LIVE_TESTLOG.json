@@ -1,0 +1,725 @@
+{
+  "base": "https://skerishkang.github.io/kbs261022",
+  "ranAt": "2026-10-26T00:40:04.127Z",
+  "views": {
+    "desktop": {
+      "counts": {
+        "조직도 부서": 2,
+        "조직도 팀/직무": 7,
+        "연혁 연도行": 12,
+        "주요사업 키워드": 12,
+        "사업분야 카드": 10,
+        "취급 브랜드": 66,
+        "시공 레퍼런스": 17,
+        "연도별 실적": 9,
+        "유지보수 사례": 4,
+        "인증·제증명 그룹": 5,
+        "대리점 지정": 3
+      },
+      "overflow": 0,
+      "broken": [],
+      "errors": []
+    },
+    "mobile": {
+      "counts": {
+        "조직도 부서": 2,
+        "조직도 팀/직무": 7,
+        "연혁 연도行": 12,
+        "주요사업 키워드": 12,
+        "사업분야 카드": 10,
+        "취급 브랜드": 66,
+        "시공 레퍼런스": 17,
+        "연도별 실적": 9,
+        "유지보수 사례": 4,
+        "인증·제증명 그룹": 5,
+        "대리점 지정": 3
+      },
+      "overflow": 0,
+      "broken": [],
+      "errors": []
+    }
+  },
+  "console": [],
+  "requests": [],
+  "mall": {
+    "company": true,
+    "products": 4575,
+    "footerText": "상품·견적 문의\n\nTEL 062) 576-8100  ·  061) 801-8100\n\nFAX 062) 576-8181\n\n[57248] 전라남도 장성군 남면\n나노산단로 102 (삼태리)",
+    "ready": "1",
+    "errors": [],
+    "apiStatus": [
+      "401 me"
+    ]
+  },
+  "results": [
+    {
+      "name": "[desktop] 런타임 오류 0",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "[desktop] 깨진 이미지 0",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "[desktop] 가로 오버플로 0",
+      "ok": true,
+      "detail": 0
+    },
+    {
+      "name": "[desktop] 조직도 부서 >= 2",
+      "ok": true,
+      "detail": {
+        "sel": "#orgChart .org-branch",
+        "got": 2
+      }
+    },
+    {
+      "name": "[desktop] 조직도 팀/직무 >= 4",
+      "ok": true,
+      "detail": {
+        "sel": "#orgChart .org-sub > li",
+        "got": 7
+      }
+    },
+    {
+      "name": "[desktop] 연혁 연도行 >= 10",
+      "ok": true,
+      "detail": {
+        "sel": "#historyList .tl-row",
+        "got": 12
+      }
+    },
+    {
+      "name": "[desktop] 주요사업 키워드 >= 12",
+      "ok": true,
+      "detail": {
+        "sel": "#bizKeywords .kw",
+        "got": 12
+      }
+    },
+    {
+      "name": "[desktop] 사업분야 카드 >= 10",
+      "ok": true,
+      "detail": {
+        "sel": "#bizGrid .biz-card",
+        "got": 10
+      }
+    },
+    {
+      "name": "[desktop] 취급 브랜드 >= 31",
+      "ok": true,
+      "detail": {
+        "sel": "#brandGrid li",
+        "got": 66
+      }
+    },
+    {
+      "name": "[desktop] 시공 레퍼런스 >= 12",
+      "ok": true,
+      "detail": {
+        "sel": "#refGrid .ref-card",
+        "got": 17
+      }
+    },
+    {
+      "name": "[desktop] 연도별 실적 >= 5",
+      "ok": true,
+      "detail": {
+        "sel": "#recordList .rec-year",
+        "got": 9
+      }
+    },
+    {
+      "name": "[desktop] 유지보수 사례 >= 4",
+      "ok": true,
+      "detail": {
+        "sel": "#maintList li",
+        "got": 4
+      }
+    },
+    {
+      "name": "[desktop] 인증·제증명 그룹 >= 3",
+      "ok": true,
+      "detail": {
+        "sel": "#credList .cred-group",
+        "got": 5
+      }
+    },
+    {
+      "name": "[desktop] 대리점 지정 >= 2",
+      "ok": true,
+      "detail": {
+        "sel": "#agencyList li",
+        "got": 3
+      }
+    },
+    {
+      "name": "[desktop] 게시됨: 장성 주소",
+      "ok": true,
+      "detail": "전라남도 장성군 남면 나노산단로 102"
+    },
+    {
+      "name": "[desktop] 게시됨: 우편번호",
+      "ok": true,
+      "detail": "57248"
+    },
+    {
+      "name": "[desktop] 게시됨: 대표전화 1",
+      "ok": true,
+      "detail": "062) 576-8100"
+    },
+    {
+      "name": "[desktop] 게시됨: 대표전화 2",
+      "ok": true,
+      "detail": "061) 801-8100"
+    },
+    {
+      "name": "[desktop] 게시됨: 팩스",
+      "ok": true,
+      "detail": "062) 576-8181"
+    },
+    {
+      "name": "[desktop] 게시됨: 사업자번호",
+      "ok": true,
+      "detail": "410-86-46283"
+    },
+    {
+      "name": "[desktop] 게시됨: 설립",
+      "ok": true,
+      "detail": "2011년 1월"
+    },
+    {
+      "name": "[desktop] 게시됨: 기준연도 라벨",
+      "ok": true,
+      "detail": "2025년 지명원 기준"
+    },
+    {
+      "name": "[desktop] 게시됨: 유효성 주의",
+      "ok": true,
+      "detail": "현재 유효성은 별도 확인이 필요합니다"
+    },
+    {
+      "name": "[desktop] 게시됨: 대표 레퍼런스",
+      "ok": true,
+      "detail": "새순교회"
+    },
+    {
+      "name": "[desktop] 게시됨: 정보통신공사업",
+      "ok": true,
+      "detail": "정보통신공사업"
+    },
+    {
+      "name": "[desktop] 비게시: 하남산단천변좌로",
+      "ok": true,
+      "detail": "하남산단천변좌로"
+    },
+    {
+      "name": "[desktop] 비게시: 광주드림파크",
+      "ok": true,
+      "detail": "광주드림파크"
+    },
+    {
+      "name": "[desktop] 비게시: 오선동",
+      "ok": true,
+      "detail": "오선동"
+    },
+    {
+      "name": "[desktop] 비게시: 010-9226-4351",
+      "ok": true,
+      "detail": "010-9226-4351"
+    },
+    {
+      "name": "[desktop] 비게시: detach",
+      "ok": true,
+      "detail": "detach"
+    },
+    {
+      "name": "[desktop] 비게시: anchor",
+      "ok": true,
+      "detail": "anchor"
+    },
+    {
+      "name": "[desktop] tel 링크 두 회선",
+      "ok": true,
+      "detail": [
+        "tel:0625768100",
+        "tel:0618018100",
+        "tel:0625768100",
+        "tel:0618018100"
+      ]
+    },
+    {
+      "name": "[desktop] 지도 링크 2종",
+      "ok": true,
+      "detail": 2
+    },
+    {
+      "name": "[desktop] 탭 클릭 시 해당 패널 노출 + 행 보유",
+      "ok": true,
+      "detail": [
+        {
+          "tab": "tabInstall",
+          "vis": [
+            {
+              "tab": "tabInstall",
+              "selected": "true",
+              "panel": "panelInstall",
+              "hidden": false,
+              "rows": 17
+            },
+            {
+              "tab": "tabRecords",
+              "selected": "false",
+              "panel": "panelRecords",
+              "hidden": true,
+              "rows": 50
+            },
+            {
+              "tab": "tabMaint",
+              "selected": "false",
+              "panel": "panelMaint",
+              "hidden": true,
+              "rows": 4
+            }
+          ]
+        },
+        {
+          "tab": "tabRecords",
+          "vis": [
+            {
+              "tab": "tabInstall",
+              "selected": "false",
+              "panel": "panelInstall",
+              "hidden": true,
+              "rows": 17
+            },
+            {
+              "tab": "tabRecords",
+              "selected": "true",
+              "panel": "panelRecords",
+              "hidden": false,
+              "rows": 50
+            },
+            {
+              "tab": "tabMaint",
+              "selected": "false",
+              "panel": "panelMaint",
+              "hidden": true,
+              "rows": 4
+            }
+          ]
+        },
+        {
+          "tab": "tabMaint",
+          "vis": [
+            {
+              "tab": "tabInstall",
+              "selected": "false",
+              "panel": "panelInstall",
+              "hidden": true,
+              "rows": 17
+            },
+            {
+              "tab": "tabRecords",
+              "selected": "false",
+              "panel": "panelRecords",
+              "hidden": true,
+              "rows": 50
+            },
+            {
+              "tab": "tabMaint",
+              "selected": "true",
+              "panel": "panelMaint",
+              "hidden": false,
+              "rows": 4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "[desktop] 미선택 탭 패널은 숨김",
+      "ok": true,
+      "detail": [
+        [
+          {
+            "tab": "tabInstall",
+            "selected": "true",
+            "panel": "panelInstall",
+            "hidden": false,
+            "rows": 17
+          },
+          {
+            "tab": "tabRecords",
+            "selected": "false",
+            "panel": "panelRecords",
+            "hidden": true,
+            "rows": 50
+          },
+          {
+            "tab": "tabMaint",
+            "selected": "false",
+            "panel": "panelMaint",
+            "hidden": true,
+            "rows": 4
+          }
+        ],
+        [
+          {
+            "tab": "tabInstall",
+            "selected": "false",
+            "panel": "panelInstall",
+            "hidden": true,
+            "rows": 17
+          },
+          {
+            "tab": "tabRecords",
+            "selected": "true",
+            "panel": "panelRecords",
+            "hidden": false,
+            "rows": 50
+          },
+          {
+            "tab": "tabMaint",
+            "selected": "false",
+            "panel": "panelMaint",
+            "hidden": true,
+            "rows": 4
+          }
+        ],
+        [
+          {
+            "tab": "tabInstall",
+            "selected": "false",
+            "panel": "panelInstall",
+            "hidden": true,
+            "rows": 17
+          },
+          {
+            "tab": "tabRecords",
+            "selected": "false",
+            "panel": "panelRecords",
+            "hidden": true,
+            "rows": 50
+          },
+          {
+            "tab": "tabMaint",
+            "selected": "true",
+            "panel": "panelMaint",
+            "hidden": false,
+            "rows": 4
+          }
+        ]
+      ]
+    },
+    {
+      "name": "[desktop] 브랜드 좁히기 감소",
+      "ok": true,
+      "detail": {
+        "before": 66,
+        "after": 1
+      }
+    },
+    {
+      "name": "[desktop] 브랜드 0건 시 안내 노출",
+      "ok": true,
+      "detail": {
+        "none": 0,
+        "emptyMsgVisible": true
+      }
+    },
+    {
+      "name": "[mobile] 런타임 오류 0",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "[mobile] 깨진 이미지 0",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "[mobile] 가로 오버플로 0",
+      "ok": true,
+      "detail": 0
+    },
+    {
+      "name": "[mobile] 조직도 부서 >= 2",
+      "ok": true,
+      "detail": {
+        "sel": "#orgChart .org-branch",
+        "got": 2
+      }
+    },
+    {
+      "name": "[mobile] 조직도 팀/직무 >= 4",
+      "ok": true,
+      "detail": {
+        "sel": "#orgChart .org-sub > li",
+        "got": 7
+      }
+    },
+    {
+      "name": "[mobile] 연혁 연도行 >= 10",
+      "ok": true,
+      "detail": {
+        "sel": "#historyList .tl-row",
+        "got": 12
+      }
+    },
+    {
+      "name": "[mobile] 주요사업 키워드 >= 12",
+      "ok": true,
+      "detail": {
+        "sel": "#bizKeywords .kw",
+        "got": 12
+      }
+    },
+    {
+      "name": "[mobile] 사업분야 카드 >= 10",
+      "ok": true,
+      "detail": {
+        "sel": "#bizGrid .biz-card",
+        "got": 10
+      }
+    },
+    {
+      "name": "[mobile] 취급 브랜드 >= 31",
+      "ok": true,
+      "detail": {
+        "sel": "#brandGrid li",
+        "got": 66
+      }
+    },
+    {
+      "name": "[mobile] 시공 레퍼런스 >= 12",
+      "ok": true,
+      "detail": {
+        "sel": "#refGrid .ref-card",
+        "got": 17
+      }
+    },
+    {
+      "name": "[mobile] 연도별 실적 >= 5",
+      "ok": true,
+      "detail": {
+        "sel": "#recordList .rec-year",
+        "got": 9
+      }
+    },
+    {
+      "name": "[mobile] 유지보수 사례 >= 4",
+      "ok": true,
+      "detail": {
+        "sel": "#maintList li",
+        "got": 4
+      }
+    },
+    {
+      "name": "[mobile] 인증·제증명 그룹 >= 3",
+      "ok": true,
+      "detail": {
+        "sel": "#credList .cred-group",
+        "got": 5
+      }
+    },
+    {
+      "name": "[mobile] 대리점 지정 >= 2",
+      "ok": true,
+      "detail": {
+        "sel": "#agencyList li",
+        "got": 3
+      }
+    },
+    {
+      "name": "[mobile] 게시됨: 장성 주소",
+      "ok": true,
+      "detail": "전라남도 장성군 남면 나노산단로 102"
+    },
+    {
+      "name": "[mobile] 게시됨: 우편번호",
+      "ok": true,
+      "detail": "57248"
+    },
+    {
+      "name": "[mobile] 게시됨: 대표전화 1",
+      "ok": true,
+      "detail": "062) 576-8100"
+    },
+    {
+      "name": "[mobile] 게시됨: 대표전화 2",
+      "ok": true,
+      "detail": "061) 801-8100"
+    },
+    {
+      "name": "[mobile] 게시됨: 팩스",
+      "ok": true,
+      "detail": "062) 576-8181"
+    },
+    {
+      "name": "[mobile] 게시됨: 사업자번호",
+      "ok": true,
+      "detail": "410-86-46283"
+    },
+    {
+      "name": "[mobile] 게시됨: 설립",
+      "ok": true,
+      "detail": "2011년 1월"
+    },
+    {
+      "name": "[mobile] 게시됨: 기준연도 라벨",
+      "ok": true,
+      "detail": "2025년 지명원 기준"
+    },
+    {
+      "name": "[mobile] 게시됨: 유효성 주의",
+      "ok": true,
+      "detail": "현재 유효성은 별도 확인이 필요합니다"
+    },
+    {
+      "name": "[mobile] 게시됨: 대표 레퍼런스",
+      "ok": true,
+      "detail": "새순교회"
+    },
+    {
+      "name": "[mobile] 게시됨: 정보통신공사업",
+      "ok": true,
+      "detail": "정보통신공사업"
+    },
+    {
+      "name": "[mobile] 비게시: 하남산단천변좌로",
+      "ok": true,
+      "detail": "하남산단천변좌로"
+    },
+    {
+      "name": "[mobile] 비게시: 광주드림파크",
+      "ok": true,
+      "detail": "광주드림파크"
+    },
+    {
+      "name": "[mobile] 비게시: 오선동",
+      "ok": true,
+      "detail": "오선동"
+    },
+    {
+      "name": "[mobile] 비게시: 010-9226-4351",
+      "ok": true,
+      "detail": "010-9226-4351"
+    },
+    {
+      "name": "[mobile] 비게시: detach",
+      "ok": true,
+      "detail": "detach"
+    },
+    {
+      "name": "[mobile] 비게시: anchor",
+      "ok": true,
+      "detail": "anchor"
+    },
+    {
+      "name": "[mobile] tel 링크 두 회선",
+      "ok": true,
+      "detail": [
+        "tel:0625768100",
+        "tel:0618018100",
+        "tel:0625768100",
+        "tel:0618018100"
+      ]
+    },
+    {
+      "name": "[mobile] 지도 링크 2종",
+      "ok": true,
+      "detail": 2
+    },
+    {
+      "name": "[mobile] 메뉴 토글",
+      "ok": true,
+      "detail": {
+        "navVisibleBefore": false,
+        "navVisibleAfter": true
+      }
+    },
+    {
+      "name": "[mobile] Esc 로 메뉴 닫힘",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "[mall] 정적 자산·런타임 오류 0",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "[mall] API 응답은 비로그인 /api/me 401 뿐",
+      "ok": true,
+      "detail": {
+        "apiStatus": [
+          "401 me"
+        ],
+        "corsBlocked": false
+      }
+    },
+    {
+      "name": "[mall] company.js 연동",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "[mall] 상품 4,575건 유지",
+      "ok": true,
+      "detail": 4575
+    },
+    {
+      "name": "[mall] 푸터 장성 주소",
+      "ok": true,
+      "detail": "상품·견적 문의\n\nTEL 062) 576-8100  ·  061) 801-8100\n\nFAX 062) 576-8181\n\n[57248] 전라남도 장"
+    },
+    {
+      "name": "[mall/about] 두 대표전화 게시",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "[mall/about] 장성 본사",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "[mall/about] 구 주소 없음",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "[mall] 브랜드 필터 라우팅 작동",
+      "ok": true,
+      "detail": {
+        "cards": 12
+      }
+    },
+    {
+      "name": "[mall] brand=SHURE 결과 실제 필터링",
+      "ok": true,
+      "detail": "본문으로 건너뛰기\n상품 카탈로그\nB2B QUOTE CATALOG\n상품 검색\n검색\n홈\n전체 상품\n견적 목록\n주문·결제\n이용 안내\n회사 홈페이지\n로그인\n회원가입\n 공개 판매가는 공급처 공개 정보 기준입니다. 최종 견적은"
+    },
+    {
+      "name": "[mall] 세션 전체 정적 자산 오류 0",
+      "ok": true,
+      "detail": []
+    }
+  ],
+  "screenshots": [
+    "home-top.png",
+    "reference-install.png",
+    "reference-records.png",
+    "business.png",
+    "home-mobile.png",
+    "menu-mobile.png",
+    "mall-about.png"
+  ],
+  "summary": {
+    "total": 83,
+    "failed": 0
+  }
+}
