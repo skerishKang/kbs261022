@@ -2520,7 +2520,7 @@ const worker = {
     const nicepayReturnMatch = url.pathname === '/api/payments/nicepay/return';
     if (nicepayReturnMatch && request.method === 'POST') {
       const payload = await readWindowForm(request);
-      const site = String(env.NICEPAY_SITE_BASE_URL || ALLOWED_ORIGIN).replace(/\/$/, '');
+      const site = String(env.NICEPAY_SITE_BASE_URL || env.SITE_BASE_URL || ALLOWED_ORIGIN).replace(/\/$/, '');
       const orderId = String(payload.orderId || payload.order_id || '').slice(0, 64);
       if (!orderId || !payload.tid) {
         return json({ error: 'window payload incomplete' }, 400);
@@ -2703,13 +2703,30 @@ return notFound();
 // origin stays pinned to the production site; only the credential flag is added.
 export default {
   async fetch(request, env) {
-    const response = await worker.fetch(request, env);
+    let response = await worker.fetch(request, env);
+
+    // CORS_ALLOWED_ORIGINS decided whether a request was *accepted*, but the
+    // response still named the production origin, so every allow-listed second
+    // origin (a sandbox deployment, a staging site) was refused by the browser
+    // when it tried to read the body. Reflect only origins the policy already
+    // accepts; anything else keeps the pinned value, which is what fails closed.
+    const origin = request.headers.get('Origin');
+    const reflected = !!origin && origin !== ALLOWED_ORIGIN && originOk(request, env);
+    if (reflected) {
+      const headers = new Headers(response.headers);
+      headers.set('Access-Control-Allow-Origin', origin);
+      const vary = headers.get('Vary') || '';
+      if (!/(^|,)\s*Origin/i.test(vary)) headers.set('Vary', vary ? `${vary}, Origin` : 'Origin');
+      response = new Response(response.body, { status: response.status, statusText: response.statusText, headers });
+    }
+
     const contentType = response.headers.get('Content-Type') || '';
+    const servedOrigin = response.headers.get('Access-Control-Allow-Origin');
     if (
       request.method !== 'OPTIONS'
       && request.headers.get('Cookie')
       && contentType.includes('application/json')
-      && response.headers.get('Access-Control-Allow-Origin') === ALLOWED_ORIGIN
+      && (servedOrigin === ALLOWED_ORIGIN || (reflected && servedOrigin === origin))
       && !response.headers.has('Access-Control-Allow-Credentials')
     ) {
       const headers = new Headers(response.headers);
