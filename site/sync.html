@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>상품 동기화 관리 | CGI</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" href="../website/assets/img/cgi-mark-green.png">
+<link rel="stylesheet" href="assets/css/cgi-catalog.css?v=75a">
+<link rel="stylesheet" href="assets/css/cgi-staff-orders.css?v=75a">
+</head>
+<body>
+
+<a class="skip-link" href="#app">본문으로 건너뛰기</a>
+
+<header class="site-header" id="siteHeader">
+  <div class="header-inner">
+    <a class="brand" href="index.html" aria-label="CGI 상품 카탈로그">
+      <img src="../website/assets/img/cgi-mark-white.png" alt="CGI (주)시지아이" width="132" height="42">
+      <span class="brand-divider" aria-hidden="true"></span>
+      <span class="brand-text">
+        <strong>동기화 관리</strong>
+        <small>STAFF ONLY</small>
+      </span>
+    </a>
+    <nav class="header-nav" id="siteNav" aria-label="주요 메뉴">
+      <a href="index.html">상품 카탈로그</a>
+      <a href="staff.html">견적 관리</a>
+      <a href="sync.html" class="is-active" aria-current="page">동기화 관리</a>
+      <a href="../website/index.html">회사 홈페이지</a>
+    </nav>
+  </div>
+</header>
+
+<main id="app" class="app staff-app">
+  <header class="page-head">
+    <p class="page-eyebrow">STAFF</p>
+    <h1>상품 동기화 관리</h1>
+    <p class="page-sub">CGI → 네이버/ERP 상품 동기화 상태, 변경 감지, 중복 매칭, 재처리를 관리합니다. (실제 외부 등록/재고 변경은 보류)</p>
+  </header>
+
+  <section id="authBox" class="auth-box" hidden>
+    <div id="memberPanel">
+      <label>이메일 <input type="email" id="memberEmail" autocomplete="username"></label>
+      <label>비밀번호 <input type="password" id="memberPassword" autocomplete="current-password"></label>
+      <button type="button" class="btn" id="memberLoginBtn">로그인</button>
+      <div class="auth-divider"><span>또는</span></div>
+      <button type="button" class="btn btn-google btn-block" id="memberGoogleBtn">
+        <svg viewBox="0 0 24 24"><path d="M12 11h3.02c.69-1.02 1.42-1.58 2.44-1.64v-2.87c-1.13-.12-2.61.38-3.8 1.66L12 6.6v4.4z" fill="#4285F4"/><path d="M11.4 14.5l-3.5 2.5c-1.17-.82-1.92-2.24-1.92-3.89 0-.7.18-1.38.5-1.97L2.56 7.6A8.5 8.5 0 0 0 1 12.1c0 4.1 2.9 7.53 6.8 8.35l4.6-5.95z" fill="#34A853"/><path d="M20.1 8.5c-.38-.7-.86-1.32-1.42-1.83L15.9 5.6 11.4 8.1l4.2 3.2c.9-.5 1.5-1.36 1.76-2.4l2.74-1.4z" fill="#FBBC05"/><path d="M11.4 14.5l4.2 3.2c1.6-.9 2.8-2.4 3.2-4.1.24-1 .18-2-.1-2.9h-3.1c-.14 1.5-.87 2.6-1.7 3.2l-2.5-.4z" fill="#EA4335"/></svg>
+        Google로 계속하기
+      </button>
+      <p class="form-note">관리자 권한이 있는 계정만 접근할 수 있어요.</p>
+    </div>
+    <p id="authMsg" class="staff-msg"></p>
+  </section>
+
+  <section class="staff-toolbar" aria-label="동기화 필터">
+    <div class="import-box">
+      <label>대상
+        <select id="syncTarget">
+          <option value="">전체</option>
+          <option value="erp">ERP</option>
+          <option value="naver">네이버</option>
+        </select>
+      </label>
+      <label>상태
+        <select id="syncStatus">
+          <option value="">전체</option>
+          <option value="pending">대기</option>
+          <option value="in_progress">진행중</option>
+          <option value="success">성공</option>
+          <option value="failed">실패</option>
+          <option value="retry_pending">재시도 대기</option>
+          <option value="skipped">건너뜀</option>
+        </select>
+      </label>
+      <label>검색 <input type="search" id="syncSearch" placeholder="CGI ID"></label>
+      <button type="button" class="btn btn-secondary" id="syncRefreshBtn">새로고침</button>
+      <button type="button" class="btn" id="syncRetryBtn">실패 재처리</button>
+      <button type="button" class="btn btn-secondary" id="logoutBtn" hidden>로그아웃</button>
+    </div>
+    <p class="toolbar-note" id="syncSummary">동기화 상태를 불러오는 중...</p>
+  </section>
+
+  <section id="syncStatusBox" class="request-list" aria-live="polite"></section>
+  <section id="syncTableBox" class="request-list" aria-live="polite"></section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="footer-bottom staff-footer">
+    <p>© 주식회사 시지아이. All rights reserved.</p>
+    <p>담당자용 화면입니다. 동기화 상태는 DB 기준이며 실제 외부 등록은 보류됩니다.</p>
+  </div>
+</footer>
+
+<script src="config.js"></script>
+<script src="data/products.js"></script>
+<script src="assets/js/cgi-header.js"></script>
+<script src="assets/js/cgi-auth.js?v=75a"></script>
+<script src="assets/js/cgi-sync-admin.js?v=75a"></script>
+</body>
+</html>
