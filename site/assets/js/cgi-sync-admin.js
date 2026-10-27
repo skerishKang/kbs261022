@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  const API = (window.CGI_API_BASE || '') + '/api';
+  const API = ((window.CGI_SITE_CONFIG && window.CGI_SITE_CONFIG.quoteApiUrl) || '') + '/api';
   const state = { items: [], summary: null, selected: new Set() };
 
   function $(id) { return document.getElementById(id); }
