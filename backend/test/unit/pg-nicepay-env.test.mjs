@@ -67,7 +67,7 @@ test('environment names are matched after trim and case folding', () => {
 test('test store without keys is unusable even though operating keys exist', () => {
   const cfg = resolveNicepayEnv({ ...OPS_IDS, [NICEPAY_ENV_VAR]: NICEPAY_ENV_TEST });
   assert.equal(cfg.ok, false);
-  assert.equal(cfg.reason, 'credentials_missing');
+  assert.equal(cfg.reason, 'keys_missing');
   assert.equal(cfg.environment, NICEPAY_ENV_TEST);
   assert.equal(cfg.apiBaseUrl, NICEPAY_ENVIRONMENTS[NICEPAY_ENV_TEST].apiBaseUrl);
   assert.equal(cfg.clientId, null);
@@ -78,7 +78,7 @@ test('test store without keys is unusable even though operating keys exist', () 
 test('operating store without keys never falls back to the test store', () => {
   const cfg = resolveNicepayEnv({ ...TEST_IDS, [NICEPAY_ENV_VAR]: NICEPAY_ENV_OPERATING });
   assert.equal(cfg.ok, false);
-  assert.equal(cfg.reason, 'credentials_missing');
+  assert.equal(cfg.reason, 'keys_missing');
   assert.equal(cfg.mode, 'production');
   assert.deepEqual(cfg.missing, ['NICEPAY_OPERATING_CLIENT_KEY', 'NICEPAY_OPERATING_SECRET_KEY']);
   assert.notEqual(cfg.clientId, TEST_IDS.NICEPAY_TEST_CLIENT_KEY);
@@ -91,7 +91,7 @@ test('blank and whitespace-only credentials count as absent', () => {
     [NICEPAY_ENV_VAR]: NICEPAY_ENV_TEST,
   });
   assert.equal(cfg.ok, false);
-  assert.equal(cfg.reason, 'credentials_missing');
+  assert.equal(cfg.reason, 'keys_missing');
   assert.equal(cfg.missing.length, 2);
 });
 
@@ -105,7 +105,7 @@ test('missing with no env bundle at all still resolves to the sandbox set', () =
   const cfg = resolveNicepayEnv({});
   assert.equal(cfg.ok, false);
   assert.equal(cfg.environment, NICEPAY_ENV_TEST);
-  assert.equal(cfg.reason, 'credentials_missing');
+  assert.equal(cfg.reason, 'keys_missing');
 });
 
 test('sandbox cannot partial-cancel; the operating store can', () => {

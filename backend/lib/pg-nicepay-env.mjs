@@ -83,7 +83,7 @@ export const OPERATING_CAPABILITIES = Object.freeze({
 
 const MISSING = Object.freeze({
   environment_unknown: '선택한 NICEPAY 환경을 인식할 수 없습니다.',
-  credentials_missing: '이 환경에 연결된 발급 키가 없습니다. 키 이름과 값을 먼저 등록하세요.',
+  keys_missing: '이 환경에 연결된 발급 키가 없습니다. 키 이름과 값을 먼저 등록하세요.',
 });
 
 function blank(value) {
@@ -120,8 +120,8 @@ export function resolveNicepayEnv(envVars = {}) {
     return {
       ok: false,
       provider: NICEPAY_PROVIDER,
-      reason: 'credentials_missing',
-      reasonText: MISSING.credentials_missing,
+      reason: 'keys_missing',
+      reasonText: MISSING.keys_missing,
       environment,
       mode: profile.mode,
       apiBaseUrl: profile.apiBaseUrl,

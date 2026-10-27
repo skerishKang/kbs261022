@@ -109,7 +109,7 @@ test('no keys means no call at all', async () => {
   const f = fakeFetch();
   const out = await runSandboxProbe({ envVars: {}, fetchFn: f.fn, orderId: 'X' });
   assert.equal(out.verdict, 'CONFIG_REFUSED');
-  assert.equal(out.reason, 'credentials_missing');
+  assert.equal(out.reason, 'keys_missing');
   assert.deepEqual(out.missing, ['NICEPAY_TEST_CLIENT_KEY', 'NICEPAY_TEST_SECRET_KEY']);
   assert.equal(f.seen.length, 0);
   assert.equal(out.calls, 0);
