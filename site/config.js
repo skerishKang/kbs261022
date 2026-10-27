@@ -16,8 +16,13 @@ window.CGI_SITE_CONFIG = {
   quoteApiUrl: 'https://cgi-quote-api.charliekant.workers.dev',
   // 주문·결제 API. 비어 있으면 quoteApiUrl 을 재사용한다.
   orderApiUrl: 'https://cgi-quote-api.charliekant.workers.dev',
+  // 결제 게이트웨이 선택. 'tosspayments' 가 기본값이고, 'nicepay' 로 바꾸면
+  // 주문 화면이 NICEPAY 결제창을 부른다. 워커의 PG_PROVIDER 와 반드시 같아야 한다
+  // (다르면 결제 화면이 워커 응답으로 정지한다).
+  pgProvider: 'tosspayments',
   // 토스페이먼츠 client key (test_gck_...). 비어 있으면 결제 화면이
   // "테스트 결제" 모의 승인 모드로 동작한다. secret key 는 절대 여기에 넣지 않는다.
+  // NICEPAY 는 클라이언트 키조차 워커가 발급하므로 여기 넣지 않는다.
   tossClientId: 'test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm',
   tossJsUrl: 'https://js.tosspayments.com/v2/standard',
   homepageLabel: '회사 홈페이지',

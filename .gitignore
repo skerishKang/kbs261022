@@ -32,3 +32,6 @@ reports/data/smartstore/live/
 # Wrangler / Miniflare local state (never commit)
 .wrangler/
 .wrangler/**
+
+# local payment lab databases (never commit)
+.lab-payments-*.sqlite

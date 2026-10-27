@@ -122,12 +122,28 @@ export function querySignature({ tid, ediDate, secretKey }) {
   return sha256Hex(`${tid}${ediDate}${secretKey}`);
 }
 
-/** Request bodies. JSON, not FORM POST — the same transport family as Toss. */
-export function approvePayload({ signatureData }) {
-  if (!signatureData || typeof signatureData !== 'object') {
-    throw new TypeError('the approve call forwards the verified returnUrl payload');
+/**
+ * The server-to-server approval body. This is NOT the payment-window return
+ * payload: `POST /v1/payments/{tid}` takes `{amount, ediDate, signData}` where
+ * signData is computed fresh by the merchant server
+ * (hex(sha256(tid + amount + ediDate + SecretKey))). Forwarding the window
+ * fields instead sends a `signature` the endpoint never reads, so the approval
+ * would fail only against a live gateway — invisible to an offline spread test.
+ */
+export function approvePayload({ tid, amount, ediDate, secretKey, returnCharSet }) {
+  if (!tid || !ediDate || !secretKey) {
+    throw new TypeError('approvePayload needs tid, ediDate and secretKey');
   }
-  return { ...signatureData };
+  const value = Number(amount);
+  if (!Number.isInteger(value) || value <= 0) {
+    throw new RangeError('approvePayload needs a positive integer amount');
+  }
+  return {
+    amount: value,
+    ediDate,
+    signData: sha256Hex(`${tid}${value}${ediDate}${secretKey}`),
+    ...(returnCharSet ? { returnCharSet } : {}),
+  };
 }
 
 /**
@@ -135,21 +151,19 @@ export function approvePayload({ signatureData }) {
  * manual defines "값이 누락이면 전액취소", and sending the total instead would
  * turn a full cancel into a partial one with a different cancelledTid.
  */
-export function cancelPayload({ orderId, cancelReason, cancelAmount, refundAccount }) {
-  if (!orderId || !cancelReason) throw new RangeError('orderId and cancelReason are required');
-  const body = { orderId, cancelReason };
-  if (cancelAmount === undefined || cancelAmount === null || cancelAmount === 0) {
-    body.cancelMethod = 'RESTRICT';
-  } else {
+export function cancelPayload({ orderId, reason, cancelAmount, refundAccount }) {
+  if (!orderId || !reason) throw new RangeError('orderId and reason are required');
+  const body = { reason: String(reason).slice(0, 100), orderId };
+  if (cancelAmount !== undefined && cancelAmount !== null && cancelAmount !== 0) {
     if (!Number.isInteger(cancelAmount) || cancelAmount < 0) {
       throw new RangeError('cancelAmount must be a non-negative integer');
     }
     body.cancelAmt = cancelAmount;
-    body.cancelMethod = 'RESTRICT';
   }
   if (refundAccount) {
-    body.refundBankCode = refundAccount.bankCode ?? undefined;
-    body.refundAccount = refundAccount.accountNumber ?? undefined;
+    if (refundAccount.bankCode) body.refundBankCode = refundAccount.bankCode;
+    if (refundAccount.accountNumber) body.refundAccount = refundAccount.accountNumber;
+    if (refundAccount.holder) body.refundHolder = String(refundAccount.holder).slice(0, 10);
   }
   return body;
 }

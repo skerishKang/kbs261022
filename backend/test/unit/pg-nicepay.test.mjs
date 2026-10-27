@@ -104,20 +104,20 @@ test('tampering with any single field is rejected with its own reason', () => {
 });
 
 test('a full cancel omits cancelAmt, because omission is what means full', () => {
-  const full = cancelPayload({ orderId: ORDER_ID, cancelReason: '재고 소진' });
+  const full = cancelPayload({ orderId: ORDER_ID, reason: '재고 소진' });
   assert.ok(!('cancelAmt' in full), JSON.stringify(full));
   assert.equal(full.orderId, ORDER_ID);
 
-  const part = cancelPayload({ orderId: ORDER_ID, cancelReason: '일부 반품', cancelAmount: 300_000 });
+  const part = cancelPayload({ orderId: ORDER_ID, reason: '일부 반품', cancelAmount: 300_000 });
   assert.equal(part.cancelAmt, 300_000);
-  assert.throws(() => cancelPayload({ orderId: ORDER_ID, cancelReason: '' }), RangeError);
-  assert.throws(() => cancelPayload({ orderId: ORDER_ID, cancelReason: 'x', cancelAmount: -1 }), RangeError);
-  assert.throws(() => cancelPayload({ orderId: ORDER_ID, cancelReason: 'x', cancelAmount: '300000' }), RangeError);
+  assert.throws(() => cancelPayload({ orderId: ORDER_ID, reason: '' }), RangeError);
+  assert.throws(() => cancelPayload({ orderId: ORDER_ID, reason: 'x', cancelAmount: -1 }), RangeError);
+  assert.throws(() => cancelPayload({ orderId: ORDER_ID, reason: 'x', cancelAmount: '300000' }), RangeError);
 });
 
 test('refund account maps only the documented bank code and account fields', () => {
   const body = cancelPayload({
-    orderId: ORDER_ID, cancelReason: '반품', cancelAmount: 100_000,
+    orderId: ORDER_ID, reason: '반품', cancelAmount: 100_000,
     refundAccount: { bankCode: '03', accountNumber: '123-456-789' },
   });
   assert.equal(body.refundBankCode, '03');
