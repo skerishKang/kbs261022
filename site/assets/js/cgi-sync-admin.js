@@ -78,6 +78,16 @@
   }
 
   async function load() {
+    const auth = window.CGI_AUTH;
+    if (auth && typeof auth.refresh === 'function') {
+      try { await auth.refresh(); } catch (e) { /* ignore */ }
+      if (!auth.isLoggedIn || !auth.isLoggedIn()) {
+        const box = $('authBox');
+        if (box) box.hidden = false;
+        $('syncSummary').textContent = '로그인이 필요합니다.';
+        return;
+      }
+    }
     const target = $('syncTarget').value;
     const status = $('syncStatus').value;
     const q = $('syncSearch').value.trim();
@@ -113,13 +123,28 @@
   }
 
   document.addEventListener('DOMContentLoaded', () => {
+    const loginBtn = $('memberLoginBtn');
+    if (loginBtn) loginBtn.addEventListener('click', async () => {
+      const auth = window.CGI_AUTH;
+      if (!auth) return;
+      const email = ($('memberEmail') && $('memberEmail').value || '').trim();
+      const pw = ($('memberPassword') && $('memberPassword').value || '');
+      const ok = await auth.login({ email: email, password: pw });
+      if (ok) { const box = $('authBox'); if (box) box.hidden = true; await load(); }
+      else { const msg = $('authMsg'); if (msg) msg.textContent = '로그인 실패'; }
+    });
+    const googleBtn = $('memberGoogleBtn');
+    if (googleBtn) googleBtn.addEventListener('click', () => {
+      const auth = window.CGI_AUTH;
+      if (auth && auth.googleLogin) auth.googleLogin('sync');
+    });
     if ($('syncRefreshBtn')) $('syncRefreshBtn').addEventListener('click', load);
     if ($('syncRetryBtn')) $('syncRetryBtn').addEventListener('click', retry);
     if ($('syncTarget')) $('syncTarget').addEventListener('change', load);
     if ($('syncStatus')) $('syncStatus').addEventListener('change', load);
     let t;
     if ($('syncSearch')) $('syncSearch').addEventListener('input', () => { clearTimeout(t); t = setTimeout(load, 300); });
-    if ($('logoutBtn')) $('logoutBtn').addEventListener('click', () => { localStorage.removeItem('cgiAdminToken'); location.reload(); });
+    if ($('logoutBtn')) $('logoutBtn').addEventListener('click', () => { if (window.CGI_AUTH && window.CGI_AUTH.logout) window.CGI_AUTH.logout(); location.reload(); });
     load();
   });
 })();
