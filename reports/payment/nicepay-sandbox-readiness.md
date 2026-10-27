@@ -151,6 +151,58 @@ node backend/tools/nicepay-sandbox-probe.mjs --environment test
 node backend/tools/nicepay-sandbox-probe.mjs --environment operating            # OPERATING_BLOCKED
 node backend/tools/nicepay-sandbox-probe.mjs --environment operating --allow-operating
 ```
+## 10. 독립 Sandbox 환경 실연동 (2026-10-27 후속 지시)
+
+운영 Worker(`cgi-quote-api`)와 운영 D1(`cgi_quotes`)는 **건드리지 않았다.** 같은 Cloudflare 계정·같은 배포 정책으로 독립 환경을 만들었다.
+
+| 항목 | 값 |
+| --- | --- |
+| Worker | `cgi-nicepay-sandbox` → `https://cgi-nicepay-sandbox.charliekant.workers.dev` |
+| D1 | `cgi_quotes_sandbox` (`e8705a5a-e4a3-4562-a245-d09d8f4a4670`) — 스키마 11개 테이블 적용, 운영 DB과 물리 분리 |
+| 설정 | `PG_PROVIDER=nicepay`, `PG_NICEPAY_ENV=test`, `PG_PROVIDER_MODE=auto`, `ERP_LIVE_WRITE=NO`, `ERP_DRY_RUN=YES`, `MAIL_MODE=console`, `AUTH_ORIGIN_STRICT=NO` |
+| 비밀 | `NICEPAY_TEST_CLIENT_KEY`·`NICEPAY_TEST_SECRET_KEY`·`ADMIN_TOKEN`·`AUTH_SESSION_SECRET` 을 `wrangler secret put`으로 주입(값은 로컬 비공개 저장소에서 stdin으로 전달, 출력·커밋·로그 0) |
+| 미복사 | 운영 Resend Secrets Store 바인딩, Google OAuth 비밀, 토스 시크릿 — Sandbox가 운영 자금/메일에 접근할 이유 없음 |
+| health 실측 | `pg={provider:nicepay, mode:sandbox, sandbox:true, live:false}`, `erp.live_write=false` |
+| config 실측 | `environment=test`, `jsSdkUrl=https://pay.nicepay.co.kr/v1/js/`, clientId는 길이 35로 존재(값 미출력), `returnUrl`은 공개 HTTPS |
+
+### 10b. 웹훅 8항 — 배포본에서 관측한 것
+
+**실모드(실 키·실 게이트웨이·실 D1)**, 요청은 브라우저에서 생성(자가 서명 = NICE발신이 아님을 구분 표기):
+
+| # | 항목 | 실측 |
+| --- | --- | --- |
+| 1 | NICEPAY → Worker 실제 수신 | **미검증** — 관리자 세션 만료로 URL 등록·원클릭 TEST 불가(§10d) |
+| 2 | 인증·서명 검증 | 위조 서명 `400 code:"signature"`, 다른 키로 만든 서명도 `400 signature`, 서명·ediDate 누락 `400 missing_edi_date` (ack 하지 않음) |
+| 3 | 정상 이벤트 처리 | mock 게이트웨이 모드에서 `200` + body `OK`(text/html) 후 `payment_webhook` 이벤트 1건·payments 행 갱신 |
+| 4 | 위조 서명 거절 | 위와 동일, `OK`를 돌려주지 않음 → NICE의 재전송·관리자 재발송 경로 보존 |
+| 5 | 중복 멱등 | 동일 `(tid,status)` 재전송 → `200 OK`이고 이벤트는 1건 그대로 |
+| 6 | 존재하지 않는 거래번호 | 유효 서명 + 미지 tid → `409 unknown_tid` (ack 거부) |
+| 7 | D1 상태 전이 | mock 모드: `pending → paid`(주문 `paid`) → 부분취소 `partial_refunded 184,000` → 전체취소 `refunded 368,000`·주문 `refunding`. 이벤트 `created/payment_confirmed/payment_webhook×1/payment_cancelled×2/status_changed/erp_skipped` |
+| 8 | 실패 HTTP | 미지 tid 조회 실패 `502 gateway_read_failed U107`, 취소 `502 refund_failed "U107: 거래내역이 존재 하지 않습니다."` |
+
+실모드에서 합성 tid로 승인을 시도하면 게이트웨이는 `U121 인증 요청내역이 존재하지 않습니다`로 거부하고, Worker은 주문을 `failed`로 기록한다(승인 없음). 즉 **상태 전이의 "paid" 경로는 실게이트웨이 tid가 없으면 진행 불가**하다.
+
+### 10c. CORS 결함 발견 (이 PR에서 수정)
+
+`CORS_ALLOWED_ORIGINS`는 **수락 판정(`originOk`)에만 쓰이고 응답 헤더는 언제나 `https://skerishkang.github.io`로 고정**이었다. 결과적으로 목록에 담은 두 번째 오리진(스택·샌드박스·Pages)은 preflight는 통과해도 응답 본문을 읽을 수 없었다 — 실측: `OPTIONS`에 Origin을 `http://127.0.0.1:8901`·`https://cgi-7li.pages.dev`로 보내도양쪽 worker 모두 `Access-Control-Allow-Origin: https://skerishkang.github.io`를 반환.
+
+수정: 요청 오리진이 `originOk`를 통과할 때만 그 오리진을 반사하고 `Vary: Origin`을 유지. 통과하지 않으면 기존 고정값( fail-closed ). 목록을 비운 배포(현행 운영)는 동작이 완전히 동일함을 테스트로 고정했다. 쿠키 응답의 `Allow-Credentials` 부여도 반사된 오리지에서 계속 동작한다.
+
+### 10d. 정확한 차단 지점 (소유자 입력 필요)
+
+1. **NICEPAY 관리자 세션 만료**: `start.nicepay.co.kr`이 로그인 화면으로 돌아갔고(`/merchant/login/main.do`, 본문 68자), 로컬 비공개 저장소에 NICEPAY 관리자 ID/PW가 **없다**(확인한 이름: `NICEPAY_TEST_*` 5개뿐). 따라서 ① 웹훅 URL 등록 ② 원클릭 Webhook TEST ③ 결제창의 최종 카드 인증은 대리 수행 불가.
+   등록할 URL: `https://cgi-nicepay-sandbox.charliekant.workers.dev/api/payments/nicepay/webhook`
+2. **결제창 왕복의 마지막 클릭**: 로컬 테스트 화면 → 실 창(`sandbox-pay.nicepay.co.kr/v1/pay` → `web.nicepay.co.kr/v3/webstd/nPayment.jsp`, 헤더 `테스트결제(실결제불가)`, 금액 368,000원, 삼성 선택, 약관 전체동의, `chkConfirm` 체크)까지 관측했고 그 다음 `368,000원 결제` 제출은 **신뢰된 사용자 제스처를 요구**해 합성 이벤트에서 정지했다. 그 뒤 단계는 카드사 인증(카드번호·비밀번호/OTP)이므로 진행하지 않는다.
+
+### 10e. 재현
+
+```bash
+node backend/tools/local-payment-lab.mjs --provider nicepay --mode mock --port 8901 \
+  --api https://cgi-nicepay-sandbox.charliekant.workers.dev     # 배포본을 붙이는 테스트 화면
+npx wrangler deploy -c backend/wrangler.sandbox.toml            # 독립 Sandbox 배포
+npx wrangler d1 execute cgi_quotes_sandbox --remote --file=backend/schema.sql -y
+```
+
 
 ## 9. 다음 단계(대표 결정 대기)
 
