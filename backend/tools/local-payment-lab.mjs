@@ -33,6 +33,9 @@ function arg(name, fallback = null) {
 }
 
 const provider = arg('--provider', 'nicepay');
+// --api points the site at another Worker (e.g. the deployed sandbox). The page
+// is still localhost, which the sandbox admits through its dev CORS rule.
+const remoteApi = arg('--api', null);
 const mode = arg('--mode', 'mock');
 const port = Number(arg('--port', '8790'));
 const dbPath = join(REPO, `.lab-payments-${port}.sqlite`);
@@ -67,8 +70,8 @@ function labConfigJs() {
   return base
     // the checkout screen refuses to run without an explicit API base, so the lab
     // points it at itself instead of at the empty string a file:// preview would use
-    .replace(/quoteApiUrl:\s*'[^']*'/, `quoteApiUrl: '${origin}'`)
-    .replace(/orderApiUrl:\s*'[^']*'/, `orderApiUrl: '${origin}'`)
+    .replace(/quoteApiUrl:\s*'[^']*'/, `quoteApiUrl: '${remoteApi || origin}'`)
+    .replace(/orderApiUrl:\s*'[^']*'/, `orderApiUrl: '${remoteApi || origin}'`)
     .replace(/pgProvider:\s*'[^']*'/, `pgProvider: '${provider}'`)
     .replace(/tossClientId:\s*'[^']*'/, provider === 'nicepay' ? "tossClientId: ''" : "tossClientId: 'test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm'")
     + `\n/* lab: same-origin API, provider=${provider}, mode=${mode} */\n`;
