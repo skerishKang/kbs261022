@@ -13,6 +13,7 @@
   var API = cfg.orderApiUrl || cfg.quoteApiUrl || '';
   var TOSS_CLIENT_ID = cfg.tossClientId || '';
   var TOSS_JS_URL = cfg.tossJsUrl || 'https://js.tosspayments.com/v2/standard';
+  var PG_PROVIDER = String(cfg.pgProvider || 'tosspayments').toLowerCase();
 
   function esc(s) {
     return String(s == null ? '' : s)
@@ -213,6 +214,7 @@
   }
 
   function renderPayment(app, order) {
+    if (PG_PROVIDER === 'nicepay') return renderNicepayPayment(app, order);
     var testMode = !TOSS_CLIENT_ID;
     var sandboxMode = !!TOSS_CLIENT_ID && String(TOSS_CLIENT_ID).indexOf('test_') === 0;
     app.innerHTML = shell(
@@ -485,6 +487,124 @@
     return true;
   }
 
+
+  /* --------------------------------------------------- NICEPAY 결제창 (issue #106)
+     창은 NICEPAY 도메인에서 뜨고, 승인 결과는 브라우저가 returnUrl(워커)로 POST 된다.
+     사이트는 금액을 보내지 않는다 — /api/payments/nicepay/window 가 서버의 주문 합계를
+     그대로 되돌려 창 금액으로 쓴다. */
+  function nicepayBadge(cfg) {
+    var testish = cfg && (cfg.mode === 'sandbox' || cfg.mode === 'mock');
+    return testish
+      ? '<p class="test-payment-badge">TEST 결제 — NICEPAY ' + (cfg.mode === 'mock' ? '모의' : '샌드박스') + ' 환경 (실 결제 없음)</p>'
+      : '';
+  }
+
+  function renderNicepayPayment(app, order) {
+    app.innerHTML = shell(
+      '<div class="page-head"><p class="page-eyebrow">PAYMENT</p><h1>결제</h1></div>' +
+      '<div class="payment-card">' +
+        '<div class="payment-order">' +
+          '<p><strong>' + esc(order.id) + '</strong></p>' +
+          '<p class="order-total">주문 금액 <strong>' + money(order.totals.total_amount) + '</strong></p>' +
+          '<p class="muted">공급가 ' + money(order.totals.supplied_amount) + ' + 부가세 ' + money(order.totals.vat_amount) + '</p>' +
+        '</div>' +
+        '<div class="payment-methods">' +
+          '<label><input type="radio" name="method" value="card" checked> 카드</label>' +
+          '<label><input type="radio" name="method" value="bank"> 계좌이체</label>' +
+          '<label><input type="radio" name="method" value="cellphone"> 휴대폰</label>' +
+        '</div>' +
+        '<div id="nicepayNotice"></div>' +
+        '<div id="paymentStatus"></div>' +
+        '<div class="order-actions">' +
+          '<button type="button" class="btn" id="payBtn">NICEPAY 결제창 열기</button>' +
+          '<a class="btn btn-secondary" href="#/quote-cart">나중에 하기</a>' +
+        '</div>' +
+      '</div>'
+    );
+
+    var payBtn = app.querySelector('#payBtn');
+    var statusBox = app.querySelector('#paymentStatus');
+    var notice = app.querySelector('#nicepayNotice');
+
+    api('GET', '/api/payments/config').then(function (res) {
+      if (!res.ok || !res.data || res.data.provider !== 'nicepay') {
+        payBtn.disabled = true;
+        payBtn.textContent = '결제를 시작할 수 없습니다';
+        notice.innerHTML = flash('서버가 NICEPAY 게이트웨이로 연결되어 있지 않습니다. (pgProvider 설정과 워커 PG_PROVIDER 를 확인하세요)', 'flash-error');
+        return;
+      }
+      notice.innerHTML = nicepayBadge(res.data);
+      payBtn.addEventListener('click', function () {
+        payBtn.disabled = true;
+        payBtn.textContent = '결제창 준비 중…';
+        var method = (app.querySelector('input[name="method"]:checked') || {}).value || 'card';
+        api('POST', '/api/payments/nicepay/window', { orderId: order.id, method: method }).then(function (w) {
+          if (!w.ok) {
+            statusBox.innerHTML = flash('결제창을 열 수 없습니다. (' + esc(w.data && w.data.error || ('HTTP ' + w.status)) + ')', 'flash-error');
+            payBtn.disabled = false;
+            payBtn.textContent = 'NICEPAY 결제창 열기';
+            return;
+          }
+          launchNicepayWindow(w.data, function () {
+            payBtn.disabled = false;
+            payBtn.textContent = 'NICEPAY 결제창 열기';
+            statusBox.innerHTML = flash('결제창을 불러오지 못했습니다. 네트워크나 팝업 차단 설정을 확인해 주세요.', 'flash-error');
+          });
+        });
+      });
+    });
+  }
+
+  function launchNicepayWindow(cfg, onFail) {
+    function go() {
+      if (!window.AUTHNICE || typeof window.AUTHNICE.requestPay !== 'function') { onFail(); return; }
+      // 창이 브라우저에서 NICEPAY 도메인으로 이동하므로 버튼 상태를 되돌려 둔다.
+      window.AUTHNICE.requestPay(Object.assign({}, cfg.request, {
+        fnError: function (result) {
+          onFail();
+          try {
+            alert('고객용: ' + ((result && result.msg) || '결제가 완료되지 않았습니다.') +
+                  '\n개발자 확인: ' + ((result && result.errorMsg) || ''));
+          } catch (e) {}
+        }
+      }));
+    }
+    if (window.AUTHNICE) { go(); return; }
+    var script = document.createElement('script');
+    script.src = cfg.sdkUrl;
+    script.onload = go;
+    script.onerror = onFail;
+    document.head.appendChild(script);
+  }
+
+  function handleNicepayRedirect(app) {
+    var params = new URLSearchParams(window.location.search || '');
+    var flag = params.get('nicepay');
+    if (!flag) return false;
+    var hash = window.location.hash || '';
+    var match = hash.match(/^#\/order\/([^/?]+)/);
+    var orderId = match ? decodeURIComponent(match[1]) : '';
+    try {
+      window.history.replaceState({}, document.title, window.location.pathname + hash);
+    } catch (e) {}
+    if (flag !== 'success') {
+      app.innerHTML = shell('<div class="page-head"><p class="page-eyebrow">PAYMENT</p><h1>결제 실패</h1></div>' +
+        flash('결제가 완료되지 않았습니다. 카드 인증을 다시 시도하거나 주문 상세에서 계속하세요.', 'flash-error') + retryLink(orderId));
+      return true;
+    }
+    app.innerHTML = shell('<div class="page-head"><p class="page-eyebrow">PAYMENT</p><h1>결제 승인 중</h1></div><p class="muted">NICEPAY 승인 결과를 확인하고 있습니다…</p>');
+    api('GET', '/api/orders/' + encodeURIComponent(orderId)).then(function (r) {
+      if (!r.ok) { app.innerHTML = shell(flash('주문 조회 실패', 'flash-error')); return; }
+      if (r.data.payment_status !== 'paid') {
+        app.innerHTML = shell('<div class="page-head"><p class="page-eyebrow">PAYMENT</p><h1>결제 확인 필요</h1></div>' +
+          flash('서버가 아직 이 주문을 결제 완료로 표시하지 않습니다. 잠시 후 주문 상세에서 확인해 주세요.', 'flash-error') + retryLink(orderId));
+        return;
+      }
+      renderComplete(app, r.data, null);
+    });
+    return true;
+  }
+
   /* ----------------------------------------------------- public interface */
   window.CGI_ORDER = {
     api: api,
@@ -495,7 +615,8 @@
     renderCheckout: renderCheckout,
     renderOrderDetail: renderOrderDetail,
     handleTossRedirect: handleTossRedirect,
+    handleNicepayRedirect: handleNicepayRedirect,
     statusLabel: statusLabel,
-    config: { api: API, tossClientId: !!TOSS_CLIENT_ID }
+    config: { api: API, tossClientId: !!TOSS_CLIENT_ID, pgProvider: PG_PROVIDER }
   };
 })();
