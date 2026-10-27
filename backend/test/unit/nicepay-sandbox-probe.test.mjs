@@ -4,13 +4,13 @@ import assert from 'node:assert/strict';
 import { runSandboxProbe } from '../../tools/nicepay-sandbox-probe.mjs';
 import { querySignature, transactionSignature } from '../../lib/pg-nicepay.mjs';
 
-const CLIENT = 'sandbox-client-id-value-35-char-a';
-const SECRET = 'aabbccddeeff00112233445566778899';
+const CLIENT = 'nicepay-fixture-client-not-real-a';
+const SECRET = 'nicepay-fixture-secret-not-real';
 const KEYS = {
   NICEPAY_TEST_CLIENT_KEY: CLIENT,
   NICEPAY_TEST_SECRET_KEY: SECRET,
-  NICEPAY_OPERATING_CLIENT_KEY: 'operating-client-id-value-35-char',
-  NICEPAY_OPERATING_SECRET_KEY: 'eeff00112233445566778899aabbccdd',
+  NICEPAY_OPERATING_CLIENT_KEY: 'nicepay-fixture-opclient-not-real',
+  NICEPAY_OPERATING_SECRET_KEY: 'nicepay-fixture-opsecret-not-real',
 };
 
 function fakeFetch({ status = 400, body = { resultCode: '3011', message: '조회된 거래가 없습니다' }, json = true, throwAs = null } = {}) {

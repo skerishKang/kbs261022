@@ -24,7 +24,7 @@ import { SANDBOX_CAPABILITIES, resolveNicepayEnv } from '../../lib/pg-nicepay-en
 // live sandbox call. `live` is a claim about evidence, not about the code:
 // UNVERIFIED means the offline contract holds but no sandbox response has been
 // observed yet.
-const SECRET = 'aabbccddeeff00112233445566778899';
+const SECRET = 'nicepay-fixture-secret-not-real';
 const ORDER_AMOUNT = 198000;
 
 function signed(overrides = {}) {

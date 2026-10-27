@@ -14,8 +14,8 @@ import {
 } from '../../lib/pg-nicepay-env.mjs';
 import { NICEPAY_JS_SDK_PROD } from '../../lib/pg-nicepay.mjs';
 
-const TEST_IDS = { NICEPAY_TEST_CLIENT_KEY: 'test-client-id-35-chars-long-aaaa', NICEPAY_TEST_SECRET_KEY: 'test-secret-32-chars-hex-aaaaaaaa' };
-const OPS_IDS = { NICEPAY_OPERATING_CLIENT_KEY: 'ops-client-id-value-35-chars-aaaaa', NICEPAY_OPERATING_SECRET_KEY: 'ops-secret-32-chars-hex-aaaaaaaa' };
+const TEST_IDS = { NICEPAY_TEST_CLIENT_KEY: 'nicepay-fixture-test-client-a', NICEPAY_TEST_SECRET_KEY: 'nicepay-fixture-test-secret-a' };
+const OPS_IDS = { NICEPAY_OPERATING_CLIENT_KEY: 'nicepay-fixture-ops-client-b', NICEPAY_OPERATING_SECRET_KEY: 'nicepay-fixture-ops-secret-b' };
 
 const full = (extra = {}) => ({ ...TEST_IDS, ...OPS_IDS, ...extra });
 
