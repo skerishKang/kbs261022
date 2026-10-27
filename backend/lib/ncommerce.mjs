@@ -116,8 +116,7 @@ export const NCOM_GATEWAY_CODES = {
  */
 export const NCOM_RESPONSIBILITY = {
   ecountNative: [
-    '스마트스토어 주문을 ERP 전표로 받아들이는 것(주문 수신·매출전표 자동 생성)',
-    'ERP 품목 마스터를 쇼핑몰로 내려보내는 기본 연동',
+    'ERP 품목 마스터를 쇼핑몰로 내려보내는 기본 연동 (공식 기능, 2026.06.12 기준)',
   ],
   thisAdapter: [
     'CGI 카탈로그를 네이버 상품으로 최초 등록하고, 판매가·재고·옵션 재고를 직접 갱신',
