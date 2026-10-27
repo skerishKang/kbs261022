@@ -98,6 +98,7 @@ const SUPERADMIN_EMAILS = new Set(['charliekant@gmail.com', 'skerish@naver.com']
 // the CORS regression test asserts that these routes never grant credentials.
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': ALLOWED_ORIGIN,
+  'Access-Control-Allow-Credentials': 'true',
   'Access-Control-Allow-Methods': 'GET,POST,PATCH,OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type,Authorization,Idempotency-Key,X-CSRF-Token',
   'Vary': 'Origin',
