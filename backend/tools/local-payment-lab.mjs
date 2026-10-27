@@ -52,9 +52,10 @@ const labControls = {
   ERP_MODE: 'test',
   SHIPPING_FEE_DEFAULT: '0',
 };
+const LAB_HANDLE = 'lab-admin-handle';
 const env = {
   DB: openD1File(dbPath),
-  ADMIN_TOKEN: 'lab-admin-token',
+  ADMIN_TOKEN: process.env.ADMIN_TOKEN || LAB_HANDLE,
   ...process.env,
   // the lab, not the ambient shell, decides which gateway and which origin
   ...labControls,

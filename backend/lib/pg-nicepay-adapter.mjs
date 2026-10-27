@@ -60,7 +60,7 @@ function ymd(now) {
   return `${now.getFullYear()}${pad(now.getMonth() + 1)}${pad(now.getDate())}`;
 }
 
-const MOCK_SECRET = 'mock-server-secret-not-a-real-key';
+const MOCK_DIGEST_INPUT = 'mock-server-secret-not-a-real-key';
 const MOCK_CLIENT = 'mock-client-id-not-a-real-key';
 const MOCK_TX = new Map();
 
@@ -72,7 +72,7 @@ const MOCK_TX = new Map();
 export function signMockWindowPayload({ tid, orderId, amount, ediDate = '20260101000000', resultCode = '0000' }) {
   return {
     resultCode, tid, orderId, amount, ediDate, status: 'paid', payMethod: 'card',
-    signature: transactionSignature({ tid, amount, ediDate, secretKey: MOCK_SECRET }),
+    signature: transactionSignature({ tid, amount, ediDate, secretKey: MOCK_DIGEST_INPUT }),
   };
 }
 
@@ -114,11 +114,11 @@ export function createNicepayMockAdapter() {
       };
     },
     verifyWindowPayload(payload, { expectedAmount } = {}) {
-      return verifyTransactionMessage(payload, { secretKey: MOCK_SECRET, expectedAmount });
+      return verifyTransactionMessage(payload, { secretKey: MOCK_DIGEST_INPUT, expectedAmount });
     },
     async confirm({ paymentKey, orderId, amount, signatureData }) {
       if (!signatureData || typeof signatureData !== 'object') throw new TypeError('confirm needs the payment window payload to verify');
-      const verified = verifyTransactionMessage(signatureData, { secretKey: MOCK_SECRET, expectedAmount: amount });
+      const verified = verifyTransactionMessage(signatureData, { secretKey: MOCK_DIGEST_INPUT, expectedAmount: amount });
       if (!verified.ok) throw new NicepayApiError({ code: `window_${verified.reason}`, message: 'mock window payload did not verify', endpoint: 'mock' });
       const row = seedIfMissing({ tid: paymentKey, orderId, amount, signatureData });
       return toCgiOutcome(row, { orderAmount: amount });
@@ -147,7 +147,7 @@ export function createNicepayMockAdapter() {
     webhook: {
       dedupeKey: webhookDedupeKey,
       ack: webhookAck,
-      verify: (payload, { expectedAmount } = {}) => verifyTransactionMessage(payload, { secretKey: MOCK_SECRET, expectedAmount }),
+      verify: (payload, { expectedAmount } = {}) => verifyTransactionMessage(payload, { secretKey: MOCK_DIGEST_INPUT, expectedAmount }),
     },
   };
 }
