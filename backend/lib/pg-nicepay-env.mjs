@@ -27,18 +27,22 @@ export const NICEPAY_ENV_VAR = 'PG_NICEPAY_ENV';
 export const NICEPAY_ENV_TEST = 'test';
 export const NICEPAY_ENV_OPERATING = 'operating';
 
-// The manual's outbound-allowlist table names sandbox-pay.nicepay.co.kr as the
-// sandbox SDK host while its sample snippet still shows the production host, so
-// the sandbox value is a documented guess pending a live window load.
-export const NICEPAY_JS_SDK_SANDBOX = 'https://sandbox-pay.nicepay.co.kr/v1/js/';
+// Measured 2026-10-27 against the live hosts: the JS bundle is served by ONE
+// host for both environments (200, application/javascript, defines AUTHNICE and
+// requestPay), and sandbox-pay.nicepay.co.kr/v1/js/ answers 404. The manual's
+// outbound-allowlist row names sandbox-pay as the sandbox 결제창 host, so it is
+// kept as the window host, not as the SDK include.
+export const NICEPAY_JS_SDK_SANDBOX_WINDOW = 'https://sandbox-pay.nicepay.co.kr';
 
 export const NICEPAY_ENVIRONMENTS = Object.freeze({
   [NICEPAY_ENV_TEST]: Object.freeze({
     environment: NICEPAY_ENV_TEST,
     mode: 'sandbox',
     apiBaseUrl: `${NICEPAY_SANDBOX_API}/v1`,
-    jsSdkUrl: NICEPAY_JS_SDK_SANDBOX,
-    jsSdkUrlVerified: false,
+    jsSdkUrl: NICEPAY_JS_SDK_PROD,
+    jsSdkUrlVerified: true,
+    sdkHostSharedWithProduction: true,
+    windowHost: NICEPAY_JS_SDK_SANDBOX_WINDOW,
     clientKeyVar: 'NICEPAY_TEST_CLIENT_KEY',
     secretKeyVar: 'NICEPAY_TEST_SECRET_KEY',
     shopNameVar: 'NICEPAY_TEST_SHOP_NAME',
@@ -49,6 +53,7 @@ export const NICEPAY_ENVIRONMENTS = Object.freeze({
     apiBaseUrl: `${NICEPAY_PROD_API}/v1`,
     jsSdkUrl: NICEPAY_JS_SDK_PROD,
     jsSdkUrlVerified: true,
+    windowHost: 'https://pay.nicepay.co.kr',
     clientKeyVar: 'NICEPAY_OPERATING_CLIENT_KEY',
     secretKeyVar: 'NICEPAY_OPERATING_SECRET_KEY',
     shopNameVar: 'NICEPAY_OPERATING_SHOP_NAME',
@@ -139,7 +144,8 @@ export function resolveNicepayEnv(envVars = {}) {
     mode: profile.mode,
     apiBaseUrl: profile.apiBaseUrl,
     jsSdkUrl: profile.jsSdkUrl,
-    jsSdkUrlVerified: profile.jsSdkUrlVerified,
+    jsSdkUrlVerified: profile.jsSdkUrlVerified === true,
+    windowHost: profile.windowHost || null,
     shopName: blank(envVars[profile.shopNameVar]) ? null : envVars[profile.shopNameVar].trim(),
     clientId,
     secretKey,

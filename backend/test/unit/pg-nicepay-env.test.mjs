@@ -6,7 +6,7 @@ import {
   NICEPAY_ENVIRONMENTS,
   NICEPAY_ENV_OPERATING,
   NICEPAY_ENV_TEST,
-  NICEPAY_JS_SDK_SANDBOX,
+
   OPERATING_CAPABILITIES,
   SANDBOX_CAPABILITIES,
   redactNicepay,
@@ -127,10 +127,17 @@ test('sandbox API host is never the production host and vice versa', () => {
   assert.doesNotMatch(operating.apiBaseUrl, /sandbox/);
 });
 
-test('the sandbox SDK host is flagged as unverified', () => {
-  assert.equal(NICEPAY_JS_SDK_SANDBOX, 'https://sandbox-pay.nicepay.co.kr/v1/js/');
-  assert.equal(NICEPAY_ENVIRONMENTS[NICEPAY_ENV_TEST].jsSdkUrlVerified, false);
+test('the JS SDK host is shared, and sandbox-pay is the window host only', () => {
+  // measured 2026-10-27: pay.nicepay.co.kr/v1/js/ → 200 + AUTHNICE + requestPay,
+  // sandbox-pay.nicepay.co.kr/v1/js/ → 404. The sandbox store is selected by
+  // clientId, not by a different include.
+  assert.equal(NICEPAY_ENVIRONMENTS[NICEPAY_ENV_TEST].jsSdkUrl, NICEPAY_JS_SDK_PROD);
+  assert.equal(NICEPAY_ENVIRONMENTS[NICEPAY_ENV_TEST].jsSdkUrlVerified, true);
+  assert.equal(NICEPAY_ENVIRONMENTS[NICEPAY_ENV_TEST].windowHost, 'https://sandbox-pay.nicepay.co.kr');
   assert.equal(NICEPAY_ENVIRONMENTS[NICEPAY_ENV_OPERATING].jsSdkUrlVerified, true);
+  const cfg = resolveNicepayEnv(full());
+  assert.equal(cfg.jsSdkUrl, NICEPAY_JS_SDK_PROD);
+  assert.equal(cfg.windowHost, 'https://sandbox-pay.nicepay.co.kr');
 });
 
 test('redaction keeps booleans and drops every credential value', () => {

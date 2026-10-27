@@ -45,7 +45,7 @@ function signed(overrides = {}) {
 }
 
 const CHECKLIST = [
-  { item: '결제창 호출', live: 'UNVERIFIED' },
+  { item: '결제창 호출', live: 'PARTIAL' },
   { item: '주문금액과 승인금액 일치', live: 'OFFLINE' },
   { item: '승인 결과 확인', live: 'OFFLINE' },
   { item: '주문번호·거래번호 조회', live: 'OFFLINE' },
@@ -63,9 +63,9 @@ test('sandbox checklist is the nine ordered items and every one declares its evi
     '중복 승인 차단', '결제 실패 처리', '전체취소', '결제 결과 Webhook 검증', '부분취소 지원 범위 확인',
   ]);
   for (const row of CHECKLIST) {
-    assert.ok(['OFFLINE', 'UNVERIFIED', 'LIVE'].includes(row.live), row.item);
+    assert.ok(['OFFLINE', 'PARTIAL', 'LIVE'].includes(row.live), row.item);
   }
-  assert.equal(CHECKLIST.filter((row) => row.live === 'UNVERIFIED').length, 1);
+  assert.equal(CHECKLIST.filter((row) => row.live === 'PARTIAL').length, 1);
 });
 
 test('1 결제창 호출 — the sandbox store exposes the clientId and SDK host the window needs', () => {
@@ -78,9 +78,11 @@ test('1 결제창 호출 — the sandbox store exposes the clientId and SDK host
   // the window call is AUTHNICE.requestPay({ clientId, method, orderId, amount, goodsName, returnUrl })
   // — the only two values the server needs from configuration are clientId and the SDK host
   assert.equal(cfg.clientId, 'sandbox-client-id');
-  assert.match(cfg.jsSdkUrl, /^https:\/\/sandbox-pay\.nicepay\.co\.kr\/v1\/js\/$/);
-  // The manual's sample keeps the production host, so nobody may claim this is proven.
-  assert.equal(cfg.jsSdkUrlVerified, false);
+  assert.equal(cfg.jsSdkUrl, 'https://pay.nicepay.co.kr/v1/js/');
+  assert.equal(cfg.windowHost, 'https://sandbox-pay.nicepay.co.kr');
+  // The include itself is measured (200 + AUTHNICE + requestPay); what is still
+  // unproven is a full window round-trip with this sandbox clientId.
+  assert.equal(cfg.jsSdkUrlVerified, true);
 });
 
 test('2 주문금액과 승인금액 일치 — a signed message for a different amount is refused', () => {
