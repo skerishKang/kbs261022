@@ -2240,6 +2240,71 @@ const worker = {
       }
     }
 
+    // ---------------- product sync (admin) ----------------
+
+    if (url.pathname === '/api/admin/sync/status' && request.method === 'GET') {
+      if (!(await isAdminOrMember(request, env.DB, env))) return unauthorized();
+      try {
+        const { results } = await env.DB.prepare(
+          `SELECT status, COUNT(*) AS n FROM product_sync_state GROUP BY status`
+        ).all();
+        const byStatus = {};
+        for (const r of (results || [])) byStatus[r.status] = r.n;
+        const { results: targetRows } = await env.DB.prepare(
+          `SELECT target, status, COUNT(*) AS n FROM product_sync_state GROUP BY target, status`
+        ).all();
+        const byTarget = {};
+        for (const r of (targetRows || [])) {
+          byTarget[r.target] = byTarget[r.target] || {};
+          byTarget[r.target][r.status] = r.n;
+        }
+        return json({ ok: true, byStatus, byTarget, total: Object.values(byStatus).reduce((a, b) => a + b, 0) });
+      } catch (e) {
+        return json({ error: 'sync status unavailable', detail: String(e && e.message || e) }, 500);
+      }
+    }
+
+    if (url.pathname === '/api/admin/sync/products' && request.method === 'GET') {
+      if (!(await isAdminOrMember(request, env.DB, env))) return unauthorized();
+      const target = url.searchParams.get('target');
+      const status = url.searchParams.get('status');
+      const q = (url.searchParams.get('q') || '').trim();
+      const limit = Math.min(200, Math.max(1, parseInt(url.searchParams.get('limit') || '50', 10)));
+      try {
+        let sql = 'SELECT cgi_id, target, status, change_hash, last_success_at, last_attempt_at, last_error, retry_count, transmitted, locked FROM product_sync_state WHERE 1=1';
+        const binds = [];
+        if (target) { sql += ' AND target = ?'; binds.push(target); }
+        if (status) { sql += ' AND status = ?'; binds.push(status); }
+        if (q) { sql += ' AND cgi_id LIKE ?'; binds.push('%' + q + '%'); }
+        sql += ' ORDER BY updated_at DESC LIMIT ?';
+        binds.push(limit);
+        const stmt = binds.length ? env.DB.prepare(sql).bind(...binds) : env.DB.prepare(sql);
+        const { results } = await stmt.all();
+        return json({ ok: true, items: results || [], count: (results || []).length });
+      } catch (e) {
+        return json({ error: 'sync products unavailable', detail: String(e && e.message || e) }, 500);
+      }
+    }
+
+    if (url.pathname === '/api/admin/sync/retry' && request.method === 'POST') {
+      if (!(await isAdminOrMember(request, env.DB, env))) return unauthorized();
+      const parsed = await readJson(request);
+      if (parsed.error) return badRequest(parsed.error);
+      const ids = Array.isArray(parsed.body && parsed.body.cgiIds) ? parsed.body.cgiIds : [];
+      if (!ids.length) return badRequest('cgiIds required');
+      const now = nowIso();
+      let retried = 0;
+      for (const id of ids) {
+        try {
+          await env.DB.prepare(
+            `UPDATE product_sync_state SET status = 'retry_pending', last_attempt_at = ?, updated_at = ? WHERE cgi_id = ?`
+          ).bind(now, now, id).run();
+          retried++;
+        } catch (e) { /* ignore individual failures */ }
+      }
+      return json({ ok: true, retried, total: ids.length });
+    }
+
     // ---------------- orders (public) ----------------
 
     if (url.pathname === '/api/orders' && request.method === 'POST') {
