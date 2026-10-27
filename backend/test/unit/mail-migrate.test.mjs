@@ -153,7 +153,7 @@ test('resend mode reads Secrets Store binding with .get() method', async () => {
   };
   try {
     // Simulate a Secrets Store binding object
-    const secretBinding = { get: async () => 're_test_key_abc12345' };
+    const secretBinding = { get: async () => 're_test_key' };
     const mail = createMailAdapter({
       MAIL_MODE: 'resend',
       B66_ALERT_RESEND_API_KEY: secretBinding,
@@ -164,7 +164,7 @@ test('resend mode reads Secrets Store binding with .get() method', async () => {
     assert.equal(out.channel, 'resend');
     assert.ok(captured);
     assert.match(captured.url, /api\.resend\.com/);
-    assert.match(captured.init.headers.Authorization, /Bearer re_test_key_abc12345/);
+    assert.match(captured.init.headers.Authorization, /Bearer re_test_key/);
     const body = JSON.parse(captured.init.body);
     assert.equal(body.from, 'noreply@test.com');
     assert.deepEqual(body.to, [MESSAGE.to]);
@@ -190,7 +190,7 @@ test('resend mode with API key sends the message and returns delivered', async (
   try {
     const mail = createMailAdapter({
       MAIL_MODE: 'resend',
-      B66_ALERT_RESEND_API_KEY: 're_test_key_abc12345',
+      B66_ALERT_RESEND_API_KEY: 're_test_key',
       MAIL_FROM: 'CGI <noreply@test.com>',
     });
     const out = await mail.deliver(MESSAGE);
@@ -198,7 +198,7 @@ test('resend mode with API key sends the message and returns delivered', async (
     assert.equal(out.channel, 'resend');
     assert.ok(captured);
     assert.match(captured.url, /api\.resend\.com/);
-    assert.match(captured.init.headers.Authorization, /Bearer re_test_key_abc12345/);
+    assert.match(captured.init.headers.Authorization, /Bearer re_test_key/);
     const body = JSON.parse(captured.init.body);
     assert.equal(body.from, 'noreply@test.com');
     assert.deepEqual(body.to, [MESSAGE.to]);
@@ -240,7 +240,7 @@ test('resend mode reports network errors', async () => {
   try {
     const mail = createMailAdapter({
       MAIL_MODE: 'resend',
-      B66_ALERT_RESEND_API_KEY: 're_test_key_abc12345',
+      B66_ALERT_RESEND_API_KEY: 're_test_key',
     });
     const out = await mail.deliver(MESSAGE);
     assert.equal(out.delivered, false);
@@ -260,14 +260,21 @@ test('an unknown mode falls back to console and is logged as such', async () => 
   assert.match(logs[0], /MAIL:console/);
 });
 
-test('urlFor builds a stable link with a token query parameter', () => {
+test('urlFor builds a stable hash-routed link with a token query parameter', () => {
   const mail = createMailAdapter({ MAIL_BASE_URL: 'https://site.example/kbs' });
-  assert.equal(mail.urlFor('/auth/verify', 'tok_1'), 'https://site.example/kbs/auth/verify?token=tok_1');
-  assert.equal(mail.urlFor('auth/verify', 'tok_1'), 'https://site.example/kbs/auth/verify?token=tok_1');
-  assert.equal(mail.urlFor('/auth/verify?step=1', 'tok_1'), 'https://site.example/kbs/auth/verify?step=1&token=tok_1');
-  assert.equal(mail.urlFor('/auth/verify', ''), 'https://site.example/kbs/auth/verify');
-  assert.equal(mail.urlFor('/auth/verify', null), 'https://site.example/kbs/auth/verify');
-  assert.equal(mail.urlFor('/auth/verify?x=%2F', 'tok_1'), 'https://site.example/kbs/auth/verify?x=%2F&token=tok_1');
+  assert.equal(mail.urlFor('/auth/verify', 'tok_1'), 'https://site.example/kbs/#/auth/verify?token=tok_1');
+  assert.equal(mail.urlFor('auth/verify', 'tok_1'), 'https://site.example/kbs/#/auth/verify?token=tok_1');
+  assert.equal(mail.urlFor('/auth/verify?step=1', 'tok_1'), 'https://site.example/kbs/#/auth/verify?step=1&token=tok_1');
+  assert.equal(mail.urlFor('/auth/verify', ''), 'https://site.example/kbs/#/auth/verify');
+  assert.equal(mail.urlFor('/auth/verify', null), 'https://site.example/kbs/#/auth/verify');
+  assert.equal(mail.urlFor('/auth/verify?x=%2F', 'tok_1'), 'https://site.example/kbs/#/auth/verify?x=%2F&token=tok_1');
+});
+
+test('urlFor keeps the GitHub Pages route inside the hash so it never 404s', () => {
+  const mail = createMailAdapter({});
+  const url = mail.urlFor('/auth/verify', 'tok_1');
+  assert.equal(url, 'https://skerishkang.github.io/kbs261022/site/#/auth/verify?token=tok_1');
+  assert.match(url, /\/site\/#\/auth\/verify\?token=/);
 });
 
 test('the adapter never marks anything verified by itself', async () => {

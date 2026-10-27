@@ -37,6 +37,7 @@
 //   GET    /api/me/orders             my orders
 //   GET    /api/me/orders/:id         my order detail
 //   POST   /api/me/orders/:id/cancel  cancel an awaiting_payment order
+//   POST   /api/me/orders/:id/repay   re-open PG payment for an unpaid order
 //   POST   /api/me/orders/:id/refund/request  request a refund
 //   GET    /api/me/quotes             my quote requests
 //   GET    /api/me/quotes/:id         my quote detail
@@ -81,7 +82,7 @@ import {
 } from './lib/auth.mjs';
 import { ensureColumns, COLUMN_UPGRADES } from './lib/migrate.mjs';
 import { createMailAdapter } from './lib/mail.mjs';
-import { createOAuthState, verifyOAuthState, buildAuthorizationUrl, exchangeCode, fetchUserInfo, OAUTH_STATE_COOKIE, oauthStateCookieOptions } from './lib/google-oauth.mjs';
+import { createOAuthState, decodeOAuthState, normalizeOAuthReturn, resolveOAuthRedirect, buildAuthorizationUrl, exchangeCode, fetchUserInfo, OAUTH_STATE_COOKIE, oauthStateCookieOptions } from './lib/google-oauth.mjs';
 
 const ALLOWED_ORIGIN = 'https://skerishkang.github.io';
 const MAX_BODY_BYTES = 64 * 1024;
@@ -115,8 +116,18 @@ export function isAuthPath(pathname) {
   return pathname === '/api/auth' || pathname.startsWith('/api/auth/') || pathname === '/api/me' || pathname.startsWith('/api/me/');
 }
 
-function corsHeadersFor(pathname) {
-  return isAuthPath(pathname) ? CORS_HEADERS_CREDENTIALS : CORS_HEADERS;
+// A cookie-authenticated admin request always carries the custom CSRF header,
+// so the preflight can opt into credentialed CORS without widening every
+// legacy route. Public guest calls keep the credential-free response.
+function preflightWantsCredentials(request) {
+  const requested = String(request.headers.get('Access-Control-Request-Headers') || '').toLowerCase();
+  return requested.split(',').map((h) => h.trim()).includes('x-csrf-token');
+}
+
+function corsHeadersFor(pathname, request) {
+  return isAuthPath(pathname) || (request && preflightWantsCredentials(request))
+    ? CORS_HEADERS_CREDENTIALS
+    : CORS_HEADERS;
 }
 
 // ---------------------------------------------------------------------------
@@ -174,7 +185,14 @@ async function readJson(request) {
   if (length > MAX_BODY_BYTES) return { error: 'body too large' };
   const buffer = await request.arrayBuffer();
   if (buffer.byteLength > MAX_BODY_BYTES) return { error: 'body too large' };
-  const text = new TextDecoder().decode(buffer);
+  let text;
+  try {
+    text = new TextDecoder('utf-8', { fatal: true }).decode(buffer);
+  } catch (e) {
+    // A body that is not valid UTF-8 decodes to U+FFFD, and that substitution is
+    // irreversible once stored. Refuse it here rather than per field.
+    return { error: 'body must be valid utf-8' };
+  }
   if (!text.trim()) return { body: {} };
   try {
     return { body: JSON.parse(text) };
@@ -876,11 +894,16 @@ async function cancelPayment(db, env, order, paymentKey, body, pg) {
       refundReceiveAccount: body.refundReceiveAccount || null,
       idempotencyKey: `cgi:cancel:${order.id}:${paymentKey}:${cancelAmount}`,
     });
+    const transactions = Array.isArray(result.cancels) ? result.cancels : [];
+    const lastCancel = transactions.length ? transactions[transactions.length - 1] : null;
     outcome = {
       ok: true,
       status: result.status || 'CANCELED',
       balanceAmount: toNonNegInt(result.balanceAmount),
-      cancelAmount: toNonNegInt(result.cancel_amount, cancelAmount),
+      // The provider reports the amount refunded SO FAR on this payment, so adding
+      // it to the stored refunded_amount would count every earlier refund twice.
+      // Only the newest transaction belongs in the ledger.
+      cancelAmount: toNonNegInt(lastCancel && lastCancel.cancelAmount, cancelAmount),
       raw: JSON.stringify(result),
     };
   } catch (e) {
@@ -1396,17 +1419,24 @@ async function handleGoogleStart(request, db, env) {
   }
 
   const redirectUri = new URL('/api/auth/google/callback', request.url).toString();
-  const state = await createOAuthState(env.AUTH_SESSION_SECRET || 'cgi-dev-secret');
+  const returnTo = normalizeOAuthReturn(new URL(request.url).searchParams.get('return'));
+  const state = await createOAuthState(env.AUTH_SESSION_SECRET || 'cgi-dev-secret', Date.now(), returnTo);
 
   const authUrl = buildAuthorizationUrl({ clientId, redirectUri }, state);
   if (!authUrl) return authJson({ error: 'google oauth not configured' }, 503);
 
   const cookieOpts = oauthStateCookieOptions();
+  const cookieAttrs = [];
+  if (cookieOpts.httpOnly) cookieAttrs.push('HttpOnly');
+  if (cookieOpts.secure) cookieAttrs.push('Secure');
+  if (cookieOpts.sameSite) cookieAttrs.push(`SameSite=${cookieOpts.sameSite}`);
+  if (cookieOpts.path) cookieAttrs.push(`Path=${cookieOpts.path}`);
+  if (cookieOpts.maxAge != null) cookieAttrs.push(`Max-Age=${cookieOpts.maxAge}`);
   return new Response(null, {
     status: 302,
     headers: {
       Location: authUrl,
-      'Set-Cookie': `${OAUTH_STATE_COOKIE}=${state}; ${Object.entries(cookieOpts).map(([k, v]) => `${k}=${v}`).join('; ')}`,
+      'Set-Cookie': `${OAUTH_STATE_COOKIE}=${state}; ${cookieAttrs.join('; ')}`,
     },
   });
 }
@@ -1429,10 +1459,18 @@ async function handleGoogleCallback(request, db, env) {
   if (!cookieState || cookieState !== state) {
     return authJson({ error: 'invalid state', detail: 'CSRF state mismatch' }, 400);
   }
+  // Verify the state token's signature and expiry, and read the origin page it
+  // carries. The return target comes from the signed payload — never the query
+  // string — and is clamped to the allowlist inside resolveOAuthRedirect.
+  const stateSecret = env.AUTH_SESSION_SECRET || 'cgi-dev-secret';
+  const statePayload = await decodeOAuthState(stateSecret, state);
+  if (!statePayload) {
+    return authJson({ error: 'invalid state', detail: 'state expired or tampered' }, 400);
+  }
 
   const clientId = env.GOOGLE_CLIENT_ID || env.GOOGLE_OAUTH_CLIENT_ID;
   const clientSecret = env.GOOGLE_CLIENT_SECRET || env.GOOGLE_OAUTH_CLIENT_SECRET;
-  const redirectUri = url.toString();
+  const redirectUri = new URL('/api/auth/google/callback', request.url).toString();
 
   // Clear state cookie
   const clearCookie = `${OAUTH_STATE_COOKIE}=; Max-Age=0; Path=/; HttpOnly; Secure; SameSite=Lax`;
@@ -1472,13 +1510,27 @@ async function handleGoogleCallback(request, db, env) {
       }
     }
 
-    // Issue session
+    // Google has already verified this address, so an existing member matched
+    // by Google ID or email must be marked verified as well. Without this, the
+    // two designated superadmin accounts stay unverified (and therefore lose
+    // admin access) whenever they first log in through Google.
+    if (!member.email_verified_at) {
+      const now = nowIso();
+      await db.prepare('UPDATE members SET email_verified_at = ?, updated_at = ? WHERE id = ?')
+        .bind(now, now, member.id).run();
+      await db.prepare('INSERT INTO member_events (member_id, type, meta, created_at) VALUES (?, ?, ?, ?)')
+        .bind(member.id, 'email_verified', JSON.stringify({ source: 'google' }), now).run();
+      member = { ...member, email_verified_at: now };
+    }
+
+    // Issue session and redirect back to the site
     const session = await issueSession(db, env, member);
-    return authJson({
-      member: memberView(member),
-      email_verified: !!member.email_verified_at,
-      auth_provider: 'google',
-    }, 200, { 'Set-Cookie': session.cookie + '; ' + clearCookie });
+    const redirectUrl = resolveOAuthRedirect(env.SITE_BASE_URL, statePayload.u);
+    const headers = new Headers();
+    headers.set('Location', redirectUrl);
+    headers.append('Set-Cookie', session.cookie);
+    headers.append('Set-Cookie', clearCookie);
+    return new Response(null, { status: 302, headers });
 
   } catch (e) {
     return authJson({ error: 'google auth failed', detail: e.message }, 400);
@@ -1490,10 +1542,20 @@ async function handleGoogleCallback(request, db, env) {
 // ---------------------------------------------------------------------------
 
 async function handleAuthRoute(pathname, method, request, db, env) {
+  // Google OAuth endpoints are GET redirects that don't require CSRF token
+  // (browser navigation via window.location.href doesn't send custom headers)
+  if (pathname === '/api/auth/google/start' && method === 'GET') {
+    return handleGoogleStart(request, db, env);
+  }
+  if (pathname === '/api/auth/google/callback' && method === 'GET') {
+    return handleGoogleCallback(request, db, env);
+  }
+
   const guard = guardAuth(request, env);
   if (guard) return guard;
   const mail = createMailAdapter(env, console.log);
   const parsed = await readJson(request);
+  if (parsed.error) return authJson({ error: parsed.error, detail: 'send the body encoded as UTF-8' }, 400);
   const body = parsed.body && typeof parsed.body === 'object' ? parsed.body : {};
 
   // ---------------- signup ----------------
@@ -1707,16 +1769,6 @@ async function handleAuthRoute(pathname, method, request, db, env) {
     return authJson({ ok: true, member: memberView({ ...member, updated_at: now }) }, 200, { 'Set-Cookie': session.cookie });
   }
 
-  // ---------------- Google OAuth (issue #79) ----------------
-
-  if (pathname === '/api/auth/google/start' && method === 'GET') {
-    return handleGoogleStart(request, db, env);
-  }
-
-  if (pathname === '/api/auth/google/callback' && method === 'GET') {
-    return handleGoogleCallback(request, db, env);
-  }
-
   return null;
 }
 
@@ -1730,6 +1782,7 @@ async function handleMeRoute(pathname, method, url, request, db, env) {
   const member = await requireMember(request, db, env);
   if (!member) return authJson({ error: 'unauthorized', detail: 'sign in first' }, 401);
   const parsed = await readJson(request);
+  if (parsed.error) return authJson({ error: parsed.error, detail: 'send the body encoded as UTF-8' }, 400);
   const body = parsed.body && typeof parsed.body === 'object' ? parsed.body : {};
   const policy = authPolicy(env);
 
@@ -1963,6 +2016,45 @@ async function handleMeRoute(pathname, method, url, request, db, env) {
     return authJson({ changed: true, id, order: publicOrderView(updated, updated.items) });
   }
 
+  const repayMatch = pathname.match(/^\/api\/me\/orders\/([^/]+)\/repay$/);
+  if (repayMatch && method === 'POST') {
+    // Re-open payment for an order that was created but never approved. The
+    // client must bind the PG widget to THIS orderId, so the server — not the
+    // browser — decides payability and the amount. No new order is ever made.
+    const id = decodeURIComponent(repayMatch[1]);
+    const row = await getOrder(db, id);
+    if (!row || String(row.customer_id) !== String(member.id)) return authJson({ error: 'order not found' }, 404);
+    if (row.kind !== 'purchase') {
+      return authJson({ error: 'not payable', detail: { reason: 'quote_order_not_payable', kind: row.kind } }, 409);
+    }
+    if (row.payment_status === 'paid') {
+      return authJson({ error: 'already_paid', detail: { status: row.status, refunded_amount: row.refunded_amount } }, 409);
+    }
+    if (row.status !== 'awaiting_payment') {
+      return authJson({ error: 'not payable', detail: { status: row.status, payment_status: row.payment_status } }, 409);
+    }
+    if (!Number.isInteger(row.total_amount) || row.total_amount <= 0) {
+      return authJson({ error: 'invalid amount', detail: { total_amount: row.total_amount } }, 409);
+    }
+    const retryAt = nowIso();
+    await db.batch([
+      db.prepare('INSERT INTO order_events (order_id, type, actor, from_status, to_status, meta, created_at) VALUES (?,?,?,?,?,?,?)')
+        .bind(id, 'payment_retry_requested', 'customer', row.status, row.status, JSON.stringify({ amount: row.total_amount }), retryAt),
+      db.prepare('INSERT INTO member_events (member_id, type, meta, created_at) VALUES (?, ?, ?, ?)')
+        .bind(member.id, 'payment_retry_requested', JSON.stringify({ order_id: id }), retryAt),
+    ]);
+    return authJson({
+      payable: true,
+      payment: {
+        order_id: row.id,
+        order_name: 'CGI 상품 주문',
+        amount: row.total_amount,
+        status: row.status,
+        payment_status: row.payment_status,
+      },
+    });
+  }
+
   const refundMatch = pathname.match(/^\/api\/me\/orders\/([^/]+)\/refund\/request$/);
   if (refundMatch && method === 'POST') {
     const id = decodeURIComponent(refundMatch[1]);
@@ -2018,11 +2110,11 @@ async function handleMeRoute(pathname, method, url, request, db, env) {
 // worker
 // ---------------------------------------------------------------------------
 
-export default {
+const worker = {
   async fetch(request, env) {
     const url = new URL(request.url);
     if (request.method === 'OPTIONS') {
-      return new Response(null, { status: 204, headers: corsHeadersFor(url.pathname) });
+      return new Response(null, { status: 204, headers: corsHeadersFor(url.pathname, request) });
     }
 
     const pg = createPgAdapter({ secretKey: env.TOSS_WIDGET_SECRET_KEY, mode: env.PG_PROVIDER_MODE || 'auto' });
@@ -2146,6 +2238,71 @@ export default {
       } catch (e) {
         return json({ error: 'schema init failed', detail: String(e && e.message || e) }, 500);
       }
+    }
+
+    // ---------------- product sync (admin) ----------------
+
+    if (url.pathname === '/api/admin/sync/status' && request.method === 'GET') {
+      if (!(await isAdminOrMember(request, env.DB, env))) return unauthorized();
+      try {
+        const { results } = await env.DB.prepare(
+          `SELECT status, COUNT(*) AS n FROM product_sync_state GROUP BY status`
+        ).all();
+        const byStatus = {};
+        for (const r of (results || [])) byStatus[r.status] = r.n;
+        const { results: targetRows } = await env.DB.prepare(
+          `SELECT target, status, COUNT(*) AS n FROM product_sync_state GROUP BY target, status`
+        ).all();
+        const byTarget = {};
+        for (const r of (targetRows || [])) {
+          byTarget[r.target] = byTarget[r.target] || {};
+          byTarget[r.target][r.status] = r.n;
+        }
+        return json({ ok: true, byStatus, byTarget, total: Object.values(byStatus).reduce((a, b) => a + b, 0) });
+      } catch (e) {
+        return json({ error: 'sync status unavailable', detail: String(e && e.message || e) }, 500);
+      }
+    }
+
+    if (url.pathname === '/api/admin/sync/products' && request.method === 'GET') {
+      if (!(await isAdminOrMember(request, env.DB, env))) return unauthorized();
+      const target = url.searchParams.get('target');
+      const status = url.searchParams.get('status');
+      const q = (url.searchParams.get('q') || '').trim();
+      const limit = Math.min(200, Math.max(1, parseInt(url.searchParams.get('limit') || '50', 10)));
+      try {
+        let sql = 'SELECT cgi_id, target, status, change_hash, last_success_at, last_attempt_at, last_error, retry_count, transmitted, locked FROM product_sync_state WHERE 1=1';
+        const binds = [];
+        if (target) { sql += ' AND target = ?'; binds.push(target); }
+        if (status) { sql += ' AND status = ?'; binds.push(status); }
+        if (q) { sql += ' AND cgi_id LIKE ?'; binds.push('%' + q + '%'); }
+        sql += ' ORDER BY updated_at DESC LIMIT ?';
+        binds.push(limit);
+        const stmt = binds.length ? env.DB.prepare(sql).bind(...binds) : env.DB.prepare(sql);
+        const { results } = await stmt.all();
+        return json({ ok: true, items: results || [], count: (results || []).length });
+      } catch (e) {
+        return json({ error: 'sync products unavailable', detail: String(e && e.message || e) }, 500);
+      }
+    }
+
+    if (url.pathname === '/api/admin/sync/retry' && request.method === 'POST') {
+      if (!(await isAdminOrMember(request, env.DB, env))) return unauthorized();
+      const parsed = await readJson(request);
+      if (parsed.error) return badRequest(parsed.error);
+      const ids = Array.isArray(parsed.body && parsed.body.cgiIds) ? parsed.body.cgiIds : [];
+      if (!ids.length) return badRequest('cgiIds required');
+      const now = nowIso();
+      let retried = 0;
+      for (const id of ids) {
+        try {
+          await env.DB.prepare(
+            `UPDATE product_sync_state SET status = 'retry_pending', last_attempt_at = ?, updated_at = ? WHERE cgi_id = ?`
+          ).bind(now, now, id).run();
+          retried++;
+        } catch (e) { /* ignore individual failures */ }
+      }
+      return json({ ok: true, retried, total: ids.length });
     }
 
     // ---------------- orders (public) ----------------
@@ -2293,6 +2450,33 @@ if (url.pathname === '/api/admin/members' && request.method === 'GET') {
   }) });
 }
 
-    return notFound();
+return notFound();
+  },
+};
+
+// A browser request that carries the session cookie is an admin/member call
+// even when its path is a legacy route (for example GET /api/orders). Those
+// responses must advertise credentials or the browser discards them. The
+// origin stays pinned to the production site; only the credential flag is added.
+export default {
+  async fetch(request, env) {
+    const response = await worker.fetch(request, env);
+    const contentType = response.headers.get('Content-Type') || '';
+    if (
+      request.method !== 'OPTIONS'
+      && request.headers.get('Cookie')
+      && contentType.includes('application/json')
+      && response.headers.get('Access-Control-Allow-Origin') === ALLOWED_ORIGIN
+      && !response.headers.has('Access-Control-Allow-Credentials')
+    ) {
+      const headers = new Headers(response.headers);
+      headers.set('Access-Control-Allow-Credentials', 'true');
+      return new Response(response.body, {
+        status: response.status,
+        statusText: response.statusText,
+        headers,
+      });
+    }
+    return response;
   },
 };

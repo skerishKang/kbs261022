@@ -26,6 +26,36 @@
   };
 
   /* ---------------------------------------------------------------- utils */
+  /* 회사정보는 website/assets/company.js(2025년 지명원 기준)를 우선 읽고,
+     파일이 없거나 배포 경로가 다를 때만 아래 값으로 대체한다. */
+  var CO = window.CGI_COMPANY || null;
+
+  function cVal(path, fallback) {
+    var cur = CO;
+    if (!cur) { return fallback; }
+    path.split('.').forEach(function (k) { cur = (cur && typeof cur === 'object') ? cur[k] : undefined; });
+    return (cur === undefined || cur === null || cur === '') ? fallback : cur;
+  }
+
+  function companyTels() {
+    var t = CO && CO.contact && CO.contact.tels;
+    return (Array.isArray(t) && t.length) ? t : [{ num: '062) 576-8100', dial: '0625768100' }];
+  }
+
+  function companyContactHtml() {
+    var telHtml = companyTels().map(function (t) {
+      return '<a href="tel:' + esc(t.dial) + '">' + esc(t.num) + '</a>';
+    }).join(' &nbsp;·&nbsp; ');
+    var zip = cVal('hq.zip', '57248');
+    return '<dl class="about-contact">' +
+      '<div><dt>전화</dt><dd>' + telHtml + '</dd></div>' +
+      '<div><dt>팩스</dt><dd>' + esc(cVal('contact.fax', '062) 576-8181')) + '</dd></div>' +
+      '<div><dt>본사</dt><dd>[' + esc(zip) + '] ' + esc(cVal('hq.addrFull', '전라남도 장성군 남면 나노산단로 102 (삼태리)')) + '</dd></div>' +
+      '<div><dt>회사</dt><dd>' + esc(cVal('identity.nameKo', '주식회사 시지아이')) +
+        ' (' + esc(cVal('identity.nameEn', 'CGI Inc.')) + ')</dd></div>' +
+      '</dl>';
+  }
+
   function esc(value) {
     if (value === null || value === undefined) return '';
     return String(value)
@@ -418,7 +448,7 @@
 
       '<section class="home-cta">' +
         '<div><h2>원하는 상품을 찾지 못하셨나요?</h2><p>상품명·모델명으로 검색하거나 CGI 담당자에게 문의해 주세요.</p></div>' +
-        '<a class="btn btn-primary" href="tel:0625768100">062) 576-8100</a>' +
+        '<a class="btn btn-primary" href="tel:' + esc(companyTels()[0].dial) + '">' + esc(companyTels()[0].num) + '</a>' +
       '</section>';
   }
 
@@ -668,6 +698,9 @@
   function cartItemCount(items) {
     return items.reduce(function (sum, x) { return sum + (x.cart.qty || 1); }, 0);
   }
+  function cartSummaryText(items) {
+    return items.length.toLocaleString('ko-KR') + '개 상품 · 총 ' + cartItemCount(items) + '점';
+  }
   /* ---- 주문·결제 분기 (issue #67): 모든 상품이 공개가이면 결제 주문 가능 ---- */
   function isPublicPriced(product) {
     return !!(product && product.price && product.price.state === 'public' &&
@@ -760,7 +793,7 @@
       '<header class="page-head">' +
         '<p class="page-eyebrow">Quote</p>' +
         '<h1>견적 목록</h1>' +
-        '<p class="page-sub">' + items.length.toLocaleString('ko-KR') + '개 상품 · 총 ' + cartItemCount(items) + '점</p>' +
+        '<p class="page-sub" id="cartSummary">' + cartSummaryText(items) + '</p>' +
       '</header>' +
       '<div class="cart-layout">' +
         '<div>' +
@@ -782,7 +815,7 @@
               '</div>' +
             '</details>' +
             (allPublicPrice(items)
-              ? '<div class="cart-total-line"><span>주문 금액</span><strong>' + money(cartTotal(items)) + '</strong></div>' +
+              ? '<div class="cart-total-line"><span>주문 금액</span><strong id="cartTotalValue">' + money(cartTotal(items)) + '</strong></div>' +
                 '<a class="btn btn-primary btn-block" href="#/checkout" style="margin-top:12px">결제 주문으로 계속</a>'
               : '<div class="cart-total-line"><span>최종 금액</span><strong>담당자 확인 후 안내</strong></div>' +
                 '<p class="form-note">일부 상품이 판매가 미확정 상태라 결제 대신 견적 요청으로 접수됩니다.</p>') +
@@ -964,12 +997,7 @@
           '<li>담당자가 내용을 확인한 뒤 연락드립니다.</li>' +
         '</ul>' +
         '<h2>문의</h2>' +
-        '<dl class="about-contact">' +
-          '<div><dt>전화</dt><dd><a href="tel:0625768100">062) 576-8100</a></dd></div>' +
-          '<div><dt>팩스</dt><dd>062) 576-8181</dd></div>' +
-          '<div><dt>주소</dt><dd>광주광역시 광산구 하남산단천변좌로 19, 광주드림파크 111호</dd></div>' +
-          '<div><dt>회사</dt><dd>주식회사 시지아이 (CGI Inc.)</dd></div>' +
-        '</dl>' +
+        companyContactHtml() +
         '<div class="about-actions">' +
           '<a class="btn btn-primary" href="#/products">상품 보기</a>' +
           '<a class="btn btn-secondary" href="../website/index.html" data-home-link>회사 홈페이지</a>' +
@@ -1321,11 +1349,16 @@
   });
 
   function refreshCartPreview() {
+    // 미리보기·헤더 집계·주문 금액은 모두 같은 상태에서 계산해 함께 그려야 한다.
     var items = cartItems();
     var text = buildQuoteCartText(items);
     var pre = document.getElementById('quoteCartText');
     if (pre) pre.textContent = text;
     window.cgiLastQuoteCartText = text;
+    var summary = document.getElementById('cartSummary');
+    if (summary) summary.textContent = cartSummaryText(items);
+    var total = document.getElementById('cartTotalValue');
+    if (total) total.textContent = money(cartTotal(items));
   }
 
   /* ---------------------------------------------------- image error fallback */
@@ -1473,6 +1506,7 @@
 
   function renderLogin(app) {
     var p = authApi();
+    if (p && p.isLoggedIn()) { navigate('#/'); return; }
     var html = authShell('로그인',
       '<form id="loginForm" class="auth-form" novalidate>' +
         authField('이메일', 'email', 'email', '', { autocomplete: 'email', required: true }) +

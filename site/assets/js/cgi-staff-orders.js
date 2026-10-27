@@ -27,7 +27,7 @@
     failed: '실패', skipped: '건너뜀(테스트)'
   };
 
-  var state = { token: null, memberMode: false, member: null, orders: [], drawer: null, events: [] };
+  var state = { token: null, memberMode: false, member: null, orders: [], drawer: null, events: [], feedback: null };
 
   function $(id) { return document.getElementById(id); }
   function esc(s) {
@@ -36,6 +36,11 @@
       .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
   }
   function money(n) { return Number(n || 0).toLocaleString('ko-KR') + '원'; }
+  /** U+FFFD 는 UTF-8 아닌 본문이 저장될 때 남는 흔적. 복원 불가라 표시로 대체한다. */
+  function displayName(s) {
+    var v = String(s == null ? '' : s);
+    return v.indexOf('\uFFFD') >= 0 ? '(이름 손상 · 재입력 필요)' : v;
+  }
   function fmtDate(v) {
     if (!v) return '—';
     var d = new Date(v);
@@ -44,6 +49,12 @@
   function kindLabel(k) { return k === 'quote' ? '견적' : '결제'; }
   function msg(el, text, kind) {
     el.innerHTML = text ? '<p class="staff-msg ' + (kind || 'info') + '">' + esc(text) + '</p>' : '';
+  }
+  // 성공·실패 안내는 드로어를 다시 그려도 남아야 하므로 상태에 보관한다.
+  function setMsg(text, kind) {
+    state.feedback = { id: state.drawer ? state.drawer.id : null, text: text, kind: kind || 'info' };
+    var el = $('actionMsg');
+    if (el) msg(el, text, kind);
   }
   function parseJson(s) {
     if (s == null) return null;
@@ -74,35 +85,49 @@
       $('authBox').insertAdjacentHTML('beforeend', '<p class="staff-msg error">API 주소가 설정되지 않았습니다.</p>');
       return;
     }
-    state.token = localStorage.getItem(LS_KEY);
-    if (state.token) {
+    /* 정식 경로는 CGI 회원 세션(관리자·총관리자 role)이다. localStorage 의
+       cgiAdminToken 은 세션이 없을 때만 쓰는 레거시 폴백이므로 먼저 시도하지
+       않는다 — 총관리자 계정 관리 UI 는 회원 세션에서만 열린다. */
+    function legacyTokenFallback() {
+      var token = localStorage.getItem(LS_KEY);
+      if (!token) { $('authBox').hidden = false; return; }
+      state.token = token;
       $('authBox').hidden = true;
       $('ordersApp').hidden = false;
       fillFilters();
       load();
-      return;
     }
-    // try CGI member session
     if (window.CGI_AUTH) {
       window.CGI_AUTH.refresh().then(function (member) {
         if (member && (member.role === 'admin' || member.role === 'superadmin' || member.is_admin)) {
-          state.memberMode = true;
-          state.member = member;
-          $('authBox').hidden = true;
-          $('ordersApp').hidden = false;
-          if (member.role === 'superadmin') { $('adminManageBox').hidden = false; loadMembers(); }
-          fillFilters();
-          load();
+          enterAsAdmin(member);
         } else {
-          $('authBox').hidden = false;
+          legacyTokenFallback();
         }
-      }).catch(function () { $('authBox').hidden = false; });
+      }).catch(legacyTokenFallback);
     } else {
-      $('authBox').hidden = false;
+      legacyTokenFallback();
     }
   }
 
+  /* 관리자 세션 진입. 부팅·비밀번호 로그인·Google 로그인 복귀가 모두 이 경로로
+     같은 화면 상태를 만든다. */
+  function enterAsAdmin(member) {
+    state.memberMode = true;
+    state.member = member;
+    state.token = null;
+    $('authBox').hidden = true;
+    $('ordersApp').hidden = false;
+    if (member.role === 'superadmin') { $('adminManageBox').hidden = false; loadMembers(); }
+    else { $('adminManageBox').hidden = true; }
+    fillFilters();
+    load();
+  }
+
+  var filtersFilled = false;
   function fillFilters() {
+    if (filtersFilled) return;
+    filtersFilled = true;
     var statusSel = $('filterStatus');
     Object.keys(STATUS_LABELS).forEach(function (k) {
       var o = document.createElement('option');
@@ -171,13 +196,43 @@
   }
 
   /* ----------------------------------------------------------- drawer */
+  /**
+   * 목록(GET /api/orders)은 ORDER_COLUMNS 평면 행을, 상세(GET /api/orders/:id)는
+   * publicOrderView 중첩 객체를 돌려준다. 드로어는 평면 필드를 그리므로 상세 응답만
+   * 쓰면 payment_key·고객 정보가 비고, 그 결과 환불 폼이 사라진다. admin_note·
+   * admin_prices 는 상세 응답에 없으니 같은 화면의 목록 행을 받침으로 깔고 얹는다.
+   */
+  function drawerOrder(row, detail) {
+    var d = detail || {};
+    var c = d.customer || {};
+    var t = d.totals || {};
+    var p = d.payment || {};
+    var v = d.delivery || {};
+    var flat = {
+      customer_company: c.company, customer_name: c.name, customer_phone: c.phone,
+      customer_email: c.email, customer_addr: c.addr, customer_addr_detail: c.addr_detail,
+      customer_note: c.note,
+      item_total: t.item_total, shipping_fee: t.shipping_fee, total_amount: t.total_amount,
+      supplied_amount: t.supplied_amount, vat_amount: t.vat_amount, refunded_amount: t.refunded_amount,
+      payment_method: p.method, payment_key: p.payment_key, paid_at: p.paid_at,
+      delivery_tracking: v.tracking
+    };
+    if (!d.id) return row || null;
+    return Object.assign({}, row || {}, d, flat);
+  }
+
+  function findRow(id) {
+    var found = null;
+    (state.orders || []).forEach(function (r) { if (r && r.id === id) found = r; });
+    return found;
+  }
+
   function openDrawer(id) {
     $('orderDrawer').hidden = false;
     $('drawerBody').innerHTML = '<p class="staff-msg info">불러오는 중…</p>';
-    var body = '';
     request('GET', '/api/orders/' + encodeURIComponent(id)).then(function (res) {
       if (!res.ok) { msg($('drawerBody'), '주문을 불러오지 못했습니다 (HTTP ' + res.status + ').'); return; }
-      state.drawer = res.data;
+      state.drawer = drawerOrder(findRow(id), res.data);
       renderDrawer();
       return request('GET', '/api/orders/' + encodeURIComponent(id) + '/events');
     }).then(function (res) {
@@ -256,14 +311,16 @@
 
     var refundable = Math.max(0, (t.total_amount || 0) - (t.refunded_amount || 0));
     var canRefund = o.payment_key && refundable > 0;
+    var minPartial = (window.CGI_REFUND && window.CGI_REFUND.MIN_PARTIAL_REFUND) || 1000;
     html += '<section class="drawer-section"><h3>환불</h3>' +
       (canRefund
         ? '<p>환불 가능 잔액: <strong>' + money(refundable) + '</strong></p>' +
           '<form id="refundForm" class="inline-form">' +
-            '<label>환불 금액<input name="cancelAmount" type="number" min="1000" step="100" value="' + refundable + '"></label>' +
+            '<label>환불 금액(비우면 전액)<input name="cancelAmount" type="number" min="1" step="1" placeholder="전액 환불"></label>' +
             '<label>사유<input name="cancelReason" maxlength="200" placeholder="고객 요청 취소/환불"></label>' +
             '<button type="submit" class="btn btn-secondary">환불 처리</button>' +
-          '</form>'
+          '</form>' +
+          '<p class="muted">금액을 비우면 잔액 전액(' + money(refundable) + ')을 환불합니다. 부분 환불은 ' + money(minPartial) + ' 이상부터 가능합니다.</p>'
         : '<p class="muted">환불할 결제가 없거나 잔액이 소진되었습니다.</p>') +
       '<p>ERP 동기화 상태: <span class="pill">' + esc(ERP_LABELS[o.erp_status] || o.erp_status) + '</span>' +
         (o.erp_sent_at ? ' · ' + esc(fmtDate(o.erp_sent_at)) : '') + '</p>' +
@@ -291,6 +348,7 @@
     html += '<section class="drawer-section"><h3>이력</h3><div id="drawerEvents"></div></section>';
 
     $('drawerBody').innerHTML = html;
+    if (state.feedback && state.feedback.id === o.id) msg($('actionMsg'), state.feedback.text, state.feedback.kind);
     bindDrawer(o, refundable);
   }
 
@@ -311,10 +369,10 @@
 
   function bindDrawer(o, refundable) {
     function patch(body, cb) {
-      msg($('actionMsg'), '처리 중…');
+      setMsg('처리 중…');
       request('PATCH', '/api/orders/' + encodeURIComponent(o.id), body).then(function (res) {
-        if (!res.ok) { msg($('actionMsg'), '실패: ' + (res.data.error || ('HTTP ' + res.status)), 'error'); return; }
-        msg($('actionMsg'), res.data.changed === false ? '변경할 항목이 없습니다.' : '변경했습니다.', 'ok');
+        if (!res.ok) { setMsg('실패: ' + (res.data.error || ('HTTP ' + res.status)), 'error'); return; }
+        setMsg(res.data.changed === false ? '변경할 항목이 없습니다.' : '변경했습니다.', 'ok');
         if (cb) cb(); else openDrawer(o.id);
       });
     }
@@ -338,7 +396,7 @@
       st.addEventListener('submit', function (ev) {
         ev.preventDefault();
         var v = sel.value;
-        if (v === o.status) { msg($('actionMsg'), '현재와 같은 상태입니다.', 'info'); return; }
+        if (v === o.status) { setMsg('현재와 같은 상태입니다.', 'info'); return; }
         patch({ status: v });
       });
     }
@@ -370,27 +428,32 @@
     var rf = $('refundForm');
     if (rf) rf.addEventListener('submit', function (ev) {
       ev.preventDefault();
-      var amount = parseInt(rf.querySelector('[name="cancelAmount"]').value, 10);
-      var reason = rf.querySelector('[name="cancelReason"]').value.trim() || '고객 요청 취소/환불';
-      if (!amount || amount < 1000) { msg($('actionMsg'), '환불 금액은 1,000원 이상이어야 합니다.', 'error'); return; }
-      if (amount > refundable) { msg($('actionMsg'), '환불 금액이 잔액(' + money(refundable) + ')을 초과합니다.', 'error'); return; }
-      msg($('actionMsg'), '환불 처리 중…');
-      request('POST', '/api/orders/' + encodeURIComponent(o.id) + '/payments/' + encodeURIComponent(o.payment_key) + '/cancel', { cancelAmount: amount, cancelReason: reason })
+      var amount = rf.querySelector('[name="cancelAmount"]').value;
+      var reason = rf.querySelector('[name="cancelReason"]').value;
+      var built = window.CGI_REFUND.buildRefundRequest(amount, refundable, reason);
+      if (!built.ok) { setMsg(built.error, 'error'); return; }
+      setMsg(built.mode === 'full' ? '전액 환불 처리 중…' : '부분 환불 처리 중…');
+      request('POST', '/api/orders/' + encodeURIComponent(o.id) + '/payments/' + encodeURIComponent(o.payment_key) + '/cancel', built.body)
         .then(function (res) {
-          if (!res.ok) { msg($('actionMsg'), '환불 실패: ' + (res.data.error || ('HTTP ' + res.status)), 'error'); return; }
-          msg($('actionMsg'), '환불 처리했습니다. 환불액 ' + money(res.data.cancel_amount), 'ok');
+          if (!res.ok) {
+            var detail = res.data && res.data.detail;
+            var extra = detail && detail.min ? ' (서버 최소금액 ' + money(detail.min) + ')' : '';
+            setMsg('환불 실패: ' + ((res.data && res.data.error) || ('HTTP ' + res.status)) + extra, 'error');
+            return;
+          }
+          setMsg('환불 처리했습니다. 환불액 ' + money(res.data.cancel_amount), 'ok');
           load();
           openDrawer(o.id);
         });
     });
 
     function erp(retry) {
-      msg($('actionMsg'), 'ERP 동기화 시도 중…');
+      setMsg('ERP 동기화 시도 중…');
       request('POST', '/api/orders/' + encodeURIComponent(o.id) + '/erp' + (retry ? '/retry' : ''), {})
         .then(function (res) {
-          if (!res.ok) { msg($('actionMsg'), 'ERP 동기화 실패 (HTTP ' + res.status + '), ' + ' ' + (res.data.error || ''), 'error'); return; }
+          if (!res.ok) { setMsg('ERP 동기화 실패 (HTTP ' + res.status + '), ' + ' ' + (res.data.error || ''), 'error'); return; }
           var d = res.data;
-          msg($('actionMsg'), 'ERP: ' + esc(String(d.status)) + (d.mode ? ' · 모드 ' + esc(String(d.mode)) : '') + (d.sent ? ' · 전송됨' : ' · 미전송(테스트 모드)') + (d.note ? ' · ' + esc(String(d.note)) : ''), d.sent ? 'ok' : 'info');
+          setMsg('ERP: ' + esc(String(d.status)) + (d.mode ? ' · 모드 ' + esc(String(d.mode)) : '') + (d.sent ? ' · 전송됨' : ' · 미전송(테스트 모드)') + (d.note ? ' · ' + esc(String(d.note)) : ''), d.sent ? 'ok' : 'info');
           load();
           openDrawer(o.id);
         });
@@ -409,12 +472,12 @@
           if (!v || v <= 0) { bad = true; return; }
           prices[it.product_id] = v;
         });
-        if (bad) { msg($('actionMsg'), '모든 항목에 유효한 공급가를 입력해 주세요.', 'error'); return; }
-        msg($('actionMsg'), '가격 확정 중…');
+        if (bad) { setMsg('모든 항목에 유효한 공급가를 입력해 주세요.', 'error'); return; }
+        setMsg('가격 확정 중…');
         request('POST', '/api/orders/' + encodeURIComponent(o.id) + '/quote/prices', { admin_prices: prices, convert: !!convert })
           .then(function (res) {
-            if (!res.ok) { msg($('actionMsg'), '확정 실패: ' + (res.data.error || ('HTTP ' + res.status)), 'error'); return; }
-            msg($('actionMsg'), convert ? '가격 확정 및 결제 주문 전환했습니다.' : '가격을 확정했습니다.', 'ok');
+            if (!res.ok) { setMsg('확정 실패: ' + (res.data.error || ('HTTP ' + res.status)), 'error'); return; }
+            setMsg(convert ? '가격 확정 및 결제 주문 전환했습니다.' : '가격을 확정했습니다.', 'ok');
             load();
             openDrawer(o.id);
           });
@@ -434,7 +497,7 @@
       items.forEach(function (m) {
         var canPromote = m.role === 'member' && m.email_verified;
         var canDemote = m.role === 'admin';
-        html += '<tr><td>' + esc(m.email) + '</td><td>' + esc(m.name) + '</td><td>' + esc(m.status) + '</td><td>' + (m.email_verified ? '완료' : '미완료') + '</td><td>' + esc(m.role) + '</td><td>' +
+        html += '<tr><td>' + esc(m.email) + '</td><td>' + esc(displayName(m.name)) + '</td><td>' + esc(m.status) + '</td><td>' + (m.email_verified ? '완료' : '미완료') + '</td><td>' + esc(m.role) + '</td><td>' +
           (canPromote ? '<button type="button" class="btn btn-secondary" data-promote="' + m.id + '">관리자 지정</button> ' : '') +
           (canDemote ? '<button type="button" class="btn btn-secondary" data-demote="' + m.id + '">해제</button>' : '') +
           '</td></tr>';
@@ -464,7 +527,7 @@
 
   /* ---------------------------------------------------------- wiring */
   document.addEventListener('DOMContentLoaded', function () {
-    $('drawerClose').addEventListener('click', function () { $('orderDrawer').hidden = true; state.drawer = null; });
+    $('drawerClose').addEventListener('click', function () { $('orderDrawer').hidden = true; state.drawer = null; state.feedback = null; });
     var memberLoginBtn = $('memberLoginBtn');
     if (memberLoginBtn) memberLoginBtn.addEventListener('click', function () {
       var email = $('memberEmail').value.trim();
@@ -478,27 +541,30 @@
             window.CGI_AUTH.logout();
             return;
           }
-          state.memberMode = true;
-          state.member = member;
-          state.token = null;
-          $('authBox').hidden = true;
-          $('ordersApp').hidden = false;
-          if (member.role === 'superadmin') { $('adminManageBox').hidden = false; loadMembers(); }
-          fillFilters();
-          load();
+          enterAsAdmin(member);
         });
       });
+    });
+    /* 비밀번호가 없는 총관리자(Google 전용) 계정을 위한 기존 OAuth 경로. */
+    var googleBtn = $('memberGoogleBtn');
+    if (googleBtn) googleBtn.addEventListener('click', function () {
+      if (!window.CGI_AUTH) { $('authMsg').innerHTML = '<p class="staff-msg error">인증 모듈을 불러오지 못했습니다.</p>'; return; }
+      googleBtn.disabled = true;
+      $('authMsg').innerHTML = '<p class="staff-msg info">Google 로그인 중…</p>';
+      window.CGI_AUTH.googleLogin('orders');
     });
     $('logoutBtn').addEventListener('click', function () {
       state.token = null;
       state.memberMode = false;
       state.member = null;
+      state.orders = [];
       localStorage.removeItem(LS_KEY);
       if (window.CGI_AUTH) window.CGI_AUTH.logout();
       $('ordersApp').hidden = true;
       $('adminManageBox').hidden = true;
       $('authBox').hidden = false;
       $('orderList').innerHTML = '';
+      $('memberList').innerHTML = '';
     });
     $('refreshBtn').addEventListener('click', load);
     ['filterKind', 'filterStatus', 'filterPayment'].forEach(function (id) {
@@ -511,4 +577,6 @@
     });
     boot();
   });
+
+  window.CGI_STAFF_ORDERS = { drawerOrder: drawerOrder };
 })();

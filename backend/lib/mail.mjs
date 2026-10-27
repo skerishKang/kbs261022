@@ -79,12 +79,18 @@ export function createMailAdapter(env, log = () => {}) {
   return {
     mode: MAIL_MODES.includes(mode) ? mode : 'console',
 
-    /** Build the public URL a mail recipient should open. */
+    /** Build the public URL a mail recipient should open.
+     *
+     * The storefront is a static GitHub Pages app with hash routing, so a
+     * path-style link like /site/auth/verify returns GitHub's 404 page. Put the
+     * route after #/ instead; the SPA reads the token from the hash query.
+     */
     urlFor(path, token) {
       const clean = path.startsWith('/') ? path : `/${path}`;
-      if (!token) return `${siteBase}${clean}`;
       const sep = clean.includes('?') ? '&' : '?';
-      return `${siteBase}${clean}${sep}token=${encodeURIComponent(token)}`;
+      const suffix = token ? `${clean}${sep}token=${encodeURIComponent(token)}` : clean;
+      const base = siteBase.replace(/#.*$/, '');
+      return `${base}/#${suffix}`;
     },
 
     /**

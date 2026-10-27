@@ -51,7 +51,7 @@ secret_name = "B66_ALERT_RESEND_API_KEY"
 #   5. Set EMAIL_VERIFY_REQUIRED=YES to enforce verification
 #
 # Google OAuth (issue #79):
-#   1. Create OAuth credentials at https://console.cloud.google.com/apis/credentials
+#   1. Reuses PADIEM's existing Google OAuth Client ID
 #   2. Add authorized redirect URI: https://cgi-quote-api.skerishkang.workers.dev/api/auth/google/callback
 #   3. Set GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET via `wrangler secret put`
 #   4. When unset, Google login returns 503
@@ -65,5 +65,3 @@ SHIPPING_FEE_DEFAULT = "0"
 MAIL_MODE = "resend"
 MAIL_FROM = "CGI <noreply@notify.padiem.net>"
 EMAIL_VERIFY_REQUIRED = "YES"
-GOOGLE_CLIENT_ID = ""
-GOOGLE_CLIENT_SECRET = ""

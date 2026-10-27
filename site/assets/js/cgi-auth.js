@@ -128,10 +128,15 @@
     });
   }
 
-  /** Google OAuth 시작: 서버가 Google 인증 URL로 리다이렉트한다. */
-  function googleLogin() {
+  /**
+   * Google OAuth 시작: 서버가 Google 인증 URL로 리다이렉트한다.
+   * returnTo 는 서버 허용 목록(site/staff/orders) 중 하나이며, 서버는 서명된
+   * state 에서만 값을 읽는다. 미전달 시 사이트 로그인 화면으로 복귀한다.
+   */
+  function googleLogin(returnTo) {
     if (!API) return;
-    window.location.href = API + '/api/auth/google/start';
+    var query = returnTo ? '?return=' + encodeURIComponent(returnTo) : '';
+    window.location.href = API + '/api/auth/google/start' + query;
   }
 
   /* --------------------------------------------------------- 마이페이지 */

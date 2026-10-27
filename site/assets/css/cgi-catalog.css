@@ -711,6 +711,7 @@ p:last-child { margin-bottom: 0; }
   border-radius: var(--radius-sm); font-size: 13.5px; font-weight: 800;
   letter-spacing: -.2px; text-align: center; transition: background .15s ease, border-color .15s ease, color .15s ease;
 }
+.btn[hidden] { display: none !important; }
 .btn-primary { background: var(--cgi-primary); color: #fff; border-color: var(--cgi-primary); }
 .btn-primary:hover { background: var(--cgi-primary-dark); border-color: var(--cgi-primary-dark); }
 .btn-secondary { background: #fff; color: var(--cgi-ink); border-color: #cfcfcf; }
@@ -1192,4 +1193,4 @@ p:last-child { margin-bottom: 0; }
 
 /* The hidden attribute loses to the class-level display: rules above, so it
    has to be re-asserted explicitly for the auth switcher. */
-.auth-links-guest[hidden], .auth-links-member[hidden], .header-nav a[hidden] { display: none !important; }
+.auth-links-guest[hidden], .auth-links-guest a[hidden], .auth-links-member[hidden], .header-nav a[hidden] { display: none !important; }
