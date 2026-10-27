@@ -80,6 +80,24 @@ test('a non-found lookup still proves the credentials work', async () => {
   assert.equal(out.resultCode, '3011');
 });
 
+test('the measured code pair separates an unauthenticated call from a missing order', async () => {
+  // observed 2026-10-27 against sandbox-api.nicepay.co.kr/v1/payments/find/...
+  //   no Authorization         -> HTTP 401 resultCode U304
+  //   Basic with the TEST keys -> HTTP 404 resultCode U107 (거래내역이 존재 하지 않습니다)
+  // so a 404 from an authenticated lookup is positive evidence the credential was accepted.
+  const withoutAuth = await runSandboxProbe({
+    ...base, fetchFn: fakeFetch({ status: 401, body: { resultCode: 'U304', resultMsg: '인가 실패' } }).fn,
+  });
+  assert.equal(withoutAuth.verdict, 'AUTH_REJECTED');
+  assert.equal(withoutAuth.resultCode, 'U304');
+  const withAuth = await runSandboxProbe({
+    ...base, fetchFn: fakeFetch({ status: 404, body: { resultCode: 'U107', resultMsg: '거래내역이 존재 하지 않습니다' } }).fn,
+  });
+  assert.equal(withAuth.verdict, 'AUTH_OK_NO_SUCH_TRANSACTION');
+  assert.equal(withAuth.resultCode, 'U107');
+  assert.notEqual(withAuth.verdict, withoutAuth.verdict);
+});
+
 test('a real transaction is reported by field shape only', async () => {
   const out = await runSandboxProbe({
     ...base,
