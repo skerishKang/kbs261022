@@ -63,19 +63,31 @@
 
 | # | 지시 항목 | 판정 | 근거 | 남은 조건 |
 | --- | --- | --- | --- | --- |
-| 1 | 결제창 호출 | **PARTIAL** | SDK include 호스트 실측 확정(200 + AUTHNICE + requestPay), 설정이 `clientId`와 `windowHost`를 제공 | 창 왕복(returnUrl 착지 + 승인 응답 수신)은 CGI측 returnUrl 배선 후 |
-| 2 | 주문금액과 승인금액 일치 | OFFLINE 통과 | `verifyTransactionMessage(...expectedAmount)`가 서명 유효·금액 불일치에서 `reason:'amount'` 거부 | 창을 통한 실응답 1건 |
-| 3 | 승인 결과 확인 | OFFLINE 통과 | `status=paid → DONE`, `ready`는 DONE 아님, 미승인 시 `paidAt=0` | 실응답 1건 |
-| 4 | 주문번호·거래번호 조회 | **LIVE 통과(1호)** | read-only 프로브가 실 샌드박스에서 Basic 인증 통과(`U107`) + tid/orderId 경로 분리 | tid 기준 조회는 실 거래 발생 후에만 |
-| 5 | 중복 승인 차단 | OFFLINE 통과 | `(tid,status)` 중복키 수렴, status 다르면 다른 키, 누락 시 `null` | Worker 주문상태 반영( worker.js 소유, PR #83 이후) |
+| 1 | 결제창 호출 | **LIVE PARTIAL** | 로컬 랩으로 쇼핑몰을 띄워 실제 TEST 상점 창을 열었다: `sandbox-pay.nicepay.co.kr/v1/pay` → `web.nicepay.co.kr/v3/webstd/nPayment.jsp`, 헤더 `테스트결제(실결제불가)`, 금액 368,000원 = 서버 주문 합계, 삼성 카드 선택·약관 동의까지 진행 | NICE 창 자체의 `결제 정보 확인` 위젯이 합성 이벤트에서 제출되지 않아 **카드 인증 직전**에서 정지. 카드 인증 수단은 소유자 본인 것이라 대리 입력하지 않음 |
+| 2 | 주문금액과 승인금액 일치 | OFFLINE 통과 + LIVE 부분 | `verifyTransactionMessage(...expectedAmount)`가 서명 유효·금액 불일치에서 `reason:'amount'` 거부. 랩 HTTP 실측에서 창 요청 금액이 always 서버 주문 합계(클라이언트가 `amount:1`을 보내도 368000) | 창을 통한 실응답 1건 |
+| 3 | 승인 결과 확인 | OFFLINE 통과 + LIVE 도달 | `status=paid → DONE`, `ready`는 DONE 아님, 미승인 시 `paidAt=0`. 합성 tid 승인 호출이 실제 샌드박스에서 **U121 인증 요청내역이 존재하지 않습니다** 응답 →  주문은 `failed` 기록(승인 미발생) — 거부는 인증 실패(U304)가 아니라 업무 코드라 승인 엔드포인트까지 도달했음을 증명 | 창이 발행한 tid에 대한 실제 승인 |
+| 4 | 주문번호·거래번호 조회 | **LIVE 통과** | read-only 프로브가 실 샌드박스에서 Basic 인증 통과(`404 U107`), 무인증은 `401 U304`로 구분. Worker 웹훅 경로가 실제 조회를 호출해 같은 코드를 수신(`gateway_read_failed U107`) | tid 기준 성공 응답은 창 승인 거래에서만 |
+| 5 | 중복 승인 차단 | OFFLINE 통과 | `(tid,status)` 웹훅 중복키 수렴 + returnUrl 재전송 시 `payment_confirmed` 이벤트 1건·payments 행 1건(e2e 실측). 승인 API 재호출은 게이트웨이 쪽 orderId 재사용 제한과 Worker의 `already_paid` 방어 | 창 승인 후 실시간 중복 시도 |
 | 6 | 결제 실패 처리 | OFFLINE 통과 | `failed → cgiStatus:'failed'`, 환불가능액 0, `expired`는 pending | 실패 응답 실측 |
-| 7 | 전체취소 | OFFLINE 통과 | `cancelAmt` 생략 = 전액취소, `cancelledTid` 별도, 잔액 0 | 실 취소 호출 |
-| 8 | 결제 결과 Webhook 검증 | OFFLINE 통과 | 서명/결과코드/tid/ediDate/시크릿 5단 검증 + `200 / text/html / OK` 응답 규칙 | **CGI 웹훅 엔드포인트 미배선** + 관리자 원클릭 TEST 대기 |
-| 9 | 부분취소 지원 범위 | OFFLINE 통과 | 샌드박스 표 `부분취소 불가`, 운영 가능. `card.canPartCancel` 경로·누적 취소 이력 newest-by-date | 운영 계약 후 실 부분취소 |
+| 7 | 전체취소 | OFFLINE 통과 + LIVE 요청형식 | `cancelAmt` 생략 = 전액취소, `cancelledTid` 별도, 잔액 0. Worker 라우로 실제 샌드박스에 취소 요청을 보내 **U107(거래내역 없음)** 을 받았고, 필드 누락 단계의 `U100`은 수정으로 해소 | 실제 취소 성공은 창 승인 거래 필요 |
+| 8 | 결제 결과 Webhook 검증 | LIVE 부분(라우 배선 완료) | `POST /api/payments/nicepay/webhook` 추가. 서명 실패는 ack 하지 않고 400, 미지 tid는 409(재시도 경로 보존), 검증 통과 시 실제 조회로 잔액/상태를 갱신하고 `(tid,status)` 1회만 기록. ack은 `200 / text/html / OK` | 관리자 원클릭 TEST 호출은 공개 URL 등록 후 |
+| 9 | 부분취소 지원 범위 | OFFLINE 통과 | 샌드박스 표 `부분취소 불가`·매뉴얼 취소표(카드 전체/부분 O, 1년 내 / 가상계좌 입금 후 환불 180일 / 에스크로 구매결정 후 불가), `card.canPartCancel` 경로, 누적 이력 newest-by-date | 운영 계약 후 실 부분취소 |
 
 OFFLINE = 오프라인 계약 테스트로 코드 규칙이 증명된 상태, LIVE = 실제 샌드박스 응답을 관측한 상태, UNVERIFIED = 관측 못 함(코드 미비 아님).
 
-## 6. 실측 중 발견·수정한 결함 4건
+## 5b. Worker 배선 (이 PR에서 추가)
+
+| 경로 | 공개 여부 | 동작 |
+| --- | --- | --- |
+| `GET /api/payments/config` | 공개 | 활성 게이트웨이·환경·SDK 호스트·(공개용) client key·returnUrl. **시크릿 키는 응답에 없음** |
+| `POST /api/payments/nicepay/window` | 공개 | 주문 행에서 창 파라미터를 만든다. 금액은 서버 주문 합계, 구매자 정보(`buyerName/buyerTel/buyerEmail`)도 서버 행에서 가져온다(미전달 시 창이 현금영수증 휴대폰 입력을 요구해 정지) |
+| `POST /api/payments/nicepay/return` | 공개(창이 form POST) | 서명 검증 → 승인 API → 주문 반영 → 사이트를 `?nicepay=success\|fail#/order/<id>`로 302 |
+| `POST /api/payments/nicepay/webhook` | 공개 | 검증 → `(tid,status)` 중복 차단 → 게이트웨이 재조회로 상태·잔액 갱신 → `200 text/html OK` |
+| `POST /api/orders/:id/payments/:paymentKey/cancel` | 관리자 | **payments.provider 행 기준으로 어댑터를 고른다** — 배포 기본값이 토스여도 NICEPAY 행은 NICE로 취소된다 |
+
+제공자 선택: `PG_PROVIDER`(기본 `tosspayments`) + `PG_NICEPAY_ENV`. 기본값을 바꾸지 않으면 기존 토스 경로와 동일하게 동작하고, `PG_PROVIDER=nicepay`인데 키가 없으면 결제 관련 경로는 503 `keys_missing`으로 **열리지 않는다**(다른 게이트웨이 자격으로 몰래 넘어가지 않음). 사이트는 `site/config.js`의 `pgProvider`로 창 종류를 고르며, 워커와 어긋나면 결제 화면이 스스로 정지한다.
+
+## 6. 실측 중 발견·수정한 결함 7건
 
 1. **PR #113 고아 병합**: #113은 `main`이 아니라 레인 브랜치 `feat/issue-106-payapp-protocol`로 병합됐고(#111은 squash로 먼저 merge), 결과로 `backend/lib/pg-nicepay.mjs`가 main에 없었습니다. 즉 NICEPAY 레이어는 "병합 완료"로 보고됐지만 **런타임에서 import 불가능**한 상태였습니다. 이 PR이 content만 main으로 재적재합니다.
 2. **`canPartCancel` 경로 오류**: 매뉴얼 응답 명세에서 이 플래그는 거래 최상위가 아니라 `card` 객체 안입니다. 기존 코드는 최상위만 읽어 실제 카드 거래에서 전부 `false` → 부분취소 대상 거래도 영구 차단됩니다. `tx.canPartCancel ?? tx.card?.canPartCancel`로 고치고 실제 형태 회귀 테스트를 추가했습니다.
@@ -83,15 +95,49 @@ OFFLINE = 오프라인 계약 테스트로 코드 규칙이 증명된 상태, LI
 
 4. **1차 버전(PR #115)이 SDK 호스트를 틀린 값으로 배포했습니다.** 매뉴얼 내부 불일치(아웃바운드 표는 `sandbox-pay`, 예시 코드는 `pay`)를 임의 해석해 `sandbox-pay.nicepay.co.kr/v1/js/`를 샌드박스 SDK로 넣고 `jsSdkUrlVerified=false` 플래그만 달아 뒀습니다. 호스트를 직접 때려보니 그 경로는 404이고 SDK는 운영과 같은 호스트에서 나오므로 설정을 실측값으로 교체하고 `windowHost`를 분리했습니다. 미검증 값에 "확인 대기" 표시만 붙여 배포하는 것도 같은 종류의 오류입니다.
 
-이 밖에도 `recoveryRequests`가 운영 호스트에 고정되어 있어 샌드박스 조정(reconciliation)이 운영 URL을 만들었습니다. `mode` 인자를 추가해 환경별로 분리했습니다.
+5. **승인 본문이 창 페이로드 그 자체였다**: `POST /v1/payments/{tid}`는 `{amount, ediDate, signData}`를 요구하는데(`signData = hex(sha256(tid+amount+ediDate+SecretKey))`) 기존 `approvePayload`은 returnUrl 필드를 그대로 펼치고 있었다. 오프라인 펼침 테스트만 통과하고 실제 게이트웨이에서 실패하는 유형이라 본문 생성자로 바꾸고 필드 집합까지 단언했다.
+6. **취소 요청의 필드 이름·누락이 겹쳐 있었다**: 엔드포인트는 `reason`(필수)과 `orderId`(필수)를 받고 `signData = hex(sha256(tid+ediDate+SecretKey))`를 기대하는데, 코드는 `cancelReason`을 보냈고 Worker는 `orderId`를 넘기지 않았으며 스펙에 없는 `cancelMethod`를 넣었다. 라이브 랩에서 `U100 reason 필수입력항목이 누락` → 수정 후 `U107 거래내역이 존재 하지 않습니다`로 바뀌어 요청 형식이 통과한 것을 실측으로 확인했다.
+7. **mock이 게이트웨이 규칙을 강제하지 않아 검증에 구멍이었다**: mock 어댑터가 `orderId` 없이도 취소를 허용해서, Worker가 orderId를 빼먹어도 테스트가 green였다. mock을 실측 규칙에 맞추자 그 뮤테이션이 즉시 검출로 바뀌었다.
 
-## 7. PR #83(ERP) 충돌 분석
+**취약 데이터 고지**: 랩 확인을 위해 `/api/payments/config`를 raw curl로 읽은 1회 출력에서 TEST 상점의 client key(브라우저 공개 값)가 터미널에 나온 적이 있다. 시크릿 키는 어떤 출력에도 등장하지 않았고 Git에도 없다. client key는 NICEPAY가 결제창 JS에 넣도록 설계한 값이지만, "인증키 미기록" 지시 기준으로 보고한다.
 
-- FILE_OVERLAP = **NONE**. #83 파일 집합(`backend/worker.js`, `backend/test/e2e/admin.test.mjs`, `backend/lib/erp-*.mjs`, `site/**`)과 이 PR 파일(`backend/lib/pg-nicepay*.mjs`, `backend/lib/pg-nicepay-env.mjs`, `backend/tools/nicepay-sandbox-probe.mjs`, `backend/test/unit/{pg-nicepay,pg-nicepay-env,pg-nicepay-sandbox-checklist,nicepay-sandbox-probe}.test.mjs`, 이 문서)은 교차하지 않습니다.
-- BEHAVIORAL_DEPENDENCY_OVERLAP = **없음**. `worker.js`·D1 스키마·`wrangler.toml`·site를 변경하지 않아 실행 경로가 겹치지 않습니다. 단 두 PR 모두 `npm run test:unit`의 수집 대상(`test/unit/*.test.mjs`)을 함께 수집하므로, #83 병합 후 이 레인을 main에 다시 맞추면 유닛 테스트 실행 개수는 늘어납니다.
-- 운영 신청 버튼(`#requestContractBtn`)·실결제·운영 설정 변경은 수행하지 않았습니다.
+## 6b. GitGuardian 검출 판정 (실제 비밀 vs 합성 테스트 값)
 
-## 8. 재현 절차
+| incident | 위치 | 판정 | 근거 |
+| --- | --- | --- | --- |
+| 39120785 / 39120784 | PR #115 커밋 `66ebc9b`의 테스트 fixture 2개 파일 | **합성 테스트 값** | 작성자가 만든 32 hex 상수. 로컬 자격 저장소와 대조해 실제 자격과 불일치를 확인했고, 어떤 서비스에도 쓰이지 않아 폐기·회전 대상이 아니다. 후속 커민에서 placeholder형으로 교체 |
+| 38957893 | PR #83: `admin.test.mjs`(Generic Password) → 재검증 후 `google-oauth-callback.test.mjs` | **합성 테스트 값** | `PASSWORD` 리터럴은 main과 바이트 동일하고 #83 diff에 없다. 픽스처 3종 모두 길이 13~19, 자격 저장소 부재, 실키 형태(40자↑) 아님, 대상 테스트는 in-process 실행(네트워크 없음) |
+
+두 번째 건은 그 파일이 **이미 `.gitguardian.yml`의 `ignore:`에 목록되어 있다**는 점이 검출 자체로 억제 실패의 증거다. 억제 수단은 대시보드 측 ack이며 운영자 권한이다. 어떤 경우에도 게이트를 완화하지 않았고 실제 자격 값을 출력하지 않았다.
+
+## 6c. 로컬 랩 재현과 실측 응답
+
+```bash
+node backend/tools/local-payment-lab.mjs --provider nicepay --mode auto --port 8800   # 실샌드박스
+node backend/tools/local-payment-lab.mjs --provider nicepay --mode mock --port 8791   # 자격 불필요
+```
+
+| 순서 | 호출 | 실측 응답 |
+| --- | --- | --- |
+| 1 | 주문 생성(사이트 UI/HTTP) | 201, 368,000원(공급가 334,545 + 부가세 33,455) |
+| 2 | 창 파라미터 | 서버 합계 유지(클라이언트가 `amount:1`을 보내도 368000), host `sandbox-pay.nicepay.co.kr` |
+| 3 | 결제창 실제 진입 | `테스트결제(실결제불가)` 헤더, 삼성 선택, 약관 동의, 확인 위젯에서 정지 |
+| 4 | returnUrl 승인(합성 tid) | 샌드박스 `U121 인증 요청내역이 존재하지 않습니다` → 주문 `failed` 기록 |
+| 5 | 웹훅 | 미지 tid `U107` → 502 `gateway_read_failed`(ack 하지 않음) |
+| 6 | 관리자 취소 | `U100` → 형식 수정 후 `U107`(게이트웨이가 요청을 해석함) |
+
+이 랩은 배포하지 않고, `wrangler`도 부르지 않으며, 실제 자금을 움직이지 않는다.
+ 샌드박스 조정(reconciliation)이 운영 URL을 만들었습니다. `mode` 인자를 추가해 환경별로 분리했습니다.
+
+## 7. PR #83(ERP) 충돌 분석 — 해소 후 배선
+
+- 지시 당시 #83은 `backend/worker.js`·`backend/test/e2e/admin.test.mjs`·`site/**`를 소유한 열린 Draft였고, 이 문서는 `worker.js`를 피워 작성됐다.
+- 후속 지시로 #83을 최신 main과 정합화(merge-forward, rebase/force 아님)한 결과 유일한 content 충돌은 `site/assets/js/cgi-staff-orders.js` 한 줄이었고, 브랜치의 `orderDrawer` 교정과 main의 `state.feedback` 초기화를 **둘 다 살려** 해결했다. #83은 main에 병합됐다(`23ad7d8`).
+- 그래서 이 변경은 `worker.js`를 수정한다. 충돌 대상이었던 #83이 이미 main에 들어와 있으므로 겹치는 영역은 없다.
+- 토스 경로 보존: `PG_PROVIDER` 기본값은 `tosspayments`이고, 기본값에서의 요청·환불·헬스 응답을 검증하는 회귀 테스트를 두었다. `pg.mjs`·스키마·`wrangler.toml` 무변경.
+- 취소는 payments 행의 provider로 어댑터를 고르므로, 전환 중에도 토스 결제 건의 환불이 살아 있다.
+
+## 8. 재현 절차(계약 검증)
 
 ```bash
 # 계약 테스트(자격 불필요, 네트워크 없음)
@@ -108,6 +154,6 @@ node backend/tools/nicepay-sandbox-probe.mjs --environment operating --allow-ope
 
 ## 9. 다음 단계(대표 결정 대기)
 
-1. 결제창 호출 항목을 LIVE로 올리려면 CGI측에 sandbox 결제창을 부를 페이지와 returnUrl이 필요합니다 — `worker.js`/site 배선이 필요한 단계로, PR #83 병합 후 진행을 권합니다.
-2. 웹훅 항목은 CGI 웹훅 라우 + 관리자 원클릭 TEST 호출로 끝납니다(키 불필요, 라우 필요).
+1. 결제창 왕복의 마지막 한 단계를 소유자 본인 인증 수단으로 완료하면 LIVE 승인이 닫힌다. 창은 실제 TEST 상점으로 뜨고 금액·구매자 정보까지 정확히 받는지까지 관측됐다.
+2. 웹훅 라우는 배선됐으니, 관리자에 `http(s)://<worker>/api/payments/nicepay/webhook` 을 등록하고 원클릭 TEST 호출로 ack 규칙까지 확인한다.
 3. NICEPAY 운영 계약 체결 시 §4의 2개 변수 등록 후 `PG_NICEPAY_ENV=operating`로 전환하고, 전환 전에 실제 소액 거래 1건으로 서명·취소·조회를 확인하세요(매뉴얼이 운영 전환 후 실거래 TEST를 요구).

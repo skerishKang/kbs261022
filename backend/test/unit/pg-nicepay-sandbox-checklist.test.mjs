@@ -152,9 +152,11 @@ test('6 결제 실패 처리 — a failed transaction settles nothing and refund
 });
 
 test('7 전체취소 — a full cancel carries no cancelAmt and clears the whole balance', () => {
-  const body = cancelPayload({ orderId: 'CGI-ORDER-4711', cancelReason: '고객 변심' });
+  const body = cancelPayload({ orderId: 'CGI-ORDER-4711', reason: '고객 변심' });
   assert.equal(Object.prototype.hasOwnProperty.call(body, 'cancelAmt'), false);
   assert.equal(body.orderId, 'CGI-ORDER-4711');
+  assert.equal(body.reason, '고객 변심');
+  assert.equal(Object.prototype.hasOwnProperty.call(body, 'cancelMethod'), false, 'cancelMethod is not in the cancel spec');
   const cancelled = toCgiOutcome({
     status: TX_STATUS.CANCELLED, amount: ORDER_AMOUNT, balanceAmt: 0,
     cancelledTid: 'UT0000113m01012710000000009999',
@@ -187,10 +189,10 @@ test('9 부분취소 지원 범위 확인 — NICE decides per transaction and t
   assert.equal(canPartialCancel({}), false);
   const tx = { amount: ORDER_AMOUNT, balanceAmt: 60000, canPartCancel: 'true' };
   assert.equal(refundableAmount(tx), 60000);
-  const partial = cancelPayload({ orderId: 'CGI-ORDER-4711', cancelReason: '일부 반품', cancelAmount: 20000 });
+  const partial = cancelPayload({ orderId: 'CGI-ORDER-4711', reason: '일부 반품', cancelAmount: 20000 });
   assert.equal(partial.cancelAmt, 20000);
-  assert.throws(() => cancelPayload({ orderId: 'CGI-ORDER-4711', cancelReason: 'x', cancelAmount: -1 }), RangeError);
-  assert.throws(() => cancelPayload({ orderId: 'CGI-ORDER-4711', cancelReason: 'x', cancelAmount: 1500.5 }), RangeError);
+  assert.throws(() => cancelPayload({ orderId: 'CGI-ORDER-4711', reason: 'x', cancelAmount: -1 }), RangeError);
+  assert.throws(() => cancelPayload({ orderId: 'CGI-ORDER-4711', reason: 'x', cancelAmount: 1500.5 }), RangeError);
   // cumulative history is read newest-first by date, not by array position
   assert.equal(cancelAmountOf({ cancels: [
     { cancelAmount: 10000, cancelDate: '2026-10-20 10:00:00' },

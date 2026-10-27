@@ -65,6 +65,12 @@ import {
   ORDER_STATUS_LABELS,
 } from './lib/orders.mjs';
 import { createPgAdapter } from './lib/pg.mjs';
+import {
+  NicepayApiError,
+  createNicepayAdapter,
+  createNicepayMockAdapter,
+} from './lib/pg-nicepay-adapter.mjs';
+import { resolveNicepayEnv } from './lib/pg-nicepay-env.mjs';
 import { buildEcountSalesSlip, erpCodeFor, createErpDriver, erpModeFromEnv, ERP_ADAPTER } from './lib/erp.mjs';
 import { PRICE_INDEX, PRICE_INDEX_META } from './data/price_index.mjs';
 import {
@@ -611,6 +617,10 @@ async function confirmPayment(db, body, env, pg) {
       amount: order.total_amount,
       orderName: 'CGI 주문',
       method: body.paymentMethod || body.payment_method || null,
+      // NICEPAY's Server-승인 model will not approve without the window payload it
+      // signed; the adapter verifies it before the approve call. Toss ignores the
+      // field, and a forged payload fails verification rather than approving.
+      signatureData: body.signatureData || body.window || null,
       idempotencyKey: `cgi:confirm:${order.id}:${paymentKey}`,
     });
     outcome = {
@@ -661,6 +671,91 @@ async function confirmPayment(db, body, env, pg) {
       payment_status: updated.payment_status,
     },
   };
+}
+
+/**
+ * The window posts returnUrl as an HTML form (application/x-www-form-urlencoded),
+ * not JSON. Anything else falls back to JSON so a hand-built test can use either.
+ */
+async function readWindowForm(request) {
+  const type = String(request.headers.get('content-type') || '');
+  if (type.includes('application/x-www-form-urlencoded')) {
+    return Object.fromEntries(await request.formData());
+  }
+  const parsed = await readJson(request);
+  return parsed.error ? {} : (parsed.body || {});
+}
+
+function redirectTarget(site, orderId, ok) {
+  const flag = ok ? 'nicepay=success' : 'nicepay=fail';
+  return `${site}/?${flag}#/order/${encodeURIComponent(String(orderId).slice(0, 64))}`;
+}
+
+/**
+ * A webhook is an at-least-once notification, so it is recorded by (tid, status)
+ * and never re-applied. A 'paid' notification re-reads the transaction from the
+ * gateway instead of trusting the body, and a cancel notification updates the
+ * stored payment row from the gateway's own balance — the order state machine is
+ * advanced by the same helpers the confirm path uses.
+ */
+async function applyNicepayWebhook(db, env, pg, payload) {
+  const ack = pg.webhook.ack();
+  const tid = String(payload.tid || '').slice(0, 200);
+  if (!tid) return json({ error: 'webhook payload incomplete' }, 400);
+
+  const row = await db.prepare('SELECT * FROM payments WHERE payment_key = ?').bind(tid).first();
+  const verified = pg.webhook.verify(payload, { expectedAmount: row ? row.amount : undefined });
+  if (!verified.ok) {
+    // Not acking keeps NICE's retry/resend path alive instead of swallowing it.
+    return json({ error: 'webhook_verification_failed', code: verified.reason }, 400);
+  }
+
+  const key = pg.webhook.dedupeKey({ tid, status: String(payload.status || '') });
+  const seen = await db.prepare(
+    "SELECT id FROM order_events WHERE type = 'payment_webhook' AND json_extract(meta, '$.dedupe_key') = ? LIMIT 1"
+  ).bind(key).first();
+  if (seen) return new Response(ack.body, { status: ack.status, headers: { 'Content-Type': ack.headers['Content-Type'] } });
+
+  if (!row) {
+    return json({ error: 'unknown_tid' }, 409);
+  }
+  const order = await getOrder(db, row.order_id);
+  if (!order) return json({ error: 'unknown_order' }, 409);
+
+  let tx;
+  try {
+    tx = await pg.fetchByPaymentKey(tid);
+  } catch (e) {
+    return json({ error: 'gateway_read_failed', code: e instanceof NicepayApiError ? e.code : 'PG_ERROR' }, 502);
+  }
+  const outcome = {
+    status: String(tx.status || payload.status || '').toLowerCase(),
+    balanceAmount: toNonNegInt(tx.balanceAmt, row.balance_amount),
+    amount: toNonNegInt(tx.amount, row.amount),
+    method: tx.payMethod || row.method,
+    cancelledTid: tx.cancelledTid || null,
+  };
+
+  const stmts = [];
+  const ts = nowIso();
+  if (row.status !== outcome.status) {
+    await recordPaymentOutcome(db, {
+      order, paymentKey: tid, amount: outcome.amount,
+      status: outcome.status === 'paid' ? 'paid'
+        : outcome.status === 'cancelled' || outcome.status === 'partialcancelled' ? 'cancelled'
+        : outcome.status === 'failed' ? 'failed' : outcome.status,
+      method: outcome.method, balanceAmount: outcome.balanceAmount,
+      provider: pg.provider, providerMode: pg.mode,
+      approvedAt: outcome.status === 'paid' ? (tx.paidAt || ts) : (row.approved_at || null),
+      requestedAt: row.requested_at || ts,
+      raw: JSON.stringify(tx).slice(0, 4000),
+    });
+  }
+  stmts.push(db.prepare(
+    'INSERT INTO order_events (order_id, type, actor, from_status, to_status, meta, created_at) VALUES (?,?,?,?,?,?,?)'
+  ).bind(order.id, 'payment_webhook', 'pg', row.status, outcome.status, JSON.stringify({ dedupe_key: key, status: outcome.status, tid }), ts));
+  await db.batch(stmts);
+  return new Response(ack.body, { status: ack.status, headers: { 'Content-Type': ack.headers['Content-Type'] } });
 }
 
 /** Persist a payment outcome and keep the order/payment status consistent. */
@@ -889,6 +984,9 @@ async function cancelPayment(db, env, order, paymentKey, body, pg) {
   try {
     const result = await pg.cancel({
       paymentKey,
+      // NICE cancels by its own orderId field and rejects the call without it;
+      // Toss ignores the extra key, so both gateways get the truth about the row.
+      orderId: order.pg_order_id || order.id,
       cancelAmount,
       cancelReason: reason,
       refundReceiveAccount: body.refundReceiveAccount || null,
@@ -2110,6 +2208,46 @@ async function handleMeRoute(pathname, method, url, request, db, env) {
 // worker
 // ---------------------------------------------------------------------------
 
+/**
+ * Provider selection is deployment policy; a payment row's own provider is the
+ * truth for refunds. Both stay resolvable at the same time, so switching the
+ * mall to NICEPAY never strands a Toss-paid order (and vice versa).
+ */
+function buildTossPg(env) {
+  return createPgAdapter({ secretKey: env.TOSS_WIDGET_SECRET_KEY, mode: env.PG_PROVIDER_MODE || 'auto' });
+}
+
+function buildNicepayPg(env) {
+  const mode = String(env.PG_PROVIDER_MODE || 'auto').trim().toLowerCase();
+  if (mode === 'mock') return createNicepayMockAdapter();
+  const config = resolveNicepayEnv(env);
+  if (!config.ok) {
+    // An unusable provider must not look like a working one, and must never fall
+    // back to the other gateway's credentials.
+    return {
+      provider: 'nicepay', configured: false, reason: config.reason,
+      environment: config.environment || null, mode: config.mode || null,
+      missing: config.missing || [], sandbox: false, live: false,
+    };
+  }
+  return createNicepayAdapter(config);
+}
+
+function buildPg(env) {
+  const provider = String(env.PG_PROVIDER || 'tosspayments').trim().toLowerCase();
+  return provider === 'nicepay' ? buildNicepayPg(env) : buildTossPg(env);
+}
+
+async function pgForPaymentKey(db, env, active, paymentKey) {
+  if (!paymentKey || active.provider === 'nicepay') return active;
+  const row = await db.prepare('SELECT provider FROM payments WHERE payment_key = ?').bind(paymentKey).first();
+  return row && row.provider === 'nicepay' ? buildNicepayPg(env) : active;
+}
+
+function pgNotConfigured(pg) {
+  return pg && pg.configured === false;
+}
+
 const worker = {
   async fetch(request, env) {
     const url = new URL(request.url);
@@ -2117,7 +2255,7 @@ const worker = {
       return new Response(null, { status: 204, headers: corsHeadersFor(url.pathname, request) });
     }
 
-    const pg = createPgAdapter({ secretKey: env.TOSS_WIDGET_SECRET_KEY, mode: env.PG_PROVIDER_MODE || 'auto' });
+    const pg = buildPg(env);
 
     // ---------------- customer accounts (cookie + CSRF guarded) ----------------
 
@@ -2319,11 +2457,109 @@ const worker = {
     }
 
     const paymentConfirmMatch = url.pathname === '/api/payments/confirm' && request.method === 'POST';
+    if (paymentConfirmMatch && pgNotConfigured(pg)) {
+      return json({ error: 'pg_not_configured', detail: pg.reason || pg.provider }, 503);
+    }
     if (paymentConfirmMatch) {
       const parsed = await readJson(request);
       if (parsed.error) return badRequest(parsed.error);
       const result = await confirmPayment(env.DB, parsed.body || {}, env, pg);
       return json(result.body, result.status);
+    }
+
+    // ---------------- payment gateway readouts and NICEPAY callbacks ----------------
+
+    if (url.pathname === '/api/payments/config' && request.method === 'GET') {
+      const active = pg;
+      if (active.provider === 'nicepay') {
+        if (pgNotConfigured(active)) {
+          return json({ provider: 'nicepay', ok: false, reason: active.reason, missing: active.missing }, 503);
+        }
+        return json({
+          provider: 'nicepay', ok: true, environment: active.environment, mode: active.mode,
+          jsSdkUrl: active.sdkUrl,
+          clientId: active.clientId,
+          returnUrl: `${url.origin}/api/payments/nicepay/return`,
+        });
+      }
+      return json({ provider: active.provider, ok: true, mode: active.mode, sandbox: active.sandbox === true });
+    }
+
+    const nicepayWindowMatch = url.pathname === '/api/payments/nicepay/window' && request.method === 'POST';
+    if (nicepayWindowMatch) {
+      if (pg.provider !== 'nicepay' || pgNotConfigured(pg)) {
+        return json({ error: 'pg_not_configured', detail: pg.reason || 'nicepay' }, 503);
+      }
+      const parsed = await readJson(request);
+      if (parsed.error) return badRequest(parsed.error);
+      const orderId = String((parsed.body || {}).orderId || (parsed.body || {}).order_id || '').slice(0, 64);
+      const order = await getOrder(env.DB, orderId);
+      if (!order) return notFound();
+      if (order.kind !== 'purchase') return conflict('quote_order_not_payable');
+      if (isTerminalStatus(order.status)) return conflict('order_closed', { status: order.status });
+      if (order.payment_status === 'paid') return conflict('already_paid');
+      // Only the payment means NICE documents for the window; anything else stays
+      // on the default rather than reaching the gateway as an arbitrary string.
+      const WINDOW_METHODS = { card: 'card', bank: 'bank', vbank: 'vbank', cellphone: 'cellphone' };
+      const requested = String((parsed.body || {}).method || '').toLowerCase();
+      const params = pg.windowParams({
+        orderId: order.id,
+        // The window amount is the server's order total, never a client claim.
+        amount: order.total_amount,
+        goodsName: 'CGI 주문',
+        method: WINDOW_METHODS[requested] || 'card',
+        buyerName: order.customer_name,
+        buyerTel: order.customer_phone,
+        buyerEmail: order.customer_email,
+        returnUrl: `${url.origin}/api/payments/nicepay/return`,
+      });
+      if (!params) return badRequest('window_params_unavailable');
+      return json({ ok: true, sdkUrl: params.sdkUrl, windowHost: params.windowHost, request: params.request });
+    }
+
+    const nicepayReturnMatch = url.pathname === '/api/payments/nicepay/return';
+    if (nicepayReturnMatch && request.method === 'POST') {
+      const payload = await readWindowForm(request);
+      const site = String(env.NICEPAY_SITE_BASE_URL || ALLOWED_ORIGIN).replace(/\/$/, '');
+      const orderId = String(payload.orderId || payload.order_id || '').slice(0, 64);
+      if (!orderId || !payload.tid) {
+        return json({ error: 'window payload incomplete' }, 400);
+      }
+      if (pg.provider !== 'nicepay' || pgNotConfigured(pg)) {
+        return json({ error: 'pg_not_configured', detail: pg.reason || 'nicepay' }, 503);
+      }
+      const order = await getOrder(env.DB, orderId);
+      if (!order) return notFound();
+      if (payload.failure || payload.authResultCode === 'FAIL') {
+        const failed = await confirmPayment(env.DB, {
+          orderId, paymentKey: String(payload.tid), amount: order.total_amount,
+          failure: true, failure_code: String(payload.resultCode || 'NICE_AUTH_FAILED'),
+          failure_message: String(payload.resultMsg || '').slice(0, 120),
+        }, env, pg);
+        return Response.redirect(redirectTarget(site, order.id, false), 302);
+      }
+      const confirmed = await confirmPayment(env.DB, {
+        orderId,
+        paymentKey: String(payload.tid),
+        amount: order.total_amount,
+        signatureData: payload,
+      }, env, pg);
+      const ok = confirmed.status === 200 && (confirmed.body.approved || confirmed.body.already_paid);
+      return Response.redirect(redirectTarget(site, order.id, ok), 302);
+    }
+    if (nicepayReturnMatch && request.method === 'GET') {
+      // NICE redirects nothing to returnUrl on GET; a bare visit is not a payment.
+      return json({ error: 'method_not_allowed' }, 405);
+    }
+
+    const nicepayWebhookMatch = url.pathname === '/api/payments/nicepay/webhook' && request.method === 'POST';
+    if (nicepayWebhookMatch) {
+      if (pg.provider !== 'nicepay' || pgNotConfigured(pg)) {
+        return json({ error: 'pg_not_configured', detail: pg.reason || 'nicepay' }, 503);
+      }
+      const payload = await readWindowForm(request);
+      const result = await applyNicepayWebhook(env.DB, env, pg, payload);
+      return result;
     }
 
     const orderMatch = url.pathname.match(/^\/api\/orders\/([^/]+)$/);
@@ -2406,6 +2642,9 @@ const worker = {
     }
 
     const cancelMatch = url.pathname.match(/^\/api\/orders\/([^/]+)\/payments\/([^/]+)\/cancel$/);
+    if (cancelMatch && request.method === 'POST' && pgNotConfigured(pg) && String(env.PG_PROVIDER || '').toLowerCase() === 'nicepay') {
+      return json({ error: 'pg_not_configured', detail: pg.reason || pg.provider }, 503);
+    }
     if (cancelMatch && request.method === 'POST') {
       if (!(await isAdminOrMember(request, env.DB, env))) return unauthorized();
       const id = decodeURIComponent(cancelMatch[1]);
@@ -2414,7 +2653,11 @@ const worker = {
       if (parsed.error) return badRequest(parsed.error);
       const order = await getOrder(env.DB, id);
       if (!order) return notFound();
-      const result = await cancelPayment(env.DB, env, order, paymentKey, parsed.body || {}, pg);
+      const rowPg = await pgForPaymentKey(env.DB, env, pg, paymentKey);
+      if (pgNotConfigured(rowPg)) {
+        return json({ error: 'pg_not_configured', detail: rowPg.reason || rowPg.provider }, 503);
+      }
+      const result = await cancelPayment(env.DB, env, order, paymentKey, parsed.body || {}, rowPg);
       return json(result.body, result.status);
     }
 
