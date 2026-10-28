@@ -264,6 +264,8 @@ p:last-child { margin-bottom: 0; }
   display: flex; align-items: center; justify-content: center;
   padding: 16px; background: #fff; border-bottom: 1px solid var(--cgi-line-soft);
 }
+/* lazy 로딩 대기·전송 중에도 흰 공백처럼 보이지 않도록 중립 톤 유지 (폴백 블록은 기존 .no-image 사용) */
+.card-img, .cart-img, .gallery-main img { background: #f2f4f2; }
 .card-img { width: 100%; height: 100%; object-fit: contain; padding: 0; }
 .thumb:hover .card-img { transform: scale(1.025); }
 .thumb .card-img { transition: transform .22s ease; }
@@ -516,7 +518,12 @@ p:last-child { margin-bottom: 0; }
 }
 
 /* --------------------------------- cart --------------------------------- */
-.cart-layout { display: grid; grid-template-columns: minmax(0, 1fr) 400px; gap: 24px; align-items: start; }
+.cart-layout { display: grid; grid-template-columns: minmax(0, 1fr) 400px; grid-template-areas: "main request" "pay request"; gap: 24px; align-items: start; }
+.cart-main { grid-area: main; min-width: 0; }
+.cart-request { grid-area: request; }
+.cart-pay-cta { grid-area: pay; background: var(--cgi-card); border: 1px solid var(--cgi-line); border-radius: var(--radius); padding: 16px 18px; box-shadow: var(--shadow-sm); }
+.cart-pay-cta .cart-total-line { margin-top: 0; }
+.cart-pay-cta .cart-pay-btn { margin-top: 12px; }
 .cart-panel {
   background: #fff; border: 1px solid var(--cgi-line); border-radius: var(--radius);
   padding: 18px; box-shadow: var(--shadow-sm);
@@ -746,8 +753,13 @@ p:last-child { margin-bottom: 0; }
   .product-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .stat-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .detail-grid { grid-template-columns: minmax(0, 420px) minmax(0, 1fr); gap: 28px; }
-  .cart-layout { grid-template-columns: minmax(0, 1fr); }
-  .cart-request { position: static; }
+  /* 태블릿·모바일(≤1099px): 견적 요청이 주 CTA, 결제는 보조 CTA로 재배치 */
+  .cart-layout { display: flex; flex-direction: column; }
+  .cart-main { order: 1; }
+  .cart-request { order: 2; position: static; }
+  .cart-pay-cta { order: 3; }
+  .cart-pay-cta .cart-pay-btn { background: #fff; color: var(--cgi-primary-dark); border: 1px solid var(--cgi-primary); }
+  .cart-pay-cta .cart-pay-btn:hover { background: var(--cgi-primary-soft); }
   .footer-inner { grid-template-columns: 1.1fr 1.2fr; }
   .footer-links { grid-column: 1 / -1; }
 }
@@ -1099,6 +1111,10 @@ p:last-child { margin-bottom: 0; }
 .auth-input:focus { outline: none; border-color: var(--cgi-primary); box-shadow: inset 0 0 0 2px rgba(7,145,58,.18); }
 .auth-input::placeholder { color: #9a9a9a; }
 .auth-hint { font-size: 12px; color: var(--cgi-muted); line-height: 1.5; }
+.auth-consent { display: flex; flex-direction: column; gap: 8px; padding: 12px 14px; border: 1px solid var(--cgi-line-soft); border-radius: var(--radius-sm); background: var(--cgi-bg); }
+.auth-check { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; color: var(--cgi-ink); cursor: pointer; }
+.auth-check input { margin-top: 2px; width: 16px; height: 16px; flex: none; accent-color: var(--cgi-primary); }
+.auth-check a { color: var(--cgi-primary-dark); text-decoration: underline; }
 .auth-muted { font-size: 13.5px; color: var(--cgi-muted); margin: 0 0 14px; }
 .auth-warn { color: var(--cgi-warn); font-weight: 700; }
 .auth-alt { margin-top: 16px; font-size: 13.5px; color: var(--cgi-muted); text-align: center; }

@@ -4,7 +4,7 @@
   "inputs": {
     "prep": {
       "path": "data/smartstore_prep/smartstore_registration_prep.csv",
-      "sha256": "1110be226bc7add9d84a065ad0794c1c3714d82f7f1acc9caa6d0f1974ffdf65"
+      "sha256": "42407a0c78d46e27cfea902e938d12f2bb1ec0b4ef824ffa9d704012db69e631"
     },
     "options": {
       "path": "data/full_catalog/options_compact.csv",

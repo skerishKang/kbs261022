@@ -96,7 +96,7 @@ const DUPLICATE_WINDOW_SECONDS = 120;
 // Smallest partial refund the backend will accept (KRW). Anything below this is
 // rounding dust rather than a refund; override with the MIN_PARTIAL_REFUND var.
 const MIN_PARTIAL_REFUND = 1000;
-const BACKEND_VERSION = '1.4.0';
+const BACKEND_VERSION = '1.5.0';
 const SUPERADMIN_EMAILS = new Set(['charliekant@gmail.com', 'skerish@naver.com']);
 
 // Legacy credential-free header set: quote intake, order, payment and admin
@@ -1670,6 +1670,14 @@ async function handleAuthRoute(pathname, method, request, db, env) {
     const policy = authPolicy(env);
     const password = validatePassword(body.password, { email: email.email, policy });
     if (!password.ok) return authJson({ error: password.error, detail: password.detail }, 400);
+    // 회원가입 필수 동의(이용약관·개인정보 수집/이용) — 입력 검증 후, 미동의 가입은 거부하고 별도 이벤트로 기록한다.
+    const terms = body.terms === true;
+    const privacy = body.privacy === true;
+    if (!terms || !privacy) {
+      return authJson({ error: 'consent required', detail: '이용약관과 개인정보 수집·이용 동의가 필요합니다.' }, 400);
+    }
+    const termsVersion = typeof body.terms_version === 'string' && body.terms_version.trim() ? body.terms_version.trim().slice(0, 40) : 'unknown';
+    const privacyVersion = typeof body.privacy_version === 'string' && body.privacy_version.trim() ? body.privacy_version.trim().slice(0, 40) : 'unknown';
 
     const limit = await rateLimitCheck(db, policy, 'signup', email.email);
     if (limit.error) return authJson({ error: limit.error, detail: limit.detail }, 429);
@@ -1691,6 +1699,8 @@ async function handleAuthRoute(pathname, method, request, db, env) {
 
     await db.prepare('INSERT INTO member_events (member_id, type, meta, created_at) VALUES (?, ?, ?, ?)')
       .bind(memberId, 'signup', JSON.stringify({ verified: false }), now).run();
+    await db.prepare('INSERT INTO member_events (member_id, type, meta, created_at) VALUES (?, ?, ?, ?)')
+      .bind(memberId, 'consent', JSON.stringify({ terms: true, privacy: true, terms_version: termsVersion, privacy_version: privacyVersion }), now).run();
     const member = await getMember(db, memberId);
     const issued = await issueToken(db, env, mail, member, 'verify_email', '/auth/verify', 'CGI 이메일 인증', '아래 링크에서 이메일 인증을 완료하세요.');
     const session = await issueSession(db, env, member);

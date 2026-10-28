@@ -41,7 +41,7 @@ window.CGI_CONFIG = {
   brands: [
     'Shure', 'Genelec', 'PRESONUS', 'Allen&Heath', 'Neutrik', 'HK Audio',
     'K&M', 'Martin Audio', 'Clear-Com', 'APOGEE', 'RADIAL', 'KLOTZ',
-    'ARTURIA', 'NNNN', 'REAN', 'IK MULTIMEDIA', 'VICOUSTIC', 'DYNAUDIO',
+    'ARTURIA', '브랜드 미확인', 'REAN', 'IK MULTIMEDIA', 'VICOUSTIC', 'DYNAUDIO',
     'NATIVE INSTRUMENTS', 'iMAG', 'Q Acoustics', 'POSITIVE GRID', 'CLOUD',
     'ROTOSOUND', 'NASH GUITARS', 'TUTTLE GUITARS', 'COMPLY', 'QED', 'JICO',
     'Fidelice', 'Q-SYS'
