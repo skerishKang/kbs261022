@@ -715,6 +715,16 @@
     }, 0);
   }
   function money(n) { return Number(n || 0).toLocaleString('ko-KR') + '원'; }
+
+  function fmtDateTime(iso) {
+    var d = iso ? new Date(iso) : new Date();
+    if (isNaN(d.getTime())) d = new Date();
+    try {
+      return d.toLocaleString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' });
+    } catch (e) {
+      return d.toLocaleString('ko-KR');
+    }
+  }
   function snapshotCartForm() {
     var form = document.getElementById('quoteCartForm');
     if (!form) return null;
@@ -891,7 +901,7 @@
     var submit = form.querySelector('button[type="submit"]');
     var apiUrl = (window.CGI_SITE_CONFIG && window.CGI_SITE_CONFIG.quoteApiUrl) || '';
     var done = function (message, cls) {
-      if (result) result.innerHTML = '<p class="' + (cls || 'result-ok') + '">' + message + '</p>';
+      if (result) result.innerHTML = '<div class="' + (cls || 'result-ok') + '">' + message + '</div>';
     };
     var setBusy = function (busy) {
       if (!submit) return;
@@ -917,7 +927,15 @@
       }).then(function (response) {
         request.id = response.id || request.id;
         window.cgiLastQuoteCartRequest = request;
-        done('견적 요청이 접수되었습니다. 접수번호: <strong>' + esc(request.id) + '</strong>');
+        done(
+          '<p class="receipt-title">견적 요청이 접수되었습니다.</p>' +
+          '<p class="receipt-no"><span>접수번호</span><strong>' + esc(request.id) + '</strong></p>' +
+          '<div class="receipt-actions">' +
+            '<button type="button" class="btn btn-secondary btn-small" data-action="copy-receipt">접수번호 복사</button>' +
+            '<span class="receipt-time">' + esc(fmtDateTime(request.createdAt)) + ' 접수</span>' +
+          '</div>' +
+          '<p class="receipt-note">담당자가 내용을 확인한 뒤 입력하신 연락처로 안내드립니다.</p>'
+        );
       }).catch(function (err) {
         try {
           var list = JSON.parse(localStorage.getItem('cgiQuoteRequests') || '[]');
@@ -1251,6 +1269,7 @@
         return;
       }
       if (action === 'copy-cart') { window.cgiCopyQuoteCart(); return; }
+      if (action === 'copy-receipt') { window.cgiCopyReceiptNumber(); return; }
       if (action === 'download-json') { window.cgiDownloadQuoteCart(); return; }
       if (action === 'download-csv') { window.cgiDownloadQuoteCartCsv(); return; }
       if (action === 'copy-quote') { window.cgiCopyQuote(); return; }
@@ -2085,6 +2104,11 @@
   window.cgiCopyQuoteCart = function () {
     var text = window.cgiLastQuoteCartText || '';
     copyText(text, '견적 요약을 복사했습니다.');
+  };
+
+  window.cgiCopyReceiptNumber = function () {
+    var req = window.cgiLastQuoteCartRequest;
+    copyText(req && req.id ? req.id : '', '접수번호를 복사했습니다.');
   };
 
   function copyText(text, message) {
