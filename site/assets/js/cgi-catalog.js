@@ -22,7 +22,8 @@
     quoteCart: [],
     quoteServices: [],
     quoteCartServices: [],
-    failedImages: {}
+    failedImages: {},
+    brandSet: {}
   };
 
   /* ---------------------------------------------------------------- utils */
@@ -217,6 +218,7 @@
       (p.specs || []).map(function (s) { return s.label + ' ' + s.value; }).join(' ')].join(' '));
     p._cat = categoryLabel(p);
     p._brand = displayBrand(p);
+    state.brandSet[p._brand.toUpperCase()] = true;
     return p;
   }
 
@@ -254,17 +256,35 @@
   }
 
   /* ------------------------------------------------------------- fragments */
+  /* #126: 상품명 선두 [태그] 중 실제 상품 상태만 분리해 배지로 표시한다(표시 전용).
+   * 브랜드명·한정판 등 상태가 아닌 접두사는 원본 상품명 그대로 노출한다. */
+  var CONDITION_TAGS = ['박스손상', '리퍼비쉬', '전시상품', '전시제품', '전시/단종 클리어런스', '단순개봉', '교환상품', '미세흠집'];
+  function splitConditionTag(name) {
+    var s = String(name || '');
+    var m = s.match(/^\[([^\]]+)\]\s*/);
+    if (m && CONDITION_TAGS.indexOf(m[1]) !== -1) {
+      return { tag: m[1], name: s.slice(m[0].length) };
+    }
+    return { tag: null, name: s };
+  }
+  /* 테스트·디버깅 노출 (브라우저 동작 불변) */
+  window.cgiDebug = window.cgiDebug || {};
+  window.cgiDebug.splitConditionTag = splitConditionTag;
+  window.cgiDebug.CONDITION_TAGS = CONDITION_TAGS;
+
   function cardHtml(product) {
     var price = fmtPrice(product);
     var badge = price.inquiry
       ? '<span class="badge inquiry">가격 문의</span>'
       : '<span class="badge">공개 판매가</span>';
+    var cond = splitConditionTag(product.name);
     return '' +
       '<a class="product-card" href="' + esc(productUrl(product.id)) + '" data-product-id="' + esc(product.id) + '">' +
         '<div class="thumb">' + badge + imageHtml(product, 'card-img') + '</div>' +
         '<div class="card-body">' +
           '<span class="card-brand">' + esc(displayBrand(product)) + '</span>' +
-          '<h3 class="card-name">' + esc(product.name) + '</h3>' +
+          (cond.tag ? '<div class="card-flags"><span class="badge cond">' + esc(cond.tag) + '</span></div>' : '') +
+          '<h3 class="card-name">' + esc(cond.name) + '</h3>' +
           (product.model && product.model !== product.name ? '<span class="card-model">' + esc(product.model) + '</span>' : '') +
           '<div class="card-foot">' +
             '<span class="price ' + price.cls + '">' + esc(price.text) + '</span>' +
@@ -305,17 +325,43 @@
     return values;
   }
 
-  function facetBlock(title, name, values, counts, selected) {
+  /** 카테고리 필터 표시 그룹핑(표시 전용): 값이 브랜드명과 동일하면 공급처 브랜드 코너로 묶는다.
+   *  원본 데이터·식별자·필터 동작(체크박스/검색)은 변경하지 않는다. */
+  function catGroupFn(value) {
+    return state.brandSet[String(value).toUpperCase()] ? '브랜드 코너 · 공급처 분류' : '일반 카테고리';
+  }
+
+  function facetBlock(title, name, values, counts, selected, groupFn) {
     if (!values.length) return '';
-    var rows = values.map(function (value, idx) {
-      var id = 'f-' + name + '-' + idx;
-      var checked = selected.indexOf(value) !== -1 ? ' checked' : '';
-      return '<label for="' + id + '">' +
-        '<input type="checkbox" id="' + id + '" data-facet="' + name + '" value="' + esc(value) + '"' + checked + '>' +
-        '<span>' + esc(value) + '</span>' +
-        '<span class="cnt">' + Number(counts[value] || 0).toLocaleString('ko-KR') + '</span>' +
-      '</label>';
-    }).join('');
+    var sections = [];
+    var sectionIndex = {};
+    values.forEach(function (value) {
+      var g = groupFn ? groupFn(value) : null;
+      if (!(g in sectionIndex)) { sectionIndex[g] = sections.length; sections.push({ label: g, values: [] }); }
+      sections[sectionIndex[g]].values.push(value);
+    });
+    if (groupFn) {
+      var pri = { '일반 카테고리': 0 };
+      sections.sort(function (a, b) {
+        return (pri[a.label] !== undefined ? pri[a.label] : 1) - (pri[b.label] !== undefined ? pri[b.label] : 1);
+      });
+    }
+    var rows = '';
+    var rowIdx = 0;
+    sections.forEach(function (sec) {
+      if (groupFn && sec.label !== null) {
+        rows += '<div class="filter-subhead">' + esc(sec.label) + '<span class="subhead-cnt">' + sec.values.length + '</span></div>';
+      }
+      rows += sec.values.map(function (value) {
+        var id = 'f-' + name + '-' + (rowIdx++);
+        var checked = selected.indexOf(value) !== -1 ? ' checked' : '';
+        return '<label for="' + id + '">' +
+          '<input type="checkbox" id="' + id + '" data-facet="' + name + '" value="' + esc(value) + '"' + checked + '>' +
+          '<span>' + esc(value) + '</span>' +
+          '<span class="cnt">' + Number(counts[value] || 0).toLocaleString('ko-KR') + '</span>' +
+        '</label>';
+      }).join('');
+    });
     return '<details class="filter-group" open>' +
       '<summary><span>' + esc(title) + '</span><span class="facet-total">' + values.length + '</span></summary>' +
       '<div class="filter-body">' +
@@ -488,7 +534,7 @@
           '<button class="filter-toggle" data-action="toggle-filters" aria-expanded="false" aria-controls="filterPanel">필터 열기</button>' +
           '<div class="filter-panel" id="filterPanel">' +
             facetBlock('브랜드', 'brand', brandValues, brandCounts, r.brands) +
-            facetBlock('카테고리', 'cat', catValues, catCounts, r.cats) +
+            facetBlock('카테고리', 'cat', catValues, catCounts, r.cats, catGroupFn) +
             facetBlock('공급처', 'site', siteValues, siteCounts, r.sites) +
             '<button class="filter-reset" data-action="reset-filters">필터 초기화</button>' +
           '</div>' +
@@ -577,7 +623,8 @@
           (thumbs ? '<div class="gallery-thumbs">' + thumbs + '</div>' : '') +
         '</div>' +
         '<div>' +
-          '<h1 class="detail-title">' + esc(product.name) + '</h1>' +
+          (splitConditionTag(product.name).tag ? '<div class="detail-flags"><span class="badge cond">' + esc(splitConditionTag(product.name).tag) + '</span></div>' : '') +
+          '<h1 class="detail-title">' + esc(splitConditionTag(product.name).name) + '</h1>' +
           '<p class="detail-sub">' +
             esc(displayBrand(product)) +
             (product.manufacturer && product.manufacturer !== displayBrand(product) ? ' · 제조사 ' + esc(product.manufacturer) : '') +

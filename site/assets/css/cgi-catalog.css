@@ -1246,3 +1246,18 @@ p:last-child { margin-bottom: 0; }
 /* The hidden attribute loses to the class-level display: rules above, so it
    has to be re-asserted explicitly for the auth switcher. */
 .auth-links-guest[hidden], .auth-links-guest a[hidden], .auth-links-member[hidden], .header-nav a[hidden] { display: none !important; }
+
+/* ── #126 UI 개선 (표시 전용: 데이터·가격·기능 불변) ─────────────────── */
+/* 상태 태그(박스손상/리퍼비쉬 등) — 공개 판매가·가격 문의 배지와 별도 톤으로 구분 */
+.card-flags { display: flex; flex-wrap: wrap; gap: 4px; }
+.badge.cond { position: static; background: #fdf3e0; color: #8a6116; border: 1px solid #ecd9ae; }
+.detail-flags { margin-bottom: 8px; }
+.detail-flags .badge.cond { position: static; font-size: 12px; padding: 4px 10px; }
+/* 카테고리 필터 그룹 헤더 (브랜드 코너 · 공급처 분류) */
+.filter-subhead {
+  margin: 8px 0 4px; padding: 4px 8px; font-size: 10.5px; font-weight: 800;
+  letter-spacing: .04em; color: var(--cgi-muted); background: #f4f6f4; border-radius: 6px;
+  display: flex; align-items: center; gap: 6px;
+}
+.filter-subhead:first-child { margin-top: 0; }
+.filter-subhead .subhead-cnt { margin-left: auto; font-size: 10px; color: var(--cgi-muted); font-weight: 600; }
