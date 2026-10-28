@@ -44,6 +44,45 @@
   }
 
   /* ------------------------------------------------------ 브랜드 목록 */
+  /* #126: 브랜드 칩 초기 노출 개수를 줄여 시각 밀도를 낮춘다(접기/더보기 토글).
+   * 전체 브랜드는 DOM에 유지되며 브랜드 검색 중에는 접기 상태를 무시한다. */
+  var BRAND_INITIAL = 24;
+  var brandCollapsed = true;
+
+  function applyBrandCollapse() {
+    var grid = $('#brandGrid');
+    if (!grid) { return; }
+    var items = $$('#brandGrid li');
+    var input = $('#brandFilter');
+    var q = input ? input.value.trim().toLowerCase() : '';
+    var filtering = q.length > 0;
+    var shown = 0;
+    items.forEach(function (li, idx) {
+      var base = !brandCollapsed || filtering || idx < BRAND_INITIAL;
+      li.hidden = !base;
+      if (base) { shown++; }
+    });
+    var btn = $('#brandMore');
+    if (btn) {
+      btn.hidden = items.length <= BRAND_INITIAL;
+      btn.textContent = brandCollapsed
+        ? '브랜드 더보기 (전체 ' + items.length + '종)'
+        : '브랜드 접기';
+      btn.setAttribute('aria-expanded', brandCollapsed ? 'false' : 'true');
+    }
+    var empty = $('#brandEmpty');
+    if (empty && filtering) { empty.hidden = shown > 0; }
+  }
+
+  function initBrandMore() {
+    var btn = $('#brandMore');
+    if (!btn) { return; }
+    btn.addEventListener('click', function () {
+      brandCollapsed = !brandCollapsed;
+      applyBrandCollapse();
+    });
+  }
+
   function brandListFromMaster(items) {
     var counts = {};
     items.forEach(function (p) {
@@ -80,6 +119,7 @@
       li.appendChild(a);
       grid.appendChild(li);
     });
+    applyBrandCollapse();
     var note = $('#brandNote');
     if (note && list.length && list[0].count) {
       var total = list.reduce(function (s, b) { return s + (b.count || 0); }, 0);
@@ -132,16 +172,7 @@
     var grid = $('#brandGrid');
     if (!input || !grid) { return; }
     input.addEventListener('input', function () {
-      var q = this.value.trim().toLowerCase();
-      var items = $$('#brandGrid li');
-      var shown = 0;
-      items.forEach(function (li) {
-        var hit = !q || (li.textContent || '').toLowerCase().indexOf(q) >= 0;
-        li.style.display = hit ? '' : 'none';
-        if (hit) { shown++; }
-      });
-      var empty = $('#brandEmpty');
-      if (empty) { empty.hidden = shown > 0; }
+      applyBrandCollapse();
     });
   }
 
@@ -402,6 +433,7 @@
     initScrollSpy();
     initRefTabs();
     initBrandFilter();
+    initBrandMore();
   }
 
   if (document.readyState === 'loading') {

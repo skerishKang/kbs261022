@@ -62,8 +62,8 @@
       </p>
       <p class="hero-en">영상장비, 음향장비 및 각종 설계·시공·제작 전문업체</p>
       <div class="hero-actions">
-        <a class="btn btn-primary" href="#products">취급 브랜드 보기</a>
-        <a class="btn btn-ghost" href="#" id="mallLinkHero" data-mall-link>제품 보기 (쇼핑몰) <span aria-hidden="true">→</span></a>
+        <a class="btn btn-primary" href="#" id="mallLinkHero" data-mall-link>제품 보기 (쇼핑몰) <span aria-hidden="true">→</span></a>
+        <a class="btn btn-ghost" href="#products">취급 브랜드 보기</a>
       </div>
     </div>
   </section>
@@ -227,6 +227,9 @@
       </div>
 
       <ul class="brand-grid" id="brandGrid"><!-- JS 로 주입 (config.js / 쇼핑몰 데이터) --></ul>
+      <div class="brand-more-wrap">
+        <button type="button" id="brandMore" class="btn-more" aria-expanded="false" aria-controls="brandGrid" hidden>브랜드 더보기</button>
+      </div>
       <p class="brand-empty" id="brandEmpty" hidden>해당 이름과 일치하는 브랜드가 없습니다. 검색어를 지우고 전체 목록을 보세요.</p>
       <p class="note" id="brandNote">
         브랜드 목록은 취급 기준입니다. 실제 취급 범위와 판매 가능 여부는 CGI 확인 후 확정되며,
