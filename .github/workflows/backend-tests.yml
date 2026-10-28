@@ -35,6 +35,9 @@ jobs:
       - name: E2E tests
         working-directory: backend
         run: npm run test:e2e
+      - name: Integration tests (mock ERP HTTP server)
+        working-directory: backend
+        run: npm run test:integration
       - name: Worker smoke test
         working-directory: backend
         run: npm run smoke
