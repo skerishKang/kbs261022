@@ -1270,6 +1270,8 @@
       }
       if (action === 'copy-cart') { window.cgiCopyQuoteCart(); return; }
       if (action === 'copy-receipt') { window.cgiCopyReceiptNumber(); return; }
+      if (action === 'toggle-quote') { toggleQuoteDetail(target); return; }
+      if (action === 'reload-quotes') { renderMyQuotes(document.getElementById('myPageBody')); return; }
       if (action === 'download-json') { window.cgiDownloadQuoteCart(); return; }
       if (action === 'download-csv') { window.cgiDownloadQuoteCartCsv(); return; }
       if (action === 'copy-quote') { window.cgiCopyQuote(); return; }
@@ -1877,12 +1879,13 @@
       return;
     }
     var tab = (state.route.tab || 'profile');
-    var allowed = ['profile', 'addresses', 'orders'].indexOf(tab) === -1 ? 'profile' : tab;
+    var allowed = ['profile', 'addresses', 'orders', 'quotes'].indexOf(tab) === -1 ? 'profile' : tab;
     var user = p.me();
     var tabs = [
       ['profile', '회원 정보'],
       ['addresses', '배송지'],
-      ['orders', '주문 내역']
+      ['orders', '주문 내역'],
+      ['quotes', '내 견적']
     ];
     var html = '<section class="mypage">' +
       '<header class="mypage-head">' +
@@ -1900,6 +1903,7 @@
     var body = document.getElementById('myPageBody');
     if (allowed === 'profile') renderMyProfile(body);
     else if (allowed === 'addresses') renderMyAddresses(body);
+    else if (allowed === 'quotes') renderMyQuotes(body);
     else renderMyOrders(body);
   }
 
@@ -2038,6 +2042,81 @@
         });
       })(deletes[i]);
     }
+  }
+
+  /* -------------------------------------------------------------- my quotes */
+
+  var QUOTE_STATUS_LABELS = { received: '접수', quoted: '견적 발송', completed: '완료', cancelled: '취소' };
+
+  function quoteStatusLabel(status) {
+    return QUOTE_STATUS_LABELS[status] || '접수';
+  }
+
+  function quoteDetailHtml(q) {
+    var items = q.items || [];
+    var rowsHtml = items.map(function (it) {
+      return '<tr><td>' + esc(it.name || it.id || '상품') + '</td>' +
+        '<td class="num">' + (it.qty != null ? it.qty : 1) + '</td>' +
+        '<td class="num">' + esc(it.publicPrice || '가격 문의') + '</td></tr>';
+    }).join('');
+    var services = (q.services || []).map(function (id) { return serviceName(id); });
+    var totalText = q.total != null ? money(q.total) : '담당자 확인 후 안내';
+    return '<dl class="quote-detail-meta">' +
+        '<dt>접수일시</dt><dd>' + esc(fmtDateTime(q.created_at)) + '</dd>' +
+        '<dt>회사/기관</dt><dd>' + esc(q.company || '-') + '</dd>' +
+        '<dt>담당자</dt><dd>' + esc(q.contact_name || '-') + ' · ' + esc(q.phone || '-') + '</dd>' +
+        (q.location ? '<dt>설치 장소</dt><dd>' + esc(q.location) + '</dd>' : '') +
+        (services.length ? '<dt>추가 서비스</dt><dd>' + esc(services.join(', ')) + '</dd>' : '') +
+        (q.note ? '<dt>요청 사항</dt><dd>' + esc(q.note) + '</dd>' : '') +
+      '</dl>' +
+      (items.length ? '<table class="spec-table quote-items"><thead><tr><th>상품</th><th>수량</th><th>공개가</th></tr></thead><tbody>' + rowsHtml + '</tbody></table>' : '') +
+      '<p class="quote-detail-total"><span>합계</span><strong>' + esc(totalText) + '</strong></p>';
+  }
+
+  function toggleQuoteDetail(btn) {
+    var id = btn.getAttribute('data-quote-toggle');
+    var detail = document.getElementById('quote-detail-' + id);
+    if (!detail) return;
+    var open = detail.hasAttribute('hidden');
+    if (open) detail.removeAttribute('hidden'); else detail.setAttribute('hidden', '');
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    btn.textContent = open ? '내용 닫기' : '내용 보기';
+  }
+
+  function renderMyQuotes(body) {
+    var p = authApi();
+    body.innerHTML = '<p class="auth-muted" data-quotes-loading>견적 내역을 불러오는 중…</p>';
+    p.quotes().then(function (items) {
+      if (items === null) {
+        body.innerHTML = authAlert('견적 내역을 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.', 'error') +
+          '<button type="button" class="btn btn-secondary" data-action="reload-quotes">다시 시도</button>';
+        return;
+      }
+      if (!items.length) {
+        body.innerHTML = '<div class="mypage-empty">' +
+          '<h3>아직 요청한 견적이 없습니다</h3>' +
+          '<p class="auth-muted">상품 상세에서 <strong>견적 요청하기</strong>를 누르면 접수 내역이 이곳에 표시됩니다.</p>' +
+          '<a class="btn btn-primary" href="#/products">상품 둘러보기</a>' +
+        '</div>';
+        return;
+      }
+      body.innerHTML = '<p class="auth-muted myquotes-count">최근 견적 ' + items.length + '건</p>' +
+        '<div class="quote-history">' + items.map(function (q) {
+          var count = (q.items || []).length;
+          var first = q.items && q.items[0] ? (q.items[0].name || '상품') : '상품';
+          return '<article class="order-card quote-card">' +
+            '<header class="order-card-head">' +
+              '<span class="order-id quote-id">' + esc(q.id) + '</span>' +
+              '<span class="quote-status ' + esc(q.status || 'received') + '">' + esc(quoteStatusLabel(q.status)) + '</span>' +
+            '</header>' +
+            '<p class="auth-muted quote-meta">' + esc(fmtDateTime(q.created_at)) + ' 접수' +
+              (count ? ' · ' + esc(first) + (count > 1 ? ' 외 ' + (count - 1) + '건' : '') : '') + '</p>' +
+            '<p class="order-total">' + (q.total != null ? money(q.total) : '금액 담당자 확인 후 안내') + '</p>' +
+            '<button type="button" class="btn btn-secondary btn-small" data-action="toggle-quote" data-quote-toggle="' + esc(q.id) + '" aria-expanded="false">내용 보기</button>' +
+            '<div class="quote-detail" id="quote-detail-' + esc(q.id) + '" hidden>' + quoteDetailHtml(q) + '</div>' +
+          '</article>';
+        }).join('') + '</div>';
+    });
   }
 
   function renderMyOrders(body) {

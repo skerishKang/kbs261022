@@ -1206,6 +1206,29 @@ p:last-child { margin-bottom: 0; }
 .order-status { font-size: 12px; font-weight: 700; background: var(--cgi-primary-soft); color: var(--cgi-primary-dark); border-radius: 4px; padding: 3px 9px; }
 .order-total { font-size: 15.5px; font-weight: 800; margin-top: 7px; }
 
+/* ------------------------------- my quotes ------------------------------ */
+.quote-history { display: flex; flex-direction: column; gap: 12px; }
+.quote-card .quote-meta { margin: 2px 0 0; font-size: 12.5px; }
+.quote-status { margin-left: auto; font-size: 11.5px; font-weight: 800; border-radius: 999px; padding: 3px 9px; }
+.quote-status.received { background: var(--cgi-warn-soft); color: #93370d; }
+.quote-status.quoted { background: var(--cgi-primary-soft); color: var(--cgi-primary-dark); }
+.quote-status.completed { background: var(--cgi-ok-soft); color: var(--cgi-ok); }
+.quote-status.cancelled { background: var(--cgi-line-soft); color: var(--cgi-muted); }
+.quote-card .btn { margin-top: 10px; }
+.quote-detail { margin-top: 12px; border-top: 1px dashed var(--cgi-line); padding-top: 12px; }
+.quote-detail-meta { display: grid; grid-template-columns: 82px minmax(0, 1fr); gap: 6px 10px; margin: 0; font-size: 12.5px; }
+.quote-detail-meta dt { color: var(--cgi-muted); }
+.quote-detail-meta dd { margin: 0; overflow-wrap: anywhere; }
+.quote-items { margin-top: 10px; }
+.quote-items th, .quote-items td { font-size: 12.5px; }
+.quote-items .num { text-align: right; white-space: nowrap; }
+.quote-detail-total { display: flex; justify-content: space-between; gap: 10px; margin: 10px 0 0; font-size: 12.5px; color: var(--cgi-muted); }
+.quote-detail-total strong { color: var(--cgi-ink); }
+.mypage-empty { padding: 28px 8px; text-align: center; }
+.mypage-empty h3 { font-size: 16px; margin-bottom: 6px; }
+.mypage-empty .btn { margin-top: 14px; }
+.mypage-empty .auth-muted { margin-bottom: 4px; }
+
 @media (max-width: 899px) {
   .header-auth { order: 5; width: 100%; border-left: 0; border-top: 1px solid #2a2a2a; padding: 10px 4px 12px; }
   .site-header:not(.nav-open) .header-auth { border-top: 0; padding: 0 0 4px; }
