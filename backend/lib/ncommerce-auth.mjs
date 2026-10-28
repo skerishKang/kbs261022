@@ -36,8 +36,8 @@ export const NCOM_AUTH_DOC = {
   grantType: 'client_credentials',
   signRecipe: 'client_secret_sign = Base64(bcrypt(`${client_id}_${timestamp}`, salt = client_secret)), timestamp in milliseconds — client_secret 은 $2a$ 형식의 bcrypt salt 문자열로 발급된다(공식 문서 예시 출력이 $2a$10$... 로 시작하므로)',
   tokenEndpoint: 'POST /v1/oauth2/token (body-only form parameters)',
-  tokenTtl: 'no numeric TTL is printed — only expires_in(seconds) is honoured',
-  serverTokenReuse: '남은 유효 시간 30분 이상이면 서버가 기존 토큰을 반환 — 이른 재발급 요청은 안전하나 필수가 아니다',
+  ttlPolicy: 'access token 의 수치 TTL 은 문서에 미인쇄 — expires_in(초) 응답값만 신뢰',
+  serverReuse: '남은 유효 시간 30분 이상이면 서버가 기존 토큰을 반환 — 이른 재발급 요청은 안전하나 필수가 아니다',
   typeSelf: '내 스토어 애플리케이션은 type=SELF(자기 스토어 리소스만)',
   rateLimit: 'API별 초당 동시 요청 제한, 일일 한도 없음, 초과 시 429(GW.RATE_LIMIT / GW.QUOTA_LIMIT)',
   unconfirmed: [
