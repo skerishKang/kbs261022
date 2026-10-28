@@ -132,7 +132,7 @@
           },
           {
             "reason": "image_external_host_upload_required",
-            "resolution": "tooling_with_token",
+            "resolution": "tooling_after_auth",
             "requires": [
               "판매자 토큰",
               "이미지 업로드 러너 실행"
@@ -161,7 +161,7 @@
           },
           {
             "reason": "naver_category_corpus_absent",
-            "resolution": "tooling_with_token",
+            "resolution": "tooling_after_auth",
             "requires": [
               "판매자 토큰",
               "코퍼스 수집 도구 실행"
@@ -171,7 +171,7 @@
           },
           {
             "reason": "naver_leaf_category_absent",
-            "resolution": "tooling_with_token",
+            "resolution": "tooling_after_auth",
             "requires": [
               "판매자 토큰",
               "코퍼스 수집",
@@ -209,7 +209,7 @@
           },
           {
             "reason": "stock_displayed_positive_unverified",
-            "resolution": "tooling_with_token",
+            "resolution": "tooling_after_auth",
             "requires": [
               "ERP 인증",
               "BAL_QTY 조회"
@@ -219,7 +219,7 @@
           },
           {
             "reason": "stock_quantity_column_absent",
-            "resolution": "tooling_with_token",
+            "resolution": "tooling_after_auth",
             "requires": [
               "ERP 인증",
               "BAL_QTY 조회",
@@ -230,7 +230,7 @@
           },
           {
             "reason": "stock_requires_erp_balance_read",
-            "resolution": "tooling_with_token",
+            "resolution": "tooling_after_auth",
             "requires": [
               "ERP 인증",
               "BAL_QTY 조회"
@@ -240,7 +240,7 @@
           },
           {
             "reason": "supplier_category_not_mapped_to_naver",
-            "resolution": "tooling_with_token",
+            "resolution": "tooling_after_auth",
             "requires": [
               "판매자 토큰",
               "코퍼스 수집",
@@ -253,7 +253,7 @@
         "product_class": "auto_resolvable",
         "resolution_classes": {
           "tooling_auto": "외부 인증 없이 도구 실행(재수집·재측정·초안 생성)으로 해소된다",
-          "tooling_with_token": "판매자 토큰·ERP 인증 등 외부 인증이 선행되면 도구 실행으로 해소된다",
+          "tooling_after_auth": "판매자 토큰·ERP 인증 등 외부 인증이 선행되면 도구 실행으로 해소된다",
           "customer_input": "고객이 값·정책·서류를 제공해야만 해소된다 — 도구가 대신 만들어낼 수 없다"
         }
       },
@@ -424,7 +424,7 @@
           },
           {
             "reason": "image_external_host_upload_required",
-            "resolution": "tooling_with_token",
+            "resolution": "tooling_after_auth",
             "requires": [
               "판매자 토큰",
               "이미지 업로드 러너 실행"
@@ -453,7 +453,7 @@
           },
           {
             "reason": "naver_category_corpus_absent",
-            "resolution": "tooling_with_token",
+            "resolution": "tooling_after_auth",
             "requires": [
               "판매자 토큰",
               "코퍼스 수집 도구 실행"
@@ -463,7 +463,7 @@
           },
           {
             "reason": "naver_leaf_category_absent",
-            "resolution": "tooling_with_token",
+            "resolution": "tooling_after_auth",
             "requires": [
               "판매자 토큰",
               "코퍼스 수집",
@@ -501,7 +501,7 @@
           },
           {
             "reason": "stock_displayed_positive_unverified",
-            "resolution": "tooling_with_token",
+            "resolution": "tooling_after_auth",
             "requires": [
               "ERP 인증",
               "BAL_QTY 조회"
@@ -511,7 +511,7 @@
           },
           {
             "reason": "stock_quantity_column_absent",
-            "resolution": "tooling_with_token",
+            "resolution": "tooling_after_auth",
             "requires": [
               "ERP 인증",
               "BAL_QTY 조회",
@@ -522,7 +522,7 @@
           },
           {
             "reason": "stock_requires_erp_balance_read",
-            "resolution": "tooling_with_token",
+            "resolution": "tooling_after_auth",
             "requires": [
               "ERP 인증",
               "BAL_QTY 조회"
@@ -532,7 +532,7 @@
           },
           {
             "reason": "supplier_category_not_mapped_to_naver",
-            "resolution": "tooling_with_token",
+            "resolution": "tooling_after_auth",
             "requires": [
               "판매자 토큰",
               "코퍼스 수집",
@@ -545,7 +545,7 @@
         "product_class": "auto_resolvable",
         "resolution_classes": {
           "tooling_auto": "외부 인증 없이 도구 실행(재수집·재측정·초안 생성)으로 해소된다",
-          "tooling_with_token": "판매자 토큰·ERP 인증 등 외부 인증이 선행되면 도구 실행으로 해소된다",
+          "tooling_after_auth": "판매자 토큰·ERP 인증 등 외부 인증이 선행되면 도구 실행으로 해소된다",
           "customer_input": "고객이 값·정책·서류를 제공해야만 해소된다 — 도구가 대신 만들어낼 수 없다"
         }
       },
@@ -716,7 +716,7 @@
           },
           {
             "reason": "image_external_host_upload_required",
-            "resolution": "tooling_with_token",
+            "resolution": "tooling_after_auth",
             "requires": [
               "판매자 토큰",
               "이미지 업로드 러너 실행"
@@ -745,7 +745,7 @@
           },
           {
             "reason": "naver_category_corpus_absent",
-            "resolution": "tooling_with_token",
+            "resolution": "tooling_after_auth",
             "requires": [
               "판매자 토큰",
               "코퍼스 수집 도구 실행"
@@ -755,7 +755,7 @@
           },
           {
             "reason": "naver_leaf_category_absent",
-            "resolution": "tooling_with_token",
+            "resolution": "tooling_after_auth",
             "requires": [
               "판매자 토큰",
               "코퍼스 수집",
@@ -793,7 +793,7 @@
           },
           {
             "reason": "stock_displayed_positive_unverified",
-            "resolution": "tooling_with_token",
+            "resolution": "tooling_after_auth",
             "requires": [
               "ERP 인증",
               "BAL_QTY 조회"
@@ -803,7 +803,7 @@
           },
           {
             "reason": "stock_quantity_column_absent",
-            "resolution": "tooling_with_token",
+            "resolution": "tooling_after_auth",
             "requires": [
               "ERP 인증",
               "BAL_QTY 조회",
@@ -814,7 +814,7 @@
           },
           {
             "reason": "stock_requires_erp_balance_read",
-            "resolution": "tooling_with_token",
+            "resolution": "tooling_after_auth",
             "requires": [
               "ERP 인증",
               "BAL_QTY 조회"
@@ -824,7 +824,7 @@
           },
           {
             "reason": "supplier_category_not_mapped_to_naver",
-            "resolution": "tooling_with_token",
+            "resolution": "tooling_after_auth",
             "requires": [
               "판매자 토큰",
               "코퍼스 수집",
@@ -837,7 +837,7 @@
         "product_class": "auto_resolvable",
         "resolution_classes": {
           "tooling_auto": "외부 인증 없이 도구 실행(재수집·재측정·초안 생성)으로 해소된다",
-          "tooling_with_token": "판매자 토큰·ERP 인증 등 외부 인증이 선행되면 도구 실행으로 해소된다",
+          "tooling_after_auth": "판매자 토큰·ERP 인증 등 외부 인증이 선행되면 도구 실행으로 해소된다",
           "customer_input": "고객이 값·정책·서류를 제공해야만 해소된다 — 도구가 대신 만들어낼 수 없다"
         }
       },

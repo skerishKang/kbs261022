@@ -67,7 +67,7 @@ test('the upload plan is prepared (dry-run) and the remaining work is split by o
     assert.equal(pkg.images.upload_plan.additional.length, 0);
     assert.match(pkg.images.runner_note, /판매자 토큰/);
     assert.equal(pkg.blockers.product_class, 'auto_resolvable', '제품별 잔여는 도구 실행 클래스다(전면 정책은 별도)');
-    assert.ok(pkg.blockers.reason_split.some((r) => r.resolution === 'tooling_with_token'), '토큰 선행 항목이 분류돼 있다');
+    assert.ok(pkg.blockers.reason_split.some((r) => r.resolution === 'tooling_after_auth'), '토큰 선행 항목이 분류돼 있다');
     assert.deepEqual(pkg.customer_inputs_pending, ['원산지 정책', '배송비·배송 방식', '반품·교환 배송비', 'AS 안내', 'KC 인증(리프 요구 확인 후)']);
   }
 });

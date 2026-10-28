@@ -2,10 +2,10 @@
 //
 // 세 클래스이며 두 바구니로 롤업된다:
 //   tooling_auto        외부 인증 없이 도구 실행(재수집·재측정·초안 생성)으로 해소
-//   tooling_with_token  판매자 토큰·ERP 인증 등 외부 인증이 선행되면 도구 실행으로 해소
+//   tooling_after_auth  판매자 토큰·ERP 인증 등 외부 인증이 선행되면 도구 실행으로 해소
 //   customer_input      고객이 값·정책·서류를 제공해야만 해소 — 도구가 만들어낼 수 없다
 //
-// auto_resolvable = tooling_auto + tooling_with_token ("자동 해소 가능").
+// auto_resolvable = tooling_auto + tooling_after_auth ("자동 해소 가능").
 // 어휘는 M1 준비도 사유 표(M1_FIELD_REASONS)의 차단 코드 전체와 1:1 이어야 하며,
 // 빠진 코드는 unclassified 로 남아 보고서가 거짓 0을 말하지 않게 한다.
 //
@@ -15,7 +15,7 @@ import { M1_FIELD_REASONS } from './m1-readiness.mjs';
 
 export const M2_RESOLUTION_CLASSES = {
   tooling_auto: '외부 인증 없이 도구 실행(재수집·재측정·초안 생성)으로 해소된다',
-  tooling_with_token: '판매자 토큰·ERP 인증 등 외부 인증이 선행되면 도구 실행으로 해소된다',
+  tooling_after_auth: '판매자 토큰·ERP 인증 등 외부 인증이 선행되면 도구 실행으로 해소된다',
   customer_input: '고객이 값·정책·서류를 제공해야만 해소된다 — 도구가 대신 만들어낼 수 없다',
 };
 
@@ -23,15 +23,15 @@ export const M2_RESOLUTION_CLASSES = {
 export const M2_BLOCKER_RESOLUTIONS = {
   // --- 네이버 카테고리 -------------------------------------------------------------
   naver_category_corpus_absent: {
-    resolution: 'tooling_with_token', requires: ['판매자 토큰', '코퍼스 수집 도구 실행'],
+    resolution: 'tooling_after_auth', requires: ['판매자 토큰', '코퍼스 수집 도구 실행'],
     note: 'GET /v1/categories?last=true — 수집·검증 도구는 mock으로 검증돼 있다',
   },
   naver_leaf_category_absent: {
-    resolution: 'tooling_with_token', requires: ['판매자 토큰', '코퍼스 수집', '운영자 리프 확인'],
+    resolution: 'tooling_after_auth', requires: ['판매자 토큰', '코퍼스 수집', '운영자 리프 확인'],
     note: '후보 제안은 도구가 하고, confirmed 는 사람이 채운다 — 임의 배정은 계약상 금지',
   },
   supplier_category_not_mapped_to_naver: {
-    resolution: 'tooling_with_token', requires: ['판매자 토큰', '코퍼스 수집', '재매핑 실행'],
+    resolution: 'tooling_after_auth', requires: ['판매자 토큰', '코퍼스 수집', '재매핑 실행'],
     note: '브랜드·프로모션 경로는 코퍼스가 있어도 매핑되지 않는다(구조 판정 계약)',
   },
 
@@ -58,20 +58,20 @@ export const M2_BLOCKER_RESOLUTIONS = {
 
   // --- 재고 ------------------------------------------------------------------------
   stock_quantity_column_absent: {
-    resolution: 'tooling_with_token', requires: ['ERP 인증', 'BAL_QTY 조회', 'stockFromErpBalance 변환'],
+    resolution: 'tooling_after_auth', requires: ['ERP 인증', 'BAL_QTY 조회', 'stockFromErpBalance 변환'],
   },
   stock_requires_erp_balance_read: {
-    resolution: 'tooling_with_token', requires: ['ERP 인증', 'BAL_QTY 조회'],
+    resolution: 'tooling_after_auth', requires: ['ERP 인증', 'BAL_QTY 조회'],
   },
   stock_displayed_positive_unverified: {
-    resolution: 'tooling_with_token', requires: ['ERP 인증', 'BAL_QTY 조회'],
+    resolution: 'tooling_after_auth', requires: ['ERP 인증', 'BAL_QTY 조회'],
     note: '공급처 표시 수량은 참고용 — ERP 잔량이 결정권',
   },
   stock_displayed_zero: {
-    resolution: 'tooling_with_token', requires: ['ERP 인증', 'BAL_QTY 조회', '품절 판정은 운영 확인'],
+    resolution: 'tooling_after_auth', requires: ['ERP 인증', 'BAL_QTY 조회', '품절 판정은 운영 확인'],
   },
   stock_displayed_but_supplier_unmanaged: {
-    resolution: 'tooling_with_token', requires: ['ERP 인증', 'BAL_QTY 조회'],
+    resolution: 'tooling_after_auth', requires: ['ERP 인증', 'BAL_QTY 조회'],
   },
   availability_fields_absent: {
     resolution: 'tooling_auto', requires: ['공급처 페이지 재수집(availability 4키)', '재수집 입력 검증 후 반영'],
@@ -89,7 +89,7 @@ export const M2_BLOCKER_RESOLUTIONS = {
 
   // --- 이미지 ----------------------------------------------------------------------
   image_external_host_upload_required: {
-    resolution: 'tooling_with_token', requires: ['판매자 토큰', '이미지 업로드 러너 실행'],
+    resolution: 'tooling_after_auth', requires: ['판매자 토큰', '이미지 업로드 러너 실행'],
     note: '업로드 러너는 M2 계약 테스트로 고정돼 있다 — 반환 URL 만 본문에 허용',
   },
   image_representative_blank: {
@@ -186,7 +186,7 @@ export function splitBlockers(rows = [], { declared = M2_BLOCKER_RESOLUTIONS } =
     else if (hasCustomer) { customer += 1; customerIds.push(cgiId); }
     else { auto += 1; autoIds.push(cgiId); }
   }
-  const byResolution = { tooling_auto: 0, tooling_with_token: 0, customer_input: 0 };
+  const byResolution = { tooling_auto: 0, tooling_after_auth: 0, customer_input: 0 };
   for (const entry of perReason.values()) byResolution[entry.resolution] += entry.products;
   return {
     products: rows.length,
