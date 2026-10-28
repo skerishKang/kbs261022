@@ -397,6 +397,7 @@ export function createNcomClient({ env = {}, fetchFn = fetch, bcryptHashpw = nul
 
     const response = await send(endpoint.method, url.toString(), {
       body: endpoint.multipart ? body : (body === undefined ? undefined : body),
+      multipart: endpoint.multipart === true,
       headers: endpoint.authed === false ? {} : { Authorization: `Bearer ${token}` },
     });
     const verdict = classifyNcomResponse({ httpStatus: response.status, body: response.body, headers: response.headers });
