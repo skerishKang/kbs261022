@@ -32,9 +32,9 @@ test('policy blanks are customer input; measurement gaps are tooling', () => {
   assert.equal(M2_BLOCKER_RESOLUTIONS.price_inquiry_only.resolution, 'customer_input');
   assert.equal(M2_BLOCKER_RESOLUTIONS.image_probe_not_fetched.resolution, 'tooling_auto');
   assert.equal(M2_BLOCKER_RESOLUTIONS.availability_fields_absent.resolution, 'tooling_auto');
-  assert.equal(M2_BLOCKER_RESOLUTIONS.naver_category_corpus_absent.resolution, 'tooling_with_token');
-  assert.equal(M2_BLOCKER_RESOLUTIONS.image_external_host_upload_required.resolution, 'tooling_with_token');
-  assert.equal(M2_BLOCKER_RESOLUTIONS.stock_requires_erp_balance_read.resolution, 'tooling_with_token');
+  assert.equal(M2_BLOCKER_RESOLUTIONS.naver_category_corpus_absent.resolution, 'tooling_after_auth');
+  assert.equal(M2_BLOCKER_RESOLUTIONS.image_external_host_upload_required.resolution, 'tooling_after_auth');
+  assert.equal(M2_BLOCKER_RESOLUTIONS.stock_requires_erp_balance_read.resolution, 'tooling_after_auth');
 });
 
 test('products split by who can resolve what, and mixed products surface the bottleneck', () => {
