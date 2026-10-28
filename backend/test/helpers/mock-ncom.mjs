@@ -46,6 +46,7 @@ export async function startMockNcomServer(overrides = {}) {
     originProductNo: 500001,
     orderPageSizeSeen: null,
     calls: [],
+    uploadSeq: 0,
     ...overrides,
   };
 
@@ -143,6 +144,15 @@ export async function startMockNcomServer(overrides = {}) {
         return;
       }
 
+      if (record.path === '/external/v1/product-images/upload' && req.method === 'POST') {
+        // 문서 전사본은 응답 예시를 인쇄하지 않는다 — { urls } 모양은 mock 편의이며,
+        // 계약 테스트가 고정하는 것은 요청 쪽(multipart/form-data + Bearer + 파일 수)과
+        // "반환된 URL 만 등록 본문에 들어갈 수 있다"는 규칙이다.
+        const fileCount = (record.raw.match(/filename=/g) || []).length;
+        const urls = Array.from({ length: Math.max(1, fileCount) }, () => `https://mock-image.example/upload-${state.uploadSeq += 1}.png`);
+        reply(200, { urls });
+        return;
+      }
       if (record.path === '/external/v1/pay-order/seller/product-orders') {
         state.orderPageSizeSeen = url.searchParams.get('pageSize');
         reply(200, {
