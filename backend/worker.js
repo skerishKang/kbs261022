@@ -2315,12 +2315,12 @@ const worker = {
     }
 
     if (url.pathname === '/api/quotes' && request.method === 'GET') {
-      if (!(await isAdminOrMember(request, env.DB, env))) return unauthorized();
+      if (!(await isAdminOrMember(request, env.DB, env))) return json({ error: 'unauthorized' }, 401, CORS_HEADERS_CREDENTIALS);
       const status = url.searchParams.get('status');
       let stmt = env.DB.prepare('SELECT id, created_at, company, contact_name, phone, status, total FROM quote_requests ORDER BY created_at DESC');
       if (status) stmt = env.DB.prepare('SELECT id, created_at, company, contact_name, phone, status, total FROM quote_requests WHERE status = ? ORDER BY created_at DESC').bind(status);
       const { results } = await stmt.all();
-      return json({ items: results });
+      return json({ items: results }, 200, CORS_HEADERS_CREDENTIALS);
     }
 
     const getMatch = url.pathname.match(/^\/api\/quotes\/([^/]+)$/);
