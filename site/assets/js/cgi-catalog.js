@@ -853,6 +853,7 @@
         '<p class="page-sub" id="cartSummary">' + cartSummaryText(items) + '</p>' +
       '</header>' +
       '<div class="cart-layout">' +
+        '<div class="cart-left">' +
         '<div class="cart-main">' +
           '<section class="cart-panel">' +
             '<div class="cart-panel-head"><h2>담은 상품</h2><span>수량을 확인해 주세요</span></div>' +
@@ -872,6 +873,16 @@
               '</div>' +
             '</details>' +
           '</section>' +
+        '</div>' +
+        (allPublicPrice(items)
+          ? '<div class="cart-pay-cta">' +
+              '<div class="cart-total-line"><span>주문 금액</span><strong id="cartTotalValue">' + money(cartTotal(items)) + '</strong></div>' +
+              '<a class="btn btn-primary btn-block cart-pay-btn" href="#/checkout">결제 주문으로 계속</a>' +
+            '</div>'
+          : '<div class="cart-pay-cta cart-pay-inquiry">' +
+              '<div class="cart-total-line"><span>최종 금액</span><strong>담당자 확인 후 안내</strong></div>' +
+              '<p class="form-note">일부 상품이 판매가 미확정 상태라 결제 대신 견적 요청으로 접수됩니다.</p>' +
+            '</div>') +
         '</div>' +
         '<aside class="cart-request">' +
           '<div class="cart-panel">' +
@@ -896,15 +907,6 @@
             '</form>' +
           '</div>' +
         '</aside>' +
-        (allPublicPrice(items)
-          ? '<div class="cart-pay-cta">' +
-              '<div class="cart-total-line"><span>주문 금액</span><strong id="cartTotalValue">' + money(cartTotal(items)) + '</strong></div>' +
-              '<a class="btn btn-primary btn-block cart-pay-btn" href="#/checkout">결제 주문으로 계속</a>' +
-            '</div>'
-          : '<div class="cart-pay-cta cart-pay-inquiry">' +
-              '<div class="cart-total-line"><span>최종 금액</span><strong>담당자 확인 후 안내</strong></div>' +
-              '<p class="form-note">일부 상품이 판매가 미확정 상태라 결제 대신 견적 요청으로 접수됩니다.</p>' +
-            '</div>') +
       '</div>' +
       '<a class="back-link" href="#/products">← 상품 더 보기</a>';
 
