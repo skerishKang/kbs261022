@@ -72,7 +72,7 @@
       btn.setAttribute('aria-expanded', brandCollapsed ? 'false' : 'true');
     }
     var empty = $('#brandEmpty');
-    if (empty && filtering) { empty.hidden = shown > 0; }
+    if (empty) { empty.hidden = !filtering || shown > 0; }
   }
 
   function initBrandMore() {
