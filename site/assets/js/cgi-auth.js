@@ -194,6 +194,19 @@
     });
   }
 
+  // 내 견적 내역 — 기존 GET /api/me/quotes 를 그대로 사용한다(신규 API 없음).
+  function quotes() {
+    return api('GET', '/api/me/quotes').then(function (res) {
+      return res.ok ? (res.data.items || []) : null;
+    });
+  }
+
+  function quoteDetail(id) {
+    return api('GET', '/api/me/quotes/' + encodeURIComponent(id)).then(function (res) {
+      return res.ok ? res.data.quote : null;
+    });
+  }
+
   function orderDetail(id) {
     return api('GET', '/api/me/orders/' + encodeURIComponent(id)).then(function (res) {
       return res.ok ? res.data.order : null;
@@ -255,6 +268,8 @@
     updateAddress: updateAddress,
     removeAddress: removeAddress,
     orders: orders,
+    quotes: quotes,
+    quoteDetail: quoteDetail,
     orderDetail: orderDetail,
     cancelOrder: cancelOrder,
     memberOrderId: memberOrderId,
