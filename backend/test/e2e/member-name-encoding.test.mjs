@@ -32,7 +32,7 @@ const encode = (text) => Array.from(new TextEncoder().encode(text));
 /** A signup frame whose name field carries raw bytes instead of UTF-8. */
 function signupBody(nameBytes) {
   return new Uint8Array([
-    ...encode('{"email":"' + EMAIL + '","password":"' + PASSWORD + '","phone":"010-0000-0000","name":"'),
+    ...encode('{"email":"' + EMAIL + '","password":"' + PASSWORD + '","phone":"010-0000-0000","terms":true,"privacy":true,"name":"'),
     ...nameBytes,
     ...encode('"}'),
   ]);

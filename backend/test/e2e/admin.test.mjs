@@ -312,6 +312,7 @@ test('PATCH on an unknown order returns 404', async () => {
 async function signUpAndVerify(env, { email = 'kim@example.com', name = '김회원' } = {}) {
   const res = await call(env, 'POST', '/api/auth/signup', {
     email, name, password: PASSWORD, phone: '010-1111-2222', company: '[E2E] 회사',
+    terms: true, privacy: true, terms_version: 'draft-2026-10-28', privacy_version: 'draft-2026-10-28',
   }, csrf);
   assert.equal(res.status, 201, `signup failed: ${res.text}`);
   const verified = await call(env, 'POST', '/api/auth/verify-email', {
