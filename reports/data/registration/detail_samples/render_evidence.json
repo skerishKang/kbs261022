@@ -1,0 +1,373 @@
+{
+  "kind": "cgi-m1-detail-render-evidence",
+  "executable": "chrome.exe",
+  "generated_at": "2026-10-28T07:07:46.521Z",
+  "viewports": [
+    {
+      "label": "pc",
+      "width": 1280,
+      "height": 900
+    },
+    {
+      "label": "mobile",
+      "width": 390,
+      "height": 844
+    }
+  ],
+  "samples": [
+    {
+      "file": "sample-01-samamusic_1118.html",
+      "viewports": {
+        "pc": {
+          "horizontalOverflow": false,
+          "scrollWidth": 1280,
+          "clientWidth": 1280,
+          "images": [
+            {
+              "src": "https://www.samamusic.co.kr/web/product/small/201808/62a2219c67e296b06ae9179e0c11cbf1.jpg",
+              "loaded": true,
+              "naturalWidth": 1000
+            }
+          ],
+          "titleVisible": true,
+          "screenshot": "reports\\screenshots\\detail-samples\\sample-01-samamusic_1118-pc.png",
+          "ok": true
+        },
+        "mobile": {
+          "horizontalOverflow": false,
+          "scrollWidth": 390,
+          "clientWidth": 390,
+          "images": [
+            {
+              "src": "https://www.samamusic.co.kr/web/product/small/201808/62a2219c67e296b06ae9179e0c11cbf1.jpg",
+              "loaded": true,
+              "naturalWidth": 1000
+            }
+          ],
+          "titleVisible": true,
+          "screenshot": "reports\\screenshots\\detail-samples\\sample-01-samamusic_1118-mobile.png",
+          "ok": true
+        }
+      }
+    },
+    {
+      "file": "sample-02-samamusic_1119.html",
+      "viewports": {
+        "pc": {
+          "horizontalOverflow": false,
+          "scrollWidth": 1280,
+          "clientWidth": 1280,
+          "images": [
+            {
+              "src": "https://www.samamusic.co.kr/web/product/small/201808/70b272d73590f2a058eb1814d4cd269e.jpg",
+              "loaded": true,
+              "naturalWidth": 1000
+            }
+          ],
+          "titleVisible": true,
+          "screenshot": "reports\\screenshots\\detail-samples\\sample-02-samamusic_1119-pc.png",
+          "ok": true
+        },
+        "mobile": {
+          "horizontalOverflow": false,
+          "scrollWidth": 390,
+          "clientWidth": 390,
+          "images": [
+            {
+              "src": "https://www.samamusic.co.kr/web/product/small/201808/70b272d73590f2a058eb1814d4cd269e.jpg",
+              "loaded": true,
+              "naturalWidth": 1000
+            }
+          ],
+          "titleVisible": true,
+          "screenshot": "reports\\screenshots\\detail-samples\\sample-02-samamusic_1119-mobile.png",
+          "ok": true
+        }
+      }
+    },
+    {
+      "file": "sample-03-samamusic_1120.html",
+      "viewports": {
+        "pc": {
+          "horizontalOverflow": false,
+          "scrollWidth": 1280,
+          "clientWidth": 1280,
+          "images": [
+            {
+              "src": "https://www.samamusic.co.kr/web/product/small/201808/bc9e8aa7aa8909a98be54bbff3f49c41.jpg",
+              "loaded": true,
+              "naturalWidth": 1000
+            }
+          ],
+          "titleVisible": true,
+          "screenshot": "reports\\screenshots\\detail-samples\\sample-03-samamusic_1120-pc.png",
+          "ok": true
+        },
+        "mobile": {
+          "horizontalOverflow": false,
+          "scrollWidth": 390,
+          "clientWidth": 390,
+          "images": [
+            {
+              "src": "https://www.samamusic.co.kr/web/product/small/201808/bc9e8aa7aa8909a98be54bbff3f49c41.jpg",
+              "loaded": true,
+              "naturalWidth": 1000
+            }
+          ],
+          "titleVisible": true,
+          "screenshot": "reports\\screenshots\\detail-samples\\sample-03-samamusic_1120-mobile.png",
+          "ok": true
+        }
+      }
+    },
+    {
+      "file": "sample-04-samasound_1001.html",
+      "viewports": {
+        "pc": {
+          "horizontalOverflow": false,
+          "scrollWidth": 1280,
+          "clientWidth": 1280,
+          "images": [
+            {
+              "src": "https://www.samasound.co.kr/web/product/small/202407/43ee37a5436960034061d8005d88f696.jpg",
+              "loaded": true,
+              "naturalWidth": 1000
+            }
+          ],
+          "titleVisible": true,
+          "screenshot": "reports\\screenshots\\detail-samples\\sample-04-samasound_1001-pc.png",
+          "ok": true
+        },
+        "mobile": {
+          "horizontalOverflow": false,
+          "scrollWidth": 390,
+          "clientWidth": 390,
+          "images": [
+            {
+              "src": "https://www.samasound.co.kr/web/product/small/202407/43ee37a5436960034061d8005d88f696.jpg",
+              "loaded": true,
+              "naturalWidth": 1000
+            }
+          ],
+          "titleVisible": true,
+          "screenshot": "reports\\screenshots\\detail-samples\\sample-04-samasound_1001-mobile.png",
+          "ok": true
+        }
+      }
+    },
+    {
+      "file": "sample-05-samasound_1043.html",
+      "viewports": {
+        "pc": {
+          "horizontalOverflow": false,
+          "scrollWidth": 1280,
+          "clientWidth": 1280,
+          "images": [
+            {
+              "src": "https://www.samasound.co.kr/web/product/small/202408/215669a45cbe1b288289a01c9da04f56.jpg",
+              "loaded": true,
+              "naturalWidth": 1000
+            }
+          ],
+          "titleVisible": true,
+          "screenshot": "reports\\screenshots\\detail-samples\\sample-05-samasound_1043-pc.png",
+          "ok": true
+        },
+        "mobile": {
+          "horizontalOverflow": false,
+          "scrollWidth": 390,
+          "clientWidth": 390,
+          "images": [
+            {
+              "src": "https://www.samasound.co.kr/web/product/small/202408/215669a45cbe1b288289a01c9da04f56.jpg",
+              "loaded": true,
+              "naturalWidth": 1000
+            }
+          ],
+          "titleVisible": true,
+          "screenshot": "reports\\screenshots\\detail-samples\\sample-05-samasound_1043-mobile.png",
+          "ok": true
+        }
+      }
+    },
+    {
+      "file": "sample-06-samasound_1044.html",
+      "viewports": {
+        "pc": {
+          "horizontalOverflow": false,
+          "scrollWidth": 1280,
+          "clientWidth": 1280,
+          "images": [
+            {
+              "src": "https://www.samasound.co.kr/web/product/small/202408/f7f9e4a335f262bcbab59ad4ced2d5fb.jpg",
+              "loaded": true,
+              "naturalWidth": 1000
+            }
+          ],
+          "titleVisible": true,
+          "screenshot": "reports\\screenshots\\detail-samples\\sample-06-samasound_1044-pc.png",
+          "ok": true
+        },
+        "mobile": {
+          "horizontalOverflow": false,
+          "scrollWidth": 390,
+          "clientWidth": 390,
+          "images": [
+            {
+              "src": "https://www.samasound.co.kr/web/product/small/202408/f7f9e4a335f262bcbab59ad4ced2d5fb.jpg",
+              "loaded": true,
+              "naturalWidth": 1000
+            }
+          ],
+          "titleVisible": true,
+          "screenshot": "reports\\screenshots\\detail-samples\\sample-06-samasound_1044-mobile.png",
+          "ok": true
+        }
+      }
+    },
+    {
+      "file": "sample-07-samamusic_1121.html",
+      "viewports": {
+        "pc": {
+          "horizontalOverflow": false,
+          "scrollWidth": 1280,
+          "clientWidth": 1280,
+          "images": [
+            {
+              "src": "https://www.samamusic.co.kr/web/product/small/201808/e489499ad4c6cfa5c13e044f08dbc8f2.jpg",
+              "loaded": true,
+              "naturalWidth": 1000
+            }
+          ],
+          "titleVisible": true,
+          "screenshot": "reports\\screenshots\\detail-samples\\sample-07-samamusic_1121-pc.png",
+          "ok": true
+        },
+        "mobile": {
+          "horizontalOverflow": false,
+          "scrollWidth": 390,
+          "clientWidth": 390,
+          "images": [
+            {
+              "src": "https://www.samamusic.co.kr/web/product/small/201808/e489499ad4c6cfa5c13e044f08dbc8f2.jpg",
+              "loaded": true,
+              "naturalWidth": 1000
+            }
+          ],
+          "titleVisible": true,
+          "screenshot": "reports\\screenshots\\detail-samples\\sample-07-samamusic_1121-mobile.png",
+          "ok": true
+        }
+      }
+    },
+    {
+      "file": "sample-08-samamusic_1122.html",
+      "viewports": {
+        "pc": {
+          "horizontalOverflow": false,
+          "scrollWidth": 1280,
+          "clientWidth": 1280,
+          "images": [
+            {
+              "src": "https://www.samamusic.co.kr/web/product/small/201808/9f39c77bacccc7dd357e1eb1e7015d40.jpg",
+              "loaded": true,
+              "naturalWidth": 1000
+            }
+          ],
+          "titleVisible": true,
+          "screenshot": "reports\\screenshots\\detail-samples\\sample-08-samamusic_1122-pc.png",
+          "ok": true
+        },
+        "mobile": {
+          "horizontalOverflow": false,
+          "scrollWidth": 390,
+          "clientWidth": 390,
+          "images": [
+            {
+              "src": "https://www.samamusic.co.kr/web/product/small/201808/9f39c77bacccc7dd357e1eb1e7015d40.jpg",
+              "loaded": true,
+              "naturalWidth": 1000
+            }
+          ],
+          "titleVisible": true,
+          "screenshot": "reports\\screenshots\\detail-samples\\sample-08-samamusic_1122-mobile.png",
+          "ok": true
+        }
+      }
+    },
+    {
+      "file": "sample-09-samamusic_1124.html",
+      "viewports": {
+        "pc": {
+          "horizontalOverflow": false,
+          "scrollWidth": 1280,
+          "clientWidth": 1280,
+          "images": [
+            {
+              "src": "https://www.samamusic.co.kr/web/product/small/201808/6147df1c5edf7ebc6ae0579683850a72.jpg",
+              "loaded": true,
+              "naturalWidth": 1000
+            }
+          ],
+          "titleVisible": true,
+          "screenshot": "reports\\screenshots\\detail-samples\\sample-09-samamusic_1124-pc.png",
+          "ok": true
+        },
+        "mobile": {
+          "horizontalOverflow": false,
+          "scrollWidth": 390,
+          "clientWidth": 390,
+          "images": [
+            {
+              "src": "https://www.samamusic.co.kr/web/product/small/201808/6147df1c5edf7ebc6ae0579683850a72.jpg",
+              "loaded": true,
+              "naturalWidth": 1000
+            }
+          ],
+          "titleVisible": true,
+          "screenshot": "reports\\screenshots\\detail-samples\\sample-09-samamusic_1124-mobile.png",
+          "ok": true
+        }
+      }
+    },
+    {
+      "file": "sample-10-samamusic_1125.html",
+      "viewports": {
+        "pc": {
+          "horizontalOverflow": false,
+          "scrollWidth": 1280,
+          "clientWidth": 1280,
+          "images": [
+            {
+              "src": "https://www.samamusic.co.kr/web/product/small/201808/792098b2a1a8f583326030e4477e31ed.jpg",
+              "loaded": true,
+              "naturalWidth": 1000
+            }
+          ],
+          "titleVisible": true,
+          "screenshot": "reports\\screenshots\\detail-samples\\sample-10-samamusic_1125-pc.png",
+          "ok": true
+        },
+        "mobile": {
+          "horizontalOverflow": false,
+          "scrollWidth": 390,
+          "clientWidth": 390,
+          "images": [
+            {
+              "src": "https://www.samamusic.co.kr/web/product/small/201808/792098b2a1a8f583326030e4477e31ed.jpg",
+              "loaded": true,
+              "naturalWidth": 1000
+            }
+          ],
+          "titleVisible": true,
+          "screenshot": "reports\\screenshots\\detail-samples\\sample-10-samamusic_1125-mobile.png",
+          "ok": true
+        }
+      }
+    }
+  ],
+  "summary": {
+    "all_ok": true,
+    "sample_count": 10
+  }
+}
