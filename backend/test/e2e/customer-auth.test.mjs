@@ -1014,6 +1014,34 @@ test('a signed-in quote request is linked, a guest quote is not', async () => {
   assert.equal(crossed.status, 404);
 });
 
+test('member B cannot see member A quotes (list and detail)', async () => {
+  const environment = env();
+  const a = await verifiedSession(environment, { email: 'a-quotes@example.com' });
+  const b = await verifiedSession(environment, { email: 'b-quotes@example.com' });
+
+  const created = await call(environment, 'POST', '/api/me/quotes', {
+    items: [{ id: 'samasound.co.kr:3836', qty: 2 }],
+    company: '[E2E] A사', name: '[E2E] 김A', phone: '010-1111-0001',
+  }, { ...csrf, Cookie: a.cookie });
+  assert.equal(created.status, 201, created.text);
+
+  const listA = await call(environment, 'GET', '/api/me/quotes', undefined, { ...csrf, Cookie: a.cookie });
+  assert.equal(listA.status, 200);
+  assert.equal(listA.json.items.length, 1);
+  assert.equal(listA.json.items[0].id, created.json.id);
+
+  const listB = await call(environment, 'GET', '/api/me/quotes', undefined, { ...csrf, Cookie: b.cookie });
+  assert.equal(listB.status, 200);
+  assert.equal(listB.json.items.length, 0, 'B must not see A quotes');
+  assert.ok(!listB.json.items.some((x) => x.id === created.json.id));
+
+  const detailB = await call(environment, 'GET', `/api/me/quotes/${created.json.id}`, undefined, { ...csrf, Cookie: b.cookie });
+  assert.equal(detailB.status, 404, 'B must not open A quote detail');
+
+  const guest = await call(environment, 'GET', '/api/me/quotes', undefined, csrf);
+  assert.equal(guest.status, 401);
+});
+
 test('a quote request from another origin is not linked even with a cookie', async () => {
   const environment = env();
   const { cookie } = await verifiedSession(environment);
