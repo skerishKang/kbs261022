@@ -47,6 +47,7 @@ export async function startMockNcomServer(overrides = {}) {
     orderPageSizeSeen: null,
     calls: [],
     uploadSeq: 0,
+    categories: null,
     ...overrides,
   };
 
@@ -151,6 +152,12 @@ export async function startMockNcomServer(overrides = {}) {
         const fileCount = (record.raw.match(/filename=/g) || []).length;
         const urls = Array.from({ length: Math.max(1, fileCount) }, () => `https://mock-image.example/upload-${state.uploadSeq += 1}.png`);
         reply(200, { urls });
+        return;
+      }
+      if (record.path === '/external/v1/categories' && req.method === 'GET') {
+        // GET /v1/categories 의 응답 형태(wholeCategoryName·id·name·last)를 흉내 낸
+        // 목업 트리 — startMockNcomServer({ categories: [...] }) 로 교체한다.
+        reply(200, state.categories ?? []);
         return;
       }
       if (record.path === '/external/v1/pay-order/seller/product-orders') {
