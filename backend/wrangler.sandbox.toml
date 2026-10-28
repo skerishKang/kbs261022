@@ -1,0 +1,54 @@
+# ---------------------------------------------------------------------------
+# NICEPAY Sandbox environment (issue #106) — an INDEPENDENT Worker on its own
+# D1 database. It reuses the same Cloudflare account and the same deployment
+# policy as cgi-quote-api, and never points at cgi_quotes.
+#
+#   deploy:  npx wrangler deploy -c backend/wrangler.sandbox.toml
+#   secret:  npx wrangler secret put NICEPAY_TEST_SECRET_KEY -c backend/wrangler.sandbox.toml
+#
+# Nothing in this file is a credential. The NICEPAY test keys live in Cloudflare
+# secrets (put from the operator's local non-public store) and in the operator's
+# local store; they are never committed, printed, or copied into a log.
+# ---------------------------------------------------------------------------
+name = "cgi-nicepay-sandbox"
+main = "worker.js"
+compatibility_date = "2026-10-23"
+compatibility_flags = ["nodejs_compat"]
+
+[[d1_databases]]
+binding = "DB"
+database_name = "cgi_quotes_sandbox"
+database_id = "e8705a5a-e4a3-4562-a245-d09d8f4a4670"
+
+[vars]
+# Which gateway this deployment speaks, and which of its two environments.
+# Production (cgi-quote-api) keeps PG_PROVIDER at its default: tosspayments.
+PG_PROVIDER = "nicepay"
+PG_NICEPAY_ENV = "test"
+PG_PROVIDER_MODE = "auto"
+
+# Where the payment window is asked to come back to. The sandbox store is the
+# TEST shop PADIEM-CGI-SANDBOX; swapping to the operating store is a secret and
+# PG_NICEPAY_ENV change, not a code change.
+# SITE_BASE_URL is the existing "where the site lives" variable (OAuth uses it).
+# The sandbox landing page is the Pages site, so both are set to the same origin.
+SITE_BASE_URL = "https://cgi-7li.pages.dev"
+NICEPAY_SITE_BASE_URL = "https://cgi-7li.pages.dev"
+
+# The sandbox must answer the Pages site, the GitHub Pages site and a local
+# checkout screen. AUTH_ORIGIN_STRICT=NO additionally admits localhost origins,
+# which is what NICEPAY's own sandbox sample uses as a returnUrl.
+CORS_ALLOWED_ORIGINS = "https://cgi-7li.pages.dev,https://skerishkang.github.io,https://www.samasound.co.kr"
+AUTH_ORIGIN_STRICT = "NO"
+
+# Nothing in this environment may transmit to the ERP or send mail.
+ERP_LIVE_WRITE = "NO"
+ERP_MODE = "test"
+ERP_DRY_RUN = "YES"
+MAIL_MODE = "console"   # no outbound mail from the sandbox (valid modes: console|echo|resend|sendgrid)
+
+SHIPPING_FEE_DEFAULT = "0"
+
+# Deliberately NOT copied from the production config: the Resend Secrets Store
+# binding, the OAuth client secret, and every Toss key. This Worker has no
+# reason to reach production money or production mail.

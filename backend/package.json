@@ -9,7 +9,8 @@
     "test:unit": "node --test --experimental-sqlite \"test/unit/*.test.mjs\"",
     "test:e2e": "node --test --experimental-sqlite \"test/e2e/*.test.mjs\"",
     "dry-run": "node tools/erp-naver-dry-run.mjs",
-    "smoke": "node --experimental-sqlite test/smoke.mjs"
+    "smoke": "node --experimental-sqlite test/smoke.mjs",
+    "test:integration": "node --test --experimental-sqlite \"test/integration/*.test.mjs\""
   },
   "devDependencies": {
     "wrangler": "^4.0.0"
