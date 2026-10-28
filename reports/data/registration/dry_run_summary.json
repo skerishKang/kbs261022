@@ -4,11 +4,11 @@
   "inputs": {
     "master": {
       "path": "data/full_catalog/product_db_compact.csv",
-      "sha256": "4fb323ce2a334ba58a740aee79e9f9e0eb10941d600cfb0c2b57675cd4383b01"
+      "sha256": "d7912303dc2e8a97e656c5dd0a1437e8ddf8490a5e1e020694835932dddf951e"
     },
     "prep": {
       "path": "data/smartstore_prep/smartstore_registration_prep.csv",
-      "sha256": "1110be226bc7add9d84a065ad0794c1c3714d82f7f1acc9caa6d0f1974ffdf65"
+      "sha256": "42407a0c78d46e27cfea902e938d12f2bb1ec0b4ef824ffa9d704012db69e631"
     },
     "options": {
       "path": "data/full_catalog/options_compact.csv",
@@ -44,7 +44,7 @@
     },
     "categoryPaths": {
       "path": "reports/data/naver/category_paths.csv",
-      "sha256": "ff5e8cc73eb2dca5ce9ca73d4560068a94e992eb3e012e40ce06edc45099d23c"
+      "sha256": "18ed6845bc47bc03cecb26cbd2bd6a6bcb7c7b822e5062a5b24c241e1f9779b3"
     },
     "readinessSummary": {
       "path": "reports/data/registration/readiness_summary.json",

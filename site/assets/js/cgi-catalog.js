@@ -796,7 +796,7 @@
         '<p class="page-sub" id="cartSummary">' + cartSummaryText(items) + '</p>' +
       '</header>' +
       '<div class="cart-layout">' +
-        '<div>' +
+        '<div class="cart-main">' +
           '<section class="cart-panel">' +
             '<div class="cart-panel-head"><h2>담은 상품</h2><span>수량을 확인해 주세요</span></div>' +
             '<table class="spec-table cart-table">' +
@@ -814,11 +814,6 @@
                 '</div>' +
               '</div>' +
             '</details>' +
-            (allPublicPrice(items)
-              ? '<div class="cart-total-line"><span>주문 금액</span><strong id="cartTotalValue">' + money(cartTotal(items)) + '</strong></div>' +
-                '<a class="btn btn-primary btn-block" href="#/checkout" style="margin-top:12px">결제 주문으로 계속</a>'
-              : '<div class="cart-total-line"><span>최종 금액</span><strong>담당자 확인 후 안내</strong></div>' +
-                '<p class="form-note">일부 상품이 판매가 미확정 상태라 결제 대신 견적 요청으로 접수됩니다.</p>') +
           '</section>' +
         '</div>' +
         '<aside class="cart-request">' +
@@ -844,6 +839,15 @@
             '</form>' +
           '</div>' +
         '</aside>' +
+        (allPublicPrice(items)
+          ? '<div class="cart-pay-cta">' +
+              '<div class="cart-total-line"><span>주문 금액</span><strong id="cartTotalValue">' + money(cartTotal(items)) + '</strong></div>' +
+              '<a class="btn btn-primary btn-block cart-pay-btn" href="#/checkout">결제 주문으로 계속</a>' +
+            '</div>'
+          : '<div class="cart-pay-cta cart-pay-inquiry">' +
+              '<div class="cart-total-line"><span>최종 금액</span><strong>담당자 확인 후 안내</strong></div>' +
+              '<p class="form-note">일부 상품이 판매가 미확정 상태라 결제 대신 견적 요청으로 접수됩니다.</p>' +
+            '</div>') +
       '</div>' +
       '<a class="back-link" href="#/products">← 상품 더 보기</a>';
 
@@ -1583,7 +1587,11 @@
         authField('회사명 (선택)', 'company', 'text', '', { autocomplete: 'organization', required: false, maxLength: 100 }) +
         authField('비밀번호', 'password', 'password', '', { autocomplete: 'new-password', min: 8 }) +
         authField('비밀번호 확인', 'password2', 'password', '', { autocomplete: 'new-password' }) +
-        '<p class="auth-hint">8자 이상, 영문과 숫자와 기호가 모두 들어가야 해요.</p>' +
+        '<p class="auth-hint">비밀번호는 8자 이상이며 영문·숫자·기호를 모두 포함해야 합니다.</p>' +
+        '<div class="auth-consent">' +
+          '<label class="auth-check"><input type="checkbox" name="agreeTerms"> <span>[필수] <a href="terms.html" target="_blank" rel="noopener">이용약관</a>에 동의합니다.</span></label>' +
+          '<label class="auth-check"><input type="checkbox" name="agreePrivacy"> <span>[필수] <a href="privacy.html" target="_blank" rel="noopener">개인정보 수집·이용 안내</a>에 동의합니다.</span></label>' +
+        '</div>' +
         '<button type="submit" class="btn btn-primary btn-block" data-auth-submit="signup">회원가입</button>' +
       '</form>', true);
     var form = document.getElementById('signupForm');
@@ -1610,6 +1618,12 @@
         showToast('비밀번호가 서로 일치하지 않습니다.');
         return;
       }
+      var agreeTerms = form.elements.agreeTerms;
+      var agreePrivacy = form.elements.agreePrivacy;
+      if (!agreeTerms || !agreePrivacy || !agreeTerms.checked || !agreePrivacy.checked) {
+        showToast('이용약관과 개인정보 수집·이용 동의가 필요합니다.');
+        return;
+      }
       submit.disabled = true;
       submit.textContent = '가입 처리 중…';
       p.signUp({
@@ -1617,7 +1631,11 @@
         name: form.elements.name.value.trim(),
         phone: form.elements.phone.value.trim(),
         company: form.elements.company.value.trim(),
-        password: password
+        password: password,
+        terms: true,
+        privacy: true,
+        terms_version: 'draft-2026-10-28',
+        privacy_version: 'draft-2026-10-28'
       }).then(function (member) {
         submit.disabled = false;
         submit.textContent = '회원가입';

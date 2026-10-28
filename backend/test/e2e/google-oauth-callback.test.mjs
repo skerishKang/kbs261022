@@ -433,6 +433,7 @@ test('google callback links to an existing member by email', async () => {
   const csrfHeaders = { Origin: ORIGIN, 'X-CSRF-Token': ORIGIN, 'Content-Type': 'application/json' };
   const signupResp = await call(env, 'POST', '/api/auth/signup', {
     email: 'existing@example.com', name: 'Existing Member', password: TEST_PASSWORD,
+    terms: true, privacy: true, terms_version: 'draft-2026-10-28', privacy_version: 'draft-2026-10-28',
   }, csrf);
   assert.equal(signupResp.status, 201);
 
@@ -572,6 +573,7 @@ test('normal member cannot access admin API', async () => {
   const csrfHeaders = { Origin: ORIGIN, 'X-CSRF-Token': ORIGIN, 'Content-Type': 'application/json' };
   const signupResp = await call(env, 'POST', '/api/auth/signup', {
     email: 'normal@example.com', name: 'Normal Member', password: TEST_PASSWORD,
+    terms: true, privacy: true, terms_version: 'draft-2026-10-28', privacy_version: 'draft-2026-10-28',
   }, csrf);
   assert.equal(signupResp.status, 201);
 
@@ -705,6 +707,7 @@ test('email signup and login still works after Google OAuth changes', async () =
   // Signup
   const signup = await call(env, 'POST', '/api/auth/signup', {
     email: 'emailuser@example.com', name: 'Email User', password: TEST_PASSWORD,
+    terms: true, privacy: true, terms_version: 'draft-2026-10-28', privacy_version: 'draft-2026-10-28',
   }, csrf);
   assert.equal(signup.status, 201);
   assert.equal(signup.json.member.email, 'emailuser@example.com');

@@ -62,6 +62,7 @@ const priced = Object.entries(PRICE_INDEX)
 async function signUp(environment, { email = 'kim@example.com', name = '김회원', password = PASSWORD } = {}) {
   const res = await call(environment, 'POST', '/api/auth/signup', {
     email, name, password, phone: '010-1111-2222', company: '[E2E] 회사',
+    terms: true, privacy: true, terms_version: 'draft-2026-10-28', privacy_version: 'draft-2026-10-28',
   }, csrf);
   assert.equal(res.status, 201, `signup failed: ${res.text}`);
   return { res, token: res.json.mail.echo_token, memberId: res.json.member.id };
@@ -188,7 +189,7 @@ test('health reports the auth posture without leaking secrets', async () => {
   const environment = env({ ADMIN_TOKEN: 'super-secret-admin-token', MAIL_MODE: 'console' });
   const res = await call(environment, 'GET', '/api/admin/health');
   assert.equal(res.status, 200);
-  assert.equal(res.json.version, '1.4.0');
+  assert.equal(res.json.version, '1.5.0');
   assert.equal(res.json.auth.enabled, true);
   assert.equal(res.json.auth.mail_mode, 'console');
   assert.equal(res.json.auth.email_verify_required, false);
@@ -238,29 +239,41 @@ test('a configured AUTH_CSRF_TOKEN is accepted and reported', async () => {
 test('signup validates inputs and stores a PBKDF2 hash plus a digested token', async () => {
   const environment = env({ MAIL_MODE: 'echo' });
 
-  const noEmail = await call(environment, 'POST', '/api/auth/signup', { name: 'x', password: PASSWORD }, csrf);
+  const noEmail = await call(environment, 'POST', '/api/auth/signup', { name: 'x', password: PASSWORD ,
+      terms: true, privacy: true, terms_version: 'draft-2026-10-28', privacy_version: 'draft-2026-10-28'
+  }, csrf);
   assert.equal(noEmail.status, 400);
 
   const badEmail = await call(environment, 'POST', '/api/auth/signup', {
     email: 'not-an-email', name: 'x', password: PASSWORD,
+    terms: true, privacy: true, terms_version: 'draft-2026-10-28', privacy_version: 'draft-2026-10-28',
   }, csrf);
   assert.equal(badEmail.status, 400);
   assert.equal(badEmail.json.error, 'invalid email');
 
   const weak = await call(environment, 'POST', '/api/auth/signup', {
     email: 'kim@example.com', name: '김회원', password: 'short',
+    terms: true, privacy: true, terms_version: 'draft-2026-10-28', privacy_version: 'draft-2026-10-28',
   }, csrf);
   assert.equal(weak.status, 400);
   assert.equal(weak.json.error, 'password too short');
 
   const noSymbol = await call(environment, 'POST', '/api/auth/signup', {
     email: 'kim@example.com', name: '김회원', password: 'abcdefgh1',
+    terms: true, privacy: true, terms_version: 'draft-2026-10-28', privacy_version: 'draft-2026-10-28',
   }, csrf);
   assert.equal(noSymbol.status, 400);
   assert.equal(noSymbol.json.error, 'password too weak');
 
+  const noConsent = await call(environment, 'POST', '/api/auth/signup', {
+    email: 'kim@example.com', name: '김회원', password: PASSWORD,
+  }, csrf);
+  assert.equal(noConsent.status, 400);
+  assert.equal(noConsent.json.error, 'consent required');
+
   const withEmail = await call(environment, 'POST', '/api/auth/signup', {
     email: 'kim@example.com', name: '김회원', password: 'kim@example.com',
+    terms: true, privacy: true, terms_version: 'draft-2026-10-28', privacy_version: 'draft-2026-10-28',
   }, csrf);
   assert.equal(withEmail.status, 400);
   assert.equal(withEmail.json.error, 'password too weak');
@@ -283,6 +296,7 @@ test('signup validates inputs and stores a PBKDF2 hash plus a digested token', a
 
   const duplicate = await call(environment, 'POST', '/api/auth/signup', {
     email: 'KIM@example.com', name: '다른 사람', password: PASSWORD,
+    terms: true, privacy: true, terms_version: 'draft-2026-10-28', privacy_version: 'draft-2026-10-28',
   }, csrf);
   assert.equal(duplicate.status, 409);
   assert.equal(duplicate.json.error, 'email already used');
@@ -1132,6 +1146,7 @@ test('an unpaid order blocks deletion until it is cancelled, then everything is 
 
   const reuse = await call(environment, 'POST', '/api/auth/signup', {
     email: 'kim@example.com', name: '김새회원', password: PASSWORD,
+    terms: true, privacy: true, terms_version: 'draft-2026-10-28', privacy_version: 'draft-2026-10-28',
   }, csrf);
   assert.equal(reuse.status, 201, 'the released email can be registered again');
 });
@@ -1194,6 +1209,7 @@ test('resend-verification requires a session and is a no-op once verified', asyn
 
   const duplicate = await call(environment, 'POST', '/api/auth/signup', {
     email: 'kim@example.com', name: '김회원2', password: PASSWORD,
+    terms: true, privacy: true, terms_version: 'draft-2026-10-28', privacy_version: 'draft-2026-10-28',
   }, csrf);
   assert.equal(duplicate.status, 409, 'the same email cannot be registered twice');
 });
