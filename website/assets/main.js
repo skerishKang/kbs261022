@@ -58,7 +58,8 @@
     var filtering = q.length > 0;
     var shown = 0;
     items.forEach(function (li, idx) {
-      var base = !brandCollapsed || filtering || idx < BRAND_INITIAL;
+      var matches = !q || (li.textContent || '').toLowerCase().indexOf(q) >= 0;
+      var base = matches && (filtering || !brandCollapsed || idx < BRAND_INITIAL);
       li.hidden = !base;
       if (base) { shown++; }
     });
