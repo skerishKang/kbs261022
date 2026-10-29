@@ -14,6 +14,7 @@
 //     상품 등록과 무관하므로 --i-confirm-register는 요구하지 않는다.
 //   - 단일 실행 잠금: 출력 디렉터리의 .ncom-stock-sync.lock (신선한 잠금=거부, 2시간 경과=stale 자동 해제).
 //   - 수량 출처 없는 쓰기는 계약 모듈이 차단(E25) — 이 CLI는 blocked 계획을 절대 전송하지 않는다.
+//     추가로 출처 불명확(fallback_*·미기록) 계획은 apply 단계에서 blocked_by_source로 분리해 전송하지 않는다.
 //   - 자격증명은 ~/.config/cgi-erp/ncom.env 에서만 읽고 값은 출력하지 않는다(런북 §1).
 //   - 스케줄러 실행은 --out-dir 로 저장소 밖 기록 권장 — 작업트리를 더럽히지 않는다.
 //
@@ -55,6 +56,37 @@ export function selectApplicablePlans(planDoc) {
   const rows = Array.isArray(planDoc?.rows) ? planDoc.rows : Object.values(planDoc?.plans ?? {});
   const ok = new Set([STOCK_SYNC_ACTIONS.sync_quantity, STOCK_SYNC_ACTIONS.restock, STOCK_SYNC_ACTIONS.sold_out_transition]);
   return rows.filter((r) => r?.plan && ok.has(r.plan.action) && r.plan.modify);
+}
+
+/** 수량 출처가 확인된 계획인지 — fallback_*(수량 미공개 하한)은 출처 불명확으로 본다. */
+export function isQuantitySourceConfirmed(plan) {
+  const source = String(plan?.stock_source ?? '').trim();
+  if (!source) return false; // 출처 미기록 계획은 쓰지 않는다(구계획 파일 포함)
+  return !/^fallback_/.test(source);
+}
+
+/**
+ * apply 전송 대상 분리 — C21 계약(④ 상태 전환 하한 허용)은 유지하고,
+ * 운영 CLI가 그 위에 더 엄격한 가드를 건다: 출처 불명확(fallback·미기록) 계획은 전송하지 않는다.
+ */
+export function selectWritablePlans(planDoc) {
+  const applicable = selectApplicablePlans(planDoc);
+  const writable = [];
+  const blocked = [];
+  for (const row of applicable) {
+    if (isQuantitySourceConfirmed(row?.plan)) {
+      writable.push(row);
+    } else {
+      blocked.push({
+        cgiId: row?.cgiId ?? null,
+        originProductNo: row?.originProductNo ?? null,
+        action: row?.plan?.action ?? null,
+        stock_source: row?.plan?.stock_source ?? null,
+        reason: 'quantity_source_unconfirmed',
+      });
+    }
+  }
+  return { writable, blocked };
 }
 
 /** 복원 본문(C12: OUTOFSTOCK은 입력이 아니다 — 재고 0 + SALE로 복원하면 서버가 OUTOFSTOCK 저장). */
@@ -287,11 +319,13 @@ async function cmdApply(args) {
   try {
     const runtime = await createRuntime();
     const planDoc = JSON.parse(fs.readFileSync(planFile, 'utf8'));
-    let applicable = selectApplicablePlans(planDoc);
+    const { writable, blocked } = selectWritablePlans(planDoc);
+    let applicable = writable;
     const codes = codesArg(args);
     if (codes) applicable = applicable.filter((r) => codes.includes(r.cgiId));
     const outFile = path.join(path.dirname(planFile), path.basename(planFile).replace('plan', 'apply'));
     logLine(outFile, `apply 시작: 대상 ${applicable.length}건 (plan=${path.basename(planFile)})`);
+    if (blocked.length) logLine(outFile, `출처 불명확 쓰기 차단: ${blocked.length}건 — fallback·미기록 계획은 전송하지 않는다`);
 
     const results = [];
     for (const item of applicable) {
@@ -342,12 +376,12 @@ async function cmdApply(args) {
       }
       results.push(out);
       fs.mkdirSync(path.dirname(outFile), { recursive: true });
-      fs.writeFileSync(outFile, `${JSON.stringify({ kind: 'cgi-bulk-stock-sync-apply', ran_at: new Date().toISOString(), note: '재고 동기화 적용 — 유효 변경만 전체 리소스 PUT + 재조회 검증 + 불일치 시 원본 복원, 전후 장부 기록.', results }, null, 2)}\n`);
+      fs.writeFileSync(outFile, `${JSON.stringify({ kind: 'cgi-bulk-stock-sync-apply', ran_at: new Date().toISOString(), note: '재고 동기화 적용 — 유효 변경만 전체 리소스 PUT + 재조회 검증 + 불일치 시 원본 복원, 전후 장부 기록. 출처 불명확(fallback·미기록) 계획은 blocked_by_source로 기록만 하고 전송하지 않는다.', blocked_by_source: blocked, results }, null, 2)}\n`);
       if (results.length % 20 === 0) logLine(outFile, `progress ${results.length}/${applicable.length}`);
       await new Promise((r) => setTimeout(r, SLEEP_MS));
     }
     const summary = summarizeApply(results);
-    logLine(outFile, `SUMMARY ${JSON.stringify({ ...summary, out: path.resolve(outFile) })}`);
+    logLine(outFile, `SUMMARY ${JSON.stringify({ ...summary, blocked_by_source: blocked.length, out: path.resolve(outFile) })}`);
     if (results.some((r) => String(r.state).startsWith('FAILED') || r.state === 'RESTORE_FAILED')) process.exitCode = 3;
   } finally {
     releaseLock(lockPath);

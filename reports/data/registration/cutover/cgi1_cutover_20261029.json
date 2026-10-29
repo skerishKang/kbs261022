@@ -1,0 +1,101 @@
+{
+  "kind": "cgi-ncom-cgi1-cutover",
+  "ran_at": "2026-10-29T14:20:17Z",
+  "host": {
+    "name": "cgi-1",
+    "workdir": "D:\\클로드\\261029\\cgi-1",
+    "main_sha": "99fa446",
+    "node": "v24.20.0",
+    "npm": "11.19.0",
+    "python": "3.13.7",
+    "git": "2.52.0"
+  },
+  "preservation": {
+    "ledger_rows": 687,
+    "registrations": 349,
+    "stock_sync_rows": 338,
+    "unique_seller_codes": 349,
+    "unique_origin_product_no": 349,
+    "unique_channel_product_no": 349,
+    "display_on": 349,
+    "mode_live": 349,
+    "display_activated": 345,
+    "display_activated_outofstock": 4,
+    "prep_join_matched": 349,
+    "prep_join_missing": 0,
+    "prep_price_numeric": 349,
+    "prep_price_missing": 0,
+    "prep_registrable_db_yes": 349,
+    "ledger_changed": false
+  },
+  "stock_sync": {
+    "sync_quantity": 168,
+    "sync_quantity_reverted": 168,
+    "revert_rows": 168,
+    "restock": 2,
+    "fallback_source_rows": 170,
+    "fallback_reverted": 168,
+    "fallback_restock_historical": 2,
+    "note": "fallback 재입고 2건(1856·2093)은 과거 예외로 기록. 현재 원격 재조회는 자격증명 부재로 미수행."
+  },
+  "price_recovery": {
+    "target": 1348,
+    "recovered": 0,
+    "exact_join_extended_mapping": 1348,
+    "exact_join_ecount_upload": 1348,
+    "sources_with_numeric_price": 0,
+    "ecount_login_attempts": 1,
+    "ecount_login_result": "failed_once_password_message_stop"
+  },
+  "live_api": {
+    "status": "BLOCKED",
+    "reason": "ncom.env missing on CGI-1; NCOM_* env absent",
+    "calls": 0,
+    "auth_verified": false,
+    "ip_allowed": false,
+    "live_products_verified": false,
+    "readonly_stock_compare": false,
+    "new_registrations": 0
+  },
+  "com1": {
+    "status": "BLOCKED",
+    "tailscale": "active_direct",
+    "ports_open": [2222, 445, 139],
+    "smb": "share enumeration error 5; direct Users/Public paths absent",
+    "ssh": "limone@100.124.21.64:2222 permission denied (publickey,keyboard-interactive)",
+    "task_checked": false,
+    "task_stopped": false,
+    "note": "중지 완료로 보고하지 않는다."
+  },
+  "scheduler": {
+    "task": "PADIEM-CGI1-LOCAL2-Ncom-StockCheck",
+    "schedule": "daily 07:30 KST",
+    "state": "Ready",
+    "logon_type": "Interactive",
+    "user": "sji",
+    "next_run": "2026-10-30T07:30:30+09:00",
+    "trial_run_at": "2026-10-29T23:15:18+09:00",
+    "last_task_result": 1,
+    "trial_run_reason": "read gate blocked: NCOM_CLIENT_ID/SECRET required",
+    "log_path": "C:\\Users\\sji\\AppData\\Local\\CGI-Ncom-StockCheck\\run.log",
+    "single_lock": ".ncom-stock-sync.lock (fresh refused, stale after 2h)"
+  },
+  "tests": {
+    "unit": "549/549 PASS",
+    "e2e": "286/286 PASS",
+    "integration": "19/19 PASS",
+    "smoke": "10/10 PASS",
+    "secret_scan": "PASS"
+  },
+  "changes": [
+    "tools/naver/ncom-stock-sync.mjs: selectWritablePlans write guard (fallback/unrecorded source blocked)",
+    "tools/naver/run-stock-check.ps1: host-agnostic out dir + run.log + exit code",
+    "backend/test/unit/ncom-stock-sync-runner.test.mjs: +1 test"
+  ],
+  "unchanged": [
+    "backend/lib/ncom-stock-sync.mjs (C21 contract)",
+    "reports/data/registration/ncom_registration_ledger.json",
+    "data/smartstore_prep/smartstore_registration_prep.csv",
+    "operational product data"
+  ]
+}
