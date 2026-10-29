@@ -1,0 +1,10 @@
+{
+  "kind": "cgi-bulk-batch13-candidates",
+  "ran_at": "2026-10-29T22:26:30.838Z",
+  "basis": {
+    "main_sha": "57c3d31",
+    "full_coverage": true
+  },
+  "count": 0,
+  "selected": []
+}

@@ -1,0 +1,649 @@
+{
+  "kind": "cgi-bulk-batch13-prep",
+  "ran_at": "2026-10-29T22:23:10.428Z",
+  "basis": {
+    "main_sha": "57c3d31",
+    "full_coverage": true,
+    "source": "full_coverage_classification_20261030.json CANDIDATE 143"
+  },
+  "pool_size": 21,
+  "excluded": [],
+  "exclusion_summary": {},
+  "candidate_count": 21,
+  "selected_states": {
+    "READY_SALE": 13,
+    "READY_OUTOFSTOCK": 8
+  },
+  "selected": [
+    {
+      "cgiId": "samamusic:1216",
+      "leafCategoryId": "50024419",
+      "category_source": "registered_path_contract(votes=5)",
+      "model": {
+        "source": "page_label",
+        "value": "SE535LTD",
+        "evidence": "SHURE SE535LTD NEW (레드) 슈어 이어폰"
+      },
+      "maker": "SHURE",
+      "live_price": 825000,
+      "collected_price": 825000,
+      "price_match": true,
+      "live_origin": "해외",
+      "sold_out": false,
+      "price_inquiry": false,
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "live_probe": {
+        "origin": "해외",
+        "brand": "SHURE",
+        "model": "SE535LTD",
+        "price": 825000,
+        "stock_label": null
+      },
+      "batch13_state": "READY_SALE"
+    },
+    {
+      "cgiId": "samamusic:233",
+      "leafCategoryId": "50024419",
+      "category_source": "registered_path_contract(votes=5)",
+      "model": {
+        "source": "product_name_substring",
+        "value": "SHURE SE215SPE",
+        "evidence": "SHURE SE215SPE 슈어 이어폰"
+      },
+      "maker": "SHURE",
+      "live_price": 189000,
+      "collected_price": 189000,
+      "price_match": true,
+      "live_origin": "해외",
+      "sold_out": false,
+      "price_inquiry": false,
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "live_probe": {
+        "origin": "해외",
+        "brand": "SHURE",
+        "model": null,
+        "price": 189000,
+        "stock_label": null
+      },
+      "batch13_state": "READY_SALE"
+    },
+    {
+      "cgiId": "samamusic:2573",
+      "leafCategoryId": "50024419",
+      "category_source": "registered_path_contract(votes=5)",
+      "model": {
+        "source": "page_label",
+        "value": "AONIC 215 TW2",
+        "evidence": "SHURE AONIC 215 TW2 / 슈어 에이오닉 완전 무선 이어폰 2세대 (블랙, 블루)"
+      },
+      "maker": "SHURE",
+      "live_price": 418000,
+      "collected_price": 418000,
+      "price_match": true,
+      "live_origin": "해외",
+      "sold_out": true,
+      "price_inquiry": false,
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "live_probe": {
+        "origin": "해외",
+        "brand": "SHURE",
+        "model": "AONIC 215 TW2",
+        "price": 418000,
+        "stock_label": null
+      },
+      "batch13_state": "READY_OUTOFSTOCK"
+    },
+    {
+      "cgiId": "samamusic:1422",
+      "leafCategoryId": "50002974",
+      "category_source": "registered_path_contract(votes=8)",
+      "model": {
+        "source": "page_label",
+        "value": "JAM PLUS",
+        "evidence": "APOGEE JAM+ Win, Mac & iOS 아포지 기타 인터페이스"
+      },
+      "maker": "APOGEE",
+      "live_price": 159000,
+      "collected_price": 159000,
+      "price_match": true,
+      "live_origin": "해외",
+      "sold_out": false,
+      "price_inquiry": false,
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "live_probe": {
+        "origin": "해외",
+        "brand": "APOGEE",
+        "model": "JAM PLUS",
+        "price": 159000,
+        "stock_label": null
+      },
+      "batch13_state": "READY_SALE"
+    },
+    {
+      "cgiId": "samamusic:283",
+      "leafCategoryId": "50002342",
+      "category_source": "registered_path_contract(votes=102)",
+      "model": {
+        "source": "page_label",
+        "value": "HPACA1",
+        "evidence": "SHURE HPACA1 / 슈어 SRH 교체용 케이블 (1.4m~5m)"
+      },
+      "maker": "SHURE",
+      "live_price": 32000,
+      "collected_price": 32000,
+      "price_match": true,
+      "live_origin": "해외 .",
+      "sold_out": false,
+      "price_inquiry": false,
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "live_probe": {
+        "origin": "해외 .",
+        "brand": "SHURE",
+        "model": "HPACA1",
+        "price": 32000,
+        "stock_label": null
+      },
+      "batch13_state": "READY_SALE"
+    },
+    {
+      "cgiId": "samamusic:285",
+      "leafCategoryId": "50002342",
+      "category_source": "registered_path_contract(votes=102)",
+      "model": {
+        "source": "page_label",
+        "value": "HPAEC1540",
+        "evidence": "SHURE HPAEC1540 / 슈어 SRH1540 교체용 이어패드 (1쌍)"
+      },
+      "maker": "SHURE",
+      "live_price": 92000,
+      "collected_price": 92000,
+      "price_match": true,
+      "live_origin": "해외 .",
+      "sold_out": false,
+      "price_inquiry": false,
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "live_probe": {
+        "origin": "해외 .",
+        "brand": "SHURE",
+        "model": "HPAEC1540",
+        "price": 92000,
+        "stock_label": null
+      },
+      "batch13_state": "READY_SALE"
+    },
+    {
+      "cgiId": "samamusic:291",
+      "leafCategoryId": "50002342",
+      "category_source": "registered_path_contract(votes=102)",
+      "model": {
+        "source": "page_label",
+        "value": "HPAEC440",
+        "evidence": "SHURE HPAEC440 / 슈어 SRH440 교체용 이어패드 (1쌍)"
+      },
+      "maker": "SHURE",
+      "live_price": 15000,
+      "collected_price": 15000,
+      "price_match": true,
+      "live_origin": "해외 .",
+      "sold_out": true,
+      "price_inquiry": false,
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "live_probe": {
+        "origin": "해외 .",
+        "brand": "SHURE",
+        "model": "HPAEC440",
+        "price": 15000,
+        "stock_label": null
+      },
+      "batch13_state": "READY_OUTOFSTOCK"
+    },
+    {
+      "cgiId": "samamusic:3013",
+      "leafCategoryId": "50002342",
+      "category_source": "registered_path_contract(votes=102)",
+      "model": {
+        "source": "page_label",
+        "value": "CL-Z",
+        "evidence": "CLOUD CL-Z / 클라우드 리프터 마이크 액티베이터"
+      },
+      "maker": "Cloud",
+      "live_price": 480000,
+      "collected_price": 480000,
+      "price_match": true,
+      "live_origin": "아메리카 미국 애리조나",
+      "sold_out": false,
+      "price_inquiry": false,
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "live_probe": {
+        "origin": "아메리카 미국 애리조나",
+        "brand": "Cloud",
+        "model": "CL-Z",
+        "price": 480000,
+        "stock_label": null
+      },
+      "batch13_state": "READY_SALE"
+    },
+    {
+      "cgiId": "samamusic:2893",
+      "leafCategoryId": "50002342",
+      "category_source": "registered_path_contract(votes=102)",
+      "model": {
+        "source": "page_label",
+        "value": "ADAPTER (12V3.33A)-Symphony Desktop용",
+        "evidence": "APOGEE Symphony Desktop용 아포지 어댑터"
+      },
+      "maker": "APOGEE",
+      "live_price": 25000,
+      "collected_price": 25000,
+      "price_match": true,
+      "live_origin": "아시아 중국 OEM",
+      "sold_out": false,
+      "price_inquiry": false,
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "live_probe": {
+        "origin": "아시아 중국 OEM",
+        "brand": "APOGEE",
+        "model": "ADAPTER (12V3.33A)-Symphony Desktop용",
+        "price": 25000,
+        "stock_label": null
+      },
+      "batch13_state": "READY_SALE"
+    },
+    {
+      "cgiId": "samamusic:3566",
+      "leafCategoryId": "50002322",
+      "category_source": "registered_path_contract(votes=8)",
+      "model": {
+        "source": "page_label",
+        "value": "Eris E3.5 BT",
+        "evidence": "[전시/단종 클리어런스] PRESONUS Eris E3.5 BT 프리소너스 블루투스 모니터 스피커 1조(2통"
+      },
+      "maker": "PRESONUS",
+      "live_price": 120000,
+      "collected_price": 120000,
+      "price_match": true,
+      "live_origin": "해외",
+      "sold_out": true,
+      "price_inquiry": false,
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "live_probe": {
+        "origin": "해외",
+        "brand": "PRESONUS",
+        "model": "Eris E3.5 BT",
+        "price": 120000,
+        "stock_label": null
+      },
+      "batch13_state": "READY_OUTOFSTOCK"
+    },
+    {
+      "cgiId": "samamusic:5750",
+      "leafCategoryId": "50002327",
+      "category_source": "registered_path_contract(votes=4)",
+      "model": {
+        "source": "page_label",
+        "value": "MV6 Gen2 (Black)/ (White)",
+        "evidence": "SHURE MV6 Gen 2 슈어 게이밍 USB-C 스피치 마이크"
+      },
+      "maker": "SHURE",
+      "live_price": 303000,
+      "collected_price": 303000,
+      "price_match": true,
+      "live_origin": "아시아 중국 ,멕시코 또는 태국",
+      "sold_out": false,
+      "price_inquiry": false,
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "live_probe": {
+        "origin": "아시아 중국 ,멕시코 또는 태국",
+        "brand": "SHURE",
+        "model": "MV6 Gen2 (Black)/ (White)",
+        "price": 303000,
+        "stock_label": null
+      },
+      "batch13_state": "READY_SALE"
+    },
+    {
+      "cgiId": "samamusic:266",
+      "leafCategoryId": "50002327",
+      "category_source": "registered_path_contract(votes=4)",
+      "model": {
+        "source": "product_name_substring",
+        "value": "SHURE MV88",
+        "evidence": "SHURE MV88 슈어 스테레오 마이크"
+      },
+      "maker": "SHURE",
+      "live_price": 240000,
+      "collected_price": 240000,
+      "price_match": true,
+      "live_origin": "아시아 중국 또는 멕시코",
+      "sold_out": true,
+      "price_inquiry": false,
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "live_probe": {
+        "origin": "아시아 중국 또는 멕시코",
+        "brand": "SHURE",
+        "model": null,
+        "price": 240000,
+        "stock_label": null
+      },
+      "batch13_state": "READY_OUTOFSTOCK"
+    },
+    {
+      "cgiId": "samamusic:274",
+      "leafCategoryId": "50002327",
+      "category_source": "registered_path_contract(votes=4)",
+      "model": {
+        "source": "product_name_substring",
+        "value": "SHURE MV5-LTG",
+        "evidence": "SHURE MV5-LTG 슈어 콘덴서 마이크"
+      },
+      "maker": "SHURE",
+      "live_price": 231000,
+      "collected_price": 231000,
+      "price_match": true,
+      "live_origin": "아시아 중국 또는 멕시코",
+      "sold_out": true,
+      "price_inquiry": false,
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "live_probe": {
+        "origin": "아시아 중국 또는 멕시코",
+        "brand": "SHURE",
+        "model": null,
+        "price": 231000,
+        "stock_label": null
+      },
+      "batch13_state": "READY_OUTOFSTOCK"
+    },
+    {
+      "cgiId": "samamusic:273",
+      "leafCategoryId": "50002327",
+      "category_source": "registered_path_contract(votes=4)",
+      "model": {
+        "source": "product_name_substring",
+        "value": "SHURE MV5-B-LTG",
+        "evidence": "SHURE MV5-B-LTG 슈어 콘덴서 마이크"
+      },
+      "maker": "SHURE",
+      "live_price": 231000,
+      "collected_price": 231000,
+      "price_match": true,
+      "live_origin": "아시아 중국 또는 멕시코",
+      "sold_out": true,
+      "price_inquiry": false,
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "live_probe": {
+        "origin": "아시아 중국 또는 멕시코",
+        "brand": "SHURE",
+        "model": null,
+        "price": 231000,
+        "stock_label": null
+      },
+      "batch13_state": "READY_OUTOFSTOCK"
+    },
+    {
+      "cgiId": "samamusic:5590",
+      "leafCategoryId": "50002326",
+      "category_source": "registered_path_contract(votes=25)",
+      "model": {
+        "source": "page_label",
+        "value": "FENDER STUDIO PRO 12M|Velvet|Melodyne 5 assistant (essential UPG)",
+        "evidence": "Fender Studio Pro Annual + iZotope Velvet + Melodyne 5 assis"
+      },
+      "maker": "iZotope",
+      "live_price": 544000,
+      "collected_price": 544000,
+      "price_match": true,
+      "live_origin": "아메리카 미국 외",
+      "sold_out": false,
+      "price_inquiry": false,
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "live_probe": {
+        "origin": "아메리카 미국 외",
+        "brand": "iZotope",
+        "model": "FENDER STUDIO PRO 12M|Velvet|Melodyne 5 assistant (essential UPG)",
+        "price": 544000,
+        "stock_label": null
+      },
+      "batch13_state": "READY_SALE"
+    },
+    {
+      "cgiId": "samamusic:366",
+      "leafCategoryId": "50002342",
+      "category_source": "registered_path_contract(votes=102)",
+      "model": {
+        "source": "product_name_substring",
+        "value": "SHURE WA335",
+        "evidence": "SHURE WA335 / 슈어 TA4M -> LEMO 변환 KIT"
+      },
+      "maker": "SHURE",
+      "live_price": 161000,
+      "collected_price": 161000,
+      "price_match": true,
+      "live_origin": "아시아 중국",
+      "sold_out": false,
+      "price_inquiry": false,
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "live_probe": {
+        "origin": "아시아 중국",
+        "brand": "SHURE",
+        "model": null,
+        "price": 161000,
+        "stock_label": null
+      },
+      "batch13_state": "READY_SALE"
+    },
+    {
+      "cgiId": "samamusic:1340",
+      "leafCategoryId": "50002342",
+      "category_source": "registered_path_contract(votes=102)",
+      "model": {
+        "source": "page_label",
+        "value": "RPM322",
+        "evidence": "SHURE RPM322 / 슈어 Countryman 교체용 윈드스크린 (황갈색)"
+      },
+      "maker": "SHURE",
+      "live_price": 40000,
+      "collected_price": 40000,
+      "price_match": true,
+      "live_origin": "해외",
+      "sold_out": true,
+      "price_inquiry": false,
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "live_probe": {
+        "origin": "해외",
+        "brand": "SHURE",
+        "model": "RPM322",
+        "price": 40000,
+        "stock_label": null
+      },
+      "batch13_state": "READY_OUTOFSTOCK"
+    },
+    {
+      "cgiId": "samamusic:478",
+      "leafCategoryId": "50002342",
+      "category_source": "registered_path_contract(votes=102)",
+      "model": {
+        "source": "product_name_substring",
+        "value": "SHURE G12-CN",
+        "evidence": "SHURE G12-CN / 크롬 구즈넥, 12\", XLR 커넥터 장착 (30.48cm)"
+      },
+      "maker": "SHURE",
+      "live_price": 50000,
+      "collected_price": 50000,
+      "price_match": true,
+      "live_origin": "아시아 중국",
+      "sold_out": true,
+      "price_inquiry": false,
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "live_probe": {
+        "origin": "아시아 중국",
+        "brand": "SHURE",
+        "model": null,
+        "price": 50000,
+        "stock_label": null
+      },
+      "batch13_state": "READY_OUTOFSTOCK"
+    },
+    {
+      "cgiId": "samamusic:1394",
+      "leafCategoryId": "50002342",
+      "category_source": "registered_path_contract(votes=102)",
+      "model": {
+        "source": "page_label",
+        "value": "PXR",
+        "evidence": "NEUTRIK PXR / 뉴트릭 NP*X 시리즈 컬러 부싱"
+      },
+      "maker": "NEUTRIK",
+      "live_price": 540,
+      "collected_price": 540,
+      "price_match": true,
+      "live_origin": "유럽 리히텐슈타인",
+      "sold_out": false,
+      "price_inquiry": false,
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "live_probe": {
+        "origin": "유럽 리히텐슈타인",
+        "brand": "NEUTRIK",
+        "model": "PXR",
+        "price": 540,
+        "stock_label": null
+      },
+      "batch13_state": "READY_SALE"
+    },
+    {
+      "cgiId": "samamusic:1391",
+      "leafCategoryId": "50002342",
+      "category_source": "registered_path_contract(votes=102)",
+      "model": {
+        "source": "page_label",
+        "value": "BXX",
+        "evidence": "NEUTRIK BXX / 뉴트릭 NC*XX 시리즈 컬러 부싱"
+      },
+      "maker": "NEUTRIK",
+      "live_price": 1480,
+      "collected_price": 1480,
+      "price_match": true,
+      "live_origin": "유럽 리히텐슈타인",
+      "sold_out": false,
+      "price_inquiry": false,
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "live_probe": {
+        "origin": "유럽 리히텐슈타인",
+        "brand": "NEUTRIK",
+        "model": "BXX",
+        "price": 1480,
+        "stock_label": null
+      },
+      "batch13_state": "READY_SALE"
+    },
+    {
+      "cgiId": "samamusic:1389",
+      "leafCategoryId": "50002342",
+      "category_source": "registered_path_contract(votes=102)",
+      "model": {
+        "source": "page_label",
+        "value": "BPX",
+        "evidence": "NEUTRIK BPX / 뉴트릭 NP*X 시리즈 컬러 부싱"
+      },
+      "maker": "NEUTRIK",
+      "live_price": 1110,
+      "collected_price": 1110,
+      "price_match": true,
+      "live_origin": "유럽 리히텐슈타인",
+      "sold_out": false,
+      "price_inquiry": false,
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "live_probe": {
+        "origin": "유럽 리히텐슈타인",
+        "brand": "NEUTRIK",
+        "model": "BPX",
+        "price": 1110,
+        "stock_label": null
+      },
+      "batch13_state": "READY_SALE"
+    }
+  ]
+}
