@@ -1,0 +1,556 @@
+{
+  "kind": "cgi-bulk-batch12-prep",
+  "ran_at": "2026-10-29T21:38:52.300Z",
+  "basis": {
+    "main_sha": "57c3d31",
+    "ledger_registered": 362,
+    "directive": "CTO 2026-10-30 배치12 — 바늘 8건(리프 50003154) + 국내 원산지 5건(E30)"
+  },
+  "origin_code_table": {
+    "total": 535,
+    "guksan_codes": [
+      {
+        "code": "00",
+        "name": "국산"
+      }
+    ],
+    "verified_at": "2026-10-29T21:38:52.301Z"
+  },
+  "leaf_contracts": {
+    "needle": {
+      "leafCategoryId": "50003154",
+      "wholeName": "디지털/가전>음향가전>오디오>오디오액세서리",
+      "name": "오디오액세서리",
+      "certification_count": 57,
+      "kc_capable": true
+    },
+    "domestic_leaves": {
+      "50002974": {
+        "leafCategoryId": "50002974",
+        "wholeName": "디지털/가전>멀티미디어장비>사운드카드>레코딩장비",
+        "name": "레코딩장비",
+        "certification_count": 57,
+        "kc_capable": true
+      },
+      "50004370": {
+        "leafCategoryId": "50004370",
+        "wholeName": "생활/건강>악기>음향기자재>앰프",
+        "name": "앰프",
+        "certification_count": 57,
+        "kc_capable": true
+      }
+    }
+  },
+  "pool_size": 13,
+  "excluded": [],
+  "candidate_count": 13,
+  "selected": [
+    {
+      "cgiId": "samamusic:954",
+      "group": "needle_50003154",
+      "leafCategoryId": "50003154",
+      "category_source": "cto_directive_50003154_20261030",
+      "semantic_evidence": "턴테이블 교체용 바늘(스타일러스) → 오디오액세서리 리프(CTO 2026-10-30 지시, 코퍼스 음향 도메인 확인)",
+      "model": {
+        "source": "product_name_substring",
+        "value": "N35S",
+        "evidence": "N35S / 교체용 바늘"
+      },
+      "maker": "SHURE",
+      "live_price": 38000,
+      "collected_price": 38000,
+      "price_match": true,
+      "live_origin": "아시아 중국",
+      "origin_code_resolved": "0200037",
+      "origin_resolved_mode": "verified_code",
+      "origin_evidence_markers": [
+        "미국(U.S.A)",
+        "미국령 버진아일랜드(VIRGIN ISLANDS U.S.)"
+      ],
+      "brand_label": "SHURE",
+      "sold_out": true,
+      "price_inquiry": false,
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "live_probe": {
+        "origin": "아시아 중국",
+        "brand": "SHURE",
+        "model": null,
+        "price": 38000,
+        "stock_label": null
+      },
+      "batch12_state": "READY_OUTOFSTOCK"
+    },
+    {
+      "cgiId": "samamusic:955",
+      "group": "needle_50003154",
+      "leafCategoryId": "50003154",
+      "category_source": "cto_directive_50003154_20261030",
+      "semantic_evidence": "턴테이블 교체용 바늘(스타일러스) → 오디오액세서리 리프(CTO 2026-10-30 지시, 코퍼스 음향 도메인 확인)",
+      "model": {
+        "source": "page_label",
+        "value": "N35X",
+        "evidence": "N35X / 교체용 바늘"
+      },
+      "maker": "SHURE",
+      "live_price": 44000,
+      "collected_price": 44000,
+      "price_match": true,
+      "live_origin": "아시아 중국",
+      "origin_code_resolved": "0200037",
+      "origin_resolved_mode": "verified_code",
+      "origin_evidence_markers": [
+        "미국(U.S.A)",
+        "미국령 버진아일랜드(VIRGIN ISLANDS U.S.)"
+      ],
+      "brand_label": "SHURE",
+      "sold_out": true,
+      "price_inquiry": false,
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "live_probe": {
+        "origin": "아시아 중국",
+        "brand": "SHURE",
+        "model": "N35X",
+        "price": 44000,
+        "stock_label": null
+      },
+      "batch12_state": "READY_OUTOFSTOCK"
+    },
+    {
+      "cgiId": "samamusic:956",
+      "group": "needle_50003154",
+      "leafCategoryId": "50003154",
+      "category_source": "cto_directive_50003154_20261030",
+      "semantic_evidence": "턴테이블 교체용 바늘(스타일러스) → 오디오액세서리 리프(CTO 2026-10-30 지시, 코퍼스 음향 도메인 확인)",
+      "model": {
+        "source": "product_name_substring",
+        "value": "N44-7",
+        "evidence": "N44-7 / 교체용 바늘"
+      },
+      "maker": "SHURE",
+      "live_price": 61000,
+      "collected_price": 61000,
+      "price_match": true,
+      "live_origin": "아시아 중국",
+      "origin_code_resolved": "0200037",
+      "origin_resolved_mode": "verified_code",
+      "origin_evidence_markers": [
+        "미국(U.S.A)",
+        "미국령 버진아일랜드(VIRGIN ISLANDS U.S.)"
+      ],
+      "brand_label": "SHURE",
+      "sold_out": true,
+      "price_inquiry": false,
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "live_probe": {
+        "origin": "아시아 중국",
+        "brand": "SHURE",
+        "model": null,
+        "price": 61000,
+        "stock_label": null
+      },
+      "batch12_state": "READY_OUTOFSTOCK"
+    },
+    {
+      "cgiId": "samamusic:957",
+      "group": "needle_50003154",
+      "leafCategoryId": "50003154",
+      "category_source": "cto_directive_50003154_20261030",
+      "semantic_evidence": "턴테이블 교체용 바늘(스타일러스) → 오디오액세서리 리프(CTO 2026-10-30 지시, 코퍼스 음향 도메인 확인)",
+      "model": {
+        "source": "product_name_substring",
+        "value": "N44G",
+        "evidence": "N44G / 교체용 바늘"
+      },
+      "maker": "SHURE",
+      "live_price": 61000,
+      "collected_price": 61000,
+      "price_match": true,
+      "live_origin": "아시아 중국",
+      "origin_code_resolved": "0200037",
+      "origin_resolved_mode": "verified_code",
+      "origin_evidence_markers": [
+        "미국(U.S.A)",
+        "미국령 버진아일랜드(VIRGIN ISLANDS U.S.)"
+      ],
+      "brand_label": "SHURE",
+      "sold_out": true,
+      "price_inquiry": false,
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "live_probe": {
+        "origin": "아시아 중국",
+        "brand": "SHURE",
+        "model": null,
+        "price": 61000,
+        "stock_label": null
+      },
+      "batch12_state": "READY_OUTOFSTOCK"
+    },
+    {
+      "cgiId": "samamusic:958",
+      "group": "needle_50003154",
+      "leafCategoryId": "50003154",
+      "category_source": "cto_directive_50003154_20261030",
+      "semantic_evidence": "턴테이블 교체용 바늘(스타일러스) → 오디오액세서리 리프(CTO 2026-10-30 지시, 코퍼스 음향 도메인 확인)",
+      "model": {
+        "source": "product_name_substring",
+        "value": "N78S",
+        "evidence": "N78S / 교체용 바늘"
+      },
+      "maker": "SHURE",
+      "live_price": 61000,
+      "collected_price": 61000,
+      "price_match": true,
+      "live_origin": "아시아 중국",
+      "origin_code_resolved": "0200037",
+      "origin_resolved_mode": "verified_code",
+      "origin_evidence_markers": [
+        "미국(U.S.A)",
+        "미국령 버진아일랜드(VIRGIN ISLANDS U.S.)"
+      ],
+      "brand_label": "SHURE",
+      "sold_out": true,
+      "price_inquiry": false,
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "live_probe": {
+        "origin": "아시아 중국",
+        "brand": "SHURE",
+        "model": null,
+        "price": 61000,
+        "stock_label": null
+      },
+      "batch12_state": "READY_OUTOFSTOCK"
+    },
+    {
+      "cgiId": "samamusic:959",
+      "group": "needle_50003154",
+      "leafCategoryId": "50003154",
+      "category_source": "cto_directive_50003154_20261030",
+      "semantic_evidence": "턴테이블 교체용 바늘(스타일러스) → 오디오액세서리 리프(CTO 2026-10-30 지시, 코퍼스 음향 도메인 확인)",
+      "model": {
+        "source": "product_name_substring",
+        "value": "N92E",
+        "evidence": "N92E / 교체용 바늘"
+      },
+      "maker": "SHURE",
+      "live_price": 41000,
+      "collected_price": 41000,
+      "price_match": true,
+      "live_origin": "아시아 중국",
+      "origin_code_resolved": "0200037",
+      "origin_resolved_mode": "verified_code",
+      "origin_evidence_markers": [
+        "미국(U.S.A)",
+        "미국령 버진아일랜드(VIRGIN ISLANDS U.S.)"
+      ],
+      "brand_label": "SHURE",
+      "sold_out": true,
+      "price_inquiry": false,
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "live_probe": {
+        "origin": "아시아 중국",
+        "brand": "SHURE",
+        "model": null,
+        "price": 41000,
+        "stock_label": null
+      },
+      "batch12_state": "READY_OUTOFSTOCK"
+    },
+    {
+      "cgiId": "samamusic:960",
+      "group": "needle_50003154",
+      "leafCategoryId": "50003154",
+      "category_source": "cto_directive_50003154_20261030",
+      "semantic_evidence": "턴테이블 교체용 바늘(스타일러스) → 오디오액세서리 리프(CTO 2026-10-30 지시, 코퍼스 음향 도메인 확인)",
+      "model": {
+        "source": "product_name_substring",
+        "value": "N97XE",
+        "evidence": "N97XE / 교체용 바늘"
+      },
+      "maker": "SHURE",
+      "live_price": 96000,
+      "collected_price": 96000,
+      "price_match": true,
+      "live_origin": "아시아 중국",
+      "origin_code_resolved": "0200037",
+      "origin_resolved_mode": "verified_code",
+      "origin_evidence_markers": [
+        "미국(U.S.A)",
+        "미국령 버진아일랜드(VIRGIN ISLANDS U.S.)"
+      ],
+      "brand_label": "SHURE",
+      "sold_out": true,
+      "price_inquiry": false,
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "live_probe": {
+        "origin": "아시아 중국",
+        "brand": "SHURE",
+        "model": null,
+        "price": 96000,
+        "stock_label": null
+      },
+      "batch12_state": "READY_OUTOFSTOCK"
+    },
+    {
+      "cgiId": "samamusic:962",
+      "group": "needle_50003154",
+      "leafCategoryId": "50003154",
+      "category_source": "cto_directive_50003154_20261030",
+      "semantic_evidence": "턴테이블 교체용 바늘(스타일러스) → 오디오액세서리 리프(CTO 2026-10-30 지시, 코퍼스 음향 도메인 확인)",
+      "model": {
+        "source": "product_name_substring",
+        "value": "SS35C",
+        "evidence": "SS35C / 교체용 바늘"
+      },
+      "maker": "SHURE",
+      "live_price": 34000,
+      "collected_price": 34000,
+      "price_match": true,
+      "live_origin": "아시아 중국",
+      "origin_code_resolved": "0200037",
+      "origin_resolved_mode": "verified_code",
+      "origin_evidence_markers": [
+        "미국(U.S.A)",
+        "미국령 버진아일랜드(VIRGIN ISLANDS U.S.)"
+      ],
+      "brand_label": "SHURE",
+      "sold_out": true,
+      "price_inquiry": false,
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "live_probe": {
+        "origin": "아시아 중국",
+        "brand": "SHURE",
+        "model": null,
+        "price": 34000,
+        "stock_label": null
+      },
+      "batch12_state": "READY_OUTOFSTOCK"
+    },
+    {
+      "cgiId": "samamusic:3169",
+      "group": "domestic_E30",
+      "leafCategoryId": "50004370",
+      "category_source": "batch11_prep_contract",
+      "semantic_evidence": "배치11 prep 확정 리프 재사용 — 원산지는 E30 정규화(국내→국산 00) 적용",
+      "model": {
+        "source": "page_label",
+        "value": "Custom Classic S 785",
+        "evidence": "Michael Tuttle Guitars] Custom Classic S 785 마이클 터틀 일렉 기타 (딜"
+      },
+      "maker": "Michael Tuttle Guitars",
+      "live_price": 6350000,
+      "collected_price": 6350000,
+      "price_match": true,
+      "live_origin": "국내",
+      "origin_code_resolved": "00",
+      "origin_resolved_mode": "verified_code",
+      "origin_evidence_markers": [
+        "미국(U.S.A)",
+        "미국령 버진아일랜드(VIRGIN ISLANDS U.S.)"
+      ],
+      "brand_label": "Michael Tuttle Guitars",
+      "sold_out": false,
+      "price_inquiry": false,
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "live_probe": {
+        "origin": "국내",
+        "brand": "Michael Tuttle Guitars",
+        "model": "Custom Classic S 785",
+        "price": 6350000,
+        "stock_label": null
+      },
+      "batch12_state": "READY_SALE"
+    },
+    {
+      "cgiId": "samamusic:3172",
+      "group": "domestic_E30",
+      "leafCategoryId": "50004370",
+      "category_source": "batch11_prep_contract",
+      "semantic_evidence": "배치11 prep 확정 리프 재사용 — 원산지는 E30 정규화(국내→국산 00) 적용",
+      "model": {
+        "source": "product_name_substring",
+        "value": "Custom Classic S 788",
+        "evidence": "[Michael Tuttle Guitars] Custom Classic S 788 마이클 터틀 일렉 기타 ("
+      },
+      "maker": "Michael Tuttle Guitars",
+      "live_price": 6250000,
+      "collected_price": 6250000,
+      "price_match": true,
+      "live_origin": "국내",
+      "origin_code_resolved": "00",
+      "origin_resolved_mode": "verified_code",
+      "origin_evidence_markers": [
+        "미국(U.S.A)",
+        "미국령 버진아일랜드(VIRGIN ISLANDS U.S.)"
+      ],
+      "brand_label": "Michael Tuttle Guitars",
+      "sold_out": false,
+      "price_inquiry": false,
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "live_probe": {
+        "origin": "국내",
+        "brand": "Michael Tuttle Guitars",
+        "model": null,
+        "price": 6250000,
+        "stock_label": null
+      },
+      "batch12_state": "READY_SALE"
+    },
+    {
+      "cgiId": "samamusic:5383",
+      "group": "domestic_E30",
+      "leafCategoryId": "50002974",
+      "category_source": "batch11_prep_contract",
+      "semantic_evidence": "배치11 prep 확정 리프 재사용 — 원산지는 E30 정규화(국내→국산 00) 적용",
+      "model": {
+        "source": "page_label",
+        "value": "EQP-A",
+        "evidence": "AudioScape EQP-A Tube Equalizer 오디오스케이프 EQP-A 진공관 이퀄라이저"
+      },
+      "maker": "AudioScape",
+      "live_price": 2950000,
+      "collected_price": 2950000,
+      "price_match": true,
+      "live_origin": "국내",
+      "origin_code_resolved": "00",
+      "origin_resolved_mode": "verified_code",
+      "origin_evidence_markers": [
+        "미국(U.S.A)",
+        "미국령 버진아일랜드(VIRGIN ISLANDS U.S.)"
+      ],
+      "brand_label": "AudioScape",
+      "sold_out": false,
+      "price_inquiry": false,
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "live_probe": {
+        "origin": "국내",
+        "brand": "AudioScape",
+        "model": "EQP-A",
+        "price": 2950000,
+        "stock_label": null
+      },
+      "batch12_state": "READY_SALE"
+    },
+    {
+      "cgiId": "samamusic:3676",
+      "group": "domestic_E30",
+      "leafCategoryId": "50004370",
+      "category_source": "batch11_prep_contract",
+      "semantic_evidence": "배치11 prep 확정 리프 재사용 — 원산지는 E30 정규화(국내→국산 00) 적용",
+      "model": {
+        "source": "product_name_substring",
+        "value": "Custom Classic S 868",
+        "evidence": "[Michael Tuttle Guitars] Custom Classic S 868 마이클 터틀 일렉 기타 ("
+      },
+      "maker": "자체브랜드",
+      "live_price": 6490000,
+      "collected_price": 6490000,
+      "price_match": true,
+      "live_origin": "국내",
+      "origin_code_resolved": "00",
+      "origin_resolved_mode": "verified_code",
+      "origin_evidence_markers": [
+        "미국(U.S.A)",
+        "미국령 버진아일랜드(VIRGIN ISLANDS U.S.)"
+      ],
+      "brand_label": "자체브랜드",
+      "sold_out": true,
+      "price_inquiry": false,
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "live_probe": {
+        "origin": "국내",
+        "brand": "자체브랜드",
+        "model": null,
+        "price": 6490000,
+        "stock_label": null
+      },
+      "batch12_state": "READY_OUTOFSTOCK"
+    },
+    {
+      "cgiId": "samamusic:3686",
+      "group": "domestic_E30",
+      "leafCategoryId": "50004370",
+      "category_source": "batch11_prep_contract",
+      "semantic_evidence": "배치11 prep 확정 리프 재사용 — 원산지는 E30 정규화(국내→국산 00) 적용",
+      "model": {
+        "source": "product_name_substring",
+        "value": "Michael Tuttle Guitars J Master 878",
+        "evidence": "Michael Tuttle Guitars J Master 878 마이클 터틀 일렉 기타 (딜러 셀렉트 모델)"
+      },
+      "maker": "Michael Tuttle Guitars",
+      "live_price": 6700000,
+      "collected_price": 6700000,
+      "price_match": true,
+      "live_origin": "국내",
+      "origin_code_resolved": "00",
+      "origin_resolved_mode": "verified_code",
+      "origin_evidence_markers": [
+        "미국(U.S.A)",
+        "미국령 버진아일랜드(VIRGIN ISLANDS U.S.)"
+      ],
+      "brand_label": "Michael Tuttle Guitars",
+      "sold_out": true,
+      "price_inquiry": false,
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "live_probe": {
+        "origin": "국내",
+        "brand": "Michael Tuttle Guitars",
+        "model": null,
+        "price": 6700000,
+        "stock_label": null
+      },
+      "batch12_state": "READY_OUTOFSTOCK"
+    }
+  ]
+}

@@ -1,0 +1,1498 @@
+{
+  "kind": "cgi-bulk-register-12th-batch",
+  "ran_at": "2026-10-29T21:42:05.719Z",
+  "scope": "12차 배치 — 교체용 바늘 8건(리프 50003154 CTO 지정) + 국내 원산지 5건(E30 국산 정규화·코드 00 첫 수용 확인 후 확대)",
+  "results": [
+    {
+      "cgiId": "samamusic:5383",
+      "leafCategoryId": "50002974",
+      "state": "DISPLAYED",
+      "live": {
+        "origin": "국내",
+        "price": 2950000,
+        "sold_out": false,
+        "brand": "AudioScape",
+        "model": "EQP-A",
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "EQP-A",
+      "live_origin": "국내",
+      "origin_code": "00",
+      "origin_mode": "verified_code",
+      "upload_ok": 1,
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "AudioScape EQP-A Tube Equalizer 오디오스케이프 EQP-A 진공관 이퀄라이저",
+          "salePrice": 2950000,
+          "stockQuantity": 1,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:5383"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "00",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "AudioScape EQP-A Tube Equalizer 오디오스케이프 EQP-A 진공관 ",
+                "manufacturer": "AudioScape",
+                "modelName": "EQP-A",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261030_72/1793310067394OLwPn_JPEG/61326903529795685_409123306.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50002974",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202603/157f9ac081d6d0233663808fc79a2fc6.jpg\" alt=\"AudioScape EQP-A Tube Equalizer 오디오스케이프 EQP-A 진공관 이퀄라이저\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">AudioScape EQP-A Tube Equalizer 오디오스케이프 EQP-A 진공관 이퀄라이저</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 AUDIOSCAPE &middot; 모델명 EQP-A</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 2,950,000원</p><p style=\"margin:12px 0;\">반세기를 넘게 사랑받아온 진공관 이퀄라이저의 재현. 최고급 NOS 진공관으로 최고의 소리를 들려주는 이퀄라이저.</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>AUDIOSCAPE</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">모델명</th><td>EQP-A</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>레코딩</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/audioscape-eqp-a-tube-equalizer-오디오스케이프-eqp-a-진공관-이퀄라이저/5383/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "leaf_for_body": "50002974",
+      "stock_target": 1,
+      "stock_source": "fallback_1",
+      "dup_check": {
+        "hits": 0,
+        "exact_hit": false
+      },
+      "originProductNo": 13777988487,
+      "smartstoreChannelProductNo": 13839423598,
+      "registered_at": "2026-10-29T21:41:05.492Z",
+      "verify": {
+        "statusType": "SALE",
+        "price": 2950000,
+        "stock": 1,
+        "price_unchanged": true
+      },
+      "display_after": "ON",
+      "after_display_check": {
+        "price": 2950000,
+        "stock": 1,
+        "statusType": "SALE",
+        "price_unchanged": true
+      }
+    },
+    {
+      "cgiId": "samamusic:954",
+      "leafCategoryId": "50003154",
+      "state": "DISPLAYED",
+      "live": {
+        "origin": "아시아 중국",
+        "price": 38000,
+        "sold_out": true,
+        "brand": "SHURE",
+        "model": null,
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "N35S",
+      "live_origin": "아시아 중국",
+      "origin_code": "0200037",
+      "origin_mode": "verified_code",
+      "upload_ok": 1,
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "N35S / 교체용 바늘",
+          "salePrice": 38000,
+          "stockQuantity": 1,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:954"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0200037",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "N35S / 교체용 바늘",
+                "manufacturer": "SHURE",
+                "modelName": "N35S",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261030_38/1793310103225TurOC_JPEG/30297658001391844_1033804520.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50003154",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/201801/954_shop1_851406.jpg\" alt=\"N35S / 교체용 바늘\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">N35S / 교체용 바늘</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 SHURE</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 38,000원</p><p style=\"margin:12px 0;\">M35S 호환 교체용 스타일러스</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>SHURE</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>교체용 바늘</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/n35s-교체용-바늘/954/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "leaf_for_body": "50003154",
+      "stock_target": 1,
+      "stock_source": "fallback_1",
+      "dup_check": {
+        "hits": 0,
+        "exact_hit": false
+      },
+      "originProductNo": 13777989027,
+      "smartstoreChannelProductNo": 13839424046,
+      "registered_at": "2026-10-29T21:41:41.338Z",
+      "stock_zero_state": "OUTOFSTOCK",
+      "zero_path": true,
+      "verify": {
+        "statusType": "OUTOFSTOCK",
+        "price": 38000,
+        "stock": 0,
+        "price_unchanged": true
+      },
+      "display_after": "ON",
+      "after_display_check": {
+        "price": 38000,
+        "stock": 0,
+        "statusType": "OUTOFSTOCK",
+        "price_unchanged": true
+      }
+    },
+    {
+      "cgiId": "samamusic:955",
+      "leafCategoryId": "50003154",
+      "state": "DISPLAYED",
+      "live": {
+        "origin": "아시아 중국",
+        "price": 44000,
+        "sold_out": true,
+        "brand": "SHURE",
+        "model": "N35X",
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "N35X",
+      "live_origin": "아시아 중국",
+      "origin_code": "0200037",
+      "origin_mode": "verified_code",
+      "upload_ok": 1,
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "N35X / 교체용 바늘",
+          "salePrice": 44000,
+          "stockQuantity": 1,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:955"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0200037",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "N35X / 교체용 바늘",
+                "manufacturer": "SHURE",
+                "modelName": "N35X",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261030_185/1793310105507vM45R_JPEG/32405924455996312_1793991584.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50003154",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/201801/955_shop1_121139.jpg\" alt=\"N35X / 교체용 바늘\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">N35X / 교체용 바늘</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 SHURE &middot; 모델명 N35X</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 44,000원</p><p style=\"margin:12px 0;\">M35X 호환 교체용 스타일러스</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>SHURE</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">모델명</th><td>N35X</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>교체용 바늘</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/n35x-교체용-바늘/955/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "leaf_for_body": "50003154",
+      "stock_target": 1,
+      "stock_source": "fallback_1",
+      "dup_check": {
+        "hits": 0,
+        "exact_hit": false
+      },
+      "originProductNo": 13777989083,
+      "smartstoreChannelProductNo": 13839424194,
+      "registered_at": "2026-10-29T21:41:43.582Z",
+      "stock_zero_state": "OUTOFSTOCK",
+      "zero_path": true,
+      "verify": {
+        "statusType": "OUTOFSTOCK",
+        "price": 44000,
+        "stock": 0,
+        "price_unchanged": true
+      },
+      "display_after": "ON",
+      "after_display_check": {
+        "price": 44000,
+        "stock": 0,
+        "statusType": "OUTOFSTOCK",
+        "price_unchanged": true
+      }
+    },
+    {
+      "cgiId": "samamusic:956",
+      "leafCategoryId": "50003154",
+      "state": "DISPLAYED",
+      "live": {
+        "origin": "아시아 중국",
+        "price": 61000,
+        "sold_out": true,
+        "brand": "SHURE",
+        "model": null,
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "N44-7",
+      "live_origin": "아시아 중국",
+      "origin_code": "0200037",
+      "origin_mode": "verified_code",
+      "upload_ok": 1,
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "N44-7 / 교체용 바늘",
+          "salePrice": 61000,
+          "stockQuantity": 1,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:956"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0200037",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "N44-7 / 교체용 바늘",
+                "manufacturer": "SHURE",
+                "modelName": "N44-7",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261030_61/17933101076198FsXE_JPEG/55775322745853395_1259284866.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50003154",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/201801/956_shop1_850529.jpg\" alt=\"N44-7 / 교체용 바늘\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">N44-7 / 교체용 바늘</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 SHURE</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 61,000원</p><p style=\"margin:12px 0;\">M44-7 호환 교체용 스타일러스</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>SHURE</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>교체용 바늘</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/n44-7-교체용-바늘/956/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "leaf_for_body": "50003154",
+      "stock_target": 1,
+      "stock_source": "fallback_1",
+      "dup_check": {
+        "hits": 0,
+        "exact_hit": false
+      },
+      "originProductNo": 13777989123,
+      "smartstoreChannelProductNo": 13839424235,
+      "registered_at": "2026-10-29T21:41:45.599Z",
+      "stock_zero_state": "OUTOFSTOCK",
+      "zero_path": true,
+      "verify": {
+        "statusType": "OUTOFSTOCK",
+        "price": 61000,
+        "stock": 0,
+        "price_unchanged": true
+      },
+      "display_after": "ON",
+      "after_display_check": {
+        "price": 61000,
+        "stock": 0,
+        "statusType": "OUTOFSTOCK",
+        "price_unchanged": true
+      }
+    },
+    {
+      "cgiId": "samamusic:957",
+      "leafCategoryId": "50003154",
+      "state": "DISPLAYED",
+      "live": {
+        "origin": "아시아 중국",
+        "price": 61000,
+        "sold_out": true,
+        "brand": "SHURE",
+        "model": null,
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "N44G",
+      "live_origin": "아시아 중국",
+      "origin_code": "0200037",
+      "origin_mode": "verified_code",
+      "upload_ok": 1,
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "N44G / 교체용 바늘",
+          "salePrice": 61000,
+          "stockQuantity": 1,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:957"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0200037",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "N44G / 교체용 바늘",
+                "manufacturer": "SHURE",
+                "modelName": "N44G",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261030_155/1793310109695JSHbs_JPEG/46025670161612763_710429936.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50003154",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/201801/957_shop1_874940.jpg\" alt=\"N44G / 교체용 바늘\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">N44G / 교체용 바늘</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 SHURE</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 61,000원</p><p style=\"margin:12px 0;\">M44G 호환 교체용 스타일러스</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>SHURE</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>교체용 바늘</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/n44g-교체용-바늘/957/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "leaf_for_body": "50003154",
+      "stock_target": 1,
+      "stock_source": "fallback_1",
+      "dup_check": {
+        "hits": 0,
+        "exact_hit": false
+      },
+      "originProductNo": 13777989171,
+      "smartstoreChannelProductNo": 13839424284,
+      "registered_at": "2026-10-29T21:41:47.654Z",
+      "stock_zero_state": "OUTOFSTOCK",
+      "zero_path": true,
+      "verify": {
+        "statusType": "OUTOFSTOCK",
+        "price": 61000,
+        "stock": 0,
+        "price_unchanged": true
+      },
+      "display_after": "ON",
+      "after_display_check": {
+        "price": 61000,
+        "stock": 0,
+        "statusType": "OUTOFSTOCK",
+        "price_unchanged": true
+      }
+    },
+    {
+      "cgiId": "samamusic:958",
+      "leafCategoryId": "50003154",
+      "state": "DISPLAYED",
+      "live": {
+        "origin": "아시아 중국",
+        "price": 61000,
+        "sold_out": true,
+        "brand": "SHURE",
+        "model": null,
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "N78S",
+      "live_origin": "아시아 중국",
+      "origin_code": "0200037",
+      "origin_mode": "verified_code",
+      "upload_ok": 1,
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "N78S / 교체용 바늘",
+          "salePrice": 61000,
+          "stockQuantity": 1,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:958"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0200037",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "N78S / 교체용 바늘",
+                "manufacturer": "SHURE",
+                "modelName": "N78S",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261030_267/1793310111884bH6ad_JPEG/32405930833106409_1818731020.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50003154",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/201801/958_shop1_167264.jpg\" alt=\"N78S / 교체용 바늘\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">N78S / 교체용 바늘</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 SHURE</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 61,000원</p><p style=\"margin:12px 0;\">M78S 호환 교체용 스타일러스</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>SHURE</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>교체용 바늘</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/n78s-교체용-바늘/958/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "leaf_for_body": "50003154",
+      "stock_target": 1,
+      "stock_source": "fallback_1",
+      "dup_check": {
+        "hits": 0,
+        "exact_hit": false
+      },
+      "originProductNo": 13777989194,
+      "smartstoreChannelProductNo": 13839424308,
+      "registered_at": "2026-10-29T21:41:49.840Z",
+      "stock_zero_state": "OUTOFSTOCK",
+      "zero_path": true,
+      "verify": {
+        "statusType": "OUTOFSTOCK",
+        "price": 61000,
+        "stock": 0,
+        "price_unchanged": true
+      },
+      "display_after": "ON",
+      "after_display_check": {
+        "price": 61000,
+        "stock": 0,
+        "statusType": "OUTOFSTOCK",
+        "price_unchanged": true
+      }
+    },
+    {
+      "cgiId": "samamusic:959",
+      "leafCategoryId": "50003154",
+      "state": "DISPLAYED",
+      "live": {
+        "origin": "아시아 중국",
+        "price": 41000,
+        "sold_out": true,
+        "brand": "SHURE",
+        "model": null,
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "N92E",
+      "live_origin": "아시아 중국",
+      "origin_code": "0200037",
+      "origin_mode": "verified_code",
+      "upload_ok": 1,
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "N92E / 교체용 바늘",
+          "salePrice": 41000,
+          "stockQuantity": 1,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:959"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0200037",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "N92E / 교체용 바늘",
+                "manufacturer": "SHURE",
+                "modelName": "N92E",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261030_229/1793310113920nrhrk_JPEG/46025674386204127_1043668978.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50003154",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/201801/959_shop1_939920.jpg\" alt=\"N92E / 교체용 바늘\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">N92E / 교체용 바늘</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 SHURE</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 41,000원</p><p style=\"margin:12px 0;\">M92E 호환 교체용 스타일러스</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>SHURE</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>교체용 바늘</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/n92e-교체용-바늘/959/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "leaf_for_body": "50003154",
+      "stock_target": 1,
+      "stock_source": "fallback_1",
+      "dup_check": {
+        "hits": 0,
+        "exact_hit": false
+      },
+      "originProductNo": 13777989225,
+      "smartstoreChannelProductNo": 13839424340,
+      "registered_at": "2026-10-29T21:41:51.927Z",
+      "stock_zero_state": "OUTOFSTOCK",
+      "zero_path": true,
+      "verify": {
+        "statusType": "OUTOFSTOCK",
+        "price": 41000,
+        "stock": 0,
+        "price_unchanged": true
+      },
+      "display_after": "ON",
+      "after_display_check": {
+        "price": 41000,
+        "stock": 0,
+        "statusType": "OUTOFSTOCK",
+        "price_unchanged": true
+      }
+    },
+    {
+      "cgiId": "samamusic:960",
+      "leafCategoryId": "50003154",
+      "state": "DISPLAYED",
+      "live": {
+        "origin": "아시아 중국",
+        "price": 96000,
+        "sold_out": true,
+        "brand": "SHURE",
+        "model": null,
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "N97XE",
+      "live_origin": "아시아 중국",
+      "origin_code": "0200037",
+      "origin_mode": "verified_code",
+      "upload_ok": 1,
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "N97XE / 교체용 바늘",
+          "salePrice": 96000,
+          "stockQuantity": 1,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:960"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0200037",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "N97XE / 교체용 바늘",
+                "manufacturer": "SHURE",
+                "modelName": "N97XE",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261030_38/1793310115973Jsb6G_JPEG/107245796931767756_1704272854.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50003154",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/201801/960_shop1_360593.jpg\" alt=\"N97XE / 교체용 바늘\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">N97XE / 교체용 바늘</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 SHURE</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 96,000원</p><p style=\"margin:12px 0;\">M97XE 호환 교체용 스타일러스</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>SHURE</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>교체용 바늘</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/n97xe-교체용-바늘/960/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "leaf_for_body": "50003154",
+      "stock_target": 1,
+      "stock_source": "fallback_1",
+      "dup_check": {
+        "hits": 0,
+        "exact_hit": false
+      },
+      "originProductNo": 13777989259,
+      "smartstoreChannelProductNo": 13839424374,
+      "registered_at": "2026-10-29T21:41:53.992Z",
+      "stock_zero_state": "OUTOFSTOCK",
+      "zero_path": true,
+      "verify": {
+        "statusType": "OUTOFSTOCK",
+        "price": 96000,
+        "stock": 0,
+        "price_unchanged": true
+      },
+      "display_after": "ON",
+      "after_display_check": {
+        "price": 96000,
+        "stock": 0,
+        "statusType": "OUTOFSTOCK",
+        "price_unchanged": true
+      }
+    },
+    {
+      "cgiId": "samamusic:962",
+      "leafCategoryId": "50003154",
+      "state": "DISPLAYED",
+      "live": {
+        "origin": "아시아 중국",
+        "price": 34000,
+        "sold_out": true,
+        "brand": "SHURE",
+        "model": null,
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "SS35C",
+      "live_origin": "아시아 중국",
+      "origin_code": "0200037",
+      "origin_mode": "verified_code",
+      "upload_ok": 1,
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "SS35C / 교체용 바늘",
+          "salePrice": 34000,
+          "stockQuantity": 1,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:962"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0200037",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "SS35C / 교체용 바늘",
+                "manufacturer": "SHURE",
+                "modelName": "SS35C",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261030_178/1793310117973NfMrF_JPEG/45079900095081607_325777446.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50003154",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/201801/962_shop1_422503.jpg\" alt=\"SS35C / 교체용 바늘\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">SS35C / 교체용 바늘</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 SHURE</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 34,000원</p><p style=\"margin:12px 0;\">SC35C 호환 교체용 스타일러스</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>SHURE</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>교체용 바늘</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/ss35c-교체용-바늘/962/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "leaf_for_body": "50003154",
+      "stock_target": 1,
+      "stock_source": "fallback_1",
+      "dup_check": {
+        "hits": 0,
+        "exact_hit": false
+      },
+      "originProductNo": 13777989281,
+      "smartstoreChannelProductNo": 13839424396,
+      "registered_at": "2026-10-29T21:41:56.010Z",
+      "stock_zero_state": "OUTOFSTOCK",
+      "zero_path": true,
+      "verify": {
+        "statusType": "OUTOFSTOCK",
+        "price": 34000,
+        "stock": 0,
+        "price_unchanged": true
+      },
+      "display_after": "ON",
+      "after_display_check": {
+        "price": 34000,
+        "stock": 0,
+        "statusType": "OUTOFSTOCK",
+        "price_unchanged": true
+      }
+    },
+    {
+      "cgiId": "samamusic:3169",
+      "leafCategoryId": "50004370",
+      "state": "DISPLAYED",
+      "live": {
+        "origin": "국내",
+        "price": 6350000,
+        "sold_out": false,
+        "brand": "Michael Tuttle Guitars",
+        "model": "Custom Classic S 785",
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "Custom Classic S 785",
+      "live_origin": "국내",
+      "origin_code": "00",
+      "origin_mode": "verified_code",
+      "upload_ok": 1,
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "Michael Tuttle Guitars] Custom Classic S 785 마이클 터틀 일렉 기타 (딜러 셀렉트 모델)",
+          "salePrice": 6350000,
+          "stockQuantity": 1,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:3169"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "00",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "Michael Tuttle Guitars] Custom Classic S 785 마이클 터",
+                "manufacturer": "Michael Tuttle Guitars",
+                "modelName": "Custom Classic S 785",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261030_70/1793310120080eK9Fp_JPEG/107245801039775207_1009123809.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50004370",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202303/15710e6dca9cd8f2bde38e905aa47057.jpg\" alt=\"Michael Tuttle Guitars] Custom Classic S 785 마이클 터틀 일렉 기타 (딜러 셀렉트 모델)\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">Michael Tuttle Guitars] Custom Classic S 785 마이클 터틀 일렉 기타 (딜러 셀렉트 모델)</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 MICHAEL TUTTLE GUITARS &middot; 모델명 Custom Classic S 785</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 6,350,000원</p><p style=\"margin:12px 0;\">커스텀 클래식S /올림픽 화이트 /앨더바디,메이플,IRW/ 톨토이즈 픽가드/ SSH/ #785</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>MICHAEL TUTTLE GUITARS</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">모델명</th><td>Custom Classic S 785</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>악기/앰프</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/michael-tuttle-guitars-custom-classic-s-785-마이클-터틀-일렉-기타-딜러-셀렉트-모델/3169/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "leaf_for_body": "50004370",
+      "stock_target": 1,
+      "stock_source": "fallback_1",
+      "dup_check": {
+        "hits": 0,
+        "exact_hit": false
+      },
+      "originProductNo": 13777989301,
+      "smartstoreChannelProductNo": 13839424416,
+      "registered_at": "2026-10-29T21:41:58.157Z",
+      "verify": {
+        "statusType": "SALE",
+        "price": 6350000,
+        "stock": 1,
+        "price_unchanged": true
+      },
+      "display_after": "ON",
+      "after_display_check": {
+        "price": 6350000,
+        "stock": 1,
+        "statusType": "SALE",
+        "price_unchanged": true
+      }
+    },
+    {
+      "cgiId": "samamusic:3172",
+      "leafCategoryId": "50004370",
+      "state": "DISPLAYED",
+      "live": {
+        "origin": "국내",
+        "price": 6250000,
+        "sold_out": false,
+        "brand": "Michael Tuttle Guitars",
+        "model": null,
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "Custom Classic S 788",
+      "live_origin": "국내",
+      "origin_code": "00",
+      "origin_mode": "verified_code",
+      "upload_ok": 1,
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "[Michael Tuttle Guitars] Custom Classic S 788 마이클 터틀 일렉 기타 (딜러 셀렉트 모델)",
+          "salePrice": 6250000,
+          "stockQuantity": 1,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:3172"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "00",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "[Michael Tuttle Guitars] Custom Classic S 788 마이클 ",
+                "manufacturer": "Michael Tuttle Guitars",
+                "modelName": "Custom Classic S 788",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261030_157/1793310121698j2tKb_JPEG/107245802657323537_2046413572.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50004370",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202303/233daa578141aff49b963e6db3e93c35.jpg\" alt=\"[Michael Tuttle Guitars] Custom Classic S 788 마이클 터틀 일렉 기타 (딜러 셀렉트 모델)\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">[Michael Tuttle Guitars] Custom Classic S 788 마이클 터틀 일렉 기타 (딜러 셀렉트 모델)</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 MICHAEL TUTTLE GUITARS</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 6,250,000원</p><p style=\"margin:12px 0;\">커스텀 클래식S / 올림픽 화이트 / 앨더바디,메이플,IRW / 민트그린 픽가드 / SSH / #788</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>MICHAEL TUTTLE GUITARS</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>악기/앰프</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/michael-tuttle-guitars-custom-classic-s-788-마이클-터틀-일렉-기타-딜러-셀렉트-모델/3172/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "leaf_for_body": "50004370",
+      "stock_target": 1,
+      "stock_source": "fallback_1",
+      "dup_check": {
+        "hits": 0,
+        "exact_hit": false
+      },
+      "originProductNo": 13777989318,
+      "smartstoreChannelProductNo": 13839424433,
+      "registered_at": "2026-10-29T21:41:59.721Z",
+      "verify": {
+        "statusType": "SALE",
+        "price": 6250000,
+        "stock": 1,
+        "price_unchanged": true
+      },
+      "display_after": "ON",
+      "after_display_check": {
+        "price": 6250000,
+        "stock": 1,
+        "statusType": "SALE",
+        "price_unchanged": true
+      }
+    },
+    {
+      "cgiId": "samamusic:3676",
+      "leafCategoryId": "50004370",
+      "state": "DISPLAYED",
+      "live": {
+        "origin": "국내",
+        "price": 6490000,
+        "sold_out": true,
+        "brand": "자체브랜드",
+        "model": null,
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "Custom Classic S 868",
+      "live_origin": "국내",
+      "origin_code": "00",
+      "origin_mode": "verified_code",
+      "upload_ok": 1,
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "[Michael Tuttle Guitars] Custom Classic S 868 마이클 터틀 일렉 기타 (딜러 셀렉트 모델)",
+          "salePrice": 6490000,
+          "stockQuantity": 1,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:3676"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "00",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "[Michael Tuttle Guitars] Custom Classic S 868 마이클 ",
+                "manufacturer": "자체브랜드",
+                "modelName": "Custom Classic S 868",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261030_193/1793310123596bRRs1_JPEG/76925498597431141_849810536.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50004370",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202312/88d0847dc4a5559672ee2fe5c2838589.jpg\" alt=\"[Michael Tuttle Guitars] Custom Classic S 868 마이클 터틀 일렉 기타 (딜러 셀렉트 모델)\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">[Michael Tuttle Guitars] Custom Classic S 868 마이클 터틀 일렉 기타 (딜러 셀렉트 모델)</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 자체브랜드</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 6,490,000원</p><p style=\"margin:12px 0;\">블랙 나이트로 / 앨더 / 메이플,IRW / Hipshot Locking / HSH / 톨토이즈 / 니켈</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>자체브랜드</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>악기/앰프</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/michael-tuttle-guitars-custom-classic-s-868-마이클-터틀-일렉-기타-딜러-셀렉트-모델/3676/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "leaf_for_body": "50004370",
+      "stock_target": 1,
+      "stock_source": "fallback_1",
+      "dup_check": {
+        "hits": 0,
+        "exact_hit": false
+      },
+      "originProductNo": 13777989343,
+      "smartstoreChannelProductNo": 13839424458,
+      "registered_at": "2026-10-29T21:42:01.813Z",
+      "stock_zero_state": "OUTOFSTOCK",
+      "zero_path": true,
+      "verify": {
+        "statusType": "OUTOFSTOCK",
+        "price": 6490000,
+        "stock": 0,
+        "price_unchanged": true
+      },
+      "display_after": "ON",
+      "after_display_check": {
+        "price": 6490000,
+        "stock": 0,
+        "statusType": "OUTOFSTOCK",
+        "price_unchanged": true
+      }
+    },
+    {
+      "cgiId": "samamusic:3686",
+      "leafCategoryId": "50004370",
+      "state": "DISPLAYED",
+      "live": {
+        "origin": "국내",
+        "price": 6700000,
+        "sold_out": true,
+        "brand": "Michael Tuttle Guitars",
+        "model": null,
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "Michael Tuttle Guitars J Master 878",
+      "live_origin": "국내",
+      "origin_code": "00",
+      "origin_mode": "verified_code",
+      "upload_ok": 1,
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "Michael Tuttle Guitars J Master 878 마이클 터틀 일렉 기타 (딜러 셀렉트 모델)",
+          "salePrice": 6700000,
+          "stockQuantity": 1,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:3686"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "00",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "Michael Tuttle Guitars J Master 878 마이클 터틀 일렉 기타 (",
+                "manufacturer": "Michael Tuttle Guitars",
+                "modelName": "Michael Tuttle Guitars J Master 878",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261030_197/1793310126244SY6oc_JPEG/28432357352190809_17767883.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50004370",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202312/3aca528f9e94023a50ee77d75b888683.jpg\" alt=\"Michael Tuttle Guitars J Master 878 마이클 터틀 일렉 기타 (딜러 셀렉트 모델)\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">Michael Tuttle Guitars J Master 878 마이클 터틀 일렉 기타 (딜러 셀렉트 모델)</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 MICHAEL TUTTLE GUITARS</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 6,700,000원</p><p style=\"margin:12px 0;\">피에스타 레드 / 애쉬 / 메이플,IRW / Hipshot Locking / HH / 3ply 민트 / 니켈</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>MICHAEL TUTTLE GUITARS</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>악기/앰프</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/michael-tuttle-guitars-j-master-878-마이클-터틀-일렉-기타-딜러-셀렉트-모델/3686/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "leaf_for_body": "50004370",
+      "stock_target": 1,
+      "stock_source": "fallback_1",
+      "dup_check": {
+        "hits": 0,
+        "exact_hit": false
+      },
+      "originProductNo": 13777989381,
+      "smartstoreChannelProductNo": 13839424496,
+      "registered_at": "2026-10-29T21:42:04.357Z",
+      "stock_zero_state": "OUTOFSTOCK",
+      "zero_path": true,
+      "verify": {
+        "statusType": "OUTOFSTOCK",
+        "price": 6700000,
+        "stock": 0,
+        "price_unchanged": true
+      },
+      "display_after": "ON",
+      "after_display_check": {
+        "price": 6700000,
+        "stock": 0,
+        "statusType": "OUTOFSTOCK",
+        "price_unchanged": true
+      }
+    }
+  ],
+  "leaf_contracts": {
+    "50002974": {
+      "leafCategoryId": "50002974",
+      "wholeName": "디지털/가전>멀티미디어장비>사운드카드>레코딩장비",
+      "name": "레코딩장비",
+      "certification_count": 57,
+      "kc_capable": true,
+      "checked_at": "2026-10-29T21:41:04.769Z"
+    },
+    "50003154": {
+      "leafCategoryId": "50003154",
+      "wholeName": "디지털/가전>음향가전>오디오>오디오액세서리",
+      "name": "오디오액세서리",
+      "certification_count": 57,
+      "kc_capable": true,
+      "checked_at": "2026-10-29T21:41:40.638Z"
+    },
+    "50004370": {
+      "leafCategoryId": "50004370",
+      "wholeName": "생활/건강>악기>음향기자재>앰프",
+      "name": "앰프",
+      "certification_count": 57,
+      "kc_capable": true,
+      "checked_at": "2026-10-29T21:41:57.526Z"
+    }
+  },
+  "metrics": {
+    "register_ms_total": 2873,
+    "register_count": 13,
+    "retries": 0,
+    "dup_blocked": 0,
+    "timeouts": 0,
+    "replaced": 0
+  },
+  "summary": {
+    "target": 50,
+    "new_registered": 13,
+    "registered_before": 362,
+    "display_on_total": 375,
+    "results_this_run": 13
+  }
+}
