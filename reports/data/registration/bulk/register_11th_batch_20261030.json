@@ -1,0 +1,1604 @@
+{
+  "kind": "cgi-bulk-register-11th-batch",
+  "ran_at": "2026-10-29T20:46:02.465Z",
+  "scope": "11차 배치 — 배치7 READY 재검증 미등록(정상+품절)·오늘 라이브 재판정 적격분 최대 50건 실등록·전시 ON",
+  "results": [
+    {
+      "cgiId": "samamusic:5705",
+      "leafCategoryId": "50002320",
+      "taxonomy_state": "READY_SALE",
+      "state": "DISPLAYED",
+      "live": {
+        "origin": "유럽 덴마크",
+        "price": 3280000,
+        "sold_out": false,
+        "brand": "DYNAUDIO",
+        "model": "CORE 5",
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "CORE 5",
+      "live_origin": "유럽 덴마크",
+      "origin_code": "0201004",
+      "origin_mode": "verified_code",
+      "upload_ok": 1,
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "DYNAUDIO CORE 5 다인오디오 모니터 스피커 (1통)",
+          "salePrice": 3280000,
+          "stockQuantity": 2,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:5705"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0201004",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "DYNAUDIO CORE 5 다인오디오 모니터 스피커 (1통)",
+                "manufacturer": "DYNAUDIO",
+                "modelName": "CORE 5",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261030_203/1793306737745smsqg_JPEG/61323573876104657_171255991.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50002320",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202608/42ff614a122605b765c040e9e6b63b9c.jpg\" alt=\"DYNAUDIO CORE 5 다인오디오 모니터 스피커 (1통)\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">DYNAUDIO CORE 5 다인오디오 모니터 스피커 (1통)</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 DYNAUDIO &middot; 모델명 CORE 5</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 3,280,000원</p><p style=\"margin:12px 0;\">본 가격은 스피커 1통에 대한 가격입니다.</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>DYNAUDIO</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">모델명</th><td>CORE 5</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>스피커</td></tr></table><h3 style=\"font-size:17px;margin:18px 0 8px;\">옵션</h3><table><tr><th style=\"white-space:nowrap;\">길이선택</th><td>1m</td></tr><tr><th style=\"white-space:nowrap;\">길이선택</th><td>3m <span style=\"color:#c0392b;\">(+7,000원)</span></td></tr><tr><th style=\"white-space:nowrap;\">길이선택</th><td>5m <span style=\"color:#c0392b;\">(+14,000원)</span></td></tr><tr><th style=\"white-space:nowrap;\">길이선택</th><td>10m <span style=\"color:#c0392b;\">(+30,000원)</span></td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/dynaudio-core-5-다인오디오-모니터-스피커-1통/5705/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "leaf_for_body": "50002320",
+      "stock_target": 2,
+      "stock_source": "taxonomy_collected",
+      "dup_check": {
+        "hits": 0,
+        "exact_hit": false
+      },
+      "originProductNo": 13777933261,
+      "smartstoreChannelProductNo": 13839368212,
+      "registered_at": "2026-10-29T20:45:36.059Z",
+      "verify": {
+        "statusType": "SALE",
+        "price": 3280000,
+        "stock": 2,
+        "price_unchanged": true
+      },
+      "display_after": "ON",
+      "after_display_check": {
+        "price": 3280000,
+        "stock": 2,
+        "statusType": "SALE",
+        "price_unchanged": true
+      }
+    },
+    {
+      "cgiId": "samamusic:730",
+      "leafCategoryId": "50002320",
+      "taxonomy_state": "READY_SALE",
+      "state": "DISPLAYED",
+      "live": {
+        "origin": "유럽 덴마크",
+        "price": 1470000,
+        "sold_out": false,
+        "brand": "DYNAUDIO",
+        "model": "LYD-8 Black, 220V",
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "LYD-8 Black, 220V",
+      "live_origin": "유럽 덴마크",
+      "origin_code": "0201004",
+      "origin_mode": "verified_code",
+      "upload_ok": 1,
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "DYNAUDIO LYD 8 Black 다인오디오 모니터 스피커",
+          "salePrice": 1470000,
+          "stockQuantity": 2,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:730"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0201004",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "DYNAUDIO LYD 8 Black 다인오디오 모니터 스피커",
+                "manufacturer": "DYNAUDIO",
+                "modelName": "LYD-8 Black, 220V",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261030_237/17933067401955hO5n_JPEG/127439556313215101_13965187.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50002320",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202009/f4bf04a74a64d20ec1867521ffe506e5.jpg\" alt=\"DYNAUDIO LYD 8 Black 다인오디오 모니터 스피커\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">DYNAUDIO LYD 8 Black 다인오디오 모니터 스피커</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 DYNAUDIO &middot; 모델명 LYD-8 Black, 220V</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 1,470,000원</p><p style=\"margin:12px 0;\">본 가격은 스피커 1통에 대한 가격입니다.</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>DYNAUDIO</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">모델명</th><td>LYD-8 Black, 220V</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>스피커</td></tr></table><h3 style=\"font-size:17px;margin:18px 0 8px;\">옵션</h3><table><tr><th style=\"white-space:nowrap;\">길이선택</th><td>1m</td></tr><tr><th style=\"white-space:nowrap;\">길이선택</th><td>3m <span style=\"color:#c0392b;\">(+7,000원)</span></td></tr><tr><th style=\"white-space:nowrap;\">길이선택</th><td>5m <span style=\"color:#c0392b;\">(+14,000원)</span></td></tr><tr><th style=\"white-space:nowrap;\">길이선택</th><td>10m <span style=\"color:#c0392b;\">(+30,000원)</span></td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/dynaudio-lyd-8-black-다인오디오-모니터-스피커/730/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "leaf_for_body": "50002320",
+      "stock_target": 2,
+      "stock_source": "taxonomy_collected",
+      "dup_check": {
+        "hits": 0,
+        "exact_hit": false
+      },
+      "originProductNo": 13777933316,
+      "smartstoreChannelProductNo": 13839368266,
+      "registered_at": "2026-10-29T20:45:38.325Z",
+      "verify": {
+        "statusType": "SALE",
+        "price": 1470000,
+        "stock": 2,
+        "price_unchanged": true
+      },
+      "display_after": "ON",
+      "after_display_check": {
+        "price": 1470000,
+        "stock": 2,
+        "statusType": "SALE",
+        "price_unchanged": true
+      }
+    },
+    {
+      "cgiId": "samamusic:732",
+      "leafCategoryId": "50002320",
+      "taxonomy_state": "READY_SALE",
+      "state": "DISPLAYED",
+      "live": {
+        "origin": "유럽 덴마크",
+        "price": 890000,
+        "sold_out": false,
+        "brand": "DYNAUDIO",
+        "model": "LYD-5Black, 220V",
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "LYD-5Black, 220V",
+      "live_origin": "유럽 덴마크",
+      "origin_code": "0201004",
+      "origin_mode": "verified_code",
+      "upload_ok": 1,
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "DYNAUDIO LYD 5 Black 다인오디오 모니터 스피커",
+          "salePrice": 890000,
+          "stockQuantity": 1,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:732"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0201004",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "DYNAUDIO LYD 5 Black 다인오디오 모니터 스피커",
+                "manufacturer": "DYNAUDIO",
+                "modelName": "LYD-5Black, 220V",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261030_20/1793306742314y3Xl1_JPEG/33476680442858304_1073541350.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50002320",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202009/57d63f5264336de9323324415e560050.jpg\" alt=\"DYNAUDIO LYD 5 Black 다인오디오 모니터 스피커\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">DYNAUDIO LYD 5 Black 다인오디오 모니터 스피커</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 DYNAUDIO &middot; 모델명 LYD-5Black, 220V</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 890,000원</p><p style=\"margin:12px 0;\">본 가격은 스피커 1통에 대한 가격입니다.</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>DYNAUDIO</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">모델명</th><td>LYD-5Black, 220V</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>스피커</td></tr></table><h3 style=\"font-size:17px;margin:18px 0 8px;\">옵션</h3><table><tr><th style=\"white-space:nowrap;\">길이선택</th><td>1m</td></tr><tr><th style=\"white-space:nowrap;\">길이선택</th><td>3m <span style=\"color:#c0392b;\">(+7,000원)</span></td></tr><tr><th style=\"white-space:nowrap;\">길이선택</th><td>5m <span style=\"color:#c0392b;\">(+14,000원)</span></td></tr><tr><th style=\"white-space:nowrap;\">길이선택</th><td>10m <span style=\"color:#c0392b;\">(+30,000원)</span></td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/dynaudio-lyd-5-black-다인오디오-모니터-스피커/732/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "leaf_for_body": "50002320",
+      "stock_target": 1,
+      "stock_source": "taxonomy_collected",
+      "dup_check": {
+        "hits": 0,
+        "exact_hit": false
+      },
+      "originProductNo": 13777933336,
+      "smartstoreChannelProductNo": 13839368287,
+      "registered_at": "2026-10-29T20:45:40.434Z",
+      "verify": {
+        "statusType": "SALE",
+        "price": 890000,
+        "stock": 1,
+        "price_unchanged": true
+      },
+      "display_after": "ON",
+      "after_display_check": {
+        "price": 890000,
+        "stock": 1,
+        "statusType": "SALE",
+        "price_unchanged": true
+      }
+    },
+    {
+      "cgiId": "samamusic:745",
+      "leafCategoryId": "50002320",
+      "taxonomy_state": "READY_SALE",
+      "state": "DISPLAYED",
+      "live": {
+        "origin": "유럽 덴마크",
+        "price": 2150000,
+        "sold_out": false,
+        "brand": "DYNAUDIO",
+        "model": "LYD-48, B/B",
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "LYD-48, B/B",
+      "live_origin": "유럽 덴마크",
+      "origin_code": "0201004",
+      "origin_mode": "verified_code",
+      "upload_ok": 1,
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "DYNAUDIO LYD 48 Black (1통) 다인오디오 모니터 스피커",
+          "salePrice": 2150000,
+          "stockQuantity": 2,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:745"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0201004",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "DYNAUDIO LYD 48 Black (1통) 다인오디오 모니터 스피커",
+                "manufacturer": "DYNAUDIO",
+                "modelName": "LYD-48, B/B",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261030_161/1793306744332oyLNF_JPEG/75740610445345208_391048205.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50002320",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202009/a786762903bb1242d3d2072073f5704b.jpg\" alt=\"DYNAUDIO LYD 48 Black (1통) 다인오디오 모니터 스피커\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">DYNAUDIO LYD 48 Black (1통) 다인오디오 모니터 스피커</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 DYNAUDIO &middot; 모델명 LYD-48, B/B</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 2,150,000원</p><p style=\"margin:12px 0;\">본 가격은 스피커 1통에 대한 가격입니다.</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>DYNAUDIO</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">모델명</th><td>LYD-48, B/B</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>스피커</td></tr></table><h3 style=\"font-size:17px;margin:18px 0 8px;\">옵션</h3><table><tr><th style=\"white-space:nowrap;\">길이선택</th><td>1m</td></tr><tr><th style=\"white-space:nowrap;\">길이선택</th><td>3m <span style=\"color:#c0392b;\">(+7,000원)</span></td></tr><tr><th style=\"white-space:nowrap;\">길이선택</th><td>5m <span style=\"color:#c0392b;\">(+14,000원)</span></td></tr><tr><th style=\"white-space:nowrap;\">길이선택</th><td>10m <span style=\"color:#c0392b;\">(+30,000원)</span></td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/dynaudio-lyd-48-black-1통-다인오디오-모니터-스피커/745/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "leaf_for_body": "50002320",
+      "stock_target": 2,
+      "stock_source": "taxonomy_collected",
+      "dup_check": {
+        "hits": 0,
+        "exact_hit": false
+      },
+      "originProductNo": 13777933354,
+      "smartstoreChannelProductNo": 13839368305,
+      "registered_at": "2026-10-29T20:45:42.409Z",
+      "verify": {
+        "statusType": "SALE",
+        "price": 2150000,
+        "stock": 2,
+        "price_unchanged": true
+      },
+      "display_after": "ON",
+      "after_display_check": {
+        "price": 2150000,
+        "stock": 2,
+        "statusType": "SALE",
+        "price_unchanged": true
+      }
+    },
+    {
+      "cgiId": "samamusic:746",
+      "leafCategoryId": "50002320",
+      "taxonomy_state": "READY_SALE",
+      "state": "DISPLAYED",
+      "live": {
+        "origin": "유럽 덴마크",
+        "price": 2150000,
+        "sold_out": false,
+        "brand": "DYNAUDIO",
+        "model": "LYD-48, B/W",
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "LYD-48, B/W",
+      "live_origin": "유럽 덴마크",
+      "origin_code": "0201004",
+      "origin_mode": "verified_code",
+      "upload_ok": 1,
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "DYNAUDIO LYD 48 White (1통) 다인오디오 모니터 스피커",
+          "salePrice": 2150000,
+          "stockQuantity": 2,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:746"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0201004",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "DYNAUDIO LYD 48 White (1통) 다인오디오 모니터 스피커",
+                "manufacturer": "DYNAUDIO",
+                "modelName": "LYD-48, B/W",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261030_71/1793306745826PWYwH_JPEG/75740611938638680_984541468.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50002320",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202009/cc2b601044172d9ca6bb64f1cde64516.jpg\" alt=\"DYNAUDIO LYD 48 White (1통) 다인오디오 모니터 스피커\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">DYNAUDIO LYD 48 White (1통) 다인오디오 모니터 스피커</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 DYNAUDIO &middot; 모델명 LYD-48, B/W</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 2,150,000원</p><p style=\"margin:12px 0;\">본 가격은 스피커 1통에 대한 가격입니다.</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>DYNAUDIO</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">모델명</th><td>LYD-48, B/W</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>스피커</td></tr></table><h3 style=\"font-size:17px;margin:18px 0 8px;\">옵션</h3><table><tr><th style=\"white-space:nowrap;\">길이선택</th><td>1m</td></tr><tr><th style=\"white-space:nowrap;\">길이선택</th><td>3m <span style=\"color:#c0392b;\">(+7,000원)</span></td></tr><tr><th style=\"white-space:nowrap;\">길이선택</th><td>5m <span style=\"color:#c0392b;\">(+14,000원)</span></td></tr><tr><th style=\"white-space:nowrap;\">길이선택</th><td>10m <span style=\"color:#c0392b;\">(+30,000원)</span></td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/dynaudio-lyd-48-white-1통-다인오디오-모니터-스피커/746/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "leaf_for_body": "50002320",
+      "stock_target": 2,
+      "stock_source": "taxonomy_collected",
+      "dup_check": {
+        "hits": 0,
+        "exact_hit": false
+      },
+      "originProductNo": 13777933371,
+      "smartstoreChannelProductNo": 13839368322,
+      "registered_at": "2026-10-29T20:45:43.894Z",
+      "verify": {
+        "statusType": "SALE",
+        "price": 2150000,
+        "stock": 2,
+        "price_unchanged": true
+      },
+      "display_after": "ON",
+      "after_display_check": {
+        "price": 2150000,
+        "stock": 2,
+        "statusType": "SALE",
+        "price_unchanged": true
+      }
+    },
+    {
+      "cgiId": "samamusic:731",
+      "leafCategoryId": "50002320",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "state": "DISPLAYED",
+      "live": {
+        "origin": "유럽 덴마크",
+        "price": 1170000,
+        "sold_out": true,
+        "brand": "DYNAUDIO",
+        "model": "LYD-7Black, 220V",
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "LYD-7Black, 220V",
+      "live_origin": "유럽 덴마크",
+      "origin_code": "0201004",
+      "origin_mode": "verified_code",
+      "upload_ok": 1,
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "DYNAUDIO LYD 7 Black 다인오디오 모니터 스피커",
+          "salePrice": 1170000,
+          "stockQuantity": 1,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:731"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0201004",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "DYNAUDIO LYD 7 Black 다인오디오 모니터 스피커",
+                "manufacturer": "DYNAUDIO",
+                "modelName": "LYD-7Black, 220V",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261030_33/1793306747481CvF2i_JPEG/45076529600195338_2109985873.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50002320",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202009/c7009f104c0d150b9eab0f1ef561a2b9.jpg\" alt=\"DYNAUDIO LYD 7 Black 다인오디오 모니터 스피커\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">DYNAUDIO LYD 7 Black 다인오디오 모니터 스피커</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 DYNAUDIO &middot; 모델명 LYD-7Black, 220V</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 1,170,000원</p><p style=\"margin:12px 0;\">본 가격은 스피커 1통에 대한 가격입니다.</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>DYNAUDIO</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">모델명</th><td>LYD-7Black, 220V</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>스피커</td></tr></table><h3 style=\"font-size:17px;margin:18px 0 8px;\">옵션</h3><table><tr><th style=\"white-space:nowrap;\">길이선택</th><td>1m</td></tr><tr><th style=\"white-space:nowrap;\">길이선택</th><td>3m <span style=\"color:#c0392b;\">(+7,000원)</span></td></tr><tr><th style=\"white-space:nowrap;\">길이선택</th><td>5m <span style=\"color:#c0392b;\">(+14,000원)</span></td></tr><tr><th style=\"white-space:nowrap;\">길이선택</th><td>10m <span style=\"color:#c0392b;\">(+30,000원)</span></td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/dynaudio-lyd-7-black-다인오디오-모니터-스피커/731/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "leaf_for_body": "50002320",
+      "stock_target": 1,
+      "stock_source": "taxonomy_collected",
+      "dup_check": {
+        "hits": 0,
+        "exact_hit": false
+      },
+      "originProductNo": 13777933393,
+      "smartstoreChannelProductNo": 13839368344,
+      "registered_at": "2026-10-29T20:45:45.566Z",
+      "stock_zero_state": "OUTOFSTOCK",
+      "zero_path": true,
+      "verify": {
+        "statusType": "OUTOFSTOCK",
+        "price": 1170000,
+        "stock": 0,
+        "price_unchanged": true
+      },
+      "display_after": "ON",
+      "after_display_check": {
+        "price": 1170000,
+        "stock": 0,
+        "statusType": "OUTOFSTOCK",
+        "price_unchanged": true
+      }
+    },
+    {
+      "cgiId": "samamusic:1164",
+      "leafCategoryId": "50002748",
+      "taxonomy_state": "READY_SALE",
+      "state": "DISPLAYED",
+      "live": {
+        "origin": "유럽 핀란드",
+        "price": 610000,
+        "sold_out": false,
+        "brand": "Genelec",
+        "model": "GLM KIT (8300-601)",
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "GLM KIT (8300-601)",
+      "live_origin": "유럽 핀란드",
+      "origin_code": "0201047",
+      "origin_mode": "verified_code",
+      "upload_ok": 1,
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "GENELEC 8300-601 GLM KIT 제네렉 측정용 마이크",
+          "salePrice": 610000,
+          "stockQuantity": 35,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:1164"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0201047",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "GENELEC 8300-601 GLM KIT 제네렉 측정용 마이크",
+                "manufacturer": "Genelec",
+                "modelName": "GLM KIT (8300-601)",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261030_73/17933067495092bnSl_JPEG/33476687643225790_1899175861.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50002748",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202106/6889104a266bf770eaa127ada19d3486.jpg\" alt=\"GENELEC 8300-601 GLM KIT 제네렉 측정용 마이크\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">GENELEC 8300-601 GLM KIT 제네렉 측정용 마이크</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 GENELEC &middot; 모델명 GLM KIT (8300-601)</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 610,000원</p><p style=\"margin:12px 0;\">스마트 모니터 시스템 측정용 마이크 KIT</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>GENELEC</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">모델명</th><td>GLM KIT (8300-601)</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>스피커</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/genelec-8300-601-glm-kit-제네렉-측정용-마이크/1164/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "leaf_for_body": "50002748",
+      "stock_target": 35,
+      "stock_source": "taxonomy_collected",
+      "dup_check": {
+        "hits": 0,
+        "exact_hit": false
+      },
+      "originProductNo": 13777933418,
+      "smartstoreChannelProductNo": 13839368369,
+      "registered_at": "2026-10-29T20:45:47.754Z",
+      "verify": {
+        "statusType": "SALE",
+        "price": 610000,
+        "stock": 35,
+        "price_unchanged": true
+      },
+      "display_after": "ON",
+      "after_display_check": {
+        "price": 610000,
+        "stock": 35,
+        "statusType": "SALE",
+        "price_unchanged": true
+      }
+    },
+    {
+      "cgiId": "samamusic:2751",
+      "leafCategoryId": "50002748",
+      "taxonomy_state": "READY_SALE",
+      "state": "DISPLAYED",
+      "live": {
+        "origin": "유럽 핀란드",
+        "price": 2140000,
+        "sold_out": false,
+        "brand": "Genelec",
+        "model": "7050CPM",
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "7050CPM",
+      "live_origin": "유럽 핀란드",
+      "origin_code": "0201047",
+      "origin_mode": "verified_code",
+      "upload_ok": 1,
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "GENELEC 7050C 제네렉 스튜디오 서브 우퍼 (블랙)",
+          "salePrice": 2140000,
+          "stockQuantity": 1,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:2751"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0201047",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "GENELEC 7050C 제네렉 스튜디오 서브 우퍼 (블랙)",
+                "manufacturer": "Genelec",
+                "modelName": "7050CPM",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261030_74/17933067512007aT4w_JPEG/107242432152022330_1360605841.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50002748",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202112/717ca0daea8b800ad33b16375aed0e84.jpg\" alt=\"GENELEC 7050C 제네렉 스튜디오 서브 우퍼 (블랙)\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">GENELEC 7050C 제네렉 스튜디오 서브 우퍼 (블랙)</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 GENELEC &middot; 모델명 7050CPM</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 2,140,000원</p><p style=\"margin:12px 0;\">본 가격은 스피커 1통 가격입니다</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>GENELEC</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">모델명</th><td>7050CPM</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>스피커</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/genelec-7050c-제네렉-스튜디오-서브-우퍼-블랙/2751/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "leaf_for_body": "50002748",
+      "stock_target": 1,
+      "stock_source": "taxonomy_collected",
+      "dup_check": {
+        "hits": 0,
+        "exact_hit": false
+      },
+      "originProductNo": 13777933439,
+      "smartstoreChannelProductNo": 13839368389,
+      "registered_at": "2026-10-29T20:45:49.523Z",
+      "verify": {
+        "statusType": "SALE",
+        "price": 2140000,
+        "stock": 1,
+        "price_unchanged": true
+      },
+      "display_after": "ON",
+      "after_display_check": {
+        "price": 2140000,
+        "stock": 1,
+        "statusType": "SALE",
+        "price_unchanged": true
+      }
+    },
+    {
+      "cgiId": "samamusic:3169",
+      "leafCategoryId": "50004370",
+      "taxonomy_state": "READY_SALE",
+      "state": "FAILED_ORIGIN",
+      "live": {
+        "origin": "국내",
+        "price": 6350000,
+        "sold_out": false,
+        "brand": "Michael Tuttle Guitars",
+        "model": "Custom Classic S 785",
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "Custom Classic S 785",
+      "live_origin": "국내",
+      "origin_code": null,
+      "origin_mode": "unresolved"
+    },
+    {
+      "cgiId": "samamusic:3172",
+      "leafCategoryId": "50004370",
+      "taxonomy_state": "READY_SALE",
+      "state": "FAILED_ORIGIN",
+      "live": {
+        "origin": "국내",
+        "price": 6250000,
+        "sold_out": false,
+        "brand": "Michael Tuttle Guitars",
+        "model": null,
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "Custom Classic S 788",
+      "live_origin": "국내",
+      "origin_code": null,
+      "origin_mode": "unresolved"
+    },
+    {
+      "cgiId": "samamusic:4979",
+      "leafCategoryId": "50002748",
+      "taxonomy_state": "READY_SALE",
+      "state": "DISPLAYED",
+      "live": {
+        "origin": "아시아 중국",
+        "price": 2250000,
+        "sold_out": false,
+        "brand": "HK Audio",
+        "model": "PR:O 118 Sub D2",
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "PR:O 118 Sub D2",
+      "live_origin": "아시아 중국",
+      "origin_code": "0200037",
+      "origin_mode": "verified_code",
+      "upload_ok": 1,
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "HK AUDIO PR:O 118 Sub D2 HK오디오 18타입 액티브 서브 우퍼",
+          "salePrice": 2250000,
+          "stockQuantity": 7,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:4979"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0200037",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "HK AUDIO PR:O 118 Sub D2 HK오디오 18타입 액티브 서브 우퍼",
+                "manufacturer": "HK Audio",
+                "modelName": "PR:O 118 Sub D2",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261030_265/1793306754573FVbwd_JPEG/139667934360388497_201234482.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50002748",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202507/bf21a0997ddd09d752d42db74a4373cf.jpg\" alt=\"HK AUDIO PR:O 118 Sub D2 HK오디오 18타입 액티브 서브 우퍼\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">HK AUDIO PR:O 118 Sub D2 HK오디오 18타입 액티브 서브 우퍼</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 HK AUDIO &middot; 모델명 PR:O 118 Sub D2</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 2,250,000원</p><p style=\"margin:12px 0;\">18타입 액티브 서브우퍼, 1200W Peak</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>HK AUDIO</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">모델명</th><td>PR:O 118 Sub D2</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>PA 스피커</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/hk-audio-pro-118-sub-d2-hk오디오-18타입-액티브-서브-우퍼/4979/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "leaf_for_body": "50002748",
+      "stock_target": 7,
+      "stock_source": "taxonomy_collected",
+      "dup_check": {
+        "hits": 0,
+        "exact_hit": false
+      },
+      "originProductNo": 13777933497,
+      "smartstoreChannelProductNo": 13839368449,
+      "registered_at": "2026-10-29T20:45:52.736Z",
+      "verify": {
+        "statusType": "SALE",
+        "price": 2250000,
+        "stock": 7,
+        "price_unchanged": true
+      },
+      "display_after": "ON",
+      "after_display_check": {
+        "price": 2250000,
+        "stock": 7,
+        "statusType": "SALE",
+        "price_unchanged": true
+      }
+    },
+    {
+      "cgiId": "samamusic:5383",
+      "leafCategoryId": "50002974",
+      "taxonomy_state": "READY_SALE",
+      "state": "FAILED_ORIGIN",
+      "live": {
+        "origin": "국내",
+        "price": 2950000,
+        "sold_out": false,
+        "brand": "AudioScape",
+        "model": "EQP-A",
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "EQP-A",
+      "live_origin": "국내",
+      "origin_code": null,
+      "origin_mode": "unresolved"
+    },
+    {
+      "cgiId": "samamusic:3330",
+      "leafCategoryId": "50004370",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "state": "DISPLAYED",
+      "live": {
+        "origin": "아메리카 미국",
+        "price": 6400000,
+        "sold_out": true,
+        "brand": "Michael Tuttle Guitars",
+        "model": null,
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "Michael Tuttle Guitars J Master 827",
+      "live_origin": "아메리카 미국",
+      "origin_code": "0204000",
+      "origin_mode": "verified_code",
+      "upload_ok": 1,
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "Michael Tuttle Guitars J Master 827 마이클 터틀 일렉 기타 (딜러 셀렉트 모델)",
+          "salePrice": 6400000,
+          "stockQuantity": 1,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:3330"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0204000",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "Michael Tuttle Guitars J Master 827 마이클 터틀 일렉 기타 (",
+                "manufacturer": "Michael Tuttle Guitars",
+                "modelName": "Michael Tuttle Guitars J Master 827",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261030_175/1793306756790xgPmO_JPEG/25658110651371604_138634244.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50004370",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202304/d9e1e65eaccb47096ed9c87810503070.jpg\" alt=\"Michael Tuttle Guitars J Master 827 마이클 터틀 일렉 기타 (딜러 셀렉트 모델)\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">Michael Tuttle Guitars J Master 827 마이클 터틀 일렉 기타 (딜러 셀렉트 모델)</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 MICHAEL TUTTLE GUITARS</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 6,400,000원</p><p style=\"margin:12px 0;\">J 마스터/메리케이 화이트/앨더바디,IRW/험버스터 픽업/SSH/#827</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>MICHAEL TUTTLE GUITARS</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>악기/앰프</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/michael-tuttle-guitars-j-master-827-마이클-터틀-일렉-기타-딜러-셀렉트-모델/3330/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "leaf_for_body": "50004370",
+      "stock_target": 1,
+      "stock_source": "taxonomy_collected",
+      "dup_check": {
+        "hits": 0,
+        "exact_hit": false
+      },
+      "originProductNo": 13777933526,
+      "smartstoreChannelProductNo": 13839368478,
+      "registered_at": "2026-10-29T20:45:54.838Z",
+      "stock_zero_state": "OUTOFSTOCK",
+      "zero_path": true,
+      "verify": {
+        "statusType": "OUTOFSTOCK",
+        "price": 6400000,
+        "stock": 0,
+        "price_unchanged": true
+      },
+      "display_after": "ON",
+      "after_display_check": {
+        "price": 6400000,
+        "stock": 0,
+        "statusType": "OUTOFSTOCK",
+        "price_unchanged": true
+      }
+    },
+    {
+      "cgiId": "samamusic:3331",
+      "leafCategoryId": "50004370",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "state": "DISPLAYED",
+      "live": {
+        "origin": "아메리카 미국",
+        "price": 6300000,
+        "sold_out": true,
+        "brand": "Michael Tuttle Guitars",
+        "model": null,
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "Michael Tuttle Guitars J Master 828",
+      "live_origin": "아메리카 미국",
+      "origin_code": "0204000",
+      "origin_mode": "verified_code",
+      "upload_ok": 1,
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "Michael Tuttle Guitars J Master 828 마이클 터틀 일렉 기타 (딜러 셀렉트 모델)",
+          "salePrice": 6300000,
+          "stockQuantity": 1,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:3331"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0204000",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "Michael Tuttle Guitars J Master 828 마이클 터틀 일렉 기타 (",
+                "manufacturer": "Michael Tuttle Guitars",
+                "modelName": "Michael Tuttle Guitars J Master 828",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261030_111/179330675926898SrP_JPEG/30294314043069713_1545115893.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50004370",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202304/c0b510e264e64d9b425526ba2d37c093.jpg\" alt=\"Michael Tuttle Guitars J Master 828 마이클 터틀 일렉 기타 (딜러 셀렉트 모델)\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">Michael Tuttle Guitars J Master 828 마이클 터틀 일렉 기타 (딜러 셀렉트 모델)</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 MICHAEL TUTTLE GUITARS</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 6,300,000원</p><p style=\"margin:12px 0;\">J 마스터 / 피에스타 레드/앨더바디,IRW/험버스터 픽업/SSH/#828</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>MICHAEL TUTTLE GUITARS</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>악기/앰프</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/michael-tuttle-guitars-j-master-828-마이클-터틀-일렉-기타-딜러-셀렉트-모델/3331/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "leaf_for_body": "50004370",
+      "stock_target": 1,
+      "stock_source": "taxonomy_collected",
+      "dup_check": {
+        "hits": 0,
+        "exact_hit": false
+      },
+      "originProductNo": 13777933549,
+      "smartstoreChannelProductNo": 13839368500,
+      "registered_at": "2026-10-29T20:45:57.375Z",
+      "stock_zero_state": "OUTOFSTOCK",
+      "zero_path": true,
+      "verify": {
+        "statusType": "OUTOFSTOCK",
+        "price": 6300000,
+        "stock": 0,
+        "price_unchanged": true
+      },
+      "display_after": "ON",
+      "after_display_check": {
+        "price": 6300000,
+        "stock": 0,
+        "statusType": "OUTOFSTOCK",
+        "price_unchanged": true
+      }
+    },
+    {
+      "cgiId": "samamusic:3676",
+      "leafCategoryId": "50004370",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "state": "FAILED_ORIGIN",
+      "live": {
+        "origin": "국내",
+        "price": 6490000,
+        "sold_out": true,
+        "brand": "자체브랜드",
+        "model": null,
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "Custom Classic S 868",
+      "live_origin": "국내",
+      "origin_code": null,
+      "origin_mode": "unresolved"
+    },
+    {
+      "cgiId": "samamusic:3686",
+      "leafCategoryId": "50004370",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "state": "FAILED_ORIGIN",
+      "live": {
+        "origin": "국내",
+        "price": 6700000,
+        "sold_out": true,
+        "brand": "Michael Tuttle Guitars",
+        "model": null,
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "Michael Tuttle Guitars J Master 878",
+      "live_origin": "국내",
+      "origin_code": null,
+      "origin_mode": "unresolved"
+    },
+    {
+      "cgiId": "samamusic:4057",
+      "leafCategoryId": "50004370",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "state": "DISPLAYED",
+      "live": {
+        "origin": "아메리카 미국",
+        "price": 4389000,
+        "sold_out": true,
+        "brand": "Nash Guitars",
+        "model": null,
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "Nashguitars S-57",
+      "live_origin": "아메리카 미국",
+      "origin_code": "0204000",
+      "origin_mode": "verified_code",
+      "upload_ok": 1,
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "Nashguitars S-57 내쉬 일렉 기타 (딜러 셀렉트,SAM-118)",
+          "salePrice": 4389000,
+          "stockQuantity": 1,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:4057"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0204000",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "Nashguitars S-57 내쉬 일렉 기타 (딜러 셀렉트,SAM-118)",
+                "manufacturer": "Nash Guitars",
+                "modelName": "Nashguitars S-57",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261029_137/1793253860327RziiN_JPEG/45969420795619285_603902265.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50004370",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202405/3d2559366c0fdc351054805443c05f5b.jpg\" alt=\"Nashguitars S-57 내쉬 일렉 기타 (딜러 셀렉트,SAM-118)\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">Nashguitars S-57 내쉬 일렉 기타 (딜러 셀렉트,SAM-118)</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 NASH GUITARS</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 4,389,000원</p><p style=\"margin:12px 0;\">Ash / Shell Pink / Maple / Lollar / Medium Aged / 1-Ply White</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>NASH GUITARS</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>악기/앰프</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/nashguitars-s-57-내쉬-일렉-기타-딜러-셀렉트sam-118/4057/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "leaf_for_body": "50004370",
+      "stock_target": 1,
+      "stock_source": "taxonomy_collected",
+      "dup_check": {
+        "hits": 0,
+        "exact_hit": false
+      },
+      "originProductNo": 13777933569,
+      "smartstoreChannelProductNo": 13839368521,
+      "registered_at": "2026-10-29T20:45:59.134Z",
+      "stock_zero_state": "OUTOFSTOCK",
+      "zero_path": true,
+      "verify": {
+        "statusType": "OUTOFSTOCK",
+        "price": 4389000,
+        "stock": 0,
+        "price_unchanged": true
+      },
+      "display_after": "ON",
+      "after_display_check": {
+        "price": 4389000,
+        "stock": 0,
+        "statusType": "OUTOFSTOCK",
+        "price_unchanged": true
+      }
+    },
+    {
+      "cgiId": "samamusic:4058",
+      "leafCategoryId": "50004370",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "state": "DISPLAYED",
+      "live": {
+        "origin": "아메리카 미국",
+        "price": 4689000,
+        "sold_out": true,
+        "brand": "Nash Guitars",
+        "model": null,
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "Nashguitars S-57",
+      "live_origin": "아메리카 미국",
+      "origin_code": "0204000",
+      "origin_mode": "verified_code",
+      "upload_ok": 1,
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "Nashguitars S-57 내쉬 일렉 기타 (딜러 셀렉트, SAM-119)",
+          "salePrice": 4689000,
+          "stockQuantity": 1,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:4058"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0204000",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "Nashguitars S-57 내쉬 일렉 기타 (딜러 셀렉트, SAM-119)",
+                "manufacturer": "Nash Guitars",
+                "modelName": "Nashguitars S-57",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261029_202/1793253857538dD7DA_JPEG/76869232540019151_1265113190.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50004370",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202405/dd9209c91dc96fb03eec5b0a83b72d4e.jpg\" alt=\"Nashguitars S-57 내쉬 일렉 기타 (딜러 셀렉트, SAM-119)\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">Nashguitars S-57 내쉬 일렉 기타 (딜러 셀렉트, SAM-119)</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 NASH GUITARS</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 4,689,000원</p><p style=\"margin:12px 0;\">Alder / Black / Maple / Lollar / Extra Heavy Aged / 1-Ply White</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>NASH GUITARS</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>악기/앰프</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/nashguitars-s-57-내쉬-일렉-기타-딜러-셀렉트-sam-119/4058/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "leaf_for_body": "50004370",
+      "stock_target": 1,
+      "stock_source": "taxonomy_collected",
+      "dup_check": {
+        "hits": 0,
+        "exact_hit": false
+      },
+      "originProductNo": 13777933592,
+      "smartstoreChannelProductNo": 13839368544,
+      "registered_at": "2026-10-29T20:46:01.043Z",
+      "stock_zero_state": "OUTOFSTOCK",
+      "zero_path": true,
+      "verify": {
+        "statusType": "OUTOFSTOCK",
+        "price": 4689000,
+        "stock": 0,
+        "price_unchanged": true
+      },
+      "display_after": "ON",
+      "after_display_check": {
+        "price": 4689000,
+        "stock": 0,
+        "statusType": "OUTOFSTOCK",
+        "price_unchanged": true
+      }
+    }
+  ],
+  "leaf_contracts": {
+    "50002320": {
+      "leafCategoryId": "50002320",
+      "wholeName": "디지털/가전>음향가전>스피커>스피커단품",
+      "name": "스피커단품",
+      "certification_count": 57,
+      "kc_capable": true,
+      "checked_at": "2026-10-29T20:45:35.171Z"
+    },
+    "50002748": {
+      "leafCategoryId": "50002748",
+      "wholeName": "디지털/가전>자동차기기>카오디오음향기기>스피커",
+      "name": "스피커",
+      "certification_count": 57,
+      "kc_capable": true,
+      "checked_at": "2026-10-29T20:45:47.023Z"
+    },
+    "50002974": {
+      "leafCategoryId": "50002974",
+      "wholeName": "디지털/가전>멀티미디어장비>사운드카드>레코딩장비",
+      "name": "레코딩장비",
+      "certification_count": 57,
+      "kc_capable": true,
+      "checked_at": "2026-10-29T20:45:54.274Z"
+    },
+    "50004370": {
+      "leafCategoryId": "50004370",
+      "wholeName": "생활/건강>악기>음향기자재>앰프",
+      "name": "앰프",
+      "certification_count": 57,
+      "kc_capable": true,
+      "checked_at": "2026-10-29T20:45:51.081Z"
+    }
+  },
+  "metrics": {
+    "register_ms_total": 2876,
+    "register_count": 13,
+    "retries": 0,
+    "dup_blocked": 0,
+    "timeouts": 0,
+    "replaced": 0
+  },
+  "summary": {
+    "target": 50,
+    "new_registered": 13,
+    "registered_before": 349,
+    "display_on_total": 362,
+    "results_this_run": 18
+  }
+}
