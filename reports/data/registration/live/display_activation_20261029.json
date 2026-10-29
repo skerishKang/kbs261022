@@ -1,0 +1,66 @@
+{
+  "kind": "cgi-ncom-display-activation",
+  "ran_at": "2026-10-29T04:17:51.253Z",
+  "endpoint": "PUT /v2/products/channel-products/{channelProductNo} (전체 리소스 교체, 전시상태만 SUSPENSION→ON)",
+  "basis": "지시 §3-B: 기존 상품번호 수정으로 전시 활성화(재생성 금지), 이미 ON 인 건 중복 처리 금지, 상품별 결과 장부 기록",
+  "results": [
+    {
+      "cgiId": "samamusic.co.kr:1769",
+      "originProductNo": 13776583531,
+      "channelProductNo": 13838007796,
+      "status_before": "SUSPENSION",
+      "requested_display_status": "ON",
+      "put_transmitted": true,
+      "status_after": "ON",
+      "origin_status_after": "SALE",
+      "origin_price_after": 116000,
+      "origin_stock_after": 8,
+      "invariants_held": {
+        "status_type_unchanged": true,
+        "price_unchanged": true,
+        "stock_unchanged": true,
+        "name_unchanged": true
+      },
+      "action": "display_activated"
+    },
+    {
+      "cgiId": "samamusic.co.kr:3417",
+      "originProductNo": 13776583540,
+      "channelProductNo": 13838007805,
+      "status_before": "SUSPENSION",
+      "requested_display_status": "ON",
+      "put_transmitted": true,
+      "status_after": "ON",
+      "origin_status_after": "SALE",
+      "origin_price_after": 518000,
+      "origin_stock_after": 9,
+      "invariants_held": {
+        "status_type_unchanged": true,
+        "price_unchanged": true,
+        "stock_unchanged": true,
+        "name_unchanged": true
+      },
+      "action": "display_activated"
+    },
+    {
+      "cgiId": "samamusic.co.kr:3418",
+      "originProductNo": 13776583545,
+      "channelProductNo": 13838007810,
+      "status_before": "SUSPENSION",
+      "requested_display_status": "ON",
+      "put_transmitted": true,
+      "status_after": "ON",
+      "origin_status_after": "SALE",
+      "origin_price_after": 1818000,
+      "origin_stock_after": 29,
+      "invariants_held": {
+        "status_type_unchanged": true,
+        "price_unchanged": true,
+        "stock_unchanged": true,
+        "name_unchanged": true
+      },
+      "action": "display_activated"
+    }
+  ],
+  "naver_requests": 9
+}
