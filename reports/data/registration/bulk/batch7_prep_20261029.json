@@ -1,0 +1,3430 @@
+{
+  "kind": "cgi-bulk-batch7-prep",
+  "ran_at": "2026-10-29T09:59:04.920Z",
+  "basis": {
+    "main_sha": "73fb4a4",
+    "ledger": 183,
+    "enrichment": "batch7_enrichment_20261029.json (2,240건)",
+    "path_contract_count": 9
+  },
+  "enrichment_summary": {
+    "fetched": 2240,
+    "price_numeric": 799,
+    "price_inquiry": 1348,
+    "sold_out": 280,
+    "on_sale": 1960,
+    "model_recovered": 1621,
+    "model_missing": 619
+  },
+  "excluded": {
+    "model_missing": 604,
+    "price_inquiry": 948,
+    "price_mismatch": 0,
+    "origin_missing": 0,
+    "brand_missing": 0,
+    "category_unresolved": 516,
+    "need_review_guard": 21,
+    "already_registered": 0,
+    "page_failed": 0,
+    "deleted": 0
+  },
+  "candidate_count": 151,
+  "selected_count": 151,
+  "backups_count": 0,
+  "selected_states": {
+    "READY_SALE": 123,
+    "READY_OUTOFSTOCK": 28
+  },
+  "selected_leaves": {
+    "50001516": 12,
+    "50002328": 8,
+    "50002342": 105,
+    "50002974": 14,
+    "50004370": 3,
+    "50024419": 7,
+    "50024439": 1,
+    "50024479": 1
+  },
+  "selected_category_source": {
+    "semantic_resolved": 139,
+    "sw_remapping_C19": 12
+  },
+  "unresolved_sample": [
+    {
+      "cgiId": "samamusic:317",
+      "reason": "unresolved",
+      "supplierPath": "액세서리",
+      "name": "SHURE SBC-USB-K-LC / 슈어 USB Power Plug without Cab"
+    },
+    {
+      "cgiId": "samamusic:280",
+      "reason": "unresolved",
+      "supplierPath": "액세서리",
+      "name": "SHURE HPACP1 / 슈어 SRH 휴대용 파우치"
+    },
+    {
+      "cgiId": "samamusic:276",
+      "reason": "unresolved",
+      "supplierPath": "액세서리",
+      "name": "SHURE HPAQA1 / 슈어 금도금 어댑터"
+    },
+    {
+      "cgiId": "samamusic:322",
+      "reason": "unresolved",
+      "supplierPath": "액세서리",
+      "name": "SHURE EA2AMPBANDS / 슈어 고무 시큐리티 밴드"
+    },
+    {
+      "cgiId": "samamusic:4947",
+      "reason": "other_family_accessory_blocked",
+      "supplierPath": "액세서리",
+      "name": "NI TRAKTOR Modular Bag 트랙터 DJ 전용 모듈러백 가방"
+    },
+    {
+      "cgiId": "samamusic:2947",
+      "reason": "unresolved",
+      "supplierPath": "액세서리",
+      "name": "APOGEE 프리미엄 데스크용 아포지 삼각대 0036-0005-0000"
+    },
+    {
+      "cgiId": "samamusic:2949",
+      "reason": "unresolved",
+      "supplierPath": "액세서리",
+      "name": "APOGEE 프리미엄 마이크 아포지 액세서리 번들 3500-0110-0000"
+    },
+    {
+      "cgiId": "samamusic:3013",
+      "reason": "unresolved",
+      "supplierPath": "액세서리",
+      "name": "CLOUD CL-Z / 클라우드 리프터 마이크 액티베이터"
+    },
+    {
+      "cgiId": "samamusic:2951",
+      "reason": "unresolved",
+      "supplierPath": "액세서리",
+      "name": "APOGEE 프리미엄 아포지 팝필터 2605-0011-0000"
+    },
+    {
+      "cgiId": "samamusic:2903",
+      "reason": "unresolved",
+      "supplierPath": "액세서리",
+      "name": "APOGEE One용 마이크 아포지 마운트"
+    },
+    {
+      "cgiId": "samamusic:2893",
+      "reason": "unresolved",
+      "supplierPath": "액세서리",
+      "name": "APOGEE Symphony Desktop용 아포지 어댑터"
+    },
+    {
+      "cgiId": "samamusic:5366",
+      "reason": "unresolved",
+      "supplierPath": "레코딩/음향",
+      "name": "Fender Studio Quantum LT 16 펜더 스튜디오 퀀텀 LT 16 오디오 인"
+    },
+    {
+      "cgiId": "samamusic:5319",
+      "reason": "unresolved",
+      "supplierPath": "레코딩/음향",
+      "name": "A&H QU-6 / QU-6D 알렌앤히스 컴팩트 디지털 믹서"
+    },
+    {
+      "cgiId": "samamusic:5365",
+      "reason": "unresolved",
+      "supplierPath": "레코딩/음향",
+      "name": "Fender Studio Quantum LT 4 펜더 스튜디오 퀀텀 LT 4 오디오 인터페"
+    },
+    {
+      "cgiId": "samamusic:5364",
+      "reason": "unresolved",
+      "supplierPath": "레코딩/음향",
+      "name": "Fender Studio Quantum LT 2 펜더 스튜디오 퀀텀 LT 2 오디오 인터페"
+    },
+    {
+      "cgiId": "samamusic:5320",
+      "reason": "unresolved",
+      "supplierPath": "레코딩/음향",
+      "name": "A&H QU-7 / QU-7D 알렌앤히스 컴팩트 디지털 믹서"
+    },
+    {
+      "cgiId": "samamusic:4113",
+      "reason": "unresolved",
+      "supplierPath": "레코딩/음향",
+      "name": "A&H CQ12T Case 알렌히스 CQ-12T 용 소프트 케이스 휴대용 가방"
+    },
+    {
+      "cgiId": "samamusic:4111",
+      "reason": "unresolved",
+      "supplierPath": "레코딩/음향",
+      "name": "PRESONUS SL-AVB-MIX 프리소너스 StudioLive AI 믹서용 AVB 옵션"
+    },
+    {
+      "cgiId": "samamusic:5318",
+      "reason": "unresolved",
+      "supplierPath": "레코딩/음향",
+      "name": "A&H QU-5 / QU-5D 알렌앤히스 컴팩트 디지털 믹서"
+    },
+    {
+      "cgiId": "samamusic:4078",
+      "reason": "unresolved",
+      "supplierPath": "레코딩/음향",
+      "name": "PreSonus NSB 16.8 Rack Kit 프리소너스 NSB16.8용 랙 마운트 키트"
+    },
+    {
+      "cgiId": "samamusic:4079",
+      "reason": "unresolved",
+      "supplierPath": "레코딩/음향",
+      "name": "PreSonus SL-SHELF-MOUNT 프리소너스 StudioLive Series II"
+    },
+    {
+      "cgiId": "samamusic:1793",
+      "reason": "unresolved",
+      "supplierPath": "레코딩/음향",
+      "name": "PreSonus StudioLive AR8c 프리소너스 아날로그 오디오 믹서 / 음향 색소"
+    },
+    {
+      "cgiId": "samamusic:4077",
+      "reason": "unresolved",
+      "supplierPath": "레코딩/음향",
+      "name": "PRESONUS NSB 8.8 Rack Kit 프리소너스 NSB8.8용 랙 마운트 키트"
+    },
+    {
+      "cgiId": "samamusic:5699",
+      "reason": "unresolved",
+      "supplierPath": "레코딩/음향",
+      "name": "[KLOTZ] 16채널(16/0) StraightLink Floor 스테이지박스 ST160"
+    },
+    {
+      "cgiId": "samamusic:4115",
+      "reason": "unresolved",
+      "supplierPath": "레코딩/음향",
+      "name": "A&H CQ18T Case 알렌히스 CQ-18T 용 소프트 케이스 휴대용 가방"
+    },
+    {
+      "cgiId": "samamusic:4117",
+      "reason": "unresolved",
+      "supplierPath": "레코딩/음향",
+      "name": "A&H CQ20B Case 알렌히스 CQ-20B 용 소프트 케이스 휴대용 가방"
+    },
+    {
+      "cgiId": "samamusic:4116",
+      "reason": "unresolved",
+      "supplierPath": "레코딩/음향",
+      "name": "A&H CQ18T-RK19 알렌히스 CQ-18T 용 랙 마운트"
+    },
+    {
+      "cgiId": "samamusic:4114",
+      "reason": "unresolved",
+      "supplierPath": "레코딩/음향",
+      "name": "A&H CQ12T-RK19 알렌히스 CQ-12T 용 랙 마운트"
+    },
+    {
+      "cgiId": "samamusic:4118",
+      "reason": "unresolved",
+      "supplierPath": "레코딩/음향",
+      "name": "A&H CQ20B-RK19 알렌히스 CQ-20B 용 랙 마운트"
+    },
+    {
+      "cgiId": "samamusic:1013",
+      "reason": "unresolved",
+      "supplierPath": "액세서리",
+      "name": "PreSonus SLMAD-RACK / StudioLive Series III 용 랙 날개"
+    }
+  ],
+  "selected": [
+    {
+      "cgiId": "samamusic:1048",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50024419",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰 경로 — 유선이어폰 리프(상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "AONIC215-UNI"
+      },
+      "maker": "SHURE",
+      "live_price": 175000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 388
+      }
+    },
+    {
+      "cgiId": "samamusic:1049",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50024419",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰 경로 — 유선이어폰 리프(상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "AONIC215-UNI"
+      },
+      "maker": "SHURE",
+      "live_price": 175000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 350
+      }
+    },
+    {
+      "cgiId": "samamusic:1050",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50024419",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰 경로 — 유선이어폰 리프(상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "AONIC215-UNI"
+      },
+      "maker": "SHURE",
+      "live_price": 175000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 116
+      }
+    },
+    {
+      "cgiId": "samamusic:1051",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50024419",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰 경로 — 유선이어폰 리프(상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "AONIC215-UNI"
+      },
+      "maker": "SHURE",
+      "live_price": 175000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 131
+      }
+    },
+    {
+      "cgiId": "samamusic:1216",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50024419",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰 경로 — 유선이어폰 리프(상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "SE535LTD"
+      },
+      "maker": "SHURE",
+      "live_price": 825000,
+      "price_source": "collected_confirmed",
+      "live_origin": "해외",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 40
+      }
+    },
+    {
+      "cgiId": "samamusic:13",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "0491-0019-0008 Apogee Duet 2/iOS Breakout Cable"
+      },
+      "maker": "APOGEE",
+      "live_price": 64000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 4
+      }
+    },
+    {
+      "cgiId": "samamusic:1401",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "NDF"
+      },
+      "maker": "NEUTRIK",
+      "live_price": 910,
+      "price_source": "collected_confirmed",
+      "live_origin": "유럽 리히텐슈타인",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 1000
+      }
+    },
+    {
+      "cgiId": "samamusic:1403",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "NDM"
+      },
+      "maker": "NEUTRIK",
+      "live_price": 1240,
+      "price_source": "collected_confirmed",
+      "live_origin": "유럽 리히텐슈타인",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 375
+      }
+    },
+    {
+      "cgiId": "samamusic:1422",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002974",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "오디오 인터페이스 경로 — 레코딩장비 리프(배치 검증 50002974, AudioBox 등 실등록)",
+      "model": {
+        "source": "page_label",
+        "value": "JAM PLUS"
+      },
+      "maker": "APOGEE",
+      "live_price": 159000,
+      "price_source": "collected_confirmed",
+      "live_origin": "해외",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 1
+      }
+    },
+    {
+      "cgiId": "samamusic:1710",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002974",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "오디오 인터페이스 경로 — 레코딩장비 리프(배치 검증 50002974, AudioBox 등 실등록)",
+      "model": {
+        "source": "page_label",
+        "value": "Symphony Desktop"
+      },
+      "maker": "APOGEE",
+      "live_price": 2490000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아메리카 멕시코 , 중국",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      }
+    },
+    {
+      "cgiId": "samamusic:1978",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "product_name_substring",
+        "value": "SHURE RMCE-TW1 CASE",
+        "evidence": "SHURE RMCE-TW1 CASE / 슈어 AONIC TW1 용 충전 케이스"
+      },
+      "maker": "SHURE",
+      "live_price": 102000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국 .",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 1
+      }
+    },
+    {
+      "cgiId": "samamusic:1979",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "product_name_substring",
+        "value": "SHURE RPE53BACOLLAR",
+        "evidence": "SHURE RPE53BACOLLAR 슈어 Aonic 5 메탈 칼라 1개"
+      },
+      "maker": "SHURE",
+      "live_price": 46000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국 .",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 5
+      }
+    },
+    {
+      "cgiId": "samamusic:1981",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "product_name_substring",
+        "value": "SHURE RPE53BANSRTS",
+        "evidence": "SHURE RPE53BANSRTS / 슈어 Aonic 5 노즐 인서트 세트"
+      },
+      "maker": "SHURE",
+      "live_price": 80000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국 .",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 3
+      }
+    },
+    {
+      "cgiId": "samamusic:1982",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "product_name_substring",
+        "value": "SHURE RPE53BANZLNSRT-BAL",
+        "evidence": "SHURE RPE53BANZLNSRT-BAL / 슈어 Aonic 5 Balanced 노즐 인서트 1쌍"
+      },
+      "maker": "SHURE",
+      "live_price": 33000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국 .",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 4
+      }
+    },
+    {
+      "cgiId": "samamusic:1983",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "product_name_substring",
+        "value": "SHURE RPE53BANZLNSRT-BRT",
+        "evidence": "SHURE RPE53BANZLNSRT-BRT / 슈어 Aonic 5 Bright 노즐 인서트 1쌍"
+      },
+      "maker": "SHURE",
+      "live_price": 33000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국 .",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 1
+      }
+    },
+    {
+      "cgiId": "samamusic:1984",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "product_name_substring",
+        "value": "SHURE RPE53BANZLNSRT-WRM",
+        "evidence": "SHURE RPE53BANZLNSRT-WRM / 슈어 Aonic 5 Warm 노즐 인서트 1쌍"
+      },
+      "maker": "SHURE",
+      "live_price": 33000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국 .",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 2
+      }
+    },
+    {
+      "cgiId": "samamusic:233",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50024419",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰 경로 — 유선이어폰 리프(상품명 근거)",
+      "model": {
+        "source": "product_name_substring",
+        "value": "SHURE SE215SPE",
+        "evidence": "SHURE SE215SPE 슈어 이어폰"
+      },
+      "maker": "SHURE",
+      "live_price": 189000,
+      "price_source": "collected_confirmed",
+      "live_origin": "해외",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 261
+      }
+    },
+    {
+      "cgiId": "samamusic:2392",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "product_name_substring",
+        "value": "SHURE 90AZ8100",
+        "evidence": "SHURE 90AZ8100 / 슈어 무선 수신기 랙 마운트 장착용 볼트 세트"
+      },
+      "maker": "SHURE",
+      "live_price": 15000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 12
+      }
+    },
+    {
+      "cgiId": "samamusic:2535",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "RPH-CABLE-USB"
+      },
+      "maker": "SHURE",
+      "live_price": 21000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국 .",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 10
+      }
+    },
+    {
+      "cgiId": "samamusic:2536",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "RPH-CABLE-AUDIO"
+      },
+      "maker": "SHURE",
+      "live_price": 15000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국 .",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 13
+      }
+    },
+    {
+      "cgiId": "samamusic:2537",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "RPH-SBH2350-CASE"
+      },
+      "maker": "SHURE",
+      "live_price": 56000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국 .",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 1
+      }
+    },
+    {
+      "cgiId": "samamusic:258",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50004370",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "헤드폰 앰프 경로 — 앰프 리프(배치 검증 50004370)",
+      "model": {
+        "source": "product_name_substring",
+        "value": "SHURE SHA900",
+        "evidence": "SHURE SHA900 / 슈어 포터블 리스닝 앰프"
+      },
+      "maker": "SHURE",
+      "live_price": 1592000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 7
+      }
+    },
+    {
+      "cgiId": "samamusic:2585",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "product_name_substring",
+        "value": "SHURE RMCE-TW2 CASE",
+        "evidence": "SHURE RMCE-TW2 CASE / 슈어 AONIC TW2 용 2세대 충전 케이스"
+      },
+      "maker": "SHURE",
+      "live_price": 117000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국 .",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 4
+      }
+    },
+    {
+      "cgiId": "samamusic:275",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "HPASCA1"
+      },
+      "maker": "SHURE",
+      "live_price": 32000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국 .",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 31
+      }
+    },
+    {
+      "cgiId": "samamusic:2773",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "product_name_substring",
+        "value": "SHURE SBH2350-WH-PADS",
+        "evidence": "SHURE SBH2350-WH-PADS / 슈어 Aonic 50 교체용 이어패드 (화이트) 1쌍"
+      },
+      "maker": "SHURE",
+      "live_price": 79000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국 .",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 8
+      }
+    },
+    {
+      "cgiId": "samamusic:282",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "HPASCA2"
+      },
+      "maker": "SHURE",
+      "live_price": 55000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국 .",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 1
+      }
+    },
+    {
+      "cgiId": "samamusic:283",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "HPACA1"
+      },
+      "maker": "SHURE",
+      "live_price": 32000,
+      "price_source": "collected_confirmed",
+      "live_origin": "해외 .",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 12
+      }
+    },
+    {
+      "cgiId": "samamusic:284",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "HPAEC1840"
+      },
+      "maker": "SHURE",
+      "live_price": 47000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국 .",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 3
+      }
+    },
+    {
+      "cgiId": "samamusic:285",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "HPAEC1540"
+      },
+      "maker": "SHURE",
+      "live_price": 92000,
+      "price_source": "collected_confirmed",
+      "live_origin": "해외 .",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 5
+      }
+    },
+    {
+      "cgiId": "samamusic:286",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "HPAEC1440"
+      },
+      "maker": "SHURE",
+      "live_price": 47000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국 .",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 2
+      }
+    },
+    {
+      "cgiId": "samamusic:2898",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "30A20070"
+      },
+      "maker": "SHURE",
+      "live_price": 2000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 26
+      }
+    },
+    {
+      "cgiId": "samamusic:2905",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "0485-0025-0000 / 1M MICRO-B TO USB-A"
+      },
+      "maker": "APOGEE",
+      "live_price": 29000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 5
+      }
+    },
+    {
+      "cgiId": "samamusic:2906",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "0485-0024-0000 / 1M MICRO-B TO USB-C"
+      },
+      "maker": "APOGEE",
+      "live_price": 29000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 3
+      }
+    },
+    {
+      "cgiId": "samamusic:2907",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "0491-0001-0000 / 1M MICRO-B TO LIGHT"
+      },
+      "maker": "APOGEE",
+      "live_price": 58000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 2
+      }
+    },
+    {
+      "cgiId": "samamusic:2927",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "SBH1DYWH1-PADS"
+      },
+      "maker": "SHURE",
+      "live_price": 67000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 2
+      }
+    },
+    {
+      "cgiId": "samamusic:2928",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "SRH440A-PADS"
+      },
+      "maker": "SHURE",
+      "live_price": 38000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국 , 멕시코 또는 태국",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 35
+      }
+    },
+    {
+      "cgiId": "samamusic:2930",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "SRH-CABLE"
+      },
+      "maker": "SHURE",
+      "live_price": 38000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 33
+      }
+    },
+    {
+      "cgiId": "samamusic:2931",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "SRH-CABLE-COILED"
+      },
+      "maker": "SHURE",
+      "live_price": 38000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국 , 멕시코 또는 태국",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 72
+      }
+    },
+    {
+      "cgiId": "samamusic:2945",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "MiC Plus Case"
+      },
+      "maker": "APOGEE",
+      "live_price": 42000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 1
+      }
+    },
+    {
+      "cgiId": "samamusic:2946",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "0078-0032-0000 / HypeMiC Carrying Case"
+      },
+      "maker": "APOGEE",
+      "live_price": 59000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 1
+      }
+    },
+    {
+      "cgiId": "samamusic:2948",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "0036-0006-0000 / Apogee Premium Microphone Stand Adapter"
+      },
+      "maker": "APOGEE",
+      "live_price": 36000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 1
+      }
+    },
+    {
+      "cgiId": "samamusic:295",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "EAC64BKS"
+      },
+      "maker": "SHURE",
+      "live_price": 81000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국 .",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 17
+      }
+    },
+    {
+      "cgiId": "samamusic:2954",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002974",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "오디오 인터페이스 경로 — 레코딩장비 리프(배치 검증 50002974, AudioBox 등 실등록)",
+      "model": {
+        "source": "page_label",
+        "value": "BOOM"
+      },
+      "maker": "APOGEE",
+      "live_price": 439000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 106
+      }
+    },
+    {
+      "cgiId": "samamusic:296",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "EAC46BKS"
+      },
+      "maker": "SHURE",
+      "live_price": 81000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국 .",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 15
+      }
+    },
+    {
+      "cgiId": "samamusic:297",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "EAC64CLS"
+      },
+      "maker": "SHURE",
+      "live_price": 81000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국 .",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 20
+      }
+    },
+    {
+      "cgiId": "samamusic:2973",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50024419",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰 경로 — 유선이어폰 리프(상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "SE215SPE-PL-A"
+      },
+      "maker": "SHURE",
+      "live_price": 189000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 802
+      }
+    },
+    {
+      "cgiId": "samamusic:298",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "EAC46CLS"
+      },
+      "maker": "SHURE",
+      "live_price": 81000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국 .",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 23
+      }
+    },
+    {
+      "cgiId": "samamusic:302",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "RPE846NZLTOOL"
+      },
+      "maker": "SHURE",
+      "live_price": 15000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국 .",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 3
+      }
+    },
+    {
+      "cgiId": "samamusic:303",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "EASQRZIPCASE-BLK"
+      },
+      "maker": "SHURE",
+      "live_price": 38000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국 .",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 32
+      }
+    },
+    {
+      "cgiId": "samamusic:304",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "EAYLF1-10"
+      },
+      "maker": "SHURE",
+      "live_price": 32000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국 .",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 59
+      }
+    },
+    {
+      "cgiId": "samamusic:305",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "EATFL1-6"
+      },
+      "maker": "SHURE",
+      "live_price": 19000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국 .",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 23
+      }
+    },
+    {
+      "cgiId": "samamusic:315",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "EAC30P-MICROB8"
+      },
+      "maker": "SHURE",
+      "live_price": 47000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국 .",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 3
+      }
+    },
+    {
+      "cgiId": "samamusic:3153",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002974",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "오디오 인터페이스 경로 — 레코딩장비 리프(배치 검증 50002974, AudioBox 등 실등록)",
+      "model": {
+        "source": "page_label",
+        "value": "IK Multimedia iRig Stream Solo"
+      },
+      "maker": "IK MULTIMEDIA",
+      "live_price": 81000,
+      "price_source": "collected_confirmed",
+      "live_origin": "유럽 이탈리아",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      }
+    },
+    {
+      "cgiId": "samamusic:318",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "EACMICROBOTG8"
+      },
+      "maker": "SHURE",
+      "live_price": 49000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국 .",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 9
+      }
+    },
+    {
+      "cgiId": "samamusic:319",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "EACLTG-MICROB8"
+      },
+      "maker": "SHURE",
+      "live_price": 49000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국 .",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 2
+      }
+    },
+    {
+      "cgiId": "samamusic:320",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "EAC3.5MM6"
+      },
+      "maker": "SHURE",
+      "live_price": 11000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국 .",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 1
+      }
+    },
+    {
+      "cgiId": "samamusic:321",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "EAC3.5MM36"
+      },
+      "maker": "SHURE",
+      "live_price": 21000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국 .",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 3
+      }
+    },
+    {
+      "cgiId": "samamusic:323",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "RPESHIRT CBL CLIP"
+      },
+      "maker": "SHURE",
+      "live_price": 13000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국 .",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 1
+      }
+    },
+    {
+      "cgiId": "samamusic:324",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "RPE846NZLNSRT-BRT"
+      },
+      "maker": "SHURE",
+      "live_price": 29000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국 .",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 2
+      }
+    },
+    {
+      "cgiId": "samamusic:325",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "RPE846NZLNSRT-WRM"
+      },
+      "maker": "SHURE",
+      "live_price": 31000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국 .",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 3
+      }
+    },
+    {
+      "cgiId": "samamusic:3257",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "0485-0031-0000 / USB C to A Cable (2m)"
+      },
+      "maker": "APOGEE",
+      "live_price": 29000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 1
+      }
+    },
+    {
+      "cgiId": "samamusic:3258",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "0485-0030-0000 / USB C to C Cable (2m)"
+      },
+      "maker": "APOGEE",
+      "live_price": 29000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 5
+      }
+    },
+    {
+      "cgiId": "samamusic:326",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "RPE846NZLNSRT-BAL"
+      },
+      "maker": "SHURE",
+      "live_price": 33000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국 .",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 6
+      }
+    },
+    {
+      "cgiId": "samamusic:327",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "RPE846NSRTS"
+      },
+      "maker": "SHURE",
+      "live_price": 113000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국 .",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 3
+      }
+    },
+    {
+      "cgiId": "samamusic:328",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "RPE846NZL"
+      },
+      "maker": "SHURE",
+      "live_price": 52000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국 .",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 5
+      }
+    },
+    {
+      "cgiId": "samamusic:329",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "EAHCASE"
+      },
+      "maker": "SHURE",
+      "live_price": 25000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국 .",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 2
+      }
+    },
+    {
+      "cgiId": "samamusic:330",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "EASCASE"
+      },
+      "maker": "SHURE",
+      "live_price": 25000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국 .",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 61
+      }
+    },
+    {
+      "cgiId": "samamusic:331",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "RMCE-LTG"
+      },
+      "maker": "SHURE",
+      "live_price": 138000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국 또는 멕시코",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 3
+      }
+    },
+    {
+      "cgiId": "samamusic:3316",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002974",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "오디오 인터페이스 경로 — 레코딩장비 리프(배치 검증 50002974, AudioBox 등 실등록)",
+      "model": {
+        "source": "page_label",
+        "value": "JAM X"
+      },
+      "maker": "APOGEE",
+      "live_price": 299000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아메리카 멕시코",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 23
+      }
+    },
+    {
+      "cgiId": "samamusic:3339",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002974",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "오디오 인터페이스 경로 — 레코딩장비 리프(배치 검증 50002974, AudioBox 등 실등록)",
+      "model": {
+        "source": "page_label",
+        "value": "AXE I/O SOLO"
+      },
+      "maker": "IK MULTIMEDIA",
+      "live_price": 377000,
+      "price_source": "collected_confirmed",
+      "live_origin": "국내",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      }
+    },
+    {
+      "cgiId": "samamusic:3383",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002974",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "오디오 인터페이스 경로 — 레코딩장비 리프(배치 검증 50002974, AudioBox 등 실등록)",
+      "model": {
+        "source": "page_label",
+        "value": "MiniFuse Recording Pack White"
+      },
+      "maker": "ARTURIA",
+      "live_price": 359000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 2
+      }
+    },
+    {
+      "cgiId": "samamusic:3475",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "Micro B (5pin) to Light Cable (2m)"
+      },
+      "maker": "APOGEE",
+      "live_price": 58000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 3
+      }
+    },
+    {
+      "cgiId": "samamusic:3563",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50024479",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "헤드폰 경로 — 무선헤드폰 리프(상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "AONIC 50 GEN2"
+      },
+      "maker": "SHURE",
+      "live_price": 608000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 114
+      }
+    },
+    {
+      "cgiId": "samamusic:3577",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "EACYF1-6XS"
+      },
+      "maker": "SHURE",
+      "live_price": 42000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 21
+      }
+    },
+    {
+      "cgiId": "samamusic:3578",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "EACYF1-6S"
+      },
+      "maker": "SHURE",
+      "live_price": 42000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 39
+      }
+    },
+    {
+      "cgiId": "samamusic:3579",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "EACYF1-6M"
+      },
+      "maker": "SHURE",
+      "live_price": 42000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 78
+      }
+    },
+    {
+      "cgiId": "samamusic:3580",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "EACYF1-6L"
+      },
+      "maker": "SHURE",
+      "live_price": 42000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 30
+      }
+    },
+    {
+      "cgiId": "samamusic:3581",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "EACYPF-6KIT"
+      },
+      "maker": "SHURE",
+      "live_price": 42000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 22
+      }
+    },
+    {
+      "cgiId": "samamusic:3582",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "EACYF1-6KIT"
+      },
+      "maker": "SHURE",
+      "live_price": 42000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 13
+      }
+    },
+    {
+      "cgiId": "samamusic:3584",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "SBH50G2-BK-PADS"
+      },
+      "maker": "SHURE",
+      "live_price": 92000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 11
+      }
+    },
+    {
+      "cgiId": "samamusic:3962",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "UA802"
+      },
+      "maker": "SHURE",
+      "live_price": 38000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 15
+      }
+    },
+    {
+      "cgiId": "samamusic:3980",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002328",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "마이크 액세서리 경로 — 마이크주변기기 리프(배치 검증 50002328)",
+      "model": {
+        "source": "page_label",
+        "value": "AMV-CHARGE"
+      },
+      "maker": "SHURE",
+      "live_price": 215000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 9
+      }
+    },
+    {
+      "cgiId": "samamusic:3981",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002328",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "마이크 액세서리 경로 — 마이크주변기기 리프(배치 검증 50002328)",
+      "model": {
+        "source": "page_label",
+        "value": "AMV-LAV-WS/W-KIT"
+      },
+      "maker": "SHURE",
+      "live_price": 86000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 19
+      }
+    },
+    {
+      "cgiId": "samamusic:3982",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002328",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "마이크 액세서리 경로 — 마이크주변기기 리프(배치 검증 50002328)",
+      "model": {
+        "source": "page_label",
+        "value": "AMV-LAV-WS/B"
+      },
+      "maker": "SHURE",
+      "live_price": 67000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 3
+      }
+    },
+    {
+      "cgiId": "samamusic:3983",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002328",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "마이크 액세서리 경로 — 마이크주변기기 리프(배치 검증 50002328)",
+      "model": {
+        "source": "page_label",
+        "value": "AMV-LAV-FUR"
+      },
+      "maker": "SHURE",
+      "live_price": 67000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 22
+      }
+    },
+    {
+      "cgiId": "samamusic:3984",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002328",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "마이크 액세서리 경로 — 마이크주변기기 리프(배치 검증 50002328)",
+      "model": {
+        "source": "page_label",
+        "value": "AMV-LAV-MM"
+      },
+      "maker": "SHURE",
+      "live_price": 52000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 12
+      }
+    },
+    {
+      "cgiId": "samamusic:3985",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002328",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "마이크 액세서리 경로 — 마이크주변기기 리프(배치 검증 50002328)",
+      "model": {
+        "source": "page_label",
+        "value": "AMV-USBC-USBC15"
+      },
+      "maker": "SHURE",
+      "live_price": 54000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 6
+      }
+    },
+    {
+      "cgiId": "samamusic:3986",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002328",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "마이크 액세서리 경로 — 마이크주변기기 리프(배치 검증 50002328)",
+      "model": {
+        "source": "page_label",
+        "value": "AMV-3.5-3.5"
+      },
+      "maker": "SHURE",
+      "live_price": 54000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 4
+      }
+    },
+    {
+      "cgiId": "samamusic:3987",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002328",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "마이크 액세서리 경로 — 마이크주변기기 리프(배치 검증 50002328)",
+      "model": {
+        "source": "page_label",
+        "value": "AMV-USBC-LTG15"
+      },
+      "maker": "SHURE",
+      "live_price": 54000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 56
+      }
+    },
+    {
+      "cgiId": "samamusic:4074",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "Caster Kits (ULT18/CDL18)"
+      },
+      "maker": "PRESONUS",
+      "live_price": 90000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      }
+    },
+    {
+      "cgiId": "samamusic:422",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "product_name_substring",
+        "value": "SHURE RPM153T",
+        "evidence": "SHURE RPM153T / 슈어 MX153 윈드스크린+클립"
+      },
+      "maker": "SHURE",
+      "live_price": 18000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 4
+      }
+    },
+    {
+      "cgiId": "samamusic:423",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "product_name_substring",
+        "value": "SHURE RPM153C",
+        "evidence": "SHURE RPM153C / 슈어 MX153 윈드스크린+클립"
+      },
+      "maker": "SHURE",
+      "live_price": 18000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 2
+      }
+    },
+    {
+      "cgiId": "samamusic:4432",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "95F52640 (USB C TO USB C)/MV용"
+      },
+      "maker": "SHURE",
+      "live_price": 19000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 19
+      }
+    },
+    {
+      "cgiId": "samamusic:4546",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "product_name_substring",
+        "value": "SHURE SB904 GLX-D",
+        "evidence": "SHURE SB904 GLX-D+ 용 리튬 이온 충전용 배터리"
+      },
+      "maker": "SHURE",
+      "live_price": 74000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 37
+      }
+    },
+    {
+      "cgiId": "samamusic:4547",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "SBC10-904-K"
+      },
+      "maker": "SHURE",
+      "live_price": 86000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 49
+      }
+    },
+    {
+      "cgiId": "samamusic:5219",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50004370",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "헤드폰 앰프 경로 — 앰프 리프(배치 검증 50004370)",
+      "model": {
+        "source": "page_label",
+        "value": "Spark NEO"
+      },
+      "maker": "Positive Grid",
+      "live_price": 399000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 165
+      }
+    },
+    {
+      "cgiId": "samamusic:5243",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50004370",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "헤드폰 앰프 경로 — 앰프 리프(배치 검증 50004370)",
+      "model": {
+        "source": "page_label",
+        "value": "Spark NEO CORE"
+      },
+      "maker": "Positive Grid",
+      "live_price": 259000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 14
+      }
+    },
+    {
+      "cgiId": "samamusic:5254",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002974",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "오디오 인터페이스 경로 — 레코딩장비 리프(배치 검증 50002974, AudioBox 등 실등록)",
+      "model": {
+        "source": "page_label",
+        "value": "SYM2AE-16X16SE-TB3"
+      },
+      "maker": "APOGEE",
+      "live_price": 12960000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 베트남",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 2
+      }
+    },
+    {
+      "cgiId": "samamusic:5269",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002974",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "오디오 인터페이스 경로 — 레코딩장비 리프(배치 검증 50002974, AudioBox 등 실등록)",
+      "model": {
+        "source": "page_label",
+        "value": "SYM2-TB3-CARD (TB3 REAR PANEL KIT)"
+      },
+      "maker": "APOGEE",
+      "live_price": 900000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 6
+      }
+    },
+    {
+      "cgiId": "samamusic:5391",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002974",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "오디오 인터페이스 경로 — 레코딩장비 리프(배치 검증 50002974, AudioBox 등 실등록)",
+      "model": {
+        "source": "page_label",
+        "value": "SYM2-CONNECT-8-TB3"
+      },
+      "maker": "APOGEE",
+      "live_price": 10600000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 베트남",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 1
+      }
+    },
+    {
+      "cgiId": "samamusic:5392",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002974",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "오디오 인터페이스 경로 — 레코딩장비 리프(배치 검증 50002974, AudioBox 등 실등록)",
+      "model": {
+        "source": "page_label",
+        "value": "SYM2-16X16SE-TB3"
+      },
+      "maker": "APOGEE",
+      "live_price": 11900000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 베트남",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 3
+      }
+    },
+    {
+      "cgiId": "samamusic:5393",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "3m Hirose Light / 0491-0035-0008-L"
+      },
+      "maker": "APOGEE",
+      "live_price": 28000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 5
+      }
+    },
+    {
+      "cgiId": "samamusic:5532",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "product_name_substring",
+        "value": "0.6m",
+        "evidence": "QED REFERENCE Optical Quartz 큐이디 레퍼런스 옵티컬 쿼츠 각대각 광케이블 (0.6m / 1m / 2m / 3m)"
+      },
+      "maker": "QED",
+      "live_price": 289000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 대만",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      }
+    },
+    {
+      "cgiId": "samamusic:593",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "0491-0036-0008(구.0491-4044-2014 )"
+      },
+      "maker": "APOGEE",
+      "live_price": 33000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 3
+      }
+    },
+    {
+      "cgiId": "samamusic:594",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "0491-0008-0000 구)0491-0031-0008"
+      },
+      "maker": "APOGEE",
+      "live_price": 27000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 3
+      }
+    },
+    {
+      "cgiId": "samamusic:598",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "0491-4043-2014, (구)0491-0034-0008-L"
+      },
+      "maker": "APOGEE",
+      "live_price": 28000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 3
+      }
+    },
+    {
+      "cgiId": "samamusic:600",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "0485-0007-0000"
+      },
+      "maker": "APOGEE",
+      "live_price": 24000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 2
+      }
+    },
+    {
+      "cgiId": "samamusic:678",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "EASFX1-10L"
+      },
+      "maker": "SHURE",
+      "live_price": 25000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국 .",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 4
+      }
+    },
+    {
+      "cgiId": "samamusic:679",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "EASFX1-10M"
+      },
+      "maker": "SHURE",
+      "live_price": 25000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국 .",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 2
+      }
+    },
+    {
+      "cgiId": "samamusic:680",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "EASFX1-10S"
+      },
+      "maker": "SHURE",
+      "live_price": 25000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국 .",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 4
+      }
+    },
+    {
+      "cgiId": "samamusic:681",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "EAC64CL"
+      },
+      "maker": "SHURE",
+      "live_price": 81000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국 .",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 171
+      }
+    },
+    {
+      "cgiId": "samamusic:682",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "EAC64BK"
+      },
+      "maker": "SHURE",
+      "live_price": 81000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국 .",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 25
+      }
+    },
+    {
+      "cgiId": "samamusic:875",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "product_name_substring",
+        "value": "SHURE RPM512",
+        "evidence": "SHURE RPM512 / 슈어 WL50용 타이클립"
+      },
+      "maker": "SHURE",
+      "live_price": 50000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 1
+      }
+    },
+    {
+      "cgiId": "samamusic:945",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "95A35726"
+      },
+      "maker": "SHURE",
+      "live_price": 2000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국 .",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 17
+      }
+    },
+    {
+      "cgiId": "samamusic:12",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_OUTOFSTOCK",
+      "leafCategoryId": "50002974",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "오디오 인터페이스 경로 — 레코딩장비 리프(배치 검증 50002974, AudioBox 등 실등록)",
+      "model": {
+        "source": "page_label",
+        "value": "DUET-IOS-MAC-L"
+      },
+      "maker": "APOGEE",
+      "live_price": 828000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아메리카 미국",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      }
+    },
+    {
+      "cgiId": "samamusic:1225",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_OUTOFSTOCK",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "16075-000-56"
+      },
+      "maker": "K&amp;M",
+      "live_price": 60000,
+      "price_source": "collected_confirmed",
+      "live_origin": "유럽 독일",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 2
+      }
+    },
+    {
+      "cgiId": "samamusic:1402",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_OUTOFSTOCK",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "NDJ"
+      },
+      "maker": "NEUTRIK",
+      "live_price": 1290,
+      "price_source": "collected_confirmed",
+      "live_origin": "유럽 리히텐슈타인",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 164
+      }
+    },
+    {
+      "cgiId": "samamusic:1404",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_OUTOFSTOCK",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "NDP"
+      },
+      "maker": "NEUTRIK",
+      "live_price": 1400,
+      "price_source": "collected_confirmed",
+      "live_origin": "유럽 리히텐슈타인",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 169
+      }
+    },
+    {
+      "cgiId": "samamusic:1985",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_OUTOFSTOCK",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "product_name_substring",
+        "value": "SHURE SBH2350-BK-PADS",
+        "evidence": "SHURE SBH2350-BK-PADS / 슈어 Aonic 50 교체용 이어패드 (블랙) 1쌍"
+      },
+      "maker": "SHURE",
+      "live_price": 79000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국 .",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      }
+    },
+    {
+      "cgiId": "samamusic:1986",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_OUTOFSTOCK",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "product_name_substring",
+        "value": "SHURE SBH2350-BR-PADS",
+        "evidence": "SHURE SBH2350-BR-PADS / 슈어 Aonic 50 교체용 이어패드 (다크 브라운) 1쌍"
+      },
+      "maker": "SHURE",
+      "live_price": 79000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국 .",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      }
+    },
+    {
+      "cgiId": "samamusic:2573",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_OUTOFSTOCK",
+      "leafCategoryId": "50024439",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰 경로 — 무선이어폰 리프(상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "AONIC 215 TW2"
+      },
+      "maker": "SHURE",
+      "live_price": 418000,
+      "price_source": "collected_confirmed",
+      "live_origin": "해외",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      }
+    },
+    {
+      "cgiId": "samamusic:287",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_OUTOFSTOCK",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "HPAEC940"
+      },
+      "maker": "SHURE",
+      "live_price": 36000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국 .",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      }
+    },
+    {
+      "cgiId": "samamusic:288",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_OUTOFSTOCK",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "HPAEC840"
+      },
+      "maker": "SHURE",
+      "live_price": 29000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국 .",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      }
+    },
+    {
+      "cgiId": "samamusic:291",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_OUTOFSTOCK",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "HPAEC440"
+      },
+      "maker": "SHURE",
+      "live_price": 15000,
+      "price_source": "collected_confirmed",
+      "live_origin": "해외 .",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      }
+    },
+    {
+      "cgiId": "samamusic:292",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_OUTOFSTOCK",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "HPAEC240"
+      },
+      "maker": "SHURE",
+      "live_price": 11000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국 .",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      }
+    },
+    {
+      "cgiId": "samamusic:2926",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_OUTOFSTOCK",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "SBH1DYBK1-PADS"
+      },
+      "maker": "SHURE",
+      "live_price": 67000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      }
+    },
+    {
+      "cgiId": "samamusic:2929",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_OUTOFSTOCK",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "SRH840A-PADS"
+      },
+      "maker": "SHURE",
+      "live_price": 38000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      }
+    },
+    {
+      "cgiId": "samamusic:299",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_OUTOFSTOCK",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "EAC45DKGR"
+      },
+      "maker": "SHURE",
+      "live_price": 79000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국 .",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      }
+    },
+    {
+      "cgiId": "samamusic:300",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_OUTOFSTOCK",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "EAC45GR"
+      },
+      "maker": "SHURE",
+      "live_price": 79000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국 .",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      }
+    },
+    {
+      "cgiId": "samamusic:312",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_OUTOFSTOCK",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "EAC9BK"
+      },
+      "maker": "SHURE",
+      "live_price": 24000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국 .",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      }
+    },
+    {
+      "cgiId": "samamusic:3150",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_OUTOFSTOCK",
+      "leafCategoryId": "50002974",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "오디오 인터페이스 경로 — 레코딩장비 리프(배치 검증 50002974, AudioBox 등 실등록)",
+      "model": {
+        "source": "page_label",
+        "value": "iRig Stream"
+      },
+      "maker": "IK MULTIMEDIA",
+      "live_price": 199000,
+      "price_source": "collected_confirmed",
+      "live_origin": "유럽 이탈리아",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      }
+    },
+    {
+      "cgiId": "samamusic:316",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_OUTOFSTOCK",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "EAAMPCASE"
+      },
+      "maker": "SHURE",
+      "live_price": 87000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국 .",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      }
+    },
+    {
+      "cgiId": "samamusic:3476",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_OUTOFSTOCK",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "0491-0019-0000 / Micro B (5pin) to Light Cable (30cm)"
+      },
+      "maker": "APOGEE",
+      "live_price": 46000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      }
+    },
+    {
+      "cgiId": "samamusic:3583",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_OUTOFSTOCK",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "RMCH1-UNI"
+      },
+      "maker": "SHURE",
+      "live_price": 71000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국 .",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 8
+      }
+    },
+    {
+      "cgiId": "samamusic:380",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_OUTOFSTOCK",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "product_name_substring",
+        "value": "12",
+        "evidence": "SHURE CVD-B 슈어 CVG 용 XLR 데스크탑 베이스, 12' 케이블"
+      },
+      "maker": "SHURE",
+      "live_price": 120000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      }
+    },
+    {
+      "cgiId": "samamusic:3932",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_OUTOFSTOCK",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "page_label",
+        "value": "44A8031"
+      },
+      "maker": "SHURE",
+      "live_price": 3000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아메리카 미국",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 7
+      }
+    },
+    {
+      "cgiId": "samamusic:424",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_OUTOFSTOCK",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "product_name_substring",
+        "value": "SHURE RPM153B",
+        "evidence": "SHURE RPM153B / 슈어 MX153 윈드스크린+클립"
+      },
+      "maker": "SHURE",
+      "live_price": 18000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 3
+      }
+    },
+    {
+      "cgiId": "samamusic:426",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_OUTOFSTOCK",
+      "leafCategoryId": "50002342",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "이어폰/헤드폰 액세서리 경로 — 기타이어폰/헤드폰액세서리 리프(코퍼스 50002342, 상품명 근거)",
+      "model": {
+        "source": "product_name_substring",
+        "value": "SHURE RPM150TC",
+        "evidence": "SHURE RPM150TC / 슈어 MX150 멀티포지션 타이 클립"
+      },
+      "maker": "SHURE",
+      "live_price": 30000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      }
+    },
+    {
+      "cgiId": "samamusic:5390",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_OUTOFSTOCK",
+      "leafCategoryId": "50002974",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "오디오 인터페이스 경로 — 레코딩장비 리프(배치 검증 50002974, AudioBox 등 실등록)",
+      "model": {
+        "source": "page_label",
+        "value": "SYM2-2X6SE-TB3"
+      },
+      "maker": "APOGEE",
+      "live_price": 7390000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 베트남",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      }
+    },
+    {
+      "cgiId": "samamusic:4463",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50001516",
+      "category_source": "sw_remapping_C19",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "Traktor Pro 4"
+      },
+      "maker": "Native Instruments",
+      "live_price": 179000,
+      "price_source": "collected_confirmed",
+      "live_origin": "유럽 독일",
+      "isSW": true,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 9
+      }
+    },
+    {
+      "cgiId": "samamusic:4464",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50001516",
+      "category_source": "sw_remapping_C19",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "Traktor Pro 4 Update"
+      },
+      "maker": "Native Instruments",
+      "live_price": 89000,
+      "price_source": "collected_confirmed",
+      "live_origin": "유럽 독일",
+      "isSW": true,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 3
+      }
+    },
+    {
+      "cgiId": "samamusic:4539",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50001516",
+      "category_source": "sw_remapping_C19",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "Maschine Central"
+      },
+      "maker": "Native Instruments",
+      "live_price": 59000,
+      "price_source": "collected_confirmed",
+      "live_origin": "유럽 독일",
+      "isSW": true,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 9
+      }
+    },
+    {
+      "cgiId": "samamusic:5313",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50001516",
+      "category_source": "sw_remapping_C19",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "Fender Studio Pro"
+      },
+      "maker": "PRESONUS",
+      "live_price": 268000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아메리카 미국",
+      "isSW": true,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 37
+      }
+    },
+    {
+      "cgiId": "samamusic:5314",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50001516",
+      "category_source": "sw_remapping_C19",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "Fender Studio Pro UPG"
+      },
+      "maker": "PRESONUS",
+      "live_price": 125000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아메리카 미국",
+      "isSW": true,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 17
+      }
+    },
+    {
+      "cgiId": "samamusic:5315",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50001516",
+      "category_source": "sw_remapping_C19",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "FENDER STUDIO PRO XGRADE"
+      },
+      "maker": "PRESONUS",
+      "live_price": 201000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아메리카 미국",
+      "isSW": true,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 6
+      }
+    },
+    {
+      "cgiId": "samamusic:5316",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50001516",
+      "category_source": "sw_remapping_C19",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "FENDER STUDIO PRO EDU"
+      },
+      "maker": "PRESONUS",
+      "live_price": 201000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아메리카 미국",
+      "isSW": true,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 10
+      }
+    },
+    {
+      "cgiId": "samamusic:5453",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50001516",
+      "category_source": "sw_remapping_C19",
+      "semantic_evidence": null,
+      "model": {
+        "source": "product_name_substring",
+        "value": "Arturia FX Collection 6 PRO",
+        "evidence": "Arturia FX Collection 6 PRO 아투리아 믹싱, 이펙트, 마스터, 오디오 컬렉션 (가상악기/VST) (실시간)"
+      },
+      "maker": "ARTURIA",
+      "live_price": 629000,
+      "price_source": "collected_confirmed",
+      "live_origin": "유럽 프랑스",
+      "isSW": true,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 24
+      }
+    },
+    {
+      "cgiId": "samamusic:5468",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_SALE",
+      "leafCategoryId": "50001516",
+      "category_source": "sw_remapping_C19",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "FENDER STUDIO PRO QUANTUM LT UPGRADE"
+      },
+      "maker": "PRESONUS",
+      "live_price": 175000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아메리카 미국",
+      "isSW": true,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 6
+      }
+    },
+    {
+      "cgiId": "samamusic:4122",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_OUTOFSTOCK",
+      "leafCategoryId": "50001516",
+      "category_source": "sw_remapping_C19",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "FX Collection 5"
+      },
+      "maker": "ARTURIA",
+      "live_price": 619000,
+      "price_source": "collected_confirmed",
+      "live_origin": "유럽 프랑스",
+      "isSW": true,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      }
+    },
+    {
+      "cgiId": "samamusic:4538",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_OUTOFSTOCK",
+      "leafCategoryId": "50001516",
+      "category_source": "sw_remapping_C19",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "Maschine 3  Update Software Only"
+      },
+      "maker": "Native Instruments",
+      "live_price": 44000,
+      "price_source": "collected_confirmed",
+      "live_origin": "유럽 독일",
+      "isSW": true,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      }
+    },
+    {
+      "cgiId": "samamusic:5539",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch7_state": "READY_OUTOFSTOCK",
+      "leafCategoryId": "50001516",
+      "category_source": "sw_remapping_C19",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "Komplete Select"
+      },
+      "maker": "Native Instruments",
+      "live_price": 165000,
+      "price_source": "collected_confirmed",
+      "live_origin": "유럽 독일",
+      "isSW": true,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      }
+    }
+  ],
+  "backups": []
+}
