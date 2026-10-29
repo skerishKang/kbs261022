@@ -263,6 +263,27 @@ test('origin resolution: the supplier 국내 declaration is the code-table 국�
   assert.equal(unmatched.ok, false, '리졸버가 코드를 못 찾으면 국내라도 값을 만들지 않는다');
 });
 
+test('origin resolution: country tokens behind qualifiers and the vague 외 suffix (E31)', () => {
+  // 배치13 실측: '아메리카 미국 애리조나'(3013)·'아시아 중국 OEM'(2893) — 국가 뒤 한정사.
+  // 뒤에서 안쪽으로 걸어 국가 토큰을 찾는다(선언 국가는 변하지 않는다).
+  const arizona = resolveOriginArea({ originText: '아메리카 미국 애리조나', resolveCode: (t) => (String(t).endsWith('미국') ? '0204000' : null) });
+  assert.equal(arizona.ok, true);
+  assert.equal(arizona.originAreaCode, '0204000');
+  assert.equal(arizona.mode, 'verified_code');
+  const oem = resolveOriginArea({ originText: '아시아 중국 OEM', resolveCode: (t) => (String(t).endsWith('중국') ? '0200037' : null) });
+  assert.equal(oem.ok, true);
+  assert.equal(oem.originAreaCode, '0200037', 'OEM은 생산 방식 한정사 — 국가 선언(중국)은 그대로다');
+  // '… 외'는 미열거 복수 후보 신호 — 04+공급처 표기 원문(C18 경로).
+  const vague = resolveOriginArea({ originText: '아메리카 미국 외', resolveCode: (t) => (String(t).endsWith('미국') ? '0204000' : null) });
+  assert.equal(vague.ok, true);
+  assert.equal(vague.originAreaCode, '04');
+  assert.equal(vague.content, '아메리카 미국 외', '미열거 복수 표기는 한 국가로 단정하지 않는다');
+  assert.equal(vague.mode, 'direct_input_content');
+  const unresolved = resolveOriginArea({ originText: '아시아 미지국가', resolveCode: () => null });
+  assert.equal(unresolved.ok, false);
+  assert.equal(unresolved.reason, 'origin_code_unresolved');
+});
+
 test('the batch intent guard rejects the measured vendor refusals', () => {
   assert.throws(() => assertLegalBatchIntent({ kind: 'register', statusType: 'SALE', stockQuantity: 0 }), (error) => error.code === 'stock_number_min');
   assert.throws(() => assertLegalBatchIntent({ kind: 'register', statusType: 'SALE', stockQuantity: null }), (error) => error.code === 'stock_number_min');
