@@ -1,0 +1,672 @@
+{
+  "kind": "cgi-bulk-batch6-existing83-verify",
+  "ran_at": "2026-10-29T09:03:15.768Z",
+  "existing_rows_unchanged": true,
+  "existing_remote_ok": "83/83",
+  "checks": [
+    {
+      "cgiId": "samamusic.co.kr:1769",
+      "originProductNo": 13776583531,
+      "origin_statusType": "SALE",
+      "origin_price": 116000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic.co.kr:3417",
+      "originProductNo": 13776583540,
+      "origin_statusType": "SALE",
+      "origin_price": 518000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic.co.kr:3418",
+      "originProductNo": 13776583545,
+      "origin_statusType": "SALE",
+      "origin_price": 1818000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:2098",
+      "originProductNo": 13776685097,
+      "origin_statusType": "SALE",
+      "origin_price": 163000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:3965",
+      "originProductNo": 13776685126,
+      "origin_statusType": "SALE",
+      "origin_price": 421000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:2323",
+      "originProductNo": 13776720808,
+      "origin_statusType": "SALE",
+      "origin_price": 162000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:2322",
+      "originProductNo": 13776720813,
+      "origin_statusType": "SALE",
+      "origin_price": 162000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:2456",
+      "originProductNo": 13776720816,
+      "origin_statusType": "SALE",
+      "origin_price": 45000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:2458",
+      "originProductNo": 13776720827,
+      "origin_statusType": "SALE",
+      "origin_price": 33000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:2459",
+      "originProductNo": 13776720841,
+      "origin_statusType": "SALE",
+      "origin_price": 45000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:1856",
+      "originProductNo": 13776723743,
+      "origin_statusType": "OUTOFSTOCK",
+      "origin_price": 200000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:2684",
+      "originProductNo": 13776723767,
+      "origin_statusType": "OUTOFSTOCK",
+      "origin_price": 190000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:1768",
+      "originProductNo": 13776723779,
+      "origin_statusType": "OUTOFSTOCK",
+      "origin_price": 165000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:4971",
+      "originProductNo": 13776723796,
+      "origin_statusType": "OUTOFSTOCK",
+      "origin_price": 1270000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:2146",
+      "originProductNo": 13776759782,
+      "origin_statusType": "SALE",
+      "origin_price": 180000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:2327",
+      "originProductNo": 13776761989,
+      "origin_statusType": "SALE",
+      "origin_price": 232000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:3712",
+      "originProductNo": 13776761997,
+      "origin_statusType": "SALE",
+      "origin_price": 990000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:4475",
+      "originProductNo": 13776762025,
+      "origin_statusType": "SALE",
+      "origin_price": 249000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:5347",
+      "originProductNo": 13776762052,
+      "origin_statusType": "SALE",
+      "origin_price": 249000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:2502",
+      "originProductNo": 13776762071,
+      "origin_statusType": "SALE",
+      "origin_price": 45000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:2499",
+      "originProductNo": 13776762082,
+      "origin_statusType": "SALE",
+      "origin_price": 45000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:3110",
+      "originProductNo": 13776762106,
+      "origin_statusType": "SALE",
+      "origin_price": 6700000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:1227",
+      "originProductNo": 13776762133,
+      "origin_statusType": "OUTOFSTOCK",
+      "origin_price": 108000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:4178",
+      "originProductNo": 13776762158,
+      "origin_statusType": "OUTOFSTOCK",
+      "origin_price": 200000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:2093",
+      "originProductNo": 13776762195,
+      "origin_statusType": "OUTOFSTOCK",
+      "origin_price": 661000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:3967",
+      "originProductNo": 13776762229,
+      "origin_statusType": "OUTOFSTOCK",
+      "origin_price": 421000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:4966",
+      "originProductNo": 13776762273,
+      "origin_statusType": "OUTOFSTOCK",
+      "origin_price": 910000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:3887",
+      "originProductNo": 13776762341,
+      "origin_statusType": "OUTOFSTOCK",
+      "origin_price": 449000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:2792",
+      "originProductNo": 13776762389,
+      "origin_statusType": "OUTOFSTOCK",
+      "origin_price": 6080000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:2788",
+      "originProductNo": 13776762411,
+      "origin_statusType": "OUTOFSTOCK",
+      "origin_price": 5640000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:2790",
+      "originProductNo": 13776762460,
+      "origin_statusType": "OUTOFSTOCK",
+      "origin_price": 3710000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:2786",
+      "originProductNo": 13776762497,
+      "origin_statusType": "OUTOFSTOCK",
+      "origin_price": 3710000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:3103",
+      "originProductNo": 13776764518,
+      "origin_statusType": "SALE",
+      "origin_price": 6690000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:1302",
+      "originProductNo": 13776938053,
+      "origin_statusType": "SALE",
+      "origin_price": 193000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:4743",
+      "originProductNo": 13776939725,
+      "origin_statusType": "SALE",
+      "origin_price": 749000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:2501",
+      "originProductNo": 13776939771,
+      "origin_statusType": "SALE",
+      "origin_price": 56000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:1299",
+      "originProductNo": 13776940798,
+      "origin_statusType": "SALE",
+      "origin_price": 197000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:1300",
+      "originProductNo": 13776940846,
+      "origin_statusType": "SALE",
+      "origin_price": 206000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:1334",
+      "originProductNo": 13776940940,
+      "origin_statusType": "SALE",
+      "origin_price": 1243000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:1336",
+      "originProductNo": 13776941009,
+      "origin_statusType": "SALE",
+      "origin_price": 690000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:1337",
+      "originProductNo": 13776941097,
+      "origin_statusType": "SALE",
+      "origin_price": 1460000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:5622",
+      "originProductNo": 13776941169,
+      "origin_statusType": "SALE",
+      "origin_price": 4528000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:5621",
+      "originProductNo": 13776941221,
+      "origin_statusType": "SALE",
+      "origin_price": 2813000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:5047",
+      "originProductNo": 13776941273,
+      "origin_statusType": "SALE",
+      "origin_price": 221000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:5046",
+      "originProductNo": 13776941325,
+      "origin_statusType": "SALE",
+      "origin_price": 255000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:5049",
+      "originProductNo": 13776941363,
+      "origin_statusType": "SALE",
+      "origin_price": 192000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:4175",
+      "originProductNo": 13776941746,
+      "origin_statusType": "SALE",
+      "origin_price": 40000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:4176",
+      "originProductNo": 13776941790,
+      "origin_statusType": "SALE",
+      "origin_price": 53000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:4049",
+      "originProductNo": 13776941877,
+      "origin_statusType": "SALE",
+      "origin_price": 534000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:4050",
+      "originProductNo": 13776941994,
+      "origin_statusType": "SALE",
+      "origin_price": 534000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:2652",
+      "originProductNo": 13776942057,
+      "origin_statusType": "SALE",
+      "origin_price": 1060000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:2650",
+      "originProductNo": 13776942129,
+      "origin_statusType": "SALE",
+      "origin_price": 639000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:2649",
+      "originProductNo": 13776942206,
+      "origin_statusType": "SALE",
+      "origin_price": 555000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:2722",
+      "originProductNo": 13776942308,
+      "origin_statusType": "SALE",
+      "origin_price": 488000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:3107",
+      "originProductNo": 13776942366,
+      "origin_statusType": "SALE",
+      "origin_price": 6700000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:3112",
+      "originProductNo": 13776943137,
+      "origin_statusType": "SALE",
+      "origin_price": 6250000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:3104",
+      "originProductNo": 13776943215,
+      "origin_statusType": "SALE",
+      "origin_price": 6250000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:3108",
+      "originProductNo": 13776943270,
+      "origin_statusType": "SALE",
+      "origin_price": 6090000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:3402",
+      "originProductNo": 13776943321,
+      "origin_statusType": "SALE",
+      "origin_price": 132000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:4390",
+      "originProductNo": 13776943350,
+      "origin_statusType": "SALE",
+      "origin_price": 3490000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:2798",
+      "originProductNo": 13776943416,
+      "origin_statusType": "SALE",
+      "origin_price": 149000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:4389",
+      "originProductNo": 13776943456,
+      "origin_statusType": "SALE",
+      "origin_price": 1970000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:3404",
+      "originProductNo": 13776943489,
+      "origin_statusType": "SALE",
+      "origin_price": 215000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:3403",
+      "originProductNo": 13776943537,
+      "origin_statusType": "SALE",
+      "origin_price": 115000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:5534",
+      "originProductNo": 13776944431,
+      "origin_statusType": "SALE",
+      "origin_price": 139000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:5263",
+      "originProductNo": 13776944480,
+      "origin_statusType": "SALE",
+      "origin_price": 229000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:3510",
+      "originProductNo": 13776944527,
+      "origin_statusType": "SALE",
+      "origin_price": 115000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:2575",
+      "originProductNo": 13776944590,
+      "origin_statusType": "SALE",
+      "origin_price": 162000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:3395",
+      "originProductNo": 13776944715,
+      "origin_statusType": "SALE",
+      "origin_price": 356000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:3509",
+      "originProductNo": 13776944785,
+      "origin_statusType": "SALE",
+      "origin_price": 102000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:3426",
+      "originProductNo": 13776944821,
+      "origin_statusType": "SALE",
+      "origin_price": 309000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:3425",
+      "originProductNo": 13776944920,
+      "origin_statusType": "SALE",
+      "origin_price": 189000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:3508",
+      "originProductNo": 13776944960,
+      "origin_statusType": "SALE",
+      "origin_price": 102000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:2654",
+      "originProductNo": 13776945043,
+      "origin_statusType": "SALE",
+      "origin_price": 45000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:3528",
+      "originProductNo": 13776945471,
+      "origin_statusType": "SALE",
+      "origin_price": 356000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:3517",
+      "originProductNo": 13776945513,
+      "origin_statusType": "SALE",
+      "origin_price": 115000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:3513",
+      "originProductNo": 13776945556,
+      "origin_statusType": "SALE",
+      "origin_price": 89000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:3502",
+      "originProductNo": 13776945594,
+      "origin_statusType": "SALE",
+      "origin_price": 127000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:2657",
+      "originProductNo": 13776945642,
+      "origin_statusType": "SALE",
+      "origin_price": 56000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:2655",
+      "originProductNo": 13776945707,
+      "origin_statusType": "SALE",
+      "origin_price": 56000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:3529",
+      "originProductNo": 13776945759,
+      "origin_statusType": "SALE",
+      "origin_price": 89000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:3527",
+      "originProductNo": 13776945864,
+      "origin_statusType": "SALE",
+      "origin_price": 127000,
+      "channel_display": "ON",
+      "ok": true
+    },
+    {
+      "cgiId": "samamusic:3525",
+      "originProductNo": 13776945898,
+      "origin_statusType": "SALE",
+      "origin_price": 89000,
+      "channel_display": "ON",
+      "ok": true
+    }
+  ]
+}

@@ -14,6 +14,7 @@ import assert from 'node:assert/strict';
 import {
   assertLegalBatchIntent,
   auditCategoryMapping,
+  classifySellerCodeHits,
   planCrashRecovery,
   planZeroStockResume,
   resolveOriginArea,
@@ -213,6 +214,24 @@ test('origin resolution: unreadable or unmatched text is reported, not invented'
   assert.equal(resolveOriginArea({ originText: '' }).ok, false);
   assert.equal(resolveOriginArea({ originText: '미확인', resolveCode: () => null }).reason, 'origin_code_unresolved');
   assert.equal(resolveOriginArea({ originText: '유럽 독일' }).ok, false, 'resolveCode 없이는 코드를 만들지 않는다');
+});
+
+test('seller-code hits: prefix-only matches are not duplicates and must not block registration', () => {
+  // 배치6 실측(E23): 'samamusic:27' 검색이 2792·2788 등 접두어 히트 6건을 돌려주고,
+  // 응답에는 판매자코드가 없다 — 원상품 GET으로 검증한 코드 목록만 근거다.
+  const r = classifySellerCodeHits({ hitCodes: ['samamusic:2798', 'samamusic:2722', 'samamusic:2786'], sellerManagementCode: 'samamusic:27' });
+  assert.equal(r.adoptable, false);
+  assert.equal(r.prefixOnly, true);
+  assert.equal(r.prefixCount, 3);
+});
+
+test('seller-code hits: an exact match is the only adoptable duplicate evidence', () => {
+  const r = classifySellerCodeHits({ hitCodes: ['samamusic:2792', 'samamusic:27'], sellerManagementCode: 'samamusic:27' });
+  assert.equal(r.adoptable, true);
+  assert.equal(r.exactCount, 1);
+  const none = classifySellerCodeHits({ hitCodes: [], sellerManagementCode: 'samamusic:27' });
+  assert.equal(none.adoptable, false);
+  assert.equal(none.prefixOnly, false);
 });
 
 test('the batch intent guard rejects the measured vendor refusals', () => {
