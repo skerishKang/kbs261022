@@ -1,0 +1,32 @@
+{
+  "kind": "cgi-bulk-dup-audit",
+  "ran_at": "2026-10-29T04:51:44.538Z",
+  "source": "data/product_quality/product_duplicate_candidates.csv",
+  "pairs_total": 1353,
+  "by_verdict": {
+    "candidate": 521,
+    "confirmed": 538,
+    "probable": 274,
+    "same_site_exact": 20
+  },
+  "by_auto_mergeable": {
+    "아니오": 815,
+    "예": 538
+  },
+  "by_variant_conflict": {
+    "예": 612,
+    "아니오": 741
+  },
+  "products_in_pairs": 2018,
+  "same_site_exact_pairs": 20,
+  "auto_mergeable_pairs": 538,
+  "review_pairs": 815,
+  "pilot_codes_in_pairs": [],
+  "pilot_excluded_from_dup": true,
+  "dup_prevention_list": [
+    "samamusic:1769",
+    "samamusic:3417",
+    "samamusic:3418"
+  ],
+  "note": "자동병합가능=예 쌍만 자동 병합 후보, 그 외는 검토 대기(기존 조치 컬럼 원칙 유지). 변형충돌=예 쌍은 옵션·구성이 다른 별개 상품 가능성 → 병합 금지. 중복 키는 .co.kr 유무를 정규화해 준비파일 ID와 조인."
+}
