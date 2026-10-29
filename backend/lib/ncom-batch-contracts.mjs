@@ -227,6 +227,24 @@ export function resolveOriginArea({ originText = null, resolveCode = null } = {}
 }
 
 /**
+ * 원격 중복조회 히트 분류(C20·배치6 실측). 벤더 상품검색은 판매자코드 접두어 매칭을
+ * 포함해 돌려준다(실측: 'samamusic:27' 검색에 'samamusic:2792' 등 6히트, 응답에
+ * 판매자코드 필드 없음). 원상품 GET으로 검증한 코드 목록(hitCodes)만을 근거로
+ * 판정한다 — 접두어만 일치하는 히트는 중복이 아니며 등록을 막지 않는다.
+ */
+export function classifySellerCodeHits({ hitCodes = [], sellerManagementCode = '' } = {}) {
+  const wanted = String(sellerManagementCode ?? '');
+  const codes = hitCodes.map((c) => String(c ?? ''));
+  const exactCount = codes.filter((c) => c === wanted).length;
+  return {
+    adoptable: exactCount > 0,
+    prefixOnly: exactCount === 0 && codes.length > 0,
+    exactCount,
+    prefixCount: codes.length - exactCount,
+  };
+}
+
+/**
  * 배치가 만들려는 의도(intent)의 하드 가드. 배치 러너가 등록·수정 본문을 보내기 전에
  * 검증한다 — 실측으로 거부된 조합(NumberMin 재고 0 등록, OUTOFSTOCK statusType 수정)은
  * 여기서 예외로 막힌다.

@@ -1,0 +1,3216 @@
+{
+  "kind": "cgi-bulk-batch6-prep",
+  "ran_at": "2026-10-29T08:46:23.332Z",
+  "basis": {
+    "main_sha": "c77192d",
+    "ledger": "ncom_registration_ledger.json (83건)",
+    "enrichment": "batch6_enrichment_20261029.json (310건 공급처 라이브 재조회)",
+    "review_leaf_evidence": {
+      "50002320": {
+        "ids": [
+          "samamusic:4979",
+          "samamusic:4977",
+          "samamusic:4967",
+          "samamusic:4975",
+          "samamusic:4969",
+          "samamusic:4101",
+          "samamusic:1448",
+          "samamusic:1367",
+          "samamusic:29",
+          "samamusic:745",
+          "samamusic:1368",
+          "samamusic:27",
+          "samamusic:746",
+          "samamusic:732",
+          "samamusic:3973",
+          "samamusic:730",
+          "samamusic:5705",
+          "samamusic:2751"
+        ],
+        "evidence": "PA/모니터/서브우퍼 스피커 단품 — 배치3·4에서 동일 리프(50002320) 실등록 검증(HK AUDIO PR:O 등). 자동차기기 리프 오매핑 정정."
+      },
+      "50007235": {
+        "ids": [
+          "samamusic:1164",
+          "samamusic:3973"
+        ],
+        "evidence": "GLM KIT(교정 키트)·9310B(볼륨 컨트롤러) — 본품 스피커가 아닌 스피커 시스템 액세서리. 배치 검증 리프(스피커액세서리)."
+      }
+    }
+  },
+  "pool_summary": {
+    "fetched": 310,
+    "on_sale": 160,
+    "sold_out": 150,
+    "model_recovered": 229,
+    "model_by_source": {
+      "page_label": 198,
+      "product_name_substring": 31
+    },
+    "category_review_resolved": 19
+  },
+  "excluded": {
+    "model_missing": 71,
+    "price_mismatch": 0,
+    "origin_missing": 0,
+    "brand_missing": 0,
+    "category_unresolved": 16,
+    "need_review_guard": 10,
+    "already_registered": 0,
+    "page_failed": 0,
+    "deleted": 0
+  },
+  "candidate_count": 213,
+  "selected_count": 100,
+  "backups_count": 25,
+  "selected_states": {
+    "READY_SALE": 85,
+    "READY_OUTOFSTOCK": 15
+  },
+  "selected_leaves": {
+    "50001516": 51,
+    "50002320": 11,
+    "50002322": 3,
+    "50002326": 1,
+    "50002327": 4,
+    "50002328": 1,
+    "50002974": 11,
+    "50004370": 3,
+    "50007235": 15
+  },
+  "execution_gates": [
+    "등록 직전 공급처 라이브 재검증(판매상태·가격·모델명·원산지)",
+    "등록 직전 판매자코드 중복조회 — 히트 시 재등록 금지(C15)",
+    "품절분: 재고 1 등록 → 재고 0 수정(SALE) → OUTOFSTOCK 확인 → 전시 ON(C11~C12)",
+    "수량 미공개분은 등록 하한 1(C10) — 실재고 주장 아님, stock_source 증적 기록",
+    "장부 즉시 기록 + 크래시·타임아웃 시 원격 확인 후 복구(C15)"
+  ],
+  "selected": [
+    {
+      "cgiId": "samamusic:2656",
+      "taxonomy_state": "READY_SALE",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50001516",
+      "category_source": "sw_remapping_C19",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "LRS WEST COAST KALLY"
+      },
+      "maker": "Overloud",
+      "live_price": 56000,
+      "live_origin": "유럽 이탈리아",
+      "isSW": true,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 5
+      },
+      "stock_quantity_note": null
+    },
+    {
+      "cgiId": "samamusic:3397",
+      "taxonomy_state": "READY_SALE",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50001516",
+      "category_source": "sw_remapping_C19",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "Mercury"
+      },
+      "maker": "Waves",
+      "live_price": 2549000,
+      "live_origin": "아시아 이스라엘",
+      "isSW": true,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 5
+      },
+      "stock_quantity_note": null
+    },
+    {
+      "cgiId": "samamusic:3501",
+      "taxonomy_state": "READY_SALE",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50001516",
+      "category_source": "sw_remapping_C19",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "Broadcast & Production"
+      },
+      "maker": "Waves",
+      "live_price": 381000,
+      "live_origin": "아시아 이스라엘",
+      "isSW": true,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 1
+      },
+      "stock_quantity_note": null
+    },
+    {
+      "cgiId": "samamusic:3503",
+      "taxonomy_state": "READY_SALE",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50001516",
+      "category_source": "sw_remapping_C19",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "Eddie Kramer Signature Series Bundle"
+      },
+      "maker": "Waves",
+      "live_price": 102000,
+      "live_origin": "아시아 이스라엘",
+      "isSW": true,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 2
+      },
+      "stock_quantity_note": null
+    },
+    {
+      "cgiId": "samamusic:3504",
+      "taxonomy_state": "READY_SALE",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50001516",
+      "category_source": "sw_remapping_C19",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "Forensics Package"
+      },
+      "maker": "Waves",
+      "live_price": 254000,
+      "live_origin": "아시아 이스라엘",
+      "isSW": true,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 2
+      },
+      "stock_quantity_note": null
+    },
+    {
+      "cgiId": "samamusic:3505",
+      "taxonomy_state": "READY_SALE",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50001516",
+      "category_source": "sw_remapping_C19",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "Genesis"
+      },
+      "maker": "Waves",
+      "live_price": 102000,
+      "live_origin": "아시아 이스라엘",
+      "isSW": true,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 1
+      },
+      "stock_quantity_note": null
+    },
+    {
+      "cgiId": "samamusic:3507",
+      "taxonomy_state": "READY_SALE",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50001516",
+      "category_source": "sw_remapping_C19",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "Grand Masters Collection"
+      },
+      "maker": "Waves",
+      "live_price": 317000,
+      "live_origin": "아시아 이스라엘",
+      "isSW": true,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 1
+      },
+      "stock_quantity_note": null
+    },
+    {
+      "cgiId": "samamusic:3511",
+      "taxonomy_state": "READY_SALE",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50001516",
+      "category_source": "sw_remapping_C19",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "JJP Analog Legends"
+      },
+      "maker": "Waves",
+      "live_price": 89000,
+      "live_origin": "아시아 이스라엘",
+      "isSW": true,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 5
+      },
+      "stock_quantity_note": null
+    },
+    {
+      "cgiId": "samamusic:3518",
+      "taxonomy_state": "READY_SALE",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50001516",
+      "category_source": "sw_remapping_C19",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "Pianos & Keys"
+      },
+      "maker": "Waves",
+      "live_price": 115000,
+      "live_origin": "아시아 이스라엘",
+      "isSW": true,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 1
+      },
+      "stock_quantity_note": null
+    },
+    {
+      "cgiId": "samamusic:3519",
+      "taxonomy_state": "READY_SALE",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50001516",
+      "category_source": "sw_remapping_C19",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "Power Pack"
+      },
+      "maker": "Waves",
+      "live_price": 115000,
+      "live_origin": "아시아 이스라엘",
+      "isSW": true,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 1
+      },
+      "stock_quantity_note": null
+    },
+    {
+      "cgiId": "samamusic:3522",
+      "taxonomy_state": "READY_SALE",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50001516",
+      "category_source": "sw_remapping_C19",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "Signature Series Vocals"
+      },
+      "maker": "Waves",
+      "live_price": 115000,
+      "live_origin": "아시아 이스라엘",
+      "isSW": true,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 2
+      },
+      "stock_quantity_note": null
+    },
+    {
+      "cgiId": "samamusic:3524",
+      "taxonomy_state": "READY_SALE",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50001516",
+      "category_source": "sw_remapping_C19",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "Sound Design Suite"
+      },
+      "maker": "Waves",
+      "live_price": 381000,
+      "live_origin": "아시아 이스라엘",
+      "isSW": true,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 1
+      },
+      "stock_quantity_note": null
+    },
+    {
+      "cgiId": "samamusic:3526",
+      "taxonomy_state": "READY_SALE",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50001516",
+      "category_source": "sw_remapping_C19",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "Transform"
+      },
+      "maker": "Waves",
+      "live_price": 102000,
+      "live_origin": "아시아 이스라엘",
+      "isSW": true,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 3
+      },
+      "stock_quantity_note": null
+    },
+    {
+      "cgiId": "samamusic:3974",
+      "taxonomy_state": "READY_SALE",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50002327",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "식품 리프 오매핑 정정 — 무선마이크(상품명: SHURE MoveMic Two Recevier Kit 슈어 2채널 무선 라발리에 마이크 리시버 세트)",
+      "model": {
+        "source": "page_label",
+        "value": "MoveMic Two Recevier Kit"
+      },
+      "maker": "SHURE",
+      "live_price": 886000,
+      "live_origin": "아시아 중국 또는 멕시코",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 30
+      },
+      "stock_quantity_note": null
+    },
+    {
+      "cgiId": "samamusic:3975",
+      "taxonomy_state": "READY_SALE",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50002327",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "식품 리프 오매핑 정정 — 무선마이크(상품명: SHURE MoveMic Two 슈어 2채널 무선 모바일 라발리에 마이크)",
+      "model": {
+        "source": "page_label",
+        "value": "MoveMic Two"
+      },
+      "maker": "SHURE",
+      "live_price": 620000,
+      "live_origin": "아시아 중국 또는 멕시코",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 5
+      },
+      "stock_quantity_note": null
+    },
+    {
+      "cgiId": "samamusic:3976",
+      "taxonomy_state": "READY_SALE",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50002327",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "식품 리프 오매핑 정정 — 무선마이크(상품명: SHURE MoveMic One 슈어 1채널 무선 모바일 라발리에 마이크)",
+      "model": {
+        "source": "page_label",
+        "value": "MoveMic One"
+      },
+      "maker": "SHURE",
+      "live_price": 442000,
+      "live_origin": "아시아 중국 또는 멕시코",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 1
+      },
+      "stock_quantity_note": null
+    },
+    {
+      "cgiId": "samamusic:3979",
+      "taxonomy_state": "READY_SALE",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50002327",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "식품 리프 오매핑 정정 — 무선마이크(상품명: SHURE AMV-LAV-Z6 슈어 무선 모바일 라발리에 마이크 (Mic only))",
+      "model": {
+        "source": "page_label",
+        "value": "AMV-LAV-Z6 (MoveMic)"
+      },
+      "maker": "SHURE",
+      "live_price": 233000,
+      "live_origin": "아시아 중국 또는 멕시코",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 14
+      },
+      "stock_quantity_note": null
+    },
+    {
+      "cgiId": "samamusic:5560",
+      "taxonomy_state": "READY_SALE",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50002326",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "상위 패밀리 오매핑 정정 — 유선마이크(상품명: SHURE CV 초소형 핀 마이크 TA4F 커텍터 포함 CVL-B/C-TQG)",
+      "model": {
+        "source": "page_label",
+        "value": "CVL-B/C-TQG"
+      },
+      "maker": "SHURE",
+      "live_price": 108000,
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 35
+      },
+      "stock_quantity_note": null
+    },
+    {
+      "cgiId": "samamusic:3391",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50001516",
+      "category_source": "sw_remapping_C19",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "Abbey Road Collection"
+      },
+      "maker": "Waves",
+      "live_price": 292000,
+      "live_origin": "아시아 이스라엘",
+      "isSW": true,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    },
+    {
+      "cgiId": "samamusic:3392",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50001516",
+      "category_source": "sw_remapping_C19",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "API Collection"
+      },
+      "maker": "Waves",
+      "live_price": 115000,
+      "live_origin": "아시아 이스라엘",
+      "isSW": true,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    },
+    {
+      "cgiId": "samamusic:3393",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50001516",
+      "category_source": "sw_remapping_C19",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "Chris Lord-Alge Signature Series"
+      },
+      "maker": "Waves",
+      "live_price": 126000,
+      "live_origin": "아시아 이스라엘",
+      "isSW": true,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    },
+    {
+      "cgiId": "samamusic:3394",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50001516",
+      "category_source": "sw_remapping_C19",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "CLA Classic Compressors"
+      },
+      "maker": "Waves",
+      "live_price": 115000,
+      "live_origin": "아시아 이스라엘",
+      "isSW": true,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    },
+    {
+      "cgiId": "samamusic:3396",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50001516",
+      "category_source": "sw_remapping_C19",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "Horizon"
+      },
+      "maker": "Waves",
+      "live_price": 382000,
+      "live_origin": "아시아 이스라엘",
+      "isSW": true,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    },
+    {
+      "cgiId": "samamusic:3398",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50001516",
+      "category_source": "sw_remapping_C19",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "Platinum"
+      },
+      "maker": "Waves",
+      "live_price": 381000,
+      "live_origin": "아시아 이스라엘",
+      "isSW": true,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    },
+    {
+      "cgiId": "samamusic:3399",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50001516",
+      "category_source": "sw_remapping_C19",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "Renaissance Maxx"
+      },
+      "maker": "Waves",
+      "live_price": 152000,
+      "live_origin": "아시아 이스라엘",
+      "isSW": true,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    },
+    {
+      "cgiId": "samamusic:3506",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50001516",
+      "category_source": "sw_remapping_C19",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "Gold"
+      },
+      "maker": "Waves",
+      "live_price": 203000,
+      "live_origin": "아시아 이스라엘",
+      "isSW": true,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    },
+    {
+      "cgiId": "samamusic:3512",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50001516",
+      "category_source": "sw_remapping_C19",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "Manny Marroquin Signature Series"
+      },
+      "maker": "Waves",
+      "live_price": 115000,
+      "live_origin": "아시아 이스라엘",
+      "isSW": true,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    },
+    {
+      "cgiId": "samamusic:3516",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50001516",
+      "category_source": "sw_remapping_C19",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "Nx Virtual Studio Collection"
+      },
+      "maker": "Waves",
+      "live_price": 126000,
+      "live_origin": "아시아 이스라엘",
+      "isSW": true,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    },
+    {
+      "cgiId": "samamusic:3521",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50001516",
+      "category_source": "sw_remapping_C19",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "Signature Series Bass and Drums"
+      },
+      "maker": "Waves",
+      "live_price": 115000,
+      "live_origin": "아시아 이스라엘",
+      "isSW": true,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    },
+    {
+      "cgiId": "samamusic:3523",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50001516",
+      "category_source": "sw_remapping_C19",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "Silver"
+      },
+      "maker": "Waves",
+      "live_price": 126000,
+      "live_origin": "아시아 이스라엘",
+      "isSW": true,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    },
+    {
+      "cgiId": "samamusic:3614",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50001516",
+      "category_source": "sw_remapping_C19",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "34711/ RX PPS 8.6"
+      },
+      "maker": "iZotope",
+      "live_price": 2338000,
+      "live_origin": "아메리카 미국",
+      "isSW": true,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    },
+    {
+      "cgiId": "samamusic:3618",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50001516",
+      "category_source": "sw_remapping_C19",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "34634/ Elements Suite 11"
+      },
+      "maker": "iZotope",
+      "live_price": 193000,
+      "live_origin": "아메리카 미국",
+      "isSW": true,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    },
+    {
+      "cgiId": "samamusic:3619",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50001516",
+      "category_source": "sw_remapping_C19",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "34640/ Mix&Master Adv"
+      },
+      "maker": "iZotope",
+      "live_price": 778000,
+      "live_origin": "아메리카 미국",
+      "isSW": true,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    },
+    {
+      "cgiId": "samamusic:3620",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50001516",
+      "category_source": "sw_remapping_C19",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "34646/ Music Production Suite 8"
+      },
+      "maker": "iZotope",
+      "live_price": 1038000,
+      "live_origin": "아메리카 미국",
+      "isSW": true,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    },
+    {
+      "cgiId": "samamusic:3638",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50001516",
+      "category_source": "sw_remapping_C19",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "10-NC4E/ Nectar Elements (v4)"
+      },
+      "maker": "iZotope",
+      "live_price": 77000,
+      "live_origin": "아메리카 미국",
+      "isSW": true,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    },
+    {
+      "cgiId": "samamusic:4903",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50001516",
+      "category_source": "sw_remapping_C19",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "LANDR COMPOSER"
+      },
+      "maker": "LANDR",
+      "live_price": 82000,
+      "live_origin": "아메리카 캐나다",
+      "isSW": true,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    },
+    {
+      "cgiId": "samamusic:5375",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50001516",
+      "category_source": "sw_remapping_C19",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "34594/ Ozone 12 ADV"
+      },
+      "maker": "iZotope",
+      "live_price": 648000,
+      "live_origin": "아메리카 미국",
+      "isSW": true,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    },
+    {
+      "cgiId": "samamusic:5376",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50001516",
+      "category_source": "sw_remapping_C19",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "34608/ Ozone 12 STA"
+      },
+      "maker": "iZotope",
+      "live_price": 284000,
+      "live_origin": "아메리카 미국",
+      "isSW": true,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    },
+    {
+      "cgiId": "samamusic:5377",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50001516",
+      "category_source": "sw_remapping_C19",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "34616/ Ozone 12 ELE"
+      },
+      "maker": "iZotope",
+      "live_price": 71000,
+      "live_origin": "아메리카 미국",
+      "isSW": true,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    },
+    {
+      "cgiId": "samamusic:5378",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50001516",
+      "category_source": "sw_remapping_C19",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "34632/Any Prev Ozone Adv UPD"
+      },
+      "maker": "iZotope",
+      "live_price": 388000,
+      "live_origin": "아메리카 미국",
+      "isSW": true,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    },
+    {
+      "cgiId": "samamusic:5585",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50001516",
+      "category_source": "sw_remapping_C19",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "36155/ Velvet"
+      },
+      "maker": "iZotope",
+      "live_price": 63000,
+      "live_origin": "아메리카 미국",
+      "isSW": true,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    },
+    {
+      "cgiId": "samamusic:2326",
+      "taxonomy_state": "READY_OUTOFSTOCK",
+      "batch6_state": "READY_OUTOFSTOCK",
+      "leafCategoryId": "50001516",
+      "category_source": "sw_remapping_C19",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "Dopamine"
+      },
+      "maker": "Overloud",
+      "live_price": 162000,
+      "live_origin": "유럽 이탈리아",
+      "isSW": true,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "품절 등록: 재고 1 등록 → 0 수정(C11)"
+    },
+    {
+      "cgiId": "samamusic:2455",
+      "taxonomy_state": "READY_OUTOFSTOCK",
+      "batch6_state": "READY_OUTOFSTOCK",
+      "leafCategoryId": "50001516",
+      "category_source": "sw_remapping_C19",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "American Classic"
+      },
+      "maker": "Overloud",
+      "live_price": 45000,
+      "live_origin": "유럽 이탈리아",
+      "isSW": true,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "품절 등록: 재고 1 등록 → 0 수정(C11)"
+    },
+    {
+      "cgiId": "samamusic:2457",
+      "taxonomy_state": "READY_OUTOFSTOCK",
+      "batch6_state": "READY_OUTOFSTOCK",
+      "leafCategoryId": "50001516",
+      "category_source": "sw_remapping_C19",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "British Classic"
+      },
+      "maker": "Overloud",
+      "live_price": 45000,
+      "live_origin": "유럽 이탈리아",
+      "isSW": true,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "품절 등록: 재고 1 등록 → 0 수정(C11)"
+    },
+    {
+      "cgiId": "samamusic:2498",
+      "taxonomy_state": "READY_OUTOFSTOCK",
+      "batch6_state": "READY_OUTOFSTOCK",
+      "leafCategoryId": "50001516",
+      "category_source": "sw_remapping_C19",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "Choptones Fried Lilbox"
+      },
+      "maker": "Overloud",
+      "live_price": 56000,
+      "live_origin": "유럽 이탈리아",
+      "isSW": true,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "품절 등록: 재고 1 등록 → 0 수정(C11)"
+    },
+    {
+      "cgiId": "samamusic:2500",
+      "taxonomy_state": "READY_OUTOFSTOCK",
+      "batch6_state": "READY_OUTOFSTOCK",
+      "leafCategoryId": "50001516",
+      "category_source": "sw_remapping_C19",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "Choptones Bogie JPC2"
+      },
+      "maker": "Overloud",
+      "live_price": 56000,
+      "live_origin": "유럽 이탈리아",
+      "isSW": true,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "품절 등록: 재고 1 등록 → 0 수정(C11)"
+    },
+    {
+      "cgiId": "samamusic:2653",
+      "taxonomy_state": "READY_OUTOFSTOCK",
+      "batch6_state": "READY_OUTOFSTOCK",
+      "leafCategoryId": "50001516",
+      "category_source": "sw_remapping_C19",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "Bass Rig Vol. 1"
+      },
+      "maker": "Overloud",
+      "live_price": 56000,
+      "live_origin": "유럽 이탈리아",
+      "isSW": true,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "품절 등록: 재고 1 등록 → 0 수정(C11)"
+    },
+    {
+      "cgiId": "samamusic:2658",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_OUTOFSTOCK",
+      "leafCategoryId": "50001516",
+      "category_source": "sw_remapping_C19",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "ORB Producer 3"
+      },
+      "maker": "LANDR",
+      "live_price": 84000,
+      "live_origin": "유럽 프랑스",
+      "isSW": true,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "품절 등록: 재고 1 등록 → 0 수정(C11)"
+    },
+    {
+      "cgiId": "samamusic:3237",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_OUTOFSTOCK",
+      "leafCategoryId": "50001516",
+      "category_source": "sw_remapping_C19",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "Articulator"
+      },
+      "maker": "Antares",
+      "live_price": 97000,
+      "live_origin": "아메리카 미국",
+      "isSW": true,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "품절 등록: 재고 1 등록 → 0 수정(C11)"
+    },
+    {
+      "cgiId": "samamusic:3400",
+      "taxonomy_state": "READY_OUTOFSTOCK",
+      "batch6_state": "READY_OUTOFSTOCK",
+      "leafCategoryId": "50001516",
+      "category_source": "sw_remapping_C19",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "SSL 4000 Collection"
+      },
+      "maker": "Waves",
+      "live_price": 164000,
+      "live_origin": "아시아 이스라엘",
+      "isSW": true,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "품절 등록: 재고 1 등록 → 0 수정(C11)"
+    },
+    {
+      "cgiId": "samamusic:3401",
+      "taxonomy_state": "READY_OUTOFSTOCK",
+      "batch6_state": "READY_OUTOFSTOCK",
+      "leafCategoryId": "50001516",
+      "category_source": "sw_remapping_C19",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "Studio Classics Collection"
+      },
+      "maker": "Waves",
+      "live_price": 292000,
+      "live_origin": "아시아 이스라엘",
+      "isSW": true,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "품절 등록: 재고 1 등록 → 0 수정(C11)"
+    },
+    {
+      "cgiId": "samamusic:3405",
+      "taxonomy_state": "READY_OUTOFSTOCK",
+      "batch6_state": "READY_OUTOFSTOCK",
+      "leafCategoryId": "50001516",
+      "category_source": "sw_remapping_C19",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "Waves Creative Access Ultimate 1 Year"
+      },
+      "maker": "Waves",
+      "live_price": 359000,
+      "live_origin": "아시아 이스라엘",
+      "isSW": true,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "품절 등록: 재고 1 등록 → 0 수정(C11)"
+    },
+    {
+      "cgiId": "samamusic:3603",
+      "taxonomy_state": "READY_OUTOFSTOCK",
+      "batch6_state": "READY_OUTOFSTOCK",
+      "leafCategoryId": "50001516",
+      "category_source": "sw_remapping_C19",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "KONTAKT 8 Crossgrade For Komplete 10-15 select"
+      },
+      "maker": "Native Instruments",
+      "live_price": 229000,
+      "live_origin": "유럽 독일",
+      "isSW": true,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "품절 등록: 재고 1 등록 → 0 수정(C11)"
+    },
+    {
+      "cgiId": "samamusic:3605",
+      "taxonomy_state": "READY_OUTOFSTOCK",
+      "batch6_state": "READY_OUTOFSTOCK",
+      "leafCategoryId": "50001516",
+      "category_source": "sw_remapping_C19",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "KONTAKT 8 Update"
+      },
+      "maker": "Native Instruments",
+      "live_price": 149000,
+      "live_origin": "유럽 독일",
+      "isSW": true,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "품절 등록: 재고 1 등록 → 0 수정(C11)"
+    },
+    {
+      "cgiId": "samamusic:3617",
+      "taxonomy_state": "READY_OUTOFSTOCK",
+      "batch6_state": "READY_OUTOFSTOCK",
+      "leafCategoryId": "50001516",
+      "category_source": "sw_remapping_C19",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "iZotope Everything Bundle"
+      },
+      "maker": "iZotope",
+      "live_price": 3898000,
+      "live_origin": "아메리카 미국",
+      "isSW": true,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "품절 등록: 재고 1 등록 → 0 수정(C11)"
+    },
+    {
+      "cgiId": "samamusic:4921",
+      "taxonomy_state": "READY_OUTOFSTOCK",
+      "batch6_state": "READY_OUTOFSTOCK",
+      "leafCategoryId": "50001516",
+      "category_source": "sw_remapping_C19",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "Massive X"
+      },
+      "maker": "Native Instruments",
+      "live_price": 129000,
+      "live_origin": "유럽 독일",
+      "isSW": true,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "품절 등록: 재고 1 등록 → 0 수정(C11)"
+    },
+    {
+      "cgiId": "samamusic:1367",
+      "taxonomy_state": "READY_SALE",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50002320",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "자동차기기 리프 오매핑 정정 — 스피커단품(상품명: DYNAUDIO CORE 7 다인오디오 모니터 스피커 (1통))",
+      "model": {
+        "source": "page_label",
+        "value": "CORE 7"
+      },
+      "maker": "DYNAUDIO",
+      "live_price": 3410000,
+      "live_origin": "유럽 덴마크",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 2
+      },
+      "stock_quantity_note": null
+    },
+    {
+      "cgiId": "samamusic:1368",
+      "taxonomy_state": "READY_SALE",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50002320",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "자동차기기 리프 오매핑 정정 — 스피커단품(상품명: DYNAUDIO CORE 59 다인오디오 모니터 스피커 (1통))",
+      "model": {
+        "source": "page_label",
+        "value": "CORE 59"
+      },
+      "maker": "DYNAUDIO",
+      "live_price": 5420000,
+      "live_origin": "유럽 덴마크",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 2
+      },
+      "stock_quantity_note": null
+    },
+    {
+      "cgiId": "samamusic:1446",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50002328",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "상위 패밀리 오매핑 정정 — 마이크주변기기(상품명: KLOTZ TITANIUM HIGH-END STARQUAD 클로츠 티타늄 마이크 케이블 (XLR to XLR)",
+      "model": {
+        "source": "page_label",
+        "value": "TI-M"
+      },
+      "maker": "Klotz",
+      "live_price": 95000,
+      "live_origin": "유럽 독일",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    },
+    {
+      "cgiId": "samamusic:1448",
+      "taxonomy_state": "READY_SALE",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50002320",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "자동차기기 리프 오매핑 정정 — 스피커단품(상품명: DYNAUDIO CORE 47 다인오디오 모니터 스피커 (1통))",
+      "model": {
+        "source": "page_label",
+        "value": "CORE 47"
+      },
+      "maker": "DYNAUDIO",
+      "live_price": 4410000,
+      "live_origin": "유럽 덴마크",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 6
+      },
+      "stock_quantity_note": null
+    },
+    {
+      "cgiId": "samamusic:1626",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50004370",
+      "category_source": "auto_candidate",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "Artist Signature Series"
+      },
+      "maker": "Rotosound",
+      "live_price": 36700,
+      "live_origin": "유럽 영국",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    },
+    {
+      "cgiId": "samamusic:1852",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50002974",
+      "category_source": "auto_candidate",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "Broadband Absorber"
+      },
+      "maker": "PRIMACOUSTIC",
+      "live_price": 1049000,
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    },
+    {
+      "cgiId": "samamusic:1853",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50002974",
+      "category_source": "auto_candidate",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "Control Column"
+      },
+      "maker": "PRIMACOUSTIC",
+      "live_price": 1032000,
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    },
+    {
+      "cgiId": "samamusic:1854",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50002974",
+      "category_source": "auto_candidate",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "Control Cubes"
+      },
+      "maker": "PRIMACOUSTIC",
+      "live_price": 1306000,
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    },
+    {
+      "cgiId": "samamusic:1855",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50002974",
+      "category_source": "auto_candidate",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "Scatter Blocks"
+      },
+      "maker": "PRIMACOUSTIC",
+      "live_price": 501000,
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    },
+    {
+      "cgiId": "samamusic:2090",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50007235",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "자동차기기 리프 오매핑 정정 — 스피커 액세서리(상품명: GENELEC 8000-403 제네렉 플로어 스탠드(컴팩트) + 플레이트)",
+      "model": {
+        "source": "page_label",
+        "value": "8000-403 (26000-329-55)"
+      },
+      "maker": "Genelec",
+      "live_price": 148000,
+      "live_origin": "유럽 독일",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    },
+    {
+      "cgiId": "samamusic:2091",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50007235",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "자동차기기 리프 오매핑 정정 — 스피커 액세서리(상품명: GENELEC 8000-409BB 제네렉 플로어 스탠드 + 플레이트)",
+      "model": {
+        "source": "page_label",
+        "value": "8000-409BB (26741-329-55)"
+      },
+      "maker": "Genelec",
+      "live_price": 291000,
+      "live_origin": "유럽 독일",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    },
+    {
+      "cgiId": "samamusic:2095",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50007235",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "자동차기기 리프 오매핑 정정 — 스피커 액세서리(상품명: GENELEC 8000-333 제네렉 탁상용 L자 스탠드(블랙, 화이트))",
+      "model": {
+        "source": "page_label",
+        "value": "8000-333"
+      },
+      "maker": "Genelec",
+      "live_price": 224000,
+      "live_origin": "유럽 독일",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    },
+    {
+      "cgiId": "samamusic:2096",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50007235",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "자동차기기 리프 오매핑 정정 — 스피커 액세서리(상품명: GENELEC 8010-320B 제네렉 탁상용 L자 스탠드(블랙))",
+      "model": {
+        "source": "page_label",
+        "value": "8010-320B (23271-000-56)"
+      },
+      "maker": "Genelec",
+      "live_price": 117000,
+      "live_origin": "유럽 독일",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    },
+    {
+      "cgiId": "samamusic:2097",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50007235",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "자동차기기 리프 오매핑 정정 — 스피커 액세서리(상품명: GENELEC 8010-330W 제네렉 탁상용 L자 스탠드(화이트) 구:8010-320W)",
+      "model": {
+        "source": "page_label",
+        "value": "8010-330W (23271-000-66) 구: 8010-320W (23271-000-68)"
+      },
+      "maker": "Genelec",
+      "live_price": 117000,
+      "live_origin": "유럽 독일",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    },
+    {
+      "cgiId": "samamusic:2099",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50007235",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "자동차기기 리프 오매핑 정정 — 스피커 액세서리(상품명: GENELEC 8020-330W 제네렉 탁상용 L자 스탠드(화이트) 구:8020-320W)",
+      "model": {
+        "source": "page_label",
+        "value": "8020-330W (23274-015-66)"
+      },
+      "maker": "Genelec",
+      "live_price": 163000,
+      "live_origin": "유럽 독일",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    },
+    {
+      "cgiId": "samamusic:2101",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50007235",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "자동차기기 리프 오매핑 정정 — 스피커 액세서리(상품명: GENELEC 8000-406 제네렉 탁상용 스탠드 + 플레이트)",
+      "model": {
+        "source": "page_label",
+        "value": "8000-406 (23310-370-55)"
+      },
+      "maker": "Genelec",
+      "live_price": 118000,
+      "live_origin": "유럽 독일",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    },
+    {
+      "cgiId": "samamusic:2452",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50007235",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "자동차기기 리프 오매핑 정정 — 스피커 액세서리(상품명: GENELEC 9101B 제네렉 무선 볼륨 컨트롤러 (블랙))",
+      "model": {
+        "source": "page_label",
+        "value": "9101B"
+      },
+      "maker": "Genelec",
+      "live_price": 144000,
+      "live_origin": "유럽 핀란드",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    },
+    {
+      "cgiId": "samamusic:2453",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50007235",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "자동차기기 리프 오매핑 정정 — 스피커 액세서리(상품명: GENELEC 9101B 제네렉 무선 볼륨 컨트롤러 (화이트))",
+      "model": {
+        "source": "page_label",
+        "value": "9101B"
+      },
+      "maker": "Genelec",
+      "live_price": 144000,
+      "live_origin": "유럽 핀란드",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    },
+    {
+      "cgiId": "samamusic:2582",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50002320",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "자동차기기 리프 오매핑 정정 — 스피커단품(상품명: HK AUDIO PR:O MOVE 8 HK오디오 버스킹용 8인치 배터리 충전식 포터블 스피커)",
+      "model": {
+        "source": "page_label",
+        "value": "PR:O Move 8"
+      },
+      "maker": "HK Audio",
+      "live_price": 790000,
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    },
+    {
+      "cgiId": "samamusic:2661",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50002974",
+      "category_source": "auto_candidate",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "VicTotem Ultra VMT"
+      },
+      "maker": "Vicoustic",
+      "live_price": 2610000,
+      "live_origin": "유럽 포르투갈",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    },
+    {
+      "cgiId": "samamusic:2672",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50002974",
+      "category_source": "auto_candidate",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "Super Bass Extreme Ultra"
+      },
+      "maker": "Vicoustic",
+      "live_price": 1040000,
+      "live_origin": "유럽 포르투갈",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    },
+    {
+      "cgiId": "samamusic:27",
+      "taxonomy_state": "READY_SALE",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50002320",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "자동차기기 리프 오매핑 정정 — 스피커단품(상품명: DYNAUDIO LYD 8 White 다인오디오 모니터 스피커)",
+      "model": {
+        "source": "page_label",
+        "value": "LYD-8, 220V"
+      },
+      "maker": "DYNAUDIO",
+      "live_price": 1470000,
+      "live_origin": "유럽 덴마크",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 2
+      },
+      "stock_quantity_note": null
+    },
+    {
+      "cgiId": "samamusic:2856",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50002974",
+      "category_source": "auto_candidate",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "KeyStep Pro"
+      },
+      "maker": "ARTURIA",
+      "live_price": 659000,
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    },
+    {
+      "cgiId": "samamusic:29",
+      "taxonomy_state": "READY_SALE",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50002320",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "자동차기기 리프 오매핑 정정 — 스피커단품(상품명: DYNAUDIO LYD 5 White 다인오디오 모니터 스피커)",
+      "model": {
+        "source": "page_label",
+        "value": "LYD-5, 220V"
+      },
+      "maker": "DYNAUDIO",
+      "live_price": 890000,
+      "live_origin": "유럽 덴마크",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 2
+      },
+      "stock_quantity_note": null
+    },
+    {
+      "cgiId": "samamusic:2924",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50002974",
+      "category_source": "auto_candidate",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "KeyStep Pro"
+      },
+      "maker": "ARTURIA",
+      "live_price": 659000,
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    },
+    {
+      "cgiId": "samamusic:3075",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50002322",
+      "category_source": "auto_candidate",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "Spark Mini"
+      },
+      "maker": "Positive Grid",
+      "live_price": 395000,
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    },
+    {
+      "cgiId": "samamusic:3169",
+      "taxonomy_state": "READY_SALE",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50004370",
+      "category_source": "auto_candidate",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "Custom Classic S 785"
+      },
+      "maker": "Michael Tuttle Guitars",
+      "live_price": 6350000,
+      "live_origin": "국내",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 1
+      },
+      "stock_quantity_note": null
+    },
+    {
+      "cgiId": "samamusic:3172",
+      "taxonomy_state": "READY_SALE",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50004370",
+      "category_source": "auto_candidate",
+      "semantic_evidence": null,
+      "model": {
+        "source": "product_name_substring",
+        "value": "Custom Classic S 788",
+        "evidence": "[Michael Tuttle Guitars] Custom Classic S 788 마이클 터틀 일렉 기타 (딜러 셀렉트 모델)"
+      },
+      "maker": "Michael Tuttle Guitars",
+      "live_price": 6250000,
+      "live_origin": "국내",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 1
+      },
+      "stock_quantity_note": null
+    },
+    {
+      "cgiId": "samamusic:3416",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50002974",
+      "category_source": "auto_candidate",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "35299/ RX 12 Elements"
+      },
+      "maker": "iZotope",
+      "live_price": 128000,
+      "live_origin": "아메리카 미국",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    },
+    {
+      "cgiId": "samamusic:3574",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50002320",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "자동차기기 리프 오매핑 정정 — 스피커단품(상품명: PreSonus Eris Pro 6 프리소너스 에리스 프로6 동축 모니터 스피커 (1통))",
+      "model": {
+        "source": "page_label",
+        "value": "Eris Pro 6"
+      },
+      "maker": "PRESONUS",
+      "live_price": 583000,
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    },
+    {
+      "cgiId": "samamusic:3588",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50002320",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "자동차기기 리프 오매핑 정정 — 스피커단품(상품명: PreSonus Eris Pro 8 프리소너스 에리스 프로8 동축 모니터 스피커 (1통))",
+      "model": {
+        "source": "page_label",
+        "value": "Eris Pro 8"
+      },
+      "maker": "PRESONUS",
+      "live_price": 729000,
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    },
+    {
+      "cgiId": "samamusic:3591",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50002322",
+      "category_source": "auto_candidate",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "Eris 4.5 BT Gen 2"
+      },
+      "maker": "PRESONUS",
+      "live_price": 321000,
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    },
+    {
+      "cgiId": "samamusic:3592",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50002322",
+      "category_source": "auto_candidate",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "Eris 5 BT Gen 2"
+      },
+      "maker": "PRESONUS",
+      "live_price": 362000,
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    },
+    {
+      "cgiId": "samamusic:3593",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50002320",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "자동차기기 리프 오매핑 정정 — 스피커단품(상품명: PreSonus Eris Studio 4 프리소너스 에리스 스튜디오 4 모니터 스피커 (1통))",
+      "model": {
+        "source": "page_label",
+        "value": "Eris Studio 4"
+      },
+      "maker": "PRESONUS",
+      "live_price": 223000,
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    },
+    {
+      "cgiId": "samamusic:3595",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50002320",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "자동차기기 리프 오매핑 정정 — 스피커단품(상품명: PreSonus Eris Studio 8 프리소너스 에리스 스튜디오 8 모니터 스피커 (1통))",
+      "model": {
+        "source": "page_label",
+        "value": "Eris Studio 8"
+      },
+      "maker": "PRESONUS",
+      "live_price": 381000,
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    },
+    {
+      "cgiId": "samamusic:3611",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50002974",
+      "category_source": "auto_candidate",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "NI KOMPLETE KONTROL S61 MK3"
+      },
+      "maker": "Native Instruments",
+      "live_price": 1490000,
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    },
+    {
+      "cgiId": "samamusic:3612",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50002974",
+      "category_source": "auto_candidate",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "NI KOMPLETE KONTROL S88 MK3"
+      },
+      "maker": "Native Instruments",
+      "live_price": 2290000,
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    },
+    {
+      "cgiId": "samamusic:3733",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50002320",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "자동차기기 리프 오매핑 정정 — 스피커단품(상품명: PreSonus Eris Pro 4 프리소너스 에리스 프로4 동축 모니터 스피커 (1통))",
+      "model": {
+        "source": "page_label",
+        "value": "Eris Pro 4"
+      },
+      "maker": "PRESONUS",
+      "live_price": 437000,
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    },
+    {
+      "cgiId": "samamusic:3968",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50007235",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "자동차기기 리프 오매핑 정정 — 스피커 액세서리(상품명: GENELEC 8000-402B 제네렉 벽걸이 브라켓 (블랙))",
+      "model": {
+        "source": "page_label",
+        "value": "8000-402B"
+      },
+      "maker": "Genelec",
+      "live_price": 223000,
+      "live_origin": "유럽 독일",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    },
+    {
+      "cgiId": "samamusic:3969",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50007235",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "자동차기기 리프 오매핑 정정 — 스피커 액세서리(상품명: GENELEC 8000-402W 제네렉 벽걸이 브라켓 (화이트))",
+      "model": {
+        "source": "page_label",
+        "value": "8000-402W"
+      },
+      "maker": "Genelec",
+      "live_price": 223000,
+      "live_origin": "유럽 독일",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    },
+    {
+      "cgiId": "samamusic:3970",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50007235",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "자동차기기 리프 오매핑 정정 — 스피커 액세서리(상품명: GENELEC 8000-422B 제네렉 벽걸이 브라켓 (블랙))",
+      "model": {
+        "source": "page_label",
+        "value": "8000-422B"
+      },
+      "maker": "Genelec",
+      "live_price": 149000,
+      "live_origin": "유럽 독일",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    },
+    {
+      "cgiId": "samamusic:3971",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50007235",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "자동차기기 리프 오매핑 정정 — 스피커 액세서리(상품명: GENELEC 8000-422W 제네렉 벽걸이 브라켓 (화이트))",
+      "model": {
+        "source": "page_label",
+        "value": "8000-422W"
+      },
+      "maker": "Genelec",
+      "live_price": 149000,
+      "live_origin": "유럽 독일",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    },
+    {
+      "cgiId": "samamusic:3972",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50007235",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "자동차기기 리프 오매핑 정정 — 스피커 액세서리(상품명: GENELEC S360-444B 제네렉 고중량 벽면 마운트)",
+      "model": {
+        "source": "page_label",
+        "value": "S360-444B"
+      },
+      "maker": "Genelec",
+      "live_price": 312000,
+      "live_origin": "유럽 독일",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    },
+    {
+      "cgiId": "samamusic:3973",
+      "taxonomy_state": "READY_SALE",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50007235",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "자동차기기 리프 오매핑 정정 — 스피커 액세서리(상품명: GENELEC 9310BM 제네렉 볼륨 컨트롤러)",
+      "model": {
+        "source": "page_label",
+        "value": "9310BM"
+      },
+      "maker": "Genelec",
+      "live_price": 184000,
+      "live_origin": "유럽 독일",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 8
+      },
+      "stock_quantity_note": null
+    }
+  ],
+  "backups": [
+    {
+      "cgiId": "samamusic:4099",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50007235",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "자동차기기 리프 오매핑 정정 — 스피커 액세서리(상품명: PRESONUS CDL 10P Tote 프리소너스 CDL 10P 보호용 소프트 토트백)",
+      "model": {
+        "source": "page_label",
+        "value": "CDL 10P Tote"
+      },
+      "maker": "PRESONUS",
+      "live_price": 170000,
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    },
+    {
+      "cgiId": "samamusic:4101",
+      "taxonomy_state": "READY_SALE",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50007235",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "자동차기기 리프 오매핑 정정 — 스피커 액세서리(상품명: PRESONUS CDL 12P Tote 프리소너스 CDL 12P 보호용 소프트 토트백)",
+      "model": {
+        "source": "page_label",
+        "value": "CDL 12P Tote"
+      },
+      "maker": "PRESONUS",
+      "live_price": 170000,
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 2
+      },
+      "stock_quantity_note": null
+    },
+    {
+      "cgiId": "samamusic:4167",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50002321",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "자동차기기 리프 오매핑 정정 — 스피커세트(상품명: [한정판] PreSonus Eris 3.5 GEN2 White 프리소너스 에리스 2세대 모니터 스피커 1조()",
+      "model": {
+        "source": "page_label",
+        "value": "Eris 3.5 GEN2 White"
+      },
+      "maker": "PRESONUS",
+      "live_price": 219000,
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    },
+    {
+      "cgiId": "samamusic:4168",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50002322",
+      "category_source": "auto_candidate",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "Eris 3.5 BT GEN2 White"
+      },
+      "maker": "PRESONUS",
+      "live_price": 249000,
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    },
+    {
+      "cgiId": "samamusic:4393",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50002322",
+      "category_source": "auto_candidate",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "Spark Mini VAI"
+      },
+      "maker": "Positive Grid",
+      "live_price": 389000,
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    },
+    {
+      "cgiId": "samamusic:4462",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50004370",
+      "category_source": "auto_candidate",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "Spark CONTROL X"
+      },
+      "maker": "Positive Grid",
+      "live_price": 239000,
+      "live_origin": "아시아 인도네시아",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    },
+    {
+      "cgiId": "samamusic:4615",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50002320",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "자동차기기 리프 오매핑 정정 — 스피커단품(상품명: Q Acoustics Q 3060S 큐어쿠스틱 액티브 서브우퍼)",
+      "model": {
+        "source": "page_label",
+        "value": "Q3060S"
+      },
+      "maker": "Q Acoustics",
+      "live_price": 939000,
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    },
+    {
+      "cgiId": "samamusic:4683",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50002326",
+      "category_source": "auto_candidate",
+      "semantic_evidence": null,
+      "model": {
+        "source": "product_name_substring",
+        "value": "SHURE SM63",
+        "evidence": "SHURE SM63 / SM63L / SM63LB 슈어 방송 인터뷰 용 다이내믹 옴니지향성 마이크"
+      },
+      "maker": "SHURE",
+      "live_price": 255000,
+      "live_origin": "아시아 중국 또는 멕시코",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    },
+    {
+      "cgiId": "samamusic:4902",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50001509",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "도서 리프 오매핑 정정 — 네트워크 컨버터장비(상품명: iMAG LZ1600T 아이맥시스템즈 SDVoE 2채널 트랜시버)",
+      "model": {
+        "source": "page_label",
+        "value": "LZ1600T"
+      },
+      "maker": "iMAG Systems",
+      "live_price": 2800000,
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    },
+    {
+      "cgiId": "samamusic:4957",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50002320",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "자동차기기 리프 오매핑 정정 — 스피커단품(상품명: HK AUDIO SONAR 110 Xi HK오디오 10타입 파워드 스피커)",
+      "model": {
+        "source": "page_label",
+        "value": "SONAR 110 Xi"
+      },
+      "maker": "HK Audio",
+      "live_price": 850000,
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    },
+    {
+      "cgiId": "samamusic:4958",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50002320",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "자동차기기 리프 오매핑 정정 — 스피커단품(상품명: HK AUDIO SONAR 112 Xi HK오디오 12타입 파워드 스피커)",
+      "model": {
+        "source": "page_label",
+        "value": "SONAR 112 Xi"
+      },
+      "maker": "HK Audio",
+      "live_price": 950000,
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    },
+    {
+      "cgiId": "samamusic:4959",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50002320",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "자동차기기 리프 오매핑 정정 — 스피커단품(상품명: HK AUDIO SONAR 115 Xi HK오디오 15타입 파워드 스피커)",
+      "model": {
+        "source": "page_label",
+        "value": "SONAR 115 Xi"
+      },
+      "maker": "HK Audio",
+      "live_price": 1090000,
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    },
+    {
+      "cgiId": "samamusic:4963",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50002320",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "자동차기기 리프 오매핑 정정 — 스피커단품(상품명: HK AUDIO Polar 10 MK2 HK오디오 10타입 우퍼 컬럼 어레이 스피커 (화이트))",
+      "model": {
+        "source": "page_label",
+        "value": "Polar10 MK2 white"
+      },
+      "maker": "HK Audio",
+      "live_price": 2170000,
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    },
+    {
+      "cgiId": "samamusic:4965",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50002320",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "자동차기기 리프 오매핑 정정 — 스피커단품(상품명: HK AUDIO Polar 12 MK2 HK오디오 12타입 우퍼 컬럼 어레이 스피커 (화이트))",
+      "model": {
+        "source": "page_label",
+        "value": "Polar12 MK2 white"
+      },
+      "maker": "HK Audio",
+      "live_price": 2360000,
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    },
+    {
+      "cgiId": "samamusic:4967",
+      "taxonomy_state": "READY_SALE",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50002320",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "자동차기기 리프 오매핑 정정 — 스피커단품(상품명: HK AUDIO PR:O 10 X HK오디오 10타입 패시브 스피커)",
+      "model": {
+        "source": "page_label",
+        "value": "PR:O 10 X"
+      },
+      "maker": "HK Audio",
+      "live_price": 1010000,
+      "live_origin": "유럽 독일",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 11
+      },
+      "stock_quantity_note": null
+    },
+    {
+      "cgiId": "samamusic:4968",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50002320",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "자동차기기 리프 오매핑 정정 — 스피커단품(상품명: HK AUDIO PR:O 12 HK오디오 12타입 패시브 스피커)",
+      "model": {
+        "source": "page_label",
+        "value": "PR:O 12"
+      },
+      "maker": "HK Audio",
+      "live_price": 1150000,
+      "live_origin": "유럽 독일",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    },
+    {
+      "cgiId": "samamusic:4969",
+      "taxonomy_state": "READY_SALE",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50002320",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "자동차기기 리프 오매핑 정정 — 스피커단품(상품명: HK AUDIO PR:O 12 M HK오디오 12타입 패시브 모니터 스피커)",
+      "model": {
+        "source": "page_label",
+        "value": "PR:O 12 M"
+      },
+      "maker": "HK Audio",
+      "live_price": 1150000,
+      "live_origin": "유럽 독일",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 18
+      },
+      "stock_quantity_note": null
+    },
+    {
+      "cgiId": "samamusic:4974",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50002320",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "자동차기기 리프 오매핑 정정 — 스피커단품(상품명: HK AUDIO PR:O 110 XD2 HK오디오 10타입 액티브 모니터 스피커)",
+      "model": {
+        "source": "page_label",
+        "value": "PR:O 110 XD2"
+      },
+      "maker": "HK Audio",
+      "live_price": 1370000,
+      "live_origin": "유럽 독일",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    },
+    {
+      "cgiId": "samamusic:4975",
+      "taxonomy_state": "READY_SALE",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50002320",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "자동차기기 리프 오매핑 정정 — 스피커단품(상품명: HK AUDIO PR:O 112 FD2 HK오디오 12타입 액티브 스피커)",
+      "model": {
+        "source": "page_label",
+        "value": "PR:O 112 FD2"
+      },
+      "maker": "HK Audio",
+      "live_price": 1560000,
+      "live_origin": "유럽 독일",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 2
+      },
+      "stock_quantity_note": null
+    },
+    {
+      "cgiId": "samamusic:4976",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50002320",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "자동차기기 리프 오매핑 정정 — 스피커단품(상품명: HK AUDIO PR:O 115 FD2 HK오디오 15타입 액티브 스피커)",
+      "model": {
+        "source": "page_label",
+        "value": "PR:O 115 FD2"
+      },
+      "maker": "HK Audio",
+      "live_price": 1780000,
+      "live_origin": "유럽 독일",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    },
+    {
+      "cgiId": "samamusic:4977",
+      "taxonomy_state": "READY_SALE",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50002320",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "자동차기기 리프 오매핑 정정 — 스피커단품(상품명: HK AUDIO PR:O 112 XD2 HK오디오 12타입 액티브 모니터 스피커)",
+      "model": {
+        "source": "page_label",
+        "value": "PR:O 112 XD2"
+      },
+      "maker": "HK Audio",
+      "live_price": 1560000,
+      "live_origin": "유럽 독일",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 14
+      },
+      "stock_quantity_note": null
+    },
+    {
+      "cgiId": "samamusic:4978",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50002320",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "자동차기기 리프 오매핑 정정 — 스피커단품(상품명: HK AUDIO PR:O 115 XD2 HK오디오 15타입 액티브 모니터 스피커)",
+      "model": {
+        "source": "page_label",
+        "value": "PR:O 115 XD2"
+      },
+      "maker": "HK Audio",
+      "live_price": 1780000,
+      "live_origin": "유럽 독일",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    },
+    {
+      "cgiId": "samamusic:5199",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50002645",
+      "category_source": "auto_candidate",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "AGS-FS1"
+      },
+      "maker": "Acoustic Grove System",
+      "live_price": 2990000,
+      "live_origin": "아시아 태국",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    },
+    {
+      "cgiId": "samamusic:5200",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50002645",
+      "category_source": "auto_candidate",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "AGS-MN1"
+      },
+      "maker": "Acoustic Grove System",
+      "live_price": 1330000,
+      "live_origin": "아시아 태국",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    },
+    {
+      "cgiId": "samamusic:5201",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch6_state": "READY_SALE",
+      "leafCategoryId": "50002645",
+      "category_source": "auto_candidate",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "AGS-FL1"
+      },
+      "maker": "Acoustic Grove System",
+      "live_price": 2630000,
+      "live_origin": "아시아 태국",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "stock_quantity_note": "공급처 수량 미공개 — 등록 하한 1(C10), 실재고 아님"
+    }
+  ],
+  "excluded_rows": [
+    {
+      "cgiId": "samamusic:2089",
+      "verdict": "EXCLUDED",
+      "reason": "category_unresolved"
+    },
+    {
+      "cgiId": "samamusic:1242",
+      "verdict": "EXCLUDED",
+      "reason": "category_unresolved"
+    },
+    {
+      "cgiId": "samamusic:1147",
+      "verdict": "EXCLUDED",
+      "reason": "category_unresolved"
+    },
+    {
+      "cgiId": "samamusic:144",
+      "verdict": "EXCLUDED",
+      "reason": "category_unresolved"
+    },
+    {
+      "cgiId": "samamusic:2991",
+      "verdict": "EXCLUDED",
+      "reason": "category_unresolved"
+    },
+    {
+      "cgiId": "samamusic:143",
+      "verdict": "EXCLUDED",
+      "reason": "category_unresolved"
+    },
+    {
+      "cgiId": "samamusic:4979",
+      "verdict": "EXCLUDED",
+      "reason": "category_semantic_unresolved",
+      "detail": "leaf_whole=디지털/가전>자동차기기>카오디오음향기기>스피커"
+    },
+    {
+      "cgiId": "samamusic:4960",
+      "verdict": "EXCLUDED",
+      "reason": "category_semantic_unresolved",
+      "detail": "leaf_whole=디지털/가전>자동차기기>카오디오음향기기>스피커"
+    },
+    {
+      "cgiId": "samamusic:4550",
+      "verdict": "EXCLUDED",
+      "reason": "model_missing_after_recovery"
+    },
+    {
+      "cgiId": "samamusic:4555",
+      "verdict": "EXCLUDED",
+      "reason": "model_missing_after_recovery"
+    },
+    {
+      "cgiId": "samamusic:3880",
+      "verdict": "EXCLUDED",
+      "reason": "model_missing_after_recovery"
+    },
+    {
+      "cgiId": "samamusic:1164",
+      "verdict": "EXCLUDED",
+      "reason": "category_semantic_unresolved",
+      "detail": "leaf_whole=디지털/가전>자동차기기>카오디오음향기기>스피커"
+    },
+    {
+      "cgiId": "samamusic:2751",
+      "verdict": "EXCLUDED",
+      "reason": "category_semantic_unresolved",
+      "detail": "leaf_whole=디지털/가전>자동차기기>카오디오음향기기>스피커"
+    },
+    {
+      "cgiId": "samamusic:1498",
+      "verdict": "EXCLUDED",
+      "reason": "category_semantic_unresolved",
+      "detail": "leaf_whole=디지털/가전>자동차기기>카오디오음향기기>스피커"
+    },
+    {
+      "cgiId": "samamusic:2506",
+      "verdict": "EXCLUDED",
+      "reason": "category_semantic_unresolved",
+      "detail": "leaf_whole=디지털/가전>자동차기기>카오디오음향기기>스피커"
+    },
+    {
+      "cgiId": "samamusic:127",
+      "verdict": "EXCLUDED",
+      "reason": "category_semantic_unresolved",
+      "detail": "leaf_whole=디지털/가전>자동차기기>카오디오음향기기>스피커"
+    },
+    {
+      "cgiId": "samamusic:2648",
+      "verdict": "EXCLUDED",
+      "reason": "category_semantic_unresolved",
+      "detail": "leaf_whole=디지털/가전>자동차기기>카오디오음향기기>스피커"
+    },
+    {
+      "cgiId": "samamusic:265",
+      "verdict": "EXCLUDED",
+      "reason": "model_missing_after_recovery"
+    },
+    {
+      "cgiId": "samamusic:268",
+      "verdict": "EXCLUDED",
+      "reason": "model_missing_after_recovery"
+    },
+    {
+      "cgiId": "samamusic:727",
+      "verdict": "EXCLUDED",
+      "reason": "model_missing_after_recovery"
+    },
+    {
+      "cgiId": "samamusic:724",
+      "verdict": "EXCLUDED",
+      "reason": "model_missing_after_recovery"
+    },
+    {
+      "cgiId": "samamusic:693",
+      "verdict": "EXCLUDED",
+      "reason": "model_missing_after_recovery"
+    },
+    {
+      "cgiId": "samamusic:692",
+      "verdict": "EXCLUDED",
+      "reason": "model_missing_after_recovery"
+    },
+    {
+      "cgiId": "samamusic:719",
+      "verdict": "EXCLUDED",
+      "reason": "model_missing_after_recovery"
+    },
+    {
+      "cgiId": "samamusic:728",
+      "verdict": "EXCLUDED",
+      "reason": "model_missing_after_recovery"
+    },
+    {
+      "cgiId": "samamusic:609",
+      "verdict": "EXCLUDED",
+      "reason": "model_missing_after_recovery"
+    },
+    {
+      "cgiId": "samamusic:612",
+      "verdict": "EXCLUDED",
+      "reason": "model_missing_after_recovery"
+    },
+    {
+      "cgiId": "samamusic:617",
+      "verdict": "EXCLUDED",
+      "reason": "model_missing_after_recovery"
+    },
+    {
+      "cgiId": "samamusic:3687",
+      "verdict": "EXCLUDED",
+      "reason": "model_missing_after_recovery"
+    },
+    {
+      "cgiId": "samamusic:718",
+      "verdict": "EXCLUDED",
+      "reason": "model_missing_after_recovery"
+    },
+    {
+      "cgiId": "samamusic:729",
+      "verdict": "EXCLUDED",
+      "reason": "model_missing_after_recovery"
+    },
+    {
+      "cgiId": "samamusic:615",
+      "verdict": "EXCLUDED",
+      "reason": "model_missing_after_recovery"
+    },
+    {
+      "cgiId": "samamusic:720",
+      "verdict": "EXCLUDED",
+      "reason": "model_missing_after_recovery"
+    },
+    {
+      "cgiId": "samamusic:607",
+      "verdict": "EXCLUDED",
+      "reason": "model_missing_after_recovery"
+    },
+    {
+      "cgiId": "samamusic:616",
+      "verdict": "EXCLUDED",
+      "reason": "model_missing_after_recovery"
+    },
+    {
+      "cgiId": "samamusic:961",
+      "verdict": "EXCLUDED",
+      "reason": "model_missing_after_recovery"
+    },
+    {
+      "cgiId": "samamusic:3678",
+      "verdict": "EXCLUDED",
+      "reason": "model_missing_after_recovery"
+    },
+    {
+      "cgiId": "samamusic:3682",
+      "verdict": "EXCLUDED",
+      "reason": "model_missing_after_recovery"
+    },
+    {
+      "cgiId": "samamusic:3176",
+      "verdict": "EXCLUDED",
+      "reason": "model_missing_after_recovery"
+    },
+    {
+      "cgiId": "samamusic:3325",
+      "verdict": "EXCLUDED",
+      "reason": "model_missing_after_recovery"
+    },
+    {
+      "cgiId": "samamusic:3680",
+      "verdict": "EXCLUDED",
+      "reason": "model_missing_after_recovery"
+    },
+    {
+      "cgiId": "samamusic:3864",
+      "verdict": "EXCLUDED",
+      "reason": "model_missing_after_recovery"
+    },
+    {
+      "cgiId": "samamusic:3455",
+      "verdict": "EXCLUDED",
+      "reason": "model_missing_after_recovery"
+    },
+    {
+      "cgiId": "samamusic:3453",
+      "verdict": "EXCLUDED",
+      "reason": "model_missing_after_recovery"
+    },
+    {
+      "cgiId": "samamusic:3677",
+      "verdict": "EXCLUDED",
+      "reason": "model_missing_after_recovery"
+    },
+    {
+      "cgiId": "samamusic:3683",
+      "verdict": "EXCLUDED",
+      "reason": "model_missing_after_recovery"
+    },
+    {
+      "cgiId": "samamusic:3863",
+      "verdict": "EXCLUDED",
+      "reason": "model_missing_after_recovery"
+    },
+    {
+      "cgiId": "samamusic:3871",
+      "verdict": "EXCLUDED",
+      "reason": "model_missing_after_recovery"
+    },
+    {
+      "cgiId": "samamusic:3681",
+      "verdict": "EXCLUDED",
+      "reason": "model_missing_after_recovery"
+    },
+    {
+      "cgiId": "samamusic:3324",
+      "verdict": "EXCLUDED",
+      "reason": "model_missing_after_recovery"
+    },
+    {
+      "cgiId": "samamusic:3866",
+      "verdict": "EXCLUDED",
+      "reason": "model_missing_after_recovery"
+    },
+    {
+      "cgiId": "samamusic:3872",
+      "verdict": "EXCLUDED",
+      "reason": "model_missing_after_recovery"
+    },
+    {
+      "cgiId": "samamusic:3869",
+      "verdict": "EXCLUDED",
+      "reason": "model_missing_after_recovery"
+    },
+    {
+      "cgiId": "samamusic:3674",
+      "verdict": "EXCLUDED",
+      "reason": "model_missing_after_recovery"
+    },
+    {
+      "cgiId": "samamusic:3860",
+      "verdict": "EXCLUDED",
+      "reason": "model_missing_after_recovery"
+    },
+    {
+      "cgiId": "samamusic:3861",
+      "verdict": "EXCLUDED",
+      "reason": "model_missing_after_recovery"
+    },
+    {
+      "cgiId": "samamusic:3459",
+      "verdict": "EXCLUDED",
+      "reason": "model_missing_after_recovery"
+    },
+    {
+      "cgiId": "samamusic:3313",
+      "verdict": "EXCLUDED",
+      "reason": "model_missing_after_recovery"
+    },
+    {
+      "cgiId": "samamusic:3456",
+      "verdict": "EXCLUDED",
+      "reason": "model_missing_after_recovery"
+    },
+    {
+      "cgiId": "samamusic:3183",
+      "verdict": "EXCLUDED",
+      "reason": "model_missing_after_recovery"
+    },
+    {
+      "cgiId": "samamusic:3670",
+      "verdict": "EXCLUDED",
+      "reason": "model_missing_after_recovery"
+    },
+    {
+      "cgiId": "samamusic:3181",
+      "verdict": "EXCLUDED",
+      "reason": "model_missing_after_recovery"
+    },
+    {
+      "cgiId": "samamusic:3312",
+      "verdict": "EXCLUDED",
+      "reason": "model_missing_after_recovery"
+    },
+    {
+      "cgiId": "samamusic:3685",
+      "verdict": "EXCLUDED",
+      "reason": "model_missing_after_recovery"
+    },
+    {
+      "cgiId": "samamusic:3174",
+      "verdict": "EXCLUDED",
+      "reason": "model_missing_after_recovery"
+    },
+    {
+      "cgiId": "samamusic:3679",
+      "verdict": "EXCLUDED",
+      "reason": "model_missing_after_recovery"
+    },
+    {
+      "cgiId": "samamusic:3447",
+      "verdict": "EXCLUDED",
+      "reason": "model_missing_after_recovery"
+    },
+    {
+      "cgiId": "samamusic:3672",
+      "verdict": "EXCLUDED",
+      "reason": "model_missing_after_recovery"
+    },
+    {
+      "cgiId": "samamusic:3875",
+      "verdict": "EXCLUDED",
+      "reason": "model_missing_after_recovery"
+    },
+    {
+      "cgiId": "samamusic:3328",
+      "verdict": "EXCLUDED",
+      "reason": "model_missing_after_recovery"
+    },
+    {
+      "cgiId": "samamusic:3868",
+      "verdict": "EXCLUDED",
+      "reason": "model_missing_after_recovery"
+    },
+    {
+      "cgiId": "samamusic:3171",
+      "verdict": "EXCLUDED",
+      "reason": "model_missing_after_recovery"
+    },
+    {
+      "cgiId": "samamusic:3191",
+      "verdict": "EXCLUDED",
+      "reason": "model_missing_after_recovery"
+    },
+    {
+      "cgiId": "samamusic:3180",
+      "verdict": "EXCLUDED",
+      "reason": "model_missing_after_recovery"
+    },
+    {
+      "cgiId": "samamusic:3460",
+      "verdict": "EXCLUDED",
+      "reason": "model_missing_after_recovery"
+    },
+    {
+      "cgiId": "samamusic:3190",
+      "verdict": "EXCLUDED",
+      "reason": "model_missing_after_recovery"
+    },
+    {
+      "cgiId": "samamusic:3675",
+      "verdict": "EXCLUDED",
+      "reason": "model_missing_after_recovery"
+    },
+    {
+      "cgiId": "samamusic:3865",
+      "verdict": "EXCLUDED",
+      "reason": "model_missing_after_recovery"
+    },
+    {
+      "cgiId": "samamusic:3451",
+      "verdict": "EXCLUDED",
+      "reason": "model_missing_after_recovery"
+    },
+    {
+      "cgiId": "samamusic:4236",
+      "verdict": "EXCLUDED",
+      "reason": "model_missing_after_recovery"
+    },
+    {
+      "cgiId": "samamusic:72",
+      "verdict": "EXCLUDED",
+      "reason": "model_missing_after_recovery"
+    },
+    {
+      "cgiId": "samamusic:909",
+      "verdict": "EXCLUDED",
+      "reason": "model_missing_after_recovery"
+    },
+    {
+      "cgiId": "samamusic:3450",
+      "verdict": "EXCLUDED",
+      "reason": "model_missing_after_recovery"
+    },
+    {
+      "cgiId": "samamusic:3175",
+      "verdict": "EXCLUDED",
+      "reason": "model_missing_after_recovery"
+    },
+    {
+      "cgiId": "samamusic:3452",
+      "verdict": "EXCLUDED",
+      "reason": "model_missing_after_recovery"
+    },
+    {
+      "cgiId": "samamusic:5738",
+      "verdict": "EXCLUDED",
+      "reason": "category_semantic_unresolved",
+      "detail": "leaf_whole=디지털/가전>자동차기기>카오디오음향기기>스피커"
+    },
+    {
+      "cgiId": "samamusic:5739",
+      "verdict": "EXCLUDED",
+      "reason": "category_semantic_unresolved",
+      "detail": "leaf_whole=디지털/가전>자동차기기>카오디오음향기기>스피커"
+    },
+    {
+      "cgiId": "samamusic:2727",
+      "verdict": "EXCLUDED",
+      "reason": "NEED_REVIEW_guard(잔금/결제창)"
+    },
+    {
+      "cgiId": "samamusic:2745",
+      "verdict": "EXCLUDED",
+      "reason": "NEED_REVIEW_guard(잔금/결제창)"
+    },
+    {
+      "cgiId": "samamusic:2918",
+      "verdict": "EXCLUDED",
+      "reason": "NEED_REVIEW_guard(잔금/결제창)"
+    },
+    {
+      "cgiId": "samamusic:2758",
+      "verdict": "EXCLUDED",
+      "reason": "NEED_REVIEW_guard(잔금/결제창)"
+    },
+    {
+      "cgiId": "samamusic:2805",
+      "verdict": "EXCLUDED",
+      "reason": "NEED_REVIEW_guard(잔금/결제창)"
+    },
+    {
+      "cgiId": "samamusic:2668",
+      "verdict": "EXCLUDED",
+      "reason": "NEED_REVIEW_guard(잔금/결제창)"
+    },
+    {
+      "cgiId": "samamusic:1914",
+      "verdict": "EXCLUDED",
+      "reason": "NEED_REVIEW_guard(잔금/결제창)"
+    },
+    {
+      "cgiId": "samamusic:2055",
+      "verdict": "EXCLUDED",
+      "reason": "NEED_REVIEW_guard(잔금/결제창)"
+    },
+    {
+      "cgiId": "samamusic:1910",
+      "verdict": "EXCLUDED",
+      "reason": "NEED_REVIEW_guard(잔금/결제창)"
+    },
+    {
+      "cgiId": "samamusic:1912",
+      "verdict": "EXCLUDED",
+      "reason": "NEED_REVIEW_guard(잔금/결제창)"
+    }
+  ]
+}
