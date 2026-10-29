@@ -1,0 +1,15 @@
+{
+  "kind": "cgi-ncom-seller-channels",
+  "ran_at": "2026-10-29T04:21:04.652Z",
+  "endpoint": "GET /v1/seller/channels",
+  "response": [
+    {
+      "channelNo": 1100260478,
+      "channelType": "STOREFARM",
+      "name": "주식회사 시지아이",
+      "url": "https://smartstore.naver.com/cgiinc",
+      "talkTalkAccountId": "ww3ooka"
+    }
+  ],
+  "naver_requests": 1
+}

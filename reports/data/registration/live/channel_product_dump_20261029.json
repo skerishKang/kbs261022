@@ -1,0 +1,299 @@
+{
+  "kind": "cgi-ncom-channel-product-dump",
+  "ran_at": "2026-10-29T04:18:34.314Z",
+  "dump": [
+    {
+      "channelProductNo": 13838007796,
+      "body": {
+        "originProduct": {
+          "statusType": "SALE",
+          "saleType": "NEW",
+          "leafCategoryId": "50001589",
+          "name": "K&M 19797 케이앤엠 태블릿 PC 스탠드",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:&#39;malgun gothic&#39; , &#39;apple sd gothic neo&#39; , sans-serif;color:#222;line-height:1.6;word-break:keep-all\"><p style=\"text-align:center;margin:16px 0\"><img src=\"https://www.samamusic.co.kr/web/product/small/20200624/a3a892a3c531bd7522d5eeaf32a09cdd.jpg\" alt=\"K&amp;M 19797 케이앤엠 태블릿 PC 스탠드\" style=\"max-width:100%;height:auto\" /></p><h2 style=\"font-size:24px;margin:10px 0 6px\">K&amp;M 19797 케이앤엠 태블릿 PC 스탠드</h2><p style=\"color:#666;margin:0 0 10px\">브랜드 K&amp;M · 모델명 19797-000-55</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px\">판매가 116,000원</p><h3 style=\"font-size:17px;margin:18px 0 8px\">제품 정보</h3><table><tbody><tr><th style=\"white-space:nowrap;width:110px\">브랜드</th><td>K&amp;M</td></tr><tr><th style=\"white-space:nowrap;width:110px\">모델명</th><td>19797-000-55</td></tr><tr><th style=\"white-space:nowrap;width:110px\">공급처 분류</th><td>K&amp;M 스탠드</td></tr></tbody></table><p style=\"margin:14px 0 6px\">출처: <a>상품 원본 페이지</a></p></div>",
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261029_262/1793236526458HLQuU_JPEG/25587880315032025_981709515.jpg"
+            },
+            "optionalImages": []
+          },
+          "salePrice": 116000,
+          "stockQuantity": 8,
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryBundleGroupUsable": false,
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000,
+              "shippingAddressId": 200682231,
+              "returnAddressId": 200682232,
+              "freeReturnInsuranceYn": false
+            },
+            "installationFee": false
+          },
+          "detailAttribute": {
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0201005",
+              "importer": "삼아사운드 유한회사",
+              "content": "독일산(삼아사운드 유한회사)",
+              "plural": false
+            },
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:1769"
+            },
+            "optionInfo": {
+              "simpleOptionSortType": "CREATE",
+              "optionSimple": [],
+              "optionCustom": [],
+              "optionCombinationSortType": "CREATE",
+              "standardOptionGroups": [],
+              "optionStandards": [],
+              "useStockManagement": true,
+              "optionDeliveryAttributes": []
+            },
+            "purchaseReviewInfo": {
+              "purchaseReviewExposure": true
+            },
+            "taxType": "TAX",
+            "certificationTargetExcludeContent": {},
+            "sellerCommentUsable": false,
+            "minorPurchasable": true,
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "태블릿 PC 스탠드",
+                "modelName": "19797-000-55",
+                "manufacturer": "K&M(König & Meyer)",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "itselfProductionProductYn": false
+          },
+          "customerBenefit": {}
+        },
+        "smartstoreChannelProduct": {
+          "storeKeepExclusiveProduct": false,
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "ON"
+        }
+      },
+      "urls": [
+        "https://www.samamusic.co.kr/web/product/small/20200624/a3a892a3c531bd7522d5eeaf32a09cdd.jpg",
+        "https://shop-phinf.pstatic.net/20261029_262/1793236526458HLQuU_JPEG/25587880315032025_981709515.jpg"
+      ]
+    },
+    {
+      "channelProductNo": 13838007805,
+      "body": {
+        "originProduct": {
+          "statusType": "SALE",
+          "saleType": "NEW",
+          "leafCategoryId": "50001516",
+          "name": "iZOTOPE RX 12 Standard 아이조톱 오디오 리페어 표준 플러그인",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:&#39;malgun gothic&#39; , &#39;apple sd gothic neo&#39; , sans-serif;color:#222;line-height:1.6;word-break:keep-all\"><p style=\"text-align:center;margin:16px 0\"><img src=\"https://www.samamusic.co.kr/web/product/small/202606/61734205dcb870404e61c666626eae4c.png\" alt=\"iZOTOPE RX 12 Standard 아이조톱 오디오 리페어 표준 플러그인\" style=\"max-width:100%;height:auto\" /></p><h2 style=\"font-size:24px;margin:10px 0 6px\">iZOTOPE RX 12 Standard 아이조톱 오디오 리페어 표준 플러그인</h2><p style=\"color:#666;margin:0 0 10px\">브랜드 IZOTOPE · 모델명 35285/ RX 12 Standard</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px\">판매가 518,000원</p><p style=\"margin:12px 0\">오디오 리페어의 표준 플러그인</p><h3 style=\"font-size:17px;margin:18px 0 8px\">제품 정보</h3><table><tbody><tr><th style=\"white-space:nowrap;width:110px\">브랜드</th><td>IZOTOPE</td></tr><tr><th style=\"white-space:nowrap;width:110px\">모델명</th><td>35285/ RX 12 Standard</td></tr><tr><th style=\"white-space:nowrap;width:110px\">공급처 분류</th><td>레코딩</td></tr></tbody></table><p style=\"margin:12px 0\">본 제품은 소프트웨어 전자배송(이메일 라이센스 발송) 상품입니다.</p><p style=\"margin:14px 0 6px\">출처: <a>상품 원본 페이지</a></p></div>",
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261029_234/1793236526872YgxMB_PNG/107172207824561384_534535795.png"
+            },
+            "optionalImages": []
+          },
+          "salePrice": 518000,
+          "stockQuantity": 9,
+          "deliveryInfo": {
+            "deliveryType": "DIRECT",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryBundleGroupUsable": false,
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 0,
+              "exchangeDeliveryFee": 0,
+              "shippingAddressId": 200682231,
+              "returnAddressId": 200682232,
+              "freeReturnInsuranceYn": false
+            },
+            "installationFee": false
+          },
+          "detailAttribute": {
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0204000",
+              "importer": "삼아사운드 유한회사",
+              "content": "미국산(삼아사운드 유한회사)",
+              "plural": false
+            },
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:3417"
+            },
+            "optionInfo": {
+              "simpleOptionSortType": "CREATE",
+              "optionSimple": [],
+              "optionCustom": [],
+              "optionCombinationSortType": "CREATE",
+              "standardOptionGroups": [],
+              "optionStandards": [],
+              "useStockManagement": true,
+              "optionDeliveryAttributes": []
+            },
+            "purchaseReviewInfo": {
+              "purchaseReviewExposure": true
+            },
+            "taxType": "TAX",
+            "certificationTargetExcludeContent": {},
+            "sellerCommentUsable": false,
+            "minorPurchasable": true,
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "DIGITAL_CONTENTS",
+              "digitalContents": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "producer": "iZotope",
+                "termsOfUse": "이메일 라이센스 발송 상품 — iZotope 공식 라이센스 이용 조건 적용",
+                "usePeriod": "제조사 라이센스 정책에 따름",
+                "medium": "다운로드",
+                "requirement": "iZotope 공식 시스템 요구사항 참조",
+                "cancelationPolicy": "소비자분쟁해결기준 및 전자상거래법에 따름(복제 가능한 전자배송 소프트웨어)",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "itselfProductionProductYn": false
+          },
+          "customerBenefit": {}
+        },
+        "smartstoreChannelProduct": {
+          "storeKeepExclusiveProduct": false,
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "ON"
+        }
+      },
+      "urls": [
+        "https://www.samamusic.co.kr/web/product/small/202606/61734205dcb870404e61c666626eae4c.png",
+        "https://shop-phinf.pstatic.net/20261029_234/1793236526872YgxMB_PNG/107172207824561384_534535795.png"
+      ]
+    },
+    {
+      "channelProductNo": 13838007810,
+      "body": {
+        "originProduct": {
+          "statusType": "SALE",
+          "saleType": "NEW",
+          "leafCategoryId": "50001516",
+          "name": "iZOTOPE RX 12 Advanced 아이조톱 오디오 리페어 프로 플러그인",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:&#39;malgun gothic&#39; , &#39;apple sd gothic neo&#39; , sans-serif;color:#222;line-height:1.6;word-break:keep-all\"><p style=\"text-align:center;margin:16px 0\"><img src=\"https://www.samamusic.co.kr/web/product/small/202606/1b19bbca30db2bab8d2bd5b952471f6b.png\" alt=\"iZOTOPE RX 12 Advanced 아이조톱 오디오 리페어 프로 플러그인\" style=\"max-width:100%;height:auto\" /></p><h2 style=\"font-size:24px;margin:10px 0 6px\">iZOTOPE RX 12 Advanced 아이조톱 오디오 리페어 프로 플러그인</h2><p style=\"color:#666;margin:0 0 10px\">브랜드 IZOTOPE · 모델명 35265/ RX 12 Advanced</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px\">판매가 1,818,000원</p><p style=\"margin:12px 0\">오디오 리페어를 위한 프로페셔널 플러그인</p><h3 style=\"font-size:17px;margin:18px 0 8px\">제품 정보</h3><table><tbody><tr><th style=\"white-space:nowrap;width:110px\">브랜드</th><td>IZOTOPE</td></tr><tr><th style=\"white-space:nowrap;width:110px\">모델명</th><td>35265/ RX 12 Advanced</td></tr><tr><th style=\"white-space:nowrap;width:110px\">공급처 분류</th><td>레코딩</td></tr></tbody></table><p style=\"margin:12px 0\">본 제품은 소프트웨어 전자배송(이메일 라이센스 발송) 상품입니다.</p><p style=\"margin:14px 0 6px\">출처: <a>상품 원본 페이지</a></p></div>",
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261029_265/1793236527130w1RVi_PNG/45006309250917189_1358402983.png"
+            },
+            "optionalImages": []
+          },
+          "salePrice": 1818000,
+          "stockQuantity": 29,
+          "deliveryInfo": {
+            "deliveryType": "DIRECT",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryBundleGroupUsable": false,
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 0,
+              "exchangeDeliveryFee": 0,
+              "shippingAddressId": 200682231,
+              "returnAddressId": 200682232,
+              "freeReturnInsuranceYn": false
+            },
+            "installationFee": false
+          },
+          "detailAttribute": {
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0204000",
+              "importer": "삼아사운드 유한회사",
+              "content": "미국산(삼아사운드 유한회사)",
+              "plural": false
+            },
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:3418"
+            },
+            "optionInfo": {
+              "simpleOptionSortType": "CREATE",
+              "optionSimple": [],
+              "optionCustom": [],
+              "optionCombinationSortType": "CREATE",
+              "standardOptionGroups": [],
+              "optionStandards": [],
+              "useStockManagement": true,
+              "optionDeliveryAttributes": []
+            },
+            "purchaseReviewInfo": {
+              "purchaseReviewExposure": true
+            },
+            "taxType": "TAX",
+            "certificationTargetExcludeContent": {},
+            "sellerCommentUsable": false,
+            "minorPurchasable": true,
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "DIGITAL_CONTENTS",
+              "digitalContents": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "producer": "iZotope",
+                "termsOfUse": "이메일 라이센스 발송 상품 — iZotope 공식 라이센스 이용 조건 적용",
+                "usePeriod": "제조사 라이센스 정책에 따름",
+                "medium": "다운로드",
+                "requirement": "iZotope 공식 시스템 요구사항 참조",
+                "cancelationPolicy": "소비자분쟁해결기준 및 전자상거래법에 따름(복제 가능한 전자배송 소프트웨어)",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "itselfProductionProductYn": false
+          },
+          "customerBenefit": {}
+        },
+        "smartstoreChannelProduct": {
+          "storeKeepExclusiveProduct": false,
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "ON"
+        }
+      },
+      "urls": [
+        "https://www.samamusic.co.kr/web/product/small/202606/1b19bbca30db2bab8d2bd5b952471f6b.png",
+        "https://shop-phinf.pstatic.net/20261029_265/1793236527130w1RVi_PNG/45006309250917189_1358402983.png"
+      ]
+    }
+  ],
+  "naver_requests": 3
+}

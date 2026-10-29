@@ -1,0 +1,137 @@
+{
+  "kind": "cgi-ncom-pre-display-check",
+  "checked_at": "2026-10-29T04:16:37.444Z",
+  "basis": "지시 §3-A: 전시 활성화 전 상품번호 단건조회 최종 점검(읽기 전용)",
+  "checks": [
+    {
+      "cgiId": "samamusic.co.kr:1769",
+      "originProductNo": 13776583531,
+      "channelProductNo": 13838007796,
+      "channel_display_status_type": "SUSPENSION",
+      "channel_naver_shopping_registration": false,
+      "channel_keys": [
+        "storeKeepExclusiveProduct",
+        "naverShoppingRegistration",
+        "channelProductDisplayStatusType"
+      ],
+      "channel_raw_keys": [
+        "originProduct",
+        "smartstoreChannelProduct"
+      ],
+      "origin_status_type": "SALE",
+      "name": "K&M 19797 케이앤엠 태블릿 PC 스탠드",
+      "salePrice": 116000,
+      "stockQuantity": 8,
+      "representative_image": "https://shop-phinf.pstatic.net/20261029_262/1793236526458HLQuU_JPEG/25587880315032025_981709515.jpg",
+      "detail_content_length": 1040,
+      "delivery_summary": {
+        "deliveryType": "DELIVERY",
+        "deliveryAttributeType": "NORMAL",
+        "deliveryCompany": "KGB",
+        "deliveryFeeType": "FREE",
+        "baseFee": 0,
+        "returnDeliveryFee": 3000,
+        "exchangeDeliveryFee": 3000
+      },
+      "origin_area": {
+        "code": "0201005",
+        "importer": "삼아사운드 유한회사"
+      },
+      "provided_notice_type": "ETC",
+      "after_service_phone": "062-576-8100",
+      "seller_code": "samamusic:1769",
+      "matches_expectation": {
+        "name": true,
+        "salePrice": true,
+        "stockQuantity": true
+      }
+    },
+    {
+      "cgiId": "samamusic.co.kr:3417",
+      "originProductNo": 13776583540,
+      "channelProductNo": 13838007805,
+      "channel_display_status_type": "SUSPENSION",
+      "channel_naver_shopping_registration": false,
+      "channel_keys": [
+        "storeKeepExclusiveProduct",
+        "naverShoppingRegistration",
+        "channelProductDisplayStatusType"
+      ],
+      "channel_raw_keys": [
+        "originProduct",
+        "smartstoreChannelProduct"
+      ],
+      "origin_status_type": "SALE",
+      "name": "iZOTOPE RX 12 Standard 아이조톱 오디오 리페어 표준 플러그인",
+      "salePrice": 518000,
+      "stockQuantity": 9,
+      "representative_image": "https://shop-phinf.pstatic.net/20261029_234/1793236526872YgxMB_PNG/107172207824561384_534535795.png",
+      "detail_content_length": 1186,
+      "delivery_summary": {
+        "deliveryType": "DIRECT",
+        "deliveryAttributeType": "NORMAL",
+        "deliveryCompany": null,
+        "deliveryFeeType": "FREE",
+        "baseFee": 0,
+        "returnDeliveryFee": 0,
+        "exchangeDeliveryFee": 0
+      },
+      "origin_area": {
+        "code": "0204000",
+        "importer": "삼아사운드 유한회사"
+      },
+      "provided_notice_type": "DIGITAL_CONTENTS",
+      "after_service_phone": "062-576-8100",
+      "seller_code": "samamusic:3417",
+      "matches_expectation": {
+        "name": true,
+        "salePrice": true,
+        "stockQuantity": true
+      }
+    },
+    {
+      "cgiId": "samamusic.co.kr:3418",
+      "originProductNo": 13776583545,
+      "channelProductNo": 13838007810,
+      "channel_display_status_type": "SUSPENSION",
+      "channel_naver_shopping_registration": false,
+      "channel_keys": [
+        "storeKeepExclusiveProduct",
+        "naverShoppingRegistration",
+        "channelProductDisplayStatusType"
+      ],
+      "channel_raw_keys": [
+        "originProduct",
+        "smartstoreChannelProduct"
+      ],
+      "origin_status_type": "SALE",
+      "name": "iZOTOPE RX 12 Advanced 아이조톱 오디오 리페어 프로 플러그인",
+      "salePrice": 1818000,
+      "stockQuantity": 29,
+      "representative_image": "https://shop-phinf.pstatic.net/20261029_265/1793236527130w1RVi_PNG/45006309250917189_1358402983.png",
+      "detail_content_length": 1194,
+      "delivery_summary": {
+        "deliveryType": "DIRECT",
+        "deliveryAttributeType": "NORMAL",
+        "deliveryCompany": null,
+        "deliveryFeeType": "FREE",
+        "baseFee": 0,
+        "returnDeliveryFee": 0,
+        "exchangeDeliveryFee": 0
+      },
+      "origin_area": {
+        "code": "0204000",
+        "importer": "삼아사운드 유한회사"
+      },
+      "provided_notice_type": "DIGITAL_CONTENTS",
+      "after_service_phone": "062-576-8100",
+      "seller_code": "samamusic:3418",
+      "matches_expectation": {
+        "name": true,
+        "salePrice": true,
+        "stockQuantity": true
+      }
+    }
+  ],
+  "naver_requests": 6
+}
