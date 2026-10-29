@@ -1,0 +1,2368 @@
+{
+  "kind": "cgi-bulk-register-14th-batch",
+  "ran_at": "2026-10-29T23:04:29.329Z",
+  "scope": "14차 배치 — 중복 그룹 해소(대표 원본·별개 SKU)+카테고리 신뢰 매핑 후보 오늘 라이브 재판정 적격분 실등록·전시 ON",
+  "results": [
+    {
+      "cgiId": "samamusic:3888",
+      "leafCategoryId": "50003154",
+      "state": "DISPLAYED",
+      "live": {
+        "origin": "아시아 일본",
+        "price": 298000,
+        "sold_out": false,
+        "brand": "JICO",
+        "model": null,
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "J44D IMP NUDE",
+      "live_origin": "아시아 일본",
+      "origin_code": "0200036",
+      "origin_mode": "verified_code",
+      "upload_ok": 1,
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "JICO DJ 지코 카트리지+스타일러스 J44D IMP NUDE (지코 커스텀샵 J44D 카트리지, N-44G 스타일러스)",
+          "salePrice": 298000,
+          "stockQuantity": 1,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:3888"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0200036",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "JICO DJ 지코 카트리지+스타일러스 J44D IMP NUDE (지코 커스텀샵 J44D ",
+                "manufacturer": "JICO",
+                "modelName": "J44D IMP NUDE",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261030_6/1793315023487Lsz7f_JPEG/127447839607139695_2111061290.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50003154",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202403/d268721a0b78dedf625dc37cd6ea5721.jpg\" alt=\"JICO DJ 지코 카트리지+스타일러스 J44D IMP NUDE (지코 커스텀샵 J44D 카트리지, N-44G 스타일러스)\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">JICO DJ 지코 카트리지+스타일러스 J44D IMP NUDE (지코 커스텀샵 J44D 카트리지, N-44G 스타일러스)</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 JICO</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 298,000원</p><p style=\"margin:12px 0;\">CARTRIDGE + STYLUS</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>JICO</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>JICO 카트리지/스타일러스</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/jico-dj-지코-카트리지스타일러스-j44d-imp-nude-지코-커스텀샵-j44d-카트리지-n-44g-스타일러스/3888/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "leaf_for_body": "50003154",
+      "stock_target": 1,
+      "stock_source": "fallback_1",
+      "dup_check": {
+        "hits": 0,
+        "exact_hit": false
+      },
+      "originProductNo": 13778088709,
+      "smartstoreChannelProductNo": 13839524480,
+      "registered_at": "2026-10-29T23:03:41.530Z",
+      "verify": {
+        "statusType": "SALE",
+        "price": 298000,
+        "stock": 1,
+        "price_unchanged": true
+      },
+      "display_after": "ON",
+      "after_display_check": {
+        "price": 298000,
+        "stock": 1,
+        "statusType": "SALE",
+        "price_unchanged": true
+      }
+    },
+    {
+      "cgiId": "samamusic:3895",
+      "leafCategoryId": "50003154",
+      "state": "DISPLAYED",
+      "live": {
+        "origin": "아시아 일본",
+        "price": 298000,
+        "sold_out": false,
+        "brand": "JICO",
+        "model": "AAC0059/ J44D IMP NUDE",
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "AAC0059/ J44D IMP NUDE",
+      "live_origin": "아시아 일본",
+      "origin_code": "0200036",
+      "origin_mode": "verified_code",
+      "upload_ok": 1,
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "JICO 지코 카트리지+스타일러스 J44D IMP NUDE (지코 커스텀샵 J44D 카트리지, N-44G 스타일러스)",
+          "salePrice": 298000,
+          "stockQuantity": 1,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:3895"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0200036",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "JICO 지코 카트리지+스타일러스 J44D IMP NUDE (지코 커스텀샵 J44D 카트리",
+                "manufacturer": "JICO",
+                "modelName": "AAC0059/ J44D IMP NUDE",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261030_129/1793315025907FYsSh_JPEG/76930400907070320_332504767.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50003154",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202403/d86a266f539027a461fad97aea3a5d27.jpg\" alt=\"JICO 지코 카트리지+스타일러스 J44D IMP NUDE (지코 커스텀샵 J44D 카트리지, N-44G 스타일러스)\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">JICO 지코 카트리지+스타일러스 J44D IMP NUDE (지코 커스텀샵 J44D 카트리지, N-44G 스타일러스)</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 JICO &middot; 모델명 AAC0059/ J44D IMP NUDE</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 298,000원</p><p style=\"margin:12px 0;\">CARTRIDGE + STYLUS</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>JICO</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">모델명</th><td>AAC0059/ J44D IMP NUDE</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>JICO 카트리지/스타일러스</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/jico-지코-카트리지스타일러스-j44d-imp-nude-지코-커스텀샵-j44d-카트리지-n-44g-스타일러스/3895/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "leaf_for_body": "50003154",
+      "stock_target": 1,
+      "stock_source": "fallback_1",
+      "dup_check": {
+        "hits": 0,
+        "exact_hit": false
+      },
+      "originProductNo": 13778088787,
+      "smartstoreChannelProductNo": 13839524559,
+      "registered_at": "2026-10-29T23:03:43.888Z",
+      "verify": {
+        "statusType": "SALE",
+        "price": 298000,
+        "stock": 1,
+        "price_unchanged": true
+      },
+      "display_after": "ON",
+      "after_display_check": {
+        "price": 298000,
+        "stock": 1,
+        "statusType": "SALE",
+        "price_unchanged": true
+      }
+    },
+    {
+      "cgiId": "samamusic:3908",
+      "leafCategoryId": "50003154",
+      "state": "DISPLAYED",
+      "live": {
+        "origin": "아시아 일본",
+        "price": 450000,
+        "sold_out": false,
+        "brand": "JICO",
+        "model": "AAC0221/ SAS/B 192-VN35E",
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "AAC0221/ SAS/B 192-VN35E",
+      "live_origin": "아시아 일본",
+      "origin_code": "0200036",
+      "origin_mode": "verified_code",
+      "upload_ok": 1,
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "JICO 지코 스타일러스 VN-35E SAS/B 보론 (SHURE VN-35E 스타일러스 복각, V15 TYPE3 카트리지 호환)",
+          "salePrice": 450000,
+          "stockQuantity": 1,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:3908"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0200036",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "JICO 지코 스타일러스 VN-35E SAS/B 보론 (SHURE VN-35E 스타일러스 ",
+                "manufacturer": "JICO",
+                "modelName": "AAC0221/ SAS/B 192-VN35E",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261030_77/1793315028088HYbp1_JPEG/107250709041847039_1904658927.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50003154",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202403/64f27e882d885274f5bffaec0d6e2cd9.jpg\" alt=\"JICO 지코 스타일러스 VN-35E SAS/B 보론 (SHURE VN-35E 스타일러스 복각, V15 TYPE3 카트리지 호환)\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">JICO 지코 스타일러스 VN-35E SAS/B 보론 (SHURE VN-35E 스타일러스 복각, V15 TYPE3 카트리지 호환)</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 JICO &middot; 모델명 AAC0221/ SAS/B 192-VN35E</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 450,000원</p><p style=\"margin:12px 0;\">CARTRIDGE + STYLUS</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>JICO</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">모델명</th><td>AAC0221/ SAS/B 192-VN35E</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>JICO 카트리지/스타일러스</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/jico-지코-스타일러스-vn-35e-sasb-보론-shure-vn-35e-스타일러스-복각-v15-type3-카트리지-호환/3908/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "leaf_for_body": "50003154",
+      "stock_target": 1,
+      "stock_source": "fallback_1",
+      "dup_check": {
+        "hits": 0,
+        "exact_hit": false
+      },
+      "originProductNo": 13778088822,
+      "smartstoreChannelProductNo": 13839524594,
+      "registered_at": "2026-10-29T23:03:46.093Z",
+      "verify": {
+        "statusType": "SALE",
+        "price": 450000,
+        "stock": 1,
+        "price_unchanged": true
+      },
+      "display_after": "ON",
+      "after_display_check": {
+        "price": 450000,
+        "stock": 1,
+        "statusType": "SALE",
+        "price_unchanged": true
+      }
+    },
+    {
+      "cgiId": "samamusic:5211",
+      "leafCategoryId": "50003154",
+      "state": "DISPLAYED",
+      "live": {
+        "origin": "아시아 일본",
+        "price": 485000,
+        "sold_out": false,
+        "brand": "JICO",
+        "model": "AAC0766/ SAS/B 192-44-7 imp wht shure",
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "AAC0766/ SAS/B 192-44-7 imp wht shure",
+      "live_origin": "아시아 일본",
+      "origin_code": "0200036",
+      "origin_mode": "verified_code",
+      "upload_ok": 1,
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "[JICO] 지코 스타일러스 N-44-7 SAS 보론 캔틸레버 (SHURE 슈어 M44 호환)",
+          "salePrice": 485000,
+          "stockQuantity": 1,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:5211"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0200036",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "[JICO] 지코 스타일러스 N-44-7 SAS 보론 캔틸레버 (SHURE 슈어 M44 호",
+                "manufacturer": "JICO",
+                "modelName": "AAC0766/ SAS/B 192-44-7 imp wht shure",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261030_187/1793315030163PGLOQ_JPEG/32410849114467935_936414510.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50003154",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202511/8bcf02a69c1596792cb0590fcc921cbd.jpg\" alt=\"[JICO] 지코 스타일러스 N-44-7 SAS 보론 캔틸레버 (SHURE 슈어 M44 호환)\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">[JICO] 지코 스타일러스 N-44-7 SAS 보론 캔틸레버 (SHURE 슈어 M44 호환)</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 JICO &middot; 모델명 AAC0766/ SAS/B 192-44-7 imp wht shure</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 485,000원</p><p style=\"margin:12px 0;\">SHURE N-44-7을 복각한 JICO의 슈퍼 아날로그 스타일러스 (SAS)</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>JICO</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">모델명</th><td>AAC0766/ SAS/B 192-44-7 imp wht shure</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>JICO</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/jico-지코-스타일러스-n-44-7-sas-보론-캔틸레버-shure-슈어-m44-호환/5211/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "leaf_for_body": "50003154",
+      "stock_target": 1,
+      "stock_source": "fallback_1",
+      "dup_check": {
+        "hits": 0,
+        "exact_hit": false
+      },
+      "originProductNo": 13778088860,
+      "smartstoreChannelProductNo": 13839524633,
+      "registered_at": "2026-10-29T23:03:48.150Z",
+      "verify": {
+        "statusType": "SALE",
+        "price": 485000,
+        "stock": 1,
+        "price_unchanged": true
+      },
+      "display_after": "ON",
+      "after_display_check": {
+        "price": 485000,
+        "stock": 1,
+        "statusType": "SALE",
+        "price_unchanged": true
+      }
+    },
+    {
+      "cgiId": "samamusic:5212",
+      "leafCategoryId": "50003154",
+      "state": "DISPLAYED",
+      "live": {
+        "origin": "아시아 일본",
+        "price": 595000,
+        "sold_out": false,
+        "brand": "JICO",
+        "model": "AAC0767/ SAS/S 192-44-7 imp wht shure",
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "AAC0767/ SAS/S 192-44-7 imp wht shure",
+      "live_origin": "아시아 일본",
+      "origin_code": "0200036",
+      "origin_mode": "verified_code",
+      "upload_ok": 1,
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "[JICO] 지코 스타일러스 N-44-7 SAS 사파이어 캔틸레버 (SHURE 슈어 M44 호환)",
+          "salePrice": 595000,
+          "stockQuantity": 1,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:5212"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0200036",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "[JICO] 지코 스타일러스 N-44-7 SAS 사파이어 캔틸레버 (SHURE 슈어 M44",
+                "manufacturer": "JICO",
+                "modelName": "AAC0767/ SAS/S 192-44-7 imp wht shure",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261030_111/1793315032350rf7Ks_JPEG/124092785364241369_1036276484.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50003154",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202511/82f9c470cecba86a9775db5743593c3a.jpg\" alt=\"[JICO] 지코 스타일러스 N-44-7 SAS 사파이어 캔틸레버 (SHURE 슈어 M44 호환)\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">[JICO] 지코 스타일러스 N-44-7 SAS 사파이어 캔틸레버 (SHURE 슈어 M44 호환)</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 JICO &middot; 모델명 AAC0767/ SAS/S 192-44-7 imp wht shure</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 595,000원</p><p style=\"margin:12px 0;\">SHURE N-44-7을 복각한 JICO의 슈퍼 아날로그 스타일러스 (SAS)</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>JICO</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">모델명</th><td>AAC0767/ SAS/S 192-44-7 imp wht shure</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>JICO</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/jico-지코-스타일러스-n-44-7-sas-사파이어-캔틸레버-shure-슈어-m44-호환/5212/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "leaf_for_body": "50003154",
+      "stock_target": 1,
+      "stock_source": "fallback_1",
+      "dup_check": {
+        "hits": 0,
+        "exact_hit": false
+      },
+      "originProductNo": 13778088918,
+      "smartstoreChannelProductNo": 13839524693,
+      "registered_at": "2026-10-29T23:03:50.394Z",
+      "verify": {
+        "statusType": "SALE",
+        "price": 595000,
+        "stock": 1,
+        "price_unchanged": true
+      },
+      "display_after": "ON",
+      "after_display_check": {
+        "price": 595000,
+        "stock": 1,
+        "statusType": "SALE",
+        "price_unchanged": true
+      }
+    },
+    {
+      "cgiId": "samamusic:5461",
+      "leafCategoryId": "50003154",
+      "state": "DISPLAYED",
+      "live": {
+        "origin": "아시아 일본",
+        "price": 535000,
+        "sold_out": false,
+        "brand": "JICO",
+        "model": "AAC0767/ SAS/S 192-44-7 imp wht shure",
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "AAC0767/ SAS/S 192-44-7 imp wht shure",
+      "live_origin": "아시아 일본",
+      "origin_code": "0200036",
+      "origin_mode": "verified_code",
+      "upload_ok": 1,
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "[전시상품] [JICO] 지코 스타일러스 N-44-7 SAS 사파이어 캔틸레버 (SHURE 슈어 M44 호환) - SCM-507",
+          "salePrice": 535000,
+          "stockQuantity": 1,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:5461"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0200036",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "[전시상품] [JICO] 지코 스타일러스 N-44-7 SAS 사파이어 캔틸레버 (SHURE",
+                "manufacturer": "JICO",
+                "modelName": "AAC0767/ SAS/S 192-44-7 imp wht shure",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261030_111/1793315032350rf7Ks_JPEG/124092785364241369_1036276484.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50003154",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202511/82f9c470cecba86a9775db5743593c3a.jpg\" alt=\"[전시상품] [JICO] 지코 스타일러스 N-44-7 SAS 사파이어 캔틸레버 (SHURE 슈어 M44 호환) - SCM-507\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">[전시상품] [JICO] 지코 스타일러스 N-44-7 SAS 사파이어 캔틸레버 (SHURE 슈어 M44 호환) - SCM-507</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 JICO &middot; 모델명 AAC0767/ SAS/S 192-44-7 imp wht shure</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 535,000원</p><p style=\"margin:12px 0;\">SHURE N-44-7을 복각한 JICO의 슈퍼 아날로그 스타일러스 (SAS)</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>JICO</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">모델명</th><td>AAC0767/ SAS/S 192-44-7 imp wht shure</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>특가상품</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/전시상품-jico-지코-스타일러스-n-44-7-sas-사파이어-캔틸레버-shure-슈어-m44-호환-scm-507/5461/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "leaf_for_body": "50003154",
+      "stock_target": 1,
+      "stock_source": "fallback_1",
+      "dup_check": {
+        "hits": 0,
+        "exact_hit": false
+      },
+      "originProductNo": 13778088942,
+      "smartstoreChannelProductNo": 13839524718,
+      "registered_at": "2026-10-29T23:03:52.192Z",
+      "verify": {
+        "statusType": "SALE",
+        "price": 535000,
+        "stock": 1,
+        "price_unchanged": true
+      },
+      "display_after": "ON",
+      "after_display_check": {
+        "price": 535000,
+        "stock": 1,
+        "statusType": "SALE",
+        "price_unchanged": true
+      }
+    },
+    {
+      "cgiId": "samamusic:5213",
+      "leafCategoryId": "50003154",
+      "state": "DISPLAYED",
+      "live": {
+        "origin": "아시아 일본",
+        "price": 179000,
+        "sold_out": false,
+        "brand": "JICO",
+        "model": "AAC0008/ J 44A7 Cartridge Only",
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "AAC0008/ J 44A7 Cartridge Only",
+      "live_origin": "아시아 일본",
+      "origin_code": "0200036",
+      "origin_mode": "verified_code",
+      "upload_ok": 1,
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "[JICO] 지코 카트리지 J44A 7 (SHURE 슈어 N-44-7, N44 호환)",
+          "salePrice": 179000,
+          "stockQuantity": 1,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:5213"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0200036",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "[JICO] 지코 카트리지 J44A 7 (SHURE 슈어 N-44-7, N44 호환)",
+                "manufacturer": "JICO",
+                "modelName": "AAC0008/ J 44A7 Cartridge Only",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261030_158/1793315036319cXDkf_JPEG/30302591095507431_1830331841.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50003154",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202511/8e05bc3e0d291eb85327234663944377.jpg\" alt=\"[JICO] 지코 카트리지 J44A 7 (SHURE 슈어 N-44-7, N44 호환)\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">[JICO] 지코 카트리지 J44A 7 (SHURE 슈어 N-44-7, N44 호환)</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 JICO &middot; 모델명 AAC0008/ J 44A7 Cartridge Only</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 179,000원</p><p style=\"margin:12px 0;\">SHURE M44-7을 복각한 JICO의 카트리지</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>JICO</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">모델명</th><td>AAC0008/ J 44A7 Cartridge Only</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>JICO</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/jico-지코-카트리지-j44a-7-shure-슈어-n-44-7-n44-호환/5213/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "leaf_for_body": "50003154",
+      "stock_target": 1,
+      "stock_source": "fallback_1",
+      "dup_check": {
+        "hits": 0,
+        "exact_hit": false
+      },
+      "originProductNo": 13778088962,
+      "smartstoreChannelProductNo": 13839524740,
+      "registered_at": "2026-10-29T23:03:54.353Z",
+      "verify": {
+        "statusType": "SALE",
+        "price": 179000,
+        "stock": 1,
+        "price_unchanged": true
+      },
+      "display_after": "ON",
+      "after_display_check": {
+        "price": 179000,
+        "stock": 1,
+        "statusType": "SALE",
+        "price_unchanged": true
+      }
+    },
+    {
+      "cgiId": "samamusic:3890",
+      "leafCategoryId": "50003154",
+      "state": "DISPLAYED",
+      "live": {
+        "origin": "아시아 일본",
+        "price": 329000,
+        "sold_out": false,
+        "brand": "JICO",
+        "model": "AAC0055/ N-44-7/DJ IMPROVED NUDE 2pcs",
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "AAC0055/ N-44-7/DJ IMPROVED NUDE 2pcs",
+      "live_origin": "아시아 일본",
+      "origin_code": "0200036",
+      "origin_mode": "verified_code",
+      "upload_ok": 1,
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "JICO DJ 지코 스타일러스 N-44-7 DJ IMP NUDE (2개입) (SHURE N-44-7 스타일러스 복각, M44-7 카트리지 호환)",
+          "salePrice": 329000,
+          "stockQuantity": 1,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:3890"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0200036",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "JICO DJ 지코 스타일러스 N-44-7 DJ IMP NUDE (2개입) (SHURE N",
+                "manufacturer": "JICO",
+                "modelName": "AAC0055/ N-44-7/DJ IMPROVED NUDE 2pcs",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261030_5/17933150384616rlBO_JPEG/76930413464308159_1882182334.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50003154",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202403/faa5dd170ab832c4960d71fb0dc13e19.jpg\" alt=\"JICO DJ 지코 스타일러스 N-44-7 DJ IMP NUDE (2개입) (SHURE N-44-7 스타일러스 복각, M44-7 카트리지 호환)\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">JICO DJ 지코 스타일러스 N-44-7 DJ IMP NUDE (2개입) (SHURE N-44-7 스타일러스 복각, M44-7 카트리지 호환)</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 JICO &middot; 모델명 AAC0055/ N-44-7/DJ IMPROVED NUDE 2pcs</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 329,000원</p><p style=\"margin:12px 0;\">CARTRIDGE + STYLUS</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>JICO</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">모델명</th><td>AAC0055/ N-44-7/DJ IMPROVED NUDE 2pcs</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>JICO 카트리지/스타일러스</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/jico-dj-지코-스타일러스-n-44-7-dj-imp-nude-2개입-shure-n-44-7-스타일러스-복각-m44-7-카트/3890/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "leaf_for_body": "50003154",
+      "stock_target": 1,
+      "stock_source": "fallback_1",
+      "dup_check": {
+        "hits": 0,
+        "exact_hit": false
+      },
+      "originProductNo": 13778088980,
+      "smartstoreChannelProductNo": 13839524758,
+      "registered_at": "2026-10-29T23:03:56.437Z",
+      "verify": {
+        "statusType": "SALE",
+        "price": 329000,
+        "stock": 1,
+        "price_unchanged": true
+      },
+      "display_after": "ON",
+      "after_display_check": {
+        "price": 329000,
+        "stock": 1,
+        "statusType": "SALE",
+        "price_unchanged": true
+      }
+    },
+    {
+      "cgiId": "samamusic:3896",
+      "leafCategoryId": "50003154",
+      "state": "DISPLAYED",
+      "live": {
+        "origin": "아시아 일본",
+        "price": 468000,
+        "sold_out": true,
+        "brand": "JICO",
+        "model": "AAC0065/ N44 KUROGAKI NUDE",
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "AAC0065/ N44 KUROGAKI NUDE",
+      "live_origin": "아시아 일본",
+      "origin_code": "0200036",
+      "origin_mode": "verified_code",
+      "upload_ok": 1,
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "JICO 지코 스타일러스 N44 KUROGAKI NUDE 쿠로가키 누드 (SHURE N-44-7 스타일러스 복각, M44G/M44-7 카트리지 호환)",
+          "salePrice": 468000,
+          "stockQuantity": 1,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:3896"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0200036",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "JICO 지코 스타일러스 N44 KUROGAKI NUDE 쿠로가키 누드 (SHURE N-4",
+                "manufacturer": "JICO",
+                "modelName": "AAC0065/ N44 KUROGAKI NUDE",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261030_100/1793315040434Urm0v_JPEG/46030600898851761_1155218953.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50003154",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202403/49c131c1456a4bd1d796205c7544b944.jpg\" alt=\"JICO 지코 스타일러스 N44 KUROGAKI NUDE 쿠로가키 누드 (SHURE N-44-7 스타일러스 복각, M44G/M44-7 카트리지 호환)\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">JICO 지코 스타일러스 N44 KUROGAKI NUDE 쿠로가키 누드 (SHURE N-44-7 스타일러스 복각, M44G/M44-7 카트리지 호환)</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 JICO &middot; 모델명 AAC0065/ N44 KUROGAKI NUDE</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 468,000원</p><p style=\"margin:12px 0;\">CARTRIDGE + STYLUS</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>JICO</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">모델명</th><td>AAC0065/ N44 KUROGAKI NUDE</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>JICO 카트리지/스타일러스</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/jico-지코-스타일러스-n44-kurogaki-nude-쿠로가키-누드-shure-n-44-7-스타일러스-복각-m44gm44-/3896/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "leaf_for_body": "50003154",
+      "stock_target": 1,
+      "stock_source": "fallback_1",
+      "dup_check": {
+        "hits": 0,
+        "exact_hit": false
+      },
+      "originProductNo": 13778089006,
+      "smartstoreChannelProductNo": 13839524783,
+      "registered_at": "2026-10-29T23:03:58.338Z",
+      "stock_zero_state": "OUTOFSTOCK",
+      "zero_path": true,
+      "verify": {
+        "statusType": "OUTOFSTOCK",
+        "price": 468000,
+        "stock": 0,
+        "price_unchanged": true
+      },
+      "display_after": "ON",
+      "after_display_check": {
+        "price": 468000,
+        "stock": 0,
+        "statusType": "OUTOFSTOCK",
+        "price_unchanged": true
+      }
+    },
+    {
+      "cgiId": "samamusic:3897",
+      "leafCategoryId": "50003154",
+      "state": "DISPLAYED",
+      "live": {
+        "origin": "아시아 일본",
+        "price": 468000,
+        "sold_out": true,
+        "brand": "JICO",
+        "model": "AAC0070/ N44 USHIKOROSHI NUDE",
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "AAC0070/ N44 USHIKOROSHI NUDE",
+      "live_origin": "아시아 일본",
+      "origin_code": "0200036",
+      "origin_mode": "verified_code",
+      "upload_ok": 1,
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "JICO 지코 스타일러스 N44 USHIKOROSHI NUDE 우시코로시 누드 (SHURE N44-7 스타일러스 복각, M44G/M44-7 카트리지 호환)",
+          "salePrice": 468000,
+          "stockQuantity": 1,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:3897"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0200036",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "JICO 지코 스타일러스 N44 USHIKOROSHI NUDE 우시코로시 누드 (SHURE",
+                "manufacturer": "JICO",
+                "modelName": "AAC0070/ N44 USHIKOROSHI NUDE",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261030_234/1793315042934jJPiI_JPEG/139676222737046343_1430163617.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50003154",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202403/34fa50b88730de423382aa1021f9d979.jpg\" alt=\"JICO 지코 스타일러스 N44 USHIKOROSHI NUDE 우시코로시 누드 (SHURE N44-7 스타일러스 복각, M44G/M44-7 카트리지 호환)\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">JICO 지코 스타일러스 N44 USHIKOROSHI NUDE 우시코로시 누드 (SHURE N44-7 스타일러스 복각, M44G/M44-7 카트리지 호환)</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 JICO &middot; 모델명 AAC0070/ N44 USHIKOROSHI NUDE</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 468,000원</p><p style=\"margin:12px 0;\">CARTRIDGE + STYLUS</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>JICO</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">모델명</th><td>AAC0070/ N44 USHIKOROSHI NUDE</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>JICO 카트리지/스타일러스</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/jico-지코-스타일러스-n44-ushikoroshi-nude-우시코로시-누드-shure-n44-7-스타일러스-복각-m44gm/3897/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "leaf_for_body": "50003154",
+      "stock_target": 1,
+      "stock_source": "fallback_1",
+      "dup_check": {
+        "hits": 0,
+        "exact_hit": false
+      },
+      "originProductNo": 13778089030,
+      "smartstoreChannelProductNo": 13839524808,
+      "registered_at": "2026-10-29T23:04:00.948Z",
+      "stock_zero_state": "OUTOFSTOCK",
+      "zero_path": true,
+      "verify": {
+        "statusType": "OUTOFSTOCK",
+        "price": 468000,
+        "stock": 0,
+        "price_unchanged": true
+      },
+      "display_after": "ON",
+      "after_display_check": {
+        "price": 468000,
+        "stock": 0,
+        "statusType": "OUTOFSTOCK",
+        "price_unchanged": true
+      }
+    },
+    {
+      "cgiId": "samamusic:3898",
+      "leafCategoryId": "50003154",
+      "state": "DISPLAYED",
+      "live": {
+        "origin": "아시아 일본",
+        "price": 197000,
+        "sold_out": true,
+        "brand": "JICO",
+        "model": "AAC0057/ N-44-7/AURORA IMPROVED NUDE",
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "AAC0057/ N-44-7/AURORA IMPROVED NUDE",
+      "live_origin": "아시아 일본",
+      "origin_code": "0200036",
+      "origin_mode": "verified_code",
+      "upload_ok": 1,
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "JICO 지코 스타일러스 N-44-7 AURORA IMP NUDE (1개입) 형광팁 (SHURE N-44-7스타일러스 복각, M-44G 카트리지 호환)",
+          "salePrice": 197000,
+          "stockQuantity": 1,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:3898"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0200036",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "JICO 지코 스타일러스 N-44-7 AURORA IMP NUDE (1개입) 형광팁 (SH",
+                "manufacturer": "JICO",
+                "modelName": "AAC0057/ N-44-7/AURORA IMPROVED NUDE",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261030_78/17933150454606hccL_JPEG/33484983593545153_129444169.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50003154",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202403/a6057d5da92fdf9a9f581f20fd8780a2.jpg\" alt=\"JICO 지코 스타일러스 N-44-7 AURORA IMP NUDE (1개입) 형광팁 (SHURE N-44-7스타일러스 복각, M-44G 카트리지 호환)\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">JICO 지코 스타일러스 N-44-7 AURORA IMP NUDE (1개입) 형광팁 (SHURE N-44-7스타일러스 복각, M-44G 카트리지 호환)</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 JICO &middot; 모델명 AAC0057/ N-44-7/AURORA IMPROVED NUDE</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 197,000원</p><p style=\"margin:12px 0;\">CARTRIDGE + STYLUS</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>JICO</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">모델명</th><td>AAC0057/ N-44-7/AURORA IMPROVED NUDE</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>JICO 카트리지/스타일러스</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/jico-지코-스타일러스-n-44-7-aurora-imp-nude-1개입-형광팁-shure-n-44-7스타일러스-복각-m-44/3898/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "leaf_for_body": "50003154",
+      "stock_target": 1,
+      "stock_source": "fallback_1",
+      "dup_check": {
+        "hits": 0,
+        "exact_hit": false
+      },
+      "originProductNo": 13778089053,
+      "smartstoreChannelProductNo": 13839524831,
+      "registered_at": "2026-10-29T23:04:03.423Z",
+      "stock_zero_state": "OUTOFSTOCK",
+      "zero_path": true,
+      "verify": {
+        "statusType": "OUTOFSTOCK",
+        "price": 197000,
+        "stock": 0,
+        "price_unchanged": true
+      },
+      "display_after": "ON",
+      "after_display_check": {
+        "price": 197000,
+        "stock": 0,
+        "statusType": "OUTOFSTOCK",
+        "price_unchanged": true
+      }
+    },
+    {
+      "cgiId": "samamusic:3899",
+      "leafCategoryId": "50003154",
+      "state": "DISPLAYED",
+      "live": {
+        "origin": "아시아 일본",
+        "price": 335000,
+        "sold_out": true,
+        "brand": "JICO",
+        "model": "AAC0058/ N-44-7/AURORA IMPROVED NUD 2pcs",
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "AAC0058/ N-44-7/AURORA IMPROVED NUD 2pcs",
+      "live_origin": "아시아 일본",
+      "origin_code": "0200036",
+      "origin_mode": "verified_code",
+      "upload_ok": 1,
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "JICO DJ 지코 스타일러스 N-44-7 AURORA IMP NUDE (2개입) (SHURE N-44-7 스타일러스 복각, M44-7 카트리지 호환)",
+          "salePrice": 335000,
+          "stockQuantity": 1,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:3899"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0200036",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "JICO DJ 지코 스타일러스 N-44-7 AURORA IMP NUDE (2개입) (SHU",
+                "manufacturer": "JICO",
+                "modelName": "AAC0058/ N-44-7/AURORA IMPROVED NUD 2pcs",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261030_145/1793315048004xS5Bw_JPEG/28437279112188839_940532076.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50003154",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202403/094b26185923bfcdc7b2aa84d2c45fe8.jpg\" alt=\"JICO DJ 지코 스타일러스 N-44-7 AURORA IMP NUDE (2개입) (SHURE N-44-7 스타일러스 복각, M44-7 카트리지 호환)\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">JICO DJ 지코 스타일러스 N-44-7 AURORA IMP NUDE (2개입) (SHURE N-44-7 스타일러스 복각, M44-7 카트리지 호환)</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 JICO &middot; 모델명 AAC0058/ N-44-7/AURORA IMPROVED NUD 2pcs</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 335,000원</p><p style=\"margin:12px 0;\">CARTRIDGE + STYLUS</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>JICO</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">모델명</th><td>AAC0058/ N-44-7/AURORA IMPROVED NUD 2pcs</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>JICO 카트리지/스타일러스</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/jico-dj-지코-스타일러스-n-44-7-aurora-imp-nude-2개입-shure-n-44-7-스타일러스-복각-m44-/3899/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "leaf_for_body": "50003154",
+      "stock_target": 1,
+      "stock_source": "fallback_1",
+      "dup_check": {
+        "hits": 0,
+        "exact_hit": false
+      },
+      "originProductNo": 13778089098,
+      "smartstoreChannelProductNo": 13839524875,
+      "registered_at": "2026-10-29T23:04:06.006Z",
+      "stock_zero_state": "OUTOFSTOCK",
+      "zero_path": true,
+      "verify": {
+        "statusType": "OUTOFSTOCK",
+        "price": 335000,
+        "stock": 0,
+        "price_unchanged": true
+      },
+      "display_after": "ON",
+      "after_display_check": {
+        "price": 335000,
+        "stock": 0,
+        "statusType": "OUTOFSTOCK",
+        "price_unchanged": true
+      }
+    },
+    {
+      "cgiId": "samamusic:3900",
+      "leafCategoryId": "50003154",
+      "state": "DISPLAYED",
+      "live": {
+        "origin": "아시아 일본",
+        "price": 188000,
+        "sold_out": true,
+        "brand": "JICO",
+        "model": "AAC0048/ N-44G / AURORA NUDE",
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "AAC0048/ N-44G / AURORA NUDE",
+      "live_origin": "아시아 일본",
+      "origin_code": "0200036",
+      "origin_mode": "verified_code",
+      "upload_ok": 1,
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "JICO 지코 스타일러스 N-44G AURORA NUDE 형광팁 (SHURE N-44-7스타일러스 복각, M-44G 카트리지 호환)",
+          "salePrice": 188000,
+          "stockQuantity": 1,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:3900"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0200036",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "JICO 지코 스타일러스 N-44G AURORA NUDE 형광팁 (SHURE N-44-7스",
+                "manufacturer": "JICO",
+                "modelName": "AAC0048/ N-44G / AURORA NUDE",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261030_238/1793315050802xjDce_JPEG/61331886934057973_1001821533.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50003154",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202403/b2c36f7dba77013a952c3cc2dfc4fd17.jpg\" alt=\"JICO 지코 스타일러스 N-44G AURORA NUDE 형광팁 (SHURE N-44-7스타일러스 복각, M-44G 카트리지 호환)\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">JICO 지코 스타일러스 N-44G AURORA NUDE 형광팁 (SHURE N-44-7스타일러스 복각, M-44G 카트리지 호환)</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 JICO &middot; 모델명 AAC0048/ N-44G / AURORA NUDE</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 188,000원</p><p style=\"margin:12px 0;\">CARTRIDGE + STYLUS</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>JICO</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">모델명</th><td>AAC0048/ N-44G / AURORA NUDE</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>JICO 카트리지/스타일러스</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/jico-지코-스타일러스-n-44g-aurora-nude-형광팁-shure-n-44-7스타일러스-복각-m-44g-카트리지-호환/3900/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "leaf_for_body": "50003154",
+      "stock_target": 1,
+      "stock_source": "fallback_1",
+      "dup_check": {
+        "hits": 0,
+        "exact_hit": false
+      },
+      "originProductNo": 13778089117,
+      "smartstoreChannelProductNo": 13839524895,
+      "registered_at": "2026-10-29T23:04:08.747Z",
+      "stock_zero_state": "OUTOFSTOCK",
+      "zero_path": true,
+      "verify": {
+        "statusType": "OUTOFSTOCK",
+        "price": 188000,
+        "stock": 0,
+        "price_unchanged": true
+      },
+      "display_after": "ON",
+      "after_display_check": {
+        "price": 188000,
+        "stock": 0,
+        "statusType": "OUTOFSTOCK",
+        "price_unchanged": true
+      }
+    },
+    {
+      "cgiId": "samamusic:3901",
+      "leafCategoryId": "50003154",
+      "state": "DISPLAYED",
+      "live": {
+        "origin": "아시아 일본",
+        "price": 182000,
+        "sold_out": true,
+        "brand": "JICO",
+        "model": "AAC0110/ N-44G MONO IMPROVED NUDE",
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "AAC0110/ N-44G MONO IMPROVED NUDE",
+      "live_origin": "아시아 일본",
+      "origin_code": "0200036",
+      "origin_mode": "verified_code",
+      "upload_ok": 1,
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "JICO 지코 스타일러스 N-44G MONO IMP NUDE 모노 (SHURE N-44G 스타일러스 복각, M-44G 카트리지 호환)",
+          "salePrice": 182000,
+          "stockQuantity": 1,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:3901"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0200036",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "JICO 지코 스타일러스 N-44G MONO IMP NUDE 모노 (SHURE N-44G ",
+                "manufacturer": "JICO",
+                "modelName": "AAC0110/ N-44G MONO IMPROVED NUDE",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261030_250/1793315053371u1UQW_JPEG/28437284480639442_2066050914.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50003154",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202403/09c9d22083ce278f1e0f6ea286b4d77a.jpg\" alt=\"JICO 지코 스타일러스 N-44G MONO IMP NUDE 모노 (SHURE N-44G 스타일러스 복각, M-44G 카트리지 호환)\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">JICO 지코 스타일러스 N-44G MONO IMP NUDE 모노 (SHURE N-44G 스타일러스 복각, M-44G 카트리지 호환)</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 JICO &middot; 모델명 AAC0110/ N-44G MONO IMPROVED NUDE</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 182,000원</p><p style=\"margin:12px 0;\">CARTRIDGE + STYLUS</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>JICO</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">모델명</th><td>AAC0110/ N-44G MONO IMPROVED NUDE</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>JICO 카트리지/스타일러스</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/jico-지코-스타일러스-n-44g-mono-imp-nude-모노-shure-n-44g-스타일러스-복각-m-44g-카트리지-호/3901/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "leaf_for_body": "50003154",
+      "stock_target": 1,
+      "stock_source": "fallback_1",
+      "dup_check": {
+        "hits": 0,
+        "exact_hit": false
+      },
+      "originProductNo": 13778089137,
+      "smartstoreChannelProductNo": 13839524915,
+      "registered_at": "2026-10-29T23:04:11.422Z",
+      "stock_zero_state": "OUTOFSTOCK",
+      "zero_path": true,
+      "verify": {
+        "statusType": "OUTOFSTOCK",
+        "price": 182000,
+        "stock": 0,
+        "price_unchanged": true
+      },
+      "display_after": "ON",
+      "after_display_check": {
+        "price": 182000,
+        "stock": 0,
+        "statusType": "OUTOFSTOCK",
+        "price_unchanged": true
+      }
+    },
+    {
+      "cgiId": "samamusic:3909",
+      "leafCategoryId": "50003154",
+      "state": "DISPLAYED",
+      "live": {
+        "origin": "아시아 일본",
+        "price": 329000,
+        "sold_out": true,
+        "brand": "JICO",
+        "model": "AAC0061/ J44D AURORA IMP NUDE",
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "AAC0061/ J44D AURORA IMP NUDE",
+      "live_origin": "아시아 일본",
+      "origin_code": "0200036",
+      "origin_mode": "verified_code",
+      "upload_ok": 1,
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "JICO 지코 카트리지+스타일러스 J44D AURORA IMP NUDE 형광팁 (지코 커스텀샵 J44D 카트리지, N-44G 스타일러스)",
+          "salePrice": 329000,
+          "stockQuantity": 1,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:3909"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0200036",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "JICO 지코 카트리지+스타일러스 J44D AURORA IMP NUDE 형광팁 (지코 커스",
+                "manufacturer": "JICO",
+                "modelName": "AAC0061/ J44D AURORA IMP NUDE",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261030_142/1793315055920VI4QC_JPEG/25666409776298506_1702390703.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50003154",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202403/dc6112345c2b74bd1940b0a0c2772a0a.jpg\" alt=\"JICO 지코 카트리지+스타일러스 J44D AURORA IMP NUDE 형광팁 (지코 커스텀샵 J44D 카트리지, N-44G 스타일러스)\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">JICO 지코 카트리지+스타일러스 J44D AURORA IMP NUDE 형광팁 (지코 커스텀샵 J44D 카트리지, N-44G 스타일러스)</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 JICO &middot; 모델명 AAC0061/ J44D AURORA IMP NUDE</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 329,000원</p><p style=\"margin:12px 0;\">CARTRIDGE + STYLUS</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>JICO</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">모델명</th><td>AAC0061/ J44D AURORA IMP NUDE</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>JICO 카트리지/스타일러스</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/jico-지코-카트리지스타일러스-j44d-aurora-imp-nude-형광팁-지코-커스텀샵-j44d-카트리지-n-44g-스타일/3909/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "leaf_for_body": "50003154",
+      "stock_target": 1,
+      "stock_source": "fallback_1",
+      "dup_check": {
+        "hits": 0,
+        "exact_hit": false
+      },
+      "originProductNo": 13778089174,
+      "smartstoreChannelProductNo": 13839524952,
+      "registered_at": "2026-10-29T23:04:14.017Z",
+      "stock_zero_state": "OUTOFSTOCK",
+      "zero_path": true,
+      "verify": {
+        "statusType": "OUTOFSTOCK",
+        "price": 329000,
+        "stock": 0,
+        "price_unchanged": true
+      },
+      "display_after": "ON",
+      "after_display_check": {
+        "price": 329000,
+        "stock": 0,
+        "statusType": "OUTOFSTOCK",
+        "price_unchanged": true
+      }
+    },
+    {
+      "cgiId": "samamusic:3912",
+      "leafCategoryId": "50003154",
+      "state": "DISPLAYED",
+      "live": {
+        "origin": "아시아 일본",
+        "price": 298000,
+        "sold_out": true,
+        "brand": "JICO",
+        "model": null,
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "J44A 7 DJ IMP NUDE",
+      "live_origin": "아시아 일본",
+      "origin_code": "0200036",
+      "origin_mode": "verified_code",
+      "upload_ok": 1,
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "JICO DJ 지코 카트리지+스타일러스 J44A 7 DJ IMP NUDE (지코 커스텀샵 J44A7 카트리지, N-44-7 스타일러스)",
+          "salePrice": 298000,
+          "stockQuantity": 1,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:3912"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0200036",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "JICO DJ 지코 카트리지+스타일러스 J44A 7 DJ IMP NUDE (지코 커스텀샵 ",
+                "manufacturer": "JICO",
+                "modelName": "J44A 7 DJ IMP NUDE",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261030_47/1793315058603bUXdB_JPEG/76930433607241911_1172685968.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50003154",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202403/d27fde8e28d8a38ff467c195d3cb9846.jpg\" alt=\"JICO DJ 지코 카트리지+스타일러스 J44A 7 DJ IMP NUDE (지코 커스텀샵 J44A7 카트리지, N-44-7 스타일러스)\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">JICO DJ 지코 카트리지+스타일러스 J44A 7 DJ IMP NUDE (지코 커스텀샵 J44A7 카트리지, N-44-7 스타일러스)</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 JICO</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 298,000원</p><p style=\"margin:12px 0;\">CARTRIDGE + STYLUS</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>JICO</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>JICO 카트리지/스타일러스</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/jico-dj-지코-카트리지스타일러스-j44a-7-dj-imp-nude-지코-커스텀샵-j44a7-카트리지-n-44-7-스타일러/3912/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "leaf_for_body": "50003154",
+      "stock_target": 1,
+      "stock_source": "fallback_1",
+      "dup_check": {
+        "hits": 0,
+        "exact_hit": false
+      },
+      "originProductNo": 13778089198,
+      "smartstoreChannelProductNo": 13839524976,
+      "registered_at": "2026-10-29T23:04:16.615Z",
+      "stock_zero_state": "OUTOFSTOCK",
+      "zero_path": true,
+      "verify": {
+        "statusType": "OUTOFSTOCK",
+        "price": 298000,
+        "stock": 0,
+        "price_unchanged": true
+      },
+      "display_after": "ON",
+      "after_display_check": {
+        "price": 298000,
+        "stock": 0,
+        "statusType": "OUTOFSTOCK",
+        "price_unchanged": true
+      }
+    },
+    {
+      "cgiId": "samamusic:4757",
+      "leafCategoryId": "50003154",
+      "state": "DISPLAYED",
+      "live": {
+        "origin": "아시아 일본",
+        "price": 172000,
+        "sold_out": false,
+        "brand": "JICO",
+        "model": null,
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "N44-G IMP SD",
+      "live_origin": "아시아 일본",
+      "origin_code": "0200036",
+      "origin_mode": "verified_code",
+      "upload_ok": 1,
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "[JICO] 지코 스타일러스 N44-G IMP SD (2개입) (SHURE 슈어 M44G 호환 / N-44G 복각)",
+          "salePrice": 172000,
+          "stockQuantity": 1,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:4757"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0200036",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "[JICO] 지코 스타일러스 N44-G IMP SD (2개입) (SHURE 슈어 M44G ",
+                "manufacturer": "JICO",
+                "modelName": "N44-G IMP SD",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261030_35/1793315061193fx17R_JPEG/46030621663648795_2106306132.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50003154",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202505/4cdbc62c9804ec084b02b47b2a8723d4.jpg\" alt=\"[JICO] 지코 스타일러스 N44-G IMP SD (2개입) (SHURE 슈어 M44G 호환 / N-44G 복각)\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">[JICO] 지코 스타일러스 N44-G IMP SD (2개입) (SHURE 슈어 M44G 호환 / N-44G 복각)</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 JICO</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 172,000원</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>JICO</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>JICO 카트리지/스타일러스</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/jico-지코-스타일러스-n44-g-imp-sd-2개입-shure-슈어-m44g-호환-n-44g-복각/4757/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "leaf_for_body": "50003154",
+      "stock_target": 1,
+      "stock_source": "fallback_1",
+      "dup_check": {
+        "hits": 0,
+        "exact_hit": false
+      },
+      "originProductNo": 13778089276,
+      "smartstoreChannelProductNo": 13839525054,
+      "registered_at": "2026-10-29T23:04:19.313Z",
+      "verify": {
+        "statusType": "SALE",
+        "price": 172000,
+        "stock": 1,
+        "price_unchanged": true
+      },
+      "display_after": "ON",
+      "after_display_check": {
+        "price": 172000,
+        "stock": 1,
+        "statusType": "SALE",
+        "price_unchanged": true
+      }
+    },
+    {
+      "cgiId": "samamusic:4758",
+      "leafCategoryId": "50003154",
+      "state": "DISPLAYED",
+      "live": {
+        "origin": "아시아 일본",
+        "price": 172000,
+        "sold_out": false,
+        "brand": "JICO",
+        "model": null,
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "N-44-7 IMP SD",
+      "live_origin": "아시아 일본",
+      "origin_code": "0200036",
+      "origin_mode": "verified_code",
+      "upload_ok": 1,
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "[JICO] 지코 스타일러스 N-44-7 IMP SD (2개입) (SHURE 슈어 M447 호환 / N-44-7 복각)",
+          "salePrice": 172000,
+          "stockQuantity": 1,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:4758"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0200036",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "[JICO] 지코 스타일러스 N-44-7 IMP SD (2개입) (SHURE 슈어 M447",
+                "manufacturer": "JICO",
+                "modelName": "N-44-7 IMP SD",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261030_250/1793315063437KMyqQ_JPEG/55780278560332036_1539468335.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50003154",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202505/699b919b145660dab15112f70a379694.jpg\" alt=\"[JICO] 지코 스타일러스 N-44-7 IMP SD (2개입) (SHURE 슈어 M447 호환 / N-44-7 복각)\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">[JICO] 지코 스타일러스 N-44-7 IMP SD (2개입) (SHURE 슈어 M447 호환 / N-44-7 복각)</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 JICO</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 172,000원</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>JICO</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>JICO 카트리지/스타일러스</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/jico-지코-스타일러스-n-44-7-imp-sd-2개입-shure-슈어-m447-호환-n-44-7-복각/4758/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "leaf_for_body": "50003154",
+      "stock_target": 1,
+      "stock_source": "fallback_1",
+      "dup_check": {
+        "hits": 0,
+        "exact_hit": false
+      },
+      "originProductNo": 13778089313,
+      "smartstoreChannelProductNo": 13839525091,
+      "registered_at": "2026-10-29T23:04:21.385Z",
+      "verify": {
+        "statusType": "SALE",
+        "price": 172000,
+        "stock": 1,
+        "price_unchanged": true
+      },
+      "display_after": "ON",
+      "after_display_check": {
+        "price": 172000,
+        "stock": 1,
+        "statusType": "SALE",
+        "price_unchanged": true
+      }
+    },
+    {
+      "cgiId": "samamusic:4766",
+      "leafCategoryId": "50003154",
+      "state": "DISPLAYED",
+      "live": {
+        "origin": "아시아 일본",
+        "price": 172000,
+        "sold_out": false,
+        "brand": "JICO",
+        "model": null,
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "N-44-7 DJ IMP SD",
+      "live_origin": "아시아 일본",
+      "origin_code": "0200036",
+      "origin_mode": "verified_code",
+      "upload_ok": 1,
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "[JICO DJ] 지코 스타일러스 N-44-7 DJ IMP SD (2개입) (SHURE 슈어 M447 호환 / N-44-7 복각)",
+          "salePrice": 172000,
+          "stockQuantity": 1,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:4766"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0200036",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "[JICO DJ] 지코 스타일러스 N-44-7 DJ IMP SD (2개입) (SHURE 슈",
+                "manufacturer": "JICO",
+                "modelName": "N-44-7 DJ IMP SD",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261030_250/1793315063437KMyqQ_JPEG/55780278560332036_1539468335.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50003154",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202505/b5db627ddc2603f11f82e4842395f176.jpg\" alt=\"[JICO DJ] 지코 스타일러스 N-44-7 DJ IMP SD (2개입) (SHURE 슈어 M447 호환 / N-44-7 복각)\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">[JICO DJ] 지코 스타일러스 N-44-7 DJ IMP SD (2개입) (SHURE 슈어 M447 호환 / N-44-7 복각)</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 JICO</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 172,000원</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>JICO</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>JICO 카트리지/스타일러스</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/jico-dj-지코-스타일러스-n-44-7-dj-imp-sd-2개입-shure-슈어-m447-호환-n-44-7-복각/4766/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "leaf_for_body": "50003154",
+      "stock_target": 1,
+      "stock_source": "fallback_1",
+      "dup_check": {
+        "hits": 0,
+        "exact_hit": false
+      },
+      "originProductNo": 13778089333,
+      "smartstoreChannelProductNo": 13839525111,
+      "registered_at": "2026-10-29T23:04:23.486Z",
+      "verify": {
+        "statusType": "SALE",
+        "price": 172000,
+        "stock": 1,
+        "price_unchanged": true
+      },
+      "display_after": "ON",
+      "after_display_check": {
+        "price": 172000,
+        "stock": 1,
+        "statusType": "SALE",
+        "price_unchanged": true
+      }
+    },
+    {
+      "cgiId": "samamusic:4900",
+      "leafCategoryId": "50003154",
+      "state": "DISPLAYED",
+      "live": {
+        "origin": "아시아 일본",
+        "price": 188000,
+        "sold_out": true,
+        "brand": "JICO",
+        "model": "N44G IMP NUDE",
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "N44G IMP NUDE",
+      "live_origin": "아시아 일본",
+      "origin_code": "0200036",
+      "origin_mode": "verified_code",
+      "upload_ok": 1,
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "JICO 지코 스타일러스 N44-G IMP NUDE (SHURE 슈어 M-44G 호환 / N44-G 복각)",
+          "salePrice": 188000,
+          "stockQuantity": 1,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:4900"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0200036",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "JICO 지코 스타일러스 N44-G IMP NUDE (SHURE 슈어 M-44G 호환 / ",
+                "manufacturer": "JICO",
+                "modelName": "N44G IMP NUDE",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261030_136/1793315067517gSFhi_JPEG/85038843476400857_1481150404.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50003154",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202507/7faf07bb37a587eb2322f8c06b13b86c.jpg\" alt=\"JICO 지코 스타일러스 N44-G IMP NUDE (SHURE 슈어 M-44G 호환 / N44-G 복각)\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">JICO 지코 스타일러스 N44-G IMP NUDE (SHURE 슈어 M-44G 호환 / N44-G 복각)</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 JICO &middot; 모델명 N44G IMP NUDE</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 188,000원</p><p style=\"margin:12px 0;\">SHURE M-44G와 호환되는 JICO 스타일러스 N44-G</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>JICO</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">모델명</th><td>N44G IMP NUDE</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>JICO 카트리지/스타일러스</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/jico-지코-스타일러스-n44-g-imp-nude-shure-슈어-m-44g-호환-n44-g-복각/4900/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "leaf_for_body": "50003154",
+      "stock_target": 1,
+      "stock_source": "fallback_1",
+      "dup_check": {
+        "hits": 0,
+        "exact_hit": false
+      },
+      "originProductNo": 13778089354,
+      "smartstoreChannelProductNo": 13839525132,
+      "registered_at": "2026-10-29T23:04:25.394Z",
+      "stock_zero_state": "OUTOFSTOCK",
+      "zero_path": true,
+      "verify": {
+        "statusType": "OUTOFSTOCK",
+        "price": 188000,
+        "stock": 0,
+        "price_unchanged": true
+      },
+      "display_after": "ON",
+      "after_display_check": {
+        "price": 188000,
+        "stock": 0,
+        "statusType": "OUTOFSTOCK",
+        "price_unchanged": true
+      }
+    },
+    {
+      "cgiId": "samamusic:4558",
+      "leafCategoryId": "50002342",
+      "state": "DISPLAYED",
+      "live": {
+        "origin": "아시아 중국",
+        "price": 1290000,
+        "sold_out": false,
+        "brand": "Q Acoustics",
+        "model": "M20",
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "M20",
+      "live_origin": "아시아 중국",
+      "origin_code": "0200037",
+      "origin_mode": "verified_code",
+      "upload_ok": 1,
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "Q Acoustics Q M20 큐어쿠스틱 Hi-Res 블루투스 무선 스피커 (Pair)",
+          "salePrice": 1290000,
+          "stockQuantity": 1,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:4558"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0200037",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "Q Acoustics Q M20 큐어쿠스틱 Hi-Res 블루투스 무선 스피커 (Pair)",
+                "manufacturer": "Q Acoustics",
+                "modelName": "M20",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261030_209/1793315070140UYS1J_JPEG/139676249944839239_814651536.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50002342",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202501/3cc7ffce0342860553e3f1b5343b956c.jpg\" alt=\"Q Acoustics Q M20 큐어쿠스틱 Hi-Res 블루투스 무선 스피커 (Pair)\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">Q Acoustics Q M20 큐어쿠스틱 Hi-Res 블루투스 무선 스피커 (Pair)</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 Q ACOUSTICS &middot; 모델명 M20</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 1,290,000원</p><p style=\"margin:12px 0;\">파워 앰프가 내장된 Active 스피커(1pair)</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>Q ACOUSTICS</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">모델명</th><td>M20</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>스피커</td></tr></table><h3 style=\"font-size:17px;margin:18px 0 8px;\">옵션</h3><table><tr><th style=\"white-space:nowrap;\">색상 선택</th><td>블랙</td></tr><tr><th style=\"white-space:nowrap;\">색상 선택</th><td>화이트</td></tr><tr><th style=\"white-space:nowrap;\">색상 선택</th><td>월넛</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/q-acoustics-q-m20-큐어쿠스틱-hi-res-블루투스-무선-스피커-pair/4558/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "leaf_for_body": "50002342",
+      "stock_target": 1,
+      "stock_source": "fallback_1",
+      "dup_check": {
+        "hits": 0,
+        "exact_hit": false
+      },
+      "originProductNo": 13778089414,
+      "smartstoreChannelProductNo": 13839525193,
+      "registered_at": "2026-10-29T23:04:28.148Z",
+      "verify": {
+        "statusType": "SALE",
+        "price": 1290000,
+        "stock": 1,
+        "price_unchanged": true
+      },
+      "display_after": "ON",
+      "after_display_check": {
+        "price": 1290000,
+        "stock": 1,
+        "statusType": "SALE",
+        "price_unchanged": true
+      }
+    }
+  ],
+  "leaf_contracts": {
+    "50002342": {
+      "leafCategoryId": "50002342",
+      "wholeName": "디지털/가전>음향가전>이어폰/헤드폰액세서리>기타이어폰/헤드폰액세서리",
+      "name": "기타이어폰/헤드폰액세서리",
+      "certification_count": 57,
+      "kc_capable": true,
+      "checked_at": "2026-10-29T23:04:27.494Z"
+    },
+    "50003154": {
+      "leafCategoryId": "50003154",
+      "wholeName": "디지털/가전>음향가전>오디오>오디오액세서리",
+      "name": "오디오액세서리",
+      "certification_count": 57,
+      "kc_capable": true,
+      "checked_at": "2026-10-29T23:03:40.773Z"
+    }
+  },
+  "metrics": {
+    "register_ms_total": 5020,
+    "register_count": 21,
+    "retries": 0,
+    "dup_blocked": 0,
+    "timeouts": 0,
+    "replaced": 0
+  },
+  "summary": {
+    "target": 200,
+    "new_registered": 21,
+    "registered_before": 509,
+    "display_on_total": 530,
+    "results_this_run": 21
+  }
+}
