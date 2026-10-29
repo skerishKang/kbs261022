@@ -1,0 +1,649 @@
+{
+  "kind": "cgi-bulk-batch14-prep",
+  "ran_at": "2026-10-29T23:03:28.291Z",
+  "basis": {
+    "main_sha": "57c3d31",
+    "full_coverage": true,
+    "source": "batch14_candidates_20261030.json — 중복 그룹 해소 21건"
+  },
+  "pool_size": 21,
+  "excluded": [],
+  "exclusion_summary": {},
+  "candidate_count": 21,
+  "selected_states": {
+    "READY_SALE": 12,
+    "READY_OUTOFSTOCK": 9
+  },
+  "selected": [
+    {
+      "cgiId": "samamusic:3888",
+      "leafCategoryId": "50003154",
+      "category_source": "jico_stylus_precedent_50003154(배치12 실등록 8건)",
+      "model": {
+        "source": "product_name_substring",
+        "value": "J44D IMP NUDE",
+        "evidence": "JICO DJ 지코 카트리지+스타일러스 J44D IMP NUDE (지코 커스텀샵 J44D 카트리지, N-44"
+      },
+      "maker": "JICO",
+      "live_price": 298000,
+      "collected_price": 298000,
+      "price_match": true,
+      "live_origin": "아시아 일본",
+      "sold_out": false,
+      "price_inquiry": false,
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "live_probe": {
+        "origin": "아시아 일본",
+        "brand": "JICO",
+        "model": null,
+        "price": 298000,
+        "stock_label": null
+      },
+      "batch14_state": "READY_SALE"
+    },
+    {
+      "cgiId": "samamusic:3895",
+      "leafCategoryId": "50003154",
+      "category_source": "jico_stylus_precedent_50003154(배치12 실등록 8건)",
+      "model": {
+        "source": "page_label",
+        "value": "AAC0059/ J44D IMP NUDE",
+        "evidence": "JICO 지코 카트리지+스타일러스 J44D IMP NUDE (지코 커스텀샵 J44D 카트리지, N-44G 스"
+      },
+      "maker": "JICO",
+      "live_price": 298000,
+      "collected_price": 298000,
+      "price_match": true,
+      "live_origin": "아시아 일본",
+      "sold_out": false,
+      "price_inquiry": false,
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "live_probe": {
+        "origin": "아시아 일본",
+        "brand": "JICO",
+        "model": "AAC0059/ J44D IMP NUDE",
+        "price": 298000,
+        "stock_label": null
+      },
+      "batch14_state": "READY_SALE"
+    },
+    {
+      "cgiId": "samamusic:3908",
+      "leafCategoryId": "50003154",
+      "category_source": "jico_stylus_precedent_50003154(배치12 실등록 8건)",
+      "model": {
+        "source": "page_label",
+        "value": "AAC0221/ SAS/B 192-VN35E",
+        "evidence": "JICO 지코 스타일러스 VN-35E SAS/B 보론 (SHURE VN-35E 스타일러스 복각, V15 TY"
+      },
+      "maker": "JICO",
+      "live_price": 450000,
+      "collected_price": 450000,
+      "price_match": true,
+      "live_origin": "아시아 일본",
+      "sold_out": false,
+      "price_inquiry": false,
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "live_probe": {
+        "origin": "아시아 일본",
+        "brand": "JICO",
+        "model": "AAC0221/ SAS/B 192-VN35E",
+        "price": 450000,
+        "stock_label": null
+      },
+      "batch14_state": "READY_SALE"
+    },
+    {
+      "cgiId": "samamusic:5211",
+      "leafCategoryId": "50003154",
+      "category_source": "jico_stylus_precedent_50003154(배치12 실등록 8건)",
+      "model": {
+        "source": "page_label",
+        "value": "AAC0766/ SAS/B 192-44-7 imp wht shure",
+        "evidence": "[JICO] 지코 스타일러스 N-44-7 SAS 보론 캔틸레버 (SHURE 슈어 M44 호환)"
+      },
+      "maker": "JICO",
+      "live_price": 485000,
+      "collected_price": 485000,
+      "price_match": true,
+      "live_origin": "아시아 일본",
+      "sold_out": false,
+      "price_inquiry": false,
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "live_probe": {
+        "origin": "아시아 일본",
+        "brand": "JICO",
+        "model": "AAC0766/ SAS/B 192-44-7 imp wht shure",
+        "price": 485000,
+        "stock_label": null
+      },
+      "batch14_state": "READY_SALE"
+    },
+    {
+      "cgiId": "samamusic:5212",
+      "leafCategoryId": "50003154",
+      "category_source": "jico_stylus_precedent_50003154(배치12 실등록 8건)",
+      "model": {
+        "source": "page_label",
+        "value": "AAC0767/ SAS/S 192-44-7 imp wht shure",
+        "evidence": "[JICO] 지코 스타일러스 N-44-7 SAS 사파이어 캔틸레버 (SHURE 슈어 M44 호환)"
+      },
+      "maker": "JICO",
+      "live_price": 595000,
+      "collected_price": 595000,
+      "price_match": true,
+      "live_origin": "아시아 일본",
+      "sold_out": false,
+      "price_inquiry": false,
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "live_probe": {
+        "origin": "아시아 일본",
+        "brand": "JICO",
+        "model": "AAC0767/ SAS/S 192-44-7 imp wht shure",
+        "price": 595000,
+        "stock_label": null
+      },
+      "batch14_state": "READY_SALE"
+    },
+    {
+      "cgiId": "samamusic:5461",
+      "leafCategoryId": "50003154",
+      "category_source": "jico_stylus_precedent_50003154(배치12 실등록 8건)",
+      "model": {
+        "source": "page_label",
+        "value": "AAC0767/ SAS/S 192-44-7 imp wht shure",
+        "evidence": "[전시상품] [JICO] 지코 스타일러스 N-44-7 SAS 사파이어 캔틸레버 (SHURE 슈어 M44 호환"
+      },
+      "maker": "JICO",
+      "live_price": 535000,
+      "collected_price": 535000,
+      "price_match": true,
+      "live_origin": "아시아 일본",
+      "sold_out": false,
+      "price_inquiry": false,
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "live_probe": {
+        "origin": "아시아 일본",
+        "brand": "JICO",
+        "model": "AAC0767/ SAS/S 192-44-7 imp wht shure",
+        "price": 535000,
+        "stock_label": null
+      },
+      "batch14_state": "READY_SALE"
+    },
+    {
+      "cgiId": "samamusic:5213",
+      "leafCategoryId": "50003154",
+      "category_source": "jico_stylus_precedent_50003154(배치12 실등록 8건)",
+      "model": {
+        "source": "page_label",
+        "value": "AAC0008/ J 44A7 Cartridge Only",
+        "evidence": "[JICO] 지코 카트리지 J44A 7 (SHURE 슈어 N-44-7, N44 호환)"
+      },
+      "maker": "JICO",
+      "live_price": 179000,
+      "collected_price": 179000,
+      "price_match": true,
+      "live_origin": "아시아 일본",
+      "sold_out": false,
+      "price_inquiry": false,
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "live_probe": {
+        "origin": "아시아 일본",
+        "brand": "JICO",
+        "model": "AAC0008/ J 44A7 Cartridge Only",
+        "price": 179000,
+        "stock_label": null
+      },
+      "batch14_state": "READY_SALE"
+    },
+    {
+      "cgiId": "samamusic:3890",
+      "leafCategoryId": "50003154",
+      "category_source": "jico_stylus_precedent_50003154(배치12 실등록 8건)",
+      "model": {
+        "source": "page_label",
+        "value": "AAC0055/ N-44-7/DJ IMPROVED NUDE 2pcs",
+        "evidence": "JICO DJ 지코 스타일러스 N-44-7 DJ IMP NUDE (2개입) (SHURE N-44-7 스타일러"
+      },
+      "maker": "JICO",
+      "live_price": 329000,
+      "collected_price": 329000,
+      "price_match": true,
+      "live_origin": "아시아 일본",
+      "sold_out": false,
+      "price_inquiry": false,
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "live_probe": {
+        "origin": "아시아 일본",
+        "brand": "JICO",
+        "model": "AAC0055/ N-44-7/DJ IMPROVED NUDE 2pcs",
+        "price": 329000,
+        "stock_label": null
+      },
+      "batch14_state": "READY_SALE"
+    },
+    {
+      "cgiId": "samamusic:3896",
+      "leafCategoryId": "50003154",
+      "category_source": "jico_stylus_precedent_50003154(배치12 실등록 8건)",
+      "model": {
+        "source": "page_label",
+        "value": "AAC0065/ N44 KUROGAKI NUDE",
+        "evidence": "JICO 지코 스타일러스 N44 KUROGAKI NUDE 쿠로가키 누드 (SHURE N-44-7 스타일러스 "
+      },
+      "maker": "JICO",
+      "live_price": 468000,
+      "collected_price": 468000,
+      "price_match": true,
+      "live_origin": "아시아 일본",
+      "sold_out": true,
+      "price_inquiry": false,
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "live_probe": {
+        "origin": "아시아 일본",
+        "brand": "JICO",
+        "model": "AAC0065/ N44 KUROGAKI NUDE",
+        "price": 468000,
+        "stock_label": null
+      },
+      "batch14_state": "READY_OUTOFSTOCK"
+    },
+    {
+      "cgiId": "samamusic:3897",
+      "leafCategoryId": "50003154",
+      "category_source": "jico_stylus_precedent_50003154(배치12 실등록 8건)",
+      "model": {
+        "source": "page_label",
+        "value": "AAC0070/ N44 USHIKOROSHI NUDE",
+        "evidence": "JICO 지코 스타일러스 N44 USHIKOROSHI NUDE 우시코로시 누드 (SHURE N44-7 스타일"
+      },
+      "maker": "JICO",
+      "live_price": 468000,
+      "collected_price": 468000,
+      "price_match": true,
+      "live_origin": "아시아 일본",
+      "sold_out": true,
+      "price_inquiry": false,
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "live_probe": {
+        "origin": "아시아 일본",
+        "brand": "JICO",
+        "model": "AAC0070/ N44 USHIKOROSHI NUDE",
+        "price": 468000,
+        "stock_label": null
+      },
+      "batch14_state": "READY_OUTOFSTOCK"
+    },
+    {
+      "cgiId": "samamusic:3898",
+      "leafCategoryId": "50003154",
+      "category_source": "jico_stylus_precedent_50003154(배치12 실등록 8건)",
+      "model": {
+        "source": "page_label",
+        "value": "AAC0057/ N-44-7/AURORA IMPROVED NUDE",
+        "evidence": "JICO 지코 스타일러스 N-44-7 AURORA IMP NUDE (1개입) 형광팁 (SHURE N-44-7"
+      },
+      "maker": "JICO",
+      "live_price": 197000,
+      "collected_price": 197000,
+      "price_match": true,
+      "live_origin": "아시아 일본",
+      "sold_out": true,
+      "price_inquiry": false,
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "live_probe": {
+        "origin": "아시아 일본",
+        "brand": "JICO",
+        "model": "AAC0057/ N-44-7/AURORA IMPROVED NUDE",
+        "price": 197000,
+        "stock_label": null
+      },
+      "batch14_state": "READY_OUTOFSTOCK"
+    },
+    {
+      "cgiId": "samamusic:3899",
+      "leafCategoryId": "50003154",
+      "category_source": "jico_stylus_precedent_50003154(배치12 실등록 8건)",
+      "model": {
+        "source": "page_label",
+        "value": "AAC0058/ N-44-7/AURORA IMPROVED NUD 2pcs",
+        "evidence": "JICO DJ 지코 스타일러스 N-44-7 AURORA IMP NUDE (2개입) (SHURE N-44-7 "
+      },
+      "maker": "JICO",
+      "live_price": 335000,
+      "collected_price": 335000,
+      "price_match": true,
+      "live_origin": "아시아 일본",
+      "sold_out": true,
+      "price_inquiry": false,
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "live_probe": {
+        "origin": "아시아 일본",
+        "brand": "JICO",
+        "model": "AAC0058/ N-44-7/AURORA IMPROVED NUD 2pcs",
+        "price": 335000,
+        "stock_label": null
+      },
+      "batch14_state": "READY_OUTOFSTOCK"
+    },
+    {
+      "cgiId": "samamusic:3900",
+      "leafCategoryId": "50003154",
+      "category_source": "jico_stylus_precedent_50003154(배치12 실등록 8건)",
+      "model": {
+        "source": "page_label",
+        "value": "AAC0048/ N-44G / AURORA NUDE",
+        "evidence": "JICO 지코 스타일러스 N-44G AURORA NUDE 형광팁 (SHURE N-44-7스타일러스 복각, M"
+      },
+      "maker": "JICO",
+      "live_price": 188000,
+      "collected_price": 188000,
+      "price_match": true,
+      "live_origin": "아시아 일본",
+      "sold_out": true,
+      "price_inquiry": false,
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "live_probe": {
+        "origin": "아시아 일본",
+        "brand": "JICO",
+        "model": "AAC0048/ N-44G / AURORA NUDE",
+        "price": 188000,
+        "stock_label": null
+      },
+      "batch14_state": "READY_OUTOFSTOCK"
+    },
+    {
+      "cgiId": "samamusic:3901",
+      "leafCategoryId": "50003154",
+      "category_source": "jico_stylus_precedent_50003154(배치12 실등록 8건)",
+      "model": {
+        "source": "page_label",
+        "value": "AAC0110/ N-44G MONO IMPROVED NUDE",
+        "evidence": "JICO 지코 스타일러스 N-44G MONO IMP NUDE 모노 (SHURE N-44G 스타일러스 복각, "
+      },
+      "maker": "JICO",
+      "live_price": 182000,
+      "collected_price": 182000,
+      "price_match": true,
+      "live_origin": "아시아 일본",
+      "sold_out": true,
+      "price_inquiry": false,
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "live_probe": {
+        "origin": "아시아 일본",
+        "brand": "JICO",
+        "model": "AAC0110/ N-44G MONO IMPROVED NUDE",
+        "price": 182000,
+        "stock_label": null
+      },
+      "batch14_state": "READY_OUTOFSTOCK"
+    },
+    {
+      "cgiId": "samamusic:3909",
+      "leafCategoryId": "50003154",
+      "category_source": "jico_stylus_precedent_50003154(배치12 실등록 8건)",
+      "model": {
+        "source": "page_label",
+        "value": "AAC0061/ J44D AURORA IMP NUDE",
+        "evidence": "JICO 지코 카트리지+스타일러스 J44D AURORA IMP NUDE 형광팁 (지코 커스텀샵 J44D 카트"
+      },
+      "maker": "JICO",
+      "live_price": 329000,
+      "collected_price": 329000,
+      "price_match": true,
+      "live_origin": "아시아 일본",
+      "sold_out": true,
+      "price_inquiry": false,
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "live_probe": {
+        "origin": "아시아 일본",
+        "brand": "JICO",
+        "model": "AAC0061/ J44D AURORA IMP NUDE",
+        "price": 329000,
+        "stock_label": null
+      },
+      "batch14_state": "READY_OUTOFSTOCK"
+    },
+    {
+      "cgiId": "samamusic:3912",
+      "leafCategoryId": "50003154",
+      "category_source": "jico_stylus_precedent_50003154(배치12 실등록 8건)",
+      "model": {
+        "source": "product_name_substring",
+        "value": "J44A 7 DJ IMP NUDE",
+        "evidence": "JICO DJ 지코 카트리지+스타일러스 J44A 7 DJ IMP NUDE (지코 커스텀샵 J44A7 카트리지"
+      },
+      "maker": "JICO",
+      "live_price": 298000,
+      "collected_price": 298000,
+      "price_match": true,
+      "live_origin": "아시아 일본",
+      "sold_out": true,
+      "price_inquiry": false,
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "live_probe": {
+        "origin": "아시아 일본",
+        "brand": "JICO",
+        "model": null,
+        "price": 298000,
+        "stock_label": null
+      },
+      "batch14_state": "READY_OUTOFSTOCK"
+    },
+    {
+      "cgiId": "samamusic:4757",
+      "leafCategoryId": "50003154",
+      "category_source": "jico_stylus_precedent_50003154(배치12 실등록 8건)",
+      "model": {
+        "source": "product_name_substring",
+        "value": "N44-G IMP SD",
+        "evidence": "[JICO] 지코 스타일러스 N44-G IMP SD (2개입) (SHURE 슈어 M44G 호환 / N-44G"
+      },
+      "maker": "JICO",
+      "live_price": 172000,
+      "collected_price": 172000,
+      "price_match": true,
+      "live_origin": "아시아 일본",
+      "sold_out": false,
+      "price_inquiry": false,
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "live_probe": {
+        "origin": "아시아 일본",
+        "brand": "JICO",
+        "model": null,
+        "price": 172000,
+        "stock_label": null
+      },
+      "batch14_state": "READY_SALE"
+    },
+    {
+      "cgiId": "samamusic:4758",
+      "leafCategoryId": "50003154",
+      "category_source": "jico_stylus_precedent_50003154(배치12 실등록 8건)",
+      "model": {
+        "source": "product_name_substring",
+        "value": "N-44-7 IMP SD",
+        "evidence": "[JICO] 지코 스타일러스 N-44-7 IMP SD (2개입) (SHURE 슈어 M447 호환 / N-44"
+      },
+      "maker": "JICO",
+      "live_price": 172000,
+      "collected_price": 172000,
+      "price_match": true,
+      "live_origin": "아시아 일본",
+      "sold_out": false,
+      "price_inquiry": false,
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "live_probe": {
+        "origin": "아시아 일본",
+        "brand": "JICO",
+        "model": null,
+        "price": 172000,
+        "stock_label": null
+      },
+      "batch14_state": "READY_SALE"
+    },
+    {
+      "cgiId": "samamusic:4766",
+      "leafCategoryId": "50003154",
+      "category_source": "jico_stylus_precedent_50003154(배치12 실등록 8건)",
+      "model": {
+        "source": "product_name_substring",
+        "value": "N-44-7 DJ IMP SD",
+        "evidence": "[JICO DJ] 지코 스타일러스 N-44-7 DJ IMP SD (2개입) (SHURE 슈어 M447 호환 "
+      },
+      "maker": "JICO",
+      "live_price": 172000,
+      "collected_price": 172000,
+      "price_match": true,
+      "live_origin": "아시아 일본",
+      "sold_out": false,
+      "price_inquiry": false,
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "live_probe": {
+        "origin": "아시아 일본",
+        "brand": "JICO",
+        "model": null,
+        "price": 172000,
+        "stock_label": null
+      },
+      "batch14_state": "READY_SALE"
+    },
+    {
+      "cgiId": "samamusic:4900",
+      "leafCategoryId": "50003154",
+      "category_source": "jico_stylus_precedent_50003154(배치12 실등록 8건)",
+      "model": {
+        "source": "page_label",
+        "value": "N44G IMP NUDE",
+        "evidence": "JICO 지코 스타일러스 N44-G IMP NUDE (SHURE 슈어 M-44G 호환 / N44-G 복각)"
+      },
+      "maker": "JICO",
+      "live_price": 188000,
+      "collected_price": 188000,
+      "price_match": true,
+      "live_origin": "아시아 일본",
+      "sold_out": true,
+      "price_inquiry": false,
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "live_probe": {
+        "origin": "아시아 일본",
+        "brand": "JICO",
+        "model": "N44G IMP NUDE",
+        "price": 188000,
+        "stock_label": null
+      },
+      "batch14_state": "READY_OUTOFSTOCK"
+    },
+    {
+      "cgiId": "samamusic:4558",
+      "leafCategoryId": "50002342",
+      "category_source": "model_series_inherit(M20)",
+      "model": {
+        "source": "page_label",
+        "value": "M20",
+        "evidence": "Q Acoustics Q M20 큐어쿠스틱 Hi-Res 블루투스 무선 스피커 (Pair)"
+      },
+      "maker": "Q Acoustics",
+      "live_price": 1290000,
+      "collected_price": 1290000,
+      "price_match": true,
+      "live_origin": "아시아 중국",
+      "sold_out": false,
+      "price_inquiry": false,
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "live_probe": {
+        "origin": "아시아 중국",
+        "brand": "Q Acoustics",
+        "model": "M20",
+        "price": 1290000,
+        "stock_label": null
+      },
+      "batch14_state": "READY_SALE"
+    }
+  ]
+}
