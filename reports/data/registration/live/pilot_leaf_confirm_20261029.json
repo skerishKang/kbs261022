@@ -1,0 +1,30 @@
+{
+  "kind": "cgi-ncom-pilot-leaf-confirm",
+  "confirmed_at": "2026-10-29",
+  "confirmed_by": "CENTRAL CTO 지시(20261029) — 라이브 코퍼스 5,003 leaves에서 상품에 부합하는 리프 근거 확정",
+  "basis": {
+    "samamusic.co.kr:1769": {
+      "leafCategoryId": "50001589",
+      "wholeCategoryName": "디지털/가전>태블릿PC액세서리>스탠드/Dock",
+      "evidence": "상품명 'K&M 19797 케이앤엠 태블릿 PC 스탠드'(prep CSV 상품명)와 리프 '태블릿PC액세서리>스탠드/Dock' 정합. 어휘 매처는 공급처 경로 'K&M 스탠드'로 동점 3개(ambiguous)였으나 상품명 실측값으로 특정.",
+      "source": "reports/data/naver/category_corpus_live.json row id=50001589"
+    },
+    "samamusic.co.kr:3417": {
+      "leafCategoryId": "50001516",
+      "wholeCategoryName": "디지털/가전>소프트웨어>그래픽/멀티미디어",
+      "evidence": "상품 'iZOTOPE RX 12 Standard 아이조톱 오디오 리페어 표준 플러그인'은 오디오 편집 소프트웨어. 어휘 후보 50002974('사운드카드>레코딩장비')는 하드웨어 리프로 불일치 — 코퍼스 내 소프트웨어 리프 중 멀티미디어 편집 소프트웨어에 부합하는 50001516으로 확정.",
+      "source": "reports/data/naver/category_corpus_live.json row id=50001516"
+    },
+    "samamusic.co.kr:3418": {
+      "leafCategoryId": "50001516",
+      "wholeCategoryName": "디지털/가전>소프트웨어>그래픽/멀티미디어",
+      "evidence": "상품 'iZOTOPE RX 12 Advanced 아이조톱 오디오 리페어 프로 플러그인' — 3417과 동일 근거.",
+      "source": "reports/data/naver/category_corpus_live.json row id=50001516"
+    }
+  },
+  "leaf_category_ids": {
+    "samamusic.co.kr:1769": "50001589",
+    "samamusic.co.kr:3417": "50001516",
+    "samamusic.co.kr:3418": "50001516"
+  }
+}

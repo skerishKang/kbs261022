@@ -1,0 +1,27 @@
+{
+  "kind": "cgi-ncom-pilot-delivery-policy",
+  "basis": "공급처(삼아스토어) 쇼핑몰 이용안내·상품 페이지 실측(2026-10-29): 배송방법 택배(로젠택배), 배송비 조건부 무료(주문 금액 50,000원 미만 3,000원), 1769 상품 페이지 '배송비 3,000원(50,000원 이상 구매 시 무료)', 3417/3418 상품 페이지 '배송비 무료' + '본 제품은 소프트웨어 전자배송 상품으로 이메일 발송'(실물 반송이 없어 반품·교환 배송비 0). 미확인 금액은 임의 생성하지 않았다 — 반품·교환 배송비 3,000원은 공급처가 게시한 유일한 배송비 실측값(기본 배송비)이며, 전자배송 상품은 0원이다.",
+  "source_url": "https://samastore.co.kr/shopinfo/guide.html + 상품 페이지 1769/3417/3418",
+  "fetched_at": "2026-10-29",
+  "delivery_by_cgi_id": {
+    "samamusic.co.kr:1769": {
+      "deliveryType": "DELIVERY",
+      "deliveryAttributeType": "NORMAL",
+      "deliveryCompany": "로젠택배",
+      "deliveryFee": { "deliveryFeeType": "FREE", "baseFee": 0, "deliveryFeePayType": "PREPAID" },
+      "claimDeliveryInfo": { "returnDeliveryCompanyPriorityType": "PRIMARY", "returnDeliveryFee": 3000, "exchangeDeliveryFee": 3000 }
+    },
+    "samamusic.co.kr:3417": {
+      "deliveryType": "DELIVERY",
+      "deliveryAttributeType": "NORMAL",
+      "deliveryFee": { "deliveryFeeType": "FREE", "baseFee": 0, "deliveryFeePayType": "PREPAID" },
+      "claimDeliveryInfo": { "returnDeliveryCompanyPriorityType": "PRIMARY", "returnDeliveryFee": 0, "exchangeDeliveryFee": 0 }
+    },
+    "samamusic.co.kr:3418": {
+      "deliveryType": "DELIVERY",
+      "deliveryAttributeType": "NORMAL",
+      "deliveryFee": { "deliveryFeeType": "FREE", "baseFee": 0, "deliveryFeePayType": "PREPAID" },
+      "claimDeliveryInfo": { "returnDeliveryCompanyPriorityType": "PRIMARY", "returnDeliveryFee": 0, "exchangeDeliveryFee": 0 }
+    }
+  }
+}

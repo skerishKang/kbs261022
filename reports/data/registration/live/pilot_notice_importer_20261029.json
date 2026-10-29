@@ -1,0 +1,72 @@
+{
+  "kind": "cgi-ncom-pilot-notice-importer-evidence",
+  "confirmed_at": "2026-10-29",
+  "basis_summary": "v3 실등록 400에서 새로 요구된 4가지(상품정보제공고시·수입사·images 스키마·전자배송 유형)에 대한 근거. 모든 값은 공급처 게시물·공식 문서·라이브 API 응답에서 가져왔고 임의 생성은 없다.",
+  "product_info_provided_notice": {
+    "api": "GET /v1/products-for-provided-notice (라이브 응답 근거: provided_notice_groups_live_20261029.json)",
+    "samamusic.co.kr:1769": {
+      "group": "ETC(기타 재화)",
+      "reason": "태블릿 PC 스탠드는 전자제품·악기·의류 등 어느 전문 상품군에도 해당하지 않는 일반 재화 — 상품군 목록의 ETC(기타 재화)가 유일하게 부합.",
+      "fields": {
+        "itemName": "태블릿 PC 스탠드",
+        "modelName": "19797-000-55",
+        "manufacturer": "K&M(König & Meyer)",
+        "customerServicePhoneNumber": "062-576-8100",
+        "returnCostReason": "0",
+        "noRefundReason": "0",
+        "qualityAssuranceStandard": "0",
+        "compensationProcedure": "0",
+        "troubleShootingContents": "0"
+      },
+      "field_basis": {
+        "itemName": "상품명 실측: K&M 19797 케이앤엠 태블릿 PC 스탠드",
+        "modelName": "공급처 상품 페이지 '모델명' 실측",
+        "manufacturer": "공급처 상세 배너 실측: '독일에서 탄생한 전 세계 표준 스탠드 브랜드', Made in Germany",
+        "customerServicePhoneNumber": "CGI 자체 쇼핑몰 공개 A/S 안내",
+        "afterServiceDirector_omitted": "v4 실측 ExclusiveNotNull — afterServiceDirector 와 customerServicePhoneNumber 는 둘 중 하나만 허용, 상담전화 하나만 남김"
+      }
+    },
+    "samamusic.co.kr:3417": {
+      "group": "DIGITAL_CONTENTS(디지털콘텐츠)",
+      "reason": "이메일 라이센스 발송 소프트웨어 — 상품군 목록 정의(음원,게임,인터넷강의 등 디지털 제공 재화)와 정확히 부합.",
+      "fields": {
+        "producer": "iZotope",
+        "termsOfUse": "이메일 라이센스 발송 상품 — iZotope 공식 라이센스 이용 조건 적용",
+        "usePeriod": "제조사 라이센스 정책에 따름",
+        "medium": "다운로드",
+        "requirement": "iZotope 공식 시스템 요구사항 참조",
+        "cancelationPolicy": "소비자분쟁해결기준 및 전자상거래법에 따름(복제 가능한 전자배송 소프트웨어)",
+        "customerServicePhoneNumber": "062-576-8100",
+        "returnCostReason": "0",
+        "noRefundReason": "0",
+        "qualityAssuranceStandard": "0",
+        "compensationProcedure": "0",
+        "troubleShootingContents": "0"
+      },
+      "field_basis": {
+        "producer": "공급처 상품 페이지 '브랜드' 실측",
+        "medium": "v4 실측 MaxLength — '다운로드(이메일 발송)(근거 설명 포함)' 값이 30자 초과로 거부. 공식 예시값 '다운로드' 사용, 이메일 발송 정보는 termsOfUse 로 옮김",
+        "termsOfUse": "공급처 상품 간략설명 실측: '소프트웨어 전자배송 상품으로 이메일 발송'",
+        "usePeriod": "공급처 자료에 이용기간 고지가 없어 임의 기술하지 않음",
+        "requirement": "공급처 자료에 사양 수치가 없어 임의 기술하지 않음"
+      }
+    },
+    "samamusic.co.kr:3418": "3417과 동일 근거(동일 브랜드·동일 전자배송 방식, 모델명만 35265/ RX 12 Advanced)"
+  },
+  "importer": {
+    "value": "삼아사운드 유한회사",
+    "basis": "공급처(삼아스토어) 공식 배너 실측(2026-10-29 OCR): '전 세계의 프리미엄 음향, 악기 브랜드를 수입·유통하는 삼아사운드의 공식 온라인 스토어입니다' + 동 사이트 푸터 회사정보 '회사명 삼아사운드 유한회사(사업자등록번호 897-87-00609)'. 공급처가 스스로 게시한 수입·유통 선언이며, 수입사명을 임의 생성하지 않기 위해 공급처 게시 근거를 그대로 사용했다.",
+    "applies_to": ["samamusic.co.kr:1769", "samamusic.co.kr:3417", "samamusic.co.kr:3418"],
+    "vendor_requirement": "원상품 정보 구조체 originAreaInfo.importer — '수입산인 경우 필수' (v3 실측 NotValid: '수입사 항목을 입력해 주세요')"
+  },
+  "images_schema": {
+    "change": "images: { representative, additional } → images: { representativeImage: { url }, optionalImages: [{ url }] }",
+    "basis": "공식 문서 원상품 정보 구조체 — v2 스키마는 representativeImage(필수 object)+optionalImages(배열) 구조. v3 실측 NotEmpty.product.images '이미지 항목을 입력해주세요'는 구조 불일치로 판단.",
+    "url_source": "변경 없음 — 2026-10-29 상품 이미지 다건 등록 API가 반환한 shop-phinf.pstatic.net URL(upload_ledger.json)만 사용"
+  },
+  "electronic_delivery": {
+    "change": "3417/3418 deliveryInfo 를 생략하지 않고 deliveryType=DIRECT(직접배송) 로 등록",
+    "basis": "v3 실측 NotAllowed.category.for.nonDelivery: '디지털/가전 카테고리는 배송없음 상품으로 설정 불가합니다' — deliveryInfo 생략(배송없음)은 이 카테고리에서 금지. deliveryType 허용값은 DELIVERY/DIRECT 뿐이고, 이메일 발송 소프트웨어에 실제 계약 택배사가 없으므로 택배사 코드를 임의로 쓰지 않는 DIRECT(판매자 직접 전달)가 유일하게 정직한 허용값.",
+    "fee_policy": "기존 근거 파일(pilot_delivery_policy_20261029.json) 유지 — 배송비 무료, 반품/교환 배송비 0"
+  }
+}
