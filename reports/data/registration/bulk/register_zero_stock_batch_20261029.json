@@ -1,0 +1,365 @@
+{
+  "kind": "cgi-bulk-zero-stock-batch",
+  "ran_at": "2026-10-29T05:40:37.006Z",
+  "scope": "지시 — 품절 상품 등록 검증: 재고 1 등록(전시 SUSPENSION) → productModifyOrigin 재고 0 → OUTOFSTOCK → 전시 ON(품절 표시)",
+  "new_contracts": [
+    "등록 시 stockQuantity 최소 1(NumberMin 실측)",
+    "수정 경로 재고 0 → OUTOFSTOCK 저장(공식 문서·실측 일치)",
+    "전시 ON 상태의 품절 상품은 스토어프론트에 품절 표시"
+  ],
+  "excluded": [
+    {
+      "id": "samamusic:3678",
+      "reason": "etc.modelName NotNull — 공급처 페이지에 모델명 미게시, 임의 생성 금지"
+    }
+  ],
+  "results": [
+    {
+      "cgiId": "samamusic:1856",
+      "leafCategoryId": "50007235",
+      "supplier_url": "https://samastore.co.kr/product/km-26720-케이앤엠-모니터-스피커-스탠드/1856/",
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "K&M 26720 케이앤엠 모니터 스피커 스탠드",
+          "salePrice": 200000,
+          "stockQuantity": 1,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:1856"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0201005",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "K&M 26720 케이앤엠 모니터 스피커 스탠드",
+                "manufacturer": "K&M",
+                "modelName": "26720-022-55",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261029_81/1793252337575ddmGO_JPEG/139613517378441688_554914034.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50007235",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202211/408f7eba3ac1f4b2512ca3e517a86578.jpg\" alt=\"K&amp;M 26720 케이앤엠 모니터 스피커 스탠드\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">K&amp;M 26720 케이앤엠 모니터 스피커 스탠드</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 K&amp;M &middot; 모델명 26720-022-55</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 200,000원</p><p style=\"margin:12px 0;\">K&amp;M의 프리미엄 플로어타입 모니터 스피커 스탠드</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>K&amp;M</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">모델명</th><td>26720-022-55</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>스피커</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/km-26720-케이앤엠-모니터-스피커-스탠드/1856/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "dup_check": {
+        "hits": 0
+      },
+      "action": "registered",
+      "originProductNo": 13776723743,
+      "smartstoreChannelProductNo": 13838149037,
+      "registered_at": "2026-10-29T05:40:33.291Z",
+      "stock_zero_modify_transmitted": true,
+      "stock_zero_state": "OUTOFSTOCK",
+      "stock_zero_quantity": 0,
+      "display_error": "BAD_REQUEST: 커머스API productModifyChannel: 입력한 데이터가 유효하지 않습니다.",
+      "display_after_fix": "ON",
+      "state_after_fix": "OUTOFSTOCK"
+    },
+    {
+      "cgiId": "samamusic:2684",
+      "leafCategoryId": "50007235",
+      "supplier_url": "https://samastore.co.kr/product/km-26773-케이앤엠-모니터-스피커-스탠드-탁상용-2개-1조/2684/",
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "K&M 26773 케이앤엠 모니터 스피커 스탠드 (탁상용) 2개 (1조)",
+          "salePrice": 190000,
+          "stockQuantity": 1,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:2684"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0201005",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "K&M 26773 케이앤엠 모니터 스피커 스탠드 (탁상용) 2개 (1조)",
+                "manufacturer": "K&M",
+                "modelName": "26773-000-56",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261029_24/1793252337898COQvi_JPEG/28374569000383469_1479112467.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50007235",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202110/994ffbea310c58019bf3f5f2fcdc7cb6.jpg\" alt=\"K&amp;M 26773 케이앤엠 모니터 스피커 스탠드 (탁상용) 2개 (1조)\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">K&amp;M 26773 케이앤엠 모니터 스피커 스탠드 (탁상용) 2개 (1조)</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 K&amp;M &middot; 모델명 26773-000-56</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 190,000원</p><p style=\"margin:12px 0;\">스탠드의 명품 브랜드 K&amp;M의 디자인 감각을 살린 Z-Stand</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>K&amp;M</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">모델명</th><td>26773-000-56</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>스피커</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/km-26773-케이앤엠-모니터-스피커-스탠드-탁상용-2개-1조/2684/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "dup_check": {
+        "hits": 0
+      },
+      "action": "registered",
+      "originProductNo": 13776723767,
+      "smartstoreChannelProductNo": 13838149062,
+      "registered_at": "2026-10-29T05:40:34.299Z",
+      "stock_zero_modify_transmitted": true,
+      "stock_zero_state": "OUTOFSTOCK",
+      "stock_zero_quantity": 0,
+      "display_error": "BAD_REQUEST: 커머스API productModifyChannel: 입력한 데이터가 유효하지 않습니다.",
+      "display_after_fix": "ON",
+      "state_after_fix": "OUTOFSTOCK"
+    },
+    {
+      "cgiId": "samamusic:1768",
+      "leafCategoryId": "50007235",
+      "supplier_url": "https://samastore.co.kr/product/km-26774-케이앤엠-모니터-스피커-스탠드-탁상용/1768/",
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "K&M 26774 케이앤엠 모니터 스피커 스탠드 (탁상용)",
+          "salePrice": 165000,
+          "stockQuantity": 1,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:1768"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0201005",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "K&M 26774 케이앤엠 모니터 스피커 스탠드 (탁상용)",
+                "manufacturer": "K&M",
+                "modelName": "26774-000-56",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261029_190/1793252338277NJXEs_JPEG/84976114231329079_499752351.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50007235",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/20200624/5d3140892794c6cc5e2b921bc285c3a3.jpg\" alt=\"K&amp;M 26774 케이앤엠 모니터 스피커 스탠드 (탁상용)\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">K&amp;M 26774 케이앤엠 모니터 스피커 스탠드 (탁상용)</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 K&amp;M &middot; 모델명 26774-000-56</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 165,000원</p><p style=\"margin:12px 0;\">모니터 스피커 스탠드 (탁상용)</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>K&amp;M</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">모델명</th><td>26774-000-56</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>스피커</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/km-26774-케이앤엠-모니터-스피커-스탠드-탁상용/1768/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "dup_check": {
+        "hits": 0
+      },
+      "action": "registered",
+      "originProductNo": 13776723779,
+      "smartstoreChannelProductNo": 13838149073,
+      "registered_at": "2026-10-29T05:40:35.342Z",
+      "stock_zero_modify_transmitted": true,
+      "stock_zero_state": "OUTOFSTOCK",
+      "stock_zero_quantity": 0,
+      "display_error": "BAD_REQUEST: 커머스API productModifyChannel: 입력한 데이터가 유효하지 않습니다.",
+      "display_after_fix": "ON",
+      "state_after_fix": "OUTOFSTOCK"
+    },
+    {
+      "cgiId": "samamusic:4971",
+      "leafCategoryId": "50002320",
+      "supplier_url": "https://samastore.co.kr/product/hk-audio-pro-15-x-hk오디오-15타입-패시브-스피커/4971/",
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "HK AUDIO PR:O 15 X HK오디오 15타입 패시브 스피커",
+          "salePrice": 1270000,
+          "stockQuantity": 1,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:4971"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0201005",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "HK AUDIO PR:O 15 X HK오디오 15타입 패시브 스피커",
+                "manufacturer": "HK AUDIO",
+                "modelName": "PR:O 15 X",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261029_26/1793252338718zoa3D_JPEG/107188019677065063_1217499632.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50002320",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202507/be7df0f26f281a5960c789e06d8ba01f.jpg\" alt=\"HK AUDIO PR:O 15 X HK오디오 15타입 패시브 스피커\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">HK AUDIO PR:O 15 X HK오디오 15타입 패시브 스피커</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 HK AUDIO &middot; 모델명 PR:O 15 X</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 1,270,000원</p><p style=\"margin:12px 0;\">15타입 패시브 스피커, 400W RMS, 60ºx40º</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>HK AUDIO</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">모델명</th><td>PR:O 15 X</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>PA 스피커</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/hk-audio-pro-15-x-hk오디오-15타입-패시브-스피커/4971/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "dup_check": {
+        "hits": 0
+      },
+      "action": "registered",
+      "originProductNo": 13776723796,
+      "smartstoreChannelProductNo": 13838149090,
+      "registered_at": "2026-10-29T05:40:36.284Z",
+      "stock_zero_modify_transmitted": true,
+      "stock_zero_state": "OUTOFSTOCK",
+      "stock_zero_quantity": 0,
+      "display_error": "BAD_REQUEST: 커머스API productModifyChannel: 입력한 데이터가 유효하지 않습니다.",
+      "display_after_fix": "ON",
+      "state_after_fix": "OUTOFSTOCK"
+    }
+  ],
+  "ledger_added": 4,
+  "naver_requests": 32,
+  "display_fix_ran_at": "2026-10-29T05:41:14.607Z"
+}
