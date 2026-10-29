@@ -1,0 +1,582 @@
+{
+  "kind": "cgi-m1-detail-samples",
+  "generated_from": {
+    "prep": "data/smartstore_prep/smartstore_registration_prep.csv",
+    "imageMeasurements": "reports/data/naver/image_measurements.csv",
+    "imageVariantMeasurements": "reports/data/naver/image_variant_measurements.csv",
+    "options": "data/full_catalog/options_compact.csv"
+  },
+  "selection_rule": "image measured ok/ok_via_segment 가산, price·options·sentence·spec·source 블록 가산, cgi_id 타이브레이크, 사이트당 최소 3건(가능 시)",
+  "sample_count": 10,
+  "candidates_considered": 4575,
+  "candidates_image_ok": 3895,
+  "samples": [
+    {
+      "index": 1,
+      "cgi_id": "samamusic:1118",
+      "site": "samamusic",
+      "product_name": "GENELEC 8010A 제네렉 스튜디오 모니터 스피커 (화이트)",
+      "file": "sample-01-samamusic_1118.html",
+      "score": 17,
+      "blocks": [
+        {
+          "key": "image",
+          "present": true,
+          "source": "대표이미지URL + reports/data/naver/image_measurements",
+          "state": "ok",
+          "width": 1000,
+          "height": 1000
+        },
+        {
+          "key": "meta",
+          "present": true,
+          "source": "브랜드, 모델명"
+        },
+        {
+          "key": "price",
+          "present": true,
+          "source": "판매가 + 가격확인필요",
+          "value": 620000
+        },
+        {
+          "key": "sentence",
+          "present": true,
+          "source": "상세설명(공급처 한 줄)"
+        },
+        {
+          "key": "spec_table",
+          "present": true,
+          "source": "카테고리경로_CGI, 브랜드, 모델명, 카테고리경로_CGI"
+        },
+        {
+          "key": "options_table",
+          "present": true,
+          "source": "옵션SKU요약 + options_compact",
+          "groups": 1,
+          "children": 4
+        },
+        {
+          "key": "source_link",
+          "present": true,
+          "source": "출처URL"
+        }
+      ],
+      "reasons": [
+        "manufacturer_absent"
+      ],
+      "notes": [],
+      "counts_as_detail_content": false,
+      "operator_approval_required": true
+    },
+    {
+      "index": 2,
+      "cgi_id": "samamusic:1119",
+      "site": "samamusic",
+      "product_name": "GENELEC 8020D 제네렉 스튜디오 모니터 스피커 (화이트)",
+      "file": "sample-02-samamusic_1119.html",
+      "score": 17,
+      "blocks": [
+        {
+          "key": "image",
+          "present": true,
+          "source": "대표이미지URL + reports/data/naver/image_measurements",
+          "state": "ok",
+          "width": 1000,
+          "height": 1000
+        },
+        {
+          "key": "meta",
+          "present": true,
+          "source": "브랜드, 모델명"
+        },
+        {
+          "key": "price",
+          "present": true,
+          "source": "판매가 + 가격확인필요",
+          "value": 950000
+        },
+        {
+          "key": "sentence",
+          "present": true,
+          "source": "상세설명(공급처 한 줄)"
+        },
+        {
+          "key": "spec_table",
+          "present": true,
+          "source": "카테고리경로_CGI, 브랜드, 모델명, 카테고리경로_CGI"
+        },
+        {
+          "key": "options_table",
+          "present": true,
+          "source": "옵션SKU요약 + options_compact",
+          "groups": 1,
+          "children": 4
+        },
+        {
+          "key": "source_link",
+          "present": true,
+          "source": "출처URL"
+        }
+      ],
+      "reasons": [
+        "manufacturer_absent"
+      ],
+      "notes": [],
+      "counts_as_detail_content": false,
+      "operator_approval_required": true
+    },
+    {
+      "index": 3,
+      "cgi_id": "samamusic:1120",
+      "site": "samamusic",
+      "product_name": "GENELEC 8030C 제네렉 스튜디오 모니터 스피커 (화이트)",
+      "file": "sample-03-samamusic_1120.html",
+      "score": 17,
+      "blocks": [
+        {
+          "key": "image",
+          "present": true,
+          "source": "대표이미지URL + reports/data/naver/image_measurements",
+          "state": "ok",
+          "width": 1000,
+          "height": 1000
+        },
+        {
+          "key": "meta",
+          "present": true,
+          "source": "브랜드, 모델명"
+        },
+        {
+          "key": "price",
+          "present": true,
+          "source": "판매가 + 가격확인필요",
+          "value": 1190000
+        },
+        {
+          "key": "sentence",
+          "present": true,
+          "source": "상세설명(공급처 한 줄)"
+        },
+        {
+          "key": "spec_table",
+          "present": true,
+          "source": "카테고리경로_CGI, 브랜드, 모델명, 카테고리경로_CGI"
+        },
+        {
+          "key": "options_table",
+          "present": true,
+          "source": "옵션SKU요약 + options_compact",
+          "groups": 1,
+          "children": 4
+        },
+        {
+          "key": "source_link",
+          "present": true,
+          "source": "출처URL"
+        }
+      ],
+      "reasons": [
+        "manufacturer_absent"
+      ],
+      "notes": [],
+      "counts_as_detail_content": false,
+      "operator_approval_required": true
+    },
+    {
+      "index": 4,
+      "cgi_id": "samasound:1001",
+      "site": "samasound",
+      "product_name": "SBC200",
+      "file": "sample-04-samasound_1001.html",
+      "score": 11,
+      "blocks": [
+        {
+          "key": "image",
+          "present": true,
+          "source": "대표이미지URL + reports/data/naver/image_measurements",
+          "state": "ok",
+          "width": 1000,
+          "height": 1000
+        },
+        {
+          "key": "meta",
+          "present": true,
+          "source": "브랜드, 제조사"
+        },
+        {
+          "key": "price",
+          "present": false,
+          "source": "판매가 + 가격확인필요"
+        },
+        {
+          "key": "sentence",
+          "present": true,
+          "source": "상세설명(공급처 한 줄)"
+        },
+        {
+          "key": "spec_table",
+          "present": true,
+          "source": "카테고리경로_CGI, 브랜드, 제조사, 카테고리경로_CGI"
+        },
+        {
+          "key": "options_table",
+          "present": false,
+          "source": "옵션SKU요약 + options_compact"
+        },
+        {
+          "key": "source_link",
+          "present": true,
+          "source": "출처URL"
+        }
+      ],
+      "reasons": [
+        "model_absent",
+        "price_inquiry_omitted",
+        "options_not_emittable"
+      ],
+      "notes": [],
+      "counts_as_detail_content": false,
+      "operator_approval_required": true
+    },
+    {
+      "index": 5,
+      "cgi_id": "samasound:1043",
+      "site": "samasound",
+      "product_name": "MV7+ White Edition",
+      "file": "sample-05-samasound_1043.html",
+      "score": 11,
+      "blocks": [
+        {
+          "key": "image",
+          "present": true,
+          "source": "대표이미지URL + reports/data/naver/image_measurements",
+          "state": "ok",
+          "width": 1000,
+          "height": 1000
+        },
+        {
+          "key": "meta",
+          "present": true,
+          "source": "브랜드, 제조사"
+        },
+        {
+          "key": "price",
+          "present": false,
+          "source": "판매가 + 가격확인필요"
+        },
+        {
+          "key": "sentence",
+          "present": true,
+          "source": "상세설명(공급처 한 줄)"
+        },
+        {
+          "key": "spec_table",
+          "present": true,
+          "source": "카테고리경로_CGI, 브랜드, 제조사, 카테고리경로_CGI"
+        },
+        {
+          "key": "options_table",
+          "present": false,
+          "source": "옵션SKU요약 + options_compact"
+        },
+        {
+          "key": "source_link",
+          "present": true,
+          "source": "출처URL"
+        }
+      ],
+      "reasons": [
+        "model_absent",
+        "price_inquiry_omitted",
+        "options_not_emittable"
+      ],
+      "notes": [],
+      "counts_as_detail_content": false,
+      "operator_approval_required": true
+    },
+    {
+      "index": 6,
+      "cgi_id": "samasound:1044",
+      "site": "samasound",
+      "product_name": "SM7B",
+      "file": "sample-06-samasound_1044.html",
+      "score": 11,
+      "blocks": [
+        {
+          "key": "image",
+          "present": true,
+          "source": "대표이미지URL + reports/data/naver/image_measurements",
+          "state": "ok",
+          "width": 1000,
+          "height": 1000
+        },
+        {
+          "key": "meta",
+          "present": true,
+          "source": "브랜드, 제조사"
+        },
+        {
+          "key": "price",
+          "present": false,
+          "source": "판매가 + 가격확인필요"
+        },
+        {
+          "key": "sentence",
+          "present": true,
+          "source": "상세설명(공급처 한 줄)"
+        },
+        {
+          "key": "spec_table",
+          "present": true,
+          "source": "카테고리경로_CGI, 브랜드, 제조사, 카테고리경로_CGI"
+        },
+        {
+          "key": "options_table",
+          "present": false,
+          "source": "옵션SKU요약 + options_compact"
+        },
+        {
+          "key": "source_link",
+          "present": true,
+          "source": "출처URL"
+        }
+      ],
+      "reasons": [
+        "model_absent",
+        "price_inquiry_omitted",
+        "options_not_emittable"
+      ],
+      "notes": [],
+      "counts_as_detail_content": false,
+      "operator_approval_required": true
+    },
+    {
+      "index": 7,
+      "cgi_id": "samamusic:1121",
+      "site": "samamusic",
+      "product_name": "GENELEC 8040B 제네렉 스튜디오 모니터 스피커 (화이트)",
+      "file": "sample-07-samamusic_1121.html",
+      "score": 17,
+      "blocks": [
+        {
+          "key": "image",
+          "present": true,
+          "source": "대표이미지URL + reports/data/naver/image_measurements",
+          "state": "ok",
+          "width": 1000,
+          "height": 1000
+        },
+        {
+          "key": "meta",
+          "present": true,
+          "source": "브랜드, 모델명"
+        },
+        {
+          "key": "price",
+          "present": true,
+          "source": "판매가 + 가격확인필요",
+          "value": 1910000
+        },
+        {
+          "key": "sentence",
+          "present": true,
+          "source": "상세설명(공급처 한 줄)"
+        },
+        {
+          "key": "spec_table",
+          "present": true,
+          "source": "카테고리경로_CGI, 브랜드, 모델명, 카테고리경로_CGI"
+        },
+        {
+          "key": "options_table",
+          "present": true,
+          "source": "옵션SKU요약 + options_compact",
+          "groups": 1,
+          "children": 4
+        },
+        {
+          "key": "source_link",
+          "present": true,
+          "source": "출처URL"
+        }
+      ],
+      "reasons": [
+        "manufacturer_absent"
+      ],
+      "notes": [],
+      "counts_as_detail_content": false,
+      "operator_approval_required": true
+    },
+    {
+      "index": 8,
+      "cgi_id": "samamusic:1122",
+      "site": "samamusic",
+      "product_name": "GENELEC 8050B 제네렉 스튜디오 모니터 스피커 (화이트)",
+      "file": "sample-08-samamusic_1122.html",
+      "score": 17,
+      "blocks": [
+        {
+          "key": "image",
+          "present": true,
+          "source": "대표이미지URL + reports/data/naver/image_measurements",
+          "state": "ok",
+          "width": 1000,
+          "height": 1000
+        },
+        {
+          "key": "meta",
+          "present": true,
+          "source": "브랜드, 모델명"
+        },
+        {
+          "key": "price",
+          "present": true,
+          "source": "판매가 + 가격확인필요",
+          "value": 3010000
+        },
+        {
+          "key": "sentence",
+          "present": true,
+          "source": "상세설명(공급처 한 줄)"
+        },
+        {
+          "key": "spec_table",
+          "present": true,
+          "source": "카테고리경로_CGI, 브랜드, 모델명, 카테고리경로_CGI"
+        },
+        {
+          "key": "options_table",
+          "present": true,
+          "source": "옵션SKU요약 + options_compact",
+          "groups": 1,
+          "children": 4
+        },
+        {
+          "key": "source_link",
+          "present": true,
+          "source": "출처URL"
+        }
+      ],
+      "reasons": [
+        "manufacturer_absent"
+      ],
+      "notes": [],
+      "counts_as_detail_content": false,
+      "operator_approval_required": true
+    },
+    {
+      "index": 9,
+      "cgi_id": "samamusic:1124",
+      "site": "samamusic",
+      "product_name": "GENELEC 8320A 제네렉 SAM 스튜디오 모니터 스피커 (화이트)",
+      "file": "sample-09-samamusic_1124.html",
+      "score": 17,
+      "blocks": [
+        {
+          "key": "image",
+          "present": true,
+          "source": "대표이미지URL + reports/data/naver/image_measurements",
+          "state": "ok",
+          "width": 1000,
+          "height": 1000
+        },
+        {
+          "key": "meta",
+          "present": true,
+          "source": "브랜드, 모델명"
+        },
+        {
+          "key": "price",
+          "present": true,
+          "source": "판매가 + 가격확인필요",
+          "value": 1220000
+        },
+        {
+          "key": "sentence",
+          "present": true,
+          "source": "상세설명(공급처 한 줄)"
+        },
+        {
+          "key": "spec_table",
+          "present": true,
+          "source": "카테고리경로_CGI, 브랜드, 모델명, 카테고리경로_CGI"
+        },
+        {
+          "key": "options_table",
+          "present": true,
+          "source": "옵션SKU요약 + options_compact",
+          "groups": 1,
+          "children": 4
+        },
+        {
+          "key": "source_link",
+          "present": true,
+          "source": "출처URL"
+        }
+      ],
+      "reasons": [
+        "manufacturer_absent"
+      ],
+      "notes": [],
+      "counts_as_detail_content": false,
+      "operator_approval_required": true
+    },
+    {
+      "index": 10,
+      "cgi_id": "samamusic:1125",
+      "site": "samamusic",
+      "product_name": "GENELEC 8330A 제네렉 SAM 스튜디오 모니터 스피커 (화이트)",
+      "file": "sample-10-samamusic_1125.html",
+      "score": 17,
+      "blocks": [
+        {
+          "key": "image",
+          "present": true,
+          "source": "대표이미지URL + reports/data/naver/image_measurements",
+          "state": "ok",
+          "width": 1000,
+          "height": 1000
+        },
+        {
+          "key": "meta",
+          "present": true,
+          "source": "브랜드, 모델명"
+        },
+        {
+          "key": "price",
+          "present": true,
+          "source": "판매가 + 가격확인필요",
+          "value": 1590000
+        },
+        {
+          "key": "sentence",
+          "present": true,
+          "source": "상세설명(공급처 한 줄)"
+        },
+        {
+          "key": "spec_table",
+          "present": true,
+          "source": "카테고리경로_CGI, 브랜드, 모델명, 카테고리경로_CGI"
+        },
+        {
+          "key": "options_table",
+          "present": true,
+          "source": "옵션SKU요약 + options_compact",
+          "groups": 1,
+          "children": 4
+        },
+        {
+          "key": "source_link",
+          "present": true,
+          "source": "출처URL"
+        }
+      ],
+      "reasons": [
+        "manufacturer_absent"
+      ],
+      "notes": [],
+      "counts_as_detail_content": false,
+      "operator_approval_required": true
+    }
+  ]
+}

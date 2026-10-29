@@ -9,3 +9,7 @@ ignore:
   # TEST_SECRET) that match GitGuardian SECRETKEY/TOKEN patterns.
   # These are not real secrets; values are fake test credentials.
   - path: "backend/test/e2e/google-oauth-callback.test.mjs"
+  # M1 self-test: a vendor-shaped ($2a$...) stand-in salt used only to prove the local
+  # bcrypt primitive offline (tools/naver/auth-check.mjs --selftest). Dummy value
+  # from the vendor sign recipe, not a credential.
+  - path: "tools/naver/ncommerce-auth-local.mjs"

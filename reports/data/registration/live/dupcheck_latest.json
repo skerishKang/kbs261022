@@ -1,0 +1,25 @@
+{
+  "kind": "cgi-ncom-live-dupcheck",
+  "ran_at": "2026-10-29T00:12:42.451Z",
+  "checks": [
+    {
+      "sellerManagementCode": "samamusic:1769",
+      "existing": false,
+      "totalElements": 0,
+      "originProductNo": null
+    },
+    {
+      "sellerManagementCode": "samamusic:3417",
+      "existing": false,
+      "totalElements": 0,
+      "originProductNo": null
+    },
+    {
+      "sellerManagementCode": "samamusic:3418",
+      "existing": false,
+      "totalElements": 0,
+      "originProductNo": null
+    }
+  ],
+  "naver_requests": 3
+}

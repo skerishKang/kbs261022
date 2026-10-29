@@ -1,0 +1,36 @@
+{
+  "kind": "cgi-naver-category-corpus-verification",
+  "corpus_file": "reports/data/naver/category_corpus_live.json",
+  "corpus_sha256": "e38792ff77ea43fa27caad7402930ccd17406c9ec08df4851e4beca58b922c23",
+  "corpus": {
+    "present": true,
+    "rows": 5003,
+    "leaves": 5003,
+    "distinct_ids": 5003,
+    "non_digit_ids": 0,
+    "problems": []
+  },
+  "contract": {
+    "supplier_products": 4575,
+    "distinct_supplier_paths": 153,
+    "products_by_status": {
+      "ambiguous": 853,
+      "unresolved": 1644,
+      "candidate": 2078
+    },
+    "products_by_reason": {
+      "runner_up_within_margin": 853,
+      "brand_index_path": 685,
+      "best_below_min_score": 425,
+      "": 2078,
+      "no_lexical_overlap": 532,
+      "promotion_page": 2
+    },
+    "proposed_products": 2078,
+    "invented_leaf_category_ids": 0,
+    "structural_violations": 0
+  },
+  "failures": [],
+  "passed": true,
+  "rule": "리프 id 는 코퍼스에서만 복사한다. 브랜드·프로모션·내비게이션 경로는 코퍼스가 있어도 매핑하지 않는다. 실패가 하나라도 있으면 passed=false 이며 exit 1 이다."
+}
