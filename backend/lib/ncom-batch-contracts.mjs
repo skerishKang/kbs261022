@@ -209,16 +209,22 @@ export function planZeroStockResume({ remote = null } = {}) {
  * 문서 의미는 '원산지가 다른 상품을 같이 등록하는지 여부'이므로 단일 상품의
  * 불확정 원산지에 true 를 쓰지 않는다.
  *
- * 계약(2026-10-29 배치5 확립):
+ * 계약(2026-10-29 배치5 확립, 2026-10-30 국산 정규화 추가):
  *   - 단일 국가 표기 → 라이브 코드표에서 유일 매칭 코드(verified_code).
+ *   - '국내' 선언은 코드표 '국산'(코드 00 실측)과 동의어로 정규화해 위임(E30).
  *   - '아시아 중국 또는 멕시코'처럼 복수 후보 표기 → 하나를 고르지 말고
  *     04 + 공급처 표기 원문(direct_input_content). 실측: 등록·전시 ON 성공.
  *   - 판독 불가·매칭 실패는 ok=false 로 보고하고 값을 만들지 않는다.
  */
 export function resolveOriginArea({ originText = null, resolveCode = null } = {}) {
   // 표기 꼬리 마침표·쉼표 제거('아시아 중국 .' 실측 — E24)
-  const text = String(originText ?? '').trim().replace(/[.,\s]+$/, '');
+  let text = String(originText ?? '').trim().replace(/[.,\s]+$/, '');
   if (!text) return { ok: false, reason: 'origin_text_missing', originAreaCode: null, content: null, plural: false, mode: null };
+  // 공급처 '국내' 선언은 네이버 코드표의 '국산'과 같은 선언이다 — 2026-10-30 라이브 실측:
+  // GET /v1/product-origin-areas 535코드 중 코드 '00'의 이름이 정확히 '국산'이고 이름이
+  // '국내'인 코드는 없다. 배치9~11의 '코드표에 국내 코드 부재' 판정은 국산 표기를 확인하지
+  // 못한 어휘 불일치였다(E30) — 동의어 정규화 후 리졸버에 위임한다(선언을 임의 생성하지 않는다).
+  if (text === '국내') text = '국산';
   if (/^해외/.test(text)) {
     // 국가 미표기('해외') — 접두코드 02 단독은 ImportTypeNotFullySelected 거부 실측(E24):
     // 근거 없는 상세 코드를 만들지 않고 제외 대상으로 보고한다.

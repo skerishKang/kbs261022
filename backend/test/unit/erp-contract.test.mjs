@@ -2,6 +2,7 @@
 // here is a number or a shape the vendor documents, so a change to a module
 // constant must be justified by a doc page, not by a test edit.
 
+import fs from 'node:fs';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 
@@ -410,6 +411,23 @@ test('the 커머스API limits are the documented numbers and nothing else', () =
   assert.equal(NCOM_ENDPOINTS.token.authed, false);
   assert.ok(NCOM_RESPONSIBILITY.rule.includes('read-only'));
   assert.ok(NCOM_RESPONSIBILITY.ecountNative.length && NCOM_RESPONSIBILITY.thisAdapter.length);
+});
+
+test('the ERP↔mall boundary text carries no vendor-disproven claims (issue #101 static guard)', () => {
+  // 이카운트 실측(2026.06.12 기능표 34행 + 벤더 FAQ — 이슈 #101):
+  //   스마트스토어2.0 상품등록 X · 재고수량의 쇼핑몰 전송 불가 · 매출전표 자동 생성 불가.
+  // 이 계약 경로에는 그 사실과 모순되는 문구가 다시 들어갈 수 없다 — 소스 원문을 정적 검사한다.
+  const src = fs.readFileSync(new URL('../../lib/ncommerce.mjs', import.meta.url), 'utf8');
+  const forbidden = [
+    '매출전표 자동 생성',
+    '품목 마스터를 쇼핑몰로 내려보내는 기본 연동',
+    '품목/재고 연동',
+    'already ships its own',
+  ];
+  for (const phrase of forbidden) {
+    assert.ok(!src.includes(phrase), `벤더 실측과 모순된 문구가 ncommerce.mjs에 다시 등장했다: ${phrase}`);
+  }
+  assert.ok(src.includes('재고수량의 쇼핑몰 전송 불가'), '경계 문서는 재고 전송 불가 실측을 명시해야 한다');
 });
 
 test('gateway classification drives the retry decision, not the HTTP status alone', () => {

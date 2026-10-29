@@ -110,13 +110,14 @@ export const NCOM_GATEWAY_CODES = {
 };
 
 /**
- * Where the storefront boundary sits. 이카운트 already ships its own
- * 스마트스토어2.0 sync (주문 수신 + 품목/재고 연동) inside the ERP, so a direct
- * Naver client must not re-implement the same job or the two writers will race.
+ * Where the storefront boundary sits. 이카운트가 기본 제공하는 스마트스토어2.0 연동은
+ * 주문·클레임 수집뿐이다(2026.06.12 기능표 실측: 스마트스토어2.0 상품등록 X, 클레임 6/7 ·
+ * 벤더 FAQ: 재고수량은 쇼핑몰로 전송 불가, 전표 자동 생성 불가 — 이슈 #101). 상품 마스터
+ * 배포와 재고·가격 쓰기는 CGI 어댑터의 몫이며, 서로 다른 필드만 쓰도록 아래 목록이 한정한다.
  */
 export const NCOM_RESPONSIBILITY = {
   ecountNative: [
-    'ERP 품목 마스터를 쇼핑몰로 내려보내는 기본 연동 (공식 기능, 2026.06.12 기준)',
+    '스마트스토어2.0 주문·클레임 수집 (기본 제공 — 주문 5/5·클레임 6/7, 2026.06.12 기능표 실측; 상품등록 미지원, 재고수량의 쇼핑몰 전송 불가)',
   ],
   thisAdapter: [
     'CGI 카탈로그를 네이버 상품으로 최초 등록하고, 판매가·재고·옵션 재고를 직접 갱신',
