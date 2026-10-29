@@ -247,6 +247,22 @@ test('origin resolution: trailing punctuation and the country-less 해외 mark a
   assert.equal(comma.content, '아메리카 멕시코 , 중국', '쉼표 나열도 복수 표기다 — 한쪽 국가만 선언하지 않는다');
 });
 
+test('origin resolution: the supplier 국내 declaration is the code-table 국산 (E30)', () => {
+  // 2026-10-30 라이브 실측: GET /v1/product-origin-areas 535코드 중 '00'의 이름이 정확히
+  // '국산'이고 이름이 '국내'인 코드는 없다 — 배치9~11의 '국내 코드 부재' 제외는 어휘 불일치였다.
+  // 정규화는 정확 일치에만 적용한다('국내산' 같은 다른 표기는 리졸버가 판단한다).
+  const domestic = resolveOriginArea({ originText: '국내', resolveCode: (t) => (String(t).endsWith('국산') ? '00' : null) });
+  assert.equal(domestic.ok, true);
+  assert.equal(domestic.originAreaCode, '00');
+  assert.equal(domestic.mode, 'verified_code');
+  assert.equal(domestic.content, null, '검증 코드 경로는 04+content와 달리 content를 만들지 않는다');
+  const guksan = resolveOriginArea({ originText: '국산', resolveCode: (t) => (String(t).endsWith('국산') ? '00' : null) });
+  assert.equal(guksan.ok, true);
+  assert.equal(guksan.originAreaCode, '00', '공급처가 직접 국산으로 표기해도 같은 코드다');
+  const unmatched = resolveOriginArea({ originText: '국내', resolveCode: () => null });
+  assert.equal(unmatched.ok, false, '리졸버가 코드를 못 찾으면 국내라도 값을 만들지 않는다');
+});
+
 test('the batch intent guard rejects the measured vendor refusals', () => {
   assert.throws(() => assertLegalBatchIntent({ kind: 'register', statusType: 'SALE', stockQuantity: 0 }), (error) => error.code === 'stock_number_min');
   assert.throws(() => assertLegalBatchIntent({ kind: 'register', statusType: 'SALE', stockQuantity: null }), (error) => error.code === 'stock_number_min');
