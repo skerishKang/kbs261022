@@ -16,6 +16,7 @@ import {
   auditCategoryMapping,
   planCrashRecovery,
   planZeroStockResume,
+  resolveOriginArea,
   CATEGORY_THRESHOLDS,
   MODIFY_ALLOWED_STATUS_TYPES,
 } from '../../lib/ncom-batch-contracts.mjs';
@@ -188,6 +189,30 @@ test('stock zero and already ON is done and verifies the saved OUTOFSTOCK state'
   const sale = planZeroStockResume({ remote: { exists: true, statusType: 'SALE', stockQuantity: 0, displayStatusType: 'ON' } });
   assert.equal(sale.action, 'done');
   assert.equal(sale.outOfStockSaved, false, '전시 ON 이어도 원상품이 OUTOFSTOCK 저장이 아니면 품절 확정 아님');
+});
+
+test('origin resolution: single-country text maps to the verified detailed code', () => {
+  const r = resolveOriginArea({ originText: '유럽 독일', resolveCode: () => '0201005' });
+  assert.equal(r.ok, true);
+  assert.equal(r.originAreaCode, '0201005');
+  assert.equal(r.content, null);
+  assert.equal(r.mode, 'verified_code');
+});
+
+test('origin resolution: a multi-candidate supplier text uses 04 + the verbatim text, never one guessed country', () => {
+  // 배치5 실측: '아시아 중국 또는 멕시코'(SHURE 마이크) — 문서상 04(기타-직접 입력)+content 경로.
+  const r = resolveOriginArea({ originText: '아시아 중국 또는 멕시코', resolveCode: () => '0200037' });
+  assert.equal(r.ok, true);
+  assert.equal(r.originAreaCode, '04');
+  assert.equal(r.content, '아시아 중국 또는 멕시코');
+  assert.equal(r.plural, false, 'plural 의 문서 의미는 옵션 묶음 원산지 혼재이므로 단일 상품 불확정 원산지에 쓰지 않는다');
+  assert.equal(r.mode, 'direct_input_content');
+});
+
+test('origin resolution: unreadable or unmatched text is reported, not invented', () => {
+  assert.equal(resolveOriginArea({ originText: '' }).ok, false);
+  assert.equal(resolveOriginArea({ originText: '미확인', resolveCode: () => null }).reason, 'origin_code_unresolved');
+  assert.equal(resolveOriginArea({ originText: '유럽 독일' }).ok, false, 'resolveCode 없이는 코드를 만들지 않는다');
 });
 
 test('the batch intent guard rejects the measured vendor refusals', () => {
