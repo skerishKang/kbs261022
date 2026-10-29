@@ -43,6 +43,7 @@
 | C17 | 재고는 공급처 표시 수량을 14일 신선도 검증 뒤에만 사용(소수 내림·0·음수·use_stock=false 거부). 수집 재고의 낡음 실측: READY 173건 재검증에서 50건 품절 발견 | PR #137·#138 | `unit/ncom-live-pipeline.test.mjs`(mapSupplierStock) |
 | C18 | 원산지 표기: 단일 국가=라이브 코드표 유일 매칭 코드 / '아시아 중국 또는 멕시코'처럼 복수 후보 표기=**04(기타-직접 입력)+공급처 표기 원문(content)** — 하나를 임의로 고르지 않는다. `plural` 의 문서 의미는 '원산지가 다른 상품을 같이 등록하는지 여부'이므로 단일 상품 불확정 원산지에 쓰지 않는다 | 배치5 실측(복수 원산지 19건 등록·전시 ON) + 벤더 문서 products.POST | `unit/ncom-batch-contracts.test.mjs`(resolveOriginArea) |
 | C19 | SW(전자배송) 판별: 공급처 페이지 '전자배송' 표기(보조: 상품명 전자배송·실시간·구독권·다운로드·라이선스 마커) → 배치 검증 리프 50001516·DIGITAL_CONTENTS 고시·DIRECT 배송 계약. 하드웨어는 각 리프+ETC 고시(제조사·모델명)+KC 비대상 선언 | 배치5 실측(SW 22건·하드웨어 28건 전원 성공) | payload 계약 검증(§5 절차 D) |
+| C20 | 원격 중복조히트는 접두어 매칭을 포함한다(실측: 'samamusic:27' 검색에 'samamusic:2792' 등 6히트, 응답에 판매자코드 없음) — 채택·차단은 원상품 GET으로 판매자코드 정확 일치를 검증한 뒤에만 하고, 접두어만 일치하면 등록을 진행한다 | 배치6 실측(E23 오채택 정정) | `unit/ncom-batch-contracts.test.mjs`(classifySellerCodeHits) |
 
 ## 3. 표준 절차
 
