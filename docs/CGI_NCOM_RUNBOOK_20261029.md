@@ -4,6 +4,8 @@
 > 라이브 실측으로 확정된 API 계약과 표준 절차를 정리한다. 오류 사례별 상세는
 > [오류·교훈·위험 레지스터](CGI_NCOM_ERROR_REGISTER_20261029.md), 배치별 수량·증적은
 > [배치 증적 수량표](CGI_NCOM_BATCH_EVIDENCE_20261029.md)를 본다.
+> **2026-10-29 CGI-1 운영 PC 전환 기록은 [CGI_NCOM_CGI1_CUTOVER_20261029.md](CGI_NCOM_CGI1_CUTOVER_20261029.md)** —
+> 이관 후 이 문서의 실행 경로·스케줄러·차단 상태는 그 문서의 실측을 우선한다.
 > **문서 정리는 실검증이 아니다** — 각 계약의 근거는 링크된 증적 파일과 회귀 테스트다.
 > 이전 세션 보고 [CGI_NCOM_LIVE_RUN_20261029.md](CGI_NCOM_LIVE_RUN_20261029.md)는 파일럿 전사 기록으로 보존되며
 > 운영 절차는 이 문서를 기준으로 한다.
@@ -13,9 +15,10 @@
 | 항목 | 값 |
 | --- | --- |
 | 대상 스토어 | `https://smartstore.naver.com/cgiinc`(주식회사 시지아이) — `GET /v1/seller/channels` 실측 |
+| 주 운영 PC | **CGI-1 `D:\클로드\261029\cgi-1`**(2026-10-29 이관) — COM1 예약 작업은 접근 실패로 중지 미확인(전환 기록 §5) |
 | 등록 엔진(유일한 권위) | `backend/lib/ncommerce.mjs`(인증·buildRegisterBody·registerOrModify) · `backend/lib/ncom-live-pipeline.mjs`(게이트·이미지·중복조회·장부) · `backend/lib/ncom-batch-contracts.mjs`(배치 판단 계약) |
 | 실행 CLI | `tools/naver/ncom-live.mjs` + `tools/naver/ncommerce-auth-local.mjs`(로컬 인증 런타임) · `tools/naver/ncom-stock-sync.mjs`(재고 동기화 운영 CLI — compare 기본·잠금·게이트·원복, 배치9) · `tools/naver/run-stock-check.ps1`(정기 점검 래퍼) |
-| 자격증명 | `~/.config/cgi-erp/ncom.env`(저장소 밖) — NCOM_CLIENT_ID/SECRET. 값은 채팅·로그·커밋 어디에도 기록하지 않는다 |
+| 자격증명 | `~/.config/cgi-erp/ncom.env`(저장소 밖) — NCOM_CLIENT_ID/SECRET. 값은 채팅·로그·커밋 어디에도 기록하지 않는다. **CGI-1에는 2026-10-29 현재 파일 없음 — 라이브 호출 0회(차단)** |
 | 전송 게이트 | 읽기=NCOM_MODE=live+자격증명 / 쓰기=+NCOM_LIVE_WRITE=YES+`--execute` / 등록=+`--i-confirm-register` (`evaluateLiveGates`) |
 | 실행 장부 | `reports/data/registration/ncom_registration_ledger.json` — cgiId 키, 최신 우선 병합(`mergeRegistrationLedger`), 등록·중복차단 모두 기록 |
 | IP 제한 | 앱 등록 API호출 IP 사전등록. 미등록 IP는 `GW.IP_NOT_ALLOWED`로 클라이언트 정지(수동 해제 없음) — 기기 이동 시 운영자가 앱 설정에 IP 추가 |
@@ -45,6 +48,7 @@
 | C19 | SW(전자배송) 판별: 공급처 페이지 '전자배송' 표기(보조: 상품명 전자배송·실시간·구독권·다운로드·라이선스 마커) → 배치 검증 리프 50001516·DIGITAL_CONTENTS 고시·DIRECT 배송 계약. 하드웨어는 각 리프+ETC 고시(제조사·모델명)+KC 비대상 선언 | 배치5 실측(SW 22건·하드웨어 28건 전원 성공) | payload 계약 검증(§5 절차 D) |
 | C20 | 원격 중복조히트는 접두어 매칭을 포함한다(실측: 'samamusic:27' 검색에 'samamusic:2792' 등 6히트, 응답에 판매자코드 없음) — 채택·차단은 원상품 GET으로 판매자코드 정확 일치를 검증한 뒤에만 하고, 접두어만 일치하면 등록을 진행한다 | 배치6 실측(E23 오채택 정정) | `unit/ncom-batch-contracts.test.mjs`(classifySellerCodeHits) |
 | C21 | 기존 상품 재고 동기화: ① 읽기 비교(공급처 관측 + 원상품 GET) → 계획 산정 → 명확히 확인된 변경만 수정 ② 동일 수량·동일 상태는 쓰기 생략 ③ 수량 미공개 공급처의 순수 수량 동기화는 차단(알려진 수량을 하한 1로 덮어쓰지 않음 — E25) ④ 상태 전환(재입고·품절)만 하한 1 허용(출처 기록) ⑤ 수정은 전체 리소스 PUT(C13) + 재조회 검증 + 전후 장부 기록 ⑥ 판매자코드 정확 일치 조인(C20) ⑦ 품절 전환은 C11~C12(OUTOFSTOCK 입력 금지) | 배치8 실측(비교 326 → 적용 170 → E25 정정 168 복원 → 유효 변경 재입고 2건 라이브 성공) | `unit/ncom-stock-sync.test.mjs` + `e2e/ncom-stock-sync.test.mjs` |
+| C22 | 운영 쓰기 가드(전환 신설): `apply`는 `stock_source`가 `supplier_label`·`supplier_sold_out`인 계획만 전송한다. `fallback_*`(수량 미공개 하한)·출처 미기록 계획은 `blocked_by_source`로 기록만 하고 PUT하지 않는다. C21 ④의 계약상 예외는 보존하되 운영 CLI가 그 위에서 차단한다 | 2026-10-29 지시(수량 출처 불명확 쓰기 차단) · 배치9 장부의 fallback 재입고 2건은 과거 예외로 기록 | `unit/ncom-stock-sync-runner.test.mjs`(selectWritablePlans) |
 
 ## 3. 표준 절차
 
@@ -82,15 +86,18 @@ C10~C12 상태머신: 재고 1 등록(SUSPENSION, 노출 창구 없음) → `pro
 - 원상품 `statusType`(SALE/OUTOFSTOCK/SUSPENSION)과 채널 `channelProductDisplayStatusType`(ON/OFF/SUSPENSION)은 별개 필드.
 - 품절=재고 0의 서버 결과(C11), 전시 ON 상태의 품절 상품은 스토어프론트에 품절 표시.
 
-### G. 정기 재고 점검·재고 동기화 실행(배치9 신설 — 운영화)
-1. **읽기 점검(기본·쓰기 0)**: `node tools/naver/ncom-stock-sync.mjs compare` — 등록분 전수를 공급처 관측+원상품 GET으로 비교해 계획만 산출한다. 스케줄러 실행은 `--out-dir`로 저장소 밖 기록(작업트리 무변경).
-2. **정기 실행**: Task Scheduler `PADIEM-CGI1-LOCAL2-Ncom-StockCheck`(매일 07:30, 읽기 전용) — 기존 PADIEM-* 관례(limone 사용자) 준수. 단일 실행 잠금(`.ncom-stock-sync.lock`, 2시간 경과분만 자동 해제)으로 중복 스케줄러를 방지한다.
-3. **쓰기(수동 게이트만)**: `apply --plan <계획파일> --execute` — blocked·noop은 전송하지 않고, 수정은 전체 리소스 PUT(C13) → 재조회 검증 → 불일치 시 원본 값 자동 복원 → 전후 장부 기록. `revert --plan <계획파일> --codes ... --execute`는 장부 before 값 기반 원복이다.
-4. 수량 출처 없는 변경은 계약 모듈이 차단한다(C21·E25) — CLI는 blocked 계획을 절대 전송하지 않는다. 배치9 실측: 326건 비교에서 blocked 273(수량 미공개)·noop 53·쓰기 0, E25 복원 168건 대조 168/168 일치.
+### G. 정기 재고 점검·재고 동기화 실행(배치9 신설 — 운영화, 배치10 CGI-1 이관)
+1. **읽기 점검(기본·쓰기 0)**: `node tools/naver/ncom-stock-sync.mjs compare` — 등록분 전수를 공급처 관측+원상품 GET으로 비교해 계획만 산출한다. 스케줄러 실행은 `--out-dir`로 저장소 밖 기록(작업트리 무변경). 기본 기록 위치는 `%LOCALAPPDATA%\CGI-Ncom-StockCheck`(래퍼), `CGI_NCOM_OUT_DIR`로 재정의 가능하다.
+2. **정기 실행**: Task Scheduler `PADIEM-CGI1-LOCAL2-Ncom-StockCheck`(매일 07:30 KST, 읽기 전용) — **CGI-1에 2026-10-29 등록·시험 실행 완료.** 실행 계정 `sji`, LogonType `Interactive`(로그온 중일 때만), 기록 `run.log`. 단일 실행 잠금(`.ncom-stock-sync.lock`, 2시간 경과분만 자동 해제)으로 같은 호스트의 중복 실행을 방지한다. **COM1 작업과의 상호 배제는 미확인**(전환 기록 §5) — 라이브 쓰기 전 운영자가 COM1 작업 비활성화를 확인한다.
+3. **쓰기(수동 게이트만)**: `apply --plan <계획파일> --execute` — blocked·noop은 전송하지 않고, 수정은 전체 리소스 PUT(C13) → 재조회 검증 → 불일치 시 원본 값 자동 복원 → 전후 장부 기록. `revert --plan <계획파일> --codes ... --execute`는 장부 before 값 기반 원복이다. **C22 가드: `fallback_*`·출처 미기록 계획은 `blocked_by_source`로 기록만 하고 전송하지 않는다.**
+4. 수량 출처 없는 변경은 계약 모듈이 차단한다(C21·E25) — CLI는 blocked 계획을 절대 전송하지 않는다. 배치9 실측: 326건 비교에서 blocked 273(수량 미공개)·noop 53·쓰기 0, E25 복원 168건 대조 168/168 일치. **CGI-1 이관 시험 실행은 `ncom.env` 부재로 읽기 게이트에서 종료(exit 1) — API 호출 0회, 원격 변경 0건.**
+5. **동시 실행 금지**: 동일 스토어에 대해 COM1과 CGI-1이 동시에 `apply`하지 않는다. CGI-1 전환 후 COM1 작업의 존재·비활성화를 확인하기 전에는 라이브 쓰기를 시작하지 않는다(2026-10-29 현재 **미확인**).
 
-## 4. 다음 배치 공급·실행 게이트 — 요약(배치9 완료 기준)
-배치9(2026-10-29, 가격 복구·운영화·등록 23건 — 누적 349) 기준 남은 공급:
-- **문의가 1,348 — 원천 차단(E26)**: 공급처 페이지 자체가 가격 비공개 + ERP API 자격증명 부재 + 가격표·견적자료 부재. 원천 확보 시 배치9 대조 스크립트·증적 양식 재실행. 허위 가격 생성 금지 유지
+## 4. 다음 배치 공급·실행 게이트 — 요약(배치9 완료·배치10 CGI-1 이관 기준)
+배치9(2026-10-29, 가격 복구·운영화·등록 23건 — 누적 349)와 배치10(CGI-1 이관) 기준 남은 공급:
+- **CGI-1 라이브 API — 차단**: `~/.config/cgi-erp/ncom.env` 부재로 인증·IP·349건 원격 재검증·재고 비교·신규 등록 **0건**. 자격증명 배치 + 앱 IP 등록이 선행 조건이다(전환 기록 §5·§8).
+- **잔여 등록 후보 28건**: 배치7 재검증 `registrable_now` 123건 중 기등록 95건을 제외한 수. 실행 시점 라이브 재판정 후 가격·원산지·모델명 근거가 있는 건만 최대 50건 상한 내에서 등록한다(품절 상품은 C10~C12로 등록 가능 유지).
+- **문의가 1,348 — 원천 차단(E26·E29)**: 공급처 페이지 자체가 가격 비공개 + ERP API 자격증명 부재 + 가격표·견적자료 부재. 원천 확보 시 배치9 대조 스크립트·증적 양식 재실행. 허위 가격 생성 금지 유지
 - **모델명 미복구**: READY 잔여 26(공급처 원본에 모델 코드 부재 — 임의 생성 금지) + 수집 DB 미복구분
 - **원산지 미표기**: '해외'(국가 미표기)·'국내'(코드표에 국내 코드 부재 — 배치7 EXCLUDED_ORIGIN_UNSPECIFIED 선례) — 선언 근거 확보 전 등록 불가, 운영자 확인 필요
 - **검토가드 9**(잔금·결제창·예약금 상품명) + 카테고리 미확정 잔여(운영자 리프 확정 필요) + STOCK_UNKNOWN 잔여
@@ -100,10 +107,14 @@ C10~C12 상태머신: 재고 1 등록(SUSPENSION, 노출 창구 없음) → `pro
 ## 5. NOT_VERIFIED 목록 (검증 안 된 가정 — 완료로 주장하지 않는다)
 | 항목 | 상태 |
 | --- | --- |
+| CGI-1 라이브 API 인증·IP 허용 | **BLOCKED** — `ncom.env` 부재, 라이브 호출 0회(2026-10-29 이관) |
+| 349건 라이브 불변 재검증 | **BLOCKED** — 오프라인 장부·CSV 조인만 수행(349/349) |
+| 정기 점검 실제 원격 비교 | **BLOCKED** — 스케줄러 시험 실행 exit 1(자격증명), API 호출 0회 |
+| COM1 예약 작업 존재·중지 | **BLOCKED** — SMB 공유 열람 오류 5·직접 경로 없음·SSH 키 거부. 중지 완료 아님 |
 | 소비자 화면(스토어프론트) 브라우저 E2E | WAF 차단으로 미검증 — API 전시 ON을 화면 검증 PASS로 쓰지 않는다(PR #136) |
 | 재입고(재고 0→N) 실재입고 E2E | 미수행 — 계약만 문서화(C12 절차 C) |
 | 네이버쇼핑 검색색인 반영 | 전시 ON 직후 미반영 확인 — 별도 판정 항목 |
-| ERP(ecount) 실재고 연동 | `~/.config/cgi-erp/ecount.env` 부재 — 배치9 재확인(E26). 공급처 라이브 조회로 우회 중, 문의가 1,348건 가격 복구도 같은 원천 차단 |
+| ERP(ecount) 실재고 연동 | CGI-1에 `~/.config/cgi-erp/ecount.env`는 있으나 2026-10-29 로그인 1회 실패(비밀번호 1회 오류 안내) — 자격증명 불신, 재시도 금지(E29). 문의가 1,348건 가격 복구도 같은 원천 차단(대조 0건) |
 | 스케줄러 라이브 쓰기 | 읽기 전용만 구성·검증(배치9) — 쓰기는 수동 게이트 유지가 의도된 설계(§3 절차 G) |
 | 중복 후보 1,353쌍 중 검토 815쌍 | 운영 검토 대기(자동병합 538쌍 포함) |
 

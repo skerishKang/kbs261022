@@ -10,6 +10,8 @@ import path from 'node:path';
 import {
   parseSupplierPage,
   selectApplicablePlans,
+  selectWritablePlans,
+  isQuantitySourceConfirmed,
   buildRestoreModify,
   needsRestore,
   summarizePlans,
@@ -49,6 +51,26 @@ test('selectApplicablePlans — blocked·noop은 전송 대상에서 제외된�
   };
   const ids = selectApplicablePlans(planDoc).map((r) => r.cgiId);
   assert.deepEqual(ids, ['a', 'd', 'e']);
+});
+
+test('selectWritablePlans — 출처 불명확(fallback·미기록) 계획은 쓰기 대상에서 제외한다(운영 가드)', () => {
+  const planDoc = {
+    plans: {
+      label: { cgiId: 'label', plan: { action: 'sync_quantity', modify: { statusType: 'SALE', stockQuantity: 5 }, stock_source: 'supplier_label' } },
+      sold: { cgiId: 'sold', plan: { action: 'sold_out_transition', modify: { statusType: 'SALE', stockQuantity: 0 }, stock_source: 'supplier_sold_out' } },
+      fallback: { cgiId: 'fallback', plan: { action: 'restock', modify: { statusType: 'SALE', stockQuantity: 1 }, stock_source: 'fallback_1_수량미공개' } },
+      legacy: { cgiId: 'legacy', plan: { action: 'sync_quantity', modify: { statusType: 'SALE', stockQuantity: 2 } } },
+      noop: { cgiId: 'noop', plan: { action: 'noop', modify: null, stock_source: 'supplier_label' } },
+    },
+  };
+  const { writable, blocked } = selectWritablePlans(planDoc);
+  assert.deepEqual(writable.map((r) => r.cgiId), ['label', 'sold']);
+  assert.deepEqual(blocked.map((r) => r.cgiId), ['fallback', 'legacy']);
+  assert.equal(blocked.every((r) => r.reason === 'quantity_source_unconfirmed'), true);
+  assert.equal(isQuantitySourceConfirmed({ stock_source: 'supplier_label' }), true);
+  assert.equal(isQuantitySourceConfirmed({ stock_source: 'supplier_sold_out' }), true);
+  assert.equal(isQuantitySourceConfirmed({ stock_source: 'fallback_1_수량미공개' }), false);
+  assert.equal(isQuantitySourceConfirmed({}), false);
 });
 
 test('buildRestoreModify — OUTOFSTOCK before는 SALE+재고0으로 복원한다(C11·C12)', () => {
