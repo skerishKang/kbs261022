@@ -180,6 +180,9 @@ export function loadOfficialCorpus(text, { format = 'auto' } = {}) {
     // A pasted API response usually arrives wrapped, and a wrapper is not a corpus
     // error — but anything that is still not a list is reported, never guessed at.
     if (records && !Array.isArray(records) && Array.isArray(records.data)) records = records.data;
+    // The live lane (tools/naver/ncom-live.mjs categories) writes a provenance
+    // wrapper whose list lives under `categories` — a wrapper is not an error.
+    if (records && !Array.isArray(records) && Array.isArray(records.categories)) records = records.categories;
     if (!Array.isArray(records)) {
       return { present: false, reason: `corpus JSON carries no list of categories (got ${typeof records})`, rows: [], leaves: [], problems: ['corpus_shape_unrecognized'], census: emptyCensus };
     }
