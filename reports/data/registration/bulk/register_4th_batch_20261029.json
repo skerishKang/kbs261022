@@ -1,0 +1,1793 @@
+{
+  "kind": "cgi-bulk-register-4th-batch",
+  "ran_at": "2026-10-29T06:04:33.199Z",
+  "scope": "지시 — 20건 배치(판매중 10 + 품절 10), 상태머신·실패 복구·장부 즉시 기록",
+  "items": [
+    {
+      "id": "samamusic:2146",
+      "state": "FAILED_DUPLICATE"
+    },
+    {
+      "id": "samamusic:2327",
+      "state": "FAILED_DUPLICATE"
+    },
+    {
+      "id": "samamusic:3712",
+      "state": "FAILED_DUPLICATE"
+    },
+    {
+      "id": "samamusic:4475",
+      "state": "FAILED_DUPLICATE"
+    },
+    {
+      "id": "samamusic:5347",
+      "state": "FAILED_DUPLICATE"
+    },
+    {
+      "id": "samamusic:2502",
+      "state": "FAILED_DUPLICATE"
+    },
+    {
+      "id": "samamusic:2499",
+      "state": "FAILED_DUPLICATE"
+    },
+    {
+      "id": "samamusic:4058",
+      "state": "FAILED_REGISTER"
+    },
+    {
+      "id": "samamusic:4057",
+      "state": "FAILED_REGISTER"
+    },
+    {
+      "id": "samamusic:3103",
+      "state": "DISPLAYED"
+    },
+    {
+      "id": "samamusic:1227",
+      "state": "FAILED_DUPLICATE"
+    },
+    {
+      "id": "samamusic:4178",
+      "state": "FAILED_DUPLICATE"
+    },
+    {
+      "id": "samamusic:2093",
+      "state": "FAILED_DUPLICATE"
+    },
+    {
+      "id": "samamusic:3967",
+      "state": "FAILED_DUPLICATE"
+    },
+    {
+      "id": "samamusic:4966",
+      "state": "FAILED_DUPLICATE"
+    },
+    {
+      "id": "samamusic:3887",
+      "state": "FAILED_DUPLICATE"
+    },
+    {
+      "id": "samamusic:2792",
+      "state": "FAILED_DUPLICATE"
+    },
+    {
+      "id": "samamusic:2788",
+      "state": "FAILED_DUPLICATE"
+    },
+    {
+      "id": "samamusic:2790",
+      "state": "FAILED_DUPLICATE"
+    },
+    {
+      "id": "samamusic:2786",
+      "state": "FAILED_DUPLICATE"
+    }
+  ],
+  "metrics": {
+    "register_ms_total": 309,
+    "register_count": 1,
+    "retries": 0,
+    "dup_blocked": 17,
+    "timeouts": 0
+  },
+  "results": [
+    {
+      "cgiId": "samamusic:2146",
+      "type": "SW",
+      "leafCategoryId": "50001516",
+      "live": {
+        "origin": "유럽 이탈리아",
+        "price": 180000,
+        "sold_out": false
+      },
+      "stock_target": 97,
+      "state": "DUPLICATE_BLOCKED",
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "[Overloud] THU PREMIUM V2 오버라우드 플러그인 (실시간) TH-U",
+          "salePrice": 180000,
+          "stockQuantity": 97,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:2146"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0201038",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "DIGITAL_CONTENTS",
+              "digitalContents": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "producer": "OVERLOUD",
+                "termsOfUse": "이메일 라이센스 발송 상품 — 공급처(제조사) 라이센스 이용 조건 적용",
+                "usePeriod": "제조사 라이센스 정책에 따름",
+                "medium": "다운로드",
+                "requirement": "제조사 공식 시스템 요구사항 참조",
+                "cancelationPolicy": "소비자분쟁해결기준 및 전자상거래법에 따름(복제 가능한 전자배송 소프트웨어)",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261029_284/1793253673970bCwAf_JPEG/28375905073575909_1716137636.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50001516",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202505/e1f41ff1cdcad74df8886ea83d687697.jpg\" alt=\"[Overloud] THU PREMIUM V2 오버라우드 플러그인 (실시간) TH-U\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">[Overloud] THU PREMIUM V2 오버라우드 플러그인 (실시간) TH-U</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 OVERLOUD &middot; 모델명 THU PREMIUM V2</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 180,000원</p><p style=\"margin:12px 0;\">DAW 기반의 VST/VSTI / 세계 최다 기타 모델링 시뮬레이션을 보유한 플러그인 콜렉션</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>OVERLOUD</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">모델명</th><td>THU PREMIUM V2</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>레코딩</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/overloud-thu-premium-v2-오버라우드-플러그인-실시간-th-u/2146/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DIRECT",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 0,
+              "exchangeDeliveryFee": 0
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "dup_check": {
+        "hits": 1,
+        "existingOriginProductNo": 13776759782
+      }
+    },
+    {
+      "cgiId": "samamusic:2327",
+      "type": "SW",
+      "leafCategoryId": "50001516",
+      "live": {
+        "origin": "유럽 이탈리아",
+        "price": 232000,
+        "sold_out": false
+      },
+      "stock_target": 18,
+      "state": "DUPLICATE_BLOCKED",
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "[Overloud] Gem Voice 오버라우드 플러그인 (전자배송)",
+          "salePrice": 232000,
+          "stockQuantity": 18,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:2327"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0201038",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "DIGITAL_CONTENTS",
+              "digitalContents": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "producer": "OVERLOUD",
+                "termsOfUse": "이메일 라이센스 발송 상품 — 공급처(제조사) 라이센스 이용 조건 적용",
+                "usePeriod": "제조사 라이센스 정책에 따름",
+                "medium": "다운로드",
+                "requirement": "제조사 공식 시스템 요구사항 참조",
+                "cancelationPolicy": "소비자분쟁해결기준 및 전자상거래법에 따름(복제 가능한 전자배송 소프트웨어)",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261029_81/1793253674407dB9tw_JPEG/127386490530501855_1164936237.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50001516",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202103/ae60ee5e883458d7e856273be5449030.jpg\" alt=\"[Overloud] Gem Voice 오버라우드 플러그인 (전자배송)\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">[Overloud] Gem Voice 오버라우드 플러그인 (전자배송)</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 OVERLOUD &middot; 모델명 Gem Voice</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 232,000원</p><p style=\"margin:12px 0;\">DAW 기반의 VST/VSTI</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>OVERLOUD</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">모델명</th><td>Gem Voice</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>레코딩</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/overloud-gem-voice-오버라우드-플러그인-전자배송/2327/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DIRECT",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 0,
+              "exchangeDeliveryFee": 0
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "dup_check": {
+        "hits": 1,
+        "existingOriginProductNo": 13776761989
+      }
+    },
+    {
+      "cgiId": "samamusic:3712",
+      "type": "SW",
+      "leafCategoryId": "50001516",
+      "live": {
+        "origin": "유럽 프랑스",
+        "price": 990000,
+        "sold_out": false
+      },
+      "stock_target": 14,
+      "state": "DUPLICATE_BLOCKED",
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "Arturia V Collection 11 PRO 아투리아 소프트웨어 신디사이저 컬렉션 (가상악기/VST) (실시간)",
+          "salePrice": 990000,
+          "stockQuantity": 14,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:3712"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0201046",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "DIGITAL_CONTENTS",
+              "digitalContents": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "producer": "ARTURIA",
+                "termsOfUse": "이메일 라이센스 발송 상품 — 공급처(제조사) 라이센스 이용 조건 적용",
+                "usePeriod": "제조사 라이센스 정책에 따름",
+                "medium": "다운로드",
+                "requirement": "제조사 공식 시스템 요구사항 참조",
+                "cancelationPolicy": "소비자분쟁해결기준 및 전자상거래법에 따름(복제 가능한 전자배송 소프트웨어)",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261029_60/1793253674749h8Qus_JPEG/127386490867518843_910351320.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50001516",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202506/eab3ca94371b0dc38efadfaaef622947.jpg\" alt=\"Arturia V Collection 11 PRO 아투리아 소프트웨어 신디사이저 컬렉션 (가상악기/VST) (실시간)\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">Arturia V Collection 11 PRO 아투리아 소프트웨어 신디사이저 컬렉션 (가상악기/VST) (실시간)</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 ARTURIA &middot; 모델명 V Collection 11 PRO</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 990,000원</p><p style=\"margin:12px 0;\">아투리아 키보드/신디사이저 올인원 가상악기 사운드컬렉션 - 45 개 키보드/신디사이저, 12,000 개 이상 고품질 프리셋 사운드 포함 가상악기</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>ARTURIA</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">모델명</th><td>V Collection 11 PRO</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>레코딩</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/arturia-v-collection-11-pro-아투리아-소프트웨어-신디사이저-컬렉션-가상악기vst-실시간/3712/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DIRECT",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 0,
+              "exchangeDeliveryFee": 0
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "dup_check": {
+        "hits": 1,
+        "existingOriginProductNo": 13776761997
+      }
+    },
+    {
+      "cgiId": "samamusic:4475",
+      "type": "SW",
+      "leafCategoryId": "50001516",
+      "live": {
+        "origin": "유럽 프랑스",
+        "price": 249000,
+        "sold_out": false
+      },
+      "stock_target": 6,
+      "state": "DUPLICATE_BLOCKED",
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "Arturia Analog Lab Pro 아투리아 소프트웨어 신디사이저 컬렉션 (가상악기/VST) (실시간)",
+          "salePrice": 249000,
+          "stockQuantity": 6,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:4475"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0201046",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "DIGITAL_CONTENTS",
+              "digitalContents": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "producer": "ARTURIA",
+                "termsOfUse": "이메일 라이센스 발송 상품 — 공급처(제조사) 라이센스 이용 조건 적용",
+                "usePeriod": "제조사 라이센스 정책에 따름",
+                "medium": "다운로드",
+                "requirement": "제조사 공식 시스템 요구사항 참조",
+                "cancelationPolicy": "소비자분쟁해결기준 및 전자상거래법에 따름(복제 가능한 전자배송 소프트웨어)",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261029_16/17932536750881zD7C_JPEG/45969235548809477_1217480701.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50001516",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202411/ceb4e3a40e7aafde295eb00ae8ab0f07.jpg\" alt=\"Arturia Analog Lab Pro 아투리아 소프트웨어 신디사이저 컬렉션 (가상악기/VST) (실시간)\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">Arturia Analog Lab Pro 아투리아 소프트웨어 신디사이저 컬렉션 (가상악기/VST) (실시간)</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 ARTURIA &middot; 모델명 Analog Lab Pro</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 249,000원</p><p style=\"margin:12px 0;\">아투리아 키보드/신디사이저 가상악기 사운드 플랫폼 - 2,000개 이상 고품질 프리셋 사운드 포함 가상악기</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>ARTURIA</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">모델명</th><td>Analog Lab Pro</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>레코딩</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/arturia-analog-lab-pro-아투리아-소프트웨어-신디사이저-컬렉션-가상악기vst-실시간/4475/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DIRECT",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 0,
+              "exchangeDeliveryFee": 0
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "dup_check": {
+        "hits": 1,
+        "existingOriginProductNo": 13776762025
+      }
+    },
+    {
+      "cgiId": "samamusic:5347",
+      "type": "SW",
+      "leafCategoryId": "50001516",
+      "live": {
+        "origin": "유럽 프랑스",
+        "price": 249000,
+        "sold_out": false
+      },
+      "stock_target": 6,
+      "state": "DUPLICATE_BLOCKED",
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "Arturia Pigments 7 아투리아 피그먼츠 소프트웨어 신디사이저 (가상악기/VST) (실시간)",
+          "salePrice": 249000,
+          "stockQuantity": 6,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:5347"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0201046",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "DIGITAL_CONTENTS",
+              "digitalContents": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "producer": "ARTURIA",
+                "termsOfUse": "이메일 라이센스 발송 상품 — 공급처(제조사) 라이센스 이용 조건 적용",
+                "usePeriod": "제조사 라이센스 정책에 따름",
+                "medium": "다운로드",
+                "requirement": "제조사 공식 시스템 요구사항 참조",
+                "cancelationPolicy": "소비자분쟁해결기준 및 전자상거래법에 따름(복제 가능한 전자배송 소프트웨어)",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261029_280/1793253675467PjhN8_JPEG/127386491588955505_1604315342.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50001516",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202602/7b0fcacaf53d9882fd716e10c59dced3.jpg\" alt=\"Arturia Pigments 7 아투리아 피그먼츠 소프트웨어 신디사이저 (가상악기/VST) (실시간)\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">Arturia Pigments 7 아투리아 피그먼츠 소프트웨어 신디사이저 (가상악기/VST) (실시간)</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 ARTURIA &middot; 모델명 Pigments 7</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 249,000원</p><p style=\"margin:12px 0;\">아투리아 피그먼츠 아날로그 신디사이저 소프트웨어 - 작곡, 사운드 디자인을 위한 아투리아 대표 소프트웨어 신디사이저</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>ARTURIA</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">모델명</th><td>Pigments 7</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>레코딩</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/arturia-pigments-7-아투리아-피그먼츠-소프트웨어-신디사이저-가상악기vst-실시간/5347/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DIRECT",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 0,
+              "exchangeDeliveryFee": 0
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "dup_check": {
+        "hits": 1,
+        "existingOriginProductNo": 13776762052
+      }
+    },
+    {
+      "cgiId": "samamusic:2502",
+      "type": "SW",
+      "leafCategoryId": "50001516",
+      "live": {
+        "origin": "유럽 이탈리아",
+        "price": 45000,
+        "sold_out": false
+      },
+      "stock_target": 9,
+      "state": "DUPLICATE_BLOCKED",
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "[Overloud] Vocs 30 Heritage HW 플러그인 (전자배송) TH-U 확장팩",
+          "salePrice": 45000,
+          "stockQuantity": 9,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:2502"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0201038",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "DIGITAL_CONTENTS",
+              "digitalContents": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "producer": "OVERLOUD",
+                "termsOfUse": "이메일 라이센스 발송 상품 — 공급처(제조사) 라이센스 이용 조건 적용",
+                "usePeriod": "제조사 라이센스 정책에 따름",
+                "medium": "다운로드",
+                "requirement": "제조사 공식 시스템 요구사항 참조",
+                "cancelationPolicy": "소비자분쟁해결기준 및 전자상거래법에 따름(복제 가능한 전자배송 소프트웨어)",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261029_238/1793253675905HzjCO_JPEG/84977451865037308_1219444508.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50001516",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202107/dd27ea1ad16a02bcd8e3b9b7787f5afc.jpg\" alt=\"[Overloud] Vocs 30 Heritage HW 플러그인 (전자배송) TH-U 확장팩\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">[Overloud] Vocs 30 Heritage HW 플러그인 (전자배송) TH-U 확장팩</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 OVERLOUD &middot; 모델명 Vocs 30 Heritage HW</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 45,000원</p><p style=\"margin:12px 0;\">Overloud TH-U의 확장팩</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>OVERLOUD</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">모델명</th><td>Vocs 30 Heritage HW</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>레코딩</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/overloud-vocs-30-heritage-hw-플러그인-전자배송-th-u-확장팩/2502/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DIRECT",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 0,
+              "exchangeDeliveryFee": 0
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "dup_check": {
+        "hits": 1,
+        "existingOriginProductNo": 13776762071
+      }
+    },
+    {
+      "cgiId": "samamusic:2499",
+      "type": "SW",
+      "leafCategoryId": "50001516",
+      "live": {
+        "origin": "유럽 이탈리아",
+        "price": 45000,
+        "sold_out": false
+      },
+      "stock_target": 7,
+      "state": "DUPLICATE_BLOCKED",
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "[Overloud] Vintage Collection 2 플러그인 (전자배송) TH-U 확장팩",
+          "salePrice": 45000,
+          "stockQuantity": 7,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:2499"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0201038",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "DIGITAL_CONTENTS",
+              "digitalContents": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "producer": "OVERLOUD",
+                "termsOfUse": "이메일 라이센스 발송 상품 — 공급처(제조사) 라이센스 이용 조건 적용",
+                "usePeriod": "제조사 라이센스 정책에 따름",
+                "medium": "다운로드",
+                "requirement": "제조사 공식 시스템 요구사항 참조",
+                "cancelationPolicy": "소비자분쟁해결기준 및 전자상거래법에 따름(복제 가능한 전자배송 소프트웨어)",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261029_230/17932536763343Xx7p_JPEG/55718891453292983_2140803560.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50001516",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202107/bf3b73c9c6bb9c670261e531748a5527.jpg\" alt=\"[Overloud] Vintage Collection 2 플러그인 (전자배송) TH-U 확장팩\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">[Overloud] Vintage Collection 2 플러그인 (전자배송) TH-U 확장팩</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 OVERLOUD &middot; 모델명 Vintage Collection 2</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 45,000원</p><p style=\"margin:12px 0;\">Overloud TH-U의 확장팩</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>OVERLOUD</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">모델명</th><td>Vintage Collection 2</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>레코딩</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/overloud-vintage-collection-2-플러그인-전자배송-th-u-확장팩/2499/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DIRECT",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 0,
+              "exchangeDeliveryFee": 0
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "dup_check": {
+        "hits": 1,
+        "existingOriginProductNo": 13776762082
+      }
+    },
+    {
+      "cgiId": "samamusic:4058",
+      "type": "GUITAR",
+      "leafCategoryId": "50004311",
+      "live": {
+        "origin": "아메리카 미국",
+        "price": 4689000,
+        "sold_out": true
+      },
+      "stock_target": 0,
+      "state": "FAILED_REGISTER",
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "Nashguitars S-57 내쉬 일렉 기타 (딜러 셀렉트, SAM-119)",
+          "salePrice": 4689000,
+          "stockQuantity": 1,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:4058"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0204000",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "Nashguitars S-57 내쉬 일렉 기타 (딜러 셀렉트, SAM-119)",
+                "manufacturer": "NASH GUITARS",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261029_202/1793253857538dD7DA_JPEG/76869232540019151_1265113190.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50004311",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202405/dd9209c91dc96fb03eec5b0a83b72d4e.jpg\" alt=\"Nashguitars S-57 내쉬 일렉 기타 (딜러 셀렉트, SAM-119)\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">Nashguitars S-57 내쉬 일렉 기타 (딜러 셀렉트, SAM-119)</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 NASH GUITARS</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 4,689,000원</p><p style=\"margin:12px 0;\">Alder / Black / Maple / Lollar / Extra Heavy Aged / 1-Ply White</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>NASH GUITARS</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>악기/앰프</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/nashguitars-s-57-내쉬-일렉-기타-딜러-셀렉트-sam-119/4058/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "dup_check": {
+        "hits": 0,
+        "existingOriginProductNo": null
+      },
+      "error": "커머스API productRegister: 입력한 데이터가 유효하지 않습니다.",
+      "invalidInputs": [
+        {
+          "name": "originProduct.detailAttribute.productInfoProvidedNotice.etc.modelName",
+          "type": "NotNull",
+          "message": "데이터를 입력해 주세요."
+        }
+      ]
+    },
+    {
+      "cgiId": "samamusic:4057",
+      "type": "GUITAR",
+      "leafCategoryId": "50004311",
+      "live": {
+        "origin": "아메리카 미국",
+        "price": 4389000,
+        "sold_out": true
+      },
+      "stock_target": 0,
+      "state": "FAILED_REGISTER",
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "Nashguitars S-57 내쉬 일렉 기타 (딜러 셀렉트,SAM-118)",
+          "salePrice": 4389000,
+          "stockQuantity": 1,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:4057"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0204000",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "Nashguitars S-57 내쉬 일렉 기타 (딜러 셀렉트,SAM-118)",
+                "manufacturer": "NASH GUITARS",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261029_137/1793253860327RziiN_JPEG/45969420795619285_603902265.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50004311",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202405/3d2559366c0fdc351054805443c05f5b.jpg\" alt=\"Nashguitars S-57 내쉬 일렉 기타 (딜러 셀렉트,SAM-118)\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">Nashguitars S-57 내쉬 일렉 기타 (딜러 셀렉트,SAM-118)</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 NASH GUITARS</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 4,389,000원</p><p style=\"margin:12px 0;\">Ash / Shell Pink / Maple / Lollar / Medium Aged / 1-Ply White</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>NASH GUITARS</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>악기/앰프</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/nashguitars-s-57-내쉬-일렉-기타-딜러-셀렉트sam-118/4057/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "dup_check": {
+        "hits": 0,
+        "existingOriginProductNo": null
+      },
+      "error": "커머스API productRegister: 입력한 데이터가 유효하지 않습니다.",
+      "invalidInputs": [
+        {
+          "name": "originProduct.detailAttribute.productInfoProvidedNotice.etc.modelName",
+          "type": "NotNull",
+          "message": "데이터를 입력해 주세요."
+        }
+      ]
+    },
+    {
+      "cgiId": "samamusic:3103",
+      "type": "GUITAR",
+      "leafCategoryId": "50004311",
+      "live": {
+        "origin": "아메리카 미국",
+        "price": 6690000,
+        "sold_out": false
+      },
+      "stock_target": 1,
+      "state": "DISPLAYED",
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "Michael Tuttle Guitars Custom Classic S 761 마이클 터틀 일렉 기타 (딜러 셀렉트 모델)",
+          "salePrice": 6690000,
+          "stockQuantity": 1,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:3103"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0204000",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "Michael Tuttle Guitars Custom Classic S 761 마이클 터틀",
+                "manufacturer": "MICHAEL TUTTLE GUITARS",
+                "modelName": "Custom Classic S 761 Mary Kay White",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261029_168/1793253860621QQemu_JPEG/33423798756153726_1752835607.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50004311",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202301/7526ce9d1147d99cbd42ed2f7bbed77d.jpg\" alt=\"Michael Tuttle Guitars Custom Classic S 761 마이클 터틀 일렉 기타 (딜러 셀렉트 모델)\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">Michael Tuttle Guitars Custom Classic S 761 마이클 터틀 일렉 기타 (딜러 셀렉트 모델)</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 MICHAEL TUTTLE GUITARS &middot; 모델명 Custom Classic S 761 Mary Kay White</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 6,690,000원</p><p style=\"margin:12px 0;\">Mary Kay White Nitro/G&amp;G Case/Ash/Maple/6150SS/White Peral/SSH</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>MICHAEL TUTTLE GUITARS</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">모델명</th><td>Custom Classic S 761 Mary Kay White</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>악기/앰프</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/michael-tuttle-guitars-custom-classic-s-761-마이클-터틀-일렉-기타-딜러-셀렉트-모델/3103/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "dup_check": {
+        "hits": 0,
+        "existingOriginProductNo": null
+      },
+      "originProductNo": 13776764518,
+      "smartstoreChannelProductNo": 13838190119,
+      "registered_at": "2026-10-29T06:04:28.097Z",
+      "verify": {
+        "statusType": "SALE",
+        "price": 6690000,
+        "stock": 1,
+        "price_unchanged": true
+      },
+      "display_after": "ON"
+    },
+    {
+      "cgiId": "samamusic:1227",
+      "type": "ACC",
+      "leafCategoryId": "50007235",
+      "live": {
+        "origin": "유럽 독일",
+        "price": 108000,
+        "sold_out": true
+      },
+      "stock_target": 0,
+      "state": "DUPLICATE_BLOCKED",
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "K&M 26772 케이앤엠 모니터 스피커 스탠드 (탁상용)",
+          "salePrice": 108000,
+          "stockQuantity": 1,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:1227"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0201005",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "K&M 26772 케이앤엠 모니터 스피커 스탠드 (탁상용)",
+                "manufacturer": "K&M",
+                "modelName": "26772-000-56",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261029_66/1793253677030HbUbN_JPEG/33423615160853640_1231393442.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50007235",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202408/024031142f440295a410b27958e8cc52.jpg\" alt=\"K&amp;M 26772 케이앤엠 모니터 스피커 스탠드 (탁상용)\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">K&amp;M 26772 케이앤엠 모니터 스피커 스탠드 (탁상용)</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 K&amp;M &middot; 모델명 26772-000-56</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 108,000원</p><p style=\"margin:12px 0;\">모니터 스피커 스탠드 (탁상용)</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>K&amp;M</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">모델명</th><td>26772-000-56</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>스피커</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/km-26772-케이앤엠-모니터-스피커-스탠드-탁상용/1227/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "dup_check": {
+        "hits": 1,
+        "existingOriginProductNo": 13776762133
+      }
+    },
+    {
+      "cgiId": "samamusic:4178",
+      "type": "ACC",
+      "leafCategoryId": "50007235",
+      "live": {
+        "origin": "유럽 독일",
+        "price": 200000,
+        "sold_out": true
+      },
+      "stock_target": 0,
+      "state": "DUPLICATE_BLOCKED",
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "K&M 26754 케이앤엠 모니터 스피커 스탠드",
+          "salePrice": 200000,
+          "stockQuantity": 1,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:4178"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0201005",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "K&M 26754 케이앤엠 모니터 스피커 스탠드",
+                "manufacturer": "K&M",
+                "modelName": "26754-000-55",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261029_285/1793253677335kHjLt_JPEG/45023459455081836_970883604.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50007235",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202408/5cc84d29b8329a94be61b26f3099e5e4.jpg\" alt=\"K&amp;M 26754 케이앤엠 모니터 스피커 스탠드\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">K&amp;M 26754 케이앤엠 모니터 스피커 스탠드</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 K&amp;M &middot; 모델명 26754-000-55</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 200,000원</p><p style=\"margin:12px 0;\">틸트 기능이 있는 플로어 타입 모니터 스피커 스탠드</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>K&amp;M</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">모델명</th><td>26754-000-55</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>스피커</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/km-26754-케이앤엠-모니터-스피커-스탠드/4178/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "dup_check": {
+        "hits": 1,
+        "existingOriginProductNo": 13776762158
+      }
+    },
+    {
+      "cgiId": "samamusic:2093",
+      "type": "ACC",
+      "leafCategoryId": "50007235",
+      "live": {
+        "origin": "유럽 독일",
+        "price": 661000,
+        "sold_out": false
+      },
+      "stock_target": 0,
+      "state": "DUPLICATE_BLOCKED",
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "GENELEC 8000-400 제네렉 고급 디자인 플로어 스탠드",
+          "salePrice": 661000,
+          "stockQuantity": 1,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:2093"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0201005",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "GENELEC 8000-400 제네렉 고급 디자인 플로어 스탠드",
+                "manufacturer": "GENELEC",
+                "modelName": "8000-400 (26785-018-56)",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261029_75/1793253764385I7mvR_JPEG/139614944191241189_1329870499.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50007235",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202012/79cd3bf1f1628e193c91ad8bd02f8d54.jpg\" alt=\"GENELEC 8000-400 제네렉 고급 디자인 플로어 스탠드\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">GENELEC 8000-400 제네렉 고급 디자인 플로어 스탠드</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 GENELEC &middot; 모델명 8000-400 (26785-018-56)</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 661,000원</p><p style=\"margin:12px 0;\">스피커 직결식 고급 Genelec 디자인 플로어 스탠드(독일 K&amp;M 제조)</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>GENELEC</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">모델명</th><td>8000-400 (26785-018-56)</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>스피커</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/genelec-8000-400-제네렉-고급-디자인-플로어-스탠드/2093/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "dup_check": {
+        "hits": 1,
+        "existingOriginProductNo": 13776762195
+      }
+    },
+    {
+      "cgiId": "samamusic:3967",
+      "type": "ACC",
+      "leafCategoryId": "50007235",
+      "live": {
+        "origin": "유럽 독일",
+        "price": 421000,
+        "sold_out": true
+      },
+      "stock_target": 0,
+      "state": "DUPLICATE_BLOCKED",
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "GENELEC 8000-325W 제네렉 스피커 스탠드 (화이트)",
+          "salePrice": 421000,
+          "stockQuantity": 1,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:3967"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0201005",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "GENELEC 8000-325W 제네렉 스피커 스탠드 (화이트)",
+                "manufacturer": "GENELEC",
+                "modelName": "8000-325W",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261029_220/17932536776486k4Uf_JPEG/28375908755235450_1463844557.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50007235",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202404/1c11f5120f62f0a82f0c1073060f09ed.jpg\" alt=\"GENELEC 8000-325W 제네렉 스피커 스탠드 (화이트)\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">GENELEC 8000-325W 제네렉 스피커 스탠드 (화이트)</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 GENELEC &middot; 모델명 8000-325W</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 421,000원</p><p style=\"margin:12px 0;\">8x4x &amp; 8x5x 전용 L자형 테이블 스탠드, 화이트</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>GENELEC</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">모델명</th><td>8000-325W</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>스피커</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/genelec-8000-325w-제네렉-스피커-스탠드-화이트/3967/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "dup_check": {
+        "hits": 1,
+        "existingOriginProductNo": 13776762229
+      }
+    },
+    {
+      "cgiId": "samamusic:4966",
+      "type": "SPK",
+      "leafCategoryId": "50002320",
+      "live": {
+        "origin": "유럽 독일",
+        "price": 910000,
+        "sold_out": false
+      },
+      "stock_target": 0,
+      "state": "DUPLICATE_BLOCKED",
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "HK AUDIO PR:O 8 HK오디오 8타입 패시브 스피커",
+          "salePrice": 910000,
+          "stockQuantity": 1,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:4966"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0201005",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "HK AUDIO PR:O 8 HK오디오 8타입 패시브 스피커",
+                "manufacturer": "HK AUDIO",
+                "modelName": "PR:O 8",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261029_253/1793253766535bCxLj_JPEG/127386582661253464_1861094645.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50002320",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202507/838c0185fb247433b62637cd3cec9e50.jpg\" alt=\"HK AUDIO PR:O 8 HK오디오 8타입 패시브 스피커\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">HK AUDIO PR:O 8 HK오디오 8타입 패시브 스피커</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 HK AUDIO &middot; 모델명 PR:O 8</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 910,000원</p><p style=\"margin:12px 0;\">8타입 패시브 스피커, 300W RMS, 80ºx80º</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>HK AUDIO</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">모델명</th><td>PR:O 8</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>PA 스피커</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/hk-audio-pro-8-hk오디오-8타입-패시브-스피커/4966/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "dup_check": {
+        "hits": 1,
+        "existingOriginProductNo": 13776762273
+      }
+    },
+    {
+      "cgiId": "samamusic:3887",
+      "type": "SPK",
+      "leafCategoryId": "50002320",
+      "live": {
+        "origin": "아시아 중국",
+        "price": 449000,
+        "sold_out": true
+      },
+      "stock_target": 0,
+      "state": "DUPLICATE_BLOCKED",
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "Positive Grid Spark CAB FRFR 스파크 캡 스피커 캐비닛 (블랙)",
+          "salePrice": 449000,
+          "stockQuantity": 1,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:3887"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0200037",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "Positive Grid Spark CAB FRFR 스파크 캡 스피커 캐비닛 (블랙)",
+                "manufacturer": "POSITIVE GRID",
+                "modelName": "Spark CAB",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261029_41/1793253678524Ch7i6_PNG/84977454425221510_1829627728.png"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50002320",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202408/1033c7fbfff1c5cdf47b1301b0913239.png\" alt=\"Positive Grid Spark CAB FRFR 스파크 캡 스피커 캐비닛 (블랙)\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">Positive Grid Spark CAB FRFR 스파크 캡 스피커 캐비닛 (블랙)</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 POSITIVE GRID &middot; 모델명 Spark CAB</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 449,000원</p><p style=\"margin:12px 0;\">140 Watt Class D FRFR 스피커, 캐비닛 Spark 앰프 시리즈 호환 : Spark2, Spark 40, Mini,GO 연결</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>POSITIVE GRID</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">모델명</th><td>Spark CAB</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>PA 스피커</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/positive-grid-spark-cab-frfr-스파크-캡-스피커-캐비닛-블랙/3887/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "dup_check": {
+        "hits": 1,
+        "existingOriginProductNo": 13776762341
+      }
+    },
+    {
+      "cgiId": "samamusic:2792",
+      "type": "ACC",
+      "leafCategoryId": "50004311",
+      "live": {
+        "origin": "아메리카 미국",
+        "price": 6080000,
+        "sold_out": true
+      },
+      "stock_target": 0,
+      "state": "DUPLICATE_BLOCKED",
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "[Rock N Roll Relics] Heartbreaker Goldtop 락엔롤렐릭스 일렉 기타 (딜러 셀렉트 모델)",
+          "salePrice": 6080000,
+          "stockQuantity": 1,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:2792"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0204000",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "[Rock N Roll Relics] Heartbreaker Goldtop 락엔롤렐릭스 일",
+                "manufacturer": "ROCK AND ROLL RELICS",
+                "modelName": "Heartbreaker Goldtop",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261029_51/17932536787089o3BV_JPEG/76869053709113005_1886615765.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50004311",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202212/2cc3d74ade4afcebfa2c4dc9aed0f10f.jpg\" alt=\"[Rock N Roll Relics] Heartbreaker Goldtop 락엔롤렐릭스 일렉 기타 (딜러 셀렉트 모델)\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">[Rock N Roll Relics] Heartbreaker Goldtop 락엔롤렐릭스 일렉 기타 (딜러 셀렉트 모델)</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 ROCK AND ROLL RELICS &middot; 모델명 Heartbreaker Goldtop</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 6,080,000원</p><p style=\"margin:12px 0;\">골드탑 레스폴</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>ROCK AND ROLL RELICS</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">모델명</th><td>Heartbreaker Goldtop</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>악기/앰프</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/rock-n-roll-relics-heartbreaker-goldtop-락엔롤렐릭스-일렉-기타-딜러-셀렉트-모델/2792/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "dup_check": {
+        "hits": 1,
+        "existingOriginProductNo": 13776762389
+      }
+    },
+    {
+      "cgiId": "samamusic:2788",
+      "type": "ACC",
+      "leafCategoryId": "50004311",
+      "live": {
+        "origin": "아메리카 미국",
+        "price": 5640000,
+        "sold_out": true
+      },
+      "stock_target": 0,
+      "state": "DUPLICATE_BLOCKED",
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "[Rock N Roll Relics] Heartbreaker 락엔롤렐릭스 일렉 기타 (딜러 셀렉트 모델)",
+          "salePrice": 5640000,
+          "stockQuantity": 1,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:2788"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0204000",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "[Rock N Roll Relics] Heartbreaker 락엔롤렐릭스 일렉 기타 (딜러",
+                "manufacturer": "ROCK AND ROLL RELICS",
+                "modelName": "Heartbreaker",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261029_114/1793253680897a57Vg_JPEG/84977456855750782_762125652.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50004311",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202212/d7af72e07afc8fddf30e7d3bbf4d7032.jpg\" alt=\"[Rock N Roll Relics] Heartbreaker 락엔롤렐릭스 일렉 기타 (딜러 셀렉트 모델)\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">[Rock N Roll Relics] Heartbreaker 락엔롤렐릭스 일렉 기타 (딜러 셀렉트 모델)</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 ROCK AND ROLL RELICS &middot; 모델명 Heartbreaker</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 5,640,000원</p><p style=\"margin:12px 0;\">59’타입 레스폴</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>ROCK AND ROLL RELICS</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">모델명</th><td>Heartbreaker</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>악기/앰프</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/rock-n-roll-relics-heartbreaker-락엔롤렐릭스-일렉-기타-딜러-셀렉트-모델/2788/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "dup_check": {
+        "hits": 1,
+        "existingOriginProductNo": 13776762411
+      }
+    },
+    {
+      "cgiId": "samamusic:2790",
+      "type": "ACC",
+      "leafCategoryId": "50004311",
+      "live": {
+        "origin": "아메리카 미국",
+        "price": 3710000,
+        "sold_out": true
+      },
+      "stock_target": 0,
+      "state": "DUPLICATE_BLOCKED",
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "[Rock N Roll Relics] Richards 락엔롤렐릭스 일렉 기타 (딜러 셀렉트 모델)",
+          "salePrice": 3710000,
+          "stockQuantity": 1,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:2790"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0204000",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "[Rock N Roll Relics] Richards 락엔롤렐릭스 일렉 기타 (딜러 셀렉트",
+                "manufacturer": "ROCK AND ROLL RELICS",
+                "modelName": "Richards",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261029_169/1793253681254dNrHb_JPEG/124031434266305675_1075042303.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50004311",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202212/0c7b2014ef0aad7acae7b5a472323e8b.jpg\" alt=\"[Rock N Roll Relics] Richards 락엔롤렐릭스 일렉 기타 (딜러 셀렉트 모델)\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">[Rock N Roll Relics] Richards 락엔롤렐릭스 일렉 기타 (딜러 셀렉트 모델)</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 ROCK AND ROLL RELICS &middot; 모델명 Richards</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 3,710,000원</p><p style=\"margin:12px 0;\">텔레캐스터</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>ROCK AND ROLL RELICS</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">모델명</th><td>Richards</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>악기/앰프</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/rock-n-roll-relics-richards-락엔롤렐릭스-일렉-기타-딜러-셀렉트-모델/2790/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "dup_check": {
+        "hits": 1,
+        "existingOriginProductNo": 13776762460
+      }
+    },
+    {
+      "cgiId": "samamusic:2786",
+      "type": "ACC",
+      "leafCategoryId": "50004311",
+      "live": {
+        "origin": "아메리카 미국",
+        "price": 3710000,
+        "sold_out": true
+      },
+      "stock_target": 0,
+      "state": "DUPLICATE_BLOCKED",
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "[Rock N Roll Relics] Blackmore 락엔롤렐릭스 일렉 기타 (딜러 셀렉트 모델)",
+          "salePrice": 3710000,
+          "stockQuantity": 1,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:2786"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0204000",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "[Rock N Roll Relics] Blackmore 락엔롤렐릭스 일렉 기타 (딜러 셀렉",
+                "manufacturer": "ROCK AND ROLL RELICS",
+                "modelName": "Blackmore",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261029_127/1793253681579RcXSG_JPEG/107189362532107526_1941841419.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50004311",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202212/8b5bc46977c6bad0f369f9c27a052bb6.jpg\" alt=\"[Rock N Roll Relics] Blackmore 락엔롤렐릭스 일렉 기타 (딜러 셀렉트 모델)\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">[Rock N Roll Relics] Blackmore 락엔롤렐릭스 일렉 기타 (딜러 셀렉트 모델)</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 ROCK AND ROLL RELICS &middot; 모델명 Blackmore</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 3,710,000원</p><p style=\"margin:12px 0;\">SSS 스트라토캐스터</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>ROCK AND ROLL RELICS</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">모델명</th><td>Blackmore</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>악기/앰프</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/rock-n-roll-relics-blackmore-락엔롤렐릭스-일렉-기타-딜러-셀렉트-모델/2786/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "dup_check": {
+        "hits": 1,
+        "existingOriginProductNo": 13776762497
+      }
+    }
+  ]
+}
