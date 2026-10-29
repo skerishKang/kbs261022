@@ -5,10 +5,13 @@
     "sellerManagementCode": "samamusic:1769",
     "originProductNo": 13776583531,
     "smartstoreChannelProductNo": 13838007796,
-    "displayStatus": "SUSPENSION",
+    "displayStatus": "ON",
     "mode": "live",
     "traceId": null,
-    "registered_at": "2026-10-29T04:02:38.955Z"
+    "registered_at": "2026-10-29T04:02:38.955Z",
+    "display_status_before": "SUSPENSION",
+    "display_activated_at": "2026-10-29T04:17:50.042Z",
+    "display_activation_result": "display_activated"
   },
   {
     "kind": "cgi-ncom-registration",
@@ -16,10 +19,13 @@
     "sellerManagementCode": "samamusic:3417",
     "originProductNo": 13776583540,
     "smartstoreChannelProductNo": 13838007805,
-    "displayStatus": "SUSPENSION",
+    "displayStatus": "ON",
     "mode": "live",
     "traceId": null,
-    "registered_at": "2026-10-29T04:02:38.955Z"
+    "registered_at": "2026-10-29T04:02:38.955Z",
+    "display_status_before": "SUSPENSION",
+    "display_activated_at": "2026-10-29T04:17:50.655Z",
+    "display_activation_result": "display_activated"
   },
   {
     "kind": "cgi-ncom-registration",
@@ -27,9 +33,12 @@
     "sellerManagementCode": "samamusic:3418",
     "originProductNo": 13776583545,
     "smartstoreChannelProductNo": 13838007810,
-    "displayStatus": "SUSPENSION",
+    "displayStatus": "ON",
     "mode": "live",
     "traceId": null,
-    "registered_at": "2026-10-29T04:02:38.955Z"
+    "registered_at": "2026-10-29T04:02:38.955Z",
+    "display_status_before": "SUSPENSION",
+    "display_activated_at": "2026-10-29T04:17:51.253Z",
+    "display_activation_result": "display_activated"
   }
 ]
