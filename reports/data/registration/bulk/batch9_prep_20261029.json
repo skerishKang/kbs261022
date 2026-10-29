@@ -1,0 +1,1349 @@
+{
+  "kind": "cgi-bulk-batch9-prep",
+  "ran_at": "2026-10-29T13:31:01.622Z",
+  "basis": {
+    "main_sha": "7452ceb",
+    "ledger_registered": 326,
+    "pool_sources": [
+      "batch5_prep",
+      "batch6_prep",
+      "batch7_prep",
+      "batch7_enrichment_READY"
+    ],
+    "live_recheck": "C17 — 전 후보 오늘 라이브 재판정"
+  },
+  "pool_size": 69,
+  "excluded": {
+    "model_missing": 26,
+    "price_inquiry": 0,
+    "price_mismatch": 0,
+    "origin_missing": 0,
+    "brand_missing": 0,
+    "category_unresolved": 0,
+    "need_review_guard": 9,
+    "already_registered": 0,
+    "page_failed": 0,
+    "deleted": 0
+  },
+  "candidate_count": 34,
+  "selected_count": 34,
+  "backups_count": 0,
+  "selected_states": {
+    "READY_SALE": 32,
+    "READY_OUTOFSTOCK": 2
+  },
+  "selected_leaves": {
+    "50001509": 1,
+    "50002320": 14,
+    "50002321": 1,
+    "50002322": 2,
+    "50002326": 1,
+    "50002342": 3,
+    "50002645": 3,
+    "50002974": 3,
+    "50004370": 3,
+    "50024419": 2,
+    "50024439": 1
+  },
+  "selected_category_source": {
+    "prev_prep_contract(batch7_prep_20261029.json)": 8,
+    "prev_prep_contract(batch5_prep_20261029.json)": 2,
+    "prev_prep_contract(batch6_prep_20261029.json)": 24
+  },
+  "exclusion_sample": [
+    {
+      "cgiId": "samamusic:4555",
+      "reason": "model_missing",
+      "note": "라이브 라벨·이전 근거·상품명 인용 모두 부재 — 임의 생성 금지(C5)"
+    },
+    {
+      "cgiId": "samamusic:3880",
+      "reason": "model_missing",
+      "note": "라이브 라벨·이전 근거·상품명 인용 모두 부재 — 임의 생성 금지(C5)"
+    },
+    {
+      "cgiId": "samamusic:265",
+      "reason": "model_missing",
+      "note": "라이브 라벨·이전 근거·상품명 인용 모두 부재 — 임의 생성 금지(C5)"
+    },
+    {
+      "cgiId": "samamusic:268",
+      "reason": "model_missing",
+      "note": "라이브 라벨·이전 근거·상품명 인용 모두 부재 — 임의 생성 금지(C5)"
+    },
+    {
+      "cgiId": "samamusic:693",
+      "reason": "model_missing",
+      "note": "라이브 라벨·이전 근거·상품명 인용 모두 부재 — 임의 생성 금지(C5)"
+    },
+    {
+      "cgiId": "samamusic:609",
+      "reason": "model_missing",
+      "note": "라이브 라벨·이전 근거·상품명 인용 모두 부재 — 임의 생성 금지(C5)"
+    },
+    {
+      "cgiId": "samamusic:612",
+      "reason": "model_missing",
+      "note": "라이브 라벨·이전 근거·상품명 인용 모두 부재 — 임의 생성 금지(C5)"
+    },
+    {
+      "cgiId": "samamusic:617",
+      "reason": "model_missing",
+      "note": "라이브 라벨·이전 근거·상품명 인용 모두 부재 — 임의 생성 금지(C5)"
+    },
+    {
+      "cgiId": "samamusic:3687",
+      "reason": "model_missing",
+      "note": "라이브 라벨·이전 근거·상품명 인용 모두 부재 — 임의 생성 금지(C5)"
+    },
+    {
+      "cgiId": "samamusic:615",
+      "reason": "model_missing",
+      "note": "라이브 라벨·이전 근거·상품명 인용 모두 부재 — 임의 생성 금지(C5)"
+    },
+    {
+      "cgiId": "samamusic:607",
+      "reason": "model_missing",
+      "note": "라이브 라벨·이전 근거·상품명 인용 모두 부재 — 임의 생성 금지(C5)"
+    },
+    {
+      "cgiId": "samamusic:616",
+      "reason": "model_missing",
+      "note": "라이브 라벨·이전 근거·상품명 인용 모두 부재 — 임의 생성 금지(C5)"
+    },
+    {
+      "cgiId": "samamusic:3176",
+      "reason": "model_missing",
+      "note": "라이브 라벨·이전 근거·상품명 인용 모두 부재 — 임의 생성 금지(C5)"
+    },
+    {
+      "cgiId": "samamusic:3871",
+      "reason": "model_missing",
+      "note": "라이브 라벨·이전 근거·상품명 인용 모두 부재 — 임의 생성 금지(C5)"
+    },
+    {
+      "cgiId": "samamusic:3183",
+      "reason": "model_missing",
+      "note": "라이브 라벨·이전 근거·상품명 인용 모두 부재 — 임의 생성 금지(C5)"
+    },
+    {
+      "cgiId": "samamusic:3181",
+      "reason": "model_missing",
+      "note": "라이브 라벨·이전 근거·상품명 인용 모두 부재 — 임의 생성 금지(C5)"
+    },
+    {
+      "cgiId": "samamusic:3174",
+      "reason": "model_missing",
+      "note": "라이브 라벨·이전 근거·상품명 인용 모두 부재 — 임의 생성 금지(C5)"
+    },
+    {
+      "cgiId": "samamusic:3868",
+      "reason": "model_missing",
+      "note": "라이브 라벨·이전 근거·상품명 인용 모두 부재 — 임의 생성 금지(C5)"
+    },
+    {
+      "cgiId": "samamusic:3171",
+      "reason": "model_missing",
+      "note": "라이브 라벨·이전 근거·상품명 인용 모두 부재 — 임의 생성 금지(C5)"
+    },
+    {
+      "cgiId": "samamusic:3191",
+      "reason": "model_missing",
+      "note": "라이브 라벨·이전 근거·상품명 인용 모두 부재 — 임의 생성 금지(C5)"
+    },
+    {
+      "cgiId": "samamusic:3180",
+      "reason": "model_missing",
+      "note": "라이브 라벨·이전 근거·상품명 인용 모두 부재 — 임의 생성 금지(C5)"
+    },
+    {
+      "cgiId": "samamusic:3190",
+      "reason": "model_missing",
+      "note": "라이브 라벨·이전 근거·상품명 인용 모두 부재 — 임의 생성 금지(C5)"
+    },
+    {
+      "cgiId": "samamusic:4236",
+      "reason": "model_missing",
+      "note": "라이브 라벨·이전 근거·상품명 인용 모두 부재 — 임의 생성 금지(C5)"
+    },
+    {
+      "cgiId": "samamusic:3450",
+      "reason": "model_missing",
+      "note": "라이브 라벨·이전 근거·상품명 인용 모두 부재 — 임의 생성 금지(C5)"
+    },
+    {
+      "cgiId": "samamusic:3175",
+      "reason": "model_missing",
+      "note": "라이브 라벨·이전 근거·상품명 인용 모두 부재 — 임의 생성 금지(C5)"
+    },
+    {
+      "cgiId": "samamusic:3452",
+      "reason": "model_missing",
+      "note": "라이브 라벨·이전 근거·상품명 인용 모두 부재 — 임의 생성 금지(C5)"
+    },
+    {
+      "cgiId": "samamusic:2745",
+      "reason": "review_guard"
+    },
+    {
+      "cgiId": "samamusic:2918",
+      "reason": "review_guard"
+    },
+    {
+      "cgiId": "samamusic:2758",
+      "reason": "review_guard"
+    },
+    {
+      "cgiId": "samamusic:2805",
+      "reason": "review_guard"
+    },
+    {
+      "cgiId": "samamusic:2668",
+      "reason": "review_guard"
+    },
+    {
+      "cgiId": "samamusic:1914",
+      "reason": "review_guard"
+    },
+    {
+      "cgiId": "samamusic:2055",
+      "reason": "review_guard"
+    },
+    {
+      "cgiId": "samamusic:1910",
+      "reason": "review_guard"
+    },
+    {
+      "cgiId": "samamusic:1912",
+      "reason": "review_guard"
+    }
+  ],
+  "selected": [
+    {
+      "cgiId": "samamusic:1216",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch9_state": "READY_SALE",
+      "leafCategoryId": "50024419",
+      "category_source": "prev_prep_contract(batch7_prep_20261029.json)",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "SE535LTD"
+      },
+      "maker": "SHURE",
+      "live_price": 825000,
+      "price_source": "collected_confirmed",
+      "live_origin": "해외",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 40
+      },
+      "live_probe": {
+        "observedAt": "2026-10-29T13:30:39.098Z",
+        "deleted": false,
+        "price": 825000,
+        "price_inquiry": false,
+        "sold_out": false,
+        "origin": "해외",
+        "brand": "SHURE",
+        "model": "SE535LTD",
+        "stock_label": null,
+        "electronic": false
+      }
+    },
+    {
+      "cgiId": "samamusic:1422",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch9_state": "READY_SALE",
+      "leafCategoryId": "50002974",
+      "category_source": "prev_prep_contract(batch7_prep_20261029.json)",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "JAM PLUS"
+      },
+      "maker": "APOGEE",
+      "live_price": 159000,
+      "price_source": "collected_confirmed",
+      "live_origin": "해외",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 1
+      },
+      "live_probe": {
+        "observedAt": "2026-10-29T13:30:39.774Z",
+        "deleted": false,
+        "price": 159000,
+        "price_inquiry": false,
+        "sold_out": false,
+        "origin": "해외",
+        "brand": "APOGEE",
+        "model": "JAM PLUS",
+        "stock_label": null,
+        "electronic": false
+      }
+    },
+    {
+      "cgiId": "samamusic:233",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch9_state": "READY_SALE",
+      "leafCategoryId": "50024419",
+      "category_source": "prev_prep_contract(batch7_prep_20261029.json)",
+      "semantic_evidence": null,
+      "model": {
+        "source": "product_name_substring",
+        "value": "SHURE SE215SPE",
+        "evidence": "SHURE SE215SPE 슈어 이어폰"
+      },
+      "maker": "SHURE",
+      "live_price": 189000,
+      "price_source": "collected_confirmed",
+      "live_origin": "해외",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 261
+      },
+      "live_probe": {
+        "observedAt": "2026-10-29T13:30:40.419Z",
+        "deleted": false,
+        "price": 189000,
+        "price_inquiry": false,
+        "sold_out": false,
+        "origin": "해외",
+        "brand": "SHURE",
+        "model": null,
+        "stock_label": null,
+        "electronic": false
+      }
+    },
+    {
+      "cgiId": "samamusic:283",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch9_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "prev_prep_contract(batch7_prep_20261029.json)",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "HPACA1"
+      },
+      "maker": "SHURE",
+      "live_price": 32000,
+      "price_source": "collected_confirmed",
+      "live_origin": "해외 .",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 12
+      },
+      "live_probe": {
+        "observedAt": "2026-10-29T13:30:41.113Z",
+        "deleted": false,
+        "price": 32000,
+        "price_inquiry": false,
+        "sold_out": false,
+        "origin": "해외 .",
+        "brand": "SHURE",
+        "model": "HPACA1",
+        "stock_label": null,
+        "electronic": false
+      }
+    },
+    {
+      "cgiId": "samamusic:285",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch9_state": "READY_SALE",
+      "leafCategoryId": "50002342",
+      "category_source": "prev_prep_contract(batch7_prep_20261029.json)",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "HPAEC1540"
+      },
+      "maker": "SHURE",
+      "live_price": 92000,
+      "price_source": "collected_confirmed",
+      "live_origin": "해외 .",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 5
+      },
+      "live_probe": {
+        "observedAt": "2026-10-29T13:30:41.773Z",
+        "deleted": false,
+        "price": 92000,
+        "price_inquiry": false,
+        "sold_out": false,
+        "origin": "해외 .",
+        "brand": "SHURE",
+        "model": "HPAEC1540",
+        "stock_label": null,
+        "electronic": false
+      }
+    },
+    {
+      "cgiId": "samamusic:3169",
+      "taxonomy_state": "READY_SALE",
+      "batch9_state": "READY_SALE",
+      "leafCategoryId": "50004370",
+      "category_source": "prev_prep_contract(batch5_prep_20261029.json)",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "Custom Classic S 785"
+      },
+      "maker": "Michael Tuttle Guitars",
+      "live_price": 6350000,
+      "price_source": "collected_confirmed",
+      "live_origin": "국내",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 1
+      },
+      "live_probe": {
+        "observedAt": "2026-10-29T13:30:21.690Z",
+        "deleted": false,
+        "price": 6350000,
+        "price_inquiry": false,
+        "sold_out": false,
+        "origin": "국내",
+        "brand": "Michael Tuttle Guitars",
+        "model": "Custom Classic S 785",
+        "stock_label": null,
+        "electronic": false
+      }
+    },
+    {
+      "cgiId": "samamusic:3172",
+      "taxonomy_state": "READY_SALE",
+      "batch9_state": "READY_SALE",
+      "leafCategoryId": "50004370",
+      "category_source": "prev_prep_contract(batch6_prep_20261029.json)",
+      "semantic_evidence": null,
+      "model": {
+        "source": "product_name_substring",
+        "value": "Custom Classic S 788",
+        "evidence": "[Michael Tuttle Guitars] Custom Classic S 788 마이클 터틀 일렉 기타 (딜러 셀렉트 모델)"
+      },
+      "maker": "Michael Tuttle Guitars",
+      "live_price": 6250000,
+      "price_source": "collected_confirmed",
+      "live_origin": "국내",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 1
+      },
+      "live_probe": {
+        "observedAt": "2026-10-29T13:30:23.016Z",
+        "deleted": false,
+        "price": 6250000,
+        "price_inquiry": false,
+        "sold_out": false,
+        "origin": "국내",
+        "brand": "Michael Tuttle Guitars",
+        "model": null,
+        "stock_label": null,
+        "electronic": false
+      }
+    },
+    {
+      "cgiId": "samamusic:3339",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch9_state": "READY_SALE",
+      "leafCategoryId": "50002974",
+      "category_source": "prev_prep_contract(batch7_prep_20261029.json)",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "AXE I/O SOLO"
+      },
+      "maker": "IK MULTIMEDIA",
+      "live_price": 377000,
+      "price_source": "collected_confirmed",
+      "live_origin": "국내",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "live_probe": {
+        "observedAt": "2026-10-29T13:30:42.410Z",
+        "deleted": false,
+        "price": 377000,
+        "price_inquiry": false,
+        "sold_out": false,
+        "origin": "국내",
+        "brand": "IK MULTIMEDIA",
+        "model": "AXE I/O SOLO",
+        "stock_label": null,
+        "electronic": false
+      }
+    },
+    {
+      "cgiId": "samamusic:4167",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch9_state": "READY_SALE",
+      "leafCategoryId": "50002321",
+      "category_source": "prev_prep_contract(batch6_prep_20261029.json)",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "Eris 3.5 GEN2 White"
+      },
+      "maker": "PRESONUS",
+      "live_price": 219000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "live_probe": {
+        "observedAt": "2026-10-29T13:30:23.742Z",
+        "deleted": false,
+        "price": 219000,
+        "price_inquiry": false,
+        "sold_out": false,
+        "origin": "아시아 중국",
+        "brand": "PRESONUS",
+        "model": "Eris 3.5 GEN2 White",
+        "stock_label": null,
+        "electronic": false
+      }
+    },
+    {
+      "cgiId": "samamusic:4168",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch9_state": "READY_SALE",
+      "leafCategoryId": "50002322",
+      "category_source": "prev_prep_contract(batch6_prep_20261029.json)",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "Eris 3.5 BT GEN2 White"
+      },
+      "maker": "PRESONUS",
+      "live_price": 249000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "live_probe": {
+        "observedAt": "2026-10-29T13:30:24.463Z",
+        "deleted": false,
+        "price": 249000,
+        "price_inquiry": false,
+        "sold_out": false,
+        "origin": "아시아 중국",
+        "brand": "PRESONUS",
+        "model": "Eris 3.5 BT GEN2 White",
+        "stock_label": null,
+        "electronic": false
+      }
+    },
+    {
+      "cgiId": "samamusic:4393",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch9_state": "READY_SALE",
+      "leafCategoryId": "50002322",
+      "category_source": "prev_prep_contract(batch6_prep_20261029.json)",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "Spark Mini VAI"
+      },
+      "maker": "Positive Grid",
+      "live_price": 389000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "live_probe": {
+        "observedAt": "2026-10-29T13:30:25.089Z",
+        "deleted": false,
+        "price": 389000,
+        "price_inquiry": false,
+        "sold_out": false,
+        "origin": "아시아 중국",
+        "brand": "Positive Grid",
+        "model": "Spark Mini VAI",
+        "stock_label": null,
+        "electronic": false
+      }
+    },
+    {
+      "cgiId": "samamusic:4462",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch9_state": "READY_SALE",
+      "leafCategoryId": "50004370",
+      "category_source": "prev_prep_contract(batch6_prep_20261029.json)",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "Spark CONTROL X"
+      },
+      "maker": "Positive Grid",
+      "live_price": 239000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 인도네시아",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "live_probe": {
+        "observedAt": "2026-10-29T13:30:25.752Z",
+        "deleted": false,
+        "price": 239000,
+        "price_inquiry": false,
+        "sold_out": false,
+        "origin": "아시아 인도네시아",
+        "brand": "Positive Grid",
+        "model": "Spark CONTROL X",
+        "stock_label": null,
+        "electronic": false
+      }
+    },
+    {
+      "cgiId": "samamusic:4615",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch9_state": "READY_SALE",
+      "leafCategoryId": "50002320",
+      "category_source": "prev_prep_contract(batch6_prep_20261029.json)",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "Q3060S"
+      },
+      "maker": "Q Acoustics",
+      "live_price": 939000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "live_probe": {
+        "observedAt": "2026-10-29T13:30:26.480Z",
+        "deleted": false,
+        "price": 939000,
+        "price_inquiry": false,
+        "sold_out": false,
+        "origin": "아시아 중국",
+        "brand": "Q Acoustics",
+        "model": "Q3060S",
+        "stock_label": null,
+        "electronic": false
+      }
+    },
+    {
+      "cgiId": "samamusic:4683",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch9_state": "READY_SALE",
+      "leafCategoryId": "50002326",
+      "category_source": "prev_prep_contract(batch6_prep_20261029.json)",
+      "semantic_evidence": null,
+      "model": {
+        "source": "product_name_substring",
+        "value": "SHURE SM63",
+        "evidence": "SHURE SM63 / SM63L / SM63LB 슈어 방송 인터뷰 용 다이내믹 옴니지향성 마이크"
+      },
+      "maker": "SHURE",
+      "live_price": 255000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국 또는 멕시코",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "live_probe": {
+        "observedAt": "2026-10-29T13:30:27.168Z",
+        "deleted": false,
+        "price": 255000,
+        "price_inquiry": false,
+        "sold_out": false,
+        "origin": "아시아 중국 또는 멕시코",
+        "brand": "SHURE",
+        "model": null,
+        "stock_label": null,
+        "electronic": false
+      }
+    },
+    {
+      "cgiId": "samamusic:4902",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch9_state": "READY_SALE",
+      "leafCategoryId": "50001509",
+      "category_source": "prev_prep_contract(batch6_prep_20261029.json)",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "LZ1600T"
+      },
+      "maker": "iMAG Systems",
+      "live_price": 2800000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "live_probe": {
+        "observedAt": "2026-10-29T13:30:27.819Z",
+        "deleted": false,
+        "price": 2800000,
+        "price_inquiry": false,
+        "sold_out": false,
+        "origin": "아시아 중국",
+        "brand": "iMAG Systems",
+        "model": "LZ1600T",
+        "stock_label": null,
+        "electronic": false
+      }
+    },
+    {
+      "cgiId": "samamusic:4957",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch9_state": "READY_SALE",
+      "leafCategoryId": "50002320",
+      "category_source": "prev_prep_contract(batch6_prep_20261029.json)",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "SONAR 110 Xi"
+      },
+      "maker": "HK Audio",
+      "live_price": 850000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "live_probe": {
+        "observedAt": "2026-10-29T13:30:28.448Z",
+        "deleted": false,
+        "price": 850000,
+        "price_inquiry": false,
+        "sold_out": false,
+        "origin": "아시아 중국",
+        "brand": "HK Audio",
+        "model": "SONAR 110 Xi",
+        "stock_label": null,
+        "electronic": false
+      }
+    },
+    {
+      "cgiId": "samamusic:4958",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch9_state": "READY_SALE",
+      "leafCategoryId": "50002320",
+      "category_source": "prev_prep_contract(batch6_prep_20261029.json)",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "SONAR 112 Xi"
+      },
+      "maker": "HK Audio",
+      "live_price": 950000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "live_probe": {
+        "observedAt": "2026-10-29T13:30:29.053Z",
+        "deleted": false,
+        "price": 950000,
+        "price_inquiry": false,
+        "sold_out": false,
+        "origin": "아시아 중국",
+        "brand": "HK Audio",
+        "model": "SONAR 112 Xi",
+        "stock_label": null,
+        "electronic": false
+      }
+    },
+    {
+      "cgiId": "samamusic:4959",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch9_state": "READY_SALE",
+      "leafCategoryId": "50002320",
+      "category_source": "prev_prep_contract(batch6_prep_20261029.json)",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "SONAR 115 Xi"
+      },
+      "maker": "HK Audio",
+      "live_price": 1090000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "live_probe": {
+        "observedAt": "2026-10-29T13:30:29.711Z",
+        "deleted": false,
+        "price": 1090000,
+        "price_inquiry": false,
+        "sold_out": false,
+        "origin": "아시아 중국",
+        "brand": "HK Audio",
+        "model": "SONAR 115 Xi",
+        "stock_label": null,
+        "electronic": false
+      }
+    },
+    {
+      "cgiId": "samamusic:4963",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch9_state": "READY_SALE",
+      "leafCategoryId": "50002320",
+      "category_source": "prev_prep_contract(batch6_prep_20261029.json)",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "Polar10 MK2 white"
+      },
+      "maker": "HK Audio",
+      "live_price": 2170000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "live_probe": {
+        "observedAt": "2026-10-29T13:30:30.503Z",
+        "deleted": false,
+        "price": 2170000,
+        "price_inquiry": false,
+        "sold_out": false,
+        "origin": "아시아 중국",
+        "brand": "HK Audio",
+        "model": "Polar10 MK2 white",
+        "stock_label": null,
+        "electronic": false
+      }
+    },
+    {
+      "cgiId": "samamusic:4965",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch9_state": "READY_SALE",
+      "leafCategoryId": "50002320",
+      "category_source": "prev_prep_contract(batch6_prep_20261029.json)",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "Polar12 MK2 white"
+      },
+      "maker": "HK Audio",
+      "live_price": 2360000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "live_probe": {
+        "observedAt": "2026-10-29T13:30:31.186Z",
+        "deleted": false,
+        "price": 2360000,
+        "price_inquiry": false,
+        "sold_out": false,
+        "origin": "아시아 중국",
+        "brand": "HK Audio",
+        "model": "Polar12 MK2 white",
+        "stock_label": null,
+        "electronic": false
+      }
+    },
+    {
+      "cgiId": "samamusic:4967",
+      "taxonomy_state": "READY_SALE",
+      "batch9_state": "READY_SALE",
+      "leafCategoryId": "50002320",
+      "category_source": "prev_prep_contract(batch6_prep_20261029.json)",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "PR:O 10 X"
+      },
+      "maker": "HK Audio",
+      "live_price": 1010000,
+      "price_source": "collected_confirmed",
+      "live_origin": "유럽 독일",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 11
+      },
+      "live_probe": {
+        "observedAt": "2026-10-29T13:30:31.888Z",
+        "deleted": false,
+        "price": 1010000,
+        "price_inquiry": false,
+        "sold_out": false,
+        "origin": "유럽 독일",
+        "brand": "HK Audio",
+        "model": "PR:O 10 X",
+        "stock_label": null,
+        "electronic": false
+      }
+    },
+    {
+      "cgiId": "samamusic:4968",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch9_state": "READY_SALE",
+      "leafCategoryId": "50002320",
+      "category_source": "prev_prep_contract(batch6_prep_20261029.json)",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "PR:O 12"
+      },
+      "maker": "HK Audio",
+      "live_price": 1150000,
+      "price_source": "collected_confirmed",
+      "live_origin": "유럽 독일",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "live_probe": {
+        "observedAt": "2026-10-29T13:30:32.558Z",
+        "deleted": false,
+        "price": 1150000,
+        "price_inquiry": false,
+        "sold_out": false,
+        "origin": "유럽 독일",
+        "brand": "HK Audio",
+        "model": "PR:O 12",
+        "stock_label": null,
+        "electronic": false
+      }
+    },
+    {
+      "cgiId": "samamusic:4969",
+      "taxonomy_state": "READY_SALE",
+      "batch9_state": "READY_SALE",
+      "leafCategoryId": "50002320",
+      "category_source": "prev_prep_contract(batch6_prep_20261029.json)",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "PR:O 12 M"
+      },
+      "maker": "HK Audio",
+      "live_price": 1150000,
+      "price_source": "collected_confirmed",
+      "live_origin": "유럽 독일",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 18
+      },
+      "live_probe": {
+        "observedAt": "2026-10-29T13:30:33.197Z",
+        "deleted": false,
+        "price": 1150000,
+        "price_inquiry": false,
+        "sold_out": false,
+        "origin": "유럽 독일",
+        "brand": "HK Audio",
+        "model": "PR:O 12 M",
+        "stock_label": null,
+        "electronic": false
+      }
+    },
+    {
+      "cgiId": "samamusic:4974",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch9_state": "READY_SALE",
+      "leafCategoryId": "50002320",
+      "category_source": "prev_prep_contract(batch6_prep_20261029.json)",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "PR:O 110 XD2"
+      },
+      "maker": "HK Audio",
+      "live_price": 1370000,
+      "price_source": "collected_confirmed",
+      "live_origin": "유럽 독일",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "live_probe": {
+        "observedAt": "2026-10-29T13:30:33.816Z",
+        "deleted": false,
+        "price": 1370000,
+        "price_inquiry": false,
+        "sold_out": false,
+        "origin": "유럽 독일",
+        "brand": "HK Audio",
+        "model": "PR:O 110 XD2",
+        "stock_label": null,
+        "electronic": false
+      }
+    },
+    {
+      "cgiId": "samamusic:4975",
+      "taxonomy_state": "READY_SALE",
+      "batch9_state": "READY_SALE",
+      "leafCategoryId": "50002320",
+      "category_source": "prev_prep_contract(batch6_prep_20261029.json)",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "PR:O 112 FD2"
+      },
+      "maker": "HK Audio",
+      "live_price": 1560000,
+      "price_source": "collected_confirmed",
+      "live_origin": "유럽 독일",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 2
+      },
+      "live_probe": {
+        "observedAt": "2026-10-29T13:30:34.538Z",
+        "deleted": false,
+        "price": 1560000,
+        "price_inquiry": false,
+        "sold_out": false,
+        "origin": "유럽 독일",
+        "brand": "HK Audio",
+        "model": "PR:O 112 FD2",
+        "stock_label": null,
+        "electronic": false
+      }
+    },
+    {
+      "cgiId": "samamusic:4976",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch9_state": "READY_SALE",
+      "leafCategoryId": "50002320",
+      "category_source": "prev_prep_contract(batch6_prep_20261029.json)",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "PR:O 115 FD2"
+      },
+      "maker": "HK Audio",
+      "live_price": 1780000,
+      "price_source": "collected_confirmed",
+      "live_origin": "유럽 독일",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "live_probe": {
+        "observedAt": "2026-10-29T13:30:35.233Z",
+        "deleted": false,
+        "price": 1780000,
+        "price_inquiry": false,
+        "sold_out": false,
+        "origin": "유럽 독일",
+        "brand": "HK Audio",
+        "model": "PR:O 115 FD2",
+        "stock_label": null,
+        "electronic": false
+      }
+    },
+    {
+      "cgiId": "samamusic:4977",
+      "taxonomy_state": "READY_SALE",
+      "batch9_state": "READY_SALE",
+      "leafCategoryId": "50002320",
+      "category_source": "prev_prep_contract(batch6_prep_20261029.json)",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "PR:O 112 XD2"
+      },
+      "maker": "HK Audio",
+      "live_price": 1560000,
+      "price_source": "collected_confirmed",
+      "live_origin": "유럽 독일",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 14
+      },
+      "live_probe": {
+        "observedAt": "2026-10-29T13:30:35.862Z",
+        "deleted": false,
+        "price": 1560000,
+        "price_inquiry": false,
+        "sold_out": false,
+        "origin": "유럽 독일",
+        "brand": "HK Audio",
+        "model": "PR:O 112 XD2",
+        "stock_label": null,
+        "electronic": false
+      }
+    },
+    {
+      "cgiId": "samamusic:4978",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch9_state": "READY_SALE",
+      "leafCategoryId": "50002320",
+      "category_source": "prev_prep_contract(batch6_prep_20261029.json)",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "PR:O 115 XD2"
+      },
+      "maker": "HK Audio",
+      "live_price": 1780000,
+      "price_source": "collected_confirmed",
+      "live_origin": "유럽 독일",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "live_probe": {
+        "observedAt": "2026-10-29T13:30:36.477Z",
+        "deleted": false,
+        "price": 1780000,
+        "price_inquiry": false,
+        "sold_out": false,
+        "origin": "유럽 독일",
+        "brand": "HK Audio",
+        "model": "PR:O 115 XD2",
+        "stock_label": null,
+        "electronic": false
+      }
+    },
+    {
+      "cgiId": "samamusic:5199",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch9_state": "READY_SALE",
+      "leafCategoryId": "50002645",
+      "category_source": "prev_prep_contract(batch6_prep_20261029.json)",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "AGS-FS1"
+      },
+      "maker": "Acoustic Grove System",
+      "live_price": 2990000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 태국",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "live_probe": {
+        "observedAt": "2026-10-29T13:30:37.201Z",
+        "deleted": false,
+        "price": 2990000,
+        "price_inquiry": false,
+        "sold_out": false,
+        "origin": "아시아 태국",
+        "brand": "Acoustic Grove System",
+        "model": "AGS-FS1",
+        "stock_label": null,
+        "electronic": false
+      }
+    },
+    {
+      "cgiId": "samamusic:5200",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch9_state": "READY_SALE",
+      "leafCategoryId": "50002645",
+      "category_source": "prev_prep_contract(batch6_prep_20261029.json)",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "AGS-MN1"
+      },
+      "maker": "Acoustic Grove System",
+      "live_price": 1330000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 태국",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "live_probe": {
+        "observedAt": "2026-10-29T13:30:37.849Z",
+        "deleted": false,
+        "price": 1330000,
+        "price_inquiry": false,
+        "sold_out": false,
+        "origin": "아시아 태국",
+        "brand": "Acoustic Grove System",
+        "model": "AGS-MN1",
+        "stock_label": null,
+        "electronic": false
+      }
+    },
+    {
+      "cgiId": "samamusic:5201",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch9_state": "READY_SALE",
+      "leafCategoryId": "50002645",
+      "category_source": "prev_prep_contract(batch6_prep_20261029.json)",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "AGS-FL1"
+      },
+      "maker": "Acoustic Grove System",
+      "live_price": 2630000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 태국",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "live_probe": {
+        "observedAt": "2026-10-29T13:30:38.491Z",
+        "deleted": false,
+        "price": 2630000,
+        "price_inquiry": false,
+        "sold_out": false,
+        "origin": "아시아 태국",
+        "brand": "Acoustic Grove System",
+        "model": "AGS-FL1",
+        "stock_label": null,
+        "electronic": false
+      }
+    },
+    {
+      "cgiId": "samamusic:5383",
+      "taxonomy_state": "READY_SALE",
+      "batch9_state": "READY_SALE",
+      "leafCategoryId": "50002974",
+      "category_source": "prev_prep_contract(batch5_prep_20261029.json)",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "EQP-A"
+      },
+      "maker": "AudioScape",
+      "live_price": 2950000,
+      "price_source": "collected_confirmed",
+      "live_origin": "국내",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 4
+      },
+      "live_probe": {
+        "observedAt": "2026-10-29T13:30:22.354Z",
+        "deleted": false,
+        "price": 2950000,
+        "price_inquiry": false,
+        "sold_out": false,
+        "origin": "국내",
+        "brand": "AudioScape",
+        "model": "EQP-A",
+        "stock_label": null,
+        "electronic": false
+      }
+    },
+    {
+      "cgiId": "samamusic:2573",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch9_state": "READY_OUTOFSTOCK",
+      "leafCategoryId": "50024439",
+      "category_source": "prev_prep_contract(batch7_prep_20261029.json)",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "AONIC 215 TW2"
+      },
+      "maker": "SHURE",
+      "live_price": 418000,
+      "price_source": "collected_confirmed",
+      "live_origin": "해외",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "live_probe": {
+        "observedAt": "2026-10-29T13:30:43.095Z",
+        "deleted": false,
+        "price": 418000,
+        "price_inquiry": false,
+        "sold_out": true,
+        "origin": "해외",
+        "brand": "SHURE",
+        "model": "AONIC 215 TW2",
+        "stock_label": null,
+        "electronic": false
+      }
+    },
+    {
+      "cgiId": "samamusic:291",
+      "taxonomy_state": "NEED_CATEGORY",
+      "batch9_state": "READY_OUTOFSTOCK",
+      "leafCategoryId": "50002342",
+      "category_source": "prev_prep_contract(batch7_prep_20261029.json)",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "HPAEC440"
+      },
+      "maker": "SHURE",
+      "live_price": 15000,
+      "price_source": "collected_confirmed",
+      "live_origin": "해외 .",
+      "isSW": false,
+      "stock": {
+        "source": "fallback_1",
+        "quantity": 1
+      },
+      "live_probe": {
+        "observedAt": "2026-10-29T13:30:43.774Z",
+        "deleted": false,
+        "price": 15000,
+        "price_inquiry": false,
+        "sold_out": true,
+        "origin": "해외 .",
+        "brand": "SHURE",
+        "model": "HPAEC440",
+        "stock_label": null,
+        "electronic": false
+      }
+    }
+  ],
+  "backups": []
+}
