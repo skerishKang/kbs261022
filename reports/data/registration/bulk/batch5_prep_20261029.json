@@ -1,0 +1,1707 @@
+{
+  "kind": "cgi-bulk-batch5-prep",
+  "ran_at": "2026-10-29T07:04:08.655Z",
+  "scope": "다음 50건 배치 준비 — 장부 33건 대조·중복 제외·후보 재산정·모델명/제조사/카테고리/원산지 사전검증. 실등록 0건, 라이브 호출 0건(공급처 상태는 2026-10-29T05:16Z 라이브 재검증 근거 재사용 — 실행 시 최종 재검증이 게이트).",
+  "basis": {
+    "main_sha": "a50ddd9",
+    "ledger": "reports/data/registration/ncom_registration_ledger.json (33건)",
+    "taxonomy": "reports/data/registration/bulk/taxonomy_v2_20261029.json",
+    "supplier_recheck": "reports/data/registration/bulk/ready_live_recheck_20261029.json (173건, 2026-10-29T05:16Z)",
+    "category_mapping": "reports/data/registration/bulk/category_mapping_bulk_20261029.json",
+    "prep_csv": "data/smartstore_prep/smartstore_registration_prep.csv"
+  },
+  "diagnostics": {
+    "ledger_cgi_unmatched_in_taxonomy": [],
+    "ledger_count": 33,
+    "ledger_in_taxonomy_states": {
+      "DUPLICATE": 14,
+      "READY_OUTOFSTOCK": 10,
+      "READY_SALE": 9
+    },
+    "ready_pool": {
+      "READY_SALE": 116,
+      "READY_OUTOFSTOCK": 66
+    },
+    "candidate_count": 70,
+    "candidate_states": {
+      "READY_SALE": 70
+    },
+    "candidate_origin_status": {
+      "NEED_ORIGIN_LOOKUP": 61,
+      "verified_code_available": 9
+    },
+    "candidate_leaf_source": {
+      "auto_candidate": 70
+    },
+    "excluded": {
+      "already_registered": 19,
+      "model_missing": 74,
+      "category_not_confirmed": 0,
+      "category_semantic_review": 19,
+      "price_or_stock_unusable": 0,
+      "dup_pair_member": 0,
+      "supplier_recheck_unreadable": 0
+    }
+  },
+  "batch_plan": {
+    "target": 50,
+    "selected_count": 50,
+    "backups_count": 20,
+    "sale_selected": 50,
+    "outofstock_selected": 0,
+    "execution_gates": [
+      "등록 직전 공급처 라이브 재검증(판매중·가격·모델명·원산지) — READY≠REGISTRABLE_NOW",
+      "등록 직전 판매자코드 중복조회 — 히트 시 재등록 금지(장부 복구 경로)",
+      "모델명·제조사 재확인 — 미수집 시 임의 생성 금지(제외)",
+      "품절분은 재고 1 등록 → 재고 0 수정 → OUTOFSTOCK → 전시 ON 상태머신",
+      "장부 즉시 기록(등록 1건당) — 크래시·타임아웃 시 planCrashRecovery 계약으로 복구"
+    ]
+  },
+  "selected": [
+    {
+      "cgiId": "samamusic:4743",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002322",
+      "leaf_source": "auto_candidate",
+      "leaf_score": 1,
+      "model_name": "Spark EDGE",
+      "maker": "",
+      "supplier_live": {
+        "on_sale": true,
+        "live_sold_out": false,
+        "live_price": 749000,
+        "live_origin": "아시아 중국",
+        "live_model": "Spark EDGE",
+        "verdict": "REGISTRABLE_NOW",
+        "checked_at": "2026-10-29T05:16:55.409Z"
+      },
+      "origin_code": null,
+      "origin_status": "NEED_ORIGIN_LOOKUP",
+      "register_path": "sale(등록→전시ON)"
+    },
+    {
+      "cgiId": "samamusic:1302",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002326",
+      "leaf_source": "auto_candidate",
+      "leaf_score": 1,
+      "model_name": "SM57-LC",
+      "maker": "",
+      "supplier_live": {
+        "on_sale": true,
+        "live_sold_out": false,
+        "live_price": 193000,
+        "live_origin": "아시아 중국 또는 멕시코",
+        "live_model": "SM57-LC",
+        "verdict": "REGISTRABLE_NOW",
+        "checked_at": "2026-10-29T05:16:55.409Z"
+      },
+      "origin_code": null,
+      "origin_status": "NEED_ORIGIN_LOOKUP",
+      "register_path": "sale(등록→전시ON)"
+    },
+    {
+      "cgiId": "samamusic:1299",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002326",
+      "leaf_source": "auto_candidate",
+      "leaf_score": 1,
+      "model_name": "SM58K-LC",
+      "maker": "",
+      "supplier_live": {
+        "on_sale": true,
+        "live_sold_out": false,
+        "live_price": 197000,
+        "live_origin": "아시아 중국 또는 멕시코",
+        "live_model": "SM58K-LC",
+        "verdict": "REGISTRABLE_NOW",
+        "checked_at": "2026-10-29T05:16:55.409Z"
+      },
+      "origin_code": null,
+      "origin_status": "NEED_ORIGIN_LOOKUP",
+      "register_path": "sale(등록→전시ON)"
+    },
+    {
+      "cgiId": "samamusic:1300",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002326",
+      "leaf_source": "auto_candidate",
+      "leaf_score": 1,
+      "model_name": "SM58SK",
+      "maker": "",
+      "supplier_live": {
+        "on_sale": true,
+        "live_sold_out": false,
+        "live_price": 206000,
+        "live_origin": "아시아 중국 또는 멕시코",
+        "live_model": "SM58SK",
+        "verdict": "REGISTRABLE_NOW",
+        "checked_at": "2026-10-29T05:16:55.409Z"
+      },
+      "origin_code": null,
+      "origin_status": "NEED_ORIGIN_LOOKUP",
+      "register_path": "sale(등록→전시ON)"
+    },
+    {
+      "cgiId": "samamusic:1334",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002326",
+      "leaf_source": "auto_candidate",
+      "leaf_score": 1,
+      "model_name": "KSM32 CG",
+      "maker": "",
+      "supplier_live": {
+        "on_sale": true,
+        "live_sold_out": false,
+        "live_price": 1243000,
+        "live_origin": "아시아 중국 또는 멕시코",
+        "live_model": "KSM32 CG",
+        "verdict": "REGISTRABLE_NOW",
+        "checked_at": "2026-10-29T05:16:55.409Z"
+      },
+      "origin_code": null,
+      "origin_status": "NEED_ORIGIN_LOOKUP",
+      "register_path": "sale(등록→전시ON)"
+    },
+    {
+      "cgiId": "samamusic:1336",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002326",
+      "leaf_source": "auto_candidate",
+      "leaf_score": 1,
+      "model_name": "KSM137 SL",
+      "maker": "",
+      "supplier_live": {
+        "on_sale": true,
+        "live_sold_out": false,
+        "live_price": 690000,
+        "live_origin": "아시아 중국 또는 멕시코",
+        "live_model": "KSM137 SL",
+        "verdict": "REGISTRABLE_NOW",
+        "checked_at": "2026-10-29T05:16:55.409Z"
+      },
+      "origin_code": null,
+      "origin_status": "NEED_ORIGIN_LOOKUP",
+      "register_path": "sale(등록→전시ON)"
+    },
+    {
+      "cgiId": "samamusic:1337",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002326",
+      "leaf_source": "auto_candidate",
+      "leaf_score": 1,
+      "model_name": "KSM137 SL Stereo",
+      "maker": "",
+      "supplier_live": {
+        "on_sale": true,
+        "live_sold_out": false,
+        "live_price": 1460000,
+        "live_origin": "아시아 중국 또는 멕시코",
+        "live_model": "KSM137 SL Stereo",
+        "verdict": "REGISTRABLE_NOW",
+        "checked_at": "2026-10-29T05:16:55.409Z"
+      },
+      "origin_code": null,
+      "origin_status": "NEED_ORIGIN_LOOKUP",
+      "register_path": "sale(등록→전시ON)"
+    },
+    {
+      "cgiId": "samamusic:5622",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002326",
+      "leaf_source": "auto_candidate",
+      "leaf_score": 1,
+      "model_name": "NXN2/1 , NXN6/4 , SM4-K/2 , BETA91A/1 , KSM137/SL/2",
+      "maker": "",
+      "supplier_live": {
+        "on_sale": true,
+        "live_sold_out": false,
+        "live_price": 4528000,
+        "live_origin": "아시아 중국 또는 멕시코",
+        "live_model": "NXN2/1 , NXN6/4 , SM4-K/2 , BETA91A/1 , KSM137/SL/2",
+        "verdict": "REGISTRABLE_NOW",
+        "checked_at": "2026-10-29T05:16:55.409Z"
+      },
+      "origin_code": null,
+      "origin_status": "NEED_ORIGIN_LOOKUP",
+      "register_path": "sale(등록→전시ON)"
+    },
+    {
+      "cgiId": "samamusic:5621",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002326",
+      "leaf_source": "auto_candidate",
+      "leaf_score": 1,
+      "model_name": "NXN2/1, NXN6/4, SM4-K/2, NXN 8003(케이스)",
+      "maker": "",
+      "supplier_live": {
+        "on_sale": true,
+        "live_sold_out": false,
+        "live_price": 2813000,
+        "live_origin": "아시아 중국 또는 멕시코",
+        "live_model": "NXN2/1, NXN6/4, SM4-K/2, NXN 8003(케이스)",
+        "verdict": "REGISTRABLE_NOW",
+        "checked_at": "2026-10-29T05:16:55.409Z"
+      },
+      "origin_code": null,
+      "origin_status": "NEED_ORIGIN_LOOKUP",
+      "register_path": "sale(등록→전시ON)"
+    },
+    {
+      "cgiId": "samamusic:5047",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002326",
+      "leaf_source": "auto_candidate",
+      "leaf_score": 1,
+      "model_name": "PGA98H-TQG",
+      "maker": "",
+      "supplier_live": {
+        "on_sale": true,
+        "live_sold_out": false,
+        "live_price": 221000,
+        "live_origin": "아시아 중국 또는 멕시코",
+        "live_model": "PGA98H-TQG",
+        "verdict": "REGISTRABLE_NOW",
+        "checked_at": "2026-10-29T05:16:55.409Z"
+      },
+      "origin_code": null,
+      "origin_status": "NEED_ORIGIN_LOOKUP",
+      "register_path": "sale(등록→전시ON)"
+    },
+    {
+      "cgiId": "samamusic:5046",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002326",
+      "leaf_source": "auto_candidate",
+      "leaf_score": 1,
+      "model_name": "PGA98H-LC",
+      "maker": "",
+      "supplier_live": {
+        "on_sale": true,
+        "live_sold_out": false,
+        "live_price": 255000,
+        "live_origin": "아시아 중국 또는 멕시코",
+        "live_model": "PGA98H-LC",
+        "verdict": "REGISTRABLE_NOW",
+        "checked_at": "2026-10-29T05:16:55.409Z"
+      },
+      "origin_code": null,
+      "origin_status": "NEED_ORIGIN_LOOKUP",
+      "register_path": "sale(등록→전시ON)"
+    },
+    {
+      "cgiId": "samamusic:5049",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002326",
+      "leaf_source": "auto_candidate",
+      "leaf_score": 1,
+      "model_name": "PGA181-LC",
+      "maker": "",
+      "supplier_live": {
+        "on_sale": true,
+        "live_sold_out": false,
+        "live_price": 192000,
+        "live_origin": "아시아 중국 또는 멕시코",
+        "live_model": "PGA181-LC",
+        "verdict": "REGISTRABLE_NOW",
+        "checked_at": "2026-10-29T05:16:55.409Z"
+      },
+      "origin_code": null,
+      "origin_status": "NEED_ORIGIN_LOOKUP",
+      "register_path": "sale(등록→전시ON)"
+    },
+    {
+      "cgiId": "samamusic:4175",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002326",
+      "leaf_source": "auto_candidate",
+      "leaf_score": 1,
+      "model_name": "SV100",
+      "maker": "",
+      "supplier_live": {
+        "on_sale": true,
+        "live_sold_out": false,
+        "live_price": 40000,
+        "live_origin": "아시아 중국 또는 멕시코",
+        "live_model": "SV100",
+        "verdict": "REGISTRABLE_NOW",
+        "checked_at": "2026-10-29T05:16:55.409Z"
+      },
+      "origin_code": null,
+      "origin_status": "NEED_ORIGIN_LOOKUP",
+      "register_path": "sale(등록→전시ON)"
+    },
+    {
+      "cgiId": "samamusic:4176",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002326",
+      "leaf_source": "auto_candidate",
+      "leaf_score": 1,
+      "model_name": "SV200",
+      "maker": "",
+      "supplier_live": {
+        "on_sale": true,
+        "live_sold_out": false,
+        "live_price": 53000,
+        "live_origin": "아시아 중국 또는 멕시코",
+        "live_model": "SV200",
+        "verdict": "REGISTRABLE_NOW",
+        "checked_at": "2026-10-29T05:16:55.409Z"
+      },
+      "origin_code": null,
+      "origin_status": "NEED_ORIGIN_LOOKUP",
+      "register_path": "sale(등록→전시ON)"
+    },
+    {
+      "cgiId": "samamusic:4049",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002326",
+      "leaf_source": "auto_candidate",
+      "leaf_score": 1,
+      "model_name": "NEXADYNE NXN8/C",
+      "maker": "",
+      "supplier_live": {
+        "on_sale": true,
+        "live_sold_out": false,
+        "live_price": 534000,
+        "live_origin": "아시아 중국 또는 멕시코",
+        "live_model": "NEXADYNE NXN8/C",
+        "verdict": "REGISTRABLE_NOW",
+        "checked_at": "2026-10-29T05:16:55.409Z"
+      },
+      "origin_code": null,
+      "origin_status": "NEED_ORIGIN_LOOKUP",
+      "register_path": "sale(등록→전시ON)"
+    },
+    {
+      "cgiId": "samamusic:4050",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002326",
+      "leaf_source": "auto_candidate",
+      "leaf_score": 1,
+      "model_name": "NEXADYNE NXN8/S",
+      "maker": "",
+      "supplier_live": {
+        "on_sale": true,
+        "live_sold_out": false,
+        "live_price": 534000,
+        "live_origin": "아시아 중국 또는 멕시코",
+        "live_model": "NEXADYNE NXN8/S",
+        "verdict": "REGISTRABLE_NOW",
+        "checked_at": "2026-10-29T05:16:55.409Z"
+      },
+      "origin_code": null,
+      "origin_status": "NEED_ORIGIN_LOOKUP",
+      "register_path": "sale(등록→전시ON)"
+    },
+    {
+      "cgiId": "samamusic:2652",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002326",
+      "leaf_source": "auto_candidate",
+      "leaf_score": 1,
+      "model_name": "PGA DRUM KIT 7",
+      "maker": "",
+      "supplier_live": {
+        "on_sale": true,
+        "live_sold_out": false,
+        "live_price": 1060000,
+        "live_origin": "아시아 중국 또는 멕시코",
+        "live_model": "PGA DRUM KIT 7",
+        "verdict": "REGISTRABLE_NOW",
+        "checked_at": "2026-10-29T05:16:55.409Z"
+      },
+      "origin_code": null,
+      "origin_status": "NEED_ORIGIN_LOOKUP",
+      "register_path": "sale(등록→전시ON)"
+    },
+    {
+      "cgiId": "samamusic:2650",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002326",
+      "leaf_source": "auto_candidate",
+      "leaf_score": 1,
+      "model_name": "PGA DRUM KIT 5",
+      "maker": "",
+      "supplier_live": {
+        "on_sale": true,
+        "live_sold_out": false,
+        "live_price": 639000,
+        "live_origin": "아시아 중국 또는 멕시코",
+        "live_model": "PGA DRUM KIT 5",
+        "verdict": "REGISTRABLE_NOW",
+        "checked_at": "2026-10-29T05:16:55.409Z"
+      },
+      "origin_code": null,
+      "origin_status": "NEED_ORIGIN_LOOKUP",
+      "register_path": "sale(등록→전시ON)"
+    },
+    {
+      "cgiId": "samamusic:2649",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002326",
+      "leaf_source": "auto_candidate",
+      "leaf_score": 1,
+      "model_name": "PGA DRUM KIT 4",
+      "maker": "",
+      "supplier_live": {
+        "on_sale": true,
+        "live_sold_out": false,
+        "live_price": 555000,
+        "live_origin": "아시아 중국 또는 멕시코",
+        "live_model": "PGA DRUM KIT 4",
+        "verdict": "REGISTRABLE_NOW",
+        "checked_at": "2026-10-29T05:16:55.409Z"
+      },
+      "origin_code": null,
+      "origin_status": "NEED_ORIGIN_LOOKUP",
+      "register_path": "sale(등록→전시ON)"
+    },
+    {
+      "cgiId": "samamusic:2722",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002326",
+      "leaf_source": "auto_candidate",
+      "leaf_score": 1,
+      "model_name": "SUPER 55",
+      "maker": "",
+      "supplier_live": {
+        "on_sale": true,
+        "live_sold_out": false,
+        "live_price": 488000,
+        "live_origin": "아시아 중국 또는 멕시코",
+        "live_model": "SUPER 55",
+        "verdict": "REGISTRABLE_NOW",
+        "checked_at": "2026-10-29T05:16:55.409Z"
+      },
+      "origin_code": null,
+      "origin_status": "NEED_ORIGIN_LOOKUP",
+      "register_path": "sale(등록→전시ON)"
+    },
+    {
+      "cgiId": "samamusic:3107",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50004370",
+      "leaf_source": "auto_candidate",
+      "leaf_score": 0.94,
+      "model_name": "Custom Classic S 768 Black Nitro & Gold hardware, Maple Figngerboard",
+      "maker": "",
+      "supplier_live": {
+        "on_sale": true,
+        "live_sold_out": false,
+        "live_price": 6700000,
+        "live_origin": "아메리카 미국",
+        "live_model": "Custom Classic S 768 Black Nitro & Gold hardware, Maple Figngerboard",
+        "verdict": "REGISTRABLE_NOW",
+        "checked_at": "2026-10-29T05:16:55.409Z"
+      },
+      "origin_code": null,
+      "origin_status": "NEED_ORIGIN_LOOKUP",
+      "register_path": "sale(등록→전시ON)"
+    },
+    {
+      "cgiId": "samamusic:3169",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50004370",
+      "leaf_source": "auto_candidate",
+      "leaf_score": 0.94,
+      "model_name": "Custom Classic S 785",
+      "maker": "",
+      "supplier_live": {
+        "on_sale": true,
+        "live_sold_out": false,
+        "live_price": 6350000,
+        "live_origin": "국내",
+        "live_model": "Custom Classic S 785",
+        "verdict": "REGISTRABLE_NOW",
+        "checked_at": "2026-10-29T05:16:55.409Z"
+      },
+      "origin_code": null,
+      "origin_status": "NEED_ORIGIN_LOOKUP",
+      "register_path": "sale(등록→전시ON)"
+    },
+    {
+      "cgiId": "samamusic:3112",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50004370",
+      "leaf_source": "auto_candidate",
+      "leaf_score": 0.94,
+      "model_name": "Custom Classic S 775 Olympic White Nitro",
+      "maker": "",
+      "supplier_live": {
+        "on_sale": true,
+        "live_sold_out": false,
+        "live_price": 6250000,
+        "live_origin": "아메리카 미국",
+        "live_model": "Custom Classic S 775 Olympic White Nitro",
+        "verdict": "REGISTRABLE_NOW",
+        "checked_at": "2026-10-29T05:16:55.409Z"
+      },
+      "origin_code": null,
+      "origin_status": "NEED_ORIGIN_LOOKUP",
+      "register_path": "sale(등록→전시ON)"
+    },
+    {
+      "cgiId": "samamusic:3104",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50004370",
+      "leaf_source": "auto_candidate",
+      "leaf_score": 0.94,
+      "model_name": "Custom Classic S 762 Shell Pink Nitro",
+      "maker": "",
+      "supplier_live": {
+        "on_sale": true,
+        "live_sold_out": false,
+        "live_price": 6250000,
+        "live_origin": "아메리카 미국",
+        "live_model": "Custom Classic S 762 Shell Pink Nitro",
+        "verdict": "REGISTRABLE_NOW",
+        "checked_at": "2026-10-29T05:16:55.409Z"
+      },
+      "origin_code": null,
+      "origin_status": "NEED_ORIGIN_LOOKUP",
+      "register_path": "sale(등록→전시ON)"
+    },
+    {
+      "cgiId": "samamusic:3108",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50004370",
+      "leaf_source": "auto_candidate",
+      "leaf_score": 0.94,
+      "model_name": "Custom Classic T 770 Vintage White",
+      "maker": "",
+      "supplier_live": {
+        "on_sale": true,
+        "live_sold_out": false,
+        "live_price": 6090000,
+        "live_origin": "아메리카 미국",
+        "live_model": "Custom Classic T 770 Vintage White",
+        "verdict": "REGISTRABLE_NOW",
+        "checked_at": "2026-10-29T05:16:55.409Z"
+      },
+      "origin_code": null,
+      "origin_status": "NEED_ORIGIN_LOOKUP",
+      "register_path": "sale(등록→전시ON)"
+    },
+    {
+      "cgiId": "samamusic:3402",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002974",
+      "leaf_source": "auto_candidate",
+      "leaf_score": 0.72,
+      "model_name": "SuperRack Performer",
+      "maker": "",
+      "supplier_live": {
+        "on_sale": true,
+        "live_sold_out": false,
+        "live_price": 132000,
+        "live_origin": "아시아 이스라엘",
+        "live_model": "SuperRack Performer",
+        "verdict": "REGISTRABLE_NOW",
+        "checked_at": "2026-10-29T05:16:55.409Z"
+      },
+      "origin_code": null,
+      "origin_status": "NEED_ORIGIN_LOOKUP",
+      "register_path": "sale(등록→전시ON)"
+    },
+    {
+      "cgiId": "samamusic:4390",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002974",
+      "leaf_source": "auto_candidate",
+      "leaf_score": 0.72,
+      "model_name": "AS-2A Optical Compressor",
+      "maker": "",
+      "supplier_live": {
+        "on_sale": true,
+        "live_sold_out": false,
+        "live_price": 3490000,
+        "live_origin": "아메리카 미국",
+        "live_model": "AS-2A Optical Compressor",
+        "verdict": "REGISTRABLE_NOW",
+        "checked_at": "2026-10-29T05:16:55.409Z"
+      },
+      "origin_code": null,
+      "origin_status": "NEED_ORIGIN_LOOKUP",
+      "register_path": "sale(등록→전시ON)"
+    },
+    {
+      "cgiId": "samamusic:2798",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002974",
+      "leaf_source": "auto_candidate",
+      "leaf_score": 0.72,
+      "model_name": "FENDER AUDIOBOX GO",
+      "maker": "",
+      "supplier_live": {
+        "on_sale": true,
+        "live_sold_out": false,
+        "live_price": 149000,
+        "live_origin": "아시아 중국",
+        "live_model": "FENDER AUDIOBOX GO",
+        "verdict": "REGISTRABLE_NOW",
+        "checked_at": "2026-10-29T05:16:55.409Z"
+      },
+      "origin_code": null,
+      "origin_status": "NEED_ORIGIN_LOOKUP",
+      "register_path": "sale(등록→전시ON)"
+    },
+    {
+      "cgiId": "samamusic:4389",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002974",
+      "leaf_source": "auto_candidate",
+      "leaf_score": 0.72,
+      "model_name": "Buss Compressor",
+      "maker": "",
+      "supplier_live": {
+        "on_sale": true,
+        "live_sold_out": false,
+        "live_price": 1970000,
+        "live_origin": "아메리카 미국",
+        "live_model": "Buss Compressor",
+        "verdict": "REGISTRABLE_NOW",
+        "checked_at": "2026-10-29T05:16:55.409Z"
+      },
+      "origin_code": null,
+      "origin_status": "NEED_ORIGIN_LOOKUP",
+      "register_path": "sale(등록→전시ON)"
+    },
+    {
+      "cgiId": "samamusic:3404",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002974",
+      "leaf_source": "auto_candidate",
+      "leaf_score": 0.72,
+      "model_name": "Waves Creative Access Essential 1 Year",
+      "maker": "",
+      "supplier_live": {
+        "on_sale": true,
+        "live_sold_out": false,
+        "live_price": 215000,
+        "live_origin": "아시아 이스라엘",
+        "live_model": "Waves Creative Access Essential 1 Year",
+        "verdict": "REGISTRABLE_NOW",
+        "checked_at": "2026-10-29T05:16:55.409Z"
+      },
+      "origin_code": null,
+      "origin_status": "NEED_ORIGIN_LOOKUP",
+      "register_path": "sale(등록→전시ON)"
+    },
+    {
+      "cgiId": "samamusic:2501",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002974",
+      "leaf_source": "auto_candidate",
+      "leaf_score": 0.72,
+      "model_name": "Choptones Brit 1959 RR",
+      "maker": "",
+      "supplier_live": {
+        "on_sale": true,
+        "live_sold_out": false,
+        "live_price": 56000,
+        "live_origin": "유럽 이탈리아",
+        "live_model": "Choptones Brit 1959 RR",
+        "verdict": "REGISTRABLE_NOW",
+        "checked_at": "2026-10-29T05:16:55.409Z"
+      },
+      "origin_code": "0201038",
+      "origin_status": "verified_code_available",
+      "register_path": "sale(등록→전시ON)"
+    },
+    {
+      "cgiId": "samamusic:3403",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002974",
+      "leaf_source": "auto_candidate",
+      "leaf_score": 0.72,
+      "model_name": "Tony Maserati Signature Series",
+      "maker": "",
+      "supplier_live": {
+        "on_sale": true,
+        "live_sold_out": false,
+        "live_price": 115000,
+        "live_origin": "아시아 이스라엘",
+        "live_model": "Tony Maserati Signature Series",
+        "verdict": "REGISTRABLE_NOW",
+        "checked_at": "2026-10-29T05:16:55.409Z"
+      },
+      "origin_code": null,
+      "origin_status": "NEED_ORIGIN_LOOKUP",
+      "register_path": "sale(등록→전시ON)"
+    },
+    {
+      "cgiId": "samamusic:5534",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002974",
+      "leaf_source": "auto_candidate",
+      "leaf_score": 0.72,
+      "model_name": "Pigments 7",
+      "maker": "",
+      "supplier_live": {
+        "on_sale": true,
+        "live_sold_out": false,
+        "live_price": 139000,
+        "live_origin": "유럽 프랑스",
+        "live_model": "Pigments 7",
+        "verdict": "REGISTRABLE_NOW",
+        "checked_at": "2026-10-29T05:16:55.409Z"
+      },
+      "origin_code": "0201046",
+      "origin_status": "verified_code_available",
+      "register_path": "sale(등록→전시ON)"
+    },
+    {
+      "cgiId": "samamusic:5263",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002974",
+      "leaf_source": "auto_candidate",
+      "leaf_score": 0.72,
+      "model_name": "Keystep MK2",
+      "maker": "",
+      "supplier_live": {
+        "on_sale": true,
+        "live_sold_out": false,
+        "live_price": 229000,
+        "live_origin": "아시아 중국",
+        "live_model": "Keystep MK2",
+        "verdict": "REGISTRABLE_NOW",
+        "checked_at": "2026-10-29T05:16:55.409Z"
+      },
+      "origin_code": null,
+      "origin_status": "NEED_ORIGIN_LOOKUP",
+      "register_path": "sale(등록→전시ON)"
+    },
+    {
+      "cgiId": "samamusic:3510",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002974",
+      "leaf_source": "auto_candidate",
+      "leaf_score": 0.72,
+      "model_name": "Jack Joseph Puig Signature Series",
+      "maker": "",
+      "supplier_live": {
+        "on_sale": true,
+        "live_sold_out": false,
+        "live_price": 115000,
+        "live_origin": "아시아 이스라엘",
+        "live_model": "Jack Joseph Puig Signature Series",
+        "verdict": "REGISTRABLE_NOW",
+        "checked_at": "2026-10-29T05:16:55.409Z"
+      },
+      "origin_code": null,
+      "origin_status": "NEED_ORIGIN_LOOKUP",
+      "register_path": "sale(등록→전시ON)"
+    },
+    {
+      "cgiId": "samamusic:2575",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002974",
+      "leaf_source": "auto_candidate",
+      "leaf_score": 0.72,
+      "model_name": "Modula",
+      "maker": "",
+      "supplier_live": {
+        "on_sale": true,
+        "live_sold_out": false,
+        "live_price": 162000,
+        "live_origin": "유럽 이탈리아",
+        "live_model": "Modula",
+        "verdict": "REGISTRABLE_NOW",
+        "checked_at": "2026-10-29T05:16:55.409Z"
+      },
+      "origin_code": "0201038",
+      "origin_status": "verified_code_available",
+      "register_path": "sale(등록→전시ON)"
+    },
+    {
+      "cgiId": "samamusic:3395",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002974",
+      "leaf_source": "auto_candidate",
+      "leaf_score": 0.72,
+      "model_name": "Diamond",
+      "maker": "",
+      "supplier_live": {
+        "on_sale": true,
+        "live_sold_out": false,
+        "live_price": 356000,
+        "live_origin": "아시아 이스라엘",
+        "live_model": "Diamond",
+        "verdict": "REGISTRABLE_NOW",
+        "checked_at": "2026-10-29T05:16:55.409Z"
+      },
+      "origin_code": null,
+      "origin_status": "NEED_ORIGIN_LOOKUP",
+      "register_path": "sale(등록→전시ON)"
+    },
+    {
+      "cgiId": "samamusic:3509",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002974",
+      "leaf_source": "auto_candidate",
+      "leaf_score": 0.72,
+      "model_name": "H-Series",
+      "maker": "",
+      "supplier_live": {
+        "on_sale": true,
+        "live_sold_out": false,
+        "live_price": 102000,
+        "live_origin": "아시아 이스라엘",
+        "live_model": "H-Series",
+        "verdict": "REGISTRABLE_NOW",
+        "checked_at": "2026-10-29T05:16:55.409Z"
+      },
+      "origin_code": null,
+      "origin_status": "NEED_ORIGIN_LOOKUP",
+      "register_path": "sale(등록→전시ON)"
+    },
+    {
+      "cgiId": "samamusic:3426",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002974",
+      "leaf_source": "auto_candidate",
+      "leaf_score": 0.72,
+      "model_name": "IK Multimedia AmpliTube TONEX MAX",
+      "maker": "",
+      "supplier_live": {
+        "on_sale": true,
+        "live_sold_out": false,
+        "live_price": 309000,
+        "live_origin": "유럽 이탈리아",
+        "live_model": "IK Multimedia AmpliTube TONEX MAX",
+        "verdict": "REGISTRABLE_NOW",
+        "checked_at": "2026-10-29T05:16:55.409Z"
+      },
+      "origin_code": "0201038",
+      "origin_status": "verified_code_available",
+      "register_path": "sale(등록→전시ON)"
+    },
+    {
+      "cgiId": "samamusic:3425",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002974",
+      "leaf_source": "auto_candidate",
+      "leaf_score": 0.72,
+      "model_name": "IK Multimedia AmpliTube TONEX",
+      "maker": "",
+      "supplier_live": {
+        "on_sale": true,
+        "live_sold_out": false,
+        "live_price": 189000,
+        "live_origin": "유럽 이탈리아",
+        "live_model": "IK Multimedia AmpliTube TONEX",
+        "verdict": "REGISTRABLE_NOW",
+        "checked_at": "2026-10-29T05:16:55.409Z"
+      },
+      "origin_code": "0201038",
+      "origin_status": "verified_code_available",
+      "register_path": "sale(등록→전시ON)"
+    },
+    {
+      "cgiId": "samamusic:3508",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002974",
+      "leaf_source": "auto_candidate",
+      "leaf_score": 0.72,
+      "model_name": "Greg Wells Signature Series",
+      "maker": "",
+      "supplier_live": {
+        "on_sale": true,
+        "live_sold_out": false,
+        "live_price": 102000,
+        "live_origin": "아시아 이스라엘",
+        "live_model": "Greg Wells Signature Series",
+        "verdict": "REGISTRABLE_NOW",
+        "checked_at": "2026-10-29T05:16:55.409Z"
+      },
+      "origin_code": null,
+      "origin_status": "NEED_ORIGIN_LOOKUP",
+      "register_path": "sale(등록→전시ON)"
+    },
+    {
+      "cgiId": "samamusic:2654",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002974",
+      "leaf_source": "auto_candidate",
+      "leaf_score": 0.72,
+      "model_name": "LRS EDDIED EL34",
+      "maker": "",
+      "supplier_live": {
+        "on_sale": true,
+        "live_sold_out": false,
+        "live_price": 45000,
+        "live_origin": "유럽 이탈리아",
+        "live_model": "LRS EDDIED EL34",
+        "verdict": "REGISTRABLE_NOW",
+        "checked_at": "2026-10-29T05:16:55.409Z"
+      },
+      "origin_code": "0201038",
+      "origin_status": "verified_code_available",
+      "register_path": "sale(등록→전시ON)"
+    },
+    {
+      "cgiId": "samamusic:3528",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002974",
+      "leaf_source": "auto_candidate",
+      "leaf_score": 0.72,
+      "model_name": "Vocal Production",
+      "maker": "",
+      "supplier_live": {
+        "on_sale": true,
+        "live_sold_out": false,
+        "live_price": 356000,
+        "live_origin": "아시아 이스라엘",
+        "live_model": "Vocal Production",
+        "verdict": "REGISTRABLE_NOW",
+        "checked_at": "2026-10-29T05:16:55.409Z"
+      },
+      "origin_code": null,
+      "origin_status": "NEED_ORIGIN_LOOKUP",
+      "register_path": "sale(등록→전시ON)"
+    },
+    {
+      "cgiId": "samamusic:3517",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002974",
+      "leaf_source": "auto_candidate",
+      "leaf_score": 0.72,
+      "model_name": "OneKnob Series",
+      "maker": "",
+      "supplier_live": {
+        "on_sale": true,
+        "live_sold_out": false,
+        "live_price": 115000,
+        "live_origin": "아시아 이스라엘",
+        "live_model": "OneKnob Series",
+        "verdict": "REGISTRABLE_NOW",
+        "checked_at": "2026-10-29T05:16:55.409Z"
+      },
+      "origin_code": null,
+      "origin_status": "NEED_ORIGIN_LOOKUP",
+      "register_path": "sale(등록→전시ON)"
+    },
+    {
+      "cgiId": "samamusic:3513",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002974",
+      "leaf_source": "auto_candidate",
+      "leaf_score": 0.72,
+      "model_name": "Masters",
+      "maker": "",
+      "supplier_live": {
+        "on_sale": true,
+        "live_sold_out": false,
+        "live_price": 89000,
+        "live_origin": "아시아 이스라엘",
+        "live_model": "Masters",
+        "verdict": "REGISTRABLE_NOW",
+        "checked_at": "2026-10-29T05:16:55.409Z"
+      },
+      "origin_code": null,
+      "origin_status": "NEED_ORIGIN_LOOKUP",
+      "register_path": "sale(등록→전시ON)"
+    },
+    {
+      "cgiId": "samamusic:3502",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002974",
+      "leaf_source": "auto_candidate",
+      "leaf_score": 0.72,
+      "model_name": "Content Creator Audio Toolkit",
+      "maker": "",
+      "supplier_live": {
+        "on_sale": true,
+        "live_sold_out": false,
+        "live_price": 127000,
+        "live_origin": "아시아 이스라엘",
+        "live_model": "Content Creator Audio Toolkit",
+        "verdict": "REGISTRABLE_NOW",
+        "checked_at": "2026-10-29T05:16:55.409Z"
+      },
+      "origin_code": null,
+      "origin_status": "NEED_ORIGIN_LOOKUP",
+      "register_path": "sale(등록→전시ON)"
+    },
+    {
+      "cgiId": "samamusic:2657",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002974",
+      "leaf_source": "auto_candidate",
+      "leaf_score": 0.72,
+      "model_name": "CHOPTONES BOGIE TWEED",
+      "maker": "",
+      "supplier_live": {
+        "on_sale": true,
+        "live_sold_out": false,
+        "live_price": 56000,
+        "live_origin": "유럽 이탈리아",
+        "live_model": "CHOPTONES BOGIE TWEED",
+        "verdict": "REGISTRABLE_NOW",
+        "checked_at": "2026-10-29T05:16:55.409Z"
+      },
+      "origin_code": "0201038",
+      "origin_status": "verified_code_available",
+      "register_path": "sale(등록→전시ON)"
+    },
+    {
+      "cgiId": "samamusic:2655",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002974",
+      "leaf_source": "auto_candidate",
+      "leaf_score": 0.72,
+      "model_name": "LRS SILVER FACE BUNDLE",
+      "maker": "",
+      "supplier_live": {
+        "on_sale": true,
+        "live_sold_out": false,
+        "live_price": 56000,
+        "live_origin": "유럽 이탈리아",
+        "live_model": "LRS SILVER FACE BUNDLE",
+        "verdict": "REGISTRABLE_NOW",
+        "checked_at": "2026-10-29T05:16:55.409Z"
+      },
+      "origin_code": "0201038",
+      "origin_status": "verified_code_available",
+      "register_path": "sale(등록→전시ON)"
+    },
+    {
+      "cgiId": "samamusic:5383",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002974",
+      "leaf_source": "auto_candidate",
+      "leaf_score": 0.72,
+      "model_name": "EQP-A",
+      "maker": "",
+      "supplier_live": {
+        "on_sale": true,
+        "live_sold_out": false,
+        "live_price": 2950000,
+        "live_origin": "국내",
+        "live_model": "EQP-A",
+        "verdict": "REGISTRABLE_NOW",
+        "checked_at": "2026-10-29T05:16:55.409Z"
+      },
+      "origin_code": null,
+      "origin_status": "NEED_ORIGIN_LOOKUP",
+      "register_path": "sale(등록→전시ON)"
+    },
+    {
+      "cgiId": "samamusic:3529",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002974",
+      "leaf_source": "auto_candidate",
+      "leaf_score": 0.72,
+      "model_name": "V-Series",
+      "maker": "",
+      "supplier_live": {
+        "on_sale": true,
+        "live_sold_out": false,
+        "live_price": 89000,
+        "live_origin": "아시아 이스라엘",
+        "live_model": "V-Series",
+        "verdict": "REGISTRABLE_NOW",
+        "checked_at": "2026-10-29T05:16:55.409Z"
+      },
+      "origin_code": null,
+      "origin_status": "NEED_ORIGIN_LOOKUP",
+      "register_path": "sale(등록→전시ON)"
+    }
+  ],
+  "backups": [
+    {
+      "cgiId": "samamusic:3527",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002974",
+      "leaf_source": "auto_candidate",
+      "leaf_score": 0.72,
+      "model_name": "Video Sound Suite",
+      "maker": "",
+      "supplier_live": {
+        "on_sale": true,
+        "live_sold_out": false,
+        "live_price": 127000,
+        "live_origin": "아시아 이스라엘",
+        "live_model": "Video Sound Suite",
+        "verdict": "REGISTRABLE_NOW",
+        "checked_at": "2026-10-29T05:16:55.409Z"
+      },
+      "origin_code": null,
+      "origin_status": "NEED_ORIGIN_LOOKUP",
+      "register_path": "sale(등록→전시ON)"
+    },
+    {
+      "cgiId": "samamusic:3525",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002974",
+      "leaf_source": "auto_candidate",
+      "leaf_score": 0.72,
+      "model_name": "Tape, Tubes & Transistors",
+      "maker": "",
+      "supplier_live": {
+        "on_sale": true,
+        "live_sold_out": false,
+        "live_price": 89000,
+        "live_origin": "아시아 이스라엘",
+        "live_model": "Tape, Tubes & Transistors",
+        "verdict": "REGISTRABLE_NOW",
+        "checked_at": "2026-10-29T05:16:55.409Z"
+      },
+      "origin_code": null,
+      "origin_status": "NEED_ORIGIN_LOOKUP",
+      "register_path": "sale(등록→전시ON)"
+    },
+    {
+      "cgiId": "samamusic:3519",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002974",
+      "leaf_source": "auto_candidate",
+      "leaf_score": 0.72,
+      "model_name": "Power Pack",
+      "maker": "",
+      "supplier_live": {
+        "on_sale": true,
+        "live_sold_out": false,
+        "live_price": 115000,
+        "live_origin": "아시아 이스라엘",
+        "live_model": "Power Pack",
+        "verdict": "REGISTRABLE_NOW",
+        "checked_at": "2026-10-29T05:16:55.409Z"
+      },
+      "origin_code": null,
+      "origin_status": "NEED_ORIGIN_LOOKUP",
+      "register_path": "sale(등록→전시ON)"
+    },
+    {
+      "cgiId": "samamusic:3518",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002974",
+      "leaf_source": "auto_candidate",
+      "leaf_score": 0.72,
+      "model_name": "Pianos & Keys",
+      "maker": "",
+      "supplier_live": {
+        "on_sale": true,
+        "live_sold_out": false,
+        "live_price": 115000,
+        "live_origin": "아시아 이스라엘",
+        "live_model": "Pianos & Keys",
+        "verdict": "REGISTRABLE_NOW",
+        "checked_at": "2026-10-29T05:16:55.409Z"
+      },
+      "origin_code": null,
+      "origin_status": "NEED_ORIGIN_LOOKUP",
+      "register_path": "sale(등록→전시ON)"
+    },
+    {
+      "cgiId": "samamusic:3526",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002974",
+      "leaf_source": "auto_candidate",
+      "leaf_score": 0.72,
+      "model_name": "Transform",
+      "maker": "",
+      "supplier_live": {
+        "on_sale": true,
+        "live_sold_out": false,
+        "live_price": 102000,
+        "live_origin": "아시아 이스라엘",
+        "live_model": "Transform",
+        "verdict": "REGISTRABLE_NOW",
+        "checked_at": "2026-10-29T05:16:55.409Z"
+      },
+      "origin_code": null,
+      "origin_status": "NEED_ORIGIN_LOOKUP",
+      "register_path": "sale(등록→전시ON)"
+    },
+    {
+      "cgiId": "samamusic:3511",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002974",
+      "leaf_source": "auto_candidate",
+      "leaf_score": 0.72,
+      "model_name": "JJP Analog Legends",
+      "maker": "",
+      "supplier_live": {
+        "on_sale": true,
+        "live_sold_out": false,
+        "live_price": 89000,
+        "live_origin": "아시아 이스라엘",
+        "live_model": "JJP Analog Legends",
+        "verdict": "REGISTRABLE_NOW",
+        "checked_at": "2026-10-29T05:16:55.409Z"
+      },
+      "origin_code": null,
+      "origin_status": "NEED_ORIGIN_LOOKUP",
+      "register_path": "sale(등록→전시ON)"
+    },
+    {
+      "cgiId": "samamusic:3522",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002974",
+      "leaf_source": "auto_candidate",
+      "leaf_score": 0.72,
+      "model_name": "Signature Series Vocals",
+      "maker": "",
+      "supplier_live": {
+        "on_sale": true,
+        "live_sold_out": false,
+        "live_price": 115000,
+        "live_origin": "아시아 이스라엘",
+        "live_model": "Signature Series Vocals",
+        "verdict": "REGISTRABLE_NOW",
+        "checked_at": "2026-10-29T05:16:55.409Z"
+      },
+      "origin_code": null,
+      "origin_status": "NEED_ORIGIN_LOOKUP",
+      "register_path": "sale(등록→전시ON)"
+    },
+    {
+      "cgiId": "samamusic:3507",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002974",
+      "leaf_source": "auto_candidate",
+      "leaf_score": 0.72,
+      "model_name": "Grand Masters Collection",
+      "maker": "",
+      "supplier_live": {
+        "on_sale": true,
+        "live_sold_out": false,
+        "live_price": 317000,
+        "live_origin": "아시아 이스라엘",
+        "live_model": "Grand Masters Collection",
+        "verdict": "REGISTRABLE_NOW",
+        "checked_at": "2026-10-29T05:16:55.409Z"
+      },
+      "origin_code": null,
+      "origin_status": "NEED_ORIGIN_LOOKUP",
+      "register_path": "sale(등록→전시ON)"
+    },
+    {
+      "cgiId": "samamusic:3524",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002974",
+      "leaf_source": "auto_candidate",
+      "leaf_score": 0.72,
+      "model_name": "Sound Design Suite",
+      "maker": "",
+      "supplier_live": {
+        "on_sale": true,
+        "live_sold_out": false,
+        "live_price": 381000,
+        "live_origin": "아시아 이스라엘",
+        "live_model": "Sound Design Suite",
+        "verdict": "REGISTRABLE_NOW",
+        "checked_at": "2026-10-29T05:16:55.409Z"
+      },
+      "origin_code": null,
+      "origin_status": "NEED_ORIGIN_LOOKUP",
+      "register_path": "sale(등록→전시ON)"
+    },
+    {
+      "cgiId": "samamusic:3505",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002974",
+      "leaf_source": "auto_candidate",
+      "leaf_score": 0.72,
+      "model_name": "Genesis",
+      "maker": "",
+      "supplier_live": {
+        "on_sale": true,
+        "live_sold_out": false,
+        "live_price": 102000,
+        "live_origin": "아시아 이스라엘",
+        "live_model": "Genesis",
+        "verdict": "REGISTRABLE_NOW",
+        "checked_at": "2026-10-29T05:16:55.409Z"
+      },
+      "origin_code": null,
+      "origin_status": "NEED_ORIGIN_LOOKUP",
+      "register_path": "sale(등록→전시ON)"
+    },
+    {
+      "cgiId": "samamusic:3504",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002974",
+      "leaf_source": "auto_candidate",
+      "leaf_score": 0.72,
+      "model_name": "Forensics Package",
+      "maker": "",
+      "supplier_live": {
+        "on_sale": true,
+        "live_sold_out": false,
+        "live_price": 254000,
+        "live_origin": "아시아 이스라엘",
+        "live_model": "Forensics Package",
+        "verdict": "REGISTRABLE_NOW",
+        "checked_at": "2026-10-29T05:16:55.409Z"
+      },
+      "origin_code": null,
+      "origin_status": "NEED_ORIGIN_LOOKUP",
+      "register_path": "sale(등록→전시ON)"
+    },
+    {
+      "cgiId": "samamusic:3397",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002974",
+      "leaf_source": "auto_candidate",
+      "leaf_score": 0.72,
+      "model_name": "Mercury",
+      "maker": "",
+      "supplier_live": {
+        "on_sale": true,
+        "live_sold_out": false,
+        "live_price": 2549000,
+        "live_origin": "아시아 이스라엘",
+        "live_model": "Mercury",
+        "verdict": "REGISTRABLE_NOW",
+        "checked_at": "2026-10-29T05:16:55.409Z"
+      },
+      "origin_code": null,
+      "origin_status": "NEED_ORIGIN_LOOKUP",
+      "register_path": "sale(등록→전시ON)"
+    },
+    {
+      "cgiId": "samamusic:3501",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002974",
+      "leaf_source": "auto_candidate",
+      "leaf_score": 0.72,
+      "model_name": "Broadcast & Production",
+      "maker": "",
+      "supplier_live": {
+        "on_sale": true,
+        "live_sold_out": false,
+        "live_price": 381000,
+        "live_origin": "아시아 이스라엘",
+        "live_model": "Broadcast & Production",
+        "verdict": "REGISTRABLE_NOW",
+        "checked_at": "2026-10-29T05:16:55.409Z"
+      },
+      "origin_code": null,
+      "origin_status": "NEED_ORIGIN_LOOKUP",
+      "register_path": "sale(등록→전시ON)"
+    },
+    {
+      "cgiId": "samamusic:2656",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002974",
+      "leaf_source": "auto_candidate",
+      "leaf_score": 0.72,
+      "model_name": "LRS WEST COAST KALLY",
+      "maker": "",
+      "supplier_live": {
+        "on_sale": true,
+        "live_sold_out": false,
+        "live_price": 56000,
+        "live_origin": "유럽 이탈리아",
+        "live_model": "LRS WEST COAST KALLY",
+        "verdict": "REGISTRABLE_NOW",
+        "checked_at": "2026-10-29T05:16:55.409Z"
+      },
+      "origin_code": "0201038",
+      "origin_status": "verified_code_available",
+      "register_path": "sale(등록→전시ON)"
+    },
+    {
+      "cgiId": "samamusic:3503",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002974",
+      "leaf_source": "auto_candidate",
+      "leaf_score": 0.72,
+      "model_name": "Eddie Kramer Signature Series Bundle",
+      "maker": "",
+      "supplier_live": {
+        "on_sale": true,
+        "live_sold_out": false,
+        "live_price": 102000,
+        "live_origin": "아시아 이스라엘",
+        "live_model": "Eddie Kramer Signature Series Bundle",
+        "verdict": "REGISTRABLE_NOW",
+        "checked_at": "2026-10-29T05:16:55.409Z"
+      },
+      "origin_code": null,
+      "origin_status": "NEED_ORIGIN_LOOKUP",
+      "register_path": "sale(등록→전시ON)"
+    },
+    {
+      "cgiId": "samamusic:5560",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002224",
+      "leaf_source": "auto_candidate",
+      "leaf_score": 0.6286,
+      "model_name": "CVL-B/C-TQG",
+      "maker": "",
+      "supplier_live": {
+        "on_sale": true,
+        "live_sold_out": false,
+        "live_price": 108000,
+        "live_origin": "아시아 중국",
+        "live_model": "CVL-B/C-TQG",
+        "verdict": "REGISTRABLE_NOW",
+        "checked_at": "2026-10-29T05:16:55.409Z"
+      },
+      "origin_code": null,
+      "origin_status": "NEED_ORIGIN_LOOKUP",
+      "register_path": "sale(등록→전시ON)"
+    },
+    {
+      "cgiId": "samamusic:3979",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002224",
+      "leaf_source": "auto_candidate",
+      "leaf_score": 0.625,
+      "model_name": "AMV-LAV-Z6 (MoveMic)",
+      "maker": "",
+      "supplier_live": {
+        "on_sale": true,
+        "live_sold_out": false,
+        "live_price": 233000,
+        "live_origin": "아시아 중국 또는 멕시코",
+        "live_model": "AMV-LAV-Z6 (MoveMic)",
+        "verdict": "REGISTRABLE_NOW",
+        "checked_at": "2026-10-29T05:16:55.409Z"
+      },
+      "origin_code": null,
+      "origin_status": "NEED_ORIGIN_LOOKUP",
+      "register_path": "sale(등록→전시ON)"
+    },
+    {
+      "cgiId": "samamusic:3976",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002224",
+      "leaf_source": "auto_candidate",
+      "leaf_score": 0.625,
+      "model_name": "MoveMic One",
+      "maker": "",
+      "supplier_live": {
+        "on_sale": true,
+        "live_sold_out": false,
+        "live_price": 442000,
+        "live_origin": "아시아 중국 또는 멕시코",
+        "live_model": "MoveMic One",
+        "verdict": "REGISTRABLE_NOW",
+        "checked_at": "2026-10-29T05:16:55.409Z"
+      },
+      "origin_code": null,
+      "origin_status": "NEED_ORIGIN_LOOKUP",
+      "register_path": "sale(등록→전시ON)"
+    },
+    {
+      "cgiId": "samamusic:3974",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002224",
+      "leaf_source": "auto_candidate",
+      "leaf_score": 0.625,
+      "model_name": "MoveMic Two Recevier Kit",
+      "maker": "",
+      "supplier_live": {
+        "on_sale": true,
+        "live_sold_out": false,
+        "live_price": 886000,
+        "live_origin": "아시아 중국 또는 멕시코",
+        "live_model": "MoveMic Two Recevier Kit",
+        "verdict": "REGISTRABLE_NOW",
+        "checked_at": "2026-10-29T05:16:55.409Z"
+      },
+      "origin_code": null,
+      "origin_status": "NEED_ORIGIN_LOOKUP",
+      "register_path": "sale(등록→전시ON)"
+    },
+    {
+      "cgiId": "samamusic:3975",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002224",
+      "leaf_source": "auto_candidate",
+      "leaf_score": 0.625,
+      "model_name": "MoveMic Two",
+      "maker": "",
+      "supplier_live": {
+        "on_sale": true,
+        "live_sold_out": false,
+        "live_price": 620000,
+        "live_origin": "아시아 중국 또는 멕시코",
+        "live_model": "MoveMic Two",
+        "verdict": "REGISTRABLE_NOW",
+        "checked_at": "2026-10-29T05:16:55.409Z"
+      },
+      "origin_code": null,
+      "origin_status": "NEED_ORIGIN_LOOKUP",
+      "register_path": "sale(등록→전시ON)"
+    }
+  ],
+  "category_semantic_review": [
+    {
+      "cgiId": "samamusic:4979",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002748",
+      "leaf_whole": "디지털/가전>자동차기기>카오디오음향기기>스피커",
+      "supplier_path": "",
+      "model_name": "PR:O 118 Sub D2",
+      "reason": "leaf semantic risk — PR #139 오매핑 사례군(자동차 카오디오 리프), 운영자 리프 확정 필요"
+    },
+    {
+      "cgiId": "samamusic:4977",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002748",
+      "leaf_whole": "디지털/가전>자동차기기>카오디오음향기기>스피커",
+      "supplier_path": "",
+      "model_name": "PR:O 112 XD2",
+      "reason": "leaf semantic risk — PR #139 오매핑 사례군(자동차 카오디오 리프), 운영자 리프 확정 필요"
+    },
+    {
+      "cgiId": "samamusic:4967",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002748",
+      "leaf_whole": "디지털/가전>자동차기기>카오디오음향기기>스피커",
+      "supplier_path": "",
+      "model_name": "PR:O 10 X",
+      "reason": "leaf semantic risk — PR #139 오매핑 사례군(자동차 카오디오 리프), 운영자 리프 확정 필요"
+    },
+    {
+      "cgiId": "samamusic:4975",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002748",
+      "leaf_whole": "디지털/가전>자동차기기>카오디오음향기기>스피커",
+      "supplier_path": "",
+      "model_name": "PR:O 112 FD2",
+      "reason": "leaf semantic risk — PR #139 오매핑 사례군(자동차 카오디오 리프), 운영자 리프 확정 필요"
+    },
+    {
+      "cgiId": "samamusic:4969",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002748",
+      "leaf_whole": "디지털/가전>자동차기기>카오디오음향기기>스피커",
+      "supplier_path": "",
+      "model_name": "PR:O 12 M",
+      "reason": "leaf semantic risk — PR #139 오매핑 사례군(자동차 카오디오 리프), 운영자 리프 확정 필요"
+    },
+    {
+      "cgiId": "samamusic:1164",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002748",
+      "leaf_whole": "디지털/가전>자동차기기>카오디오음향기기>스피커",
+      "supplier_path": "",
+      "model_name": "GLM KIT (8300-601)",
+      "reason": "leaf semantic risk — PR #139 오매핑 사례군(자동차 카오디오 리프), 운영자 리프 확정 필요"
+    },
+    {
+      "cgiId": "samamusic:1448",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002748",
+      "leaf_whole": "디지털/가전>자동차기기>카오디오음향기기>스피커",
+      "supplier_path": "",
+      "model_name": "CORE 47",
+      "reason": "leaf semantic risk — PR #139 오매핑 사례군(자동차 카오디오 리프), 운영자 리프 확정 필요"
+    },
+    {
+      "cgiId": "samamusic:1367",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002748",
+      "leaf_whole": "디지털/가전>자동차기기>카오디오음향기기>스피커",
+      "supplier_path": "",
+      "model_name": "CORE 7",
+      "reason": "leaf semantic risk — PR #139 오매핑 사례군(자동차 카오디오 리프), 운영자 리프 확정 필요"
+    },
+    {
+      "cgiId": "samamusic:29",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002748",
+      "leaf_whole": "디지털/가전>자동차기기>카오디오음향기기>스피커",
+      "supplier_path": "",
+      "model_name": "LYD-5, 220V",
+      "reason": "leaf semantic risk — PR #139 오매핑 사례군(자동차 카오디오 리프), 운영자 리프 확정 필요"
+    },
+    {
+      "cgiId": "samamusic:745",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002748",
+      "leaf_whole": "디지털/가전>자동차기기>카오디오음향기기>스피커",
+      "supplier_path": "",
+      "model_name": "LYD-48, B/B",
+      "reason": "leaf semantic risk — PR #139 오매핑 사례군(자동차 카오디오 리프), 운영자 리프 확정 필요"
+    },
+    {
+      "cgiId": "samamusic:1368",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002748",
+      "leaf_whole": "디지털/가전>자동차기기>카오디오음향기기>스피커",
+      "supplier_path": "",
+      "model_name": "CORE 59",
+      "reason": "leaf semantic risk — PR #139 오매핑 사례군(자동차 카오디오 리프), 운영자 리프 확정 필요"
+    },
+    {
+      "cgiId": "samamusic:2751",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002748",
+      "leaf_whole": "디지털/가전>자동차기기>카오디오음향기기>스피커",
+      "supplier_path": "",
+      "model_name": "7050CPM",
+      "reason": "leaf semantic risk — PR #139 오매핑 사례군(자동차 카오디오 리프), 운영자 리프 확정 필요"
+    },
+    {
+      "cgiId": "samamusic:27",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002748",
+      "leaf_whole": "디지털/가전>자동차기기>카오디오음향기기>스피커",
+      "supplier_path": "",
+      "model_name": "LYD-8, 220V",
+      "reason": "leaf semantic risk — PR #139 오매핑 사례군(자동차 카오디오 리프), 운영자 리프 확정 필요"
+    },
+    {
+      "cgiId": "samamusic:746",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002748",
+      "leaf_whole": "디지털/가전>자동차기기>카오디오음향기기>스피커",
+      "supplier_path": "",
+      "model_name": "LYD-48, B/W",
+      "reason": "leaf semantic risk — PR #139 오매핑 사례군(자동차 카오디오 리프), 운영자 리프 확정 필요"
+    },
+    {
+      "cgiId": "samamusic:732",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002748",
+      "leaf_whole": "디지털/가전>자동차기기>카오디오음향기기>스피커",
+      "supplier_path": "",
+      "model_name": "LYD-5Black, 220V",
+      "reason": "leaf semantic risk — PR #139 오매핑 사례군(자동차 카오디오 리프), 운영자 리프 확정 필요"
+    },
+    {
+      "cgiId": "samamusic:3973",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002748",
+      "leaf_whole": "디지털/가전>자동차기기>카오디오음향기기>스피커",
+      "supplier_path": "",
+      "model_name": "9310BM",
+      "reason": "leaf semantic risk — PR #139 오매핑 사례군(자동차 카오디오 리프), 운영자 리프 확정 필요"
+    },
+    {
+      "cgiId": "samamusic:730",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002748",
+      "leaf_whole": "디지털/가전>자동차기기>카오디오음향기기>스피커",
+      "supplier_path": "",
+      "model_name": "LYD-8 Black, 220V",
+      "reason": "leaf semantic risk — PR #139 오매핑 사례군(자동차 카오디오 리프), 운영자 리프 확정 필요"
+    },
+    {
+      "cgiId": "samamusic:4101",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002748",
+      "leaf_whole": "디지털/가전>자동차기기>카오디오음향기기>스피커",
+      "supplier_path": "",
+      "model_name": "CDL 12P Tote",
+      "reason": "leaf semantic risk — PR #139 오매핑 사례군(자동차 카오디오 리프), 운영자 리프 확정 필요"
+    },
+    {
+      "cgiId": "samamusic:5705",
+      "taxonomy_state": "READY_SALE",
+      "leafCategoryId": "50002748",
+      "leaf_whole": "디지털/가전>자동차기기>카오디오음향기기>스피커",
+      "supplier_path": "",
+      "model_name": "CORE 5",
+      "reason": "leaf semantic risk — PR #139 오매핑 사례군(자동차 카오디오 리프), 운영자 리프 확정 필요"
+    }
+  ]
+}
