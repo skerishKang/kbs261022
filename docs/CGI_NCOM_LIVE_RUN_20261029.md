@@ -1,5 +1,10 @@
 # 네이버 커머스API 라이브 실측 보고 — COM1 (2026-10-29)
 
+> **안내(2026-10-29):** 이 문서는 파일럿 전사 기록이다. 운영 절차·계약의 최신 통합본은
+> [CGI_NCOM_RUNBOOK_20261029.md](CGI_NCOM_RUNBOOK_20261029.md)이고, 오류 사례는
+> [오류 레지스터](CGI_NCOM_ERROR_REGISTER_20261029.md), 배치별 수량은
+> [배치 증적 수량표](CGI_NCOM_BATCH_EVIDENCE_20261029.md)에 정리돼 있다.
+
 > 브랜치 `cgi-com1/ncom-live-20261029` (기준 HEAD `fcd18a4` = PR #132 스택 최상단)
 > 지시: CENTRAL CTO → COM1(Padiem-Command-Center) 신규 세션, 네이버 Commerce API 실연동 (기준 이슈 #130)
 > 범위 준수: 기존 PR #125·#127·#131·#132 재사용(중복 개발 0), COM1 기존 개발 폴더 미변경, 인증 원본 이미지 미변경, 라이브 **쓰기 0건**
