@@ -17,6 +17,7 @@
 | **배치6(100건)** | `c77192d` 스택 | [#143](https://github.com/skerishKang/kbs261022/pull/143) | 310건 공급처 재조회 → 213 후보(선정 100+예비 25) | **100** | 결정론적 실패 2(원산지 미해소) + E23 오채택 1건(정확 일치 검증 후 정상 등록으로 정정) | **15**(OUTOFSTOCK) | 1→정확 일치 검증으로 정정(E23) | E23(접두어 히트 오채택) | C20(정확 일치 검증) 계약 확립·classifySellerCodeHits 테스트 고정 | batch-contracts unit(+2) | `bulk/register_6th_batch_20261029.json` · `bulk/batch6_enrichment_20261029.json` · `bulk/batch6_prep_20261029.json` · `bulk/batch6_existing83_verify_20261029.json` |
 | **배치7(200건 목표→143)** | `73fb4a4` 스택 | [#144](https://github.com/skerishKang/kbs261022/pull/144) | 2,240건 재조회 → 151 후보 | **143** | 원산지 미표기·미해소 8건 제외(E24) | **26**(OUTOFSTOCK) | 0 | E24(원산지 표기 정규화·'해외' 02 단독 거부·쉼표 복수 누락) | C18 확장(꼬리 마침표 제거·쉼표 복수·'해외' 제외)·resolveOriginArea 테스트 +1 | batch-contracts unit(+1) | `bulk/register_7th_batch_20261029.json` · `bulk/batch7_enrichment_20261029.json` · `bulk/batch7_prep_20261029.json` · `bulk/batch7_existing183_verify_20261029.json` |
 | **배치8(재고 동기화, 등록 0)** | `45c8a37` 스택 | [#145](https://github.com/skerishKang/kbs261022/pull/145) | 등록 후보 0(표본 재확인 — 문의가 50/50 비공개·모델명 0/20) | **0**(신규 적격 후보 없음) | — | — | 0 | E25(수량 미공개 하한 1 덮어쓰기 — 자기 점검 발견) | **재고 동기화 신설(C21)**: 비교 326 → 적용 170 → E25 정정 168 복원 → 유효 변경 재입고 2건 라이브 성공(LIVE_RESTOCK_E2E=VERIFIED) | ncom-stock-sync unit 11 + e2e 3(신설) | `bulk/stock_sync_plan_20261029.json` · `bulk/stock_sync_apply_20261029.json` · `bulk/batch8_sample_recheck_20261029.json` |
+| **배치9(가격 복구·재고 운영화·등록)** | `6aac09d`+`2517734` 스택 | [#146](https://github.com/skerishKang/kbs261022/pull/146) | 오늘 라이브 재판정 풀 69(배치5~7 미등록 34+READY 잔여 35) → 적격 34 | **23** | 원산지 미표기 11('해외' 7·'국내' 4 — 코드표에 국내 코드 부재, 배치7 선례 계약) + prep 제외 35(모델명 없음 26·검토가드 9) | 0(재판정 품절 2건은 원산지 제외에 포함) | 0 | 기술 실패 0 유지 — E26(데이터 원천 접근)은 오류 레지스터 참조 | **문의가 1,348건 5원천 전수 대조(회수 0 — 원천 차단 보고)** · 재고 CLI 운영화(잠금·게이트·검증불일치 자동원복) · 읽기 전용 정기 점검 스케줄 등록 | ncom-stock-sync-runner unit 7(신설) | `bulk/batch9_price_recovery_20261029.json` · `bulk/stock_sync_plan_batch9_20261029.json` · `bulk/batch9_prep_20261029.json` · `bulk/register_9th_batch_20261029.json` |
 
 배치4의 19건 구성: 1차 실행 18건 등록(장부 기록 포함) → 2146 등록 직후 크래시(장부 미기록) → 재실행에서 17건 DUPLICATE_BLOCKED(원격 존재 확인) + 2146 회수 + 신규 1건(3103) 등록 = 19. 증적 JSON의 `state` 분포: DISPLAYED 1 · DUPLICATE_BLOCKED 17 · FAILED_REGISTER 2.
 
@@ -28,7 +29,9 @@
 
 배치8의 재고 동기화: 등록 326건 읽기 비교(공급처 관측+원상품 GET) → 계획(noop 156·수량 168·재입고 2) → 적용 170건 SYNCED → 수량 미공개 168건은 E25 정정으로 원상품 실측값 복원(REVERTED 168/168) → 유효 변경 재입고 2건 라이브 성공(samamusic:1856·2093, OUTOFSTOCK→SALE).
 
-## 누적 장부 상태 (2026-10-29 배치8 완료, 등록 326건 + 재고 동기화 감사 기록)
+배치9의 구성: ① **가격 복구** — 문의가 1,348건을 5원천(배치7 공급처 실측·CGI 카탈로그·수집DB·ERP 품목 출고단가·ERP 확장매핑)과 전수 대조 → **회수 0건**, 미복구 사유를 상품별 기록(E26 — ERP API는 `ecount.env` 부재, 가격표·견적자료는 저장소 내 부재). 확정 판매가 신규 전환 0건 — 허위 가격 생성 없음. ② **재고 운영화** — 커밋용 CLI `tools/naver/ncom-stock-sync.mjs` 신설(읽기 비교 기본·단일 실행 잠금·쓰기 이중 게이트·검증 불일치 자동 원복·revert 명령) + 326건 라이브 읽기 전수 비교(blocked 273=수량 미공개 차단·noop 53·쓰기 0) + **E25 168건 복원 대조 168/168 현재 원격 일치** + 재입고 2건 현행 일치 — 기존 326건 의도하지 않은 변경 0. 읽기 전용 정기 점검을 Task Scheduler `PADIEM-CGI1-LOCAL2-Ncom-StockCheck`(매일 07:30)에 등록·시험 실행. ③ **신규 등록** — prep 풀 69건 전수 오늘 라이브 재판정(가격·품절·모델·원산지·브랜드·전자배송) → 적격 34(가격 수집가=라이브 불일치 0) → 23건 등록·전시 ON(전원 SALE, 하드웨어 23 · 원산지 검증 코드 22+복수 04+content 1 · 리프: 스피커단품 14·레코딩장비 3·블루투스스피커 2·기타 리프 4 · 원상품번호 13777385132~13777385953). 잔여 35건 제외 사유 상품별 기록(원산지 미표기 11·모델명 없음 26·검토가드 9).
+
+## 누적 장부 상태 (2026-10-29 배치9 완료, 등록 349건 + 재고 동기화 감사 기록)
 
 | 구간 | 건수 | 비고 |
 | --- | --- | --- |
@@ -40,6 +43,7 @@
 | 배치6 | 100 | 원상품번호 13777038302~13777055078 대역 — SALE 85·OUTOFSTOCK 15 |
 | 배치7 | 143 | 원상품번호 13777135790~13777147854 대역 — SALE 117·OUTOFSTOCK 26 |
 | 배치8 | 0 | 재고 동기화 — 유효 변경 재입고 2건(1856·2093, OUTOFSTOCK→SALE) 외 등록 변동 없음(E25 정정 168건 복원) |
+| 배치9 | 23 | 원상품번호 13777385132~13777385953 대역 — 전원 SALE·전시 ON(하드웨어 23 · 리프 7종) |
 | **합계** | **326** | displayStatus ON 326/326 · mode=live · cgiId·상품번호 유일 |
 
 기존 등록 불변 검증: 배치5 후 33건(행 대조+원격 33/33 — `bulk/batch5_existing33_verify_20261029.json`), 배치6 후 83건(행 대조+원격 83/83 — `bulk/batch6_existing83_verify_20261029.json`), 배치7 후 183건(행 대조+원격 183/183 — `bulk/batch7_existing183_verify_20261029.json`).
