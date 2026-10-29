@@ -1,0 +1,287 @@
+{
+  "ran_at": "2026-10-29T11:01:18.501Z",
+  "inquiry_sample": {
+    "samasound:3836": {
+      "price_now": null,
+      "still_inquiry": true
+    },
+    "samasound:3129": {
+      "price_now": null,
+      "still_inquiry": true
+    },
+    "samasound:3130": {
+      "price_now": null,
+      "still_inquiry": true
+    },
+    "samasound:3833": {
+      "price_now": null,
+      "still_inquiry": true
+    },
+    "samasound:3835": {
+      "price_now": null,
+      "still_inquiry": true
+    },
+    "samasound:3131": {
+      "price_now": null,
+      "still_inquiry": true
+    },
+    "samasound:3128": {
+      "price_now": null,
+      "still_inquiry": true
+    },
+    "samasound:3127": {
+      "price_now": null,
+      "still_inquiry": true
+    },
+    "samasound:268": {
+      "price_now": null,
+      "still_inquiry": true
+    },
+    "samasound:267": {
+      "price_now": null,
+      "still_inquiry": true
+    },
+    "samasound:265": {
+      "price_now": null,
+      "still_inquiry": true
+    },
+    "samasound:264": {
+      "price_now": null,
+      "still_inquiry": true
+    },
+    "samasound:263": {
+      "price_now": null,
+      "still_inquiry": true
+    },
+    "samasound:262": {
+      "price_now": null,
+      "still_inquiry": true
+    },
+    "samasound:260": {
+      "price_now": null,
+      "still_inquiry": true
+    },
+    "samasound:261": {
+      "price_now": null,
+      "still_inquiry": true
+    },
+    "samasound:259": {
+      "price_now": null,
+      "still_inquiry": true
+    },
+    "samasound:258": {
+      "price_now": null,
+      "still_inquiry": true
+    },
+    "samasound:257": {
+      "price_now": null,
+      "still_inquiry": true
+    },
+    "samasound:256": {
+      "price_now": null,
+      "still_inquiry": true
+    },
+    "samasound:254": {
+      "price_now": null,
+      "still_inquiry": true
+    },
+    "samasound:255": {
+      "price_now": null,
+      "still_inquiry": true
+    },
+    "samasound:253": {
+      "price_now": null,
+      "still_inquiry": true
+    },
+    "samasound:252": {
+      "price_now": null,
+      "still_inquiry": true
+    },
+    "samasound:251": {
+      "price_now": null,
+      "still_inquiry": true
+    },
+    "samasound:250": {
+      "price_now": null,
+      "still_inquiry": true
+    },
+    "samasound:249": {
+      "price_now": null,
+      "still_inquiry": true
+    },
+    "samasound:246": {
+      "price_now": null,
+      "still_inquiry": true
+    },
+    "samasound:242": {
+      "price_now": null,
+      "still_inquiry": true
+    },
+    "samasound:247": {
+      "price_now": null,
+      "still_inquiry": true
+    },
+    "samasound:240": {
+      "price_now": null,
+      "still_inquiry": true
+    },
+    "samasound:248": {
+      "price_now": null,
+      "still_inquiry": true
+    },
+    "samasound:241": {
+      "price_now": null,
+      "still_inquiry": true
+    },
+    "samasound:239": {
+      "price_now": null,
+      "still_inquiry": true
+    },
+    "samasound:238": {
+      "price_now": null,
+      "still_inquiry": true
+    },
+    "samasound:237": {
+      "price_now": null,
+      "still_inquiry": true
+    },
+    "samasound:236": {
+      "price_now": null,
+      "still_inquiry": true
+    },
+    "samasound:234": {
+      "price_now": null,
+      "still_inquiry": true
+    },
+    "samasound:233": {
+      "price_now": null,
+      "still_inquiry": true
+    },
+    "samasound:232": {
+      "price_now": null,
+      "still_inquiry": true
+    },
+    "samasound:231": {
+      "price_now": null,
+      "still_inquiry": true
+    },
+    "samasound:230": {
+      "price_now": null,
+      "still_inquiry": true
+    },
+    "samasound:223": {
+      "price_now": null,
+      "still_inquiry": true
+    },
+    "samasound:222": {
+      "price_now": null,
+      "still_inquiry": true
+    },
+    "samasound:221": {
+      "price_now": null,
+      "still_inquiry": true
+    },
+    "samasound:220": {
+      "price_now": null,
+      "still_inquiry": true
+    },
+    "samasound:219": {
+      "price_now": null,
+      "still_inquiry": true
+    },
+    "samasound:218": {
+      "price_now": null,
+      "still_inquiry": true
+    },
+    "samasound:217": {
+      "price_now": null,
+      "still_inquiry": true
+    },
+    "samasound:215": {
+      "price_now": null,
+      "still_inquiry": true
+    }
+  },
+  "model_sample": {
+    "samasound:3131": {
+      "model_found": null,
+      "name": "SQ-Rack"
+    },
+    "samasound:3127": {
+      "model_found": null,
+      "name": "Avantis / Avantis Solo"
+    },
+    "samasound:268": {
+      "model_found": null,
+      "name": "ME-U"
+    },
+    "samasound:265": {
+      "model_found": null,
+      "name": "M-Waves"
+    },
+    "samasound:264": {
+      "model_found": null,
+      "name": "M-Dante"
+    },
+    "samasound:263": {
+      "model_found": null,
+      "name": "M-MADI"
+    },
+    "samasound:262": {
+      "model_found": null,
+      "name": "SQ Waves"
+    },
+    "samasound:261": {
+      "model_found": null,
+      "name": "SQ SLink"
+    },
+    "samasound:223": {
+      "model_found": null,
+      "name": "Qu-PAC"
+    },
+    "samasound:96": {
+      "model_found": null,
+      "name": "플로어 스탠드"
+    },
+    "samasound:94": {
+      "model_found": null,
+      "name": "숏 테이블 스탠드"
+    },
+    "samasound:92": {
+      "model_found": null,
+      "name": "디자인 플로어 스탠드"
+    },
+    "samasound:91": {
+      "model_found": null,
+      "name": "높이 조절형 테이블 스탠드"
+    },
+    "samasound:86": {
+      "model_found": null,
+      "name": "Genelec 이동용 소프트 가방"
+    },
+    "samasound:3662": {
+      "model_found": null,
+      "name": "NADITBNC-MX"
+    },
+    "samasound:3661": {
+      "model_found": null,
+      "name": "NADITBNC-FX"
+    },
+    "samasound:3660": {
+      "model_found": null,
+      "name": "NADITBNC-M"
+    },
+    "samasound:3659": {
+      "model_found": null,
+      "name": "NADITBNC-F"
+    },
+    "samasound:3569": {
+      "model_found": null,
+      "name": "XXCR"
+    },
+    "samasound:3568": {
+      "model_found": null,
+      "name": "SCM"
+    }
+  }
+}
