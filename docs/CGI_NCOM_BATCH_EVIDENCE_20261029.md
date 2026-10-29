@@ -15,6 +15,8 @@
 | 배치4(20건 계획) | `a50ddd9` | [#140](https://github.com/skerishKang/kbs261022/pull/140) | 20 | **19** | 2(4057·4058 — `etc.modelName` NotNull "데이터를 입력해 주세요.") | 11(OUTOFSTOCK) | **17**(멱등 실증) | E16(2146 등록 직후 크래시) | 크래시 복구 계약 실증(13776759782 회수) | batch-recovery e2e(신설) | `bulk/register_4th_batch_20261029.json`(등록 309ms×1건·재시도 0·타임아웃 0) |
 | **배치5(50건)** | `6ddd95e` 스택 | [#142](https://github.com/skerishKang/kbs261022/pull/142) | 70(선정 50+예비 20) | **50** | 결정론적 실패 2(3169·5383 원산지 미해소) + 시범 중 버그 2(재시도 성공) | 0(라이브 재검증에서 품절 전환 0) | 0 | E21(러너 원산지 결합 누락)·E22(복수 원산지) | C18(04+content)·C19(SW 재매핑) 계약 확립·resolveOriginArea 테스트 고정 | batch-contracts unit(+3) | `bulk/register_5th_batch_20261029.json` · `bulk/batch5_existing33_verify_20261029.json` |
 | **배치6(100건)** | `c77192d` 스택 | [#143](https://github.com/skerishKang/kbs261022/pull/143) | 310건 공급처 재조회 → 213 후보(선정 100+예비 25) | **100** | 결정론적 실패 2(원산지 미해소) + E23 오채택 1건(정확 일치 검증 후 정상 등록으로 정정) | **15**(OUTOFSTOCK) | 1→정확 일치 검증으로 정정(E23) | E23(접두어 히트 오채택) | C20(정확 일치 검증) 계약 확립·classifySellerCodeHits 테스트 고정 | batch-contracts unit(+2) | `bulk/register_6th_batch_20261029.json` · `bulk/batch6_enrichment_20261029.json` · `bulk/batch6_prep_20261029.json` · `bulk/batch6_existing83_verify_20261029.json` |
+| **배치7(200건 목표→143)** | `73fb4a4` 스택 | [#144](https://github.com/skerishKang/kbs261022/pull/144) | 2,240건 재조회 → 151 후보 | **143** | 원산지 미표기·미해소 8건 제외(E24) | **26**(OUTOFSTOCK) | 0 | E24(원산지 표기 정규화·'해외' 02 단독 거부·쉼표 복수 누락) | C18 확장(꼬리 마침표 제거·쉼표 복수·'해외' 제외)·resolveOriginArea 테스트 +1 | batch-contracts unit(+1) | `bulk/register_7th_batch_20261029.json` · `bulk/batch7_enrichment_20261029.json` · `bulk/batch7_prep_20261029.json` · `bulk/batch7_existing183_verify_20261029.json` |
+| **배치8(재고 동기화, 등록 0)** | `45c8a37` 스택 | [#145](https://github.com/skerishKang/kbs261022/pull/145) | 등록 후보 0(표본 재확인 — 문의가 50/50 비공개·모델명 0/20) | **0**(신규 적격 후보 없음) | — | — | 0 | E25(수량 미공개 하한 1 덮어쓰기 — 자기 점검 발견) | **재고 동기화 신설(C21)**: 비교 326 → 적용 170 → E25 정정 168 복원 → 유효 변경 재입고 2건 라이브 성공(LIVE_RESTOCK_E2E=VERIFIED) | ncom-stock-sync unit 11 + e2e 3(신설) | `bulk/stock_sync_plan_20261029.json` · `bulk/stock_sync_apply_20261029.json` · `bulk/batch8_sample_recheck_20261029.json` |
 
 배치4의 19건 구성: 1차 실행 18건 등록(장부 기록 포함) → 2146 등록 직후 크래시(장부 미기록) → 재실행에서 17건 DUPLICATE_BLOCKED(원격 존재 확인) + 2146 회수 + 신규 1건(3103) 등록 = 19. 증적 JSON의 `state` 분포: DISPLAYED 1 · DUPLICATE_BLOCKED 17 · FAILED_REGISTER 2.
 
@@ -22,7 +24,11 @@
 
 배치6의 100건 구성: SW 51(리프 50001516) + 하드웨어 49(스피커액세서리 17·스피커단품 11·레코딩장비 11·무선마이크 4·블루투스스피커 3·앰프 1·유선마이크 1·마이크주변기기 1). 원산지: 검증 코드 96 + 복수 04+content 4. 품절 등록 15건(C11~C12 상태머신). 카테고리 의미 재분류: 자동차기기·식품·도서 리프 오매핑 22건 정정(상품명 근거 기록). 모델명 복구 229건(페이지 라벨 198·상품명 코드 31). 재고: 수집값 25·수량 미공개(하한 1, 실재고 아님) 75. 등록 평균 249ms/건, 재시도 0·타임아웃 0.
 
-## 누적 장부 상태 (2026-10-29 배치7 완료, `ncom_registration_ledger.json` 326건)
+배치7의 143건 구성: SW 12 + 하드웨어 131(이어폰/헤드폰 액세서리 102·레코딩장비 12·마이크주변기기 8·앰프 3·유선이어폰 5·무선헤드폰 1). 원산지: 검증 코드 140 + 복수 04+content 3. 품절 등록 26건. 신규 리프 5종(이어폰/헤드폰 패밀리 — categoryGet 확인). 등록 평균 257ms/건, 재시도 0·타임아웃 0.
+
+배치8의 재고 동기화: 등록 326건 읽기 비교(공급처 관측+원상품 GET) → 계획(noop 156·수량 168·재입고 2) → 적용 170건 SYNCED → 수량 미공개 168건은 E25 정정으로 원상품 실측값 복원(REVERTED 168/168) → 유효 변경 재입고 2건 라이브 성공(samamusic:1856·2093, OUTOFSTOCK→SALE).
+
+## 누적 장부 상태 (2026-10-29 배치8 완료, 등록 326건 + 재고 동기화 감사 기록)
 
 | 구간 | 건수 | 비고 |
 | --- | --- | --- |
@@ -33,6 +39,7 @@
 | 배치5 | 50 | 원상품번호 13776938053~13776945898 대역 — 전원 SALE |
 | 배치6 | 100 | 원상품번호 13777038302~13777055078 대역 — SALE 85·OUTOFSTOCK 15 |
 | 배치7 | 143 | 원상품번호 13777135790~13777147854 대역 — SALE 117·OUTOFSTOCK 26 |
+| 배치8 | 0 | 재고 동기화 — 유효 변경 재입고 2건(1856·2093, OUTOFSTOCK→SALE) 외 등록 변동 없음(E25 정정 168건 복원) |
 | **합계** | **326** | displayStatus ON 326/326 · mode=live · cgiId·상품번호 유일 |
 
 기존 등록 불변 검증: 배치5 후 33건(행 대조+원격 33/33 — `bulk/batch5_existing33_verify_20261029.json`), 배치6 후 83건(행 대조+원격 83/83 — `bulk/batch6_existing83_verify_20261029.json`), 배치7 후 183건(행 대조+원격 183/183 — `bulk/batch7_existing183_verify_20261029.json`).
