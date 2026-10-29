@@ -203,6 +203,30 @@ export function planZeroStockResume({ remote = null } = {}) {
 }
 
 /**
+ * 공급처 원산지 표기 → 등록 본문 originAreaInfo 결정(순수 함수).
+ * 벤더 문서(api/v2/products.POST): originAreaCode 는 상세 지역 코드(02xxxxx) 또는
+ * 접두 코드 00~05, '04(기타-직접 입력)'는 content 를 필수로 요구한다. plural 의
+ * 문서 의미는 '원산지가 다른 상품을 같이 등록하는지 여부'이므로 단일 상품의
+ * 불확정 원산지에 true 를 쓰지 않는다.
+ *
+ * 계약(2026-10-29 배치5 확립):
+ *   - 단일 국가 표기 → 라이브 코드표에서 유일 매칭 코드(verified_code).
+ *   - '아시아 중국 또는 멕시코'처럼 복수 후보 표기 → 하나를 고르지 말고
+ *     04 + 공급처 표기 원문(direct_input_content). 실측: 등록·전시 ON 성공.
+ *   - 판독 불가·매칭 실패는 ok=false 로 보고하고 값을 만들지 않는다.
+ */
+export function resolveOriginArea({ originText = null, resolveCode = null } = {}) {
+  const text = String(originText ?? '').trim();
+  if (!text) return { ok: false, reason: 'origin_text_missing', originAreaCode: null, content: null, plural: false, mode: null };
+  if (/또는/.test(text)) {
+    return { ok: true, originAreaCode: '04', content: text, plural: false, mode: 'direct_input_content' };
+  }
+  const code = typeof resolveCode === 'function' ? resolveCode(text) : null;
+  if (!code) return { ok: false, reason: 'origin_code_unresolved', originAreaCode: null, content: null, plural: false, mode: null };
+  return { ok: true, originAreaCode: code, content: null, plural: false, mode: 'verified_code' };
+}
+
+/**
  * 배치가 만들려는 의도(intent)의 하드 가드. 배치 러너가 등록·수정 본문을 보내기 전에
  * 검증한다 — 실측으로 거부된 조합(NumberMin 재고 0 등록, OUTOFSTOCK statusType 수정)은
  * 여기서 예외로 막힌다.
