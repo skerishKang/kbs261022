@@ -1,0 +1,281 @@
+{
+  "kind": "cgi-m1-readiness-report",
+  "products": 4575,
+  "registerable_now": 0,
+  "registerable_now_note": "naver_register_problems 가 빈 행이 0건 — 카테고리·재고·업로드 이미지·정책 게이트가 모두 열리기 전까지는 본문 전송 후보가 없다",
+  "fields": {
+    "naver_category": {
+      "usable": 0,
+      "blocked": 4575,
+      "source_ready": 0,
+      "reason_counts": {
+        "supplier_category_not_mapped_to_naver": 4575,
+        "naver_leaf_category_absent": 4575,
+        "naver_category_corpus_absent": 4575
+      },
+      "label": "네이버 카테고리",
+      "note": "leafCategoryId 의 유일한 출처는 GET /v1/categories (판매자 토큰) — 코퍼스 수집 전까지 임의 배정 금지"
+    },
+    "sale_price": {
+      "usable": 2116,
+      "blocked": 2459,
+      "source_ready": 0,
+      "reason_counts": {
+        "price_inquiry_only": 2370,
+        "price_sold_out_no_public_price": 87,
+        "price_numeric_but_inquiry_state": 3,
+        "price_value_untrusted_parse_artifact": 1,
+        "price_absent_no_published_value": 1
+      },
+      "label": "판매가",
+      "note": "공개 판매가만 usable — 가격 문의·판매완료는 고객 확정 전까지 등록 불가"
+    },
+    "stock": {
+      "usable": 0,
+      "blocked": 4575,
+      "source_ready": 0,
+      "reason_counts": {
+        "stock_quantity_column_absent": 4575,
+        "stock_requires_erp_balance_read": 4575,
+        "stock_displayed_zero": 462,
+        "stock_displayed_but_supplier_unmanaged": 2621,
+        "stock_displayed_positive_unverified": 1151,
+        "availability_fields_absent": 341
+      },
+      "label": "재고",
+      "note": "확정 수량은 Ecount 잔량조회(BAL_QTY)만 근거 — 공급처 표시 수량은 참고용"
+    },
+    "detail_content": {
+      "usable": 0,
+      "blocked": 4575,
+      "source_ready": 0,
+      "reason_counts": {
+        "detail_content_absent": 323,
+        "detail_content_summary_only": 4252
+      },
+      "label": "상세설명",
+      "note": "공급처 한 줄 요약(최대 187자)은 본문이 아니다 — M1 템플릿 초안이 전 건 생성되지만 운영자 승인 전까지 required 는 미해소"
+    },
+    "images": {
+      "usable": 0,
+      "blocked": 4575,
+      "source_ready": 3895,
+      "reason_counts": {
+        "image_representative_blank": 0,
+        "image_measurement_missing": 0,
+        "image_probe_not_fetched": 0,
+        "image_probe_http_error": 0,
+        "image_bytes_unreadable": 0,
+        "image_format_not_allowed": 0,
+        "image_below_recommended_pixels": 680,
+        "image_non_square_measured": 11,
+        "image_no_larger_segment_measured": 642,
+        "image_larger_segment_still_small": 38,
+        "image_extra_over_api_max": 2561,
+        "image_external_host_upload_required": 4575,
+        "image_gif_animation_indicator": 0
+      },
+      "label": "이미지",
+      "note": "등록 가능 판정은 업로드 API 반환 URL만 통과(image_external_host_upload_required 가 전 건의 기본 차단) — 소스 준비도(ok/ok_via_segment)는 업로드 대기 품질 지표",
+      "state_census": {
+        "ok": 3894,
+        "ok_via_segment": 1,
+        "below_recommended": 680
+      }
+    },
+    "origin": {
+      "usable": 0,
+      "blocked": 4575,
+      "source_ready": 0,
+      "reason_counts": {
+        "origin_code_absent": 4575
+      },
+      "label": "원산지",
+      "note": "storewide 정책 — detailAttribute.originAreaInfo.originAreaCode 는 등록 시 필수"
+    },
+    "delivery_returns": {
+      "usable": 0,
+      "blocked": 4575,
+      "source_ready": 0,
+      "reason_counts": {
+        "shipping_policy_absent": 4575,
+        "return_policy_absent": 4575
+      },
+      "label": "배송·반품",
+      "note": "deliveryInfo.deliveryFee 와 claimDeliveryInfo(반품/교환 배송비)는 등록 시 필수 — 고객 정책 확정 필요"
+    },
+    "as_kc": {
+      "usable": 0,
+      "blocked": 4575,
+      "source_ready": 0,
+      "reason_counts": {
+        "as_template_absent": 4575,
+        "kc_info_absent": 4575
+      },
+      "label": "AS·인증",
+      "note": "detailAttribute.afterServiceInfo(AS 전화번호·안내)는 필수. 카테고리별 인증(KC 등) 요구는 코퍼스 수집 전까지 미확인"
+    }
+  },
+  "m1_detail_template": {
+    "drafts_built": 4575,
+    "approval_pending": 4575,
+    "with_hero_image": 4575,
+    "with_price": 2117,
+    "with_options_table": 367,
+    "reason_counts": {
+      "manufacturer_absent": 2294,
+      "model_absent": 2835,
+      "detail_sentence_absent": 323,
+      "options_not_emittable": 4208,
+      "price_inquiry_omitted": 2458
+    },
+    "counts_as_detail_content": false,
+    "operator_approval_required": true
+  },
+  "candidates": {
+    "gates": {
+      "price_gate": "price_usable == yes",
+      "image_gate": "image_measured_state in (ok, ok_via_segment)",
+      "duplicate_gate": "duplicate_pair_count == 0 (쌍 자체가 없는 상품만 — 판정 대기 쌍은 제외)",
+      "pilot_status_gate": "공급처 판매상태 == 판매중",
+      "first_batch_status_gate": "공급처 판매상태 != 품절(판매중지) && != 판매완료",
+      "always_open_gates": [
+        "naver_category",
+        "stock",
+        "origin",
+        "delivery_returns",
+        "as_kc",
+        "detail_content 승인",
+        "images 업로드 API 전환",
+        "cgi_sale_status 승인"
+      ]
+    },
+    "pilot": {
+      "count": 3,
+      "cgi_ids": [
+        "samamusic.co.kr:1769",
+        "samamusic.co.kr:3417",
+        "samamusic.co.kr:3418"
+      ],
+      "note": "게이트 해제 시 최우선 파일럿 후보"
+    },
+    "first_batch": {
+      "count": 241,
+      "cgi_ids_capped": 50,
+      "cgi_ids": [
+        "samamusic.co.kr:1013",
+        "samamusic.co.kr:1102",
+        "samamusic.co.kr:1103",
+        "samamusic.co.kr:1136",
+        "samamusic.co.kr:1138",
+        "samamusic.co.kr:1147",
+        "samamusic.co.kr:1226",
+        "samamusic.co.kr:1242",
+        "samamusic.co.kr:1376",
+        "samamusic.co.kr:1377",
+        "samamusic.co.kr:1387",
+        "samamusic.co.kr:1388",
+        "samamusic.co.kr:1389",
+        "samamusic.co.kr:1391",
+        "samamusic.co.kr:1392",
+        "samamusic.co.kr:1393",
+        "samamusic.co.kr:1394",
+        "samamusic.co.kr:143",
+        "samamusic.co.kr:1446",
+        "samamusic.co.kr:1505",
+        "samamusic.co.kr:1630",
+        "samamusic.co.kr:1769",
+        "samamusic.co.kr:177",
+        "samamusic.co.kr:178",
+        "samamusic.co.kr:182",
+        "samamusic.co.kr:184",
+        "samamusic.co.kr:187",
+        "samamusic.co.kr:189",
+        "samamusic.co.kr:1892",
+        "samamusic.co.kr:1893",
+        "samamusic.co.kr:190",
+        "samamusic.co.kr:191",
+        "samamusic.co.kr:193",
+        "samamusic.co.kr:194",
+        "samamusic.co.kr:1949",
+        "samamusic.co.kr:1953",
+        "samamusic.co.kr:197",
+        "samamusic.co.kr:1971",
+        "samamusic.co.kr:2090",
+        "samamusic.co.kr:2091",
+        "samamusic.co.kr:2092",
+        "samamusic.co.kr:2095",
+        "samamusic.co.kr:2096",
+        "samamusic.co.kr:2097",
+        "samamusic.co.kr:2099",
+        "samamusic.co.kr:2101",
+        "samamusic.co.kr:2128",
+        "samamusic.co.kr:2151",
+        "samamusic.co.kr:2154",
+        "samamusic.co.kr:2183"
+      ],
+      "by_supplier_status": {
+        "재고미관리": 127,
+        "미확인": 111,
+        "판매중": 3
+      }
+    },
+    "by_supplier_status": {
+      "품절(판매중지)": 1700,
+      "재고미관리": 2491,
+      "판매중": 26,
+      "미확인": 271,
+      "판매완료": 87
+    }
+  },
+  "inputs": {
+    "master": {
+      "path": "data/full_catalog/product_db_compact.csv",
+      "sha256": "d7f0446d6bbae6d8fe1b54ad55e70619b1c0ac41ade2bb165caf73dcc0ec3603"
+    },
+    "extended": {
+      "path": "data/erp_prep/erp_extended_mapping.csv",
+      "sha256": "8f4658de30888384496dd9255d32b9b5b89c7df4408df81b4724811e69e40e16"
+    },
+    "upload": {
+      "path": "data/erp_prep/ecount_item_upload.csv",
+      "sha256": "8506cb399015fb30f493c479c4d0b3af338054383b367722e8fb52bf9a218f80"
+    },
+    "smartstore": {
+      "path": "data/smartstore_prep/smartstore_registration_prep.csv",
+      "sha256": "4833b4c184a30956a084452adacfc2242f7fc08dc16d72631b392c2c5d3bac13"
+    },
+    "options": {
+      "path": "data/full_catalog/options_compact.csv",
+      "sha256": "eec8afaaf238887556457f6c906f91d002da9afef43f7c09de83c8b316c6f290"
+    },
+    "duplicates": {
+      "path": "data/product_quality/product_duplicate_candidates.csv",
+      "sha256": "011d21a0ff989da30ba6c9a39004eba1c188718896ba7d7faa011dac8e60b4c6"
+    },
+    "imageMeasurements": {
+      "path": "reports/data/naver/image_measurements.csv",
+      "sha256": "b0e4e9de66438c483ff30b601595a9d37d301442711e376025a7bb6ffcc69db7"
+    },
+    "imageVariantMeasurements": {
+      "path": "reports/data/naver/image_variant_measurements.csv",
+      "sha256": "7afe648ff6b6309afbc3c0d680fe8846d0402140c9594ec33a7e6e6ca5afb34b"
+    },
+    "comparison": {
+      "path": "reports/data/erp/erp_readonly_comparison.json",
+      "sha256": "772566f7c6973d907e16ad8a68b4f34bd4293fbbc71c3bff903196f6b3235a24"
+    },
+    "summary": {
+      "path": "reports/data/erp/summary.json",
+      "sha256": "60aac6bf30a69df3613f115def17c82ead01859b7307d36b7562d12636dec511"
+    }
+  },
+  "m1_additions": {
+    "auth_module": "backend/lib/ncommerce-auth.mjs — 재시도 정책·토큰 수명 관리·로컬 bcrypt 바인딩(tools/naver), 테스트는 mock 만 사용",
+    "detail_template": "backend/lib/detail-template.mjs — 확인된 데이터만 반영하는 반응형 상세 초안, 10건 시안은 reports/data/registration/detail_samples/",
+    "naver_requests": 0,
+    "erp_requests": 0,
+    "live_writes": 0,
+    "account_login": "NO"
+  }
+}

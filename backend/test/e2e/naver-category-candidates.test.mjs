@@ -136,6 +136,25 @@ test('the committed aggregate publishes counts, not the supplier request surface
   assert.equal(aggregate.certification_kind_enum_size, 7);
 });
 
+test('the live-lane corpus wrapper (categories list) is parsed, not mistaken for an empty tree', () => {
+  const source = writeFixture('corpus-wrapper', 'prep.csv', toCsv(FIXTURE_ROWS, FIXTURE_COLUMNS));
+  const wrapper = JSON.stringify({
+    kind: 'cgi-naver-category-corpus',
+    source: 'GET /v1/categories?last=true',
+    mode: 'live',
+    fetched_at: '2026-10-29T00:00:00Z',
+    sha256: 'e'.repeat(64),
+    row_count: CORPUS_ROWS.length,
+    categories: CORPUS_ROWS,
+  });
+  const corpusFile = writeFixture('corpus-wrapper', 'corpus_live.json', wrapper);
+  const { summary } = run('corpus-wrapper', ['--source', source, '--corpus', corpusFile, '--paths', `${WORK_REL}/corpus-wrapper/paths.csv`]);
+  assert.equal(summary.CORPUS_PRESENT, true, 'the wrapper the live lane writes must parse as a corpus');
+  assert.equal(summary.CORPUS_ROWS, 3);
+  assert.equal(summary.CORPUS_LEAVES, 2);
+  assert.equal(summary.INVENTED_LEAF_IDS, 0);
+});
+
 test('a corpus in hand maps product paths and still leaves brand pages alone', () => {
   const source = writeFixture('corpus', 'prep.csv', toCsv(FIXTURE_ROWS, FIXTURE_COLUMNS));
   const corpusFile = writeFixture('corpus', 'corpus.csv', toCsv(CORPUS_ROWS, CORPUS_COLUMNS));

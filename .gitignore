@@ -33,5 +33,7 @@ reports/data/smartstore/live/
 .wrangler/
 .wrangler/**
 
+reports/screenshots/
+
 # local payment lab databases (never commit)
 .lab-payments-*.sqlite

@@ -1,0 +1,891 @@
+{
+  "kind": "cgi-m2b-pilot-packages",
+  "products": 3,
+  "pilot_selection": "reports/data/registration/m1_readiness_report.json candidates.pilot.cgi_ids",
+  "packages": [
+    {
+      "cgi_id": "samamusic.co.kr:1769",
+      "product_name": "K&M 19797 케이앤엠 태블릿 PC 스탠드",
+      "seller_management_code": "samamusic:1769",
+      "package": {
+        "cgiId": "samamusic.co.kr:1769",
+        "productName": "K&M 19797 케이앤엠 태블릿 PC 스탠드",
+        "sellerManagementCode": "samamusic:1769",
+        "body": {
+          "originProduct": {
+            "statusType": "SALE",
+            "name": "K&M 19797 케이앤엠 태블릿 PC 스탠드",
+            "salePrice": 116000,
+            "stockQuantity": null,
+            "detailAttribute": {
+              "taxType": "TAX",
+              "sellerCodeInfo": {
+                "sellerManagementCode": "samamusic:1769"
+              }
+            },
+            "images": {
+              "representative": "https://www.samamusic.co.kr/web/product/small/20200624/a3a892a3c531bd7522d5eeaf32a09cdd.jpg",
+              "additional": []
+            }
+          },
+          "smartstoreChannelProduct": {
+            "naverShoppingRegistration": false,
+            "channelProductDisplayStatusType": "ON"
+          }
+        },
+        "problems": [
+          {
+            "field": "leafCategoryId",
+            "reason": "required_at_register"
+          },
+          {
+            "field": "detailContent",
+            "reason": "required_at_register"
+          },
+          {
+            "field": "stockQuantity",
+            "reason": "required_at_register"
+          },
+          {
+            "field": "images.representative",
+            "reason": "not_from_image_upload_api",
+            "note": "외부 호스트 직접 링크는 거부됩니다. POST /v1/product-images/upload 응답 URL만 사용 가능합니다."
+          },
+          {
+            "field": "sellerManagementCode",
+            "reason": "duplicate_search_not_executed"
+          }
+        ],
+        "blocking_fields": [
+          "leafCategoryId",
+          "detailContent",
+          "stockQuantity",
+          "images.representative",
+          "sellerManagementCode"
+        ],
+        "blocking_field_count": 5,
+        "status": "blocked",
+        "would_transmit": false,
+        "execute": false,
+        "transmitted": false,
+        "evidence": {
+          "category": {
+            "path": "K&M 스탠드",
+            "kind": "product_classification",
+            "status": "unresolved",
+            "confirmed": "no",
+            "candidates": []
+          },
+          "detail": {
+            "draft_available": true,
+            "counts_as_detail_content": false,
+            "operator_approval_required": true,
+            "missing": [
+              "detail_content_absent",
+              "kc_info_absent",
+              "origin_code_absent",
+              "importer_absent"
+            ]
+          },
+          "option": {
+            "status": "no_options",
+            "option_type": "NONE",
+            "emittable": false,
+            "children": 0,
+            "reasons": [
+              "option_source_absent"
+            ]
+          },
+          "image": {
+            "representative_is_upload_api_url": false,
+            "measured_state": "ok",
+            "supplier_url_present": true
+          },
+          "stock": {
+            "numeric_in_catalogue": false,
+            "used_the_documented_auto_set": false
+          }
+        },
+        "bucket": "manual_review",
+        "note": "이 패키지는 실등록 준비 확인용이며 전송되지 않는다. values 는 원천 컬럼 사본이거나 결측 사유이다."
+      },
+      "blockers": {
+        "reason_split": [
+          {
+            "reason": "as_template_absent",
+            "resolution": "customer_input",
+            "requires": [
+              "고객 AS 안내(전화번호·안내 문구)"
+            ],
+            "note": "",
+            "products": 1
+          },
+          {
+            "reason": "detail_content_absent",
+            "resolution": "tooling_auto",
+            "requires": [
+              "M1 템플릿 초안(전 건 생성됨)",
+              "운영자 상세본문 승인"
+            ],
+            "note": "",
+            "products": 1
+          },
+          {
+            "reason": "image_external_host_upload_required",
+            "resolution": "tooling_after_auth",
+            "requires": [
+              "판매자 토큰",
+              "이미지 업로드 러너 실행"
+            ],
+            "note": "업로드 러너는 M2 계약 테스트로 고정돼 있다 — 반환 URL 만 본문에 허용",
+            "products": 1
+          },
+          {
+            "reason": "image_extra_over_api_max",
+            "resolution": "tooling_auto",
+            "requires": [
+              "추가 이미지 선별(대표 1+9 상한)"
+            ],
+            "note": "",
+            "products": 1
+          },
+          {
+            "reason": "kc_info_absent",
+            "resolution": "customer_input",
+            "requires": [
+              "고객 KC 인증 서류·신고 정보",
+              "리프 certificationInfos 요구 확인(토큰)"
+            ],
+            "note": "카테고리가 요구하는 리프에만 필요 — 코퍼스 수집 후 대상 확정",
+            "products": 1
+          },
+          {
+            "reason": "naver_category_corpus_absent",
+            "resolution": "tooling_after_auth",
+            "requires": [
+              "판매자 토큰",
+              "코퍼스 수집 도구 실행"
+            ],
+            "note": "GET /v1/categories?last=true — 수집·검증 도구는 mock으로 검증돼 있다",
+            "products": 1
+          },
+          {
+            "reason": "naver_leaf_category_absent",
+            "resolution": "tooling_after_auth",
+            "requires": [
+              "판매자 토큰",
+              "코퍼스 수집",
+              "운영자 리프 확인"
+            ],
+            "note": "후보 제안은 도구가 하고, confirmed 는 사람이 채운다 — 임의 배정은 계약상 금지",
+            "products": 1
+          },
+          {
+            "reason": "origin_code_absent",
+            "resolution": "customer_input",
+            "requires": [
+              "고객 원산지 정책 확정(제조국/수입 원산지)"
+            ],
+            "note": "전면 정책 하나 — 상품별 판단이 아니라 storewide 값이다",
+            "products": 1
+          },
+          {
+            "reason": "return_policy_absent",
+            "resolution": "customer_input",
+            "requires": [
+              "고객 반품·교환 배송비 정책"
+            ],
+            "note": "",
+            "products": 1
+          },
+          {
+            "reason": "shipping_policy_absent",
+            "resolution": "customer_input",
+            "requires": [
+              "고객 배송비·배송 방식 정책"
+            ],
+            "note": "",
+            "products": 1
+          },
+          {
+            "reason": "stock_displayed_positive_unverified",
+            "resolution": "tooling_after_auth",
+            "requires": [
+              "ERP 인증",
+              "BAL_QTY 조회"
+            ],
+            "note": "공급처 표시 수량은 참고용 — ERP 잔량이 결정권",
+            "products": 1
+          },
+          {
+            "reason": "stock_quantity_column_absent",
+            "resolution": "tooling_after_auth",
+            "requires": [
+              "ERP 인증",
+              "BAL_QTY 조회",
+              "stockFromErpBalance 변환"
+            ],
+            "note": "",
+            "products": 1
+          },
+          {
+            "reason": "stock_requires_erp_balance_read",
+            "resolution": "tooling_after_auth",
+            "requires": [
+              "ERP 인증",
+              "BAL_QTY 조회"
+            ],
+            "note": "",
+            "products": 1
+          },
+          {
+            "reason": "supplier_category_not_mapped_to_naver",
+            "resolution": "tooling_after_auth",
+            "requires": [
+              "판매자 토큰",
+              "코퍼스 수집",
+              "재매핑 실행"
+            ],
+            "note": "브랜드·프로모션 경로는 코퍼스가 있어도 매핑되지 않는다(구조 판정 계약)",
+            "products": 1
+          }
+        ],
+        "product_class": "auto_resolvable",
+        "resolution_classes": {
+          "tooling_auto": "외부 인증 없이 도구 실행(재수집·재측정·초안 생성)으로 해소된다",
+          "tooling_after_auth": "판매자 토큰·ERP 인증 등 외부 인증이 선행되면 도구 실행으로 해소된다",
+          "customer_input": "고객이 값·정책·서류를 제공해야만 해소된다 — 도구가 대신 만들어낼 수 없다"
+        }
+      },
+      "images": {
+        "representative_url_present": true,
+        "image_measured_state": "ok",
+        "upload_plan": {
+          "representative": "https://www.samamusic.co.kr/web/product/small/20200624/a3a892a3c531bd7522d5eeaf32a09cdd.jpg",
+          "additional": [],
+          "dropped_over_limit": [],
+          "upload_calls": 1,
+          "batches": [
+            {
+              "batch": 1,
+              "urls": [
+                "https://www.samamusic.co.kr/web/product/small/20200624/a3a892a3c531bd7522d5eeaf32a09cdd.jpg"
+              ]
+            }
+          ],
+          "over_extra_limit": false
+        },
+        "runner_note": "러너(lib/image-upload-runner.mjs)는 dry-run 검증을 마쳤다 — 실행(execute=true)은 NCOM_MODE=mock 검증만 이 레인에 있고, 실제 업로드는 판매자 토큰 승인 후 운영자 레인이다."
+      },
+      "category": {
+        "path": "K&M 스탠드",
+        "kind": "product_classification",
+        "status": "unresolved",
+        "confirmed": "no",
+        "note": "코퍼스 수집 도구(tools/naver-category-corpus.mjs)는 mock 으로 검증돼 있다 — 실수집은 판매자 토큰 승인 후."
+      },
+      "stock": {
+        "body_value": null,
+        "note": "ERP BAL_QTY 연동은 본 레인에서 제외됐다 — docs/CGI_M2B_ERP_DEFERRED_20261028.md 의 후속 과제."
+      },
+      "customer_inputs_pending": [
+        "원산지 정책",
+        "배송비·배송 방식",
+        "반품·교환 배송비",
+        "AS 안내",
+        "KC 인증(리프 요구 확인 후)"
+      ]
+    },
+    {
+      "cgi_id": "samamusic.co.kr:3417",
+      "product_name": "iZOTOPE RX 12 Standard 아이조톱 오디오 리페어 표준 플러그인",
+      "seller_management_code": "samamusic:3417",
+      "package": {
+        "cgiId": "samamusic.co.kr:3417",
+        "productName": "iZOTOPE RX 12 Standard 아이조톱 오디오 리페어 표준 플러그인",
+        "sellerManagementCode": "samamusic:3417",
+        "body": {
+          "originProduct": {
+            "statusType": "SALE",
+            "name": "iZOTOPE RX 12 Standard 아이조톱 오디오 리페어 표준 플러그인",
+            "salePrice": 518000,
+            "stockQuantity": null,
+            "detailAttribute": {
+              "taxType": "TAX",
+              "sellerCodeInfo": {
+                "sellerManagementCode": "samamusic:3417"
+              }
+            },
+            "images": {
+              "representative": "https://www.samamusic.co.kr/web/product/small/202606/61734205dcb870404e61c666626eae4c.png",
+              "additional": []
+            }
+          },
+          "smartstoreChannelProduct": {
+            "naverShoppingRegistration": false,
+            "channelProductDisplayStatusType": "ON"
+          }
+        },
+        "problems": [
+          {
+            "field": "leafCategoryId",
+            "reason": "required_at_register"
+          },
+          {
+            "field": "detailContent",
+            "reason": "required_at_register"
+          },
+          {
+            "field": "stockQuantity",
+            "reason": "required_at_register"
+          },
+          {
+            "field": "images.representative",
+            "reason": "not_from_image_upload_api",
+            "note": "외부 호스트 직접 링크는 거부됩니다. POST /v1/product-images/upload 응답 URL만 사용 가능합니다."
+          },
+          {
+            "field": "sellerManagementCode",
+            "reason": "duplicate_search_not_executed"
+          }
+        ],
+        "blocking_fields": [
+          "leafCategoryId",
+          "detailContent",
+          "stockQuantity",
+          "images.representative",
+          "sellerManagementCode"
+        ],
+        "blocking_field_count": 5,
+        "status": "blocked",
+        "would_transmit": false,
+        "execute": false,
+        "transmitted": false,
+        "evidence": {
+          "category": {
+            "path": "레코딩",
+            "kind": "product_classification",
+            "status": "unresolved",
+            "confirmed": "no",
+            "candidates": []
+          },
+          "detail": {
+            "draft_available": true,
+            "counts_as_detail_content": false,
+            "operator_approval_required": true,
+            "missing": [
+              "kc_info_absent",
+              "origin_code_absent",
+              "importer_absent"
+            ]
+          },
+          "option": {
+            "status": "no_options",
+            "option_type": "NONE",
+            "emittable": false,
+            "children": 0,
+            "reasons": [
+              "option_source_absent"
+            ]
+          },
+          "image": {
+            "representative_is_upload_api_url": false,
+            "measured_state": "ok",
+            "supplier_url_present": true
+          },
+          "stock": {
+            "numeric_in_catalogue": false,
+            "used_the_documented_auto_set": false
+          }
+        },
+        "bucket": "manual_review",
+        "note": "이 패키지는 실등록 준비 확인용이며 전송되지 않는다. values 는 원천 컬럼 사본이거나 결측 사유이다."
+      },
+      "blockers": {
+        "reason_split": [
+          {
+            "reason": "as_template_absent",
+            "resolution": "customer_input",
+            "requires": [
+              "고객 AS 안내(전화번호·안내 문구)"
+            ],
+            "note": "",
+            "products": 1
+          },
+          {
+            "reason": "detail_content_summary_only",
+            "resolution": "tooling_auto",
+            "requires": [
+              "M1 템플릿 초안",
+              "운영자 상세본문 승인"
+            ],
+            "note": "공급처 한 줄 요약은 본문이 아니다 — 초안이 이미 만들어져 있다",
+            "products": 1
+          },
+          {
+            "reason": "image_external_host_upload_required",
+            "resolution": "tooling_after_auth",
+            "requires": [
+              "판매자 토큰",
+              "이미지 업로드 러너 실행"
+            ],
+            "note": "업로드 러너는 M2 계약 테스트로 고정돼 있다 — 반환 URL 만 본문에 허용",
+            "products": 1
+          },
+          {
+            "reason": "image_extra_over_api_max",
+            "resolution": "tooling_auto",
+            "requires": [
+              "추가 이미지 선별(대표 1+9 상한)"
+            ],
+            "note": "",
+            "products": 1
+          },
+          {
+            "reason": "kc_info_absent",
+            "resolution": "customer_input",
+            "requires": [
+              "고객 KC 인증 서류·신고 정보",
+              "리프 certificationInfos 요구 확인(토큰)"
+            ],
+            "note": "카테고리가 요구하는 리프에만 필요 — 코퍼스 수집 후 대상 확정",
+            "products": 1
+          },
+          {
+            "reason": "naver_category_corpus_absent",
+            "resolution": "tooling_after_auth",
+            "requires": [
+              "판매자 토큰",
+              "코퍼스 수집 도구 실행"
+            ],
+            "note": "GET /v1/categories?last=true — 수집·검증 도구는 mock으로 검증돼 있다",
+            "products": 1
+          },
+          {
+            "reason": "naver_leaf_category_absent",
+            "resolution": "tooling_after_auth",
+            "requires": [
+              "판매자 토큰",
+              "코퍼스 수집",
+              "운영자 리프 확인"
+            ],
+            "note": "후보 제안은 도구가 하고, confirmed 는 사람이 채운다 — 임의 배정은 계약상 금지",
+            "products": 1
+          },
+          {
+            "reason": "origin_code_absent",
+            "resolution": "customer_input",
+            "requires": [
+              "고객 원산지 정책 확정(제조국/수입 원산지)"
+            ],
+            "note": "전면 정책 하나 — 상품별 판단이 아니라 storewide 값이다",
+            "products": 1
+          },
+          {
+            "reason": "return_policy_absent",
+            "resolution": "customer_input",
+            "requires": [
+              "고객 반품·교환 배송비 정책"
+            ],
+            "note": "",
+            "products": 1
+          },
+          {
+            "reason": "shipping_policy_absent",
+            "resolution": "customer_input",
+            "requires": [
+              "고객 배송비·배송 방식 정책"
+            ],
+            "note": "",
+            "products": 1
+          },
+          {
+            "reason": "stock_displayed_positive_unverified",
+            "resolution": "tooling_after_auth",
+            "requires": [
+              "ERP 인증",
+              "BAL_QTY 조회"
+            ],
+            "note": "공급처 표시 수량은 참고용 — ERP 잔량이 결정권",
+            "products": 1
+          },
+          {
+            "reason": "stock_quantity_column_absent",
+            "resolution": "tooling_after_auth",
+            "requires": [
+              "ERP 인증",
+              "BAL_QTY 조회",
+              "stockFromErpBalance 변환"
+            ],
+            "note": "",
+            "products": 1
+          },
+          {
+            "reason": "stock_requires_erp_balance_read",
+            "resolution": "tooling_after_auth",
+            "requires": [
+              "ERP 인증",
+              "BAL_QTY 조회"
+            ],
+            "note": "",
+            "products": 1
+          },
+          {
+            "reason": "supplier_category_not_mapped_to_naver",
+            "resolution": "tooling_after_auth",
+            "requires": [
+              "판매자 토큰",
+              "코퍼스 수집",
+              "재매핑 실행"
+            ],
+            "note": "브랜드·프로모션 경로는 코퍼스가 있어도 매핑되지 않는다(구조 판정 계약)",
+            "products": 1
+          }
+        ],
+        "product_class": "auto_resolvable",
+        "resolution_classes": {
+          "tooling_auto": "외부 인증 없이 도구 실행(재수집·재측정·초안 생성)으로 해소된다",
+          "tooling_after_auth": "판매자 토큰·ERP 인증 등 외부 인증이 선행되면 도구 실행으로 해소된다",
+          "customer_input": "고객이 값·정책·서류를 제공해야만 해소된다 — 도구가 대신 만들어낼 수 없다"
+        }
+      },
+      "images": {
+        "representative_url_present": true,
+        "image_measured_state": "ok",
+        "upload_plan": {
+          "representative": "https://www.samamusic.co.kr/web/product/small/202606/61734205dcb870404e61c666626eae4c.png",
+          "additional": [],
+          "dropped_over_limit": [],
+          "upload_calls": 1,
+          "batches": [
+            {
+              "batch": 1,
+              "urls": [
+                "https://www.samamusic.co.kr/web/product/small/202606/61734205dcb870404e61c666626eae4c.png"
+              ]
+            }
+          ],
+          "over_extra_limit": false
+        },
+        "runner_note": "러너(lib/image-upload-runner.mjs)는 dry-run 검증을 마쳤다 — 실행(execute=true)은 NCOM_MODE=mock 검증만 이 레인에 있고, 실제 업로드는 판매자 토큰 승인 후 운영자 레인이다."
+      },
+      "category": {
+        "path": "레코딩",
+        "kind": "product_classification",
+        "status": "unresolved",
+        "confirmed": "no",
+        "note": "코퍼스 수집 도구(tools/naver-category-corpus.mjs)는 mock 으로 검증돼 있다 — 실수집은 판매자 토큰 승인 후."
+      },
+      "stock": {
+        "body_value": null,
+        "note": "ERP BAL_QTY 연동은 본 레인에서 제외됐다 — docs/CGI_M2B_ERP_DEFERRED_20261028.md 의 후속 과제."
+      },
+      "customer_inputs_pending": [
+        "원산지 정책",
+        "배송비·배송 방식",
+        "반품·교환 배송비",
+        "AS 안내",
+        "KC 인증(리프 요구 확인 후)"
+      ]
+    },
+    {
+      "cgi_id": "samamusic.co.kr:3418",
+      "product_name": "iZOTOPE RX 12 Advanced 아이조톱 오디오 리페어 프로 플러그인",
+      "seller_management_code": "samamusic:3418",
+      "package": {
+        "cgiId": "samamusic.co.kr:3418",
+        "productName": "iZOTOPE RX 12 Advanced 아이조톱 오디오 리페어 프로 플러그인",
+        "sellerManagementCode": "samamusic:3418",
+        "body": {
+          "originProduct": {
+            "statusType": "SALE",
+            "name": "iZOTOPE RX 12 Advanced 아이조톱 오디오 리페어 프로 플러그인",
+            "salePrice": 1818000,
+            "stockQuantity": null,
+            "detailAttribute": {
+              "taxType": "TAX",
+              "sellerCodeInfo": {
+                "sellerManagementCode": "samamusic:3418"
+              }
+            },
+            "images": {
+              "representative": "https://www.samamusic.co.kr/web/product/small/202606/1b19bbca30db2bab8d2bd5b952471f6b.png",
+              "additional": []
+            }
+          },
+          "smartstoreChannelProduct": {
+            "naverShoppingRegistration": false,
+            "channelProductDisplayStatusType": "ON"
+          }
+        },
+        "problems": [
+          {
+            "field": "leafCategoryId",
+            "reason": "required_at_register"
+          },
+          {
+            "field": "detailContent",
+            "reason": "required_at_register"
+          },
+          {
+            "field": "stockQuantity",
+            "reason": "required_at_register"
+          },
+          {
+            "field": "images.representative",
+            "reason": "not_from_image_upload_api",
+            "note": "외부 호스트 직접 링크는 거부됩니다. POST /v1/product-images/upload 응답 URL만 사용 가능합니다."
+          },
+          {
+            "field": "sellerManagementCode",
+            "reason": "duplicate_search_not_executed"
+          }
+        ],
+        "blocking_fields": [
+          "leafCategoryId",
+          "detailContent",
+          "stockQuantity",
+          "images.representative",
+          "sellerManagementCode"
+        ],
+        "blocking_field_count": 5,
+        "status": "blocked",
+        "would_transmit": false,
+        "execute": false,
+        "transmitted": false,
+        "evidence": {
+          "category": {
+            "path": "레코딩",
+            "kind": "product_classification",
+            "status": "unresolved",
+            "confirmed": "no",
+            "candidates": []
+          },
+          "detail": {
+            "draft_available": true,
+            "counts_as_detail_content": false,
+            "operator_approval_required": true,
+            "missing": [
+              "kc_info_absent",
+              "origin_code_absent",
+              "importer_absent"
+            ]
+          },
+          "option": {
+            "status": "no_options",
+            "option_type": "NONE",
+            "emittable": false,
+            "children": 0,
+            "reasons": [
+              "option_source_absent"
+            ]
+          },
+          "image": {
+            "representative_is_upload_api_url": false,
+            "measured_state": "ok",
+            "supplier_url_present": true
+          },
+          "stock": {
+            "numeric_in_catalogue": false,
+            "used_the_documented_auto_set": false
+          }
+        },
+        "bucket": "manual_review",
+        "note": "이 패키지는 실등록 준비 확인용이며 전송되지 않는다. values 는 원천 컬럼 사본이거나 결측 사유이다."
+      },
+      "blockers": {
+        "reason_split": [
+          {
+            "reason": "as_template_absent",
+            "resolution": "customer_input",
+            "requires": [
+              "고객 AS 안내(전화번호·안내 문구)"
+            ],
+            "note": "",
+            "products": 1
+          },
+          {
+            "reason": "detail_content_summary_only",
+            "resolution": "tooling_auto",
+            "requires": [
+              "M1 템플릿 초안",
+              "운영자 상세본문 승인"
+            ],
+            "note": "공급처 한 줄 요약은 본문이 아니다 — 초안이 이미 만들어져 있다",
+            "products": 1
+          },
+          {
+            "reason": "image_external_host_upload_required",
+            "resolution": "tooling_after_auth",
+            "requires": [
+              "판매자 토큰",
+              "이미지 업로드 러너 실행"
+            ],
+            "note": "업로드 러너는 M2 계약 테스트로 고정돼 있다 — 반환 URL 만 본문에 허용",
+            "products": 1
+          },
+          {
+            "reason": "image_extra_over_api_max",
+            "resolution": "tooling_auto",
+            "requires": [
+              "추가 이미지 선별(대표 1+9 상한)"
+            ],
+            "note": "",
+            "products": 1
+          },
+          {
+            "reason": "kc_info_absent",
+            "resolution": "customer_input",
+            "requires": [
+              "고객 KC 인증 서류·신고 정보",
+              "리프 certificationInfos 요구 확인(토큰)"
+            ],
+            "note": "카테고리가 요구하는 리프에만 필요 — 코퍼스 수집 후 대상 확정",
+            "products": 1
+          },
+          {
+            "reason": "naver_category_corpus_absent",
+            "resolution": "tooling_after_auth",
+            "requires": [
+              "판매자 토큰",
+              "코퍼스 수집 도구 실행"
+            ],
+            "note": "GET /v1/categories?last=true — 수집·검증 도구는 mock으로 검증돼 있다",
+            "products": 1
+          },
+          {
+            "reason": "naver_leaf_category_absent",
+            "resolution": "tooling_after_auth",
+            "requires": [
+              "판매자 토큰",
+              "코퍼스 수집",
+              "운영자 리프 확인"
+            ],
+            "note": "후보 제안은 도구가 하고, confirmed 는 사람이 채운다 — 임의 배정은 계약상 금지",
+            "products": 1
+          },
+          {
+            "reason": "origin_code_absent",
+            "resolution": "customer_input",
+            "requires": [
+              "고객 원산지 정책 확정(제조국/수입 원산지)"
+            ],
+            "note": "전면 정책 하나 — 상품별 판단이 아니라 storewide 값이다",
+            "products": 1
+          },
+          {
+            "reason": "return_policy_absent",
+            "resolution": "customer_input",
+            "requires": [
+              "고객 반품·교환 배송비 정책"
+            ],
+            "note": "",
+            "products": 1
+          },
+          {
+            "reason": "shipping_policy_absent",
+            "resolution": "customer_input",
+            "requires": [
+              "고객 배송비·배송 방식 정책"
+            ],
+            "note": "",
+            "products": 1
+          },
+          {
+            "reason": "stock_displayed_positive_unverified",
+            "resolution": "tooling_after_auth",
+            "requires": [
+              "ERP 인증",
+              "BAL_QTY 조회"
+            ],
+            "note": "공급처 표시 수량은 참고용 — ERP 잔량이 결정권",
+            "products": 1
+          },
+          {
+            "reason": "stock_quantity_column_absent",
+            "resolution": "tooling_after_auth",
+            "requires": [
+              "ERP 인증",
+              "BAL_QTY 조회",
+              "stockFromErpBalance 변환"
+            ],
+            "note": "",
+            "products": 1
+          },
+          {
+            "reason": "stock_requires_erp_balance_read",
+            "resolution": "tooling_after_auth",
+            "requires": [
+              "ERP 인증",
+              "BAL_QTY 조회"
+            ],
+            "note": "",
+            "products": 1
+          },
+          {
+            "reason": "supplier_category_not_mapped_to_naver",
+            "resolution": "tooling_after_auth",
+            "requires": [
+              "판매자 토큰",
+              "코퍼스 수집",
+              "재매핑 실행"
+            ],
+            "note": "브랜드·프로모션 경로는 코퍼스가 있어도 매핑되지 않는다(구조 판정 계약)",
+            "products": 1
+          }
+        ],
+        "product_class": "auto_resolvable",
+        "resolution_classes": {
+          "tooling_auto": "외부 인증 없이 도구 실행(재수집·재측정·초안 생성)으로 해소된다",
+          "tooling_after_auth": "판매자 토큰·ERP 인증 등 외부 인증이 선행되면 도구 실행으로 해소된다",
+          "customer_input": "고객이 값·정책·서류를 제공해야만 해소된다 — 도구가 대신 만들어낼 수 없다"
+        }
+      },
+      "images": {
+        "representative_url_present": true,
+        "image_measured_state": "ok",
+        "upload_plan": {
+          "representative": "https://www.samamusic.co.kr/web/product/small/202606/1b19bbca30db2bab8d2bd5b952471f6b.png",
+          "additional": [],
+          "dropped_over_limit": [],
+          "upload_calls": 1,
+          "batches": [
+            {
+              "batch": 1,
+              "urls": [
+                "https://www.samamusic.co.kr/web/product/small/202606/1b19bbca30db2bab8d2bd5b952471f6b.png"
+              ]
+            }
+          ],
+          "over_extra_limit": false
+        },
+        "runner_note": "러너(lib/image-upload-runner.mjs)는 dry-run 검증을 마쳤다 — 실행(execute=true)은 NCOM_MODE=mock 검증만 이 레인에 있고, 실제 업로드는 판매자 토큰 승인 후 운영자 레인이다."
+      },
+      "category": {
+        "path": "레코딩",
+        "kind": "product_classification",
+        "status": "unresolved",
+        "confirmed": "no",
+        "note": "코퍼스 수집 도구(tools/naver-category-corpus.mjs)는 mock 으로 검증돼 있다 — 실수집은 판매자 토큰 승인 후."
+      },
+      "stock": {
+        "body_value": null,
+        "note": "ERP BAL_QTY 연동은 본 레인에서 제외됐다 — docs/CGI_M2B_ERP_DEFERRED_20261028.md 의 후속 과제."
+      },
+      "customer_inputs_pending": [
+        "원산지 정책",
+        "배송비·배송 방식",
+        "반품·교환 배송비",
+        "AS 안내",
+        "KC 인증(리프 요구 확인 후)"
+      ]
+    }
+  ],
+  "would_transmit": false,
+  "transmitted": false,
+  "account_login": "NO",
+  "naver_requests": 0,
+  "live_writes": 0,
+  "violations": [],
+  "note": "이 패키지들은 등록 준비 상태의 사진이다 — 본문의 빈 필드(카테고리·상세본문·재고·업로드 이미지)는 게이트가 열릴 때까지 비어 있는 것이 정상이다."
+}
