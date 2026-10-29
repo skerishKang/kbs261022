@@ -1,0 +1,46 @@
+{
+  "kind": "cgi-ncom-live-upload-ledger",
+  "mode": "live",
+  "ran_at": "2026-10-29T01:18:39.495Z",
+  "transmitted": true,
+  "refused": false,
+  "ledger": [
+    {
+      "cgiId": "samamusic.co.kr:1769",
+      "source": "https://www.samamusic.co.kr/web/product/small/20200624/a3a892a3c531bd7522d5eeaf32a09cdd.jpg",
+      "uploaded": "https://shop-phinf.pstatic.net/20261029_262/1793236526458HLQuU_JPEG/25587880315032025_981709515.jpg",
+      "mode": "live"
+    },
+    {
+      "cgiId": "samamusic.co.kr:3417",
+      "source": "https://www.samamusic.co.kr/web/product/small/202606/61734205dcb870404e61c666626eae4c.png",
+      "uploaded": "https://shop-phinf.pstatic.net/20261029_234/1793236526872YgxMB_PNG/107172207824561384_534535795.png",
+      "mode": "live"
+    },
+    {
+      "cgiId": "samamusic.co.kr:3418",
+      "source": "https://www.samamusic.co.kr/web/product/small/202606/1b19bbca30db2bab8d2bd5b952471f6b.png",
+      "uploaded": "https://shop-phinf.pstatic.net/20261029_265/1793236527130w1RVi_PNG/45006309250917189_1358402983.png",
+      "mode": "live"
+    }
+  ],
+  "batches": [
+    {
+      "cgiId": "samamusic.co.kr:1769",
+      "batch": 1,
+      "files": 1
+    },
+    {
+      "cgiId": "samamusic.co.kr:3417",
+      "batch": 2,
+      "files": 1
+    },
+    {
+      "cgiId": "samamusic.co.kr:3418",
+      "batch": 3,
+      "files": 1
+    }
+  ],
+  "failed_batches": [],
+  "naver_requests": 3
+}
