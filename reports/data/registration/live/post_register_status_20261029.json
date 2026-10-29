@@ -1,0 +1,51 @@
+{
+  "kind": "cgi-ncom-live-post-register-status",
+  "checked_at": "2026-10-29T04:02:39.998Z",
+  "checks": [
+    {
+      "cgiId": "samamusic.co.kr:1769",
+      "sellerManagementCode": "samamusic:1769",
+      "requested_display_status": "SUSPENSION",
+      "originProductNo": 13776583531,
+      "smartstoreChannelProductNo": 13838007796,
+      "origin_status_type": "SALE",
+      "origin_name": "K&M 19797 케이앤엠 태블릿 PC 스탠드",
+      "origin_sale_price": 116000,
+      "origin_stock_quantity": 8,
+      "origin_origin_area_code": "0201005",
+      "channel_display_status_type": "SUSPENSION",
+      "search_hits": 0,
+      "search_first": null
+    },
+    {
+      "cgiId": "samamusic.co.kr:3417",
+      "sellerManagementCode": "samamusic:3417",
+      "requested_display_status": "SUSPENSION",
+      "originProductNo": 13776583540,
+      "smartstoreChannelProductNo": 13838007805,
+      "origin_status_type": "SALE",
+      "origin_name": "iZOTOPE RX 12 Standard 아이조톱 오디오 리페어 표준 플러그인",
+      "origin_sale_price": 518000,
+      "origin_stock_quantity": 9,
+      "origin_origin_area_code": "0204000",
+      "channel_display_status_type": "SUSPENSION",
+      "search_hits": 0,
+      "search_first": null
+    },
+    {
+      "cgiId": "samamusic.co.kr:3418",
+      "sellerManagementCode": "samamusic:3418",
+      "requested_display_status": "SUSPENSION",
+      "originProductNo": 13776583545,
+      "smartstoreChannelProductNo": 13838007810,
+      "origin_status_type": "SALE",
+      "origin_name": "iZOTOPE RX 12 Advanced 아이조톱 오디오 리페어 프로 플러그인",
+      "origin_sale_price": 1818000,
+      "origin_stock_quantity": 29,
+      "origin_origin_area_code": "0204000",
+      "channel_display_status_type": "SUSPENSION",
+      "search_hits": 0,
+      "search_first": null
+    }
+  ]
+}

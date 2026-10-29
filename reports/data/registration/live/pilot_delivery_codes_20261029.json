@@ -1,0 +1,15 @@
+{
+  "kind": "cgi-ncom-delivery-code-evidence",
+  "confirmed_at": "2026-10-29",
+  "courier_code": {
+    "로젠택배": "KGB",
+    "usage": "상품 API deliveryInfo.deliveryCompany — 원상품 정보 구조체 규정: \"주문 > 발주/발송 처리 > 발송 처리 API의 택배사 코드(deliveryCompanyCode)를 참고하여 코드값을 입력\" (같은 코드표 사용)",
+    "source": "커머스API docs > 주문 > 발주/발송 처리 > 발송 처리(POST /v1/pay-order/seller/product-orders/dispatch) deliveryCompanyCode 코드표 — KGB=로젠택배, CJGLS=CJ대한통운, HYUNDAI=롯데택배, HANJIN=한진택배, EPOST=우체국택배",
+    "crosscheck": "commerce-api-naver/commerce-api discussion #3321 — vendor(커머스API 공식)가 같은 표의 HYUNDAI=롯데택배를 답변으로 확인(2026-03-20)",
+    "v1_failure_basis": "2026-10-29 실측: 1769 본문에 택배사명 '로젠택배' 전송 → TypeMismatch \"택배사코드 입력정보가 올바르지 않습니다.\""
+  },
+  "electronic_delivery": {
+    "basis": "공식 문서(v2 상품 등록/원상품 정보 구조체): \"deliveryInfo 를 입력하지 않으면 배송 없는 상품으로 등록됩니다\". deliveryType 허용값은 DELIVERY/DIRECT 뿐이라 전자배송 전용 유형은 없고, DELIVERY 로 보내면 deliveryCompany 가 필수라 400(2026-10-29 실측: 3417/3418 \"택배, 소포, 등기 상품은 택배사를 필수로 입력해야 합니다\"). 이메일 라이센스 발송 소프트웨어(물리적 반송 없음)는 deliveryInfo 생략 = '배송 없는 상품' 등록이 공식 스키마에 부합하는 형태다.",
+    "applies_to": ["samamusic.co.kr:3417", "samamusic.co.kr:3418"]
+  }
+}

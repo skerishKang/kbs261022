@@ -1,0 +1,35 @@
+[
+  {
+    "kind": "cgi-ncom-registration",
+    "cgiId": "samamusic.co.kr:1769",
+    "sellerManagementCode": "samamusic:1769",
+    "originProductNo": 13776583531,
+    "smartstoreChannelProductNo": 13838007796,
+    "displayStatus": "SUSPENSION",
+    "mode": "live",
+    "traceId": null,
+    "registered_at": "2026-10-29T04:02:38.955Z"
+  },
+  {
+    "kind": "cgi-ncom-registration",
+    "cgiId": "samamusic.co.kr:3417",
+    "sellerManagementCode": "samamusic:3417",
+    "originProductNo": 13776583540,
+    "smartstoreChannelProductNo": 13838007805,
+    "displayStatus": "SUSPENSION",
+    "mode": "live",
+    "traceId": null,
+    "registered_at": "2026-10-29T04:02:38.955Z"
+  },
+  {
+    "kind": "cgi-ncom-registration",
+    "cgiId": "samamusic.co.kr:3418",
+    "sellerManagementCode": "samamusic:3418",
+    "originProductNo": 13776583545,
+    "smartstoreChannelProductNo": 13838007810,
+    "displayStatus": "SUSPENSION",
+    "mode": "live",
+    "traceId": null,
+    "registered_at": "2026-10-29T04:02:38.955Z"
+  }
+]

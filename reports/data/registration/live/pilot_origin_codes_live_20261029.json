@@ -1,0 +1,24 @@
+{
+  "kind": "cgi-ncom-live-origin-area-lookup",
+  "ran_at": "2026-10-29T03:38:17.654Z",
+  "endpoint": "GET /v1/product-origin-areas (+ /query 교차검증)",
+  "basis": "v2 실등록 400 재발 방지 — originAreaCode 는 vendor 전용 상세 코드만 허용(2026-10-29 실측). ISO DE/US 거부 확인됨.",
+  "total_codes": 535,
+  "germany": [
+    {
+      "code": "0201005",
+      "name": "수입산:유럽>독일"
+    }
+  ],
+  "usa": [
+    {
+      "code": "0204000",
+      "name": "수입산:북아메리카(북미)>미국"
+    }
+  ],
+  "query_check": {
+    "유럽 > 독일": [],
+    "아메리카 > 미국": []
+  },
+  "naver_requests": 3
+}
