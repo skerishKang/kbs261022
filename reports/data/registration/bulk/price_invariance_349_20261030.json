@@ -1,0 +1,3157 @@
+{
+  "kind": "cgi-bulk-price-invariance-349",
+  "ran_at": "2026-10-29T20:41:58.246Z",
+  "total": 349,
+  "price_compared": 349,
+  "price_unchanged": 349,
+  "price_changed": [],
+  "errors": [],
+  "status_dist": {
+    "SALE": 296,
+    "OUTOFSTOCK": 53
+  },
+  "naver_requests": 408,
+  "results": [
+    {
+      "cgiId": "samamusic:1769",
+      "originProductNo": 13776583531,
+      "ledger_price_basis": 116000,
+      "remote_salePrice": 116000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3417",
+      "originProductNo": 13776583540,
+      "ledger_price_basis": 518000,
+      "remote_salePrice": 518000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3418",
+      "originProductNo": 13776583545,
+      "ledger_price_basis": 1818000,
+      "remote_salePrice": 1818000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:2098",
+      "originProductNo": 13776685097,
+      "ledger_price_basis": 163000,
+      "remote_salePrice": 163000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3965",
+      "originProductNo": 13776685126,
+      "ledger_price_basis": 421000,
+      "remote_salePrice": 421000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:2323",
+      "originProductNo": 13776720808,
+      "ledger_price_basis": 162000,
+      "remote_salePrice": 162000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:2322",
+      "originProductNo": 13776720813,
+      "ledger_price_basis": 162000,
+      "remote_salePrice": 162000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:2456",
+      "originProductNo": 13776720816,
+      "ledger_price_basis": 45000,
+      "remote_salePrice": 45000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:2458",
+      "originProductNo": 13776720827,
+      "ledger_price_basis": 33000,
+      "remote_salePrice": 33000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:2459",
+      "originProductNo": 13776720841,
+      "ledger_price_basis": 45000,
+      "remote_salePrice": 45000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:1856",
+      "originProductNo": 13776723743,
+      "ledger_price_basis": 200000,
+      "remote_salePrice": 200000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:2684",
+      "originProductNo": 13776723767,
+      "ledger_price_basis": 190000,
+      "remote_salePrice": 190000,
+      "remote_statusType": "OUTOFSTOCK",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:1768",
+      "originProductNo": 13776723779,
+      "ledger_price_basis": 165000,
+      "remote_salePrice": 165000,
+      "remote_statusType": "OUTOFSTOCK",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:4971",
+      "originProductNo": 13776723796,
+      "ledger_price_basis": 1270000,
+      "remote_salePrice": 1270000,
+      "remote_statusType": "OUTOFSTOCK",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:2146",
+      "originProductNo": 13776759782,
+      "ledger_price_basis": 180000,
+      "remote_salePrice": 180000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:2327",
+      "originProductNo": 13776761989,
+      "ledger_price_basis": 232000,
+      "remote_salePrice": 232000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3712",
+      "originProductNo": 13776761997,
+      "ledger_price_basis": 990000,
+      "remote_salePrice": 990000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:4475",
+      "originProductNo": 13776762025,
+      "ledger_price_basis": 249000,
+      "remote_salePrice": 249000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:5347",
+      "originProductNo": 13776762052,
+      "ledger_price_basis": 249000,
+      "remote_salePrice": 249000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:2502",
+      "originProductNo": 13776762071,
+      "ledger_price_basis": 45000,
+      "remote_salePrice": 45000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:2499",
+      "originProductNo": 13776762082,
+      "ledger_price_basis": 45000,
+      "remote_salePrice": 45000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3110",
+      "originProductNo": 13776762106,
+      "ledger_price_basis": 6700000,
+      "remote_salePrice": 6700000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:1227",
+      "originProductNo": 13776762133,
+      "ledger_price_basis": 108000,
+      "remote_salePrice": 108000,
+      "remote_statusType": "OUTOFSTOCK",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:4178",
+      "originProductNo": 13776762158,
+      "ledger_price_basis": 200000,
+      "remote_salePrice": 200000,
+      "remote_statusType": "OUTOFSTOCK",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:2093",
+      "originProductNo": 13776762195,
+      "ledger_price_basis": 661000,
+      "remote_salePrice": 661000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3967",
+      "originProductNo": 13776762229,
+      "ledger_price_basis": 421000,
+      "remote_salePrice": 421000,
+      "remote_statusType": "OUTOFSTOCK",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:4966",
+      "originProductNo": 13776762273,
+      "ledger_price_basis": 910000,
+      "remote_salePrice": 910000,
+      "remote_statusType": "OUTOFSTOCK",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3887",
+      "originProductNo": 13776762341,
+      "ledger_price_basis": 449000,
+      "remote_salePrice": 449000,
+      "remote_statusType": "OUTOFSTOCK",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:2792",
+      "originProductNo": 13776762389,
+      "ledger_price_basis": 6080000,
+      "remote_salePrice": 6080000,
+      "remote_statusType": "OUTOFSTOCK",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:2788",
+      "originProductNo": 13776762411,
+      "ledger_price_basis": 5640000,
+      "remote_salePrice": 5640000,
+      "remote_statusType": "OUTOFSTOCK",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:2790",
+      "originProductNo": 13776762460,
+      "ledger_price_basis": 3710000,
+      "remote_salePrice": 3710000,
+      "remote_statusType": "OUTOFSTOCK",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:2786",
+      "originProductNo": 13776762497,
+      "ledger_price_basis": 3710000,
+      "remote_salePrice": 3710000,
+      "remote_statusType": "OUTOFSTOCK",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3103",
+      "originProductNo": 13776764518,
+      "ledger_price_basis": 6690000,
+      "remote_salePrice": 6690000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:1302",
+      "originProductNo": 13776938053,
+      "ledger_price_basis": 193000,
+      "remote_salePrice": 193000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:4743",
+      "originProductNo": 13776939725,
+      "ledger_price_basis": 749000,
+      "remote_salePrice": 749000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:2501",
+      "originProductNo": 13776939771,
+      "ledger_price_basis": 56000,
+      "remote_salePrice": 56000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:1299",
+      "originProductNo": 13776940798,
+      "ledger_price_basis": 197000,
+      "remote_salePrice": 197000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:1300",
+      "originProductNo": 13776940846,
+      "ledger_price_basis": 206000,
+      "remote_salePrice": 206000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:1334",
+      "originProductNo": 13776940940,
+      "ledger_price_basis": 1243000,
+      "remote_salePrice": 1243000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:1336",
+      "originProductNo": 13776941009,
+      "ledger_price_basis": 690000,
+      "remote_salePrice": 690000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:1337",
+      "originProductNo": 13776941097,
+      "ledger_price_basis": 1460000,
+      "remote_salePrice": 1460000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:5622",
+      "originProductNo": 13776941169,
+      "ledger_price_basis": 4528000,
+      "remote_salePrice": 4528000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:5621",
+      "originProductNo": 13776941221,
+      "ledger_price_basis": 2813000,
+      "remote_salePrice": 2813000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:5047",
+      "originProductNo": 13776941273,
+      "ledger_price_basis": 221000,
+      "remote_salePrice": 221000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:5046",
+      "originProductNo": 13776941325,
+      "ledger_price_basis": 255000,
+      "remote_salePrice": 255000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:5049",
+      "originProductNo": 13776941363,
+      "ledger_price_basis": 192000,
+      "remote_salePrice": 192000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:4175",
+      "originProductNo": 13776941746,
+      "ledger_price_basis": 40000,
+      "remote_salePrice": 40000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:4176",
+      "originProductNo": 13776941790,
+      "ledger_price_basis": 53000,
+      "remote_salePrice": 53000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:4049",
+      "originProductNo": 13776941877,
+      "ledger_price_basis": 534000,
+      "remote_salePrice": 534000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:4050",
+      "originProductNo": 13776941994,
+      "ledger_price_basis": 534000,
+      "remote_salePrice": 534000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:2652",
+      "originProductNo": 13776942057,
+      "ledger_price_basis": 1060000,
+      "remote_salePrice": 1060000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:2650",
+      "originProductNo": 13776942129,
+      "ledger_price_basis": 639000,
+      "remote_salePrice": 639000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:2649",
+      "originProductNo": 13776942206,
+      "ledger_price_basis": 555000,
+      "remote_salePrice": 555000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:2722",
+      "originProductNo": 13776942308,
+      "ledger_price_basis": 488000,
+      "remote_salePrice": 488000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3107",
+      "originProductNo": 13776942366,
+      "ledger_price_basis": 6700000,
+      "remote_salePrice": 6700000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3112",
+      "originProductNo": 13776943137,
+      "ledger_price_basis": 6250000,
+      "remote_salePrice": 6250000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3104",
+      "originProductNo": 13776943215,
+      "ledger_price_basis": 6250000,
+      "remote_salePrice": 6250000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3108",
+      "originProductNo": 13776943270,
+      "ledger_price_basis": 6090000,
+      "remote_salePrice": 6090000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3402",
+      "originProductNo": 13776943321,
+      "ledger_price_basis": 132000,
+      "remote_salePrice": 132000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:4390",
+      "originProductNo": 13776943350,
+      "ledger_price_basis": 3490000,
+      "remote_salePrice": 3490000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:2798",
+      "originProductNo": 13776943416,
+      "ledger_price_basis": 149000,
+      "remote_salePrice": 149000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:4389",
+      "originProductNo": 13776943456,
+      "ledger_price_basis": 1970000,
+      "remote_salePrice": 1970000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3404",
+      "originProductNo": 13776943489,
+      "ledger_price_basis": 215000,
+      "remote_salePrice": 215000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3403",
+      "originProductNo": 13776943537,
+      "ledger_price_basis": 115000,
+      "remote_salePrice": 115000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:5534",
+      "originProductNo": 13776944431,
+      "ledger_price_basis": 139000,
+      "remote_salePrice": 139000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:5263",
+      "originProductNo": 13776944480,
+      "ledger_price_basis": 229000,
+      "remote_salePrice": 229000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3510",
+      "originProductNo": 13776944527,
+      "ledger_price_basis": 115000,
+      "remote_salePrice": 115000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:2575",
+      "originProductNo": 13776944590,
+      "ledger_price_basis": 162000,
+      "remote_salePrice": 162000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3395",
+      "originProductNo": 13776944715,
+      "ledger_price_basis": 356000,
+      "remote_salePrice": 356000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3509",
+      "originProductNo": 13776944785,
+      "ledger_price_basis": 102000,
+      "remote_salePrice": 102000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3426",
+      "originProductNo": 13776944821,
+      "ledger_price_basis": 309000,
+      "remote_salePrice": 309000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3425",
+      "originProductNo": 13776944920,
+      "ledger_price_basis": 189000,
+      "remote_salePrice": 189000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3508",
+      "originProductNo": 13776944960,
+      "ledger_price_basis": 102000,
+      "remote_salePrice": 102000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:2654",
+      "originProductNo": 13776945043,
+      "ledger_price_basis": 45000,
+      "remote_salePrice": 45000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3528",
+      "originProductNo": 13776945471,
+      "ledger_price_basis": 356000,
+      "remote_salePrice": 356000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3517",
+      "originProductNo": 13776945513,
+      "ledger_price_basis": 115000,
+      "remote_salePrice": 115000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3513",
+      "originProductNo": 13776945556,
+      "ledger_price_basis": 89000,
+      "remote_salePrice": 89000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3502",
+      "originProductNo": 13776945594,
+      "ledger_price_basis": 127000,
+      "remote_salePrice": 127000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:2657",
+      "originProductNo": 13776945642,
+      "ledger_price_basis": 56000,
+      "remote_salePrice": 56000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:2655",
+      "originProductNo": 13776945707,
+      "ledger_price_basis": 56000,
+      "remote_salePrice": 56000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3529",
+      "originProductNo": 13776945759,
+      "ledger_price_basis": 89000,
+      "remote_salePrice": 89000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3527",
+      "originProductNo": 13776945864,
+      "ledger_price_basis": 127000,
+      "remote_salePrice": 127000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3525",
+      "originProductNo": 13776945898,
+      "ledger_price_basis": 89000,
+      "remote_salePrice": 89000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:2656",
+      "originProductNo": 13777038302,
+      "ledger_price_basis": 56000,
+      "remote_salePrice": 56000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:2326",
+      "originProductNo": 13777038364,
+      "ledger_price_basis": 162000,
+      "remote_salePrice": 162000,
+      "remote_statusType": "OUTOFSTOCK",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:2090",
+      "originProductNo": 13777038407,
+      "ledger_price_basis": 148000,
+      "remote_salePrice": 148000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3397",
+      "originProductNo": 13777039083,
+      "ledger_price_basis": 2549000,
+      "remote_salePrice": 2549000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3501",
+      "originProductNo": 13777039127,
+      "ledger_price_basis": 381000,
+      "remote_salePrice": 381000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3503",
+      "originProductNo": 13777039269,
+      "ledger_price_basis": 102000,
+      "remote_salePrice": 102000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3504",
+      "originProductNo": 13777039326,
+      "ledger_price_basis": 254000,
+      "remote_salePrice": 254000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3505",
+      "originProductNo": 13777039366,
+      "ledger_price_basis": 102000,
+      "remote_salePrice": 102000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3507",
+      "originProductNo": 13777039395,
+      "ledger_price_basis": 317000,
+      "remote_salePrice": 317000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3511",
+      "originProductNo": 13777039440,
+      "ledger_price_basis": 89000,
+      "remote_salePrice": 89000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3518",
+      "originProductNo": 13777039470,
+      "ledger_price_basis": 115000,
+      "remote_salePrice": 115000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3519",
+      "originProductNo": 13777039513,
+      "ledger_price_basis": 115000,
+      "remote_salePrice": 115000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3522",
+      "originProductNo": 13777039563,
+      "ledger_price_basis": 115000,
+      "remote_salePrice": 115000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3524",
+      "originProductNo": 13777039722,
+      "ledger_price_basis": 381000,
+      "remote_salePrice": 381000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3526",
+      "originProductNo": 13777039789,
+      "ledger_price_basis": 102000,
+      "remote_salePrice": 102000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3974",
+      "originProductNo": 13777040331,
+      "ledger_price_basis": 886000,
+      "remote_salePrice": 886000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3975",
+      "originProductNo": 13777040380,
+      "ledger_price_basis": 620000,
+      "remote_salePrice": 620000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3976",
+      "originProductNo": 13777040420,
+      "ledger_price_basis": 442000,
+      "remote_salePrice": 442000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3979",
+      "originProductNo": 13777040447,
+      "ledger_price_basis": 233000,
+      "remote_salePrice": 233000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:5560",
+      "originProductNo": 13777040540,
+      "ledger_price_basis": 108000,
+      "remote_salePrice": 108000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3391",
+      "originProductNo": 13777040612,
+      "ledger_price_basis": 292000,
+      "remote_salePrice": 292000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3392",
+      "originProductNo": 13777040668,
+      "ledger_price_basis": 115000,
+      "remote_salePrice": 115000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3393",
+      "originProductNo": 13777040718,
+      "ledger_price_basis": 126000,
+      "remote_salePrice": 126000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3394",
+      "originProductNo": 13777040762,
+      "ledger_price_basis": 115000,
+      "remote_salePrice": 115000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3396",
+      "originProductNo": 13777040890,
+      "ledger_price_basis": 382000,
+      "remote_salePrice": 382000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3398",
+      "originProductNo": 13777040929,
+      "ledger_price_basis": 381000,
+      "remote_salePrice": 381000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3399",
+      "originProductNo": 13777040970,
+      "ledger_price_basis": 152000,
+      "remote_salePrice": 152000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3506",
+      "originProductNo": 13777041120,
+      "ledger_price_basis": 203000,
+      "remote_salePrice": 203000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3512",
+      "originProductNo": 13777041166,
+      "ledger_price_basis": 115000,
+      "remote_salePrice": 115000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3516",
+      "originProductNo": 13777041223,
+      "ledger_price_basis": 126000,
+      "remote_salePrice": 126000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3521",
+      "originProductNo": 13777041293,
+      "ledger_price_basis": 115000,
+      "remote_salePrice": 115000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3523",
+      "originProductNo": 13777041332,
+      "ledger_price_basis": 126000,
+      "remote_salePrice": 126000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3614",
+      "originProductNo": 13777041433,
+      "ledger_price_basis": 2338000,
+      "remote_salePrice": 2338000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3618",
+      "originProductNo": 13777041539,
+      "ledger_price_basis": 193000,
+      "remote_salePrice": 193000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3619",
+      "originProductNo": 13777041585,
+      "ledger_price_basis": 778000,
+      "remote_salePrice": 778000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3620",
+      "originProductNo": 13777041627,
+      "ledger_price_basis": 1038000,
+      "remote_salePrice": 1038000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3638",
+      "originProductNo": 13777041712,
+      "ledger_price_basis": 77000,
+      "remote_salePrice": 77000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:4903",
+      "originProductNo": 13777041745,
+      "ledger_price_basis": 82000,
+      "remote_salePrice": 82000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:5375",
+      "originProductNo": 13777041788,
+      "ledger_price_basis": 648000,
+      "remote_salePrice": 648000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:5376",
+      "originProductNo": 13777041988,
+      "ledger_price_basis": 284000,
+      "remote_salePrice": 284000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:5377",
+      "originProductNo": 13777042037,
+      "ledger_price_basis": 71000,
+      "remote_salePrice": 71000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:5378",
+      "originProductNo": 13777042110,
+      "ledger_price_basis": 388000,
+      "remote_salePrice": 388000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:5585",
+      "originProductNo": 13777042140,
+      "ledger_price_basis": 63000,
+      "remote_salePrice": 63000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:2455",
+      "originProductNo": 13777042175,
+      "ledger_price_basis": 45000,
+      "remote_salePrice": 45000,
+      "remote_statusType": "OUTOFSTOCK",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:2457",
+      "originProductNo": 13777042247,
+      "ledger_price_basis": 45000,
+      "remote_salePrice": 45000,
+      "remote_statusType": "OUTOFSTOCK",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:2498",
+      "originProductNo": 13777042297,
+      "ledger_price_basis": 56000,
+      "remote_salePrice": 56000,
+      "remote_statusType": "OUTOFSTOCK",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:2500",
+      "originProductNo": 13777042338,
+      "ledger_price_basis": 56000,
+      "remote_salePrice": 56000,
+      "remote_statusType": "OUTOFSTOCK",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:2653",
+      "originProductNo": 13777042400,
+      "ledger_price_basis": 56000,
+      "remote_salePrice": 56000,
+      "remote_statusType": "OUTOFSTOCK",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:2658",
+      "originProductNo": 13777042472,
+      "ledger_price_basis": 84000,
+      "remote_salePrice": 84000,
+      "remote_statusType": "OUTOFSTOCK",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3237",
+      "originProductNo": 13777042526,
+      "ledger_price_basis": 97000,
+      "remote_salePrice": 97000,
+      "remote_statusType": "OUTOFSTOCK",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3400",
+      "originProductNo": 13777042587,
+      "ledger_price_basis": 164000,
+      "remote_salePrice": 164000,
+      "remote_statusType": "OUTOFSTOCK",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3401",
+      "originProductNo": 13777042659,
+      "ledger_price_basis": 292000,
+      "remote_salePrice": 292000,
+      "remote_statusType": "OUTOFSTOCK",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3405",
+      "originProductNo": 13777042715,
+      "ledger_price_basis": 359000,
+      "remote_salePrice": 359000,
+      "remote_statusType": "OUTOFSTOCK",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3603",
+      "originProductNo": 13777042766,
+      "ledger_price_basis": 229000,
+      "remote_salePrice": 229000,
+      "remote_statusType": "OUTOFSTOCK",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3605",
+      "originProductNo": 13777042822,
+      "ledger_price_basis": 149000,
+      "remote_salePrice": 149000,
+      "remote_statusType": "OUTOFSTOCK",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3617",
+      "originProductNo": 13777042906,
+      "ledger_price_basis": 3898000,
+      "remote_salePrice": 3898000,
+      "remote_statusType": "OUTOFSTOCK",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:4921",
+      "originProductNo": 13777042953,
+      "ledger_price_basis": 129000,
+      "remote_salePrice": 129000,
+      "remote_statusType": "OUTOFSTOCK",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:1367",
+      "originProductNo": 13777042994,
+      "ledger_price_basis": 3410000,
+      "remote_salePrice": 3410000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:1368",
+      "originProductNo": 13777043027,
+      "ledger_price_basis": 5420000,
+      "remote_salePrice": 5420000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:1446",
+      "originProductNo": 13777043066,
+      "ledger_price_basis": 95000,
+      "remote_salePrice": 95000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:1448",
+      "originProductNo": 13777043140,
+      "ledger_price_basis": 4410000,
+      "remote_salePrice": 4410000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:1626",
+      "originProductNo": 13777043198,
+      "ledger_price_basis": 36700,
+      "remote_salePrice": 36700,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:1852",
+      "originProductNo": 13777043229,
+      "ledger_price_basis": 1049000,
+      "remote_salePrice": 1049000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:1853",
+      "originProductNo": 13777043440,
+      "ledger_price_basis": 1032000,
+      "remote_salePrice": 1032000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:1854",
+      "originProductNo": 13777043494,
+      "ledger_price_basis": 1306000,
+      "remote_salePrice": 1306000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:1855",
+      "originProductNo": 13777043595,
+      "ledger_price_basis": 501000,
+      "remote_salePrice": 501000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:2091",
+      "originProductNo": 13777043632,
+      "ledger_price_basis": 291000,
+      "remote_salePrice": 291000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:2095",
+      "originProductNo": 13777043659,
+      "ledger_price_basis": 224000,
+      "remote_salePrice": 224000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:2096",
+      "originProductNo": 13777043778,
+      "ledger_price_basis": 117000,
+      "remote_salePrice": 117000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:2097",
+      "originProductNo": 13777043822,
+      "ledger_price_basis": 117000,
+      "remote_salePrice": 117000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:2099",
+      "originProductNo": 13777043861,
+      "ledger_price_basis": 163000,
+      "remote_salePrice": 163000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:2101",
+      "originProductNo": 13777043904,
+      "ledger_price_basis": 118000,
+      "remote_salePrice": 118000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:2452",
+      "originProductNo": 13777044009,
+      "ledger_price_basis": 144000,
+      "remote_salePrice": 144000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:2453",
+      "originProductNo": 13777044063,
+      "ledger_price_basis": 144000,
+      "remote_salePrice": 144000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:2582",
+      "originProductNo": 13777044177,
+      "ledger_price_basis": 790000,
+      "remote_salePrice": 790000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:2661",
+      "originProductNo": 13777044233,
+      "ledger_price_basis": 2610000,
+      "remote_salePrice": 2610000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:2672",
+      "originProductNo": 13777044288,
+      "ledger_price_basis": 1040000,
+      "remote_salePrice": 1040000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:2856",
+      "originProductNo": 13777044341,
+      "ledger_price_basis": 659000,
+      "remote_salePrice": 659000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:29",
+      "originProductNo": 13777044401,
+      "ledger_price_basis": 890000,
+      "remote_salePrice": 890000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:2924",
+      "originProductNo": 13777044445,
+      "ledger_price_basis": 659000,
+      "remote_salePrice": 659000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3075",
+      "originProductNo": 13777044487,
+      "ledger_price_basis": 395000,
+      "remote_salePrice": 395000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3416",
+      "originProductNo": 13777044532,
+      "ledger_price_basis": 128000,
+      "remote_salePrice": 128000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3574",
+      "originProductNo": 13777044577,
+      "ledger_price_basis": 583000,
+      "remote_salePrice": 583000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3588",
+      "originProductNo": 13777044602,
+      "ledger_price_basis": 729000,
+      "remote_salePrice": 729000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3591",
+      "originProductNo": 13777044897,
+      "ledger_price_basis": 321000,
+      "remote_salePrice": 321000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3592",
+      "originProductNo": 13777044926,
+      "ledger_price_basis": 362000,
+      "remote_salePrice": 362000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3593",
+      "originProductNo": 13777044997,
+      "ledger_price_basis": 223000,
+      "remote_salePrice": 223000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3595",
+      "originProductNo": 13777045042,
+      "ledger_price_basis": 381000,
+      "remote_salePrice": 381000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3611",
+      "originProductNo": 13777045078,
+      "ledger_price_basis": 1490000,
+      "remote_salePrice": 1490000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3612",
+      "originProductNo": 13777045118,
+      "ledger_price_basis": 2290000,
+      "remote_salePrice": 2290000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3733",
+      "originProductNo": 13777045143,
+      "ledger_price_basis": 437000,
+      "remote_salePrice": 437000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3968",
+      "originProductNo": 13777045179,
+      "ledger_price_basis": 223000,
+      "remote_salePrice": 223000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3969",
+      "originProductNo": 13777045215,
+      "ledger_price_basis": 223000,
+      "remote_salePrice": 223000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3970",
+      "originProductNo": 13777045296,
+      "ledger_price_basis": 149000,
+      "remote_salePrice": 149000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3971",
+      "originProductNo": 13777045379,
+      "ledger_price_basis": 149000,
+      "remote_salePrice": 149000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3972",
+      "originProductNo": 13777045413,
+      "ledger_price_basis": 312000,
+      "remote_salePrice": 312000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3973",
+      "originProductNo": 13777045470,
+      "ledger_price_basis": 184000,
+      "remote_salePrice": 184000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:4099",
+      "originProductNo": 13777045506,
+      "ledger_price_basis": 170000,
+      "remote_salePrice": 170000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:4101",
+      "originProductNo": 13777045607,
+      "ledger_price_basis": 170000,
+      "remote_salePrice": 170000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:27",
+      "originProductNo": 13777055078,
+      "ledger_price_basis": 1470000,
+      "remote_salePrice": 1470000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:13",
+      "originProductNo": 13777135790,
+      "ledger_price_basis": 64000,
+      "remote_salePrice": 64000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:12",
+      "originProductNo": 13777135891,
+      "ledger_price_basis": 828000,
+      "remote_salePrice": 828000,
+      "remote_statusType": "OUTOFSTOCK",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:4463",
+      "originProductNo": 13777135931,
+      "ledger_price_basis": 179000,
+      "remote_salePrice": 179000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:1048",
+      "originProductNo": 13777136100,
+      "ledger_price_basis": 175000,
+      "remote_salePrice": 175000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:1049",
+      "originProductNo": 13777136150,
+      "ledger_price_basis": 175000,
+      "remote_salePrice": 175000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:1050",
+      "originProductNo": 13777136180,
+      "ledger_price_basis": 175000,
+      "remote_salePrice": 175000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:1051",
+      "originProductNo": 13777136233,
+      "ledger_price_basis": 175000,
+      "remote_salePrice": 175000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:1401",
+      "originProductNo": 13777136314,
+      "ledger_price_basis": 910,
+      "remote_salePrice": 910,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:1403",
+      "originProductNo": 13777136348,
+      "ledger_price_basis": 1240,
+      "remote_salePrice": 1240,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:1710",
+      "originProductNo": 13777136391,
+      "ledger_price_basis": 2490000,
+      "remote_salePrice": 2490000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:1978",
+      "originProductNo": 13777138919,
+      "ledger_price_basis": 102000,
+      "remote_salePrice": 102000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:1979",
+      "originProductNo": 13777138954,
+      "ledger_price_basis": 46000,
+      "remote_salePrice": 46000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:1981",
+      "originProductNo": 13777139010,
+      "ledger_price_basis": 80000,
+      "remote_salePrice": 80000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:1982",
+      "originProductNo": 13777139046,
+      "ledger_price_basis": 33000,
+      "remote_salePrice": 33000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:1983",
+      "originProductNo": 13777139088,
+      "ledger_price_basis": 33000,
+      "remote_salePrice": 33000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:1984",
+      "originProductNo": 13777139150,
+      "ledger_price_basis": 33000,
+      "remote_salePrice": 33000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:2392",
+      "originProductNo": 13777139199,
+      "ledger_price_basis": 15000,
+      "remote_salePrice": 15000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:2535",
+      "originProductNo": 13777139223,
+      "ledger_price_basis": 21000,
+      "remote_salePrice": 21000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:2536",
+      "originProductNo": 13777139279,
+      "ledger_price_basis": 15000,
+      "remote_salePrice": 15000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:2537",
+      "originProductNo": 13777139313,
+      "ledger_price_basis": 56000,
+      "remote_salePrice": 56000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:258",
+      "originProductNo": 13777139346,
+      "ledger_price_basis": 1592000,
+      "remote_salePrice": 1592000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:2585",
+      "originProductNo": 13777139369,
+      "ledger_price_basis": 117000,
+      "remote_salePrice": 117000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:275",
+      "originProductNo": 13777139399,
+      "ledger_price_basis": 32000,
+      "remote_salePrice": 32000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:2773",
+      "originProductNo": 13777139468,
+      "ledger_price_basis": 79000,
+      "remote_salePrice": 79000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:282",
+      "originProductNo": 13777139514,
+      "ledger_price_basis": 55000,
+      "remote_salePrice": 55000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:284",
+      "originProductNo": 13777139587,
+      "ledger_price_basis": 47000,
+      "remote_salePrice": 47000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:286",
+      "originProductNo": 13777139668,
+      "ledger_price_basis": 47000,
+      "remote_salePrice": 47000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:2898",
+      "originProductNo": 13777139722,
+      "ledger_price_basis": 2000,
+      "remote_salePrice": 2000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:2905",
+      "originProductNo": 13777139748,
+      "ledger_price_basis": 29000,
+      "remote_salePrice": 29000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:2906",
+      "originProductNo": 13777139829,
+      "ledger_price_basis": 29000,
+      "remote_salePrice": 29000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:2907",
+      "originProductNo": 13777141166,
+      "ledger_price_basis": 58000,
+      "remote_salePrice": 58000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:2927",
+      "originProductNo": 13777141195,
+      "ledger_price_basis": 67000,
+      "remote_salePrice": 67000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:2928",
+      "originProductNo": 13777141220,
+      "ledger_price_basis": 38000,
+      "remote_salePrice": 38000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:2930",
+      "originProductNo": 13777141275,
+      "ledger_price_basis": 38000,
+      "remote_salePrice": 38000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:2931",
+      "originProductNo": 13777141298,
+      "ledger_price_basis": 38000,
+      "remote_salePrice": 38000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:2945",
+      "originProductNo": 13777141330,
+      "ledger_price_basis": 42000,
+      "remote_salePrice": 42000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:2946",
+      "originProductNo": 13777141358,
+      "ledger_price_basis": 59000,
+      "remote_salePrice": 59000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:2948",
+      "originProductNo": 13777141392,
+      "ledger_price_basis": 36000,
+      "remote_salePrice": 36000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:295",
+      "originProductNo": 13777141429,
+      "ledger_price_basis": 81000,
+      "remote_salePrice": 81000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:2954",
+      "originProductNo": 13777141476,
+      "ledger_price_basis": 439000,
+      "remote_salePrice": 439000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:296",
+      "originProductNo": 13777141524,
+      "ledger_price_basis": 81000,
+      "remote_salePrice": 81000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:297",
+      "originProductNo": 13777141573,
+      "ledger_price_basis": 81000,
+      "remote_salePrice": 81000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:2973",
+      "originProductNo": 13777141606,
+      "ledger_price_basis": 189000,
+      "remote_salePrice": 189000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:298",
+      "originProductNo": 13777141653,
+      "ledger_price_basis": 81000,
+      "remote_salePrice": 81000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:302",
+      "originProductNo": 13777141689,
+      "ledger_price_basis": 15000,
+      "remote_salePrice": 15000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:303",
+      "originProductNo": 13777141770,
+      "ledger_price_basis": 38000,
+      "remote_salePrice": 38000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:304",
+      "originProductNo": 13777141857,
+      "ledger_price_basis": 32000,
+      "remote_salePrice": 32000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:305",
+      "originProductNo": 13777141947,
+      "ledger_price_basis": 19000,
+      "remote_salePrice": 19000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:315",
+      "originProductNo": 13777141977,
+      "ledger_price_basis": 47000,
+      "remote_salePrice": 47000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3153",
+      "originProductNo": 13777142047,
+      "ledger_price_basis": 81000,
+      "remote_salePrice": 81000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:318",
+      "originProductNo": 13777142344,
+      "ledger_price_basis": 49000,
+      "remote_salePrice": 49000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:319",
+      "originProductNo": 13777142375,
+      "ledger_price_basis": 49000,
+      "remote_salePrice": 49000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:320",
+      "originProductNo": 13777142403,
+      "ledger_price_basis": 11000,
+      "remote_salePrice": 11000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:321",
+      "originProductNo": 13777142436,
+      "ledger_price_basis": 21000,
+      "remote_salePrice": 21000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:323",
+      "originProductNo": 13777142462,
+      "ledger_price_basis": 13000,
+      "remote_salePrice": 13000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:324",
+      "originProductNo": 13777142503,
+      "ledger_price_basis": 29000,
+      "remote_salePrice": 29000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:325",
+      "originProductNo": 13777142536,
+      "ledger_price_basis": 31000,
+      "remote_salePrice": 31000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3257",
+      "originProductNo": 13777142570,
+      "ledger_price_basis": 29000,
+      "remote_salePrice": 29000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3258",
+      "originProductNo": 13777142613,
+      "ledger_price_basis": 29000,
+      "remote_salePrice": 29000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:326",
+      "originProductNo": 13777142650,
+      "ledger_price_basis": 33000,
+      "remote_salePrice": 33000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:327",
+      "originProductNo": 13777142682,
+      "ledger_price_basis": 113000,
+      "remote_salePrice": 113000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:328",
+      "originProductNo": 13777142712,
+      "ledger_price_basis": 52000,
+      "remote_salePrice": 52000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:329",
+      "originProductNo": 13777142752,
+      "ledger_price_basis": 25000,
+      "remote_salePrice": 25000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:330",
+      "originProductNo": 13777142812,
+      "ledger_price_basis": 25000,
+      "remote_salePrice": 25000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:331",
+      "originProductNo": 13777142863,
+      "ledger_price_basis": 138000,
+      "remote_salePrice": 138000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3316",
+      "originProductNo": 13777142960,
+      "ledger_price_basis": 299000,
+      "remote_salePrice": 299000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3383",
+      "originProductNo": 13777142987,
+      "ledger_price_basis": 359000,
+      "remote_salePrice": 359000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3475",
+      "originProductNo": 13777143010,
+      "ledger_price_basis": 58000,
+      "remote_salePrice": 58000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3563",
+      "originProductNo": 13777143039,
+      "ledger_price_basis": 608000,
+      "remote_salePrice": 608000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3577",
+      "originProductNo": 13777143665,
+      "ledger_price_basis": 42000,
+      "remote_salePrice": 42000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3578",
+      "originProductNo": 13777143695,
+      "ledger_price_basis": 42000,
+      "remote_salePrice": 42000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3579",
+      "originProductNo": 13777143735,
+      "ledger_price_basis": 42000,
+      "remote_salePrice": 42000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3580",
+      "originProductNo": 13777143778,
+      "ledger_price_basis": 42000,
+      "remote_salePrice": 42000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3581",
+      "originProductNo": 13777143809,
+      "ledger_price_basis": 42000,
+      "remote_salePrice": 42000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3582",
+      "originProductNo": 13777143845,
+      "ledger_price_basis": 42000,
+      "remote_salePrice": 42000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3584",
+      "originProductNo": 13777143878,
+      "ledger_price_basis": 92000,
+      "remote_salePrice": 92000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3962",
+      "originProductNo": 13777143908,
+      "ledger_price_basis": 38000,
+      "remote_salePrice": 38000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3980",
+      "originProductNo": 13777143958,
+      "ledger_price_basis": 215000,
+      "remote_salePrice": 215000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3981",
+      "originProductNo": 13777143977,
+      "ledger_price_basis": 86000,
+      "remote_salePrice": 86000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3982",
+      "originProductNo": 13777144027,
+      "ledger_price_basis": 67000,
+      "remote_salePrice": 67000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3983",
+      "originProductNo": 13777144059,
+      "ledger_price_basis": 67000,
+      "remote_salePrice": 67000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3984",
+      "originProductNo": 13777144136,
+      "ledger_price_basis": 52000,
+      "remote_salePrice": 52000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3985",
+      "originProductNo": 13777144159,
+      "ledger_price_basis": 54000,
+      "remote_salePrice": 54000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3986",
+      "originProductNo": 13777144202,
+      "ledger_price_basis": 54000,
+      "remote_salePrice": 54000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3987",
+      "originProductNo": 13777144234,
+      "ledger_price_basis": 54000,
+      "remote_salePrice": 54000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:4074",
+      "originProductNo": 13777144257,
+      "ledger_price_basis": 90000,
+      "remote_salePrice": 90000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:422",
+      "originProductNo": 13777144325,
+      "ledger_price_basis": 18000,
+      "remote_salePrice": 18000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:423",
+      "originProductNo": 13777144359,
+      "ledger_price_basis": 18000,
+      "remote_salePrice": 18000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:4432",
+      "originProductNo": 13777144395,
+      "ledger_price_basis": 19000,
+      "remote_salePrice": 19000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:4546",
+      "originProductNo": 13777144420,
+      "ledger_price_basis": 74000,
+      "remote_salePrice": 74000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:4547",
+      "originProductNo": 13777144503,
+      "ledger_price_basis": 86000,
+      "remote_salePrice": 86000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:5219",
+      "originProductNo": 13777144528,
+      "ledger_price_basis": 399000,
+      "remote_salePrice": 399000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:5243",
+      "originProductNo": 13777144595,
+      "ledger_price_basis": 259000,
+      "remote_salePrice": 259000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:5254",
+      "originProductNo": 13777144623,
+      "ledger_price_basis": 12960000,
+      "remote_salePrice": 12960000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:5269",
+      "originProductNo": 13777144790,
+      "ledger_price_basis": 900000,
+      "remote_salePrice": 900000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:5391",
+      "originProductNo": 13777144835,
+      "ledger_price_basis": 10600000,
+      "remote_salePrice": 10600000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:5392",
+      "originProductNo": 13777144858,
+      "ledger_price_basis": 11900000,
+      "remote_salePrice": 11900000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:5393",
+      "originProductNo": 13777144952,
+      "ledger_price_basis": 28000,
+      "remote_salePrice": 28000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:5532",
+      "originProductNo": 13777145149,
+      "ledger_price_basis": 289000,
+      "remote_salePrice": 289000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:593",
+      "originProductNo": 13777145252,
+      "ledger_price_basis": 33000,
+      "remote_salePrice": 33000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:594",
+      "originProductNo": 13777145289,
+      "ledger_price_basis": 27000,
+      "remote_salePrice": 27000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:598",
+      "originProductNo": 13777145322,
+      "ledger_price_basis": 28000,
+      "remote_salePrice": 28000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:600",
+      "originProductNo": 13777145396,
+      "ledger_price_basis": 24000,
+      "remote_salePrice": 24000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:678",
+      "originProductNo": 13777145429,
+      "ledger_price_basis": 25000,
+      "remote_salePrice": 25000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:679",
+      "originProductNo": 13777145453,
+      "ledger_price_basis": 25000,
+      "remote_salePrice": 25000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:680",
+      "originProductNo": 13777145492,
+      "ledger_price_basis": 25000,
+      "remote_salePrice": 25000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:681",
+      "originProductNo": 13777145559,
+      "ledger_price_basis": 81000,
+      "remote_salePrice": 81000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:682",
+      "originProductNo": 13777145581,
+      "ledger_price_basis": 81000,
+      "remote_salePrice": 81000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:875",
+      "originProductNo": 13777145662,
+      "ledger_price_basis": 50000,
+      "remote_salePrice": 50000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:945",
+      "originProductNo": 13777145693,
+      "ledger_price_basis": 2000,
+      "remote_salePrice": 2000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:1225",
+      "originProductNo": 13777145739,
+      "ledger_price_basis": 60000,
+      "remote_salePrice": 60000,
+      "remote_statusType": "OUTOFSTOCK",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:1402",
+      "originProductNo": 13777145792,
+      "ledger_price_basis": 1290,
+      "remote_salePrice": 1290,
+      "remote_statusType": "OUTOFSTOCK",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:1404",
+      "originProductNo": 13777145829,
+      "ledger_price_basis": 1400,
+      "remote_salePrice": 1400,
+      "remote_statusType": "OUTOFSTOCK",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:1985",
+      "originProductNo": 13777145861,
+      "ledger_price_basis": 79000,
+      "remote_salePrice": 79000,
+      "remote_statusType": "OUTOFSTOCK",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:1986",
+      "originProductNo": 13777145900,
+      "ledger_price_basis": 79000,
+      "remote_salePrice": 79000,
+      "remote_statusType": "OUTOFSTOCK",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:287",
+      "originProductNo": 13777145963,
+      "ledger_price_basis": 36000,
+      "remote_salePrice": 36000,
+      "remote_statusType": "OUTOFSTOCK",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:288",
+      "originProductNo": 13777146008,
+      "ledger_price_basis": 29000,
+      "remote_salePrice": 29000,
+      "remote_statusType": "OUTOFSTOCK",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:292",
+      "originProductNo": 13777146152,
+      "ledger_price_basis": 11000,
+      "remote_salePrice": 11000,
+      "remote_statusType": "OUTOFSTOCK",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:2926",
+      "originProductNo": 13777146187,
+      "ledger_price_basis": 67000,
+      "remote_salePrice": 67000,
+      "remote_statusType": "OUTOFSTOCK",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:2929",
+      "originProductNo": 13777146230,
+      "ledger_price_basis": 38000,
+      "remote_salePrice": 38000,
+      "remote_statusType": "OUTOFSTOCK",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:299",
+      "originProductNo": 13777146310,
+      "ledger_price_basis": 79000,
+      "remote_salePrice": 79000,
+      "remote_statusType": "OUTOFSTOCK",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:300",
+      "originProductNo": 13777146383,
+      "ledger_price_basis": 79000,
+      "remote_salePrice": 79000,
+      "remote_statusType": "OUTOFSTOCK",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:312",
+      "originProductNo": 13777146416,
+      "ledger_price_basis": 24000,
+      "remote_salePrice": 24000,
+      "remote_statusType": "OUTOFSTOCK",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3150",
+      "originProductNo": 13777146472,
+      "ledger_price_basis": 199000,
+      "remote_salePrice": 199000,
+      "remote_statusType": "OUTOFSTOCK",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:316",
+      "originProductNo": 13777146505,
+      "ledger_price_basis": 87000,
+      "remote_salePrice": 87000,
+      "remote_statusType": "OUTOFSTOCK",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3476",
+      "originProductNo": 13777146580,
+      "ledger_price_basis": 46000,
+      "remote_salePrice": 46000,
+      "remote_statusType": "OUTOFSTOCK",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3583",
+      "originProductNo": 13777146660,
+      "ledger_price_basis": 71000,
+      "remote_salePrice": 71000,
+      "remote_statusType": "OUTOFSTOCK",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:380",
+      "originProductNo": 13777146708,
+      "ledger_price_basis": 120000,
+      "remote_salePrice": 120000,
+      "remote_statusType": "OUTOFSTOCK",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:3932",
+      "originProductNo": 13777146753,
+      "ledger_price_basis": 3000,
+      "remote_salePrice": 3000,
+      "remote_statusType": "OUTOFSTOCK",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:424",
+      "originProductNo": 13777146789,
+      "ledger_price_basis": 18000,
+      "remote_salePrice": 18000,
+      "remote_statusType": "OUTOFSTOCK",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:426",
+      "originProductNo": 13777146838,
+      "ledger_price_basis": 30000,
+      "remote_salePrice": 30000,
+      "remote_statusType": "OUTOFSTOCK",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:5390",
+      "originProductNo": 13777146884,
+      "ledger_price_basis": 7390000,
+      "remote_salePrice": 7390000,
+      "remote_statusType": "OUTOFSTOCK",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:4464",
+      "originProductNo": 13777146938,
+      "ledger_price_basis": 89000,
+      "remote_salePrice": 89000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:4539",
+      "originProductNo": 13777147003,
+      "ledger_price_basis": 59000,
+      "remote_salePrice": 59000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:5313",
+      "originProductNo": 13777147132,
+      "ledger_price_basis": 268000,
+      "remote_salePrice": 268000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:5314",
+      "originProductNo": 13777147175,
+      "ledger_price_basis": 125000,
+      "remote_salePrice": 125000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:5315",
+      "originProductNo": 13777147230,
+      "ledger_price_basis": 201000,
+      "remote_salePrice": 201000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:5316",
+      "originProductNo": 13777147253,
+      "ledger_price_basis": 201000,
+      "remote_salePrice": 201000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:5453",
+      "originProductNo": 13777147295,
+      "ledger_price_basis": 629000,
+      "remote_salePrice": 629000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:5468",
+      "originProductNo": 13777147390,
+      "ledger_price_basis": 175000,
+      "remote_salePrice": 175000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:4122",
+      "originProductNo": 13777147461,
+      "ledger_price_basis": 619000,
+      "remote_salePrice": 619000,
+      "remote_statusType": "OUTOFSTOCK",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:4538",
+      "originProductNo": 13777147523,
+      "ledger_price_basis": 44000,
+      "remote_salePrice": 44000,
+      "remote_statusType": "OUTOFSTOCK",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:5539",
+      "originProductNo": 13777147854,
+      "ledger_price_basis": 165000,
+      "remote_salePrice": 165000,
+      "remote_statusType": "OUTOFSTOCK",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:4167",
+      "originProductNo": 13777385132,
+      "ledger_price_basis": 219000,
+      "remote_salePrice": 219000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:4168",
+      "originProductNo": 13777385156,
+      "ledger_price_basis": 249000,
+      "remote_salePrice": 249000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:4393",
+      "originProductNo": 13777385183,
+      "ledger_price_basis": 389000,
+      "remote_salePrice": 389000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:4462",
+      "originProductNo": 13777385205,
+      "ledger_price_basis": 239000,
+      "remote_salePrice": 239000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:4615",
+      "originProductNo": 13777385225,
+      "ledger_price_basis": 939000,
+      "remote_salePrice": 939000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:4683",
+      "originProductNo": 13777385275,
+      "ledger_price_basis": 255000,
+      "remote_salePrice": 255000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:4902",
+      "originProductNo": 13777385329,
+      "ledger_price_basis": 2800000,
+      "remote_salePrice": 2800000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:4957",
+      "originProductNo": 13777385380,
+      "ledger_price_basis": 850000,
+      "remote_salePrice": 850000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:4958",
+      "originProductNo": 13777385433,
+      "ledger_price_basis": 950000,
+      "remote_salePrice": 950000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:4959",
+      "originProductNo": 13777385467,
+      "ledger_price_basis": 1090000,
+      "remote_salePrice": 1090000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:4963",
+      "originProductNo": 13777385497,
+      "ledger_price_basis": 2170000,
+      "remote_salePrice": 2170000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:4965",
+      "originProductNo": 13777385520,
+      "ledger_price_basis": 2360000,
+      "remote_salePrice": 2360000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:4967",
+      "originProductNo": 13777385558,
+      "ledger_price_basis": 1010000,
+      "remote_salePrice": 1010000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:4968",
+      "originProductNo": 13777385591,
+      "ledger_price_basis": 1150000,
+      "remote_salePrice": 1150000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:4969",
+      "originProductNo": 13777385626,
+      "ledger_price_basis": 1150000,
+      "remote_salePrice": 1150000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:4974",
+      "originProductNo": 13777385667,
+      "ledger_price_basis": 1370000,
+      "remote_salePrice": 1370000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:4975",
+      "originProductNo": 13777385704,
+      "ledger_price_basis": 1560000,
+      "remote_salePrice": 1560000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:4976",
+      "originProductNo": 13777385735,
+      "ledger_price_basis": 1780000,
+      "remote_salePrice": 1780000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:4977",
+      "originProductNo": 13777385779,
+      "ledger_price_basis": 1560000,
+      "remote_salePrice": 1560000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:4978",
+      "originProductNo": 13777385854,
+      "ledger_price_basis": 1780000,
+      "remote_salePrice": 1780000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:5199",
+      "originProductNo": 13777385886,
+      "ledger_price_basis": 2990000,
+      "remote_salePrice": 2990000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:5200",
+      "originProductNo": 13777385920,
+      "ledger_price_basis": 1330000,
+      "remote_salePrice": 1330000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    },
+    {
+      "cgiId": "samamusic:5201",
+      "originProductNo": 13777385953,
+      "ledger_price_basis": 2630000,
+      "remote_salePrice": 2630000,
+      "remote_statusType": "SALE",
+      "price_unchanged": true,
+      "error": null
+    }
+  ]
+}
