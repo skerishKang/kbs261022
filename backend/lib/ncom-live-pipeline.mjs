@@ -218,6 +218,39 @@ const sniffImageFormat = (bytes) => {
 };
 
 /**
+ * 멀티파트 파트의 Content-Type 은 이미지의 실제 MIME 이어야 한다 — vendor 규정
+ * (commerce-api-naver/commerce-api discussion #1663: "JPEG: image/jpeg").
+ * 스니프 형식명(JPG)을 그대로 내려보내면 image/jpg 가 되어 서버가
+ * "이미지 업로드중 오류가 발생하였습니다"(400)로 거부한다 — 2026-10-29 라이브 실측.
+ */
+/**
+ * 상품 이미지 다건 등록의 응답에서 업로드 URL 배열을 뽑는다(순수 함수).
+ * vendor 실측(2026-10-29): 최상위 {images:[{url}]} — mock 계약({urls})과 다르다.
+ * 두 형태를 모두 받되, URL 수가 보낸 파일 수와 다르면 호출자의 부분 채택 금지
+ * 규칙이 그대로 적용되도록 배열(또는 null)만 돌려준다.
+ */
+export function uploadedUrlsFromResponse(response) {
+  const body = response?.raw ?? response?.data ?? response;
+  const pickImages = (list) => {
+    if (!Array.isArray(list) || list.length === 0) return null;
+    const urls = [];
+    for (const item of list) {
+      const url = item && typeof item === 'object' ? item.url : item;
+      if (typeof url !== 'string' || url.length === 0) return null;
+      urls.push(url);
+    }
+    return urls;
+  };
+  if (Array.isArray(body?.images)) return pickImages(body.images);
+  if (Array.isArray(body?.urls)) return pickImages(body.urls);
+  if (Array.isArray(response?.data?.urls)) return pickImages(response.data.urls);
+  if (Array.isArray(response?.data?.images)) return pickImages(response.data.images);
+  return null;
+}
+
+const MIME_BY_FORMAT = { JPG: 'image/jpeg', PNG: 'image/png', GIF: 'image/gif', BMP: 'image/bmp' };
+
+/**
  * 파일럿 이미지 라이브 업로드. M2 이미지 러너의 계약(대표 1+추가 9, 배치 10장,
  * 응답 URL 수 불일치 배치는 부분 채택 금지, ledger 반환 URL 만 본문 허용)을 그대로
  * 따르되, 이 레인은 라이브만 허용한다(게이트). 파일 바이트는 실행 시 공급처 URL 에서
@@ -271,10 +304,10 @@ export async function runPilotImageUpload({ runtime, packages = [], env = {}, ga
       batches.push({ cgiId: pkg.cgiId, batch: batches.length + 1, files: batch.length });
       const form = new FormData();
       for (const item of batch) {
-        form.append('imageFiles', new File([item.bytes], item.filename, { type: `image/${item.format.toLowerCase()}` }));
+        form.append('imageFiles', new File([item.bytes], item.filename, { type: MIME_BY_FORMAT[item.format] ?? 'application/octet-stream' }));
       }
       const response = await runtime.call('imageUpload', { body: form });
-      const urlsOut = response?.data?.urls;
+      const urlsOut = uploadedUrlsFromResponse(response);
       if (!Array.isArray(urlsOut) || urlsOut.length !== batch.length) {
         failed_batches.push({
           cgiId: pkg.cgiId,
