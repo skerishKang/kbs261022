@@ -1,0 +1,2875 @@
+{
+  "kind": "cgi-bulk-register-9th-batch",
+  "ran_at": "2026-10-29T13:33:40.856Z",
+  "scope": "9차 배치 — 가격 복구 후 배치5~7 미등록·오늘 라이브 재판정 적격분 최대 100건 실등록·전시 ON",
+  "results": [
+    {
+      "cgiId": "samamusic:1216",
+      "leafCategoryId": "50024419",
+      "taxonomy_state": "NEED_CATEGORY",
+      "state": "FAILED_ORIGIN",
+      "live": {
+        "origin": "해외",
+        "price": 825000,
+        "sold_out": false,
+        "brand": "SHURE",
+        "model": "SE535LTD",
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "SE535LTD",
+      "live_origin": "해외",
+      "origin_code": null,
+      "origin_mode": "unresolved"
+    },
+    {
+      "cgiId": "samamusic:1422",
+      "leafCategoryId": "50002974",
+      "taxonomy_state": "NEED_CATEGORY",
+      "state": "FAILED_ORIGIN",
+      "live": {
+        "origin": "해외",
+        "price": 159000,
+        "sold_out": false,
+        "brand": "APOGEE",
+        "model": "JAM PLUS",
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "JAM PLUS",
+      "live_origin": "해외",
+      "origin_code": null,
+      "origin_mode": "unresolved"
+    },
+    {
+      "cgiId": "samamusic:233",
+      "leafCategoryId": "50024419",
+      "taxonomy_state": "NEED_CATEGORY",
+      "state": "FAILED_ORIGIN",
+      "live": {
+        "origin": "해외",
+        "price": 189000,
+        "sold_out": false,
+        "brand": "SHURE",
+        "model": null,
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "SHURE SE215SPE",
+      "live_origin": "해외",
+      "origin_code": null,
+      "origin_mode": "unresolved"
+    },
+    {
+      "cgiId": "samamusic:283",
+      "leafCategoryId": "50002342",
+      "taxonomy_state": "NEED_CATEGORY",
+      "state": "FAILED_ORIGIN",
+      "live": {
+        "origin": "해외 .",
+        "price": 32000,
+        "sold_out": false,
+        "brand": "SHURE",
+        "model": "HPACA1",
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "HPACA1",
+      "live_origin": "해외 .",
+      "origin_code": null,
+      "origin_mode": "unresolved"
+    },
+    {
+      "cgiId": "samamusic:285",
+      "leafCategoryId": "50002342",
+      "taxonomy_state": "NEED_CATEGORY",
+      "state": "FAILED_ORIGIN",
+      "live": {
+        "origin": "해외 .",
+        "price": 92000,
+        "sold_out": false,
+        "brand": "SHURE",
+        "model": "HPAEC1540",
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "HPAEC1540",
+      "live_origin": "해외 .",
+      "origin_code": null,
+      "origin_mode": "unresolved"
+    },
+    {
+      "cgiId": "samamusic:3169",
+      "leafCategoryId": "50004370",
+      "taxonomy_state": "READY_SALE",
+      "state": "FAILED_ORIGIN",
+      "live": {
+        "origin": "국내",
+        "price": 6350000,
+        "sold_out": false,
+        "brand": "Michael Tuttle Guitars",
+        "model": "Custom Classic S 785",
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "Custom Classic S 785",
+      "live_origin": "국내",
+      "origin_code": null,
+      "origin_mode": "unresolved"
+    },
+    {
+      "cgiId": "samamusic:3172",
+      "leafCategoryId": "50004370",
+      "taxonomy_state": "READY_SALE",
+      "state": "FAILED_ORIGIN",
+      "live": {
+        "origin": "국내",
+        "price": 6250000,
+        "sold_out": false,
+        "brand": "Michael Tuttle Guitars",
+        "model": null,
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "Custom Classic S 788",
+      "live_origin": "국내",
+      "origin_code": null,
+      "origin_mode": "unresolved"
+    },
+    {
+      "cgiId": "samamusic:3339",
+      "leafCategoryId": "50002974",
+      "taxonomy_state": "NEED_CATEGORY",
+      "state": "FAILED_ORIGIN",
+      "live": {
+        "origin": "국내",
+        "price": 377000,
+        "sold_out": false,
+        "brand": "IK MULTIMEDIA",
+        "model": "AXE I/O SOLO",
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "AXE I/O SOLO",
+      "live_origin": "국내",
+      "origin_code": null,
+      "origin_mode": "unresolved"
+    },
+    {
+      "cgiId": "samamusic:4167",
+      "leafCategoryId": "50002321",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "state": "DISPLAYED",
+      "live": {
+        "origin": "아시아 중국",
+        "price": 219000,
+        "sold_out": false,
+        "brand": "PRESONUS",
+        "model": "Eris 3.5 GEN2 White",
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "Eris 3.5 GEN2 White",
+      "live_origin": "아시아 중국",
+      "origin_code": "0200037",
+      "origin_mode": "verified_code",
+      "upload_ok": 1,
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "[한정판] PreSonus Eris 3.5 GEN2 White 프리소너스 에리스 2세대 모니터 스피커 1조(2통) 화이트",
+          "salePrice": 219000,
+          "stockQuantity": 1,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:4167"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0200037",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "[한정판] PreSonus Eris 3.5 GEN2 White 프리소너스 에리스 2세대 모",
+                "manufacturer": "PRESONUS",
+                "modelName": "Eris 3.5 GEN2 White",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261029_30/17932807738597zhet_JPEG/107216454809397388_719991895.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50002321",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202502/e4649d43a00fb70bc48bae1936529c25.jpg\" alt=\"[한정판] PreSonus Eris 3.5 GEN2 White 프리소너스 에리스 2세대 모니터 스피커 1조(2통) 화이트\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">[한정판] PreSonus Eris 3.5 GEN2 White 프리소너스 에리스 2세대 모니터 스피커 1조(2통) 화이트</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 PRESONUS &middot; 모델명 Eris 3.5 GEN2 White</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 219,000원</p><p style=\"margin:12px 0;\">본 가격은 스피커 1조(2통)에 대한 가격입니다</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>PRESONUS</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">모델명</th><td>Eris 3.5 GEN2 White</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>스피커</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/한정판-presonus-eris-35-gen2-white-프리소너스-에리스-2세대-모니터-스피커-1조2통-화이트/4167/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "leaf_for_body": "50002321",
+      "stock_target": 1,
+      "stock_source": "fallback_1",
+      "dup_check": {
+        "hits": 0,
+        "exact_hit": false
+      },
+      "originProductNo": 13777385132,
+      "smartstoreChannelProductNo": 13838817693,
+      "registered_at": "2026-10-29T13:32:52.526Z",
+      "verify": {
+        "statusType": "SALE",
+        "price": 219000,
+        "stock": 1,
+        "price_unchanged": true
+      },
+      "display_after": "ON",
+      "after_display_check": {
+        "price": 219000,
+        "stock": 1,
+        "statusType": "SALE",
+        "price_unchanged": true
+      }
+    },
+    {
+      "cgiId": "samamusic:4168",
+      "leafCategoryId": "50002322",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "state": "DISPLAYED",
+      "live": {
+        "origin": "아시아 중국",
+        "price": 249000,
+        "sold_out": false,
+        "brand": "PRESONUS",
+        "model": "Eris 3.5 BT GEN2 White",
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "Eris 3.5 BT GEN2 White",
+      "live_origin": "아시아 중국",
+      "origin_code": "0200037",
+      "origin_mode": "verified_code",
+      "upload_ok": 1,
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "[한정판] PreSonus Eris 3.5 BT GEN2 White 프리소너스 에리스 2세대 블루투스 모니터 스피커 1조(2통) 화이트",
+          "salePrice": 249000,
+          "stockQuantity": 1,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:4168"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0200037",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "[한정판] PreSonus Eris 3.5 BT GEN2 White 프리소너스 에리스 2세",
+                "manufacturer": "PRESONUS",
+                "modelName": "Eris 3.5 BT GEN2 White",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261029_227/17932807757296axx9_JPEG/25632129583270871_1039470688.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50002322",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202502/fbe419ee638fa0d70b8d1139a8aabee8.jpg\" alt=\"[한정판] PreSonus Eris 3.5 BT GEN2 White 프리소너스 에리스 2세대 블루투스 모니터 스피커 1조(2통) 화이트\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">[한정판] PreSonus Eris 3.5 BT GEN2 White 프리소너스 에리스 2세대 블루투스 모니터 스피커 1조(2통) 화이트</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 PRESONUS &middot; 모델명 Eris 3.5 BT GEN2 White</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 249,000원</p><p style=\"margin:12px 0;\">본 가격은 스피커 1조(2통)에 대한 가격입니다</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>PRESONUS</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">모델명</th><td>Eris 3.5 BT GEN2 White</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>블루투스 스피커</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/한정판-presonus-eris-35-bt-gen2-white-프리소너스-에리스-2세대-블루투스-모니터-스피커-1조2통-화이트/4168/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "leaf_for_body": "50002322",
+      "stock_target": 1,
+      "stock_source": "fallback_1",
+      "dup_check": {
+        "hits": 0,
+        "exact_hit": false
+      },
+      "originProductNo": 13777385156,
+      "smartstoreChannelProductNo": 13838817718,
+      "registered_at": "2026-10-29T13:32:54.349Z",
+      "verify": {
+        "statusType": "SALE",
+        "price": 249000,
+        "stock": 1,
+        "price_unchanged": true
+      },
+      "display_after": "ON",
+      "after_display_check": {
+        "price": 249000,
+        "stock": 1,
+        "statusType": "SALE",
+        "price_unchanged": true
+      }
+    },
+    {
+      "cgiId": "samamusic:4393",
+      "leafCategoryId": "50002322",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "state": "DISPLAYED",
+      "live": {
+        "origin": "아시아 중국",
+        "price": 389000,
+        "sold_out": false,
+        "brand": "Positive Grid",
+        "model": "Spark Mini VAI",
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "Spark Mini VAI",
+      "live_origin": "아시아 중국",
+      "origin_code": "0200037",
+      "origin_mode": "verified_code",
+      "upload_ok": 1,
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "Positive Grid Spark MINI VAI 아티스트 에디션 스마트 앰프 기타 앰프",
+          "salePrice": 389000,
+          "stockQuantity": 1,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:4393"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0200037",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "Positive Grid Spark MINI VAI 아티스트 에디션 스마트 앰프 기타 앰프",
+                "manufacturer": "Positive Grid",
+                "modelName": "Spark Mini VAI",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261029_15/1793280777554FXdPU_JPEG/124058530552394542_468463431.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50002322",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202410/910d30589073242231a986734e6cd6e9.jpg\" alt=\"Positive Grid Spark MINI VAI 아티스트 에디션 스마트 앰프 기타 앰프\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">Positive Grid Spark MINI VAI 아티스트 에디션 스마트 앰프 기타 앰프</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 POSITIVE GRID &middot; 모델명 Spark Mini VAI</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 389,000원</p><p style=\"margin:12px 0;\">배터리 내장형 스마트 기타 앰프이자 컴팩트한 사이즈의 블루투스 스피커</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>POSITIVE GRID</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">모델명</th><td>Spark Mini VAI</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>블루투스 스피커</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/positive-grid-spark-mini-vai-아티스트-에디션-스마트-앰프-기타-앰프/4393/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "leaf_for_body": "50002322",
+      "stock_target": 1,
+      "stock_source": "fallback_1",
+      "dup_check": {
+        "hits": 0,
+        "exact_hit": false
+      },
+      "originProductNo": 13777385183,
+      "smartstoreChannelProductNo": 13838817745,
+      "registered_at": "2026-10-29T13:32:56.156Z",
+      "verify": {
+        "statusType": "SALE",
+        "price": 389000,
+        "stock": 1,
+        "price_unchanged": true
+      },
+      "display_after": "ON",
+      "after_display_check": {
+        "price": 389000,
+        "stock": 1,
+        "statusType": "SALE",
+        "price_unchanged": true
+      }
+    },
+    {
+      "cgiId": "samamusic:4462",
+      "leafCategoryId": "50004370",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "state": "DISPLAYED",
+      "live": {
+        "origin": "아시아 인도네시아",
+        "price": 239000,
+        "sold_out": false,
+        "brand": "Positive Grid",
+        "model": "Spark CONTROL X",
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "Spark CONTROL X",
+      "live_origin": "아시아 인도네시아",
+      "origin_code": "0200034",
+      "origin_mode": "verified_code",
+      "upload_ok": 1,
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "Positive Grid Spark CONTROL X 무선 컨트롤러",
+          "salePrice": 239000,
+          "stockQuantity": 1,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:4462"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0200034",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "Positive Grid Spark CONTROL X 무선 컨트롤러",
+                "manufacturer": "Positive Grid",
+                "modelName": "Spark CONTROL X",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261029_182/1793280779249IKVGw_JPEG/85004555205031309_316646681.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50004370",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202411/5419f2ecb84fec458e2bc3dd07cb0ecb.jpg\" alt=\"Positive Grid Spark CONTROL X 무선 컨트롤러\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">Positive Grid Spark CONTROL X 무선 컨트롤러</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 POSITIVE GRID &middot; 모델명 Spark CONTROL X</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 239,000원</p><p style=\"margin:12px 0;\">Spark 제품을 위한 무선 컨트롤러</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>POSITIVE GRID</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">모델명</th><td>Spark CONTROL X</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>악기/앰프</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/positive-grid-spark-control-x-무선-컨트롤러/4462/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "leaf_for_body": "50004370",
+      "stock_target": 1,
+      "stock_source": "fallback_1",
+      "dup_check": {
+        "hits": 0,
+        "exact_hit": false
+      },
+      "originProductNo": 13777385205,
+      "smartstoreChannelProductNo": 13838817767,
+      "registered_at": "2026-10-29T13:32:57.776Z",
+      "verify": {
+        "statusType": "SALE",
+        "price": 239000,
+        "stock": 1,
+        "price_unchanged": true
+      },
+      "display_after": "ON",
+      "after_display_check": {
+        "price": 239000,
+        "stock": 1,
+        "statusType": "SALE",
+        "price_unchanged": true
+      }
+    },
+    {
+      "cgiId": "samamusic:4615",
+      "leafCategoryId": "50002320",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "state": "DISPLAYED",
+      "live": {
+        "origin": "아시아 중국",
+        "price": 939000,
+        "sold_out": false,
+        "brand": "Q Acoustics",
+        "model": "Q3060S",
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "Q3060S",
+      "live_origin": "아시아 중국",
+      "origin_code": "0200037",
+      "origin_mode": "verified_code",
+      "upload_ok": 1,
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "Q Acoustics Q 3060S 큐어쿠스틱 액티브 서브우퍼",
+          "salePrice": 939000,
+          "stockQuantity": 1,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:4615"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0200037",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "Q Acoustics Q 3060S 큐어쿠스틱 액티브 서브우퍼",
+                "manufacturer": "Q Acoustics",
+                "modelName": "Q3060S",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261029_239/1793280780930AcyXN_JPEG/25632134791592631_1896444609.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50002320",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202502/988c5af98087a41d7202d25cfbb35275.jpg\" alt=\"Q Acoustics Q 3060S 큐어쿠스틱 액티브 서브우퍼\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">Q Acoustics Q 3060S 큐어쿠스틱 액티브 서브우퍼</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 Q ACOUSTICS &middot; 모델명 Q3060S</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 939,000원</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>Q ACOUSTICS</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">모델명</th><td>Q3060S</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>스피커</td></tr></table><h3 style=\"font-size:17px;margin:18px 0 8px;\">옵션</h3><table><tr><th style=\"white-space:nowrap;\">색상 선택</th><td>블랙</td></tr><tr><th style=\"white-space:nowrap;\">색상 선택</th><td>화이트</td></tr><tr><th style=\"white-space:nowrap;\">색상 선택</th><td>그레이</td></tr><tr><th style=\"white-space:nowrap;\">색상 선택</th><td>월넛</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/q-acoustics-q-3060s-큐어쿠스틱-액티브-서브우퍼/4615/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "leaf_for_body": "50002320",
+      "stock_target": 1,
+      "stock_source": "fallback_1",
+      "dup_check": {
+        "hits": 0,
+        "exact_hit": false
+      },
+      "originProductNo": 13777385225,
+      "smartstoreChannelProductNo": 13838817787,
+      "registered_at": "2026-10-29T13:32:59.470Z",
+      "verify": {
+        "statusType": "SALE",
+        "price": 939000,
+        "stock": 1,
+        "price_unchanged": true
+      },
+      "display_after": "ON",
+      "after_display_check": {
+        "price": 939000,
+        "stock": 1,
+        "statusType": "SALE",
+        "price_unchanged": true
+      }
+    },
+    {
+      "cgiId": "samamusic:4683",
+      "leafCategoryId": "50002326",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "state": "DISPLAYED",
+      "live": {
+        "origin": "아시아 중국 또는 멕시코",
+        "price": 255000,
+        "sold_out": false,
+        "brand": "SHURE",
+        "model": null,
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "SHURE SM63",
+      "live_origin": "아시아 중국 또는 멕시코",
+      "origin_code": null,
+      "origin_mode": "multi_origin_04_content",
+      "upload_ok": 1,
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "SHURE SM63 / SM63L / SM63LB 슈어 방송 인터뷰 용 다이내믹 옴니지향성 마이크",
+          "salePrice": 255000,
+          "stockQuantity": 1,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:4683"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "04",
+              "content": "아시아 중국 또는 멕시코",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "SHURE SM63 / SM63L / SM63LB 슈어 방송 인터뷰 용 다이내믹 옴니지향성",
+                "manufacturer": "SHURE",
+                "modelName": "SHURE SM63",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261029_179/1793280783162t5GqA_JPEG/85004559122423488_410482700.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50002326",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202504/d3ddf39859051c70cf0088d245c6e444.jpg\" alt=\"SHURE SM63 / SM63L / SM63LB 슈어 방송 인터뷰 용 다이내믹 옴니지향성 마이크\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">SHURE SM63 / SM63L / SM63LB 슈어 방송 인터뷰 용 다이내믹 옴니지향성 마이크</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 SHURE</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 255,000원</p><p style=\"margin:12px 0;\">방송 인터뷰용 다이내믹 옴니지향성 마이크</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>SHURE</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>유선 마이크</td></tr></table><h3 style=\"font-size:17px;margin:18px 0 8px;\">옵션</h3><table><tr><th style=\"white-space:nowrap;\">상세모델</th><td>SM63</td></tr><tr><th style=\"white-space:nowrap;\">상세모델</th><td>SM63L <span style=\"color:#c0392b;\">(+46,000원)</span></td></tr><tr><th style=\"white-space:nowrap;\">상세모델</th><td>SM63LB <span style=\"color:#c0392b;\">(+46,000원)</span></td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/shure-sm63-sm63l-sm63lb-슈어-방송-인터뷰-용-다이내믹-옴니지향성-마이크/4683/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "leaf_for_body": "50002326",
+      "stock_target": 1,
+      "stock_source": "fallback_1",
+      "dup_check": {
+        "hits": 0,
+        "exact_hit": false
+      },
+      "originProductNo": 13777385275,
+      "smartstoreChannelProductNo": 13838817837,
+      "registered_at": "2026-10-29T13:33:01.713Z",
+      "verify": {
+        "statusType": "SALE",
+        "price": 255000,
+        "stock": 1,
+        "price_unchanged": true
+      },
+      "display_after": "ON",
+      "after_display_check": {
+        "price": 255000,
+        "stock": 1,
+        "statusType": "SALE",
+        "price_unchanged": true
+      }
+    },
+    {
+      "cgiId": "samamusic:4902",
+      "leafCategoryId": "50001509",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "state": "DISPLAYED",
+      "live": {
+        "origin": "아시아 중국",
+        "price": 2800000,
+        "sold_out": false,
+        "brand": "iMAG Systems",
+        "model": "LZ1600T",
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "LZ1600T",
+      "live_origin": "아시아 중국",
+      "origin_code": "0200037",
+      "origin_mode": "verified_code",
+      "upload_ok": 1,
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "iMAG LZ1600T 아이맥시스템즈 SDVoE 2채널 트랜시버",
+          "salePrice": 2800000,
+          "stockQuantity": 1,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:4902"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0200037",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "iMAG LZ1600T 아이맥시스템즈 SDVoE 2채널 트랜시버",
+                "manufacturer": "iMAG Systems",
+                "modelName": "LZ1600T",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261029_273/1793280785434gsJIM_JPEG/107216466393485487_2080978071.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50001509",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202507/c67301fb0d91f4b7b5eada17a1117742.jpg\" alt=\"iMAG LZ1600T 아이맥시스템즈 SDVoE 2채널 트랜시버\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">iMAG LZ1600T 아이맥시스템즈 SDVoE 2채널 트랜시버</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 IMAG SYSTEMS &middot; 모델명 LZ1600T</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 2,800,000원</p><p style=\"margin:12px 0;\">4K60 10Gbps SDVoE 2채널 트랜시버</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>IMAG SYSTEMS</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">모델명</th><td>LZ1600T</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>네트워크</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/imag-lz1600t-아이맥시스템즈-sdvoe-2채널-트랜시버/4902/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "leaf_for_body": "50001509",
+      "stock_target": 1,
+      "stock_source": "fallback_1",
+      "dup_check": {
+        "hits": 0,
+        "exact_hit": false
+      },
+      "originProductNo": 13777385329,
+      "smartstoreChannelProductNo": 13838817891,
+      "registered_at": "2026-10-29T13:33:04.015Z",
+      "verify": {
+        "statusType": "SALE",
+        "price": 2800000,
+        "stock": 1,
+        "price_unchanged": true
+      },
+      "display_after": "ON",
+      "after_display_check": {
+        "price": 2800000,
+        "stock": 1,
+        "statusType": "SALE",
+        "price_unchanged": true
+      }
+    },
+    {
+      "cgiId": "samamusic:4957",
+      "leafCategoryId": "50002320",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "state": "DISPLAYED",
+      "live": {
+        "origin": "아시아 중국",
+        "price": 850000,
+        "sold_out": false,
+        "brand": "HK Audio",
+        "model": "SONAR 110 Xi",
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "SONAR 110 Xi",
+      "live_origin": "아시아 중국",
+      "origin_code": "0200037",
+      "origin_mode": "verified_code",
+      "upload_ok": 1,
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "HK AUDIO SONAR 110 Xi HK오디오 10타입 파워드 스피커",
+          "salePrice": 850000,
+          "stockQuantity": 1,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:4957"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0200037",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "HK AUDIO SONAR 110 Xi HK오디오 10타입 파워드 스피커",
+                "manufacturer": "HK Audio",
+                "modelName": "SONAR 110 Xi",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261029_196/1793280787561eJiyH_JPEG/124058540572226323_1949820019.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50002320",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202507/4b2fd1ae67f9ffdc96f39e862bde507b.jpg\" alt=\"HK AUDIO SONAR 110 Xi HK오디오 10타입 파워드 스피커\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">HK AUDIO SONAR 110 Xi HK오디오 10타입 파워드 스피커</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 HK AUDIO &middot; 모델명 SONAR 110 Xi</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 850,000원</p><p style=\"margin:12px 0;\">10타입 파워드 스피커, 800W Peak, 90ºx60º</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>HK AUDIO</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">모델명</th><td>SONAR 110 Xi</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>PA 스피커</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/hk-audio-sonar-110-xi-hk오디오-10타입-파워드-스피커/4957/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "leaf_for_body": "50002320",
+      "stock_target": 1,
+      "stock_source": "fallback_1",
+      "dup_check": {
+        "hits": 0,
+        "exact_hit": false
+      },
+      "originProductNo": 13777385380,
+      "smartstoreChannelProductNo": 13838817942,
+      "registered_at": "2026-10-29T13:33:06.340Z",
+      "verify": {
+        "statusType": "SALE",
+        "price": 850000,
+        "stock": 1,
+        "price_unchanged": true
+      },
+      "display_after": "ON",
+      "after_display_check": {
+        "price": 850000,
+        "stock": 1,
+        "statusType": "SALE",
+        "price_unchanged": true
+      }
+    },
+    {
+      "cgiId": "samamusic:4958",
+      "leafCategoryId": "50002320",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "state": "DISPLAYED",
+      "live": {
+        "origin": "아시아 중국",
+        "price": 950000,
+        "sold_out": false,
+        "brand": "HK Audio",
+        "model": "SONAR 112 Xi",
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "SONAR 112 Xi",
+      "live_origin": "아시아 중국",
+      "origin_code": "0200037",
+      "origin_mode": "verified_code",
+      "upload_ok": 1,
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "HK AUDIO SONAR 112 Xi HK오디오 12타입 파워드 스피커",
+          "salePrice": 950000,
+          "stockQuantity": 1,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:4958"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0200037",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "HK AUDIO SONAR 112 Xi HK오디오 12타입 파워드 스피커",
+                "manufacturer": "HK Audio",
+                "modelName": "SONAR 112 Xi",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261029_1/1793280789970n7a5N_JPEG/45996350437893828_2010195377.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50002320",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202507/4cc4a41dbedaf8c6bb94418a5ae7daab.jpg\" alt=\"HK AUDIO SONAR 112 Xi HK오디오 12타입 파워드 스피커\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">HK AUDIO SONAR 112 Xi HK오디오 12타입 파워드 스피커</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 HK AUDIO &middot; 모델명 SONAR 112 Xi</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 950,000원</p><p style=\"margin:12px 0;\">12타입 파워드 스피커, 1200W Peak, 90ºx60º</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>HK AUDIO</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">모델명</th><td>SONAR 112 Xi</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>PA 스피커</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/hk-audio-sonar-112-xi-hk오디오-12타입-파워드-스피커/4958/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "leaf_for_body": "50002320",
+      "stock_target": 1,
+      "stock_source": "fallback_1",
+      "dup_check": {
+        "hits": 0,
+        "exact_hit": false
+      },
+      "originProductNo": 13777385433,
+      "smartstoreChannelProductNo": 13838817995,
+      "registered_at": "2026-10-29T13:33:08.516Z",
+      "verify": {
+        "statusType": "SALE",
+        "price": 950000,
+        "stock": 1,
+        "price_unchanged": true
+      },
+      "display_after": "ON",
+      "after_display_check": {
+        "price": 950000,
+        "stock": 1,
+        "statusType": "SALE",
+        "price_unchanged": true
+      }
+    },
+    {
+      "cgiId": "samamusic:4959",
+      "leafCategoryId": "50002320",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "state": "DISPLAYED",
+      "live": {
+        "origin": "아시아 중국",
+        "price": 1090000,
+        "sold_out": false,
+        "brand": "HK Audio",
+        "model": "SONAR 115 Xi",
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "SONAR 115 Xi",
+      "live_origin": "아시아 중국",
+      "origin_code": "0200037",
+      "origin_mode": "verified_code",
+      "upload_ok": 1,
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "HK AUDIO SONAR 115 Xi HK오디오 15타입 파워드 스피커",
+          "salePrice": 1090000,
+          "stockQuantity": 1,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:4959"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0200037",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "HK AUDIO SONAR 115 Xi HK오디오 15타입 파워드 스피커",
+                "manufacturer": "HK Audio",
+                "modelName": "SONAR 115 Xi",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261029_198/1793280792241CbRel_JPEG/32376611190312019_1017377112.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50002320",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202507/a57bc71e8b13d2c2437aa85c19727cff.jpg\" alt=\"HK AUDIO SONAR 115 Xi HK오디오 15타입 파워드 스피커\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">HK AUDIO SONAR 115 Xi HK오디오 15타입 파워드 스피커</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 HK AUDIO &middot; 모델명 SONAR 115 Xi</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 1,090,000원</p><p style=\"margin:12px 0;\">15타입 파워드 스피커, 1200W Peak, 90ºx60º</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>HK AUDIO</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">모델명</th><td>SONAR 115 Xi</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>PA 스피커</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/hk-audio-sonar-115-xi-hk오디오-15타입-파워드-스피커/4959/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "leaf_for_body": "50002320",
+      "stock_target": 1,
+      "stock_source": "fallback_1",
+      "dup_check": {
+        "hits": 0,
+        "exact_hit": false
+      },
+      "originProductNo": 13777385467,
+      "smartstoreChannelProductNo": 13838818029,
+      "registered_at": "2026-10-29T13:33:10.887Z",
+      "verify": {
+        "statusType": "SALE",
+        "price": 1090000,
+        "stock": 1,
+        "price_unchanged": true
+      },
+      "display_after": "ON",
+      "after_display_check": {
+        "price": 1090000,
+        "stock": 1,
+        "statusType": "SALE",
+        "price_unchanged": true
+      }
+    },
+    {
+      "cgiId": "samamusic:4963",
+      "leafCategoryId": "50002320",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "state": "DISPLAYED",
+      "live": {
+        "origin": "아시아 중국",
+        "price": 2170000,
+        "sold_out": false,
+        "brand": "HK Audio",
+        "model": "Polar10 MK2 white",
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "Polar10 MK2 white",
+      "live_origin": "아시아 중국",
+      "origin_code": "0200037",
+      "origin_mode": "verified_code",
+      "upload_ok": 1,
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "HK AUDIO Polar 10 MK2 HK오디오 10타입 우퍼 컬럼 어레이 스피커 (화이트)",
+          "salePrice": 2170000,
+          "stockQuantity": 1,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:4963"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0200037",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "HK AUDIO Polar 10 MK2 HK오디오 10타입 우퍼 컬럼 어레이 스피커 (화이",
+                "manufacturer": "HK Audio",
+                "modelName": "Polar10 MK2 white",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261029_197/1793280794445KG4ro_JPEG/107216475404502949_1344043183.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50002320",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202507/5162b889a4be4360952e1065eaa038d7.jpg\" alt=\"HK AUDIO Polar 10 MK2 HK오디오 10타입 우퍼 컬럼 어레이 스피커 (화이트)\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">HK AUDIO Polar 10 MK2 HK오디오 10타입 우퍼 컬럼 어레이 스피커 (화이트)</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 HK AUDIO &middot; 모델명 Polar10 MK2 white</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 2,170,000원</p><p style=\"margin:12px 0;\">컬럼 어레이 스피커</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>HK AUDIO</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">모델명</th><td>Polar10 MK2 white</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>PA 스피커</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/hk-audio-polar-10-mk2-hk오디오-10타입-우퍼-컬럼-어레이-스피커-화이트/4963/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "leaf_for_body": "50002320",
+      "stock_target": 1,
+      "stock_source": "fallback_1",
+      "dup_check": {
+        "hits": 0,
+        "exact_hit": false
+      },
+      "originProductNo": 13777385497,
+      "smartstoreChannelProductNo": 13838818059,
+      "registered_at": "2026-10-29T13:33:13.035Z",
+      "verify": {
+        "statusType": "SALE",
+        "price": 2170000,
+        "stock": 1,
+        "price_unchanged": true
+      },
+      "display_after": "ON",
+      "after_display_check": {
+        "price": 2170000,
+        "stock": 1,
+        "statusType": "SALE",
+        "price_unchanged": true
+      }
+    },
+    {
+      "cgiId": "samamusic:4965",
+      "leafCategoryId": "50002320",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "state": "DISPLAYED",
+      "live": {
+        "origin": "아시아 중국",
+        "price": 2360000,
+        "sold_out": false,
+        "brand": "HK Audio",
+        "model": "Polar12 MK2 white",
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "Polar12 MK2 white",
+      "live_origin": "아시아 중국",
+      "origin_code": "0200037",
+      "origin_mode": "verified_code",
+      "upload_ok": 1,
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "HK AUDIO Polar 12 MK2 HK오디오 12타입 우퍼 컬럼 어레이 스피커 (화이트)",
+          "salePrice": 2360000,
+          "stockQuantity": 1,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:4965"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0200037",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "HK AUDIO Polar 12 MK2 HK오디오 12타입 우퍼 컬럼 어레이 스피커 (화이",
+                "manufacturer": "HK Audio",
+                "modelName": "Polar12 MK2 white",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261029_197/1793280794445KG4ro_JPEG/107216475404502949_1344043183.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50002320",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202507/df5c1771eee2db29ad12e26f03a82d00.jpg\" alt=\"HK AUDIO Polar 12 MK2 HK오디오 12타입 우퍼 컬럼 어레이 스피커 (화이트)\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">HK AUDIO Polar 12 MK2 HK오디오 12타입 우퍼 컬럼 어레이 스피커 (화이트)</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 HK AUDIO &middot; 모델명 Polar12 MK2 white</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 2,360,000원</p><p style=\"margin:12px 0;\">컬럼 어레이 스피커</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>HK AUDIO</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">모델명</th><td>Polar12 MK2 white</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>PA 스피커</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/hk-audio-polar-12-mk2-hk오디오-12타입-우퍼-컬럼-어레이-스피커-화이트/4965/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "leaf_for_body": "50002320",
+      "stock_target": 1,
+      "stock_source": "fallback_1",
+      "dup_check": {
+        "hits": 0,
+        "exact_hit": false
+      },
+      "originProductNo": 13777385520,
+      "smartstoreChannelProductNo": 13838818082,
+      "registered_at": "2026-10-29T13:33:15.036Z",
+      "verify": {
+        "statusType": "SALE",
+        "price": 2360000,
+        "stock": 1,
+        "price_unchanged": true
+      },
+      "display_after": "ON",
+      "after_display_check": {
+        "price": 2360000,
+        "stock": 1,
+        "statusType": "SALE",
+        "price_unchanged": true
+      }
+    },
+    {
+      "cgiId": "samamusic:4967",
+      "leafCategoryId": "50002320",
+      "taxonomy_state": "READY_SALE",
+      "state": "DISPLAYED",
+      "live": {
+        "origin": "유럽 독일",
+        "price": 1010000,
+        "sold_out": false,
+        "brand": "HK Audio",
+        "model": "PR:O 10 X",
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "PR:O 10 X",
+      "live_origin": "유럽 독일",
+      "origin_code": "0201005",
+      "origin_mode": "verified_code",
+      "upload_ok": 1,
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "HK AUDIO PR:O 10 X HK오디오 10타입 패시브 스피커",
+          "salePrice": 1010000,
+          "stockQuantity": 11,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:4967"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0201005",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "HK AUDIO PR:O 10 X HK오디오 10타입 패시브 스피커",
+                "manufacturer": "HK Audio",
+                "modelName": "PR:O 10 X",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261029_300/17932807988313oIgE_JPEG/45050580948437595_1270144111.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50002320",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202507/27d66d02242506bac386b6351b0b9cd0.jpg\" alt=\"HK AUDIO PR:O 10 X HK오디오 10타입 패시브 스피커\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">HK AUDIO PR:O 10 X HK오디오 10타입 패시브 스피커</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 HK AUDIO &middot; 모델명 PR:O 10 X</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 1,010,000원</p><p style=\"margin:12px 0;\">10타입 패시브 스피커, 300W RMS, 90ºx60º</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>HK AUDIO</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">모델명</th><td>PR:O 10 X</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>PA 스피커</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/hk-audio-pro-10-x-hk오디오-10타입-패시브-스피커/4967/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "leaf_for_body": "50002320",
+      "stock_target": 11,
+      "stock_source": "taxonomy_collected",
+      "dup_check": {
+        "hits": 0,
+        "exact_hit": false
+      },
+      "originProductNo": 13777385558,
+      "smartstoreChannelProductNo": 13838818120,
+      "registered_at": "2026-10-29T13:33:17.393Z",
+      "verify": {
+        "statusType": "SALE",
+        "price": 1010000,
+        "stock": 11,
+        "price_unchanged": true
+      },
+      "display_after": "ON",
+      "after_display_check": {
+        "price": 1010000,
+        "stock": 11,
+        "statusType": "SALE",
+        "price_unchanged": true
+      }
+    },
+    {
+      "cgiId": "samamusic:4968",
+      "leafCategoryId": "50002320",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "state": "DISPLAYED",
+      "live": {
+        "origin": "유럽 독일",
+        "price": 1150000,
+        "sold_out": false,
+        "brand": "HK Audio",
+        "model": "PR:O 12",
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "PR:O 12",
+      "live_origin": "유럽 독일",
+      "origin_code": "0201005",
+      "origin_mode": "verified_code",
+      "upload_ok": 1,
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "HK AUDIO PR:O 12 HK오디오 12타입 패시브 스피커",
+          "salePrice": 1150000,
+          "stockQuantity": 1,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:4968"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0201005",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "HK AUDIO PR:O 12 HK오디오 12타입 패시브 스피커",
+                "manufacturer": "HK Audio",
+                "modelName": "PR:O 12",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261029_157/1793280801057Jg53d_JPEG/124058554062333097_1591140882.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50002320",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202507/503ecf140eac453656a489195bca4b03.jpg\" alt=\"HK AUDIO PR:O 12 HK오디오 12타입 패시브 스피커\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">HK AUDIO PR:O 12 HK오디오 12타입 패시브 스피커</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 HK AUDIO &middot; 모델명 PR:O 12</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 1,150,000원</p><p style=\"margin:12px 0;\">12타입 패시브 스피커, 400W RMS, 60ºx40º</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>HK AUDIO</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">모델명</th><td>PR:O 12</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>PA 스피커</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/hk-audio-pro-12-hk오디오-12타입-패시브-스피커/4968/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "leaf_for_body": "50002320",
+      "stock_target": 1,
+      "stock_source": "fallback_1",
+      "dup_check": {
+        "hits": 0,
+        "exact_hit": false
+      },
+      "originProductNo": 13777385591,
+      "smartstoreChannelProductNo": 13838818153,
+      "registered_at": "2026-10-29T13:33:19.607Z",
+      "verify": {
+        "statusType": "SALE",
+        "price": 1150000,
+        "stock": 1,
+        "price_unchanged": true
+      },
+      "display_after": "ON",
+      "after_display_check": {
+        "price": 1150000,
+        "stock": 1,
+        "statusType": "SALE",
+        "price_unchanged": true
+      }
+    },
+    {
+      "cgiId": "samamusic:4969",
+      "leafCategoryId": "50002320",
+      "taxonomy_state": "READY_SALE",
+      "state": "DISPLAYED",
+      "live": {
+        "origin": "유럽 독일",
+        "price": 1150000,
+        "sold_out": false,
+        "brand": "HK Audio",
+        "model": "PR:O 12 M",
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "PR:O 12 M",
+      "live_origin": "유럽 독일",
+      "origin_code": "0201005",
+      "origin_mode": "verified_code",
+      "upload_ok": 1,
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "HK AUDIO PR:O 12 M HK오디오 12타입 패시브 모니터 스피커",
+          "salePrice": 1150000,
+          "stockQuantity": 18,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:4969"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0201005",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "HK AUDIO PR:O 12 M HK오디오 12타입 패시브 모니터 스피커",
+                "manufacturer": "HK Audio",
+                "modelName": "PR:O 12 M",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261029_96/17932808032825gEwa_JPEG/55746018410284173_1004258061.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50002320",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202507/af0c53047e8ab0332fe7c5042c0d0dca.jpg\" alt=\"HK AUDIO PR:O 12 M HK오디오 12타입 패시브 모니터 스피커\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">HK AUDIO PR:O 12 M HK오디오 12타입 패시브 모니터 스피커</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 HK AUDIO &middot; 모델명 PR:O 12 M</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 1,150,000원</p><p style=\"margin:12px 0;\">12타입 패시브 모니터 스피커, 400W RMS, 60ºx40º</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>HK AUDIO</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">모델명</th><td>PR:O 12 M</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>PA 스피커</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/hk-audio-pro-12-m-hk오디오-12타입-패시브-모니터-스피커/4969/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "leaf_for_body": "50002320",
+      "stock_target": 18,
+      "stock_source": "taxonomy_collected",
+      "dup_check": {
+        "hits": 0,
+        "exact_hit": false
+      },
+      "originProductNo": 13777385626,
+      "smartstoreChannelProductNo": 13838818188,
+      "registered_at": "2026-10-29T13:33:21.867Z",
+      "verify": {
+        "statusType": "SALE",
+        "price": 1150000,
+        "stock": 18,
+        "price_unchanged": true
+      },
+      "display_after": "ON",
+      "after_display_check": {
+        "price": 1150000,
+        "stock": 18,
+        "statusType": "SALE",
+        "price_unchanged": true
+      }
+    },
+    {
+      "cgiId": "samamusic:4974",
+      "leafCategoryId": "50002320",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "state": "DISPLAYED",
+      "live": {
+        "origin": "유럽 독일",
+        "price": 1370000,
+        "sold_out": false,
+        "brand": "HK Audio",
+        "model": "PR:O 110 XD2",
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "PR:O 110 XD2",
+      "live_origin": "유럽 독일",
+      "origin_code": "0201005",
+      "origin_mode": "verified_code",
+      "upload_ok": 1,
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "HK AUDIO PR:O 110 XD2 HK오디오 10타입 액티브 모니터 스피커",
+          "salePrice": 1370000,
+          "stockQuantity": 1,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:4974"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0201005",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "HK AUDIO PR:O 110 XD2 HK오디오 10타입 액티브 모니터 스피커",
+                "manufacturer": "HK Audio",
+                "modelName": "PR:O 110 XD2",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261029_92/1793280805472s8MpA_JPEG/107216486418355306_1289150176.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50002320",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202507/27f24e7e8b2c1ebed7c5e717e2974ec7.jpg\" alt=\"HK AUDIO PR:O 110 XD2 HK오디오 10타입 액티브 모니터 스피커\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">HK AUDIO PR:O 110 XD2 HK오디오 10타입 액티브 모니터 스피커</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 HK AUDIO &middot; 모델명 PR:O 110 XD2</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 1,370,000원</p><p style=\"margin:12px 0;\">10타입 액티브 모니터 스피커, 1200W Peak, 90ºx55º</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>HK AUDIO</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">모델명</th><td>PR:O 110 XD2</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>PA 스피커</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/hk-audio-pro-110-xd2-hk오디오-10타입-액티브-모니터-스피커/4974/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "leaf_for_body": "50002320",
+      "stock_target": 1,
+      "stock_source": "fallback_1",
+      "dup_check": {
+        "hits": 0,
+        "exact_hit": false
+      },
+      "originProductNo": 13777385667,
+      "smartstoreChannelProductNo": 13838818229,
+      "registered_at": "2026-10-29T13:33:24.074Z",
+      "verify": {
+        "statusType": "SALE",
+        "price": 1370000,
+        "stock": 1,
+        "price_unchanged": true
+      },
+      "display_after": "ON",
+      "after_display_check": {
+        "price": 1370000,
+        "stock": 1,
+        "statusType": "SALE",
+        "price_unchanged": true
+      }
+    },
+    {
+      "cgiId": "samamusic:4975",
+      "leafCategoryId": "50002320",
+      "taxonomy_state": "READY_SALE",
+      "state": "DISPLAYED",
+      "live": {
+        "origin": "유럽 독일",
+        "price": 1560000,
+        "sold_out": false,
+        "brand": "HK Audio",
+        "model": "PR:O 112 FD2",
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "PR:O 112 FD2",
+      "live_origin": "유럽 독일",
+      "origin_code": "0201005",
+      "origin_mode": "verified_code",
+      "upload_ok": 1,
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "HK AUDIO PR:O 112 FD2 HK오디오 12타입 액티브 스피커",
+          "salePrice": 1560000,
+          "stockQuantity": 2,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:4975"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0201005",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "HK AUDIO PR:O 112 FD2 HK오디오 12타입 액티브 스피커",
+                "manufacturer": "HK Audio",
+                "modelName": "PR:O 112 FD2",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261029_224/1793280807668XLDHc_JPEG/107216488609251236_949191175.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50002320",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202507/213a5d912782154171f1d24e05691868.jpg\" alt=\"HK AUDIO PR:O 112 FD2 HK오디오 12타입 액티브 스피커\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">HK AUDIO PR:O 112 FD2 HK오디오 12타입 액티브 스피커</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 HK AUDIO &middot; 모델명 PR:O 112 FD2</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 1,560,000원</p><p style=\"margin:12px 0;\">12타입 액티브 스피커, 1200W Peak, 90ºx55º</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>HK AUDIO</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">모델명</th><td>PR:O 112 FD2</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>PA 스피커</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/hk-audio-pro-112-fd2-hk오디오-12타입-액티브-스피커/4975/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "leaf_for_body": "50002320",
+      "stock_target": 2,
+      "stock_source": "taxonomy_collected",
+      "dup_check": {
+        "hits": 0,
+        "exact_hit": false
+      },
+      "originProductNo": 13777385704,
+      "smartstoreChannelProductNo": 13838818266,
+      "registered_at": "2026-10-29T13:33:26.293Z",
+      "verify": {
+        "statusType": "SALE",
+        "price": 1560000,
+        "stock": 2,
+        "price_unchanged": true
+      },
+      "display_after": "ON",
+      "after_display_check": {
+        "price": 1560000,
+        "stock": 2,
+        "statusType": "SALE",
+        "price_unchanged": true
+      }
+    },
+    {
+      "cgiId": "samamusic:4976",
+      "leafCategoryId": "50002320",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "state": "DISPLAYED",
+      "live": {
+        "origin": "유럽 독일",
+        "price": 1780000,
+        "sold_out": false,
+        "brand": "HK Audio",
+        "model": "PR:O 115 FD2",
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "PR:O 115 FD2",
+      "live_origin": "유럽 독일",
+      "origin_code": "0201005",
+      "origin_mode": "verified_code",
+      "upload_ok": 1,
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "HK AUDIO PR:O 115 FD2 HK오디오 15타입 액티브 스피커",
+          "salePrice": 1780000,
+          "stockQuantity": 1,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:4976"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0201005",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "HK AUDIO PR:O 115 FD2 HK오디오 15타입 액티브 스피커",
+                "manufacturer": "HK Audio",
+                "modelName": "PR:O 115 FD2",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261029_91/1793280809941AOfpg_JPEG/30268364717745512_1440365026.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50002320",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202507/fc5492f0a5ebba48d5eced0651f91359.jpg\" alt=\"HK AUDIO PR:O 115 FD2 HK오디오 15타입 액티브 스피커\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">HK AUDIO PR:O 115 FD2 HK오디오 15타입 액티브 스피커</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 HK AUDIO &middot; 모델명 PR:O 115 FD2</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 1,780,000원</p><p style=\"margin:12px 0;\">15타입 액티브 스피커, 1200W Peak, 90ºx55º</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>HK AUDIO</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">모델명</th><td>PR:O 115 FD2</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>PA 스피커</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/hk-audio-pro-115-fd2-hk오디오-15타입-액티브-스피커/4976/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "leaf_for_body": "50002320",
+      "stock_target": 1,
+      "stock_source": "fallback_1",
+      "dup_check": {
+        "hits": 0,
+        "exact_hit": false
+      },
+      "originProductNo": 13777385735,
+      "smartstoreChannelProductNo": 13838818298,
+      "registered_at": "2026-10-29T13:33:28.564Z",
+      "verify": {
+        "statusType": "SALE",
+        "price": 1780000,
+        "stock": 1,
+        "price_unchanged": true
+      },
+      "display_after": "ON",
+      "after_display_check": {
+        "price": 1780000,
+        "stock": 1,
+        "statusType": "SALE",
+        "price_unchanged": true
+      }
+    },
+    {
+      "cgiId": "samamusic:4977",
+      "leafCategoryId": "50002320",
+      "taxonomy_state": "READY_SALE",
+      "state": "DISPLAYED",
+      "live": {
+        "origin": "유럽 독일",
+        "price": 1560000,
+        "sold_out": false,
+        "brand": "HK Audio",
+        "model": "PR:O 112 XD2",
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "PR:O 112 XD2",
+      "live_origin": "유럽 독일",
+      "origin_code": "0201005",
+      "origin_mode": "verified_code",
+      "upload_ok": 1,
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "HK AUDIO PR:O 112 XD2 HK오디오 12타입 액티브 모니터 스피커",
+          "salePrice": 1560000,
+          "stockQuantity": 14,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:4977"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0201005",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "HK AUDIO PR:O 112 XD2 HK오디오 12타입 액티브 모니터 스피커",
+                "manufacturer": "HK Audio",
+                "modelName": "PR:O 112 XD2",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261029_268/1793280812183UDfeh_JPEG/139641991986932546_20666400.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50002320",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202507/11c1966a090cdf8bb91cc9d47648204f.jpg\" alt=\"HK AUDIO PR:O 112 XD2 HK오디오 12타입 액티브 모니터 스피커\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">HK AUDIO PR:O 112 XD2 HK오디오 12타입 액티브 모니터 스피커</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 HK AUDIO &middot; 모델명 PR:O 112 XD2</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 1,560,000원</p><p style=\"margin:12px 0;\">12타입 액티브 모니터 스피커, 1200W Peak, 90ºx55º</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>HK AUDIO</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">모델명</th><td>PR:O 112 XD2</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>PA 스피커</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/hk-audio-pro-112-xd2-hk오디오-12타입-액티브-모니터-스피커/4977/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "leaf_for_body": "50002320",
+      "stock_target": 14,
+      "stock_source": "taxonomy_collected",
+      "dup_check": {
+        "hits": 0,
+        "exact_hit": false
+      },
+      "originProductNo": 13777385779,
+      "smartstoreChannelProductNo": 13838818339,
+      "registered_at": "2026-10-29T13:33:31.055Z",
+      "verify": {
+        "statusType": "SALE",
+        "price": 1560000,
+        "stock": 14,
+        "price_unchanged": true
+      },
+      "display_after": "ON",
+      "after_display_check": {
+        "price": 1560000,
+        "stock": 14,
+        "statusType": "SALE",
+        "price_unchanged": true
+      }
+    },
+    {
+      "cgiId": "samamusic:4978",
+      "leafCategoryId": "50002320",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "state": "DISPLAYED",
+      "live": {
+        "origin": "유럽 독일",
+        "price": 1780000,
+        "sold_out": false,
+        "brand": "HK Audio",
+        "model": "PR:O 115 XD2",
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "PR:O 115 XD2",
+      "live_origin": "유럽 독일",
+      "origin_code": "0201005",
+      "origin_mode": "verified_code",
+      "upload_ok": 1,
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "HK AUDIO PR:O 115 XD2 HK오디오 15타입 액티브 모니터 스피커",
+          "salePrice": 1780000,
+          "stockQuantity": 1,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:4978"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0201005",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "HK AUDIO PR:O 115 XD2 HK오디오 15타입 액티브 모니터 스피커",
+                "manufacturer": "HK Audio",
+                "modelName": "PR:O 115 XD2",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261029_153/1793280814838ufzal_JPEG/76896189824183027_2060784276.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50002320",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202507/8eaf0eec3d9482e7328a5c349857241b.jpg\" alt=\"HK AUDIO PR:O 115 XD2 HK오디오 15타입 액티브 모니터 스피커\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">HK AUDIO PR:O 115 XD2 HK오디오 15타입 액티브 모니터 스피커</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 HK AUDIO &middot; 모델명 PR:O 115 XD2</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 1,780,000원</p><p style=\"margin:12px 0;\">15타입 액티브 모니터 스피커, 1200W Peak, 90ºx55º</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>HK AUDIO</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">모델명</th><td>PR:O 115 XD2</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>PA 스피커</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/hk-audio-pro-115-xd2-hk오디오-15타입-액티브-모니터-스피커/4978/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "leaf_for_body": "50002320",
+      "stock_target": 1,
+      "stock_source": "fallback_1",
+      "dup_check": {
+        "hits": 0,
+        "exact_hit": false
+      },
+      "originProductNo": 13777385854,
+      "smartstoreChannelProductNo": 13838818418,
+      "registered_at": "2026-10-29T13:33:33.449Z",
+      "verify": {
+        "statusType": "SALE",
+        "price": 1780000,
+        "stock": 1,
+        "price_unchanged": true
+      },
+      "display_after": "ON",
+      "after_display_check": {
+        "price": 1780000,
+        "stock": 1,
+        "statusType": "SALE",
+        "price_unchanged": true
+      }
+    },
+    {
+      "cgiId": "samamusic:5199",
+      "leafCategoryId": "50002645",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "state": "DISPLAYED",
+      "live": {
+        "origin": "아시아 태국",
+        "price": 2990000,
+        "sold_out": false,
+        "brand": "Acoustic Grove System",
+        "model": "AGS-FS1",
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "AGS-FS1",
+      "live_origin": "아시아 태국",
+      "origin_code": "0200044",
+      "origin_mode": "verified_code",
+      "upload_ok": 1,
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "Acoustic Grove System AGS - FS1 프리스탠딩 유닛 룸 튜닝재",
+          "salePrice": 2990000,
+          "stockQuantity": 1,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:5199"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0200044",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "Acoustic Grove System AGS - FS1 프리스탠딩 유닛 룸 튜닝재",
+                "manufacturer": "Acoustic Grove System",
+                "modelName": "AGS-FS1",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261029_26/1793280817054dMJXn_JPEG/76896192053009594_1078379849.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50002645",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202510/c4343489e9783a9d15b91eada0afbfac.jpg\" alt=\"Acoustic Grove System AGS - FS1 프리스탠딩 유닛 룸 튜닝재\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">Acoustic Grove System AGS - FS1 프리스탠딩 유닛 룸 튜닝재</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 ACOUSTIC GROVE SYSTEM &middot; 모델명 AGS-FS1</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 2,990,000원</p><p style=\"margin:12px 0;\">AGS 기술을 기반으로 개발된 프리스탠딩 룸 튜닝 유닛</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>ACOUSTIC GROVE SYSTEM</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">모델명</th><td>AGS-FS1</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>어쿠스틱 용품</td></tr></table><h3 style=\"font-size:17px;margin:18px 0 8px;\">옵션</h3><table><tr><th style=\"white-space:nowrap;\">왼쪽오른쪽</th><td>AGS-FS1(L)</td></tr><tr><th style=\"white-space:nowrap;\">왼쪽오른쪽</th><td>AGS-FS1(R)</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/acoustic-grove-system-ags-fs1-프리스탠딩-유닛-룸-튜닝재/5199/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "leaf_for_body": "50002645",
+      "stock_target": 1,
+      "stock_source": "fallback_1",
+      "dup_check": {
+        "hits": 0,
+        "exact_hit": false
+      },
+      "originProductNo": 13777385886,
+      "smartstoreChannelProductNo": 13838818451,
+      "registered_at": "2026-10-29T13:33:35.618Z",
+      "verify": {
+        "statusType": "SALE",
+        "price": 2990000,
+        "stock": 1,
+        "price_unchanged": true
+      },
+      "display_after": "ON",
+      "after_display_check": {
+        "price": 2990000,
+        "stock": 1,
+        "statusType": "SALE",
+        "price_unchanged": true
+      }
+    },
+    {
+      "cgiId": "samamusic:5200",
+      "leafCategoryId": "50002645",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "state": "DISPLAYED",
+      "live": {
+        "origin": "아시아 태국",
+        "price": 1330000,
+        "sold_out": false,
+        "brand": "Acoustic Grove System",
+        "model": "AGS-MN1",
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "AGS-MN1",
+      "live_origin": "아시아 태국",
+      "origin_code": "0200044",
+      "origin_mode": "verified_code",
+      "upload_ok": 1,
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "Acoustic Grove System AGS - MN1 컴팩트 유닛 룸 튜닝재",
+          "salePrice": 1330000,
+          "stockQuantity": 1,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:5200"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0200044",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "Acoustic Grove System AGS - MN1 컴팩트 유닛 룸 튜닝재",
+                "manufacturer": "Acoustic Grove System",
+                "modelName": "AGS-MN1",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261029_61/1793280819203xEUsJ_JPEG/124058572212594558_2000919950.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50002645",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202510/62a122a25eed82065b9146c993463afb.jpg\" alt=\"Acoustic Grove System AGS - MN1 컴팩트 유닛 룸 튜닝재\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">Acoustic Grove System AGS - MN1 컴팩트 유닛 룸 튜닝재</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 ACOUSTIC GROVE SYSTEM &middot; 모델명 AGS-MN1</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 1,330,000원</p><p style=\"margin:12px 0;\">소리의 공간감과 입체감을 높여주며 배치가 용이한 컴팩트 룸 튜닝 유닛</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>ACOUSTIC GROVE SYSTEM</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">모델명</th><td>AGS-MN1</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>어쿠스틱 용품</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/acoustic-grove-system-ags-mn1-컴팩트-유닛-룸-튜닝재/5200/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "leaf_for_body": "50002645",
+      "stock_target": 1,
+      "stock_source": "fallback_1",
+      "dup_check": {
+        "hits": 0,
+        "exact_hit": false
+      },
+      "originProductNo": 13777385920,
+      "smartstoreChannelProductNo": 13838818487,
+      "registered_at": "2026-10-29T13:33:37.752Z",
+      "verify": {
+        "statusType": "SALE",
+        "price": 1330000,
+        "stock": 1,
+        "price_unchanged": true
+      },
+      "display_after": "ON",
+      "after_display_check": {
+        "price": 1330000,
+        "stock": 1,
+        "statusType": "SALE",
+        "price_unchanged": true
+      }
+    },
+    {
+      "cgiId": "samamusic:5201",
+      "leafCategoryId": "50002645",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "state": "DISPLAYED",
+      "live": {
+        "origin": "아시아 태국",
+        "price": 2630000,
+        "sold_out": false,
+        "brand": "Acoustic Grove System",
+        "model": "AGS-FL1",
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "AGS-FL1",
+      "live_origin": "아시아 태국",
+      "origin_code": "0200044",
+      "origin_mode": "verified_code",
+      "upload_ok": 1,
+      "payload": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "Acoustic Grove System AGS - FL1 플로어 타입 유닛 룸 튜닝재",
+          "salePrice": 2630000,
+          "stockQuantity": 1,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:5201"
+            },
+            "minorPurchasable": true,
+            "afterServiceInfo": {
+              "afterServiceTelephoneNumber": "062-576-8100",
+              "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+            },
+            "originAreaInfo": {
+              "originAreaCode": "0200044",
+              "plural": false,
+              "importer": "삼아사운드 유한회사"
+            },
+            "productInfoProvidedNotice": {
+              "productInfoProvidedNoticeType": "ETC",
+              "etc": {
+                "returnCostReason": "0",
+                "noRefundReason": "0",
+                "qualityAssuranceStandard": "0",
+                "compensationProcedure": "0",
+                "troubleShootingContents": "0",
+                "itemName": "Acoustic Grove System AGS - FL1 플로어 타입 유닛 룸 튜닝재",
+                "manufacturer": "Acoustic Grove System",
+                "modelName": "AGS-FL1",
+                "customerServicePhoneNumber": "062-576-8100"
+              }
+            },
+            "certificationTargetExcludeContent": {
+              "kcCertifiedProductExclusionYn": "TRUE"
+            }
+          },
+          "images": {
+            "representativeImage": {
+              "url": "https://shop-phinf.pstatic.net/20261029_180/1793280821282czs7o_JPEG/76896196286013760_397962648.jpg"
+            },
+            "optionalImages": []
+          },
+          "leafCategoryId": "50002645",
+          "detailContent": "<div class=\"cgi-detail\" style=\"max-width:780px;margin:0 auto;padding:0 12px;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#222;line-height:1.6;word-break:keep-all;\"><style>.cgi-detail table{width:100%;border-collapse:collapse;margin:0 0 8px;}.cgi-detail th,.cgi-detail td{border:1px solid #e5e5e5;padding:8px;text-align:left;vertical-align:top;font-weight:normal;}@media (max-width:480px){.cgi-detail{font-size:14px;}}</style><p style=\"text-align:center;margin:16px 0;\"><img src=\"https://www.samamusic.co.kr/web/product/small/202510/15cab4844d7be2e92e40f82ca5ab915d.jpg\" alt=\"Acoustic Grove System AGS - FL1 플로어 타입 유닛 룸 튜닝재\" style=\"max-width:100%;height:auto;\"></p><h2 style=\"font-size:24px;margin:10px 0 6px;\">Acoustic Grove System AGS - FL1 플로어 타입 유닛 룸 튜닝재</h2><p style=\"color:#666;margin:0 0 10px;\">브랜드 ACOUSTIC GROVE SYSTEM &middot; 모델명 AGS-FL1</p><p style=\"font-size:20px;font-weight:700;margin:14px 0 10px;\">판매가 2,630,000원</p><p style=\"margin:12px 0;\">바닥에 최적화된 설계로 스피커 앞에 배치하여 강한 반사를 줄여주는 룸 튜닝 유닛</p><h3 style=\"font-size:17px;margin:18px 0 8px;\">제품 정보</h3><table><tr><th style=\"white-space:nowrap;width:110px;\">브랜드</th><td>ACOUSTIC GROVE SYSTEM</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">모델명</th><td>AGS-FL1</td></tr><tr><th style=\"white-space:nowrap;width:110px;\">공급처 분류</th><td>어쿠스틱 용품</td></tr></table><p style=\"margin:14px 0 6px;\">출처: <a href=\"https://samastore.co.kr/product/acoustic-grove-system-ags-fl1-플로어-타입-유닛-룸-튜닝재/5201/\">상품 원본 페이지</a></p></div>",
+          "deliveryInfo": {
+            "deliveryType": "DELIVERY",
+            "deliveryAttributeType": "NORMAL",
+            "deliveryCompany": "KGB",
+            "deliveryFee": {
+              "deliveryFeeType": "FREE",
+              "baseFee": 0,
+              "deliveryFeePayType": "PREPAID"
+            },
+            "claimDeliveryInfo": {
+              "returnDeliveryCompanyPriorityType": "PRIMARY",
+              "returnDeliveryFee": 3000,
+              "exchangeDeliveryFee": 3000
+            }
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "leaf_for_body": "50002645",
+      "stock_target": 1,
+      "stock_source": "fallback_1",
+      "dup_check": {
+        "hits": 0,
+        "exact_hit": false
+      },
+      "originProductNo": 13777385953,
+      "smartstoreChannelProductNo": 13838818522,
+      "registered_at": "2026-10-29T13:33:39.799Z",
+      "verify": {
+        "statusType": "SALE",
+        "price": 2630000,
+        "stock": 1,
+        "price_unchanged": true
+      },
+      "display_after": "ON",
+      "after_display_check": {
+        "price": 2630000,
+        "stock": 1,
+        "statusType": "SALE",
+        "price_unchanged": true
+      }
+    },
+    {
+      "cgiId": "samamusic:5383",
+      "leafCategoryId": "50002974",
+      "taxonomy_state": "READY_SALE",
+      "state": "FAILED_ORIGIN",
+      "live": {
+        "origin": "국내",
+        "price": 2950000,
+        "sold_out": false,
+        "brand": "AudioScape",
+        "model": "EQP-A",
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "EQP-A",
+      "live_origin": "국내",
+      "origin_code": null,
+      "origin_mode": "unresolved"
+    },
+    {
+      "cgiId": "samamusic:2573",
+      "leafCategoryId": "50024439",
+      "taxonomy_state": "NEED_CATEGORY",
+      "state": "FAILED_ORIGIN",
+      "live": {
+        "origin": "해외",
+        "price": 418000,
+        "sold_out": true,
+        "brand": "SHURE",
+        "model": "AONIC 215 TW2",
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "AONIC 215 TW2",
+      "live_origin": "해외",
+      "origin_code": null,
+      "origin_mode": "unresolved"
+    },
+    {
+      "cgiId": "samamusic:291",
+      "leafCategoryId": "50002342",
+      "taxonomy_state": "NEED_CATEGORY",
+      "state": "FAILED_ORIGIN",
+      "live": {
+        "origin": "해외 .",
+        "price": 15000,
+        "sold_out": true,
+        "brand": "SHURE",
+        "model": "HPAEC440",
+        "electronic": false
+      },
+      "isSW": false,
+      "live_model": "HPAEC440",
+      "live_origin": "해외 .",
+      "origin_code": null,
+      "origin_mode": "unresolved"
+    }
+  ],
+  "leaf_contracts": {
+    "50001509": {
+      "leafCategoryId": "50001509",
+      "wholeName": "디지털/가전>네트워크장비>컨버터장비",
+      "name": "컨버터장비",
+      "certification_count": 57,
+      "kc_capable": true,
+      "checked_at": "2026-10-29T13:33:03.326Z"
+    },
+    "50002320": {
+      "leafCategoryId": "50002320",
+      "wholeName": "디지털/가전>음향가전>스피커>스피커단품",
+      "name": "스피커단품",
+      "certification_count": 57,
+      "kc_capable": true,
+      "checked_at": "2026-10-29T13:32:58.843Z"
+    },
+    "50002321": {
+      "leafCategoryId": "50002321",
+      "wholeName": "디지털/가전>음향가전>스피커>스피커세트",
+      "name": "스피커세트",
+      "certification_count": 57,
+      "kc_capable": true,
+      "checked_at": "2026-10-29T13:32:51.544Z"
+    },
+    "50002322": {
+      "leafCategoryId": "50002322",
+      "wholeName": "디지털/가전>음향가전>스피커>블루투스스피커",
+      "name": "블루투스스피커",
+      "certification_count": 57,
+      "kc_capable": true,
+      "checked_at": "2026-10-29T13:32:53.631Z"
+    },
+    "50002326": {
+      "leafCategoryId": "50002326",
+      "wholeName": "디지털/가전>음향가전>마이크>유선마이크",
+      "name": "유선마이크",
+      "certification_count": 57,
+      "kc_capable": true,
+      "checked_at": "2026-10-29T13:33:01.033Z"
+    },
+    "50002342": {
+      "leafCategoryId": "50002342",
+      "wholeName": "디지털/가전>음향가전>이어폰/헤드폰액세서리>기타이어폰/헤드폰액세서리",
+      "name": "기타이어폰/헤드폰액세서리",
+      "certification_count": 57,
+      "kc_capable": true,
+      "checked_at": "2026-10-29T13:32:49.780Z"
+    },
+    "50002645": {
+      "leafCategoryId": "50002645",
+      "wholeName": "스포츠/레저>등산>등산장비>스틱",
+      "name": "스틱",
+      "certification_count": 57,
+      "kc_capable": true,
+      "checked_at": "2026-10-29T13:33:34.961Z"
+    },
+    "50002974": {
+      "leafCategoryId": "50002974",
+      "wholeName": "디지털/가전>멀티미디어장비>사운드카드>레코딩장비",
+      "name": "레코딩장비",
+      "certification_count": 57,
+      "kc_capable": true,
+      "checked_at": "2026-10-29T13:32:48.707Z"
+    },
+    "50004370": {
+      "leafCategoryId": "50004370",
+      "wholeName": "생활/건강>악기>음향기자재>앰프",
+      "name": "앰프",
+      "certification_count": 57,
+      "kc_capable": true,
+      "checked_at": "2026-10-29T13:32:50.416Z"
+    },
+    "50024419": {
+      "leafCategoryId": "50024419",
+      "wholeName": "디지털/가전>음향가전>이어폰/이어셋>유선이어폰/이어셋",
+      "name": "유선이어폰/이어셋",
+      "certification_count": 57,
+      "kc_capable": true,
+      "checked_at": "2026-10-29T13:32:48.044Z"
+    },
+    "50024439": {
+      "leafCategoryId": "50024439",
+      "wholeName": "디지털/가전>음향가전>이어폰/이어셋>무선이어폰/이어셋",
+      "name": "무선이어폰/이어셋",
+      "certification_count": 57,
+      "kc_capable": true,
+      "checked_at": "2026-10-29T13:33:40.817Z"
+    }
+  },
+  "metrics": {
+    "register_ms_total": 5837,
+    "register_count": 23,
+    "retries": 0,
+    "dup_blocked": 0,
+    "timeouts": 0,
+    "replaced": 0
+  },
+  "summary": {
+    "target": 100,
+    "new_registered": 23,
+    "registered_before": 326,
+    "display_on_total": 349,
+    "results_this_run": 34
+  }
+}
