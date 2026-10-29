@@ -30,7 +30,7 @@ import process from 'node:process';
 import { fileURLToPath } from 'node:url';
 
 import { parseCsv } from '../../backend/lib/product-mapping.mjs';
-import { mapSupplierStock, planPilotRegister, ledgerEntriesFromRegisterRun, mergeRegistrationLedger, runPilotDuplicateCheck, runPilotImageUpload, runPilotRegister, evaluateLiveGates, LIVE_LANE_DOC } from '../../backend/lib/ncom-live-pipeline.mjs';
+import { mapSupplierStock, normalizeM2bPackages, planPilotRegister, ledgerEntriesFromRegisterRun, mergeRegistrationLedger, runPilotDuplicateCheck, runPilotImageUpload, runPilotRegister, evaluateLiveGates, LIVE_LANE_DOC } from '../../backend/lib/ncom-live-pipeline.mjs';
 import { imagesFromLedger } from '../../backend/lib/image-upload-runner.mjs';
 import { createLocalNcomAuth } from './ncommerce-auth-local.mjs';
 
@@ -75,7 +75,8 @@ function loadEnvFile(rel) {
 function loadPackages() {
   const packages = JSON.parse(fs.readFileSync(path.join(ROOT, PKG_REL), 'utf8')).packages;
   if (!Array.isArray(packages) || packages.length !== 3) die(`${PKG_REL} 파일럿 패키지는 3건이어야 한다`);
-  return packages;
+  // 커밋된 m2b 패키지는 snake_case 최상위 키를 쓴다 — 레인 계약(camelCase)으로 평탄화한다.
+  return normalizeM2bPackages(packages);
 }
 
 /** product_db_compact 에서 cgiId(samamusic.co.kr:1769)의 availability·수집시각을 찾는다. */
@@ -83,7 +84,10 @@ function findAvailability(cgiId) {
   const [site, id] = String(cgiId).split(':');
   if (!site || !id) die(`cgiId 형태를 읽을 수 없다: ${cgiId}`);
   const rows = parseCsv(fs.readFileSync(path.join(ROOT, MASTER_REL), 'utf8'));
-  const row = rows.find((r) => String(r.source_site ?? '').trim() === site.trim() && String(r.source_product_id ?? '').trim() === id.trim());
+  // CSV 는 source_site 에 호스트 접미사 없는 'samamusic' 을 쓴다 — '.co.kr' 를 벗겨 비교한다
+  // (backend/lib/erp-product-sync.mjs 의 사이트 정규화와 동일 기준).
+  const hostOf = (value) => String(value ?? '').trim().replace(/\.co\.kr$/i, '');
+  const row = rows.find((r) => hostOf(r.source_site) === hostOf(site) && String(r.source_product_id ?? '').trim() === id.trim());
   if (!row) return { availability: null, collectedAt: null, found: false };
   return { availability: row.availability ?? null, collectedAt: row.collected_at ?? null, found: true };
 }

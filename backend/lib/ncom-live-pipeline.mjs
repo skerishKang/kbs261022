@@ -395,6 +395,30 @@ export function ledgerEntriesFromRegisterRun({ run, displayStatus = 'SUSPENSION'
   return entries;
 }
 
+/**
+ * m2b 등록 준비 패키지(reports/data/registration/m2b_pilot_packages.json)는 최상위
+ * 키가 snake_case(cgi_id·product_name·seller_management_code)이고 본문은 .package
+ * 에 들어 있다. 반면 이 레인의 계약(planPilotRegister·업로드·중복조회 러너와 e2e
+ * 픽스처)은 평평한 camelCase(cgiId·productName·sellerManagementCode·body)다 — 그대로
+ * 읽으면 코드가 전부 undefined 가 되어 라이브 검색·조립이 빈 값으로 실행된다
+ * (2026-10-29 실측 결함, "undefined: no existing product" 3건). 로드 시점에 한 번
+ * 평탄화하고, 이미 평평한 패키지는 있는 값을 그대로 통과시킨다.
+ */
+export function normalizeM2bPackages(packages = []) {
+  return packages.map((pkg) => {
+    if (!pkg || typeof pkg !== 'object') return pkg;
+    const inner = pkg.package && typeof pkg.package === 'object' ? pkg.package : {};
+    const body = pkg.body ?? inner.body ?? null;
+    return {
+      ...pkg,
+      cgiId: pkg.cgiId ?? pkg.cgi_id ?? inner.cgiId ?? '',
+      productName: pkg.productName ?? pkg.product_name ?? inner.productName ?? '',
+      sellerManagementCode: pkg.sellerManagementCode ?? pkg.seller_management_code ?? inner.sellerManagementCode ?? '',
+      ...(body ? { body } : {}),
+    };
+  });
+}
+
 /** 중복조회 단계(dupcheck) — 등록 결정 없이 검색만. read 게이트. */
 export async function runPilotDuplicateCheck({ runtime, sellerCodes = [], env = {}, gates = evaluateLiveGates } = {}) {
   const gate = gates({ env, action: LIVE_ACTIONS.read, acks: {} });
