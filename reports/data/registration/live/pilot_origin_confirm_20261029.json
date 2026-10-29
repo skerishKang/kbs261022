@@ -1,0 +1,24 @@
+{
+  "kind": "cgi-ncom-pilot-origin-confirm",
+  "confirmed_at": "2026-10-29",
+  "basis": "공급처(삼아스토어) 상품 페이지 '기본 정보 > 원산지' 실측값 — 수집 자료에 없던 원산지를 상품 페이지에서 그대로 확인했다. 수입자 정보는 어느 자료에도 없어 임의 생성하지 않았다(빈 값).",
+  "sources": {
+    "samamusic.co.kr:1769": "https://samastore.co.kr/product/km-19797-케이앤엠-태블릿-pc-스탠드/1769/ (원산지: 유럽 독일)",
+    "samamusic.co.kr:3417": "https://samastore.co.kr/product/izotope-rx-12-standard-아이조톱-오디오-리페어-표준-플러그인/3417/ (원산지: 아메리카 미국)",
+    "samamusic.co.kr:3418": "https://samastore.co.kr/product/izotope-rx-12-advanced-아이조톱-오디오-리페어-프로-플러그인/3418/ (원산지: 아메리카 미국)"
+  },
+  "origin_area_by_cgi_id": {
+    "samamusic.co.kr:1769": { "originAreaCode": "DE", "content": "유럽 독일", "plural": false },
+    "samamusic.co.kr:3417": { "originAreaCode": "US", "content": "아메리카 미국", "plural": false },
+    "samamusic.co.kr:3418": { "originAreaCode": "US", "content": "아메리카 미국", "plural": false }
+  },
+  "after_service_info": {
+    "basis": "CGI 자체 쇼핑몰 공개 안내(site/returns.html, 게시 기준일 2026-10-27) — 판매자(CGI) 상품·견적 문의 전화",
+    "afterServiceTelephoneNumber": "062-576-8100",
+    "afterServiceGuideContent": "CGI(주식회사 시지아이) 상품 문의: 062-576-8100, 061-801-8100. 교환·반품은 상품 수령 후 7일 이내 접수하며, 반송 방법과 주소는 접수 후 안내됩니다."
+  },
+  "minor_purchasable": {
+    "value": true,
+    "basis": "세 상품 모두 구매 연령 제거 대상이 아니다(스탠드·소프트웨어) — 미성년자 구매 가능=true"
+  }
+}
