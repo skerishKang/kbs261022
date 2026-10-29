@@ -234,6 +234,19 @@ test('seller-code hits: an exact match is the only adoptable duplicate evidence'
   assert.equal(none.prefixOnly, false);
 });
 
+test('origin resolution: trailing punctuation and the country-less 해외 mark are handled per E24', () => {
+  const dot = resolveOriginArea({ originText: '아시아 중국 .', resolveCode: () => '0200037' });
+  assert.equal(dot.ok, true);
+  assert.equal(dot.originAreaCode, '0200037', '표기 꼬리 마침표는 제거하고 상세 코드로 매칭한다');
+  const overseas = resolveOriginArea({ originText: '해외', resolveCode: () => '02' });
+  assert.equal(overseas.ok, false);
+  assert.equal(overseas.reason, 'origin_country_unspecified', '국가 미표기 원산지는 02 단독 선언(거부 실측) 대신 제외 대상이다');
+  const comma = resolveOriginArea({ originText: '아메리카 멕시코 , 중국', resolveCode: () => '0200037' });
+  assert.equal(comma.ok, true);
+  assert.equal(comma.originAreaCode, '04');
+  assert.equal(comma.content, '아메리카 멕시코 , 중국', '쉼표 나열도 복수 표기다 — 한쪽 국가만 선언하지 않는다');
+});
+
 test('the batch intent guard rejects the measured vendor refusals', () => {
   assert.throws(() => assertLegalBatchIntent({ kind: 'register', statusType: 'SALE', stockQuantity: 0 }), (error) => error.code === 'stock_number_min');
   assert.throws(() => assertLegalBatchIntent({ kind: 'register', statusType: 'SALE', stockQuantity: null }), (error) => error.code === 'stock_number_min');

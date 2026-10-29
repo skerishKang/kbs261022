@@ -216,9 +216,15 @@ export function planZeroStockResume({ remote = null } = {}) {
  *   - 판독 불가·매칭 실패는 ok=false 로 보고하고 값을 만들지 않는다.
  */
 export function resolveOriginArea({ originText = null, resolveCode = null } = {}) {
-  const text = String(originText ?? '').trim();
+  // 표기 꼬리 마침표·쉼표 제거('아시아 중국 .' 실측 — E24)
+  const text = String(originText ?? '').trim().replace(/[.,\s]+$/, '');
   if (!text) return { ok: false, reason: 'origin_text_missing', originAreaCode: null, content: null, plural: false, mode: null };
-  if (/또는/.test(text)) {
+  if (/^해외/.test(text)) {
+    // 국가 미표기('해외') — 접두코드 02 단독은 ImportTypeNotFullySelected 거부 실측(E24):
+    // 근거 없는 상세 코드를 만들지 않고 제외 대상으로 보고한다.
+    return { ok: false, reason: 'origin_country_unspecified', originAreaCode: null, content: null, plural: false, mode: null };
+  }
+  if (/또는|,|，|·/.test(text)) {
     return { ok: true, originAreaCode: '04', content: text, plural: false, mode: 'direct_input_content' };
   }
   const code = typeof resolveCode === 'function' ? resolveCode(text) : null;
