@@ -1,0 +1,934 @@
+{
+  "kind": "cgi-bulk-batch11-prep",
+  "ran_at": "2026-10-29T20:42:48.157Z",
+  "basis": {
+    "main_sha": "23cb777",
+    "ledger_registered": 349,
+    "pool_sources": [
+      "ready_live_recheck_미등록전원",
+      "batch5_prep",
+      "batch6_prep",
+      "batch7_prep",
+      "batch7_enrichment_READY"
+    ],
+    "live_recheck": "C17 — 전 후보 오늘 라이브 재판정"
+  },
+  "pool_size": 74,
+  "excluded": {
+    "model_missing": 48,
+    "price_inquiry": 0,
+    "price_mismatch": 0,
+    "origin_missing": 0,
+    "brand_missing": 0,
+    "category_unresolved": 8,
+    "need_review_guard": 0,
+    "already_registered": 0,
+    "page_failed": 0,
+    "deleted": 0
+  },
+  "candidate_count": 18,
+  "selected_count": 18,
+  "backups_count": 0,
+  "selected_states": {
+    "READY_SALE": 11,
+    "READY_OUTOFSTOCK": 7
+  },
+  "selected_leaves": {
+    "50002320": 6,
+    "50002748": 3,
+    "50002974": 1,
+    "50004370": 8
+  },
+  "selected_category_source": {
+    "semantic_resolved": 6,
+    "registered_path_contract": 9,
+    "prev_prep_contract(batch6_prep_20261029.json)": 2,
+    "prev_prep_contract(batch5_prep_20261029.json)": 1
+  },
+  "exclusion_log": [
+    {
+      "cgiId": "samamusic:3880",
+      "reason": "model_missing",
+      "note": "라이브 라벨·이전 근거·상품명 인용 모두 부재 — 임의 생성 금지(C5)"
+    },
+    {
+      "cgiId": "samamusic:265",
+      "reason": "model_missing",
+      "note": "라이브 라벨·이전 근거·상품명 인용 모두 부재 — 임의 생성 금지(C5)"
+    },
+    {
+      "cgiId": "samamusic:268",
+      "reason": "model_missing",
+      "note": "라이브 라벨·이전 근거·상품명 인용 모두 부재 — 임의 생성 금지(C5)"
+    },
+    {
+      "cgiId": "samamusic:693",
+      "reason": "model_missing",
+      "note": "라이브 라벨·이전 근거·상품명 인용 모두 부재 — 임의 생성 금지(C5)"
+    },
+    {
+      "cgiId": "samamusic:609",
+      "reason": "model_missing",
+      "note": "라이브 라벨·이전 근거·상품명 인용 모두 부재 — 임의 생성 금지(C5)"
+    },
+    {
+      "cgiId": "samamusic:612",
+      "reason": "model_missing",
+      "note": "라이브 라벨·이전 근거·상품명 인용 모두 부재 — 임의 생성 금지(C5)"
+    },
+    {
+      "cgiId": "samamusic:3176",
+      "reason": "model_missing",
+      "note": "라이브 라벨·이전 근거·상품명 인용 모두 부재 — 임의 생성 금지(C5)"
+    },
+    {
+      "cgiId": "samamusic:3871",
+      "reason": "model_missing",
+      "note": "라이브 라벨·이전 근거·상품명 인용 모두 부재 — 임의 생성 금지(C5)"
+    },
+    {
+      "cgiId": "samamusic:3183",
+      "reason": "model_missing",
+      "note": "라이브 라벨·이전 근거·상품명 인용 모두 부재 — 임의 생성 금지(C5)"
+    },
+    {
+      "cgiId": "samamusic:3181",
+      "reason": "model_missing",
+      "note": "라이브 라벨·이전 근거·상품명 인용 모두 부재 — 임의 생성 금지(C5)"
+    },
+    {
+      "cgiId": "samamusic:3174",
+      "reason": "model_missing",
+      "note": "라이브 라벨·이전 근거·상품명 인용 모두 부재 — 임의 생성 금지(C5)"
+    },
+    {
+      "cgiId": "samamusic:3868",
+      "reason": "model_missing",
+      "note": "라이브 라벨·이전 근거·상품명 인용 모두 부재 — 임의 생성 금지(C5)"
+    },
+    {
+      "cgiId": "samamusic:3171",
+      "reason": "model_missing",
+      "note": "라이브 라벨·이전 근거·상품명 인용 모두 부재 — 임의 생성 금지(C5)"
+    },
+    {
+      "cgiId": "samamusic:3191",
+      "reason": "model_missing",
+      "note": "라이브 라벨·이전 근거·상품명 인용 모두 부재 — 임의 생성 금지(C5)"
+    },
+    {
+      "cgiId": "samamusic:3180",
+      "reason": "model_missing",
+      "note": "라이브 라벨·이전 근거·상품명 인용 모두 부재 — 임의 생성 금지(C5)"
+    },
+    {
+      "cgiId": "samamusic:3190",
+      "reason": "model_missing",
+      "note": "라이브 라벨·이전 근거·상품명 인용 모두 부재 — 임의 생성 금지(C5)"
+    },
+    {
+      "cgiId": "samamusic:4236",
+      "reason": "model_missing",
+      "note": "라이브 라벨·이전 근거·상품명 인용 모두 부재 — 임의 생성 금지(C5)"
+    },
+    {
+      "cgiId": "samamusic:961",
+      "reason": "model_missing",
+      "note": "라이브 라벨·이전 근거·상품명 인용 모두 부재 — 임의 생성 금지(C5)"
+    },
+    {
+      "cgiId": "samamusic:959",
+      "reason": "category_unresolved",
+      "supplierPath": "교체용 바늘"
+    },
+    {
+      "cgiId": "samamusic:957",
+      "reason": "category_unresolved",
+      "supplierPath": "교체용 바늘"
+    },
+    {
+      "cgiId": "samamusic:958",
+      "reason": "category_unresolved",
+      "supplierPath": "교체용 바늘"
+    },
+    {
+      "cgiId": "samamusic:960",
+      "reason": "category_unresolved",
+      "supplierPath": "교체용 바늘"
+    },
+    {
+      "cgiId": "samamusic:962",
+      "reason": "category_unresolved",
+      "supplierPath": "교체용 바늘"
+    },
+    {
+      "cgiId": "samamusic:954",
+      "reason": "category_unresolved",
+      "supplierPath": "교체용 바늘"
+    },
+    {
+      "cgiId": "samamusic:955",
+      "reason": "category_unresolved",
+      "supplierPath": "교체용 바늘"
+    },
+    {
+      "cgiId": "samamusic:3678",
+      "reason": "model_missing",
+      "note": "라이브 라벨·이전 근거·상품명 인용 모두 부재 — 임의 생성 금지(C5)"
+    },
+    {
+      "cgiId": "samamusic:3682",
+      "reason": "model_missing",
+      "note": "라이브 라벨·이전 근거·상품명 인용 모두 부재 — 임의 생성 금지(C5)"
+    },
+    {
+      "cgiId": "samamusic:956",
+      "reason": "category_unresolved",
+      "supplierPath": "교체용 바늘"
+    },
+    {
+      "cgiId": "samamusic:3325",
+      "reason": "model_missing",
+      "note": "라이브 라벨·이전 근거·상품명 인용 모두 부재 — 임의 생성 금지(C5)"
+    },
+    {
+      "cgiId": "samamusic:3680",
+      "reason": "model_missing",
+      "note": "라이브 라벨·이전 근거·상품명 인용 모두 부재 — 임의 생성 금지(C5)"
+    },
+    {
+      "cgiId": "samamusic:3864",
+      "reason": "model_missing",
+      "note": "라이브 라벨·이전 근거·상품명 인용 모두 부재 — 임의 생성 금지(C5)"
+    },
+    {
+      "cgiId": "samamusic:3455",
+      "reason": "model_missing",
+      "note": "라이브 라벨·이전 근거·상품명 인용 모두 부재 — 임의 생성 금지(C5)"
+    },
+    {
+      "cgiId": "samamusic:3453",
+      "reason": "model_missing",
+      "note": "라이브 라벨·이전 근거·상품명 인용 모두 부재 — 임의 생성 금지(C5)"
+    },
+    {
+      "cgiId": "samamusic:3677",
+      "reason": "model_missing",
+      "note": "라이브 라벨·이전 근거·상품명 인용 모두 부재 — 임의 생성 금지(C5)"
+    },
+    {
+      "cgiId": "samamusic:3683",
+      "reason": "model_missing",
+      "note": "라이브 라벨·이전 근거·상품명 인용 모두 부재 — 임의 생성 금지(C5)"
+    },
+    {
+      "cgiId": "samamusic:3863",
+      "reason": "model_missing",
+      "note": "라이브 라벨·이전 근거·상품명 인용 모두 부재 — 임의 생성 금지(C5)"
+    },
+    {
+      "cgiId": "samamusic:3681",
+      "reason": "model_missing",
+      "note": "라이브 라벨·이전 근거·상품명 인용 모두 부재 — 임의 생성 금지(C5)"
+    },
+    {
+      "cgiId": "samamusic:3324",
+      "reason": "model_missing",
+      "note": "라이브 라벨·이전 근거·상품명 인용 모두 부재 — 임의 생성 금지(C5)"
+    },
+    {
+      "cgiId": "samamusic:3872",
+      "reason": "model_missing",
+      "note": "라이브 라벨·이전 근거·상품명 인용 모두 부재 — 임의 생성 금지(C5)"
+    },
+    {
+      "cgiId": "samamusic:3866",
+      "reason": "model_missing",
+      "note": "라이브 라벨·이전 근거·상품명 인용 모두 부재 — 임의 생성 금지(C5)"
+    },
+    {
+      "cgiId": "samamusic:3869",
+      "reason": "model_missing",
+      "note": "라이브 라벨·이전 근거·상품명 인용 모두 부재 — 임의 생성 금지(C5)"
+    },
+    {
+      "cgiId": "samamusic:3674",
+      "reason": "model_missing",
+      "note": "라이브 라벨·이전 근거·상품명 인용 모두 부재 — 임의 생성 금지(C5)"
+    },
+    {
+      "cgiId": "samamusic:3861",
+      "reason": "model_missing",
+      "note": "라이브 라벨·이전 근거·상품명 인용 모두 부재 — 임의 생성 금지(C5)"
+    },
+    {
+      "cgiId": "samamusic:3860",
+      "reason": "model_missing",
+      "note": "라이브 라벨·이전 근거·상품명 인용 모두 부재 — 임의 생성 금지(C5)"
+    },
+    {
+      "cgiId": "samamusic:3459",
+      "reason": "model_missing",
+      "note": "라이브 라벨·이전 근거·상품명 인용 모두 부재 — 임의 생성 금지(C5)"
+    },
+    {
+      "cgiId": "samamusic:3313",
+      "reason": "model_missing",
+      "note": "라이브 라벨·이전 근거·상품명 인용 모두 부재 — 임의 생성 금지(C5)"
+    },
+    {
+      "cgiId": "samamusic:3456",
+      "reason": "model_missing",
+      "note": "라이브 라벨·이전 근거·상품명 인용 모두 부재 — 임의 생성 금지(C5)"
+    },
+    {
+      "cgiId": "samamusic:3670",
+      "reason": "model_missing",
+      "note": "라이브 라벨·이전 근거·상품명 인용 모두 부재 — 임의 생성 금지(C5)"
+    },
+    {
+      "cgiId": "samamusic:3312",
+      "reason": "model_missing",
+      "note": "라이브 라벨·이전 근거·상품명 인용 모두 부재 — 임의 생성 금지(C5)"
+    },
+    {
+      "cgiId": "samamusic:3685",
+      "reason": "model_missing",
+      "note": "라이브 라벨·이전 근거·상품명 인용 모두 부재 — 임의 생성 금지(C5)"
+    },
+    {
+      "cgiId": "samamusic:3679",
+      "reason": "model_missing",
+      "note": "라이브 라벨·이전 근거·상품명 인용 모두 부재 — 임의 생성 금지(C5)"
+    },
+    {
+      "cgiId": "samamusic:3447",
+      "reason": "model_missing",
+      "note": "라이브 라벨·이전 근거·상품명 인용 모두 부재 — 임의 생성 금지(C5)"
+    },
+    {
+      "cgiId": "samamusic:3672",
+      "reason": "model_missing",
+      "note": "라이브 라벨·이전 근거·상품명 인용 모두 부재 — 임의 생성 금지(C5)"
+    },
+    {
+      "cgiId": "samamusic:3328",
+      "reason": "model_missing",
+      "note": "라이브 라벨·이전 근거·상품명 인용 모두 부재 — 임의 생성 금지(C5)"
+    },
+    {
+      "cgiId": "samamusic:3875",
+      "reason": "model_missing",
+      "note": "라이브 라벨·이전 근거·상품명 인용 모두 부재 — 임의 생성 금지(C5)"
+    },
+    {
+      "cgiId": "samamusic:3460",
+      "reason": "model_missing",
+      "note": "라이브 라벨·이전 근거·상품명 인용 모두 부재 — 임의 생성 금지(C5)"
+    }
+  ],
+  "selected": [
+    {
+      "cgiId": "samamusic:5705",
+      "taxonomy_state": "READY_SALE",
+      "batch11_state": "READY_SALE",
+      "leafCategoryId": "50002320",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "자동차기기 리프 오매핑 정정 — 상품명 근거(DYNAUDIO CORE 5 다인오디오 모니터 스피커 (1통))",
+      "model": {
+        "source": "page_label",
+        "value": "CORE 5"
+      },
+      "maker": "DYNAUDIO",
+      "live_price": 3280000,
+      "price_source": "collected_confirmed",
+      "live_origin": "유럽 덴마크",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 2
+      },
+      "live_probe": {
+        "observedAt": "2026-10-29T20:42:17.151Z",
+        "deleted": false,
+        "price": 3280000,
+        "price_inquiry": false,
+        "sold_out": false,
+        "origin": "유럽 덴마크",
+        "brand": "DYNAUDIO",
+        "model": "CORE 5",
+        "stock_label": null,
+        "electronic": false
+      }
+    },
+    {
+      "cgiId": "samamusic:730",
+      "taxonomy_state": "READY_SALE",
+      "batch11_state": "READY_SALE",
+      "leafCategoryId": "50002320",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "자동차기기 리프 오매핑 정정 — 상품명 근거(DYNAUDIO LYD 8 Black 다인오디오 모니터 스피커)",
+      "model": {
+        "source": "page_label",
+        "value": "LYD-8 Black, 220V"
+      },
+      "maker": "DYNAUDIO",
+      "live_price": 1470000,
+      "price_source": "collected_confirmed",
+      "live_origin": "유럽 덴마크",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 2
+      },
+      "live_probe": {
+        "observedAt": "2026-10-29T20:42:15.309Z",
+        "deleted": false,
+        "price": 1470000,
+        "price_inquiry": false,
+        "sold_out": false,
+        "origin": "유럽 덴마크",
+        "brand": "DYNAUDIO",
+        "model": "LYD-8 Black, 220V",
+        "stock_label": null,
+        "electronic": false
+      }
+    },
+    {
+      "cgiId": "samamusic:732",
+      "taxonomy_state": "READY_SALE",
+      "batch11_state": "READY_SALE",
+      "leafCategoryId": "50002320",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "자동차기기 리프 오매핑 정정 — 상품명 근거(DYNAUDIO LYD 5 Black 다인오디오 모니터 스피커)",
+      "model": {
+        "source": "page_label",
+        "value": "LYD-5Black, 220V"
+      },
+      "maker": "DYNAUDIO",
+      "live_price": 890000,
+      "price_source": "collected_confirmed",
+      "live_origin": "유럽 덴마크",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 1
+      },
+      "live_probe": {
+        "observedAt": "2026-10-29T20:42:15.929Z",
+        "deleted": false,
+        "price": 890000,
+        "price_inquiry": false,
+        "sold_out": false,
+        "origin": "유럽 덴마크",
+        "brand": "DYNAUDIO",
+        "model": "LYD-5Black, 220V",
+        "stock_label": null,
+        "electronic": false
+      }
+    },
+    {
+      "cgiId": "samamusic:745",
+      "taxonomy_state": "READY_SALE",
+      "batch11_state": "READY_SALE",
+      "leafCategoryId": "50002320",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "자동차기기 리프 오매핑 정정 — 상품명 근거(DYNAUDIO LYD 48 Black (1통) 다인오디오 모니터 스피커)",
+      "model": {
+        "source": "page_label",
+        "value": "LYD-48, B/B"
+      },
+      "maker": "DYNAUDIO",
+      "live_price": 2150000,
+      "price_source": "collected_confirmed",
+      "live_origin": "유럽 덴마크",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 2
+      },
+      "live_probe": {
+        "observedAt": "2026-10-29T20:42:14.023Z",
+        "deleted": false,
+        "price": 2150000,
+        "price_inquiry": false,
+        "sold_out": false,
+        "origin": "유럽 덴마크",
+        "brand": "DYNAUDIO",
+        "model": "LYD-48, B/B",
+        "stock_label": null,
+        "electronic": false
+      }
+    },
+    {
+      "cgiId": "samamusic:746",
+      "taxonomy_state": "READY_SALE",
+      "batch11_state": "READY_SALE",
+      "leafCategoryId": "50002320",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "자동차기기 리프 오매핑 정정 — 상품명 근거(DYNAUDIO LYD 48 White (1통) 다인오디오 모니터 스피커)",
+      "model": {
+        "source": "page_label",
+        "value": "LYD-48, B/W"
+      },
+      "maker": "DYNAUDIO",
+      "live_price": 2150000,
+      "price_source": "collected_confirmed",
+      "live_origin": "유럽 덴마크",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 2
+      },
+      "live_probe": {
+        "observedAt": "2026-10-29T20:42:16.542Z",
+        "deleted": false,
+        "price": 2150000,
+        "price_inquiry": false,
+        "sold_out": false,
+        "origin": "유럽 덴마크",
+        "brand": "DYNAUDIO",
+        "model": "LYD-48, B/W",
+        "stock_label": null,
+        "electronic": false
+      }
+    },
+    {
+      "cgiId": "samamusic:731",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch11_state": "READY_OUTOFSTOCK",
+      "leafCategoryId": "50002320",
+      "category_source": "semantic_resolved",
+      "semantic_evidence": "자동차기기 리프 오매핑 정정 — 상품명 근거(DYNAUDIO LYD 7 Black 다인오디오 모니터 스피커)",
+      "model": {
+        "source": "page_label",
+        "value": "LYD-7Black, 220V"
+      },
+      "maker": "DYNAUDIO",
+      "live_price": 1170000,
+      "price_source": "collected_confirmed",
+      "live_origin": "유럽 덴마크",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 1
+      },
+      "live_probe": {
+        "observedAt": "2026-10-29T20:42:26.715Z",
+        "deleted": false,
+        "price": 1170000,
+        "price_inquiry": false,
+        "sold_out": true,
+        "origin": "유럽 덴마크",
+        "brand": "DYNAUDIO",
+        "model": "LYD-7Black, 220V",
+        "stock_label": null,
+        "electronic": false
+      }
+    },
+    {
+      "cgiId": "samamusic:1164",
+      "taxonomy_state": "READY_SALE",
+      "batch11_state": "READY_SALE",
+      "leafCategoryId": "50002748",
+      "category_source": "registered_path_contract",
+      "semantic_evidence": "성공 등록 경로 계약 재사용(경로 '스피커' → 등록 58건)",
+      "model": {
+        "source": "page_label",
+        "value": "GLM KIT (8300-601)"
+      },
+      "maker": "Genelec",
+      "live_price": 610000,
+      "price_source": "collected_confirmed",
+      "live_origin": "유럽 핀란드",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 35
+      },
+      "live_probe": {
+        "observedAt": "2026-10-29T20:42:12.905Z",
+        "deleted": false,
+        "price": 610000,
+        "price_inquiry": false,
+        "sold_out": false,
+        "origin": "유럽 핀란드",
+        "brand": "Genelec",
+        "model": "GLM KIT (8300-601)",
+        "stock_label": null,
+        "electronic": false
+      }
+    },
+    {
+      "cgiId": "samamusic:2751",
+      "taxonomy_state": "READY_SALE",
+      "batch11_state": "READY_SALE",
+      "leafCategoryId": "50002748",
+      "category_source": "registered_path_contract",
+      "semantic_evidence": "성공 등록 경로 계약 재사용(경로 '스피커' → 등록 58건)",
+      "model": {
+        "source": "page_label",
+        "value": "7050CPM"
+      },
+      "maker": "Genelec",
+      "live_price": 2140000,
+      "price_source": "collected_confirmed",
+      "live_origin": "유럽 핀란드",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 1
+      },
+      "live_probe": {
+        "observedAt": "2026-10-29T20:42:14.643Z",
+        "deleted": false,
+        "price": 2140000,
+        "price_inquiry": false,
+        "sold_out": false,
+        "origin": "유럽 핀란드",
+        "brand": "Genelec",
+        "model": "7050CPM",
+        "stock_label": null,
+        "electronic": false
+      }
+    },
+    {
+      "cgiId": "samamusic:3169",
+      "taxonomy_state": "READY_SALE",
+      "batch11_state": "READY_SALE",
+      "leafCategoryId": "50004370",
+      "category_source": "prev_prep_contract(batch6_prep_20261029.json)",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "Custom Classic S 785"
+      },
+      "maker": "Michael Tuttle Guitars",
+      "live_price": 6350000,
+      "price_source": "collected_confirmed",
+      "live_origin": "국내",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 1
+      },
+      "live_probe": {
+        "observedAt": "2026-10-29T20:42:22.811Z",
+        "deleted": false,
+        "price": 6350000,
+        "price_inquiry": false,
+        "sold_out": false,
+        "origin": "국내",
+        "brand": "Michael Tuttle Guitars",
+        "model": "Custom Classic S 785",
+        "stock_label": null,
+        "electronic": false
+      }
+    },
+    {
+      "cgiId": "samamusic:3172",
+      "taxonomy_state": "READY_SALE",
+      "batch11_state": "READY_SALE",
+      "leafCategoryId": "50004370",
+      "category_source": "prev_prep_contract(batch6_prep_20261029.json)",
+      "semantic_evidence": null,
+      "model": {
+        "source": "product_name_substring",
+        "value": "Custom Classic S 788",
+        "evidence": "[Michael Tuttle Guitars] Custom Classic S 788 마이클 터틀 일렉 기타 (딜러 셀렉트 모델)"
+      },
+      "maker": "Michael Tuttle Guitars",
+      "live_price": 6250000,
+      "price_source": "collected_confirmed",
+      "live_origin": "국내",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 1
+      },
+      "live_probe": {
+        "observedAt": "2026-10-29T20:42:23.392Z",
+        "deleted": false,
+        "price": 6250000,
+        "price_inquiry": false,
+        "sold_out": false,
+        "origin": "국내",
+        "brand": "Michael Tuttle Guitars",
+        "model": null,
+        "stock_label": null,
+        "electronic": false
+      }
+    },
+    {
+      "cgiId": "samamusic:4979",
+      "taxonomy_state": "READY_SALE",
+      "batch11_state": "READY_SALE",
+      "leafCategoryId": "50002748",
+      "category_source": "registered_path_contract",
+      "semantic_evidence": "성공 등록 경로 계약 재사용(경로 'PA 스피커' → 등록 17건)",
+      "model": {
+        "source": "page_label",
+        "value": "PR:O 118 Sub D2"
+      },
+      "maker": "HK Audio",
+      "live_price": 2250000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아시아 중국",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 7
+      },
+      "live_probe": {
+        "observedAt": "2026-10-29T20:42:12.270Z",
+        "deleted": false,
+        "price": 2250000,
+        "price_inquiry": false,
+        "sold_out": false,
+        "origin": "아시아 중국",
+        "brand": "HK Audio",
+        "model": "PR:O 118 Sub D2",
+        "stock_label": null,
+        "electronic": false
+      }
+    },
+    {
+      "cgiId": "samamusic:5383",
+      "taxonomy_state": "READY_SALE",
+      "batch11_state": "READY_SALE",
+      "leafCategoryId": "50002974",
+      "category_source": "prev_prep_contract(batch5_prep_20261029.json)",
+      "semantic_evidence": null,
+      "model": {
+        "source": "page_label",
+        "value": "EQP-A"
+      },
+      "maker": "AudioScape",
+      "live_price": 2950000,
+      "price_source": "collected_confirmed",
+      "live_origin": "국내",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 4
+      },
+      "live_probe": {
+        "observedAt": "2026-10-29T20:42:18.657Z",
+        "deleted": false,
+        "price": 2950000,
+        "price_inquiry": false,
+        "sold_out": false,
+        "origin": "국내",
+        "brand": "AudioScape",
+        "model": "EQP-A",
+        "stock_label": null,
+        "electronic": false
+      }
+    },
+    {
+      "cgiId": "samamusic:3330",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch11_state": "READY_OUTOFSTOCK",
+      "leafCategoryId": "50004370",
+      "category_source": "registered_path_contract",
+      "semantic_evidence": "성공 등록 경로 계약 재사용(경로 '악기/앰프' → 등록 12건)",
+      "model": {
+        "source": "product_name_substring",
+        "value": "Michael Tuttle Guitars J Master 827",
+        "evidence": "Michael Tuttle Guitars J Master 827 마이클 터틀 일렉 기타 (딜러 셀렉트 모델)"
+      },
+      "maker": "Michael Tuttle Guitars",
+      "live_price": 6400000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아메리카 미국",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 1
+      },
+      "live_probe": {
+        "observedAt": "2026-10-29T20:42:37.624Z",
+        "deleted": false,
+        "price": 6400000,
+        "price_inquiry": false,
+        "sold_out": true,
+        "origin": "아메리카 미국",
+        "brand": "Michael Tuttle Guitars",
+        "model": null,
+        "stock_label": null,
+        "electronic": false
+      }
+    },
+    {
+      "cgiId": "samamusic:3331",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch11_state": "READY_OUTOFSTOCK",
+      "leafCategoryId": "50004370",
+      "category_source": "registered_path_contract",
+      "semantic_evidence": "성공 등록 경로 계약 재사용(경로 '악기/앰프' → 등록 12건)",
+      "model": {
+        "source": "product_name_substring",
+        "value": "Michael Tuttle Guitars J Master 828",
+        "evidence": "Michael Tuttle Guitars J Master 828 마이클 터틀 일렉 기타 (딜러 셀렉트 모델)"
+      },
+      "maker": "Michael Tuttle Guitars",
+      "live_price": 6300000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아메리카 미국",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 1
+      },
+      "live_probe": {
+        "observedAt": "2026-10-29T20:42:44.122Z",
+        "deleted": false,
+        "price": 6300000,
+        "price_inquiry": false,
+        "sold_out": true,
+        "origin": "아메리카 미국",
+        "brand": "Michael Tuttle Guitars",
+        "model": null,
+        "stock_label": null,
+        "electronic": false
+      }
+    },
+    {
+      "cgiId": "samamusic:3676",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch11_state": "READY_OUTOFSTOCK",
+      "leafCategoryId": "50004370",
+      "category_source": "registered_path_contract",
+      "semantic_evidence": "성공 등록 경로 계약 재사용(경로 '악기/앰프' → 등록 12건)",
+      "model": {
+        "source": "product_name_substring",
+        "value": "Custom Classic S 868",
+        "evidence": "[Michael Tuttle Guitars] Custom Classic S 868 마이클 터틀 일렉 기타 ("
+      },
+      "maker": "자체브랜드",
+      "live_price": 6490000,
+      "price_source": "collected_confirmed",
+      "live_origin": "국내",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 1
+      },
+      "live_probe": {
+        "observedAt": "2026-10-29T20:42:36.613Z",
+        "deleted": false,
+        "price": 6490000,
+        "price_inquiry": false,
+        "sold_out": true,
+        "origin": "국내",
+        "brand": "자체브랜드",
+        "model": null,
+        "stock_label": null,
+        "electronic": false
+      }
+    },
+    {
+      "cgiId": "samamusic:3686",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch11_state": "READY_OUTOFSTOCK",
+      "leafCategoryId": "50004370",
+      "category_source": "registered_path_contract",
+      "semantic_evidence": "성공 등록 경로 계약 재사용(경로 '악기/앰프' → 등록 12건)",
+      "model": {
+        "source": "product_name_substring",
+        "value": "Michael Tuttle Guitars J Master 878",
+        "evidence": "Michael Tuttle Guitars J Master 878 마이클 터틀 일렉 기타 (딜러 셀렉트 모델)"
+      },
+      "maker": "Michael Tuttle Guitars",
+      "live_price": 6700000,
+      "price_source": "collected_confirmed",
+      "live_origin": "국내",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 1
+      },
+      "live_probe": {
+        "observedAt": "2026-10-29T20:42:32.345Z",
+        "deleted": false,
+        "price": 6700000,
+        "price_inquiry": false,
+        "sold_out": true,
+        "origin": "국내",
+        "brand": "Michael Tuttle Guitars",
+        "model": null,
+        "stock_label": null,
+        "electronic": false
+      }
+    },
+    {
+      "cgiId": "samamusic:4057",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch11_state": "READY_OUTOFSTOCK",
+      "leafCategoryId": "50004370",
+      "category_source": "registered_path_contract",
+      "semantic_evidence": "성공 등록 경로 계약 재사용(경로 '악기/앰프' → 등록 12건)",
+      "model": {
+        "source": "product_name_substring",
+        "value": "Nashguitars S-57",
+        "evidence": "Nashguitars S-57 내쉬 일렉 기타 (딜러 셀렉트,SAM-118)"
+      },
+      "maker": "Nash Guitars",
+      "live_price": 4389000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아메리카 미국",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 1
+      },
+      "live_probe": {
+        "observedAt": "2026-10-29T20:42:47.988Z",
+        "deleted": false,
+        "price": 4389000,
+        "price_inquiry": false,
+        "sold_out": true,
+        "origin": "아메리카 미국",
+        "brand": "Nash Guitars",
+        "model": null,
+        "stock_label": null,
+        "electronic": false
+      }
+    },
+    {
+      "cgiId": "samamusic:4058",
+      "taxonomy_state": "STOCK_UNKNOWN",
+      "batch11_state": "READY_OUTOFSTOCK",
+      "leafCategoryId": "50004370",
+      "category_source": "registered_path_contract",
+      "semantic_evidence": "성공 등록 경로 계약 재사용(경로 '악기/앰프' → 등록 12건)",
+      "model": {
+        "source": "product_name_substring",
+        "value": "Nashguitars S-57",
+        "evidence": "Nashguitars S-57 내쉬 일렉 기타 (딜러 셀렉트, SAM-119)"
+      },
+      "maker": "Nash Guitars",
+      "live_price": 4689000,
+      "price_source": "collected_confirmed",
+      "live_origin": "아메리카 미국",
+      "isSW": false,
+      "stock": {
+        "source": "taxonomy_collected",
+        "quantity": 1
+      },
+      "live_probe": {
+        "observedAt": "2026-10-29T20:42:47.406Z",
+        "deleted": false,
+        "price": 4689000,
+        "price_inquiry": false,
+        "sold_out": true,
+        "origin": "아메리카 미국",
+        "brand": "Nash Guitars",
+        "model": null,
+        "stock_label": null,
+        "electronic": false
+      }
+    }
+  ],
+  "backups": []
+}
