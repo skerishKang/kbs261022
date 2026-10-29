@@ -1,0 +1,234 @@
+{
+  "kind": "cgi-ncom-live-register-request",
+  "built_at": "2026-10-29T00:14:45.541Z",
+  "displayStatus": "SUSPENSION",
+  "counts": {
+    "products": 3,
+    "registerable": 0,
+    "blocked": 3
+  },
+  "rows": [
+    {
+      "cgiId": "samamusic.co.kr:1769",
+      "sellerManagementCode": "samamusic:1769",
+      "productName": "K&M 19797 케이앤엠 태블릿 PC 스탠드",
+      "displayStatus": "SUSPENSION",
+      "body": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "K&M 19797 케이앤엠 태블릿 PC 스탠드",
+          "salePrice": 116000,
+          "stockQuantity": 8,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:1769"
+            }
+          },
+          "images": {
+            "representative": null,
+            "additional": []
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "problems": [
+        {
+          "field": "leafCategoryId",
+          "reason": "required_at_register"
+        },
+        {
+          "field": "detailContent",
+          "reason": "required_at_register"
+        },
+        {
+          "field": "images.representative",
+          "reason": "required"
+        }
+      ],
+      "pending": [
+        {
+          "field": "leafCategoryId",
+          "owner": "tooling_after_auth",
+          "note": "라이브 코퍼스 수집→매핑→운영자 리프 확정(--category-file)"
+        },
+        {
+          "field": "detailContent",
+          "owner": "operator_approval",
+          "note": "운영자 승인 상세본문 파일(--detail-dir) 필요 — 초안 자동 반영 없음"
+        },
+        {
+          "field": "images.representative",
+          "owner": "tooling_after_auth",
+          "note": "라이브 이미지 업로드 러너 실행 → ledger 반환 URL 필요"
+        },
+        {
+          "field": "deliveryInfo",
+          "owner": "customer_input",
+          "note": "고객 확정 배송·클레임 정책(--policy-file)이 있을 때만 본문에 들어간다 — 값은 만들지 않는다"
+        }
+      ],
+      "stock": {
+        "ok": true,
+        "stockQuantity": 8,
+        "source": "supplier_displayed",
+        "measuredAt": "2026-10-22T05:16:51Z",
+        "ageHours": 163,
+        "stale": false,
+        "reason": null
+      },
+      "registerable": false
+    },
+    {
+      "cgiId": "samamusic.co.kr:3417",
+      "sellerManagementCode": "samamusic:3417",
+      "productName": "iZOTOPE RX 12 Standard 아이조톱 오디오 리페어 표준 플러그인",
+      "displayStatus": "SUSPENSION",
+      "body": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "iZOTOPE RX 12 Standard 아이조톱 오디오 리페어 표준 플러그인",
+          "salePrice": 518000,
+          "stockQuantity": 9,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:3417"
+            }
+          },
+          "images": {
+            "representative": null,
+            "additional": []
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "problems": [
+        {
+          "field": "leafCategoryId",
+          "reason": "required_at_register"
+        },
+        {
+          "field": "detailContent",
+          "reason": "required_at_register"
+        },
+        {
+          "field": "images.representative",
+          "reason": "required"
+        }
+      ],
+      "pending": [
+        {
+          "field": "leafCategoryId",
+          "owner": "tooling_after_auth",
+          "note": "라이브 코퍼스 수집→매핑→운영자 리프 확정(--category-file)"
+        },
+        {
+          "field": "detailContent",
+          "owner": "operator_approval",
+          "note": "운영자 승인 상세본문 파일(--detail-dir) 필요 — 초안 자동 반영 없음"
+        },
+        {
+          "field": "images.representative",
+          "owner": "tooling_after_auth",
+          "note": "라이브 이미지 업로드 러너 실행 → ledger 반환 URL 필요"
+        },
+        {
+          "field": "deliveryInfo",
+          "owner": "customer_input",
+          "note": "고객 확정 배송·클레임 정책(--policy-file)이 있을 때만 본문에 들어간다 — 값은 만들지 않는다"
+        }
+      ],
+      "stock": {
+        "ok": true,
+        "stockQuantity": 9,
+        "source": "supplier_displayed",
+        "measuredAt": "2026-10-22T05:16:51Z",
+        "ageHours": 163,
+        "stale": false,
+        "reason": null
+      },
+      "registerable": false
+    },
+    {
+      "cgiId": "samamusic.co.kr:3418",
+      "sellerManagementCode": "samamusic:3418",
+      "productName": "iZOTOPE RX 12 Advanced 아이조톱 오디오 리페어 프로 플러그인",
+      "displayStatus": "SUSPENSION",
+      "body": {
+        "originProduct": {
+          "statusType": "SALE",
+          "name": "iZOTOPE RX 12 Advanced 아이조톱 오디오 리페어 프로 플러그인",
+          "salePrice": 1818000,
+          "stockQuantity": 29,
+          "detailAttribute": {
+            "taxType": "TAX",
+            "sellerCodeInfo": {
+              "sellerManagementCode": "samamusic:3418"
+            }
+          },
+          "images": {
+            "representative": null,
+            "additional": []
+          }
+        },
+        "smartstoreChannelProduct": {
+          "naverShoppingRegistration": false,
+          "channelProductDisplayStatusType": "SUSPENSION"
+        }
+      },
+      "problems": [
+        {
+          "field": "leafCategoryId",
+          "reason": "required_at_register"
+        },
+        {
+          "field": "detailContent",
+          "reason": "required_at_register"
+        },
+        {
+          "field": "images.representative",
+          "reason": "required"
+        }
+      ],
+      "pending": [
+        {
+          "field": "leafCategoryId",
+          "owner": "tooling_after_auth",
+          "note": "라이브 코퍼스 수집→매핑→운영자 리프 확정(--category-file)"
+        },
+        {
+          "field": "detailContent",
+          "owner": "operator_approval",
+          "note": "운영자 승인 상세본문 파일(--detail-dir) 필요 — 초안 자동 반영 없음"
+        },
+        {
+          "field": "images.representative",
+          "owner": "tooling_after_auth",
+          "note": "라이브 이미지 업로드 러너 실행 → ledger 반환 URL 필요"
+        },
+        {
+          "field": "deliveryInfo",
+          "owner": "customer_input",
+          "note": "고객 확정 배송·클레임 정책(--policy-file)이 있을 때만 본문에 들어간다 — 값은 만들지 않는다"
+        }
+      ],
+      "stock": {
+        "ok": true,
+        "stockQuantity": 29,
+        "source": "supplier_displayed",
+        "measuredAt": "2026-10-22T05:16:51Z",
+        "ageHours": 163,
+        "stale": false,
+        "reason": null
+      },
+      "registerable": false
+    }
+  ]
+}

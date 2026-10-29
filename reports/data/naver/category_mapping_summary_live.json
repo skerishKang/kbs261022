@@ -1,0 +1,152 @@
+{
+ "kind": "cgi-naver-category-mapping",
+ "scope": "supplier category paths from the committed prep CSV; no Naver call, no credential, no product touched",
+ "issue": 95,
+ "source": "data/smartstore_prep/smartstore_registration_prep.csv",
+ "path_column": "카테고리경로_CGI",
+ "thresholds": {
+  "limit": 5,
+  "min_score": 0.5,
+  "margin": 0.08
+ },
+ "transmitted": false,
+ "account_login": "NO",
+ "naver_requests": 0,
+ "live_writes": 0,
+ "corpus": {
+  "parsed": true,
+  "selectable_leaves": true,
+  "reason": "",
+  "file": {
+   "path": "reports/data/naver/category_corpus_live.json",
+   "bytes": 845083,
+   "sha256": "93dc7325eebc3a2b2cf5e8be63c668129ff97dec9286c4eb4230608ced59575d"
+  },
+  "census": {
+   "rows": 5003,
+   "leaves": 5003,
+   "distinct_ids": 5003,
+   "non_digit_ids": 0
+  },
+  "problems": []
+ },
+ "census": {
+  "products": 4575,
+  "distinct_supplier_paths": 153,
+  "corpus_present": true,
+  "corpus_leaves": 5003,
+  "paths_by_kind": {
+   "promotion_page": 1,
+   "product_classification": 109,
+   "brand_index": 43
+  },
+  "products_by_kind": {
+   "promotion_page": 2,
+   "product_classification": 3888,
+   "brand_index": 685
+  },
+  "products_by_status": {
+   "ambiguous": 853,
+   "unresolved": 1644,
+   "candidate": 2078
+  },
+  "products_by_reason": {
+   "runner_up_within_margin": 853,
+   "brand_index_path": 685,
+   "best_below_min_score": 425,
+   "": 2078,
+   "no_lexical_overlap": 532,
+   "promotion_page": 2
+  },
+  "paths_by_reason": {
+   "promotion_page": 1,
+   "no_lexical_overlap": 41,
+   "runner_up_within_margin": 24,
+   "brand_index_path": 43,
+   "none": 30,
+   "best_below_min_score": 14
+  },
+  "proposed_products": 2078,
+  "confirmed_products": 0,
+  "invented_leaf_category_ids": 0
+ },
+ "paths_by_status": {
+  "unresolved": 99,
+  "ambiguous": 24,
+  "candidate": 30
+ },
+ "documented_contract": {
+  "source": "apicenter.commerce.naver.com docs/commerce-api/current (transcriptions)",
+  "endpoints": [
+   {
+    "id": "categoryList",
+    "method": "GET",
+    "path": "/v1/categories",
+    "auth": "Bearer",
+    "query": {
+     "last": "boolean — 리프 카테고리만 조회"
+    },
+    "fields": [
+     "wholeCategoryName",
+     "id",
+     "name",
+     "last"
+    ],
+    "docPage": "get-category-list-product",
+    "docUrl": "https://apicenter.commerce.naver.com/docs/commerce-api/current/get-category-list-product"
+   },
+   {
+    "id": "categoryGet",
+    "method": "GET",
+    "path": "/v1/categories/{categoryId}",
+    "auth": "Bearer",
+    "fields": [
+     "wholeCategoryName",
+     "id",
+     "name",
+     "last",
+     "exceptionalCategories",
+     "certificationInfos"
+    ],
+    "docPage": "get-category-product",
+    "docUrl": "https://apicenter.commerce.naver.com/docs/commerce-api/current/get-category-product"
+   },
+   {
+    "id": "categorySub",
+    "method": "GET",
+    "path": "/v1/categories/{categoryId}/sub-categories",
+    "auth": "Bearer",
+    "fields": [
+     "wholeCategoryName",
+     "id",
+     "name",
+     "last"
+    ],
+    "docPage": "get-sub-category-product",
+    "docUrl": "https://apicenter.commerce.naver.com/docs/commerce-api/current/get-sub-category-product"
+   }
+  ],
+  "responses": "wholeCategoryName(전체 경로 표시명), id, name, last(리프 여부)",
+  "idType": "the category-detail page types id as string, not integer — a corpus row is kept on any non-empty id and only flagged if it is not digits",
+  "unauthorized": {
+   "400": "BAD_REQUEST — 형식 오류",
+   "401": "UNAUTHORIZED — 토큰 오류",
+   "403": "FORBIDDEN — 권한 없음",
+   "404": "NOT_FOUND — 데이터 없음",
+   "500": "INTERNAL_SERVER_ERROR"
+  },
+  "redirect": "the category-detail page prints a 308 case: follow Location and re-request",
+  "caching": "카테고리 메타 데이터는 변경 빈도가 낮아 캐시 권장(일 단위/배포 주기 갱신)",
+  "leafRule": "last=true 항목만 상품 등록 시 실제로 선택 가능",
+  "certificationFields": "certificationInfos[]: id, name, kindTypes[], green, certificationMarkType, companyName, certificationDate, kcParallelImportExemptionObject, nonEssential",
+  "unconfirmed": [
+   "the category tree itself — never retrieved in this lane (needs a seller token)",
+   "how many leaf categories exist and which apply to audio equipment",
+   "whether a category id is stable across SmartStore and Intelligent Store",
+   "a page size or total for GET /v1/categories — no pagination parameter is printed"
+  ]
+ },
+ "exceptional_category_enum_size": 34,
+ "certification_kind_enum_size": 7,
+ "rule": "only path_kind=product_classification is scored against the corpus; brand_index and promotion_page are never given a leaf, and a leaf id is copied out of the corpus or not written at all"
+}

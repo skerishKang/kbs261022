@@ -1,0 +1,154 @@
+﻿category_path,leaf,path_kind,products,distinct_brands,brand_disagrees,status,reason,candidate_leaf_category_ids,candidate_leaf_category_names,candidate_scores,candidate_evidence,confirmed
+10% 할인 상품,10% 할인 상품,promotion_page,2,2,no,unresolved,promotion_page,,,,,no
+3.5mm 커넥터,3.5mm 커넥터,product_classification,10,1,no,unresolved,no_lexical_overlap,,,,,no
+A&H 액세서리,A&H 액세서리,product_classification,3,1,no,ambiguous,runner_up_within_margin,50007161|50016260|50002733|50002731|50002935,액세서리|액세서리|내비게이션|블랙박스|타블렛,0.8533|0.8333|0.12|0.12|0.12,leaf_name_contains;path_token_overlap_20|leaf_name_contains;path_token_overlap_17|path_token_overlap_20|path_token_overlap_20|path_token_overlap_20,no
+APOGEE,APOGEE,brand_index,3,1,no,unresolved,brand_index_path,,,,,no
+ARTURIA,ARTURIA,brand_index,17,2,yes,unresolved,brand_index_path,,,,,no
+Allen&Heath,Allen&Heath,brand_index,1,1,no,unresolved,brand_index_path,,,,,no
+Avantis dPack,Avantis dPack,product_classification,1,1,no,unresolved,no_lexical_overlap,,,,,no
+Axient Digital,Axient Digital,product_classification,1,1,no,unresolved,no_lexical_overlap,,,,,no
+BETA,BETA,product_classification,18,1,no,unresolved,no_lexical_overlap,,,,,no
+BLX,BLX,product_classification,23,1,no,unresolved,no_lexical_overlap,,,,,no
+COMPLY,COMPLY,brand_index,26,1,no,unresolved,brand_index_path,,,,,no
+D-Sub 케이블,D-Sub 케이블,product_classification,7,1,no,candidate,,50003116|50002769|50005301|50003125|50002340,D-SUB케이블|충전기/케이블|전선/케이블|변환 젠더/케이블|연장선/케이블,1|0.0857|0.0857|0.075|0.075,leaf_name_exact|path_token_overlap_14|path_token_overlap_14|path_token_overlap_13|path_token_overlap_13,no
+GENELEC,GENELEC,brand_index,21,1,no,unresolved,brand_index_path,,,,,no
+GLX-D,GLX-D,product_classification,15,1,no,unresolved,no_lexical_overlap,,,,,no
+GRAY LONDON GUITARS,GRAY LONDON GUITARS,brand_index,1,1,no,unresolved,brand_index_path,,,,,no
+IK MULTIMEDIA,IK MULTIMEDIA,brand_index,13,2,yes,unresolved,brand_index_path,,,,,no
+JICO,JICO,brand_index,5,1,no,unresolved,brand_index_path,,,,,no
+JICO 카트리지/스타일러스,JICO 카트리지/스타일러스,product_classification,44,1,no,unresolved,no_lexical_overlap,,,,,no
+K&M,K&M,brand_index,1,1,no,unresolved,brand_index_path,,,,,no
+K&M 스탠드,K&M 스탠드,product_classification,25,1,no,ambiguous,runner_up_within_margin,50002128|50004369|50002853|50003330|50003331,스탠드|스탠드|스탠드|단스탠드|장스탠드,0.84|0.84|0.84|0.12|0.12,leaf_name_contains;path_token_overlap_20|leaf_name_contains;path_token_overlap_20|leaf_name_contains;path_token_overlap_20|path_token_overlap_20|path_token_overlap_20,no
+KEN SMITH,KEN SMITH,brand_index,3,1,no,unresolved,brand_index_path,,,,,no
+KLOTZ,KLOTZ,brand_index,2,1,no,unresolved,brand_index_path,,,,,no
+KLOTZ 케이블,KLOTZ 케이블,product_classification,9,1,no,unresolved,best_below_min_score,50002769|50005301|50003125|50002340,충전기/케이블|전선/케이블|변환 젠더/케이블|연장선/케이블,0.0857|0.0857|0.075|0.075,path_token_overlap_14|path_token_overlap_14|path_token_overlap_13|path_token_overlap_13,no
+KSM,KSM,product_classification,15,1,no,unresolved,no_lexical_overlap,,,,,no
+MESA/BOOGIE,MESA/BOOGIE,brand_index,10,1,no,unresolved,brand_index_path,,,,,no
+MICHAEL TUTTLE GUITARS,MICHAEL TUTTLE GUITARS,brand_index,1,1,no,unresolved,brand_index_path,,,,,no
+MOTIV,MOTIV,product_classification,16,1,no,unresolved,no_lexical_overlap,,,,,no
+Matrix Audio,Matrix Audio,brand_index,1,1,no,unresolved,brand_index_path,,,,,no
+Melodyne,Melodyne,product_classification,7,1,no,unresolved,no_lexical_overlap,,,,,no
+Microflex Wireless,Microflex Wireless,product_classification,2,1,no,unresolved,no_lexical_overlap,,,,,no
+NASH GUITARS,NASH GUITARS,brand_index,25,1,no,unresolved,brand_index_path,,,,,no
+NATIVE INSTRUMENTS,NATIVE INSTRUMENTS,brand_index,5,1,no,unresolved,brand_index_path,,,,,no
+NEUTRIK 커넥터&액세서리,NEUTRIK 커넥터&액세서리,product_classification,88,1,no,ambiguous,runner_up_within_margin,50007161|50016260|50002733|50002731|50002935,액세서리|액세서리|내비게이션|블랙박스|타블렛,0.7429|0.7321|0.0857|0.0857|0.0857,leaf_name_contains;path_token_overlap_14|leaf_name_contains;path_token_overlap_13|path_token_overlap_14|path_token_overlap_14|path_token_overlap_14,no
+Other,Other,product_classification,3,1,no,unresolved,no_lexical_overlap,,,,,no
+PA 스피커,PA 스피커,product_classification,38,3,no,candidate,,50002748|50024339|50002322|50002320|50002321,스피커|PC스피커|블루투스스피커|스피커단품|스피커세트,0.82|0.1|0.1|0.1|0.1,leaf_name_contains;path_token_overlap_17|path_token_overlap_17|path_token_overlap_17|path_token_overlap_17|path_token_overlap_17,no
+PG ALTA,PG ALTA,product_classification,22,1,no,unresolved,no_lexical_overlap,,,,,no
+POSITIVE GRID,POSITIVE GRID,brand_index,5,1,no,unresolved,brand_index_path,,,,,no
+PRESONUS,PRESONUS,brand_index,1,1,no,unresolved,brand_index_path,,,,,no
+QED,QED,brand_index,1,1,no,unresolved,brand_index_path,,,,,no
+QLX-D,QLX-D,product_classification,12,1,no,unresolved,no_lexical_overlap,,,,,no
+RADIAL,RADIAL,brand_index,1,1,no,unresolved,brand_index_path,,,,,no
+RCA 커넥터,RCA 커넥터,product_classification,8,1,no,unresolved,no_lexical_overlap,,,,,no
+RICKENBACKER,RICKENBACKER,brand_index,1,1,no,unresolved,brand_index_path,,,,,no
+ROSCOE GUITARS,ROSCOE GUITARS,brand_index,7,1,no,unresolved,brand_index_path,,,,,no
+SHURE,SHURE,brand_index,4,1,no,unresolved,brand_index_path,,,,,no
+SHURE 유선마이크용,SHURE 유선마이크용,product_classification,7,1,no,ambiguous,runner_up_within_margin,50002326|50002753|50002224,유선마이크|유선|마,0.6909|0.6364|0.6182,leaf_name_contains|leaf_name_contains|leaf_name_contains,no
+SLX,SLX,product_classification,8,1,no,unresolved,no_lexical_overlap,,,,,no
+SLX-D,SLX-D,product_classification,3,1,no,unresolved,no_lexical_overlap,,,,,no
+SM,SM,product_classification,26,1,no,ambiguous,runner_up_within_margin,50007036|50006037,MSM|3DS/MAX,0.7333|0.6667,leaf_name_contains|leaf_name_contains,no
+SVX,SVX,product_classification,6,1,no,unresolved,no_lexical_overlap,,,,,no
+TS/TRS(55) 커넥터,TS/TRS(55) 커넥터,product_classification,16,1,no,unresolved,no_lexical_overlap,,,,,no
+ULX,ULX,product_classification,9,1,no,unresolved,no_lexical_overlap,,,,,no
+ULX-D,ULX-D,product_classification,1,1,no,unresolved,no_lexical_overlap,,,,,no
+VICOUSTIC,VICOUSTIC,brand_index,4,1,no,unresolved,brand_index_path,,,,,no
+VP,VP,product_classification,17,1,no,unresolved,no_lexical_overlap,,,,,no
+XLR(캐논) 커넥터,XLR(캐논) 커넥터,product_classification,16,1,no,unresolved,no_lexical_overlap,,,,,no
+교체용 바늘,교체용 바늘,product_classification,9,1,no,candidate,,50003013|50002064|50003663,바늘|침/바늘|실/바늘,0.78|0.12|0.1,leaf_name_contains;path_token_overlap_17|path_token_overlap_20|path_token_overlap_17,no
+기타 이펙터,기타 이펙터,product_classification,25,3,no,ambiguous,runner_up_within_margin,50004371|50010223|50006026|50006100|50006109,이펙터|기타|기타|기타|기타,0.82|0.8|0.8|0.8|0.8,leaf_name_contains;path_token_overlap_17|leaf_name_contains;path_token_overlap_20|leaf_name_contains;path_token_overlap_20|leaf_name_contains;path_token_overlap_20|leaf_name_contains;path_token_overlap_20,no
+기타&악기 케이블,기타&악기 케이블,product_classification,28,1,no,ambiguous,runner_up_within_margin,50010223|50006026|50006100|50006109|50011141,기타|기타|기타|기타|기타,0.7571|0.7571|0.7571|0.7571|0.7571,leaf_name_contains;path_token_overlap_17|leaf_name_contains;path_token_overlap_17|leaf_name_contains;path_token_overlap_17|leaf_name_contains;path_token_overlap_17|leaf_name_contains;path_token_overlap_17,no
+네트워크,네트워크,product_classification,1,1,no,candidate,,50010766|50001498|50001511|50001499,네트워크/보안|네트워크모듈|기타네트워크장비|네트워크테스트기,0.8533|0.7333|0.7|0.7,leaf_name_contains;path_token_overlap_20|leaf_name_contains|leaf_name_contains|leaf_name_contains,no
+다이렉트 박스,다이렉트 박스,product_classification,19,1,no,unresolved,best_below_min_score,50003785,화구통/박스,0.0857,path_token_overlap_14,no
+디지털 믹서,디지털 믹서,product_classification,1,1,no,unresolved,best_below_min_score,50000151|50000153|50000152|50001737|50001620,노트북|모니터|태블릿PC|브랜드PC|CPU,0.15|0.15|0.15|0.12|0.12,path_token_overlap_25|path_token_overlap_25|path_token_overlap_25|path_token_overlap_20|path_token_overlap_20,no
+디지털 케이블,디지털 케이블,product_classification,1,1,no,unresolved,best_below_min_score,50002769|50003125|50002340|50000151|50000153,충전기/케이블|변환 젠더/케이블|연장선/케이블|노트북|모니터,0.2|0.1714|0.1714|0.15|0.15,path_token_overlap_33|path_token_overlap_29|path_token_overlap_29|path_token_overlap_25|path_token_overlap_25,no
+라발리어 마이크,라발리어 마이크,product_classification,8,1,no,candidate,,50002224|50024359|50002328|50002327|50002326,마|PC마이크|마이크주변기기|무선마이크|유선마이크,0.6286|0.1|0.1|0.1|0.1,leaf_name_contains|path_token_overlap_17|path_token_overlap_17|path_token_overlap_17|path_token_overlap_17,no
+레코딩,레코딩,product_classification,207,14,no,candidate,,50002974,레코딩장비,0.72,leaf_name_contains,no
+레코딩 케이블,레코딩 케이블,product_classification,9,1,no,unresolved,best_below_min_score,50002769|50005301|50003125|50002340,충전기/케이블|전선/케이블|변환 젠더/케이블|연장선/케이블,0.0857|0.0857|0.075|0.075,path_token_overlap_14|path_token_overlap_14|path_token_overlap_13|path_token_overlap_13,no
+레코딩/음향,레코딩/음향,product_classification,56,5,no,unresolved,no_lexical_overlap,,,,,no
+리앰퍼,리앰퍼,product_classification,3,1,no,unresolved,no_lexical_overlap,,,,,no
+마이크,마이크,product_classification,77,1,no,ambiguous,runner_up_within_margin,50024359|50002327|50002326|50002328|50006972,PC마이크|무선마이크|유선마이크|마이크주변기기|전문가용마이크,0.84|0.84|0.84|0.8057|0.8057,leaf_name_contains;path_token_overlap_20|leaf_name_contains;path_token_overlap_20|leaf_name_contains;path_token_overlap_20|leaf_name_contains;path_token_overlap_20|leaf_name_contains;path_token_overlap_20,no
+마이크 스탠드,마이크 스탠드,product_classification,14,1,no,ambiguous,runner_up_within_margin,50002128|50004369|50002853|50002224|50003330,스탠드|스탠드|스탠드|마|단스탠드,0.8|0.8|0.8|0.6333|0.1,leaf_name_contains;path_token_overlap_17|leaf_name_contains;path_token_overlap_17|leaf_name_contains;path_token_overlap_17|leaf_name_contains|path_token_overlap_17,no
+마이크 케이블,마이크 케이블,product_classification,12,1,no,candidate,,50002224|50024359|50002328|50002327|50002326,마|PC마이크|마이크주변기기|무선마이크|유선마이크,0.6333|0.1|0.1|0.1|0.1,leaf_name_contains|path_token_overlap_17|path_token_overlap_17|path_token_overlap_17|path_token_overlap_17,no
+모니터 스피커,모니터 스피커,product_classification,3,2,no,ambiguous,runner_up_within_margin,50000153|50002748|50024339|50002322|50002320,모니터|스피커|PC스피커|블루투스스피커|스피커단품,0.85|0.8|0.1|0.1|0.1,leaf_name_contains;path_token_overlap_25|leaf_name_contains;path_token_overlap_17|path_token_overlap_17|path_token_overlap_17|path_token_overlap_17,no
+모니터 컨트롤러,모니터 컨트롤러,product_classification,1,1,no,candidate,,50000153|50003538|50016620|50002744|50002747,모니터|롤러|모니터 액정필름/커버|거치형|기타차량용TV/모니터,0.8357|0.6571|0.0857|0.0857|0.0857,leaf_name_contains;path_token_overlap_25|leaf_name_contains|path_token_overlap_14|path_token_overlap_14|path_token_overlap_14,no
+무선 마이크,무선 마이크,product_classification,14,1,no,candidate,,50002327|50002752|50002224|50002222|50024359,무선마이크|무선|마|무|PC마이크,1|0.78|0.64|0.64|0.1,leaf_name_exact;path_token_overlap_17|leaf_name_contains;path_token_overlap_17|leaf_name_contains|leaf_name_contains|path_token_overlap_17,no
+버스킹 스피커,버스킹 스피커,product_classification,3,1,no,candidate,,50002748|50024339|50002322|50002320|50002321,스피커|PC스피커|블루투스스피커|스피커단품|스피커세트,0.8|0.1|0.1|0.1|0.1,leaf_name_contains;path_token_overlap_17|path_token_overlap_17|path_token_overlap_17|path_token_overlap_17|path_token_overlap_17,no
+벌크 케이블,벌크 케이블,product_classification,60,1,no,unresolved,best_below_min_score,50002769|50005301|50003125|50002340,충전기/케이블|전선/케이블|변환 젠더/케이블|연장선/케이블,0.0857|0.0857|0.075|0.075,path_token_overlap_14|path_token_overlap_14|path_token_overlap_13|path_token_overlap_13,no
+베이스 기타,베이스 기타,product_classification,16,2,no,candidate,,50004307|50004323|50010223|50006026|50006100,베이스기타|베이스|기타|기타|기타,1|0.82|0.8|0.8|0.8,leaf_name_exact;path_token_overlap_14|leaf_name_contains;path_token_overlap_17|leaf_name_contains;path_token_overlap_20|leaf_name_contains;path_token_overlap_20|leaf_name_contains;path_token_overlap_20,no
+블루투스 스피커,블루투스 스피커,product_classification,11,2,no,candidate,,50002322|50002748|50024339|50002320|50002321,블루투스스피커|스피커|PC스피커|스피커단품|스피커세트,1|0.7857|0.1|0.1|0.1,leaf_name_exact;path_token_overlap_17|leaf_name_contains;path_token_overlap_17|path_token_overlap_17|path_token_overlap_17|path_token_overlap_17,no
+소프트웨어,소프트웨어,product_classification,13,1,no,unresolved,best_below_min_score,50001515|50001517|50001512|50001518|50001516,개발툴|번역|운영체제|유틸리티|그래픽/멀티미디어,0.15|0.15|0.15|0.15|0.12,path_token_overlap_25|path_token_overlap_25|path_token_overlap_25|path_token_overlap_25|path_token_overlap_20,no
+소프트웨어 (DAW),소프트웨어 (DAW),product_classification,7,2,no,unresolved,best_below_min_score,50001515|50001517|50001512|50001518|50001516,개발툴|번역|운영체제|유틸리티|그래픽/멀티미디어,0.12|0.12|0.12|0.12|0.1,path_token_overlap_20|path_token_overlap_20|path_token_overlap_20|path_token_overlap_20|path_token_overlap_17,no
+소프트웨어 (Plug-in),소프트웨어 (Plug-in),product_classification,6,2,no,unresolved,best_below_min_score,50001515|50001517|50001512|50001518|50001516,개발툴|번역|운영체제|유틸리티|그래픽/멀티미디어,0.1|0.1|0.1|0.1|0.0857,path_token_overlap_17|path_token_overlap_17|path_token_overlap_17|path_token_overlap_17|path_token_overlap_14,no
+스플리터,스플리터,product_classification,18,1,no,unresolved,no_lexical_overlap,,,,,no
+스피커,스피커,product_classification,181,10,no,candidate,,50002748|50024339|50002320|50002321|50024319,스피커|PC스피커|스피커단품|스피커세트|휴대용스피커,1|0.84|0.84|0.84|0.82,leaf_name_exact;path_token_overlap_20|leaf_name_contains;path_token_overlap_20|leaf_name_contains;path_token_overlap_20|leaf_name_contains;path_token_overlap_20|leaf_name_contains;path_token_overlap_20,no
+아날로그 믹서,아날로그 믹서,product_classification,1,1,no,unresolved,no_lexical_overlap,,,,,no
+아이솔레이터,아이솔레이터,product_classification,7,1,no,ambiguous,runner_up_within_margin,50004787|50001844,솔|솔,0.6333|0.6333,leaf_name_contains|leaf_name_contains,no
+악기/앰프,악기/앰프,product_classification,277,11,no,candidate,,50004370|50002750|50004360|50004363|50004331,앰프|앰프|북|징|활,0.94|0.8|0.12|0.12|0.12,leaf_name_contains;path_token_overlap_40|leaf_name_contains;path_token_overlap_17|path_token_overlap_20|path_token_overlap_20|path_token_overlap_20,no
+액세서리,액세서리,product_classification,239,11,no,ambiguous,runner_up_within_margin,50016260|50007161|50006131|50002936|50002732,액세서리|액세서리|전자담배 액세서리|타블렛액세서리|블랙박스액세서리,1|1|0.82|0.8143|0.8,leaf_name_exact;path_token_overlap_17|leaf_name_exact;path_token_overlap_20|leaf_name_contains;path_token_overlap_20|leaf_name_contains;path_token_overlap_17|leaf_name_contains;path_token_overlap_17,no
+어쿠스틱 용품,어쿠스틱 용품,product_classification,3,1,no,candidate,,50002645|50001066|50001060|50001064|50001061,스틱|데코스티커|목재|몰딩|반제품,0.6667|0.1|0.1|0.1|0.1,leaf_name_contains|path_token_overlap_17|path_token_overlap_17|path_token_overlap_17|path_token_overlap_17,no
+유선 마이크,유선 마이크,product_classification,60,2,no,candidate,,50002326|50002753|50002224|50024359|50002328,유선마이크|유선|마|PC마이크|마이크주변기기,1|0.78|0.64|0.1|0.1,leaf_name_exact;path_token_overlap_17|leaf_name_contains;path_token_overlap_17|leaf_name_contains|path_token_overlap_17|path_token_overlap_17,no
+유튜버 마이크(MV),유튜버 마이크(MV),product_classification,23,1,no,candidate,,50002224|50024359|50002328|50002327|50002326,마|PC마이크|마이크주변기기|무선마이크|유선마이크,0.625|0.0857|0.0857|0.0857|0.0857,leaf_name_contains|path_token_overlap_14|path_token_overlap_14|path_token_overlap_14|path_token_overlap_14,no
+이더콘,이더콘,product_classification,2,1,no,unresolved,no_lexical_overlap,,,,,no
+이어폰,이어폰,product_classification,17,1,no,ambiguous,runner_up_within_margin,50024439|50024419|50002342|50002338|50002339,무선이어폰/이어셋|유선이어폰/이어셋|기타이어폰/헤드폰액세서리|캡/솜/팁|거치대,0.775|0.775|0.75|0.12|0.1,leaf_name_contains;path_token_overlap_17|leaf_name_contains;path_token_overlap_17|leaf_name_contains;path_token_overlap_17|path_token_overlap_20|path_token_overlap_17,no
+인터페이스 (Thunderbolt),인터페이스 (Thunderbolt),product_classification,13,2,no,unresolved,no_lexical_overlap,,,,,no
+인터페이스 (USB),인터페이스 (USB),product_classification,38,5,no,unresolved,no_lexical_overlap,,,,,no
+전시상품,전시상품,product_classification,2,2,no,unresolved,no_lexical_overlap,,,,,no
+채널스트립,채널스트립,product_classification,3,1,no,unresolved,no_lexical_overlap,,,,,no
+컨트롤러,컨트롤러,product_classification,10,1,no,ambiguous,runner_up_within_margin,50002770|50003143|50003538,조이스틱/컨트롤러|팬/온도컨트롤러|롤러,0.7857|0.7143|0.7,leaf_name_contains;path_token_overlap_14|leaf_name_contains|leaf_name_contains,no
+케이블/커넥터,케이블/커넥터,product_classification,28,1,no,unresolved,best_below_min_score,50002769|50005301|50003125|50002340,충전기/케이블|전선/케이블|변환 젠더/케이블|연장선/케이블,0.0857|0.0857|0.075|0.075,path_token_overlap_14|path_token_overlap_14|path_token_overlap_13|path_token_overlap_13,no
+키보드 스탠드,키보드 스탠드,product_classification,6,1,no,ambiguous,runner_up_within_margin,50002128|50004369|50002853|50003330|50003331,스탠드|스탠드|스탠드|단스탠드|장스탠드,0.8|0.8|0.8|0.1|0.1,leaf_name_contains;path_token_overlap_17|leaf_name_contains;path_token_overlap_17|leaf_name_contains;path_token_overlap_17|path_token_overlap_17|path_token_overlap_17,no
+특가상품,특가상품,product_classification,57,18,no,unresolved,no_lexical_overlap,,,,,no
+파워콘,파워콘,product_classification,8,1,no,unresolved,no_lexical_overlap,,,,,no
+포노카트리지,포노카트리지,product_classification,8,1,no,unresolved,no_lexical_overlap,,,,,no
+포터블 오디오 케이블,포터블 오디오 케이블,product_classification,36,1,no,candidate,,50003124|50002319|50003154|50002318|50002317,오디오케이블|분리형오디오|오디오액세서리|일체형오디오|휴대폰도킹스피커/오디오,0.7333|0.0857|0.0857|0.0857|0.0857,leaf_name_contains|path_token_overlap_14|path_token_overlap_14|path_token_overlap_14|path_token_overlap_14,no
+프리앰프,프리앰프,product_classification,4,2,no,ambiguous,runner_up_within_margin,50002750|50004370,앰프|앰프,0.7|0.7,leaf_name_contains|leaf_name_contains,no
+헤드폰,헤드폰,product_classification,7,1,no,ambiguous,runner_up_within_margin,50024479|50024459|50002076|50002342,무선헤드폰/헤드셋|유선헤드폰/헤드셋|헤드|기타이어폰/헤드폰액세서리,0.775|0.775|0.7333|0.65,leaf_name_contains;path_token_overlap_17|leaf_name_contains;path_token_overlap_17|leaf_name_contains|leaf_name_contains,no
+헤드폰 앰프,헤드폰 앰프,product_classification,5,4,no,ambiguous,runner_up_within_margin,50002750|50004370|50002076|50001964|50024479,앰프|앰프|헤드|리시버/앰프|무선헤드폰/헤드셋,0.78|0.78|0.68|0.1|0.0857,leaf_name_contains;path_token_overlap_17|leaf_name_contains;path_token_overlap_17|leaf_name_contains|path_token_overlap_17|path_token_overlap_14,no
+홈 > 브랜드별 보기 > A-C > AGS,AGS,brand_index,3,1,no,unresolved,brand_index_path,,,,,no
+홈 > 브랜드별 보기 > A-C > APOGEE,APOGEE,brand_index,27,1,no,unresolved,brand_index_path,,,,,no
+홈 > 브랜드별 보기 > A-C > ARTURIA,ARTURIA,brand_index,1,1,no,unresolved,brand_index_path,,,,,no
+홈 > 브랜드별 보기 > A-C > Allen&Heath,Allen&Heath,brand_index,24,1,no,unresolved,brand_index_path,,,,,no
+홈 > 브랜드별 보기 > D-G > DYNAUDIO,DYNAUDIO,brand_index,14,1,no,unresolved,brand_index_path,,,,,no
+홈 > 브랜드별 보기 > D-G > Fidelice,Fidelice,brand_index,3,1,no,unresolved,brand_index_path,,,,,no
+홈 > 브랜드별 보기 > H-K > HK Audio,HK Audio,brand_index,5,1,no,unresolved,brand_index_path,,,,,no
+홈 > 브랜드별 보기 > H-K > IK MULTIMEDIA,IK MULTIMEDIA,brand_index,7,1,no,unresolved,brand_index_path,,,,,no
+홈 > 브랜드별 보기 > H-K > JICO,JICO,brand_index,46,1,no,unresolved,brand_index_path,,,,,no
+홈 > 브랜드별 보기 > H-K > KLOTZ,KLOTZ,brand_index,159,1,no,unresolved,brand_index_path,,,,,no
+홈 > 브랜드별 보기 > L-O > MESA/BOOGIE,MESA/BOOGIE,brand_index,1,1,no,unresolved,brand_index_path,,,,,no
+홈 > 브랜드별 보기 > L-O > Martin Audio,Martin Audio,brand_index,4,1,no,unresolved,brand_index_path,,,,,no
+홈 > 브랜드별 보기 > L-O > NNNN,NNNN,brand_index,2,1,no,unresolved,brand_index_path,,,,,no
+홈 > 브랜드별 보기 > L-O > Neutrik,Neutrik,brand_index,18,1,no,unresolved,brand_index_path,,,,,no
+홈 > 브랜드별 보기 > P-R > PRESONUS,PRESONUS,brand_index,97,1,no,unresolved,brand_index_path,,,,,no
+홈 > 브랜드별 보기 > P-R > Q Acoustics,Q Acoustics,brand_index,3,1,no,unresolved,brand_index_path,,,,,no
+홈 > 브랜드별 보기 > P-R > ROCK AND ROLL RELICS,ROCK AND ROLL RELICS,brand_index,4,1,no,unresolved,brand_index_path,,,,,no
+홈 > 브랜드별 보기 > S-Z > Shure,Shure,brand_index,87,1,no,unresolved,brand_index_path,,,,,no
+홈 > 브랜드별 보기 > S-Z > Vaddio,Vaddio,brand_index,21,1,no,unresolved,brand_index_path,,,,,no
+홈 > 전체보기,전체보기,product_classification,2,1,no,unresolved,no_lexical_overlap,,,,,no
+홈 > 제품분류별 보기 > 레코딩&악기 > 소프트웨어/플러그인,소프트웨어/플러그인,product_classification,242,14,no,candidate,,50000981|50001515|50001517|50001512|50001518,러그|개발툴|번역|운영체제|유틸리티,0.6444|0.0667|0.0667|0.0667|0.0667,leaf_name_contains|path_token_overlap_11|path_token_overlap_11|path_token_overlap_11|path_token_overlap_11,no
+홈 > 제품분류별 보기 > 레코딩&악기 > 아웃보드,아웃보드,product_classification,16,2,no,unresolved,best_below_min_score,50004360|50004363|50004331|50004314|50004319,북|징|활|멜로디언|실로폰,0.075|0.075|0.075|0.0667|0.0667,path_token_overlap_13|path_token_overlap_13|path_token_overlap_13|path_token_overlap_11|path_token_overlap_11,no
+홈 > 제품분류별 보기 > 레코딩&악기 > 악기/앰프,악기/앰프,product_classification,187,13,no,candidate,,50004370|50002750|50004360|50004363|50004331,앰프|앰프|북|징|활,0.85|0.7667|0.075|0.075|0.075,leaf_name_contains;path_token_overlap_25|leaf_name_contains;path_token_overlap_11|path_token_overlap_13|path_token_overlap_13|path_token_overlap_13,no
+홈 > 제품분류별 보기 > 레코딩&악기 > 인터페이스,인터페이스,product_classification,70,5,no,candidate,,50003133|50004360|50004363|50004331|50004314,기타인터페이스카드|북|징|활|멜로디언,0.7111|0.075|0.075|0.075|0.0667,leaf_name_contains|path_token_overlap_13|path_token_overlap_13|path_token_overlap_13|path_token_overlap_11,no
+홈 > 제품분류별 보기 > 레코딩&악기 > 컨트롤러,컨트롤러,product_classification,52,3,no,ambiguous,runner_up_within_margin,50002770|50003143|50003538|50004360|50004363,조이스틱/컨트롤러|팬/온도컨트롤러|롤러|북|징,0.7545|0.7143|0.7|0.075|0.075,leaf_name_contains;path_token_overlap_9|leaf_name_contains|leaf_name_contains|path_token_overlap_13|path_token_overlap_13,no
+홈 > 제품분류별 보기 > 룸어쿠스틱&스탠드 > 룸어쿠스틱,룸어쿠스틱,product_classification,60,2,no,candidate,,50002645|50003330|50003331|50002363|50002364,스틱|단스탠드|장스탠드|LED스탠드|삼파장스탠드,0.68|0.075|0.075|0.075|0.075,leaf_name_contains|path_token_overlap_13|path_token_overlap_13|path_token_overlap_13|path_token_overlap_13,no
+홈 > 제품분류별 보기 > 룸어쿠스틱&스탠드 > 스탠드,스탠드,product_classification,69,1,no,ambiguous,runner_up_within_margin,50002128|50004369|50002853|50003330|50003331,스탠드|스탠드|스탠드|단스탠드|장스탠드,1|1|1|0.825|0.825,leaf_name_exact;path_token_overlap_13|leaf_name_exact;path_token_overlap_13|leaf_name_exact;path_token_overlap_13|leaf_name_contains;path_token_overlap_13|leaf_name_contains;path_token_overlap_13,no
+홈 > 제품분류별 보기 > 마이크 > USB 마이크,USB 마이크,product_classification,12,1,no,candidate,,50002224|50024359|50002328|50002327|50002326,마|PC마이크|마이크주변기기|무선마이크|유선마이크,0.6333|0.075|0.075|0.075|0.075,leaf_name_contains|path_token_overlap_13|path_token_overlap_13|path_token_overlap_13|path_token_overlap_13,no
+홈 > 제품분류별 보기 > 마이크 > 모바일 마이크,모바일 마이크,product_classification,5,1,no,candidate,,50002224|50024359|50002328|50002327|50002326,마|PC마이크|마이크주변기기|무선마이크|유선마이크,0.6333|0.075|0.075|0.075|0.075,leaf_name_contains|path_token_overlap_13|path_token_overlap_13|path_token_overlap_13|path_token_overlap_13,no
+홈 > 제품분류별 보기 > 마이크 > 무선마이크,무선마이크,product_classification,55,1,no,candidate,,50002327|50002752|50002224|50002222|50024359,무선마이크|무선|마|무|PC마이크,1|0.68|0.64|0.64|0.075,leaf_name_exact;path_token_overlap_29|leaf_name_contains|leaf_name_contains|leaf_name_contains|path_token_overlap_13,no
+홈 > 제품분류별 보기 > 마이크 > 유선마이크,유선마이크,product_classification,266,2,no,candidate,,50002326|50002753|50002224|50024359|50002328,유선마이크|유선|마|PC마이크|마이크주변기기,1|0.68|0.64|0.075|0.075,leaf_name_exact;path_token_overlap_29|leaf_name_contains|leaf_name_contains|path_token_overlap_13|path_token_overlap_13,no
+홈 > 제품분류별 보기 > 스피커&퍼스널리스닝 > Hi-Fi,Hi-Fi,product_classification,66,4,no,unresolved,best_below_min_score,50024339|50002322|50002320|50002321|50007235,PC스피커|블루투스스피커|스피커단품|스피커세트|스피커액세서리,0.06|0.06|0.06|0.06|0.06,path_token_overlap_10|path_token_overlap_10|path_token_overlap_10|path_token_overlap_10|path_token_overlap_10,no
+홈 > 제품분류별 보기 > 스피커&퍼스널리스닝 > 라우드 스피커,라우드 스피커,product_classification,215,4,no,candidate,,50002748|50024339|50002322|50002320|50002321,스피커|PC스피커|블루투스스피커|스피커단품|스피커세트,0.7667|0.0667|0.0667|0.0667|0.0667,leaf_name_contains;path_token_overlap_11|path_token_overlap_11|path_token_overlap_11|path_token_overlap_11|path_token_overlap_11,no
+홈 > 제품분류별 보기 > 스피커&퍼스널리스닝 > 스튜디오 모니터 스피커,스튜디오 모니터 스피커,product_classification,35,1,no,ambiguous,runner_up_within_margin,50000153|50002748|50024339|50002322|50002320,모니터|스피커|PC스피커|블루투스스피커|스피커단품,0.735|0.72|0.06|0.06|0.06,leaf_name_contains;path_token_overlap_13|leaf_name_contains;path_token_overlap_10|path_token_overlap_10|path_token_overlap_10|path_token_overlap_10,no
+홈 > 제품분류별 보기 > 스피커&퍼스널리스닝 > 헤드폰 & 이어폰,헤드폰 & 이어폰,product_classification,46,2,no,candidate,,50002076|50024339|50002322|50002320|50002321,헤드|PC스피커|블루투스스피커|스피커단품|스피커세트,0.6667|0.06|0.06|0.06|0.06,leaf_name_contains|path_token_overlap_10|path_token_overlap_10|path_token_overlap_10|path_token_overlap_10,no
+홈 > 제품분류별 보기 > 프로 오디오 > DI,DI,product_classification,48,2,no,ambiguous,runner_up_within_margin,50010400|50003914|50000516|50003104|50001595,가구/DIY|DIY전구|DIY 아기용품|NVIDIA계열|Divx플레이어,0.68|0.68|0.6571|0.65|0.65,leaf_name_contains|leaf_name_contains|leaf_name_contains|leaf_name_contains|leaf_name_contains,no
+홈 > 제품분류별 보기 > 프로 오디오 > 네트워크 프로세서,네트워크 프로세서,product_classification,2,1,no,unresolved,best_below_min_score,50010766|50002319|50003154|50002318|50002317,네트워크/보안|분리형오디오|오디오액세서리|일체형오디오|휴대폰도킹스피커/오디오,0.06|0.06|0.06|0.06|0.06,path_token_overlap_10|path_token_overlap_10|path_token_overlap_10|path_token_overlap_10|path_token_overlap_10,no
+홈 > 제품분류별 보기 > 프로 오디오 > 믹서,믹서,product_classification,52,3,no,ambiguous,runner_up_within_margin,50001861|50004373|50001966|50004822|50006966,믹서기|파워믹서|오디오믹서|핸드믹서기|업소용믹서기,0.7333|0.7|0.68|0.68|0.6667,leaf_name_contains|leaf_name_contains|leaf_name_contains|leaf_name_contains|leaf_name_contains,no
+홈 > 제품분류별 보기 > 프로 오디오 > 인이어 모니터 시스템,인이어 모니터 시스템,product_classification,4,1,no,candidate,,50000153|50002319|50003154|50002318|50002317,모니터|분리형오디오|오디오액세서리|일체형오디오|휴대폰도킹스피커/오디오,0.7333|0.0545|0.0545|0.0545|0.0545,leaf_name_contains;path_token_overlap_11|path_token_overlap_9|path_token_overlap_9|path_token_overlap_9|path_token_overlap_9,no
+홈 > 제품분류별 보기 > 프로 오디오 > 커넥터&케이블,커넥터&케이블,product_classification,188,3,no,unresolved,best_below_min_score,50002319|50003154|50002318|50002317|50002769,분리형오디오|오디오액세서리|일체형오디오|휴대폰도킹스피커/오디오|충전기/케이블,0.06|0.06|0.06|0.06|0.0545,path_token_overlap_10|path_token_overlap_10|path_token_overlap_10|path_token_overlap_10|path_token_overlap_9,no
+홈 > 제품분류별 보기 > 프로 오디오 > 파워앰프,파워앰프,product_classification,6,1,no,ambiguous,runner_up_within_margin,50002750|50004370|50002319|50003154|50002318,앰프|앰프|분리형오디오|오디오액세서리|일체형오디오,0.7|0.7|0.0667|0.0667|0.0667,leaf_name_contains|leaf_name_contains|path_token_overlap_11|path_token_overlap_11|path_token_overlap_11,no
+홈 > 제품분류별 보기 > 회의 시스템 & 통합제어 > AV & Control Platform,AV & Control Platform,product_classification,9,1,no,candidate,,50000374,LP,0.6235,leaf_name_contains,no
+홈 > 제품분류별 보기 > 회의 시스템 & 통합제어 > Loudspeakers,Loudspeakers,product_classification,13,1,no,unresolved,no_lexical_overlap,,,,,no
+홈 > 제품분류별 보기 > 회의 시스템 & 통합제어 > Power Amplifiers,Power Amplifiers,product_classification,3,1,no,unresolved,no_lexical_overlap,,,,,no
+홈 > 제품분류별 보기 > 회의 시스템 & 통합제어 > Zone Mixers,Zone Mixers,product_classification,2,1,no,unresolved,no_lexical_overlap,,,,,no
+홈 > 제품분류별 보기 > 회의 시스템 & 통합제어 > 인터컴 시스템,인터컴 시스템,product_classification,3,1,no,unresolved,no_lexical_overlap,,,,,no
+홈 > 제품분류별 보기 > 회의 시스템 & 통합제어 > 회의용 시스템,회의용 시스템,product_classification,27,1,no,unresolved,no_lexical_overlap,,,,,no
