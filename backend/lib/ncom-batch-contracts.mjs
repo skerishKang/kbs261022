@@ -230,12 +230,21 @@ export function resolveOriginArea({ originText = null, resolveCode = null } = {}
     // 근거 없는 상세 코드를 만들지 않고 제외 대상으로 보고한다.
     return { ok: false, reason: 'origin_country_unspecified', originAreaCode: null, content: null, plural: false, mode: null };
   }
-  if (/또는|,|，|·/.test(text)) {
+  if (/또는|,|，|·|\s외$/.test(text)) {
+    // 복수·미열거 후보 표기('멕시코 , 중국' 실측, '아메리카 미국 외' 배치13 실측) — 하나를
+    // 고르지 말고 04(직접 입력)+공급처 표기 원문으로 선언한다(C18).
     return { ok: true, originAreaCode: '04', content: text, plural: false, mode: 'direct_input_content' };
   }
-  const code = typeof resolveCode === 'function' ? resolveCode(text) : null;
-  if (!code) return { ok: false, reason: 'origin_code_unresolved', originAreaCode: null, content: null, plural: false, mode: null };
-  return { ok: true, originAreaCode: code, content: null, plural: false, mode: 'verified_code' };
+  // E31(배치13 실측): 국가 뒤에 한정사가 붙는 표기('아메리카 미국 애리조나'·'아시아 중국 OEM') —
+  // 뒤에서 안쪽으로 걸어 국가 토큰을 찾는다(마지막 순회가 전체 텍스트). 나머지 토큰은
+  // 주(州)·생산 방식 한정사이고 선언 국가는 변하지 않으므로 임의 생성이 아니다.
+  const tokens = text.split(/\s+/);
+  for (let i = tokens.length - 1; i >= 0; i -= 1) {
+    const probe = tokens.slice(0, i + 1).join(' ');
+    const code = typeof resolveCode === 'function' ? resolveCode(probe) : null;
+    if (code) return { ok: true, originAreaCode: code, content: null, plural: false, mode: 'verified_code' };
+  }
+  return { ok: false, reason: 'origin_code_unresolved', originAreaCode: null, content: null, plural: false, mode: null };
 }
 
 /**
