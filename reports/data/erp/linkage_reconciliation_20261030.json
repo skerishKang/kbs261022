@@ -1,0 +1,176 @@
+{
+  "generated_at": "2026-10-30T05:10:56.057Z",
+  "date": "20261030",
+  "sources": {
+    "ledger": "reports/data/registration/ncom_registration_ledger.json",
+    "master": "data/full_catalog/product_db_compact.csv",
+    "comparison": "reports/data/erp/erp_readonly_comparison.json"
+  },
+  "live_ledger": {
+    "rows": 1000,
+    "unique_cgi_ids": 1000,
+    "unique_origin_product_nos": 1000,
+    "duplicate_cgi_ids": [],
+    "duplicate_origin_product_nos": [],
+    "display_status_on": 1000,
+    "also_present_in_stock_sync_ledger": 170
+  },
+  "cgi_master": {
+    "rows": 4575,
+    "unregistered_on_naver": 3575,
+    "malformed_master_product_key": 4575,
+    "malformed_key_sample": [
+      "|SQ5",
+      "|SQ6",
+      "|SQ7",
+      "|SQRACK",
+      "|QU7NEW"
+    ]
+  },
+  "join": {
+    "live_in_master": 1000,
+    "live_not_in_master": 0,
+    "not_in_master_cgi_ids": [],
+    "master_rows_live_in_master": 1000
+  },
+  "erp": {
+    "item_master_in_repo": false,
+    "exact_code_matches": 0,
+    "exact_name_pairs": 1,
+    "exact_model_pairs": 25,
+    "candidate_pairs": 62,
+    "erp_items_total": 964,
+    "erp_read_complete": false,
+    "blocked_reason": "ERP item-level master is not committed; the 964-item read exists only as aggregates in erp_readonly_comparison.json"
+  },
+  "live_field_coverage": {
+    "withPublicPrice": 1000,
+    "priceInquiry": 0,
+    "priceOtherState": 0,
+    "withModel": 852,
+    "withBrand": 1000,
+    "stockManaged": 699
+  },
+  "batch_attribution": {
+    "attributed": 999,
+    "unattributed": 1,
+    "multiBatch": 42,
+    "byBatch": {
+      "reports\\data\\registration\\live\\pilot_register_request.json": 3,
+      "reports\\data\\registration\\live\\pilot_register_request_20261029.json": 3,
+      "reports\\data\\registration\\bulk\\register_2nd_batch_20261029.json": 2,
+      "reports\\data\\registration\\bulk\\register_3rd_batch_20261029.json": 9,
+      "reports\\data\\registration\\bulk\\register_zero_stock_batch_20261029.json": 4,
+      "reports\\data\\registration\\bulk\\register_4th_batch_20261029.json": 20,
+      "reports\\data\\registration\\bulk\\register_5th_batch_20261029.json": 55,
+      "reports\\data\\registration\\bulk\\register_6th_batch_20261029.json": 103,
+      "reports\\data\\registration\\bulk\\register_7th_batch_20261029.json": 159,
+      "reports\\data\\registration\\bulk\\register_9th_batch_20261029.json": 27,
+      "reports\\data\\registration\\bulk\\register_11th_batch_20261030.json": 18,
+      "reports\\data\\registration\\bulk\\register_12th_batch_20261030.json": 13,
+      "reports\\data\\registration\\bulk\\register_13th_batch_20261030.json": 148,
+      "reports\\data\\registration\\bulk\\register_14th_batch_20261030.json": 21,
+      "reports\\data\\registration\\bulk\\register_15th_batch_20261030.json": 470
+    },
+    "unattributed_sample": [
+      "samamusic:3110"
+    ]
+  },
+  "batch_files": [
+    {
+      "file": "reports\\data\\registration\\bulk\\register_11th_batch_20261030.json",
+      "scope": "11차 배치 — 배치7 READY 재검증 미등록(정상+품절)·오늘 라이브 재판정 적격분 최대 50건 실등록·전시 ON",
+      "ranAt": "2026-10-29T20:46:02.465Z",
+      "resultCount": 18
+    },
+    {
+      "file": "reports\\data\\registration\\bulk\\register_12th_batch_20261030.json",
+      "scope": "12차 배치 — 교체용 바늘 8건(리프 50003154 CTO 지정) + 국내 원산지 5건(E30 국산 정규화·코드 00 첫 수용 확인 후 확대)",
+      "ranAt": "2026-10-29T21:42:05.719Z",
+      "resultCount": 13
+    },
+    {
+      "file": "reports\\data\\registration\\bulk\\register_13th_batch_20261030.json",
+      "scope": "13차 배치 — 전수 분류 CANDIDATE(성장한 경로 계약 체인으로 카테고리 자동 해소분) 오늘 라이브 재판정 적격분 실등록·전시 ON",
+      "ranAt": "2026-10-29T22:25:49.176Z",
+      "resultCount": 157
+    },
+    {
+      "file": "reports\\data\\registration\\bulk\\register_14th_batch_20261030.json",
+      "scope": "14차 배치 — 중복 그룹 해소(대표 원본·별개 SKU)+카테고리 신뢰 매핑 후보 오늘 라이브 재판정 적격분 실등록·전시 ON",
+      "ranAt": "2026-10-29T23:04:29.329Z",
+      "resultCount": 21
+    },
+    {
+      "file": "reports\\data\\registration\\bulk\\register_15th_batch_20261030.json",
+      "scope": "15차 배치 — 통합 마스터·채널 계약 준수 재분류 후보(구 중복·검토가드 해소 포함) 오늘 라이브 재판정 적격분 실등록·전시 ON",
+      "ranAt": "2026-10-29T23:56:35.269Z",
+      "resultCount": 550
+    },
+    {
+      "file": "reports\\data\\registration\\bulk\\register_2nd_batch_20261029.json",
+      "scope": "지시 §2 — 검증 배치 2건 실등록 + 단건조회 + 전시 ON(대표 승인: 정상 상품 소량 실등록)",
+      "ranAt": "2026-10-29T05:16:08.772Z",
+      "resultCount": 2
+    },
+    {
+      "file": "reports\\data\\registration\\bulk\\register_3rd_batch_20261029.json",
+      "scope": "지시 — 품절 등록 허용 배치: 판매중 소프트웨어 5건(DIRECT·DIGITAL_CONTENTS·리프 50001516) + 품절 하드웨어 5건(재고 0 → OUTOFSTOCK, 전시 ON)",
+      "ranAt": "2026-10-29T05:39:06.737Z",
+      "resultCount": 10
+    },
+    {
+      "file": "reports\\data\\registration\\bulk\\register_4th_batch_20261029.json",
+      "scope": "지시 — 20건 배치(판매중 10 + 품절 10), 상태머신·실패 복구·장부 즉시 기록",
+      "ranAt": "2026-10-29T06:04:33.199Z",
+      "resultCount": 20
+    },
+    {
+      "file": "reports\\data\\registration\\bulk\\register_5th_batch_20261029.json",
+      "scope": "5차 배치 — 준비 후보 50건 실등록·전시 ON",
+      "ranAt": "2026-10-29T07:51:04.840Z",
+      "resultCount": 55
+    },
+    {
+      "file": "reports\\data\\registration\\bulk\\register_6th_batch_20261029.json",
+      "scope": "6차 배치 — 자동 보완 후보 100건 실등록·전시 ON",
+      "ranAt": "2026-10-29T09:01:03.272Z",
+      "resultCount": 103
+    },
+    {
+      "file": "reports\\data\\registration\\bulk\\register_7th_batch_20261029.json",
+      "scope": "7차 배치 — 자동 보완 확대 후보 최대 200건 실등록·전시 ON",
+      "ranAt": "2026-10-29T10:10:27.297Z",
+      "resultCount": 179
+    },
+    {
+      "file": "reports\\data\\registration\\bulk\\register_9th_batch_20261029.json",
+      "scope": "9차 배치 — 가격 복구 후 배치5~7 미등록·오늘 라이브 재판정 적격분 최대 100건 실등록·전시 ON",
+      "ranAt": "2026-10-29T13:33:40.856Z",
+      "resultCount": 34
+    },
+    {
+      "file": "reports\\data\\registration\\bulk\\register_zero_stock_batch_20261029.json",
+      "scope": "지시 — 품절 상품 등록 검증: 재고 1 등록(전시 SUSPENSION) → productModifyOrigin 재고 0 → OUTOFSTOCK → 전시 ON(품절 표시)",
+      "ranAt": "2026-10-29T05:40:37.006Z",
+      "resultCount": 4
+    },
+    {
+      "file": "reports\\data\\registration\\live\\pilot_register_request.json",
+      "scope": "pilot — first live registrations (predates bulk register_* convention)",
+      "ranAt": "2026-10-29T00:14:45.541Z",
+      "resultCount": 3
+    },
+    {
+      "file": "reports\\data\\registration\\live\\pilot_register_request_20261029.json",
+      "scope": "pilot — first live registrations (predates bulk register_* convention)",
+      "ranAt": "2026-10-29T01:22:57.816Z",
+      "resultCount": 3
+    }
+  ],
+  "writes_performed": {
+    "naver_products_changed": 0,
+    "erp_documents_created": 0,
+    "ledger_rows_added": 0
+  }
+}
