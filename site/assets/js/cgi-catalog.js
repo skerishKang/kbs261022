@@ -1207,6 +1207,8 @@
     else if (view === 'auth-reset') renderAuthReset(app);
     else if (view === 'my-page') renderMyPage(app);
     else renderAbout();
+    // 뷰 렌더로 새로 만들어진 [data-home-link](이용 안내 등)에도 정본 URL을 적용한다.
+    applySiteConfig();
     if (view !== 'login' && view !== 'signup') window.cgiSyncAuthHeader && window.cgiSyncAuthHeader();
     updateTitle();
     document.body.setAttribute('data-view', view);

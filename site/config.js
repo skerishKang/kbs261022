@@ -11,7 +11,10 @@
  */
 window.CGI_SITE_CONFIG = {
   // ── 회사 홈페이지 복귀 경로 ────────────────────────────────
-  homepageUrl: '../website/index.html',
+  // 이슈 #128: 상대경로(같은 배포 안의 복본) 대신 홈페이지 프로젝트의
+  // canonical Pages URL로 이동한다. cgihomepage.pages.dev 루트는 /website/ 로
+  // 302 리다이렉트된다.
+  homepageUrl: 'https://cgihomepage.pages.dev/',
   // 견적 API (Cloudflare Worker). 비어 있으면 localStorage 정적 시연 모드.
   quoteApiUrl: 'https://cgi-quote-api.charliekant.workers.dev',
   // 주문·결제 API. 비어 있으면 quoteApiUrl 을 재사용한다.
