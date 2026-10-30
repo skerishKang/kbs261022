@@ -28,8 +28,11 @@ window.CGI_CONFIG = {
   siteName: '(주)시지아이 CGI',
 
   // ── 쇼핑몰(PR #17) 연결 주소 ────────────────────────────────
-  mallUrl: '../site/index.html',                  // 쇼핑몰 홈
-  mallListUrl: '../site/index.html#/products',    // 쇼핑몰 전체 목록
+  // 이슈 #128: 두 Pages가 복본을 서빙하므로 상대경로 대신 상대 프로젝트의
+  // canonical Pages URL로 이동한다(한쪽만 재배포해도 구버전 링크 노출 방지).
+  // cgishop.pages.dev 루트는 /site/ 로 302 리다이렉트되며 해시는 보존된다.
+  mallUrl: 'https://cgishop.pages.dev/',                  // 쇼핑몰 홈
+  mallListUrl: 'https://cgishop.pages.dev/#/products',    // 쇼핑몰 전체 목록
   mallBrandParam: 'brand',                       // 브랜드 필터 쿼리 키
   mallBrandCase: 'upper',                        // brand_norm 에 맞춰 대문자 정규화
 
