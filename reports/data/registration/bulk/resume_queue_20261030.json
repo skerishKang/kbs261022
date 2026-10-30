@@ -1,0 +1,1060 @@
+{
+  "kind": "cgi-bulk-resume-queue",
+  "created_at": "2026-10-30T00:48:43.477Z",
+  "basis": {
+    "main_sha": "d52be94",
+    "batch15_evidence": "register_15th_batch_20261030.json",
+    "issue": 157
+  },
+  "counts": {
+    "limit_over": 63,
+    "unprocessed": 37,
+    "queue_total": 100,
+    "registered_excluded": 0,
+    "fixed_error_items": 8,
+    "image_retry": 1
+  },
+  "gate": "한도(Naver E33) 회복 확인 전 등록 시도 금지 — 재시도 시 러너 계약(중복조회·가격·원산지·전시) 전부 적용",
+  "queue": [
+    {
+      "cgiId": "samamusic:63",
+      "sellerManagementCode": "samamusic:63",
+      "leafCategoryId": "50004370",
+      "collected_price": 2830000,
+      "model": "Mark V 35 1x12 Combo",
+      "live_origin": "아메리카 미국",
+      "sold_out": true,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:764",
+      "sellerManagementCode": "samamusic:764",
+      "leafCategoryId": "50004370",
+      "collected_price": 3180000,
+      "model": "TC-50 Combo",
+      "live_origin": "아메리카 미국",
+      "sold_out": true,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:31",
+      "sellerManagementCode": "samamusic:31",
+      "leafCategoryId": "50004370",
+      "collected_price": 2830000,
+      "model": "MARK FIVE 35 HEAD",
+      "live_origin": "아메리카 미국",
+      "sold_out": true,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:1360",
+      "sellerManagementCode": "samamusic:1360",
+      "leafCategoryId": "50004370",
+      "collected_price": 2541000,
+      "model": "Mark V 25 Head",
+      "live_origin": "아메리카 미국",
+      "sold_out": true,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:1355",
+      "sellerManagementCode": "samamusic:1355",
+      "leafCategoryId": "50004370",
+      "collected_price": 2519000,
+      "model": "Fillmore 50 Head Custom",
+      "live_origin": "아메리카 미국",
+      "sold_out": true,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:1326",
+      "sellerManagementCode": "samamusic:1326",
+      "leafCategoryId": "50004370",
+      "collected_price": 2290000,
+      "model": "Fillmore 50 Head",
+      "live_origin": "아메리카 미국",
+      "sold_out": true,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:1325",
+      "sellerManagementCode": "samamusic:1325",
+      "leafCategoryId": "50004370",
+      "collected_price": 2600000,
+      "model": "Fillmore 50 1x12 Combo",
+      "live_origin": "아메리카 미국",
+      "sold_out": true,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:1439",
+      "sellerManagementCode": "samamusic:1439",
+      "leafCategoryId": "50004370",
+      "collected_price": 2910000,
+      "model": "California Tweed 1x12 Combo",
+      "live_origin": "아메리카 미국",
+      "sold_out": true,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:70",
+      "sellerManagementCode": "samamusic:70",
+      "leafCategoryId": "50004370",
+      "collected_price": 2240000,
+      "model": "Recto-Verb 25 1x12 combo",
+      "live_origin": "아메리카 미국",
+      "sold_out": true,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:1706",
+      "sellerManagementCode": "samamusic:1706",
+      "leafCategoryId": "50004370",
+      "collected_price": 2770000,
+      "model": "Mark V 25 1x10 Combo",
+      "live_origin": "아메리카 미국",
+      "sold_out": true,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:68",
+      "sellerManagementCode": "samamusic:68",
+      "leafCategoryId": "50004370",
+      "collected_price": 2150000,
+      "model": "Mark V 25 Head",
+      "live_origin": "아메리카 미국",
+      "sold_out": true,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:69",
+      "sellerManagementCode": "samamusic:69",
+      "leafCategoryId": "50004370",
+      "collected_price": 1960000,
+      "model": "Recto-Verb 25 head",
+      "live_origin": "아메리카 미국",
+      "sold_out": true,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:79",
+      "sellerManagementCode": "samamusic:79",
+      "leafCategoryId": "50004370",
+      "collected_price": 1350000,
+      "model": "2x12 Recto Vertical",
+      "live_origin": "아메리카 미국",
+      "sold_out": true,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:73",
+      "sellerManagementCode": "samamusic:73",
+      "leafCategoryId": "50004370",
+      "collected_price": 1810000,
+      "model": "Mini rectifier 25 Head",
+      "live_origin": "아메리카 미국",
+      "sold_out": true,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:1915",
+      "sellerManagementCode": "samamusic:1915",
+      "leafCategoryId": "50004370",
+      "collected_price": 1150000,
+      "model": "1x12 Subway",
+      "live_origin": "아메리카 미국",
+      "sold_out": true,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:32",
+      "sellerManagementCode": "samamusic:32",
+      "leafCategoryId": "50004370",
+      "collected_price": 1040000,
+      "model": "2x12 Recto Compact",
+      "live_origin": "아메리카 미국",
+      "sold_out": true,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:76",
+      "sellerManagementCode": "samamusic:76",
+      "leafCategoryId": "50004370",
+      "collected_price": 1220000,
+      "model": "Subway D-800 Head",
+      "live_origin": "아메리카 미국",
+      "sold_out": true,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:82",
+      "sellerManagementCode": "samamusic:82",
+      "leafCategoryId": "50004370",
+      "collected_price": 810000,
+      "model": "1x12 Widebody Closed Back",
+      "live_origin": "아메리카 미국",
+      "sold_out": true,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:84",
+      "sellerManagementCode": "samamusic:84",
+      "leafCategoryId": "50004370",
+      "collected_price": 660000,
+      "model": "1x12 Widebody",
+      "live_origin": "아메리카 미국",
+      "sold_out": true,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:86",
+      "sellerManagementCode": "samamusic:86",
+      "leafCategoryId": "50004370",
+      "collected_price": 760000,
+      "model": "1x12 Mini Recto Slant",
+      "live_origin": "아메리카 미국",
+      "sold_out": true,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:80",
+      "sellerManagementCode": "samamusic:80",
+      "leafCategoryId": "50004370",
+      "collected_price": 760000,
+      "model": "1x12 Thiele",
+      "live_origin": "아메리카 미국",
+      "sold_out": true,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:85",
+      "sellerManagementCode": "samamusic:85",
+      "leafCategoryId": "50004370",
+      "collected_price": 1220000,
+      "model": "2x12 Recto Horizontal",
+      "live_origin": "아메리카 미국",
+      "sold_out": true,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:1327",
+      "sellerManagementCode": "samamusic:1327",
+      "leafCategoryId": "50004370",
+      "collected_price": 690000,
+      "model": "1x12 Fillmore 23 Cabinet",
+      "live_origin": "아메리카 미국",
+      "sold_out": true,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:4542",
+      "sellerManagementCode": "samamusic:4542",
+      "leafCategoryId": "50004370",
+      "collected_price": 4745000,
+      "model": "S-63 SSH",
+      "live_origin": "아메리카 미국",
+      "sold_out": true,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:4543",
+      "sellerManagementCode": "samamusic:4543",
+      "leafCategoryId": "50004370",
+      "collected_price": 4900000,
+      "model": "T-63",
+      "live_origin": "아메리카 미국",
+      "sold_out": true,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:4541",
+      "sellerManagementCode": "samamusic:4541",
+      "leafCategoryId": "50004370",
+      "collected_price": 4745000,
+      "model": "S-63 SSH",
+      "live_origin": "아메리카 미국",
+      "sold_out": true,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:3121",
+      "sellerManagementCode": "samamusic:3121",
+      "leafCategoryId": "50004370",
+      "collected_price": 3450000,
+      "model": "T-63",
+      "live_origin": "아메리카 미국",
+      "sold_out": true,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:1783",
+      "sellerManagementCode": "samamusic:1783",
+      "leafCategoryId": "50004370",
+      "collected_price": 2970000,
+      "model": "Mark V 25 1x10 Combo",
+      "live_origin": "아메리카 미국",
+      "sold_out": true,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:1782",
+      "sellerManagementCode": "samamusic:1782",
+      "leafCategoryId": "50004370",
+      "collected_price": 2970000,
+      "model": "Mark V 25 1x10 Combo",
+      "live_origin": "아메리카 미국",
+      "sold_out": true,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:765",
+      "sellerManagementCode": "samamusic:765",
+      "leafCategoryId": "50004370",
+      "collected_price": 2890000,
+      "model": "TC-50 Head",
+      "live_origin": "아메리카 미국",
+      "sold_out": true,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:1781",
+      "sellerManagementCode": "samamusic:1781",
+      "leafCategoryId": "50004370",
+      "collected_price": 2970000,
+      "model": "Mark V 25 1x10 Combo",
+      "live_origin": "아메리카 미국",
+      "sold_out": true,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:1358",
+      "sellerManagementCode": "samamusic:1358",
+      "leafCategoryId": "50004370",
+      "collected_price": 2948000,
+      "model": "MARK FIVE 35 HEAD Custom",
+      "live_origin": "아메리카 미국",
+      "sold_out": true,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:1885",
+      "sellerManagementCode": "samamusic:1885",
+      "leafCategoryId": "50004370",
+      "collected_price": 2880000,
+      "model": "Mark V 25 Head",
+      "live_origin": "아메리카 미국",
+      "sold_out": true,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:1886",
+      "sellerManagementCode": "samamusic:1886",
+      "leafCategoryId": "50004370",
+      "collected_price": 2880000,
+      "model": "Mark V 25 Head",
+      "live_origin": "아메리카 미국",
+      "sold_out": true,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:78",
+      "sellerManagementCode": "samamusic:78",
+      "leafCategoryId": "50004370",
+      "collected_price": 1840000,
+      "model": "4x12 Recto Traditional Slant",
+      "live_origin": "아메리카 미국",
+      "sold_out": true,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:1884",
+      "sellerManagementCode": "samamusic:1884",
+      "leafCategoryId": "50004370",
+      "collected_price": 1680000,
+      "model": "SUBWAY TT-800 HEAD",
+      "live_origin": "아메리카 미국 California",
+      "sold_out": true,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:1779",
+      "sellerManagementCode": "samamusic:1779",
+      "leafCategoryId": "50004370",
+      "collected_price": 2970000,
+      "model": "Mark V 25 1x10 Combo",
+      "live_origin": "아메리카 미국",
+      "sold_out": true,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:77",
+      "sellerManagementCode": "samamusic:77",
+      "leafCategoryId": "50004370",
+      "collected_price": 1380000,
+      "model": "1x15 Subway",
+      "live_origin": "아메리카 미국",
+      "sold_out": true,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:1007",
+      "sellerManagementCode": "samamusic:1007",
+      "leafCategoryId": "50004370",
+      "collected_price": 760000,
+      "model": "1x12 Mini Recto Slant",
+      "live_origin": "아메리카 미국",
+      "sold_out": true,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:1866",
+      "sellerManagementCode": "samamusic:1866",
+      "leafCategoryId": "50004370",
+      "collected_price": 2880000,
+      "model": "Mark V 25 Head",
+      "live_origin": "아메리카 미국",
+      "sold_out": true,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:1443",
+      "sellerManagementCode": "samamusic:1443",
+      "leafCategoryId": "50004370",
+      "collected_price": 920000,
+      "model": "California Tweed 1x12 Cabinet",
+      "live_origin": "아메리카 미국",
+      "sold_out": true,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:1629",
+      "sellerManagementCode": "samamusic:1629",
+      "leafCategoryId": "50004370",
+      "collected_price": 47000,
+      "model": "PSD Bass 99 Series",
+      "live_origin": "유럽 영국",
+      "sold_out": true,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:1328",
+      "sellerManagementCode": "samamusic:1328",
+      "leafCategoryId": "50004370",
+      "collected_price": 1020000,
+      "model": "2x12 Fillmore Cabinet",
+      "live_origin": "아메리카 미국",
+      "sold_out": true,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:1623",
+      "sellerManagementCode": "samamusic:1623",
+      "leafCategoryId": "50004370",
+      "collected_price": 35000,
+      "model": "Swing Bass 66 Series",
+      "live_origin": "유럽 영국",
+      "sold_out": true,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:4627",
+      "sellerManagementCode": "samamusic:4627",
+      "leafCategoryId": "50004370",
+      "collected_price": 550000,
+      "model": "DrumBrute Impact 1984",
+      "live_origin": "아시아 중국",
+      "sold_out": true,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:4941",
+      "sellerManagementCode": "samamusic:4941",
+      "leafCategoryId": "50004370",
+      "collected_price": 4800000,
+      "model": "S-63 SSH",
+      "live_origin": "아메리카 미국",
+      "sold_out": true,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:817",
+      "sellerManagementCode": "samamusic:817",
+      "leafCategoryId": "50004370",
+      "collected_price": 1840000,
+      "model": "4x12 Recto Standard Slant",
+      "live_origin": "아메리카 미국",
+      "sold_out": true,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:1444",
+      "sellerManagementCode": "samamusic:1444",
+      "leafCategoryId": "50004370",
+      "collected_price": 1380000,
+      "model": "California Tweed 2x12 Cabinet",
+      "live_origin": "아메리카 미국",
+      "sold_out": true,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:1413",
+      "sellerManagementCode": "samamusic:1413",
+      "leafCategoryId": "50002342",
+      "collected_price": 2600,
+      "model": "SCDX-9",
+      "live_origin": "유럽 리히텐슈타인",
+      "sold_out": false,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:1412",
+      "sellerManagementCode": "samamusic:1412",
+      "leafCategoryId": "50002342",
+      "collected_price": 2600,
+      "model": "SCDX-6",
+      "live_origin": "유럽 리히텐슈타인",
+      "sold_out": false,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:1411",
+      "sellerManagementCode": "samamusic:1411",
+      "leafCategoryId": "50002342",
+      "collected_price": 2600,
+      "model": "SCDX-5",
+      "live_origin": "유럽 리히텐슈타인",
+      "sold_out": false,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:1397",
+      "sellerManagementCode": "samamusic:1397",
+      "leafCategoryId": "50002342",
+      "collected_price": 89000,
+      "model": "GNS18",
+      "live_origin": "유럽 리히텐슈타인",
+      "sold_out": false,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:4657",
+      "sellerManagementCode": "samamusic:4657",
+      "leafCategoryId": "50007235",
+      "collected_price": 291000,
+      "model": "8000-409BB (26741-329-55)",
+      "live_origin": "유럽 독일",
+      "sold_out": false,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:5564",
+      "sellerManagementCode": "samamusic:5564",
+      "leafCategoryId": "50002326",
+      "collected_price": 391000,
+      "model": "SM35-XLR",
+      "live_origin": "아시아 중국",
+      "sold_out": false,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:5562",
+      "sellerManagementCode": "samamusic:5562",
+      "leafCategoryId": "50002326",
+      "collected_price": 234000,
+      "model": "SM31FH-TQG",
+      "live_origin": "아시아 중국",
+      "sold_out": false,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:5563",
+      "sellerManagementCode": "samamusic:5563",
+      "leafCategoryId": "50002326",
+      "collected_price": 234000,
+      "model": "SM35-TQG",
+      "live_origin": "아시아 중국",
+      "sold_out": false,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:5558",
+      "sellerManagementCode": "samamusic:5558",
+      "leafCategoryId": "50002326",
+      "collected_price": 194000,
+      "model": "WL93",
+      "live_origin": "아시아 중국",
+      "sold_out": false,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:5559",
+      "sellerManagementCode": "samamusic:5559",
+      "leafCategoryId": "50002326",
+      "collected_price": 194000,
+      "model": "WL93T",
+      "live_origin": "아시아 중국",
+      "sold_out": false,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:5561",
+      "sellerManagementCode": "samamusic:5561",
+      "leafCategoryId": "50002326",
+      "collected_price": 117000,
+      "model": "PGA31-TQG",
+      "live_origin": "아시아 중국",
+      "sold_out": false,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:5557",
+      "sellerManagementCode": "samamusic:5557",
+      "leafCategoryId": "50002326",
+      "collected_price": 279000,
+      "model": "WL185MB/C-TQG",
+      "live_origin": "아시아 중국",
+      "sold_out": false,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:5554",
+      "sellerManagementCode": "samamusic:5554",
+      "leafCategoryId": "50001516",
+      "collected_price": 1690000,
+      "model": "K 26 Ultimate Crossgrade",
+      "live_origin": "유럽 독일",
+      "sold_out": false,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:5553",
+      "sellerManagementCode": "samamusic:5553",
+      "leafCategoryId": "50001516",
+      "collected_price": 559000,
+      "model": "K 26 Standard Crossgrade",
+      "live_origin": "유럽 독일",
+      "sold_out": false,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:5552",
+      "sellerManagementCode": "samamusic:5552",
+      "leafCategoryId": "50001516",
+      "collected_price": 919000,
+      "model": "K 26 Ultimate Upgrade for S-Series",
+      "live_origin": "유럽 독일",
+      "sold_out": false,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:5544",
+      "sellerManagementCode": "samamusic:5544",
+      "leafCategoryId": "50001516",
+      "collected_price": 479000,
+      "model": "K 26 Ultimate UPD/UPG",
+      "live_origin": "유럽 독일",
+      "sold_out": false,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:5545",
+      "sellerManagementCode": "samamusic:5545",
+      "leafCategoryId": "50001516",
+      "collected_price": 639000,
+      "model": "K 26 Collectors Edition UPD/UPG",
+      "live_origin": "유럽 독일",
+      "sold_out": false,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:5542",
+      "sellerManagementCode": "samamusic:5542",
+      "leafCategoryId": "50001516",
+      "collected_price": 3100000,
+      "model": "K 26 Collectors Edition",
+      "live_origin": "유럽 독일",
+      "sold_out": false,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:5543",
+      "sellerManagementCode": "samamusic:5543",
+      "leafCategoryId": "50001516",
+      "collected_price": 239000,
+      "model": "K 26 Standard UPD/UPG",
+      "live_origin": "유럽 독일",
+      "sold_out": false,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:5551",
+      "sellerManagementCode": "samamusic:5551",
+      "leafCategoryId": "50001516",
+      "collected_price": 359000,
+      "model": "K 26 Standard Upgrade for S-Series",
+      "live_origin": "유럽 독일",
+      "sold_out": false,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:5541",
+      "sellerManagementCode": "samamusic:5541",
+      "leafCategoryId": "50001516",
+      "collected_price": 1990000,
+      "model": "K 26 Ultimate",
+      "live_origin": "유럽 독일",
+      "sold_out": false,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:5540",
+      "sellerManagementCode": "samamusic:5540",
+      "leafCategoryId": "50001516",
+      "collected_price": 879000,
+      "model": "K 26 Standard",
+      "live_origin": "유럽 독일",
+      "sold_out": false,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:3910",
+      "sellerManagementCode": "samamusic:3910",
+      "leafCategoryId": "50003154",
+      "collected_price": 78000,
+      "model": "AAC0207/ HEADSHELL BLACK CSS-JHSB",
+      "live_origin": "아시아 일본",
+      "sold_out": false,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:4901",
+      "sellerManagementCode": "samamusic:4901",
+      "leafCategoryId": "50003154",
+      "collected_price": 398000,
+      "model": "OMNIA J44A 7 IMP NUDE BLACK",
+      "live_origin": "아시아 일본",
+      "sold_out": false,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:4761",
+      "sellerManagementCode": "samamusic:4761",
+      "leafCategoryId": "50003154",
+      "collected_price": 235000,
+      "model": "J44A 7 DJ IMP SD",
+      "live_origin": "아시아 일본",
+      "sold_out": false,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:4764",
+      "sellerManagementCode": "samamusic:4764",
+      "leafCategoryId": "50003154",
+      "collected_price": 98000,
+      "model": "N-44-7 DJ IMP SD",
+      "live_origin": "아시아 일본",
+      "sold_out": false,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:4759",
+      "sellerManagementCode": "samamusic:4759",
+      "leafCategoryId": "50003154",
+      "collected_price": 309000,
+      "model": "OMNIA J44A 7 DJ IMP SD",
+      "live_origin": "아시아 일본",
+      "sold_out": false,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:3905",
+      "sellerManagementCode": "samamusic:3905",
+      "leafCategoryId": "50003154",
+      "collected_price": 398000,
+      "model": "AAC0195/ OMNIA J44D IMP NUDE BLACK",
+      "live_origin": "아시아 일본",
+      "sold_out": false,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:4899",
+      "sellerManagementCode": "samamusic:4899",
+      "leafCategoryId": "50003154",
+      "collected_price": 188000,
+      "model": "N-44-7 IMP NUDE",
+      "live_origin": "아시아 일본",
+      "sold_out": false,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:4755",
+      "sellerManagementCode": "samamusic:4755",
+      "leafCategoryId": "50003154",
+      "collected_price": 235000,
+      "model": "J44D IMP SD",
+      "live_origin": "아시아 일본",
+      "sold_out": false,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:4749",
+      "sellerManagementCode": "samamusic:4749",
+      "leafCategoryId": "50003154",
+      "collected_price": 309000,
+      "model": "OMNIA J44A 7 IMP SD",
+      "live_origin": "아시아 일본",
+      "sold_out": false,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:4748",
+      "sellerManagementCode": "samamusic:4748",
+      "leafCategoryId": "50003154",
+      "collected_price": 309000,
+      "model": "OMNIA J44D IMP SD",
+      "live_origin": "아시아 일본",
+      "sold_out": false,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:4756",
+      "sellerManagementCode": "samamusic:4756",
+      "leafCategoryId": "50003154",
+      "collected_price": 235000,
+      "model": "J44A 7 IMP SD",
+      "live_origin": "아시아 일본",
+      "sold_out": false,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:4745",
+      "sellerManagementCode": "samamusic:4745",
+      "leafCategoryId": "50003154",
+      "collected_price": 94000,
+      "model": "N-44-7 IMP SD",
+      "live_origin": "아시아 일본",
+      "sold_out": false,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:3891",
+      "sellerManagementCode": "samamusic:3891",
+      "leafCategoryId": "50003154",
+      "collected_price": 191000,
+      "model": "AAC0046/ N-44G/DJ IMPROVED NUDE",
+      "live_origin": "아시아 일본",
+      "sold_out": false,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:4744",
+      "sellerManagementCode": "samamusic:4744",
+      "leafCategoryId": "50003154",
+      "collected_price": 94000,
+      "model": "N44-G IMP SD",
+      "live_origin": "아시아 일본",
+      "sold_out": false,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:3907",
+      "sellerManagementCode": "samamusic:3907",
+      "leafCategoryId": "50003154",
+      "collected_price": 439000,
+      "model": "AAC0363/ OMNIA J50 IMP NUDE BLACK",
+      "live_origin": "아시아 일본",
+      "sold_out": true,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:3904",
+      "sellerManagementCode": "samamusic:3904",
+      "leafCategoryId": "50003154",
+      "collected_price": 389000,
+      "model": "AAC0203/ OMNIA J44A 7 IMP AURORA NUD BLK",
+      "live_origin": "아시아 일본",
+      "sold_out": true,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:3906",
+      "sellerManagementCode": "samamusic:3906",
+      "leafCategoryId": "50003154",
+      "collected_price": 398000,
+      "model": "AAC0198/ OMNIA J44D IMP NUDE SILVER",
+      "live_origin": "아시아 일본",
+      "sold_out": true,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:3902",
+      "sellerManagementCode": "samamusic:3902",
+      "leafCategoryId": "50003154",
+      "collected_price": 239000,
+      "model": "AAC0114/ N-97xE NUDE",
+      "live_origin": "아시아 일본",
+      "sold_out": true,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:3894",
+      "sellerManagementCode": "samamusic:3894",
+      "leafCategoryId": "50003154",
+      "collected_price": 417000,
+      "model": "AAC0353/ OMNIA IMPACT BLACK",
+      "live_origin": "아시아 일본",
+      "sold_out": true,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:4763",
+      "sellerManagementCode": "samamusic:4763",
+      "leafCategoryId": "50003154",
+      "collected_price": 289000,
+      "model": "N-44-7",
+      "live_origin": "아시아 일본",
+      "sold_out": true,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:4760",
+      "sellerManagementCode": "samamusic:4760",
+      "leafCategoryId": "50003154",
+      "collected_price": 235000,
+      "model": "J44D DJ IMP SD",
+      "live_origin": "아시아 일본",
+      "sold_out": true,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:4830",
+      "sellerManagementCode": "samamusic:4830",
+      "leafCategoryId": "50003154",
+      "collected_price": 298000,
+      "model": "J44A 7 IMP NUDE",
+      "live_origin": "아시아 일본",
+      "sold_out": true,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:4754",
+      "sellerManagementCode": "samamusic:4754",
+      "leafCategoryId": "50003154",
+      "collected_price": 289000,
+      "model": "J50 IMP SD",
+      "live_origin": "아시아 일본",
+      "sold_out": true,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:4747",
+      "sellerManagementCode": "samamusic:4747",
+      "leafCategoryId": "50003154",
+      "collected_price": 345000,
+      "model": "OMNIA J50 IMP SD",
+      "live_origin": "아시아 일본",
+      "sold_out": false,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:3893",
+      "sellerManagementCode": "samamusic:3893",
+      "leafCategoryId": "50003154",
+      "collected_price": 323000,
+      "model": "AAC0355/ IMPACT",
+      "live_origin": "아시아 일본",
+      "sold_out": true,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:3889",
+      "sellerManagementCode": "samamusic:3889",
+      "leafCategoryId": "50003154",
+      "collected_price": 191000,
+      "model": "AAC0054/ N-44-7 / DJ IMPROVED NUDE",
+      "live_origin": "아시아 일본",
+      "sold_out": true,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:3892",
+      "sellerManagementCode": "samamusic:3892",
+      "leafCategoryId": "50003154",
+      "collected_price": 398000,
+      "model": "AAC0196/ OMNIA J44D IMP DJ NUDE BLACK",
+      "live_origin": "아시아 일본",
+      "sold_out": true,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:4762",
+      "sellerManagementCode": "samamusic:4762",
+      "leafCategoryId": "50003154",
+      "collected_price": 369000,
+      "model": "N-44-7",
+      "live_origin": "아시아 일본",
+      "sold_out": false,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:5214",
+      "sellerManagementCode": "samamusic:5214",
+      "leafCategoryId": "50003154",
+      "collected_price": 78000,
+      "model": "HEADSHELL BLACK CSS-JHS",
+      "live_origin": "아시아 일본",
+      "sold_out": true,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    },
+    {
+      "cgiId": "samamusic:5215",
+      "sellerManagementCode": "samamusic:5215",
+      "leafCategoryId": "50003154",
+      "collected_price": 110000,
+      "model": "AAC0890/ RUBY sh.192-44 skt101 yel",
+      "live_origin": "아시아 일본",
+      "sold_out": false,
+      "retry_contract": "등록 직전 판매자코드 원격 중복조회(C14/C20)·가격 불변 재판정(C17)·원산지 코드 확정(C18/E30/E31) 필수"
+    }
+  ],
+  "fixed_error_items": [
+    {
+      "cgiId": "samamusic:2408",
+      "fix": "E34 리프 코드 선택 계약 적용(러시아연방 0201007)"
+    },
+    {
+      "cgiId": "samamusic:2410",
+      "fix": "E34 리프 코드 선택 계약 적용(러시아연방 0201007)"
+    },
+    {
+      "cgiId": "samamusic:2406",
+      "fix": "E34 리프 코드 선택 계약 적용(러시아연방 0201007)"
+    },
+    {
+      "cgiId": "samamusic:2407",
+      "fix": "E34 리프 코드 선택 계약 적용(러시아연방 0201007)"
+    },
+    {
+      "cgiId": "samamusic:2409",
+      "fix": "E34 리프 코드 선택 계약 적용(러시아연방 0201007)"
+    },
+    {
+      "cgiId": "samamusic:5554",
+      "fix": "name_100_truncation(계약 헬투 적용)"
+    },
+    {
+      "cgiId": "samamusic:5553",
+      "fix": "name_100_truncation(계약 헬투 적용)"
+    },
+    {
+      "cgiId": "samamusic:5552",
+      "fix": "name_100_truncation(계약 헬투 적용)"
+    }
+  ],
+  "image_retry_items": [
+    {
+      "cgiId": "samamusic:1133",
+      "fix": "이미지 업로드 재시도(원본 URL 200·image/jpeg 확인)"
+    }
+  ]
+}

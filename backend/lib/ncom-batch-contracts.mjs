@@ -253,6 +253,44 @@ export function resolveOriginArea({ originText = null, resolveCode = null } = {}
  * 판매자코드 필드 없음). 원상품 GET으로 검증한 코드 목록(hitCodes)만을 근거로
  * 판정한다 — 접두어만 일치하는 히트는 중복이 아니며 등록을 막지 않는다.
  */
+/**
+ * 네이버 상품명·고시 품명의 기계적 정규화 (배치13·15 실측 계약).
+ *  - 등록불가 특수문자(\ * ? " < >) 제거 — SpecialCharacters 실측 거부
+ *  - 상품명 100자, 고시 품명(itemName) 50자 한도 — MaxLength 실측 거부(배치15: 111~120자 3건)
+ *  - 문자 단위 절단(서러게이트 쌍 보존 — Array.from). 공급처 원문은 호출자가 보존하고,
+ *    이 함수의 반환값만 네이버 전송 필드에 쓴다(정보 추가 없음 — 금지 문자 제거·길이 제한만).
+ */
+export const NAVER_PRODUCT_NAME_MAX = 100;
+export const NAVER_NOTICE_ITEM_NAME_MAX = 50;
+
+export function normalizeNaverProductName(name, { maxLength = NAVER_PRODUCT_NAME_MAX } = {}) {
+  const cleaned = String(name ?? '').replace(/[\*?"<>]/g, ' ').replace(/\s+/g, ' ').trim();
+  const chars = Array.from(cleaned);
+  return chars.length <= maxLength ? cleaned : chars.slice(0, maxLength).join('').trim();
+}
+
+/**
+ * 원산지 코드 선택 (E34 배치15 실측 계약).
+ *  - 토큰 매칭은 코드표 이름의 마지막 경로 구간과 상호 접두 비교('러시아' ↔ '러시아연방').
+ *  - 리프 코드(7자리 상세) 우선 — 지역 집계 코드(4자리, 예: 0201 수입산:유럽)는
+ *    API가 '수입국 항목을 입력해 주세요'(ImportTypeNotFullySelected)로 거부한다(실측).
+ *  - 리프 후보가 여러 개면 모호하므로 null(매칭하지 않는다 — 임의 선언 금지).
+ */
+export function selectOriginAreaCode({ rows = [], token = null } = {}) {
+  const tokenText = String(token ?? '').trim();
+  if (!tokenText || !Array.isArray(rows)) return null;
+  const lastSegment = (name) => String(name ?? '').split('>').pop().trim();
+  const leaf = rows.filter((r) => {
+    const code = String(r.code ?? '');
+    const seg = lastSegment(r.name);
+    return code.length === 7 && seg && (seg.startsWith(tokenText) || tokenText.startsWith(seg));
+  });
+  if (leaf.length === 1) return leaf[0].code;
+  const exact = leaf.filter((r) => lastSegment(r.name) === tokenText);
+  if (exact.length === 1) return exact[0].code;
+  return null;
+}
+
 export function classifySellerCodeHits({ hitCodes = [], sellerManagementCode = '' } = {}) {
   const wanted = String(sellerManagementCode ?? '');
   const codes = hitCodes.map((c) => String(c ?? ''));
