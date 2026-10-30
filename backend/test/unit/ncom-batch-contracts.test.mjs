@@ -17,7 +17,7 @@ import {
   classifySellerCodeHits,
   planCrashRecovery,
   planZeroStockResume,
-  resolveOriginArea,
+  resolveOriginArea, normalizeNaverProductName, NAVER_PRODUCT_NAME_MAX, NAVER_NOTICE_ITEM_NAME_MAX, selectOriginAreaCode,
   CATEGORY_THRESHOLDS,
   MODIFY_ALLOWED_STATUS_TYPES,
 } from '../../lib/ncom-batch-contracts.mjs';
@@ -291,4 +291,35 @@ test('the batch intent guard rejects the measured vendor refusals', () => {
   assert.throws(() => assertLegalBatchIntent({ kind: 'patch' }), (error) => error.code === 'batch_intent_unknown');
   assert.equal(assertLegalBatchIntent({ kind: 'register', statusType: 'SALE', stockQuantity: 1 }), true);
   assert.equal(assertLegalBatchIntent({ kind: 'modify', statusType: 'SALE', stockQuantity: 0 }), true);
+});
+
+test('product name normalization: forbidden chars removed and the 100/50 char limits hold (batch15 MaxLength)', () => {
+  // 배치15 실측: 상품명 111~120자 3건이 MaxLength(100자)로 거부됐다 — 네이버 전송 필드만 정규화하고 원문은 호출자가 보존한다.
+  const long = 'SHURE ' + '가나다라마바사아자차카타파하'.repeat(10); // 6 + 140자
+  const n = normalizeNaverProductName(long);
+  assert.ok(n.length <= NAVER_PRODUCT_NAME_MAX, '상품명은 100자 이하로 절단된다');
+  assert.ok(Array.from(n).length <= NAVER_PRODUCT_NAME_MAX, '문자 단위 절단(서러게이트 보존)');
+  assert.equal(normalizeNaverProductName('SHURE G12-CN / 크롬 구즈넥, 12", XLR'), 'SHURE G12-CN / 크롬 구즈넥, 12 , XLR', '등록불가 특수문자(\ * ? " < >)는 공백으로 치환 후 정리된다(문자 추가 없음');
+  assert.equal(normalizeNaverProductName('NEUTRIK NP*X 시리즈'), 'NEUTRIK NP X 시리즈', "'*'는 제거가 아니라 공백 치환 — 'NPX'는 다른 시리즈명이 되므로 경계를 보존한다");
+  assert.equal(normalizeNaverProductName('  A   B  '), 'A B', '연속 공백은 정리된다');
+  assert.ok(normalizeNaverProductName('이모지😀상품').includes('이모지😀상품'), '서러게이트 쌍이 깨지지 않는다');
+  const item = normalizeNaverProductName('품명'.repeat(30), { maxLength: NAVER_NOTICE_ITEM_NAME_MAX });
+  assert.ok(item.length <= NAVER_NOTICE_ITEM_NAME_MAX, '고시 품명(itemName)은 50자 이하');
+});
+
+test('origin code selection: leaf codes win over region aggregates and mutual prefixes match (E34)', () => {
+  // 배치15 실측: '유럽 러시아'의 토큰 '러시아'가 지역 집계 코드 0201(수입산:유럽)에 걸려
+  // ImportTypeNotFullySelected('수입국 항목을 입력해 주세요')로 거부됐다 — 리프 코드 0201007(러시아연방)이 정답.
+  const rows = [
+    { code: '02', name: '수입산' },
+    { code: '0201', name: '수입산:유럽' },
+    { code: '0201007', name: '수입산:유럽>러시아연방' },
+    { code: '0201005', name: '수입산:유럽>독일' },
+  ];
+  assert.equal(selectOriginAreaCode({ rows, token: '러시아' }), '0201007', '상호 접두 매칭(러시아↔러시아연방)으로 리프 코드를 선택한다');
+  assert.equal(selectOriginAreaCode({ rows, token: '독일' }), '0201005');
+  assert.equal(selectOriginAreaCode({ rows, token: '유럽' }), null, '지역 집계 코드(4자리)는 리프가 아니므로 선택하지 않는다');
+  assert.equal(selectOriginAreaCode({ rows, token: '미지국' }), null, '근거 없는 토큰은 코드를 만들지 않는다');
+  const dup = [...rows, { code: '0209999', name: '수입산:아시아>러시아연방' }];
+  assert.equal(selectOriginAreaCode({ rows: dup, token: '러시아연방' }), null, '리프 후보가 여러 개면 모호 — 매칭하지 않는다');
 });
