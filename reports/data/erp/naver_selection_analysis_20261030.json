@@ -1,0 +1,525 @@
+{
+  "generated_at": "2026-10-30T05:10:56.057Z",
+  "subject": "live Naver SmartStore registrations (1,000)",
+  "note": "Distribution of the products actually registered. This is a description of what happened, not evidence that sales performance, margin, or strategic brand drove the selection.",
+  "live_distributions": {
+    "site": [
+      [
+        "samamusic",
+        1000
+      ]
+    ],
+    "brand": [
+      [
+        "SHURE",
+        290
+      ],
+      [
+        "PRESONUS",
+        79
+      ],
+      [
+        "Genelec",
+        77
+      ],
+      [
+        "Klotz",
+        55
+      ],
+      [
+        "APOGEE",
+        52
+      ],
+      [
+        "ARTURIA",
+        47
+      ],
+      [
+        "Waves",
+        43
+      ],
+      [
+        "Q Acoustics",
+        26
+      ],
+      [
+        "Nash Guitars",
+        25
+      ],
+      [
+        "Overloud",
+        23
+      ],
+      [
+        "NEUTRIK",
+        22
+      ],
+      [
+        "iZotope",
+        21
+      ],
+      [
+        "PRIMACOUSTIC",
+        21
+      ],
+      [
+        "DYNAUDIO",
+        20
+      ],
+      [
+        "HK Audio",
+        20
+      ],
+      [
+        "JICO",
+        20
+      ],
+      [
+        "Native Instruments",
+        18
+      ],
+      [
+        "Antares",
+        12
+      ],
+      [
+        "Michael Tuttle Guitars",
+        11
+      ],
+      [
+        "Rotosound",
+        11
+      ]
+    ],
+    "category": [
+      [
+        "액세서리",
+        222
+      ],
+      [
+        "레코딩",
+        178
+      ],
+      [
+        "스피커",
+        164
+      ],
+      [
+        "악기/앰프",
+        77
+      ],
+      [
+        "유선 마이크",
+        60
+      ],
+      [
+        "특가상품",
+        50
+      ],
+      [
+        "포터블 오디오 케이블",
+        35
+      ],
+      [
+        "인터페이스 (USB)",
+        33
+      ],
+      [
+        "PA 스피커",
+        25
+      ],
+      [
+        "유튜버 마이크(MV)",
+        21
+      ],
+      [
+        "JICO 카트리지/스타일러스",
+        16
+      ],
+      [
+        "이어폰",
+        13
+      ],
+      [
+        "인터페이스 (Thunderbolt)",
+        13
+      ],
+      [
+        "무선 마이크",
+        12
+      ],
+      [
+        "마이크 케이블",
+        11
+      ],
+      [
+        "블루투스 스피커",
+        10
+      ],
+      [
+        "교체용 바늘",
+        8
+      ],
+      [
+        "소프트웨어 (DAW)",
+        7
+      ],
+      [
+        "포노카트리지",
+        7
+      ],
+      [
+        "D-Sub 케이블",
+        7
+      ]
+    ],
+    "price_state": [
+      [
+        "public",
+        1000
+      ]
+    ],
+    "price_band": [
+      [
+        "c_100k_300k",
+        225
+      ],
+      [
+        "d_300k_1m",
+        225
+      ],
+      [
+        "a_under_50k",
+        181
+      ],
+      [
+        "e_1m_5m",
+        177
+      ],
+      [
+        "b_50k_100k",
+        127
+      ],
+      [
+        "f_over_5m",
+        65
+      ]
+    ],
+    "sales_status": [
+      [
+        "품절(판매중지)",
+        749
+      ],
+      [
+        "미확인",
+        119
+      ],
+      [
+        "재고미관리",
+        113
+      ],
+      [
+        "판매중",
+        19
+      ]
+    ],
+    "option_count": [
+      [
+        "0",
+        709
+      ],
+      [
+        "1",
+        139
+      ],
+      [
+        "2",
+        2
+      ],
+      [
+        "4",
+        2
+      ],
+      [
+        "5",
+        53
+      ],
+      [
+        "6",
+        4
+      ],
+      [
+        "9",
+        8
+      ],
+      [
+        "11",
+        15
+      ],
+      [
+        "12",
+        10
+      ],
+      [
+        "13",
+        9
+      ]
+    ]
+  },
+  "catalog_distributions": {
+    "site": [
+      [
+        "samamusic",
+        2294
+      ],
+      [
+        "samasound",
+        2281
+      ]
+    ],
+    "brand": [
+      [
+        "SHURE",
+        600
+      ],
+      [
+        "Shure",
+        474
+      ],
+      [
+        "Genelec",
+        174
+      ],
+      [
+        "Klotz",
+        166
+      ],
+      [
+        "KLOTZ",
+        161
+      ],
+      [
+        "PreSonus",
+        160
+      ],
+      [
+        "PRESONUS",
+        157
+      ],
+      [
+        "Neutrik",
+        139
+      ],
+      [
+        "APOGEE",
+        133
+      ],
+      [
+        "HK Audio",
+        133
+      ],
+      [
+        "ARTURIA",
+        132
+      ],
+      [
+        "Michael Tuttle Guitars",
+        124
+      ],
+      [
+        "NEUTRIK",
+        117
+      ],
+      [
+        "Nash Guitars",
+        102
+      ],
+      [
+        "JICO",
+        96
+      ],
+      [
+        "Waves",
+        87
+      ],
+      [
+        "IK MULTIMEDIA",
+        82
+      ],
+      [
+        "PRIMACOUSTIC",
+        79
+      ],
+      [
+        "Martin Audio",
+        77
+      ],
+      [
+        "König & Meyer",
+        69
+      ]
+    ],
+    "category": [
+      [
+        "악기/앰프",
+        277
+      ],
+      [
+        "액세서리",
+        268
+      ],
+      [
+        "소프트웨어/플러그인",
+        242
+      ],
+      [
+        "레코딩",
+        207
+      ],
+      [
+        "유선마이크 액세서리",
+        189
+      ],
+      [
+        "스피커",
+        181
+      ],
+      [
+        "KLOTZ",
+        161
+      ],
+      [
+        "PRESONUS",
+        98
+      ],
+      [
+        "NEUTRIK 커넥터&액세서리",
+        88
+      ],
+      [
+        "무선 마이크 액세서리",
+        87
+      ],
+      [
+        "마이크",
+        77
+      ],
+      [
+        "기타&베이스 앰프",
+        67
+      ],
+      [
+        "USB 인터페이스",
+        65
+      ],
+      [
+        "XLR",
+        63
+      ],
+      [
+        "벌크 케이블",
+        60
+      ],
+      [
+        "유선 마이크",
+        60
+      ],
+      [
+        "특가상품",
+        57
+      ],
+      [
+        "레코딩/음향",
+        56
+      ],
+      [
+        "JICO",
+        51
+      ],
+      [
+        "설치용 스피커",
+        50
+      ]
+    ],
+    "price_state": [
+      [
+        "inquiry_price",
+        2370
+      ],
+      [
+        "public",
+        2117
+      ],
+      [
+        "sold_out_sale_completed",
+        87
+      ],
+      [
+        "missing",
+        1
+      ]
+    ],
+    "price_band": [
+      [
+        "(blank)",
+        2455
+      ],
+      [
+        "a_under_50k",
+        513
+      ],
+      [
+        "d_300k_1m",
+        485
+      ],
+      [
+        "c_100k_300k",
+        381
+      ],
+      [
+        "e_1m_5m",
+        367
+      ],
+      [
+        "b_50k_100k",
+        248
+      ],
+      [
+        "f_over_5m",
+        126
+      ]
+    ]
+  },
+  "live_vs_catalog_site_share": {
+    "samasound": {
+      "live": 0,
+      "live_share": 0,
+      "catalog": 2281,
+      "catalog_share": 0.4986
+    },
+    "samamusic": {
+      "live": 1000,
+      "live_share": 1,
+      "catalog": 2294,
+      "catalog_share": 0.5014
+    },
+    "yamaha": {
+      "live": 0,
+      "live_share": 0,
+      "catalog": 0,
+      "catalog_share": 0
+    },
+    "samastore": {
+      "live": 0,
+      "live_share": 0,
+      "catalog": 0,
+      "catalog_share": 0
+    }
+  },
+  "evidence_available": {
+    "margin": false,
+    "sales_volume": false,
+    "representative_product_flag": false,
+    "batch_selection_reason_text": true
+  }
+}
