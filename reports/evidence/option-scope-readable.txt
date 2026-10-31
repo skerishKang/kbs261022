@@ -1,0 +1,16 @@
+=== 4167 ===
+  own selects  : 
+  cross selects: addproduct_option_id_1637_1 owner=1637 "KLOTZ AY7 클로츠 Lightweight Y 케이블 (3.5 TRS" ; addproduct_option_id_1638_1 owner=1638 "KLOTZ AY7A 클로츠 Lightweight Y 케이블 (3.5 TR" ; addproduct_option_id_3319_1 owner=3319 "[묶음상품용] KLOTZ M1BTT 자체제작 클로츠 레코딩 케이블 (TR"
+  tables       : 상품 옵션 <[한정판] PreSonus Eris 3.5 GEN2 White 프리소너스 에리스 2세대 모니터 스피커 1조(2통) 화이트> [] | 옵션 정보 <추가구성상품 선택하신 상품은 메인 상품과 함께 결제가 가능합니다.> [addproduct_option_id_1637_1] | 옵션 정보 <추가구성상품 선택하신 상품은 메인 상품과 함께 결제가 가능합니다.> [addproduct_option_id_1638_1] | 옵션 정보 <추가구성상품 선택하신 상품은 메인 상품과 함께 결제가 가능합니다.> [addproduct_option_id_3319_1]
+=== 1118 ===
+  own selects  : 
+  cross selects: addproduct_option_id_3318_1 owner=3318 "[묶음상품용] KLOTZ M2BMXT 자체제작 클로츠 레코딩 케이블 (X"
+  tables       : 상품 옵션 <GENELEC 8010A 제네렉 스튜디오 모니터 스피커 (화이트)> [] | 옵션 정보 <추가구성상품 선택하신 상품은 메인 상품과 함께 결제가 가능합니다.> [addproduct_option_id_3318_1]
+=== 5685 ===
+  own selects  : product_option_id1 [1m / 3m [품절] (+40,000원) / 5m [품절] (+85,000원)]
+  cross selects: 
+  tables       : 상품 옵션 <KLOTZ D-Sub (25pin) 수 to 4/4 XLR M/F 클로츠 LOOM 디지털 케이블 (YAMAHA 핀 배열) YCDAE> [product_option_id1]
+=== 4558 ===
+  own selects  : product_option_id1 [블랙 / 화이트 / 월넛]
+  cross selects: 
+  tables       : 상품 옵션 <Q Acoustics Q M20 큐어쿠스틱 Hi-Res 블루투스 무선 스피커 (Pair)> [product_option_id1]

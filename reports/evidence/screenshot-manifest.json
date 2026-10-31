@@ -1,0 +1,249 @@
+{
+  "kept_count": 60,
+  "dropped_count": 1,
+  "kept": [
+    {
+      "file": "category-1038.jpg",
+      "reason": "category menu walk"
+    },
+    {
+      "file": "category-24.jpg",
+      "reason": "category menu walk"
+    },
+    {
+      "file": "category-25.jpg",
+      "reason": "category menu walk"
+    },
+    {
+      "file": "category-1152.jpg",
+      "reason": "category menu walk"
+    },
+    {
+      "file": "category-28.jpg",
+      "reason": "category menu walk"
+    },
+    {
+      "file": "category-366.jpg",
+      "reason": "category menu walk"
+    },
+    {
+      "file": "category-379.jpg",
+      "reason": "category menu walk"
+    },
+    {
+      "file": "category-42.jpg",
+      "reason": "category menu walk"
+    },
+    {
+      "file": "category-758.jpg",
+      "reason": "category menu walk"
+    },
+    {
+      "file": "category-84.jpg",
+      "reason": "category menu walk"
+    },
+    {
+      "file": "category-97.jpg",
+      "reason": "category menu walk"
+    },
+    {
+      "file": "category-after-click.jpg",
+      "reason": "category click interaction"
+    },
+    {
+      "file": "crosscheck-samasound-3842.jpg",
+      "reason": "samasound B2B cross-check"
+    },
+    {
+      "file": "crosscheck-samasound-3826.jpg",
+      "reason": "samasound B2B cross-check"
+    },
+    {
+      "file": "crosscheck-samasound-3887.jpg",
+      "reason": "samasound B2B cross-check"
+    },
+    {
+      "file": "crosscheck-samasound-list.jpg",
+      "reason": "samasound B2B cross-check"
+    },
+    {
+      "file": "detail-1139.jpg",
+      "reason": "sample product detail"
+    },
+    {
+      "file": "detail-1502.jpg",
+      "reason": "sample product detail"
+    },
+    {
+      "file": "detail-1562.jpg",
+      "reason": "sample product detail"
+    },
+    {
+      "file": "detail-1710.jpg",
+      "reason": "sample product detail"
+    },
+    {
+      "file": "detail-3184.jpg",
+      "reason": "sample product detail"
+    },
+    {
+      "file": "detail-3563.jpg",
+      "reason": "sample product detail"
+    },
+    {
+      "file": "detail-3687.jpg",
+      "reason": "sample product detail"
+    },
+    {
+      "file": "detail-40.jpg",
+      "reason": "sample product detail"
+    },
+    {
+      "file": "detail-4103.jpg",
+      "reason": "sample product detail"
+    },
+    {
+      "file": "detail-4167.jpg",
+      "reason": "sample product detail"
+    },
+    {
+      "file": "detail-4175.jpg",
+      "reason": "sample product detail"
+    },
+    {
+      "file": "detail-4176.jpg",
+      "reason": "sample product detail"
+    },
+    {
+      "file": "detail-4494.jpg",
+      "reason": "sample product detail"
+    },
+    {
+      "file": "detail-4537.jpg",
+      "reason": "sample product detail"
+    },
+    {
+      "file": "detail-4558.jpg",
+      "reason": "sample product detail"
+    },
+    {
+      "file": "detail-5162.jpg",
+      "reason": "sample product detail"
+    },
+    {
+      "file": "detail-5612.jpg",
+      "reason": "sample product detail"
+    },
+    {
+      "file": "detail-5665.jpg",
+      "reason": "sample product detail"
+    },
+    {
+      "file": "detail-5685.jpg",
+      "reason": "sample product detail"
+    },
+    {
+      "file": "detail-974.jpg",
+      "reason": "sample product detail"
+    },
+    {
+      "file": "domain-samamusic_apex.jpg",
+      "reason": "domain comparison"
+    },
+    {
+      "file": "domain-samasound_www.jpg",
+      "reason": "domain comparison"
+    },
+    {
+      "file": "domain-samamusic_www.jpg",
+      "reason": "domain comparison"
+    },
+    {
+      "file": "domain-samastore_apex.jpg",
+      "reason": "domain comparison"
+    },
+    {
+      "file": "option-4558-product_option_id1.jpg",
+      "reason": "own option group"
+    },
+    {
+      "file": "list-cate-42.jpg",
+      "reason": "category list page"
+    },
+    {
+      "file": "domain-samastore_www.jpg",
+      "reason": "domain comparison"
+    },
+    {
+      "file": "option-5685-product_option_id1.jpg",
+      "reason": "own option group"
+    },
+    {
+      "file": "soldout-detail-1304.jpg",
+      "reason": "sold-out evidence"
+    },
+    {
+      "file": "search-shure.jpg",
+      "reason": "search result"
+    },
+    {
+      "file": "soldout-detail-1119.jpg",
+      "reason": "sold-out evidence"
+    },
+    {
+      "file": "soldout-detail-4056.jpg",
+      "reason": "sold-out evidence"
+    },
+    {
+      "file": "soldout-detail-3184.jpg",
+      "reason": "sold-out evidence"
+    },
+    {
+      "file": "soldout-detail-4385.jpg",
+      "reason": "sold-out evidence"
+    },
+    {
+      "file": "soldout-detail-4115.jpg",
+      "reason": "sold-out evidence"
+    },
+    {
+      "file": "soldout-list-cate-366.jpg",
+      "reason": "sold-out list evidence"
+    },
+    {
+      "file": "soldout-list-cate-24.jpg",
+      "reason": "sold-out list evidence"
+    },
+    {
+      "file": "soldout-list-cate-379.jpg",
+      "reason": "sold-out list evidence"
+    },
+    {
+      "file": "soldout-list-cate-84.jpg",
+      "reason": "sold-out list evidence"
+    },
+    {
+      "file": "verify-search-price-defect.jpg",
+      "reason": "search price attribute defect"
+    },
+    {
+      "file": "verify-search-genelec.jpg",
+      "reason": "search verification"
+    },
+    {
+      "file": "soldout-list-cate-42.jpg",
+      "reason": "sold-out list evidence"
+    },
+    {
+      "file": "verify-search-_________XYZ.jpg",
+      "reason": "search verification"
+    },
+    {
+      "file": "verify-search-shure.jpg",
+      "reason": "search verification"
+    }
+  ],
+  "dropped": [
+    "detail-3187.png"
+  ]
+}

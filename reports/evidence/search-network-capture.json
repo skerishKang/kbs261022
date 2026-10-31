@@ -1,0 +1,141 @@
+[
+  {
+    "phase": "request",
+    "method": "POST",
+    "url": "https://api.dalue.io:10806/dcse/hotKeywords",
+    "post_data": "apiKey=Ak25dpcSKLXu&collName=products&type=0&variance=1"
+  },
+  {
+    "phase": "request",
+    "method": "POST",
+    "url": "https://api.dalue.io:10806/dcse/hotKeywords",
+    "post_data": "apiKey=Ak25dpcSKLXu&collName=products&type=0&variance=1"
+  },
+  {
+    "phase": "request",
+    "method": "POST",
+    "url": "https://api.dalue.io:10806/dcse/relativeTerm",
+    "post_data": "apiKey=Ak25dpcSKLXu&collName=products&typo=1&query=shure"
+  },
+  {
+    "phase": "request",
+    "method": "POST",
+    "url": "https://api.dalue.io:10806/dcse/query",
+    "post_data": "apiKey=Ak25dpcSKLXu&query=(shure)%3AproductName+%3COR%3E+(shure)%3AproductName+%3COR%3E+(shure)%3AproductTag+%3COR%3E+(shure)%3AsummaryDescription+%3COR%3E+(shure)%3AcustomProductCode+%3COR%3E+(shure)&collName=products&begin=1&size=40&sortField=&sortType=&categoryIdFields=categoryRoot1No%2CcategoryRoot2No&categoryNameFields=categoryRoot1%2CcategoryRoot2&brandIdField=brandCode&brandNameField=brandName&brandCode=&categoryId=&rangeFields=mobileDiscountPrice&rangeValues=0%2C9999999999&categoryAuthFieldName=categoryNos&categoryAuthDevice=2&categoryAuthMemberType=0&vFields=productNo%2CproductName%2Cprice%2CretailPrice%2CpointsAmount%2Cimage%2CsoldOut%2CpcDiscountPrice%2CmobileDiscountPrice%2CexposureLimitType%2CexposureGroupList%2CcategoryNos%2CbrandName%2Cdisplay%2Cselling%2CproductCode%2CcategoryRoot1No%2CsimpleDescription%2CmodelName%2Cicon%2CiconShowPeriod%2Cicon%2ClistIcon%2CsummaryDescription%2Coptions%2CpriceContent&equalFields=display&equalValues=1&aclFlagField=exposureLimitType&aclFlagValue=M&aclField=exposureGroupList&aclFieldValue=0&aclShow=0&aclRemoveFields=price%2CmobilePrice%2CpcPrice&priceField=mobileDiscountPrice&priceClusterNo=3&categoryAuthNoCategory=0&freqUpdateFieldSort=&freqUpdateFieldInclude=1&tagStat=1&tagFields=class_%ED%8A%B9%EA%B0%80%EC%83%81%ED%92%88%7Cclass_%EC%9D%B4%EC%96%B4%ED%8F%B0%C2%B7%ED%97%A4%EB%93%9C%ED%8F%B0%7Cbrand%7Cclass_%EC%86%8C%ED%94%84%ED%8A%B8%EC%9B%A8%EC%96%B4%7Cclass_%EC%95%85%EA%B8%B0%C2%B7%EC%95%B0%ED%94%84%7Cclass_%EC%BC%80%EC%9D%B4%EB%B8%94%C2%B7%EC%BB%A4%EB%84%A5%ED%84%B0%7Cclass_%EB%A7%88%EC%9D%B4%ED%81%AC%7Cclass_%EC%95%A1%EC%84%B8%EC%84%9C%EB%A6%AC%7Cclass%7Cclass_%EC%95%84%EC%9B%83%EB%B3%B4%EB%93%9C%7Cclass_%EB%A0%88%EC%BD%94%EB%94%A9%7Cclass_Hi-Fi%7Cclass_%EB%AF%B9%EC%84%9C%7Cclass_%EC%8A%A4%ED%94%BC%EC%BB%A4&tagSeperator=%7C&tagOperator=&exceptCategoryMatchAll=1&customAuthId=&weightField=soldOut&weightMultiplier=-900000&weightInclude=0&tagValue_class_%EC%95%85%EA%B8%B0%C2%B7%EC%95%B0%ED%94%84=&tagOperator_class_%ED%8A%B9%EA%B0%80%EC%83%81%ED%92%88=&tagOperator_class_%EC%9D%B4%EC%96%B4%ED%8F%B0%C2%B7%ED%97%A4%EB%93%9C%ED%8F%B0=&tagOperator_brand=&tagOperator_class_%EC%86%8C%ED%94%84%ED%8A%B8%EC%9B%A8%EC%96%B4=&tagOperator_class_%EC%95%85%EA%B8%B0%C2%B7%EC%95%B0%ED%94%84=&tagOperator_class_%EC%BC%80%EC%9D%B4%EB%B8%94%C2%B7%EC%BB%A4%EB%84%A5%ED%84%B0=&tagOperator_class_%EB%A7%88%EC%9D%B4%ED%81%AC=&tagOperator_class_%EC%95%A1%EC%84%B8%EC%84%9C%EB%A6%AC=&tagOperator_class=&tagOperator_class_%EC%95%84%EC%9B%83%EB%B3%B4%EB%93%9C=&tagOperator_class_%EB%A0%88%EC%BD%94%EB%94%A9=&tagOperator_class_Hi-Fi=&tagOperator_class_%EB%AF%B9%EC%84%9C=&tagOperator_class_%EC%8A%A4%ED%94%BC%EC%BB%A4="
+  },
+  {
+    "phase": "response",
+    "status": 200,
+    "url": "https://api.dalue.io:10806/dcse/hotKeywords",
+    "body": "{\"header\":{\"options\":{\"__reserved\":\"\"},\"code\":0,\"message\":\"\"},\"result\":[\"(NEUTRIK):productName <OR> (NEUTRIK):productName <OR> (NEUTRIK):productTag <OR> (NEUTRIK):summaryDescription <OR> (NEUTRIK):customProductCode <OR> (NEUTRIK)\",\"(pga):productName <OR> (pga):productName <OR> (pga):productTag <OR> (pga):summaryDescription <OR> (pga):customProductCode <OR> (pga)\",\"*\",\"(shure):productName <OR> (shure):productName <OR> (shure):productTag <OR> (shure):summaryDescription <OR> (shure):customProductCode <OR> (shure)\",\"(shure sm):productName <OR> (shure sm):productName <OR> (shure sm):productTag <OR> (shure sm):summaryDescription <OR> (shure sm):customProductCode <OR> (shure sm)\",\"(PR O):productName <OR> (PR O):productName <OR> (PR O):productTag <OR> (PR O):summaryDescription <OR> (PR O):customProductCode <OR> (PR O)\",\"(스탠드):productName <OR> (스탠드):productName <OR> (스탠드):productTag <OR> (스탠드):summaryDescription <OR> (스탠드):customProductCode <OR> (스탠드)\",\"(컴플라이폼팁 버즈4):productName <OR> (컴플라이폼팁 버즈4):productName <OR> (컴플라이폼팁 버즈4):productTag <OR> (컴플라이폼팁 버즈4):summaryDescription <OR> (컴플라이폼팁 버즈4):customProductCode <OR> (컴플라�\",\"(SONAR):productName <OR> (SONAR):productName <OR> (SONAR):productTag <O"
+  },
+  {
+    "phase": "response",
+    "status": 200,
+    "url": "https://api.dalue.io:10806/dcse/hotKeywords",
+    "body": "{\"header\":{\"options\":{\"__reserved\":\"\"},\"code\":0,\"message\":\"\"},\"result\":[\"(NEUTRIK):productName <OR> (NEUTRIK):productName <OR> (NEUTRIK):productTag <OR> (NEUTRIK):summaryDescription <OR> (NEUTRIK):customProductCode <OR> (NEUTRIK)\",\"(pga):productName <OR> (pga):productName <OR> (pga):productTag <OR> (pga):summaryDescription <OR> (pga):customProductCode <OR> (pga)\",\"*\",\"(shure):productName <OR> (shure):productName <OR> (shure):productTag <OR> (shure):summaryDescription <OR> (shure):customProductCode <OR> (shure)\",\"(shure sm):productName <OR> (shure sm):productName <OR> (shure sm):productTag <OR> (shure sm):summaryDescription <OR> (shure sm):customProductCode <OR> (shure sm)\",\"(PR O):productName <OR> (PR O):productName <OR> (PR O):productTag <OR> (PR O):summaryDescription <OR> (PR O):customProductCode <OR> (PR O)\",\"(스탠드):productName <OR> (스탠드):productName <OR> (스탠드):productTag <OR> (스탠드):summaryDescription <OR> (스탠드):customProductCode <OR> (스탠드)\",\"(컴플라이폼팁 버즈4):productName <OR> (컴플라이폼팁 버즈4):productName <OR> (컴플라이폼팁 버즈4):productTag <OR> (컴플라이폼팁 버즈4):summaryDescription <OR> (컴플라이폼팁 버즈4):customProductCode <OR> (컴플라�\",\"(SONAR):productName <OR> (SONAR):productName <OR> (SONAR):productTag <O"
+  },
+  {
+    "phase": "response",
+    "status": 200,
+    "url": "https://api.dalue.io:10806/dcse/relativeTerm",
+    "body": "{\"header\":{\"options\":{\"__reserved\":\"\"},\"code\":0,\"message\":\"SUCCESS\"},\"relativeTerms\":[\"N SHURE\",\"SHURE N\",\"NUDE SHURE\",\"SHURE 50\",\"SHURE 카트리지\",\"지코 SHURE\",\"스타일러스 SHURE\",\"IMP SHURE\",\"SHURE SHURE\"]}"
+  },
+  {
+    "phase": "response",
+    "status": 200,
+    "url": "https://api.dalue.io:10806/dcse/query",
+    "body": "{\"header\":{\"options\":{\"__reserved\":\"\"},\"code\":0,\"message\":\"SUCCESS\",\"collName\":\"products\",\"count\":40,\"totalCount\":657,\"begin\":1,\"size\":40,\"keyField\":\"productNo\"},\"result\":[{\"__weight\":8220,\"productNo\":\"4901\",\"productName\":\"JICO 지코 일체형 옴니아 OMNIA J44A 7 IMP NUDE (SHURE 슈어 M44-7 복각) - 블랙\",\"price\":\"398000\",\"retailPrice\":\"0\",\"pointsAmount\":\"\",\"image\":\"https:\\/\\/samastore.co.kr\\/web\\/product\\/medium\\/202507\\/96acf93220c2f60697e1930e7999277c.jpg\",\"soldOut\":\"0\",\"pcDiscountPrice\":\"398000\",\"mobileDiscountPrice\":\"398000\",\"exposureLimitType\":\"A\",\"exposureGroupList\":\"\",\"categoryNos\":\"131;131^914;24^1016;1038^1104\",\"brandName\":\"JICO\",\"display\":\"1\",\"selling\":\"1\",\"productCode\":\"P0000HGN\",\"categoryRoot1No\":\"24\",\"simpleDescription\":\"천연다이아몬드를 사용하여 수작업 방식으로 제작합니다.\",\"modelName\":\"OMNIA J44A 7 IMP NUDE BLACK\",\"icon\":\"\",\"iconShowPeriod\":\"\",\"listIcon\":\"0,0,0\",\"summaryDescription\":\"SHURE M44-7을 복각한 JICO의 일체형 'OMNIA' 모델 (헤드쉘+카트리지+스타일러스)\",\"options\":\"{\\\"has_option\\\":\\\"F\\\",\\\"option_type\\\":\\\"\\\",\\\"option_list_type\\\":\\\"\\\",\\\"option_preset_code\\\":\\\"\\\",\\\"options\\\":[],\\\"select_one_by_option\\\":\\\"\\\",\\\"option_preset_name\\\":\\\"\\\",\\\"use_additional_option\\\":\\\"F\\\",\\\"additional_options\\\":[],\\\"use_attached_file_option\\\":\\\"F\\\"}\""
+  },
+  {
+    "phase": "meta",
+    "inputs": [
+      {
+        "id": "banner_action",
+        "name": "banner_action",
+        "type": "hidden",
+        "cls": "",
+        "visible": false
+      },
+      {
+        "id": "keyword",
+        "name": "keyword",
+        "type": "hidden",
+        "cls": "",
+        "visible": false
+      },
+      {
+        "id": "",
+        "name": "sortType",
+        "type": "hidden",
+        "cls": "",
+        "visible": false
+      },
+      {
+        "id": "queryTop",
+        "name": "query",
+        "type": "text",
+        "cls": "inputTypeText queryTop",
+        "visible": true
+      },
+      {
+        "id": "bntTop",
+        "name": "",
+        "type": "image",
+        "cls": "",
+        "visible": true
+      },
+      {
+        "id": "query2",
+        "name": "query",
+        "type": "text",
+        "cls": "keyword dss_si1",
+        "visible": true
+      },
+      {
+        "id": "dssBtn_in",
+        "name": "",
+        "type": "image",
+        "cls": "dssBtnSearch",
+        "visible": true
+      },
+      {
+        "id": "priceFrom",
+        "name": "",
+        "type": "number",
+        "cls": "dalue_css_input_price",
+        "visible": false
+      },
+      {
+        "id": "priceTo",
+        "name": "",
+        "type": "number",
+        "cls": "dalue_css_input_price",
+        "visible": false
+      },
+      {
+        "id": "queryLeft",
+        "name": "query",
+        "type": "text",
+        "cls": "",
+        "visible": false
+      },
+      {
+        "id": "keyword",
+        "name": "keyword",
+        "type": "hidden",
+        "cls": "queryInput si",
+        "visible": false
+      },
+      {
+        "id": "query2",
+        "name": "query",
+        "type": "text",
+        "cls": "inputTypeText shopSearchInput1 queryInput",
+        "visible": false
+      }
+    ],
+    "url": "https://www.samamusic.co.kr/shopSearch/search.html?keyword=shure&query=shure&begin=1&size=40&brandeCode=&categoryId=&price=&sortType=&cursor=&freqUpdateFieldSort=&tagStat=1&replaceHistory=true&&queryField=&tagValue_class_%EC%95%85%EA%B8%B0%C2%B7%EC%95%B0%ED%94%84=",
+    "title": "삼아스토어"
+  }
+]

@@ -1,0 +1,74 @@
+{
+  "menus": [
+    {
+      "selector": "#category-lnb.xans-element- xans-layout xans-layout-category category",
+      "link_count": 11,
+      "links": [
+        {
+          "text": "프로모션 보기",
+          "href": "/product/list.html?cate_no=1152",
+          "absolute": "https://www.samamusic.co.kr/product/list.html?cate_no=1152"
+        },
+        {
+          "text": "브랜드",
+          "href": "/product/list.html?cate_no=24",
+          "absolute": "https://www.samamusic.co.kr/product/list.html?cate_no=24"
+        },
+        {
+          "text": "마이크",
+          "href": "/product/list.html?cate_no=84",
+          "absolute": "https://www.samamusic.co.kr/product/list.html?cate_no=84"
+        },
+        {
+          "text": "스피커",
+          "href": "/product/list.html?cate_no=42",
+          "absolute": "https://www.samamusic.co.kr/product/list.html?cate_no=42"
+        },
+        {
+          "text": "이어폰/헤드폰",
+          "href": "/product/list.html?cate_no=25",
+          "absolute": "https://www.samamusic.co.kr/product/list.html?cate_no=25"
+        },
+        {
+          "text": "레코딩/음향",
+          "href": "/product/list.html?cate_no=28",
+          "absolute": "https://www.samamusic.co.kr/product/list.html?cate_no=28"
+        },
+        {
+          "text": "악기/앰프",
+          "href": "/product/list.html?cate_no=379",
+          "absolute": "https://www.samamusic.co.kr/product/list.html?cate_no=379"
+        },
+        {
+          "text": "Hi-Fi",
+          "href": "/product/list.html?cate_no=1038",
+          "absolute": "https://www.samamusic.co.kr/product/list.html?cate_no=1038"
+        },
+        {
+          "text": "케이블/커넥터",
+          "href": "/product/list.html?cate_no=366",
+          "absolute": "https://www.samamusic.co.kr/product/list.html?cate_no=366"
+        },
+        {
+          "text": "소프트웨어",
+          "href": "/product/list.html?cate_no=758",
+          "absolute": "https://www.samamusic.co.kr/product/list.html?cate_no=758"
+        },
+        {
+          "text": "특가상품",
+          "href": "/product/list.html?cate_no=97",
+          "absolute": "https://www.samamusic.co.kr/product/list.html?cate_no=97"
+        }
+      ]
+    }
+  ],
+  "interaction": [
+    {
+      "clicked_text": "마이크",
+      "clicked_href": "/product/list.html?cate_no=84",
+      "before": "https://www.samamusic.co.kr/",
+      "after": "https://www.samamusic.co.kr/product/list.html?cate_no=84",
+      "screenshot": "category-after-click.png"
+    }
+  ]
+}

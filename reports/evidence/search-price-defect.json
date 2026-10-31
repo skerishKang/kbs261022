@@ -1,0 +1,217 @@
+{
+  "search_cards": {
+    "url": "https://www.samamusic.co.kr/shopSearch/search.html?query=genelec&begin=1&size=40&brandeCode=&categoryId=&price=&sortType=&cursor=&freqUpdateFieldSort=&tagStat=1&replaceHistory=true&&queryField=&tagValue_class_%EC%95%85%EA%B8%B0%C2%B7%EC%95%B0%ED%94%84=",
+    "card_count_visible": 40,
+    "cards": [
+      {
+        "card_id": "anchorBoxId_4558",
+        "href_product_no": "1118",
+        "dprice_element_id": "dprice_1118",
+        "rendered_price_text": "620,000원",
+        "data_price_attr": "^1,050,000",
+        "card_price_numbers": [
+          "620,000원"
+        ]
+      },
+      {
+        "card_id": "anchorBoxId_4558",
+        "href_product_no": "4688",
+        "dprice_element_id": "dprice_4688",
+        "rendered_price_text": "620,000원",
+        "data_price_attr": "^1,050,000",
+        "card_price_numbers": [
+          "620,000원"
+        ]
+      },
+      {
+        "card_id": "anchorBoxId_4558",
+        "href_product_no": "4239",
+        "dprice_element_id": "dprice_4239",
+        "rendered_price_text": "620,000원",
+        "data_price_attr": "^1,050,000",
+        "card_price_numbers": [
+          "620,000원"
+        ]
+      },
+      {
+        "card_id": "anchorBoxId_4558",
+        "href_product_no": "2827",
+        "dprice_element_id": "dprice_2827",
+        "rendered_price_text": "620,000원",
+        "data_price_attr": "^1,050,000",
+        "card_price_numbers": [
+          "620,000원"
+        ]
+      },
+      {
+        "card_id": "anchorBoxId_4558",
+        "href_product_no": "5396",
+        "dprice_element_id": "dprice_5396",
+        "rendered_price_text": "8,592,000원",
+        "data_price_attr": "^1,050,000",
+        "card_price_numbers": [
+          "8,592,000원"
+        ]
+      },
+      {
+        "card_id": "anchorBoxId_4558",
+        "href_product_no": "2847",
+        "dprice_element_id": "dprice_2847",
+        "rendered_price_text": "8,500,000원",
+        "data_price_attr": "^1,050,000",
+        "card_price_numbers": [
+          "8,500,000원"
+        ]
+      },
+      {
+        "card_id": "anchorBoxId_4558",
+        "href_product_no": "1129",
+        "dprice_element_id": "dprice_1129",
+        "rendered_price_text": "3,960,000원",
+        "data_price_attr": "^1,050,000",
+        "card_price_numbers": [
+          "3,960,000원"
+        ]
+      },
+      {
+        "card_id": "anchorBoxId_4558",
+        "href_product_no": "1132",
+        "dprice_element_id": "dprice_1132",
+        "rendered_price_text": "5,160,000원",
+        "data_price_attr": "^1,050,000",
+        "card_price_numbers": [
+          "5,160,000원"
+        ]
+      },
+      {
+        "card_id": "anchorBoxId_4558",
+        "href_product_no": "2844",
+        "dprice_element_id": "dprice_2844",
+        "rendered_price_text": "5,160,000원",
+        "data_price_attr": "^1,050,000",
+        "card_price_numbers": [
+          "5,160,000원"
+        ]
+      },
+      {
+        "card_id": "anchorBoxId_4558",
+        "href_product_no": "4429",
+        "dprice_element_id": "dprice_4429",
+        "rendered_price_text": "5,160,000원",
+        "data_price_attr": "^1,050,000",
+        "card_price_numbers": [
+          "5,160,000원"
+        ]
+      },
+      {
+        "card_id": "anchorBoxId_4558",
+        "href_product_no": "1127",
+        "dprice_element_id": "dprice_1127",
+        "rendered_price_text": "2,670,000원",
+        "data_price_attr": "^1,050,000",
+        "card_price_numbers": [
+          "2,670,000원"
+        ]
+      },
+      {
+        "card_id": "anchorBoxId_4558",
+        "href_product_no": "2841",
+        "dprice_element_id": "dprice_2841",
+        "rendered_price_text": "2,670,000원",
+        "data_price_attr": "^1,050,000",
+        "card_price_numbers": [
+          "2,670,000원"
+        ]
+      }
+    ]
+  },
+  "category_cards": {
+    "card_count_visible": 20,
+    "cards": [
+      {
+        "card_id": "anchorBoxId_4167",
+        "data_price_attr": "^219000",
+        "card_price_numbers": [
+          "219,000원"
+        ]
+      },
+      {
+        "card_id": "anchorBoxId_4168",
+        "data_price_attr": "^249000",
+        "card_price_numbers": [
+          "249,000원"
+        ]
+      },
+      {
+        "card_id": "anchorBoxId_974",
+        "data_price_attr": "^219000",
+        "card_price_numbers": [
+          "219,000원"
+        ]
+      },
+      {
+        "card_id": "anchorBoxId_1562",
+        "data_price_attr": "^249000",
+        "card_price_numbers": [
+          "249,000원"
+        ]
+      },
+      {
+        "card_id": "anchorBoxId_1118",
+        "data_price_attr": "^620000",
+        "card_price_numbers": [
+          "620,000원"
+        ]
+      },
+      {
+        "card_id": "anchorBoxId_2827",
+        "data_price_attr": "^620000",
+        "card_price_numbers": [
+          "620,000원"
+        ]
+      },
+      {
+        "card_id": "anchorBoxId_2828",
+        "data_price_attr": "^950000",
+        "card_price_numbers": [
+          "950,000원"
+        ]
+      },
+      {
+        "card_id": "anchorBoxId_1120",
+        "data_price_attr": "^1190000",
+        "card_price_numbers": [
+          "1,190,000원"
+        ]
+      },
+      {
+        "card_id": "anchorBoxId_2830",
+        "data_price_attr": "^1190000",
+        "card_price_numbers": [
+          "1,190,000원"
+        ]
+      },
+      {
+        "card_id": "anchorBoxId_2832",
+        "data_price_attr": "^1910000",
+        "card_price_numbers": [
+          "1,910,000원"
+        ]
+      },
+      {
+        "card_id": "anchorBoxId_2833",
+        "data_price_attr": "^1910000",
+        "card_price_numbers": [
+          "1,910,000원"
+        ]
+      },
+      {
+        "card_id": "anchorBoxId_2835",
+        "data_price_attr": "^1220000",
+        "card_price_numbers": [
+          "1,220,000원"
+        ]
+      }
+    ]
+  }
+}
