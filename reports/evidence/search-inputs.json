@@ -1,0 +1,35 @@
+[
+  {
+    "id": "queryTop",
+    "name": "query",
+    "cls": "inputTypeText queryTop",
+    "type": "text",
+    "placeholder": "",
+    "visible": true,
+    "parent_id": "",
+    "parent_cls": "",
+    "form_action": "https://www.samamusic.co.kr/shopSearch/search.html"
+  },
+  {
+    "id": "queryLeft",
+    "name": "query",
+    "cls": "",
+    "type": "text",
+    "placeholder": "",
+    "visible": false,
+    "parent_id": "",
+    "parent_cls": "dalue_left_filter_content dalue_left_filter_btn_container",
+    "form_action": null
+  },
+  {
+    "id": "query2",
+    "name": "query",
+    "cls": "inputTypeText shopSearchInput1 queryInput",
+    "type": "text",
+    "placeholder": "",
+    "visible": false,
+    "parent_id": "",
+    "parent_cls": "",
+    "form_action": null
+  }
+]
