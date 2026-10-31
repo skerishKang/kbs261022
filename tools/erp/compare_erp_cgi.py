@@ -82,12 +82,13 @@ def load_erp_items(path):
             "erp_spec": row[idx["규격명"]] if "규격명" in idx else "",
             "erp_group": row[idx["계층그룹명"]] if "계층그룹명" in idx else "",
             "erp_stock_mgmt": row[idx["재고수량관리"]] if "재고수량관리" in idx else "",
+            "erp_search": row[idx["검색창내용"]] if "검색창내용" in idx else "",
         })
     return items
 
 
-def load_cgi_master():
-    wb = openpyxl.load_workbook(DB_PATH, read_only=True, data_only=True)
+def load_cgi_master(path=None):
+    wb = openpyxl.load_workbook(path or DB_PATH, read_only=True, data_only=True)
     ws = wb["통합상품"]
     rows = list(ws.iter_rows(values_only=True))
     idx = {name: index for index, name in enumerate(rows[0])}
@@ -101,6 +102,11 @@ def load_cgi_master():
             "cgi_brand": str(row[idx["브랜드"]] or "").strip(),
             "cgi_model": str(row[idx["모델명"]] or "").strip(),
             "cgi_source": str(row[idx["공급처코드"]] or "").strip(),
+            "cgi_manufacturer": str(row[idx["제조사"]] or "").strip(),
+            "cgi_source_id": str(row[idx["공급처원본ID"]] or "").strip(),
+            "cgi_option_count": str(row[idx["옵션수"]] or "").strip(),
+            "cgi_spec_rows": str(row[idx["규격행수"]] or "").strip(),
+            "cgi_quality_flag": str(row[idx["품질플래그"]] or "").strip() if "품질플래그" in idx else "",
         })
     return items
 
