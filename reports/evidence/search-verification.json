@@ -1,0 +1,66 @@
+{
+  "shure": {
+    "url": "https://www.samamusic.co.kr/shopSearch/search.html?query=shure&begin=1&size=40&brandeCode=&categoryId=&price=&sortType=&cursor=&freqUpdateFieldSort=&tagStat=1&replaceHistory=true&&queryField=&tagValue_class_%EC%95%85%EA%B8%B0%C2%B7%EC%95%B0%ED%94%84=",
+    "card_count": 42,
+    "visible_cards": 40,
+    "first_names": [
+      "JICO 지코 일체형 옴니아 OMNIA J44A 7 IMP NUDE (SHURE 슈어 M44-7 복각) - 블랙",
+      "JICO 지코 스타일러스 N-44-7 IMP NUDE (SHURE 슈어 M-44-7 호환 / N-44-7 복각)",
+      "SHURE 95A35726 / 슈어 BT1 블루투스 이어폰 케이블 고정용 옷 클립",
+      "[JICO] 지코 카트리지 J44A 7 (SHURE 슈어 N-44-7, N44 호환)",
+      "[JICO] 지코 스타일러스 N-44-7 SAS 사파이어 캔틸레버 (SHURE 슈어 M44 호환)",
+      "[JICO] 지코 스타일러스 N-44-7 SAS 보론 캔틸레버 (SHURE 슈어 M44 호환)"
+    ],
+    "first_prices": [
+      "^1,050,000",
+      "^1,050,000",
+      "^1,050,000",
+      "^1,050,000",
+      "^1,050,000",
+      "^1,050,000"
+    ],
+    "no_result_message_visible": false,
+    "no_result_message_text": "검색결과가 없습니다.",
+    "pagination_text": "1 2 3"
+  },
+  "genelec": {
+    "url": "https://www.samamusic.co.kr/shopSearch/search.html?query=genelec&begin=1&size=40&brandeCode=&categoryId=&price=&sortType=&cursor=&freqUpdateFieldSort=&tagStat=1&replaceHistory=true&&queryField=&tagValue_class_%EC%95%85%EA%B8%B0%C2%B7%EC%95%B0%ED%94%84=",
+    "card_count": 42,
+    "visible_cards": 40,
+    "first_names": [
+      "GENELEC 8010A 제네렉 스튜디오 모니터 스피커 (화이트)",
+      "GENELEC 8010A 제네렉 스튜디오 모니터 스피커 (블랙)",
+      "GENELEC 8010A 제네렉 스튜디오 모니터 스피커 (로우컬러)",
+      "GENELEC 8010A 제네렉 스튜디오 모니터 스피커 (다크그레이)",
+      "GENELEC 커스텀 컬러 8331A 1조 제네렉 SAM 동축 스튜디오 모니터 스피커",
+      "GENELEC 8351B 제네렉 SAM 동축 스튜디오 모니터 스피커 (블랙)"
+    ],
+    "first_prices": [
+      "^1,050,000",
+      "^1,050,000",
+      "^1,050,000",
+      "^1,050,000",
+      "^1,050,000",
+      "^1,050,000"
+    ],
+    "no_result_message_visible": false,
+    "no_result_message_text": "검색결과가 없습니다.",
+    "pagination_text": "1 2 3"
+  },
+  "존재하지않는상품명XYZ": {
+    "url": "https://www.samamusic.co.kr/shopSearch/search.html?query=%EC%A1%B4%EC%9E%AC%ED%95%98%EC%A7%80%EC%95%8A%EB%8A%94%EC%83%81%ED%92%88%EB%AA%85XYZ&begin=1&size=40&brandeCode=&categoryId=&price=&sortType=&cursor=&freqUpdateFieldSort=&tagStat=1&replaceHistory=true&&queryField=&tagValue_class_%EC%95%85%EA%B8%B0%C2%B7%EC%95%B0%ED%94%84=",
+    "card_count": 2,
+    "visible_cards": 0,
+    "first_names": [
+      "상품명 : Positive Grid REACTOR Control 리액터 전용 무선 풋 컨트롤러",
+      "{$productName}"
+    ],
+    "first_prices": [
+      null,
+      "^1,050,000"
+    ],
+    "no_result_message_visible": true,
+    "no_result_message_text": "검색결과가 없습니다.",
+    "pagination_text": ""
+  }
+}
