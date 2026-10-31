@@ -36,4 +36,4 @@ jobs:
       - name: Validate upload files
         run: python tools/erp/validate_erp_prep.py
       - name: Run ERP tests
-        run: python -m unittest tools.erp.tests.test_erp_prep -v
+        run: python -m unittest tools.erp.tests.test_erp_prep tools.erp.tests.test_erp_master_mapping -v

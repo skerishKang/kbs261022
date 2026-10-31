@@ -1,0 +1,28 @@
+{
+  "classification_counts": {
+    "CONFLICT": 0,
+    "EXACT_MATCH": 8,
+    "INSUFFICIENT_DATA": 4,
+    "NEW_CANDIDATE": 4410,
+    "NORMALIZED_MATCH": 18,
+    "SUSPECTED_DUPLICATE": 135
+  },
+  "erp_actual_items": 964,
+  "erp_items_confirmed_mapped": 26,
+  "erp_items_suspected_referenced": 41,
+  "erp_writes": 0,
+  "inputs": {
+    "erp_xlsx": "ecount_item_export.xlsx",
+    "master_rows": 4575,
+    "naver_ledger_rows": 1000
+  },
+  "integrity_issues": [],
+  "mapping_rows": 4575,
+  "master_writes": 0,
+  "multi_master_to_same_erp_pairs": 0,
+  "naver_registered_reference_count": 1000,
+  "naver_writes": 0,
+  "new_candidate_count": 4410,
+  "review_required_count": 139,
+  "unmatched_erp_items": 938
+}
