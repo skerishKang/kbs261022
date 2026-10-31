@@ -1,0 +1,67 @@
+{
+  "list": {
+    "url": "https://www.samasound.co.kr/product/list.html?cate_no=23",
+    "card_count": 20,
+    "card_sample": [
+      "V Collection 11 PRO EDU(학생/교직원용) 아투리아 키보드/신디사이저 올인원 가상악기 사운드컬렉션 - 45 개 키보드/신디사이저, 12,000 개 이상 고품질 프리셋 사운드 포함 가상악기",
+      "Komplete Select 확장된 사운드, 깊이 있는 표현력",
+      "Komplete 26 Standrad 확장된 사운드, 깊이 있는 표현력",
+      "Komplete 26 Ultimate 확장된 사운드, 깊이 있는 표현력",
+      "Komplete 26 Collectors Edition 확장된 사운드, 깊이 있는 표현력"
+    ],
+    "body_price_strings": [],
+    "has_price_inquiry": false,
+    "jsonld_types": []
+  },
+  "details": [
+    {
+      "product_no": 3826,
+      "spec": {
+        "상품명": "Lunar 110 XA 10” 액티브 스피커",
+        "상품요약정보": "액티브 스피커",
+        "상품간략설명": "10인치 액티브 포인트소스 스피커",
+        "제조사": "HK Audio",
+        "원산지": "유럽 독일",
+        "영문상품명": "Lunar 110 XA 10” 액티브 스피커",
+        "판매가": "가격 문의"
+      },
+      "body_price_strings": [],
+      "has_price_inquiry": true,
+      "jsonld": [
+        {
+          "type": "Product",
+          "price": "가격 문의",
+          "sku": "cafe24_samassi_1_3826",
+          "brand": "HK Audio"
+        }
+      ]
+    },
+    {
+      "product_no": 3887,
+      "spec": {
+        "상품명": "V Collection 11 PRO EDU(학생/교직원용)",
+        "상품요약정보": "아투리아 키보드/신디사이저 올인원 가상악기 사운드컬렉션 - 45 개 키보드/신디사이저, 12,000 개 이상 고품질 프리셋 사운드 포함 가상악기",
+        "제조사": "ARTURIA",
+        "원산지": "유럽 프랑스",
+        "판매가": "가격 문의"
+      },
+      "body_price_strings": [],
+      "has_price_inquiry": true,
+      "jsonld": [
+        {
+          "type": "Product",
+          "price": "가격 문의",
+          "sku": "cafe24_samassi_1_3887",
+          "brand": "ARTURIA"
+        }
+      ]
+    },
+    {
+      "product_no": 3842,
+      "spec": {},
+      "body_price_strings": [],
+      "has_price_inquiry": false,
+      "jsonld": []
+    }
+  ]
+}
