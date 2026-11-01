@@ -3,7 +3,8 @@
    - 회원가입 / 이메일 인증 / 로그인 / 로그아웃 / 비밀번호 재설정
    - 마이페이지(프로필·비밀번호·배송지·주문내역) 호출 래퍼
    - 세션 쿠키 기반으로 동작: 모든 호출에 credentials: 'include'
-   - 서버는 /api/auth/* 와 /api/me/* 에만 Origin + X-CSRF-Token을 요구한다
+   - 서버는 /api/auth/*, /api/me/* 와 쿠키 세션 스태프 API(/api/quotes, /api/orders …)에
+     Origin + X-CSRF-Token을 요구한다
    ========================================================================== */
 (function () {
   'use strict';

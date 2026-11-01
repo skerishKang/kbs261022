@@ -149,7 +149,7 @@ test('a damaged profile write cannot overwrite a stored name', async () => {
 
 test('the quote wire is guarded by the same boundary', async () => {
   const environment = env();
-  const items = '{"items":[{"id":"p1","name":"Mic","qty":1}],"company":"CGI","phone":"010-0000-0000",';
+  const items = '{"items":[{"id":"p1","name":"Mic","qty":1}],"company":"CGI","phone":"010-0000-0000","privacy_consent":true,';
 
   const damaged = await postRaw(environment, '/api/quotes', new Uint8Array([
     ...encode(items + '"name":"'),

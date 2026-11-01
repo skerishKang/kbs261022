@@ -177,11 +177,14 @@
     if (productShots.length) out = productShots; // 상세 설명용 장문 마케팅 이미지는 갤러리에서 제외
     return out.slice(0, 8);
   }
+  // 공급처 서버 hotlink 이미지는 결려 로드 실패가 발생한다 — 빈 칸 대신
+  // 중립 플레이스홀더로 폴백한다 (추가 네트워크 요청 없음).
+  var IMG_FALLBACK = "data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect width='400' height='300' fill='%23eef0f6'/%3E%3C/svg%3E";
   function imageHtml(product, className) {
     if (!product.images.length) {
       return '<div class="' + className + ' no-image"><span class="no-image-logo">CGI</span><span>이미지 준비 중</span></div>';
     }
-    return '<img class="' + className + '" src="' + esc(product.images[0]) + '" alt="' + esc(product.name) + '" loading="lazy" decoding="async">';
+    return '<img class="' + className + '" src="' + esc(product.images[0]) + '" alt="' + esc(product.name) + '" loading="lazy" decoding="async" data-fallback="' + IMG_FALLBACK + '" onerror="this.onerror=null;this.src=this.dataset.fallback">';
   }
   function fallbackBlock(className) {
     return '<div class="' + className + ' no-image"><span class="no-image-logo">CGI</span><span>이미지 준비 중</span></div>';
@@ -240,7 +243,24 @@
     });
 
     var sort = r.sort || 'recent';
+    // 검색어와 함께 기본 정렬이면 '최신순'이 아니라 관련도순으로 보인다.
+    var useRelevance = !!q && sort === 'recent';
+    var relevance = function (p) {
+      var s = 0;
+      var name = norm(p.name), model = norm(p.model), brand = norm(p._brand);
+      if (model && model === q) s += 100;
+      if (name.indexOf(q) === 0) s += 60;
+      else if (name.indexOf(q) !== -1) s += 40;
+      if (brand && (q.indexOf(brand) !== -1 || brand.indexOf(q) !== -1)) s += 30;
+      q.split(' ').forEach(function (t) { if (t.length >= 2 && p._search.indexOf(t) !== -1) s += 5; });
+      return s;
+    };
     list.sort(function (a, b) {
+      if (useRelevance) {
+        var d = relevance(b) - relevance(a);
+        if (d) return d;
+        return recentCompare(a, b);
+      }
       if (sort === 'price_asc' || sort === 'price_desc') {
         var av = a.price && a.price.value !== null && a.price.value !== undefined ? a.price.value : null;
         var bv = b.price && b.price.value !== null && b.price.value !== undefined ? b.price.value : null;
@@ -311,7 +331,10 @@
 
   function orderedFacetValues(counts, selected) {
     var values = Object.keys(counts);
+    // "기타…" 계열은 분류 잡음이라 항상 뒤로 밀는다 — 시지아이 주력 브랜드가 상위.
+    var otherRank = function (v) { return /^기타/.test(v) ? 1 : 0; };
     values.sort(function (a, b) {
+      if (otherRank(a) !== otherRank(b)) return otherRank(a) - otherRank(b);
       if (counts[b] !== counts[a]) return counts[b] - counts[a];
       return a.localeCompare(b, 'ko');
     });
@@ -398,7 +421,8 @@
   function pickFeatured(limit) {
     var priority = ['SHURE', 'GENELEC', 'ALLEN&HEATH', 'PRESONUS', 'KLOTZ', 'NEUTRIK', 'APOGEE', 'ARTURIA'];
     var candidates = state.products.filter(function (p) {
-      return p.images.length && p.price && p.price.state === 'public';
+      // 박스손상·리퍼 등 상태 태그 상품은 추천에서 제외 — 첫 화면은 정상 재고 면모.
+      return p.images.length && p.price && p.price.state === 'public' && !splitConditionTag(p.name).tag;
     }).sort(recentCompare);
     var chosen = [], usedId = {}, usedBrand = {};
     priority.forEach(function (brand) {
@@ -516,10 +540,6 @@
     var activeChips = [];
     r.brands.forEach(function (b) { activeChips.push({ kind: 'brands', value: b, label: '브랜드: ' + b }); });
     r.cats.forEach(function (c) { activeChips.push({ kind: 'cats', value: c, label: '카테고리: ' + c }); });
-    r.sites.forEach(function (s) {
-      var label = (state.meta.source_labels && state.meta.source_labels[s]) || s;
-      activeChips.push({ kind: 'sites', value: s, label: '공급처: ' + label });
-    });
     if (r.q) activeChips.push({ kind: 'q', value: '', label: '검색: ' + r.q });
 
     app.innerHTML =
@@ -535,7 +555,6 @@
           '<div class="filter-panel" id="filterPanel">' +
             facetBlock('브랜드', 'brand', brandValues, brandCounts, r.brands) +
             facetBlock('카테고리', 'cat', catValues, catCounts, r.cats, catGroupFn) +
-            facetBlock('공급처', 'site', siteValues, siteCounts, r.sites) +
             '<button class="filter-reset" data-action="reset-filters">필터 초기화</button>' +
           '</div>' +
         '</aside>' +
@@ -592,13 +611,18 @@
     var price = fmtPrice(product);
     var images = product.images;
     var specRows = (product.specs || []).filter(function (s) { return s.label && s.value; });
+    // 타 몰에서 수집된 잔여 UI 문구(배송·옵션 선택 안내)는 사양이 아니다 — 표시 제외.
+    var JUNK_SPEC_RE = /정기배송\s*할인|\[필수\]\s*옵션|옵션을 선택해\s*주세요/;
+    specRows = specRows.filter(function (s) {
+      return !JUNK_SPEC_RE.test(String(s.label)) && !JUNK_SPEC_RE.test(String(s.value));
+    });
 
     var thumbs = images.map(function (img, idx) {
       return '<button type="button" class="' + (idx === 0 ? 'is-active' : '') + '" data-gallery-index="' + idx + '" data-img-url="' + esc(img) + '" aria-label="이미지 ' + (idx + 1) + '">' +
-        '<img src="' + esc(img) + '" alt="' + esc(product.name) + ' 이미지 ' + (idx + 1) + '" loading="lazy" decoding="async"></button>';
+        '<img src="' + esc(img) + '" alt="' + esc(product.name) + ' 이미지 ' + (idx + 1) + '" loading="lazy" decoding="async" data-fallback="' + IMG_FALLBACK + '" onerror="this.onerror=null;this.src=this.dataset.fallback"></button>';
     }).join('');
     var mainImg = images.length
-      ? '<img id="galleryMain" src="' + esc(images[0]) + '" data-img-url="' + esc(images[0]) + '" alt="' + esc(product.name) + '" decoding="async">'
+      ? '<img id="galleryMain" src="' + esc(images[0]) + '" data-img-url="' + esc(images[0]) + '" alt="' + esc(product.name) + '" decoding="async" data-fallback="' + IMG_FALLBACK + '" onerror="this.onerror=null;this.src=this.dataset.fallback">'
       : fallbackBlock('gallery-no-image');
 
     var optionsHtml = '';
@@ -611,9 +635,9 @@
     }
 
     var sourceUrl = product.source && product.source.url ? product.source.url : '';
-    var originalLink = sourceUrl
-      ? '<a href="' + esc(sourceUrl) + '" target="_blank" rel="noopener noreferrer">공급처 상품 페이지에서 확인 ↗</a>'
-      : '확인 중';
+    // 공급처 상품 페이지로 나가는 링크는 고객 유출 경로라 고객 화면에서 제거한다.
+    // (staff 화면과 원본 데이터의 출처 URL은 그대로 보존.)
+    var originalLink = '최종 가격·재고는 CGI 확인 후 안내';
 
     app.innerHTML =
       '<div class="breadcrumb"><a href="#/">홈</a><span>›</span><a href="' + esc(listUrl({ q: '', brands: [], cats: [], sites: [] })) + '">상품 목록</a><span>›</span><span>' + esc(product.name) + '</span></div>' +
@@ -654,9 +678,8 @@
           }).join('') + '</tbody></table>' : '') +
           optionsHtml +
           '<div class="detail-block"><h3>판매 정보</h3><div class="source-box"><dl>' +
-            '<dt>공급처</dt><dd>' + esc(siteLabel(product)) + '</dd>' +
+            '<dt>판매자</dt><dd>(주)시지아이 — 가격·재고·배송은 CGI 담당자 확인 후 안내</dd>' +
             '<dt>카테고리</dt><dd>' + esc(product._cat) + '</dd>' +
-            '<dt>원본 상품</dt><dd>' + originalLink + '</dd>' +
           '</dl></div></div>' +
           '<a class="back-link" href="' + esc(listUrl({})) + '">← 목록으로 돌아가기</a>' +
         '</div>' +
@@ -900,7 +923,14 @@
                 '<label>이메일 <input type="email" name="email" autocomplete="email"></label>' +
               '</div>' +
               '<label>배송/설치 장소 <input type="text" name="location" placeholder="예: 광주광역시 ○○구"></label>' +
+              '<div class="form-grid">' +
+                '<label>세금계산서 발행 <select name="invoice_type"><option value="">선택 안 함</option><option value="tax_invoice">세금계산서(일반과세)</option><option value="cash_receipt">현금영수증</option></select></label>' +
+                '<label>사업자등록번호 <input type="text" name="biz_no" inputmode="numeric" maxlength="12" placeholder="000-00-00000 (세금계산서 시 필수)"></label>' +
+                '<label>나라장터 기관코드 <input type="text" name="agency_no" maxlength="40" placeholder="선택 — 관공서·학교·군 구매 담당자"></label>' +
+              '</div>' +
+              '<p class="form-note">규격서·도면 등 첨부 파일이 있으면 접수 후 담당자 안내 메일로 보내주세요 (이 폼에서는 파일 업로드를 받지 않습니다).</p>' +
               '<label>요청 사항 <textarea name="note" rows="4" placeholder="설치 환경, 일정, 수량 등을 입력하세요."></textarea></label>' +
+              '<label class="auth-check"><input type="checkbox" name="privacyConsent"> <span>[필수] 견적 응대 목적의 개인정보(회사·담당자·연락처·설치 장소) 수집·이용에 동의합니다. 목적 외 사용 금지, 문의 후 보관은 담당자 확인 범위로 한정합니다.</span></label>' +
               '<button type="submit" class="btn btn-primary btn-block">견적 요청 보내기</button>' +
               '<p class="form-note">입력하신 정보는 견적 응대 목적으로만 사용됩니다.</p>' +
               '<div id="quoteCartResult" class="quote-result" role="status"></div>' +
@@ -922,6 +952,18 @@
 
   function submitQuoteCart(form, items) {
     var data = new FormData(form);
+    if (!form.querySelector('input[name="privacyConsent"]').checked) {
+      var warn = document.getElementById('quoteCartResult');
+      if (warn) warn.innerHTML = '<p class="form-error">개인정보 수집·이용 동의(필수)에 체크해 주세요.</p>';
+      return;
+    }
+    var invoiceType = String(data.get('invoice_type') || '');
+    var bizNo = String(data.get('biz_no') || '').replace(/[^0-9]/g, '');
+    if (invoiceType === 'tax_invoice' && bizNo.length !== 10) {
+      var warn2 = document.getElementById('quoteCartResult');
+      if (warn2) warn2.innerHTML = '<p class="form-error">세금계산서 발행에는 사업자등록번호 10자리가 필요합니다.</p>';
+      return;
+    }
     var request = {
       id: 'Q-' + Date.now(),
       createdAt: new Date().toISOString(),
@@ -931,6 +973,10 @@
       email: data.get('email') || '',
       location: data.get('location') || '',
       note: data.get('note') || '',
+      privacy_consent: true,
+      invoice_type: invoiceType || null,
+      biz_no: bizNo || null,
+      agency_no: String(data.get('agency_no') || '').trim() || null,
       services: (state.quoteCartServices || []).slice(),
       items: items.map(function (x) {
         var p = x.product;
@@ -1221,11 +1267,31 @@
   /* ------------------------------------------- 쇼핑몰 ↔ 홈페이지 연결 설정 */
   function applySiteConfig() {
     var cfg = window.CGI_SITE_CONFIG || {};
+    renderLegalInfo(cfg);
     if (!cfg.homepageUrl) return;
     var links = document.querySelectorAll('[data-home-link]');
     for (var i = 0; i < links.length; i++) {
       links[i].setAttribute('href', cfg.homepageUrl);
     }
+  }
+
+  /* 전자상거래법 필수 표기(사업자등록번호·통신판매업신고·개인정보보호책임자).
+     값은 config.js legal 블록에서 주입되며 미확정 항목만 "확인 예정"으로 표시한다. */
+  function renderLegalInfo(cfg) {
+    var el = document.querySelector('[data-legal-info]');
+    if (!el) return;
+    var legal = cfg.legal || {};
+    function val(v, label) {
+      var text = String(v || '').trim();
+      return text || label + ' 확인 예정';
+    }
+    var officer = legal.privacyOfficerName
+      ? esc(legal.privacyOfficerName + (legal.privacyOfficerEmail ? ' (' + legal.privacyOfficerEmail + ')' : ''))
+      : '확인 예정';
+    el.innerHTML = '© 주식회사 시지아이 · 사업자등록번호 ' + esc(val(legal.bizRegNo, '확인 예정')) +
+      ' · 통신판매업신고 ' + esc(val(legal.mailOrderNo, '확인 예정')) +
+      ' · 개인정보보호책임자 ' + officer +
+      ' · <a href="terms.html" style="color:inherit">이용약관</a> · <a href="privacy.html" style="color:inherit">개인정보처리방침</a> · <a href="returns.html" style="color:inherit">교환·반품·환불 안내</a>';
   }
 
   /* --------------------------------------------------------------- events */

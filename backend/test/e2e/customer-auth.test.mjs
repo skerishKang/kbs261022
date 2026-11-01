@@ -683,6 +683,7 @@ test('member-scoped checkout and quote intake link the member without touching t
   const quote = await call(environment, 'POST', '/api/me/quotes', {
     company: '[E2E] 회사', name: '[E2E] 김회원', phone: '010-1111-2222',
     items: [{ id: priced[0], qty: 1 }],
+    privacy_consent: true,
   }, { ...csrf, Cookie: cookie });
   assert.equal(quote.status, 201, quote.text);
   assert.equal(quote.json.member_id, memberId);
@@ -695,6 +696,7 @@ test('member-scoped checkout and quote intake link the member without touching t
   // The legacy guest paths stay credential-free in their CORS response.
   const guestOrder = await call(environment, 'POST', '/api/orders', {
     items: [{ product_id: priced[0], qty: 1 }],
+    privacy_consent: true,
     company: '[E2E] 업체', name: '[E2E] 김고객', phone: '010-5555-6666',
     idempotency_key: 'e2e-guest-scoped',
   }, csrf);
@@ -914,11 +916,14 @@ test('a failed payment stays repayable with the original amount', async () => {
     orderId: order.id, paymentKey: 'e2e_fail_card_declined', amount: order.totals.total_amount,
   }, csrf);
   assert.equal(failed.status, 402);
-  assert.equal(failed.json.payment_status, 'failed');
+  // A PG rejection no longer flips the ORDER to failed (the key proved nothing
+  // about this order); the payment row still records the decline.
+  assert.equal(failed.json.payment_status, 'pending');
 
   const res = await repay(environment, cookie, order.id);
   assert.equal(res.status, 200, res.text);
-  assert.equal(res.json.payment.payment_status, 'failed');
+  // The order never got a PG-approved payment: it stays pending and repayable.
+  assert.equal(res.json.payment.payment_status, 'pending');
   assert.equal(res.json.payment.amount, order.totals.total_amount);
 
   const retry = await call(environment, 'POST', '/api/payments/confirm', {
@@ -986,6 +991,7 @@ test('a signed-in quote request is linked, a guest quote is not', async () => {
 
   const mine = await call(environment, 'POST', '/api/quotes', {
     items: [{ id: 'samasound.co.kr:3836', qty: 1 }],
+    privacy_consent: true,
     company: '[E2E] 회사', name: '[E2E] 김회원', phone: '010-1111-2222',
   }, { ...csrf, Cookie: cookie });
   assert.equal(mine.status, 201, mine.text);
@@ -996,6 +1002,7 @@ test('a signed-in quote request is linked, a guest quote is not', async () => {
 
   const guest = await call(environment, 'POST', '/api/quotes', {
     items: [{ id: 'samasound.co.kr:3836', qty: 1 }],
+    privacy_consent: true,
     company: '[E2E] 업체', name: '[E2E] 김고객', phone: '010-5555-6666',
   }, csrf);
   assert.equal(guest.status, 201);
@@ -1021,6 +1028,7 @@ test('member B cannot see member A quotes (list and detail)', async () => {
 
   const created = await call(environment, 'POST', '/api/me/quotes', {
     items: [{ id: 'samasound.co.kr:3836', qty: 2 }],
+    privacy_consent: true,
     company: '[E2E] A사', name: '[E2E] 김A', phone: '010-1111-0001',
   }, { ...csrf, Cookie: a.cookie });
   assert.equal(created.status, 201, created.text);
@@ -1047,6 +1055,7 @@ test('a quote request from another origin is not linked even with a cookie', asy
   const { cookie } = await verifiedSession(environment);
   const res = await call(environment, 'POST', '/api/quotes', {
     items: [{ id: 'samasound.co.kr:3836', qty: 1 }],
+    privacy_consent: true,
     company: '[E2E] 회사', name: '[E2E] 김회원', phone: '010-1111-2222',
   }, { Origin: EVIL, Cookie: cookie });
   assert.equal(res.status, 201);

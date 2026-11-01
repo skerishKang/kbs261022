@@ -71,6 +71,7 @@ test('existing quote route CORS and status behaviour is unchanged', async () => 
     name: '이름',
     phone: '010-0000-0000',
     items: [{ id: 'samasound.co.kr:3836', qty: 1 }],
+    privacy_consent: true,
   });
   assert.equal(created.status, 201);
   assert.ok(created.json.id.startsWith('Q-'));

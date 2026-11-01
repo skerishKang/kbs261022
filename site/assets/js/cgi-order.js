@@ -213,7 +213,19 @@
     });
   }
 
+  function orderEmailFor(id) {
+    try { return localStorage.getItem('cgiOrderEmail:' + id) || ''; } catch (e) { return ''; }
+  }
+  function orderLookupPath(id) {
+    var email = orderEmailFor(id);
+    return '/api/orders/' + encodeURIComponent(id) + (email ? '?email=' + encodeURIComponent(email) : '');
+  }
+
   function renderPayment(app, order) {
+    if (order && order.id && order.customer && order.customer.email) {
+      // 주문 상세·승인 조회의 이메일 팩터: 주문 생성 세션만 자기 주문 PII를 본다.
+      try { localStorage.setItem('cgiOrderEmail:' + order.id, order.customer.email); } catch (e) {}
+    }
     if (PG_PROVIDER === 'nicepay') return renderNicepayPayment(app, order);
     var testMode = !TOSS_CLIENT_ID;
     var sandboxMode = !!TOSS_CLIENT_ID && String(TOSS_CLIENT_ID).indexOf('test_') === 0;
@@ -437,7 +449,7 @@
 
   function renderOrderDetail(app, id) {
     app.innerHTML = shell('<div class="page-head"><p class="page-eyebrow">ORDER</p><h1>주문 상세</h1></div><p class="muted">주문을 불러오는 중입니다…</p>');
-    api('GET', '/api/orders/' + encodeURIComponent(id)).then(function (res) {
+    api('GET', orderLookupPath(id)).then(function (res) {
       if (!res.ok) {
         app.innerHTML = shell('<div class="page-head"><p class="page-eyebrow">ORDER</p><h1>주문 상세</h1></div>' + flash('주문을 찾을 수 없습니다. (' + esc(id) + ')', 'flash-error') + '<p><a class="btn" href="#/products">상품 목록</a></p>');
         return;
@@ -479,7 +491,7 @@
         app.innerHTML = shell('<div class="page-head"><p class="page-eyebrow">PAYMENT</p><h1>결제 승인 실패</h1></div>' + flash('결제 승인에 실패했습니다. (' + esc(res.data && res.data.error || ('HTTP ' + res.status)) + ')', 'flash-error') + retryLink(orderId));
         return;
       }
-      api('GET', '/api/orders/' + encodeURIComponent(orderId)).then(function (r) {
+      api('GET', orderLookupPath(orderId)).then(function (r) {
         if (!r.ok) { app.innerHTML = shell(flash('주문 조회 실패', 'flash-error')); return; }
         renderComplete(app, r.data, res.data);
       });
@@ -593,7 +605,7 @@
       return true;
     }
     app.innerHTML = shell('<div class="page-head"><p class="page-eyebrow">PAYMENT</p><h1>결제 승인 중</h1></div><p class="muted">NICEPAY 승인 결과를 확인하고 있습니다…</p>');
-    api('GET', '/api/orders/' + encodeURIComponent(orderId)).then(function (r) {
+    api('GET', orderLookupPath(orderId)).then(function (r) {
       if (!r.ok) { app.innerHTML = shell(flash('주문 조회 실패', 'flash-error')); return; }
       if (r.data.payment_status !== 'paid') {
         app.innerHTML = shell('<div class="page-head"><p class="page-eyebrow">PAYMENT</p><h1>결제 확인 필요</h1></div>' +

@@ -298,7 +298,8 @@ test('from is configurable and has a safe default', () => {
 test('COLUMN_UPGRADES lists every member link and role', () => {
   assert.deepEqual(
     COLUMN_UPGRADES.map((upgrade) => `${upgrade.table}.${upgrade.column}`),
-    ['orders.customer_id', 'quote_requests.member_id', 'members.role', 'members.google_id'],
+    ['orders.customer_id', 'quote_requests.member_id', 'members.role', 'members.google_id',
+     'quote_requests.privacy_consent', 'quote_requests.invoice_type', 'quote_requests.biz_no', 'quote_requests.agency_no'],
   );
   for (const upgrade of COLUMN_UPGRADES) {
     assert.match(upgrade.ddl, new RegExp(`ADD COLUMN ${upgrade.column}`));

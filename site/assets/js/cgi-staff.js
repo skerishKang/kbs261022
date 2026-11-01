@@ -131,6 +131,11 @@
     html += '<p>회사: ' + esc(r.company) + ' / 담당자: ' + esc(r.name) + ' / 연락처: ' + esc(r.phone) +
       ' / 이메일: ' + esc(r.email) + '</p>';
     html += '<p>장소: ' + esc(r.location || '-') + (r.note ? ' · 요청 사항: ' + esc(r.note) : '') + '</p>';
+    // 결제 서류(세금계산서/현금영수증/나라장터) — 접수 폼 2026-11-01 확장 필드
+    if (r.invoice_type || r.biz_no || r.agency_no) {
+      var invLabel = { tax_invoice: '세금계산서', cash_receipt: '현금영수증' }[r.invoice_type] || (r.invoice_type || '-');
+      html += '<p>결제 서류: ' + esc(invLabel) + (r.biz_no ? ' · 사업자번호 ' + esc(r.biz_no) : '') + (r.agency_no ? ' · 나라장터 기관코드 ' + esc(r.agency_no) : '') + '</p>';
+    }
     html += '<p>서비스: ' + esc(serviceNames.length ? serviceNames.join(', ') : '없음') + '</p>';
     html += '<div class="table-scroll"><table class="spec-table"><thead><tr><th>상품</th><th>브랜드</th><th>카테고리</th><th>수량</th><th>단가(입력)</th><th>금액</th></tr></thead><tbody>';
     var total = 0;

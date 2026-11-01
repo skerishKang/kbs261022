@@ -166,10 +166,17 @@ test('customer can look up their order and 404 on unknown ids', async () => {
   const created = await call(env, 'POST', '/api/orders', { ...purchaseCart(), ...CUSTOMER });
   assert.equal(created.status, 201);
 
-  const lookedUp = await call(env, 'GET', `/api/orders/${created.json.id}`);
+  const lookedUp = await call(env, 'GET', `/api/orders/${created.json.id}?email=${encodeURIComponent(CUSTOMER.email)}`);
   assert.equal(lookedUp.status, 200);
   assert.equal(lookedUp.json.id, created.json.id);
   assert.equal(lookedUp.json.items.length, 2);
+
+  // The order number alone must not expose PII to a stranger.
+  const stranger = await call(env, 'GET', `/api/orders/${created.json.id}`);
+  assert.equal(stranger.status, 200);
+  assert.equal(stranger.json.restricted, true);
+  assert.equal(stranger.json.customer, undefined);
+  assert.equal(stranger.json.items, undefined);
 
   const missing = await call(env, 'GET', '/api/orders/ORD-19990101-ABCDE');
   assert.equal(missing.status, 404);

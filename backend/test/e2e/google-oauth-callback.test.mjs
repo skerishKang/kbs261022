@@ -436,6 +436,10 @@ test('google callback links to an existing member by email', async () => {
     terms: true, privacy: true, terms_version: 'draft-2026-10-28', privacy_version: 'draft-2026-10-28',
   }, csrf);
   assert.equal(signupResp.status, 201);
+  // This case covers the LEGITIMATE link: the member already proved mailbox
+  // ownership through email verification before signing in with Google.
+  await env.DB.prepare('UPDATE members SET email_verified_at = ? WHERE email = ?')
+    .bind(new Date().toISOString(), 'existing@example.com').run();
 
   const restore = mockGoogleOAuth({
     subject: 'link-google-id-456',
@@ -472,10 +476,55 @@ test('google callback links to an existing member by email', async () => {
 
   // Verify member events were recorded
   const { results: events } = await env.DB.prepare("SELECT type FROM member_events WHERE type IN ('google_linked', 'email_verified') ORDER BY type").all();
-  assert.deepEqual(events.map((row) => row.type), ['email_verified', 'google_linked']);
+  assert.deepEqual(events.map((row) => row.type), ['google_linked']);
 
   restoreAfter();
   restore();
+});
+
+test('google callback takes over a squatted unverified account and kills its password', async () => {
+  const env = makeEnv();
+  const csrfHeaders = { Origin: ORIGIN, 'X-CSRF-Token': ORIGIN, 'Content-Type': 'application/json' };
+  // Attacker signs up with the victim's email and sets a password they know.
+  // The verification email can never reach them, so the account stays unverified.
+  const signupResp = await call(env, 'POST', '/api/auth/signup', {
+    email: 'victim@example.com', name: 'Squatter', password: TEST_PASSWORD,
+    terms: true, privacy: true, terms_version: 'draft-2026-10-28', privacy_version: 'draft-2026-10-28',
+  }, csrfHeaders);
+  assert.equal(signupResp.status, 201);
+
+  const restore = mockGoogleOAuth({
+    subject: 'victim-google-789',
+    email: 'victim@example.com',
+    name: 'Real Victim',
+  });
+  const startResp = await worker.fetch(
+    new Request('http://cgi.local/api/auth/google/start', { method: 'GET', headers: { Origin: ORIGIN } }),
+    env,
+  );
+  const stateValue = startResp.headers.get('set-cookie').match(/cgi_oauth_state=([^;]+)/)[1];
+  const callbackResp = await worker.fetch(
+    new Request(`http://cgi.local/api/auth/google/callback?code=mock-code&state=${encodeURIComponent(stateValue)}`, {
+      method: 'GET',
+      headers: { Origin: ORIGIN, Cookie: `cgi_oauth_state=${stateValue}` },
+    }),
+    env,
+  );
+  assert.equal(callbackResp.status, 302);
+  restore();
+
+  const { results } = await env.DB.prepare('SELECT id, google_id, email_verified_at, password_hash FROM members WHERE email = ?').bind('victim@example.com').all();
+  assert.equal(results.length, 1);
+  assert.equal(results[0].google_id, 'victim-google-789');
+  assert.ok(results[0].email_verified_at, 'Google-verified mailbox claims the account');
+  assert.ok(String(results[0].password_hash).startsWith('revoked$'), 'the squatter password is invalidated');
+
+  // The squatter's known password must no longer log in.
+  const loginResp = await call(env, 'POST', '/api/auth/login', { email: 'victim@example.com', password: TEST_PASSWORD }, csrfHeaders);
+  assert.ok(loginResp.status >= 400, `squatter password must fail, got ${loginResp.status}`);
+
+  const { results: events } = await env.DB.prepare("SELECT type FROM member_events WHERE type = 'google_takeover_unclaimed'").all();
+  assert.equal(events.length, 1);
 });
 
 test('google callback verifies an existing google-linked superadmin member on login', async () => {

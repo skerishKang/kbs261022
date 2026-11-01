@@ -69,7 +69,7 @@ test('returnUrl approves the payment, redirects to the mall and writes a NICEPAY
   assert.match(redirect.headers.location, /nicepay=success/);
   assert.match(redirect.headers.location, new RegExp(`#/order/${order.id}$`));
 
-  const read = await call(env, 'GET', `/api/orders/${order.id}`);
+  const read = await call(env, 'GET', `/api/orders/${order.id}?email=${encodeURIComponent(CUSTOMER.email)}`);
   assert.equal(read.json.payment_status, 'paid');
   assert.equal(read.json.status, 'paid');
   assert.equal(read.json.payment.payment_key, tid);
@@ -138,8 +138,11 @@ test('the window reports an authentication failure without approving', async () 
   });
   assert.equal(res.status, 302);
   assert.match(res.headers.location, /nicepay=fail/);
-  const read = await call(env, 'GET', `/api/orders/${order.id}`);
-  assert.equal(read.json.payment_status, 'failed');
+  // An unsigned window-cancel report must not mark the order failed: anyone
+  // could forge that POST. The decline is logged; the order stays payable.
+  const read = await call(env, 'GET', `/api/orders/${order.id}?email=${encodeURIComponent(CUSTOMER.email)}`);
+  assert.equal(read.json.payment_status, 'pending');
+  assert.equal(read.json.payable, true);
 });
 
 test('a GET on returnUrl is not a payment and says so', async () => {
