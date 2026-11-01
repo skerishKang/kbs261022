@@ -95,9 +95,6 @@
     if (product.category_path && product.category_path.length) return product.category_path[product.category_path.length - 1];
     return '미분류';
   }
-  function siteLabel(product) {
-    return (product.source && (product.source.site_label || product.source.site)) || '공급처';
-  }
   function productUrl(id) { return '#/product/' + encodeURIComponent(id); }
   function findProduct(id) {
     for (var i = 0; i < state.products.length; i++) {
@@ -308,7 +305,6 @@
           (product.model && product.model !== product.name ? '<span class="card-model">' + esc(product.model) + '</span>' : '') +
           '<div class="card-foot">' +
             '<span class="price ' + price.cls + '">' + esc(price.text) + '</span>' +
-            '<span class="card-site">' + esc(siteLabel(product)) + '</span>' +
           '</div>' +
         '</div>' +
       '</a>';
@@ -351,7 +347,7 @@
   /** 카테고리 필터 표시 그룹핑(표시 전용): 값이 브랜드명과 동일하면 공급처 브랜드 코너로 묶는다.
    *  원본 데이터·식별자·필터 동작(체크박스/검색)은 변경하지 않는다. */
   function catGroupFn(value) {
-    return state.brandSet[String(value).toUpperCase()] ? '브랜드 코너 · 공급처 분류' : '일반 카테고리';
+    return state.brandSet[String(value).toUpperCase()] ? '브랜드 코너 · 브랜드 분류' : '일반 카테고리';
   }
 
   function facetBlock(title, name, values, counts, selected, groupFn) {
@@ -509,7 +505,7 @@
       '<dl class="stat-row">' +
         '<div class="stat-card"><dt>전체 상품</dt><dd>' + total.toLocaleString('ko-KR') + '<small>브랜드·카테고리 기준</small></dd></div>' +
         '<div class="stat-card"><dt>취급 브랜드</dt><dd>' + brands.length + '<small>카탈로그 등록 브랜드</small></dd></div>' +
-        '<div class="stat-card"><dt>공개 판매가</dt><dd>' + priced.toLocaleString('ko-KR') + '<small>공급처 공개 가격 기준</small></dd></div>' +
+        '<div class="stat-card"><dt>공개 판매가</dt><dd>' + priced.toLocaleString('ko-KR') + '<small>가격은 변동될 수 있습니다</small></dd></div>' +
         '<div class="stat-card"><dt>가격 문의</dt><dd>' + inquiry.toLocaleString('ko-KR') + '<small>담당자 확인 후 안내</small></dd></div>' +
       '</dl>' +
 
@@ -658,8 +654,8 @@
           '<div class="detail-price-row">' +
             '<span class="detail-price ' + price.cls + '">' + esc(price.text) + '</span>' +
             '<span class="detail-price-note">' + (price.inquiry
-              ? '공급처에 공개된 판매가가 없어 담당자가 확인 후 안내합니다.'
-              : '공급처 공개 판매가 기준이며, 최종 견적은 CGI 확인 후 안내합니다.') + '</span>' +
+              ? '이 상품의 가격은 담당자 확인 후 안내드립니다.'
+              : '표시 가격은 참고가이며 변동될 수 있고, 최종 견적은 CGI 확인 후 안내합니다.') + '</span>' +
           '</div>' +
 
           '<div class="detail-block"><h3>추가 서비스 (선택)</h3>' +
@@ -1103,7 +1099,7 @@
         '<p>㈜시지아이가 취급하는 음향·영상·조명 장비를 한곳에서 살펴보는 B2B 카탈로그입니다. 브랜드·카테고리로 상품을 찾고, 필요한 상품을 견적 목록에 담아 한 번에 요청할 수 있습니다.</p>' +
         '<h2>가격과 재고</h2>' +
         '<ul>' +
-          '<li>공개 판매가는 공급처 공개 정보를 기준으로 표시하며, 실제 판매가와 다를 수 있습니다.</li>' +
+          '<li>표시 가격은 참고가이며, 최종 판매가와 다를 수 있습니다.</li>' +
           '<li>가격이 공개되지 않은 상품은 추정하지 않고 <strong>가격 문의</strong>로 표시합니다.</li>' +
           '<li>재고·배송 일정은 실시간 정보가 아니며, 담당자 확인 후 안내합니다.</li>' +
         '</ul>' +
