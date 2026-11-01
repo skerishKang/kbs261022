@@ -8,7 +8,11 @@
 
   async function authHeaders() {
     const token = localStorage.getItem('cgiAdminToken') || '';
-    return token ? { Authorization: 'Bearer ' + token } : {};
+    // Bearer 경로와 무관하게, 쿠키 세션으로 스태프 API를 쓰는 경우 서버가
+    // Origin + X-CSRF-Token을 요구한다 (CSRF 게이트).
+    const headers = { 'X-CSRF-Token': window.location.origin || '' };
+    if (token) headers.Authorization = 'Bearer ' + token;
+    return headers;
   }
 
   async function fetchJson(path) {

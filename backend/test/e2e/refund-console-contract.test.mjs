@@ -103,7 +103,7 @@ test('every partial the console blocks below the floor, the server blocks as wel
     assert.equal(res.json.detail.min, FLOOR);
   }
 
-  const untouched = await call(env, 'GET', `/api/orders/${order.id}`);
+  const untouched = await call(env, 'GET', `/api/orders/${order.id}`, null, auth());
   assert.equal(untouched.json.payment_status, 'paid', 'blocked refunds left no trace');
 });
 
@@ -144,7 +144,7 @@ test('a console partial leaves a balance the console can finish in full', async 
   assert.equal(res2.json.refunded_amount, order.balance);
   assert.equal(res2.json.order_status, 'refunding');
 
-  const final = await call(env, 'GET', `/api/orders/${order.id}`);
+  const final = await call(env, 'GET', `/api/orders/${order.id}`, null, auth());
   assert.equal(final.json.totals.refunded_amount, order.balance, 'no earlier refund counted twice');
   assert.equal(final.json.payment_status, 'refunded');
   assert.equal(final.json.status, 'refunding');
@@ -158,7 +158,7 @@ test('a partial refund does not count the same money twice in the ledger', async
     const res = await cancel(env, order, { cancelAmount: 1000, cancelReason: `누적 확인 ${n}` });
     assert.equal(res.status, 200, res.text);
   }
-  const after = await call(env, 'GET', `/api/orders/${order.id}`);
+  const after = await call(env, 'GET', `/api/orders/${order.id}`, null, auth());
   assert.equal(after.json.totals.refunded_amount, 3000, 'three 1,000원 refunds are 3,000원, not 6,000원');
   assert.equal(after.json.payment_status, 'partial_refunded');
   assert.equal(after.json.status, 'paid', 'still a balance left, so the order is not closing');

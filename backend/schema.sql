@@ -35,6 +35,10 @@ CREATE TABLE IF NOT EXISTS quote_requests (
   admin_prices TEXT, -- JSON object
   total REAL,
   member_id INTEGER,              -- null for guest submissions (issue #69)
+  privacy_consent INTEGER NOT NULL DEFAULT 0, -- 견적 목적 개인정보 수집·이용 동의 (2026-11-01)
+  invoice_type TEXT,              -- none | tax_invoice | cash_receipt (세금계산서 희망)
+  biz_no TEXT,                    -- 사업자등록번호 (10자리, 발급 희망 시)
+  agency_no TEXT,                 -- 나라장터 기관코드 (관공서·학교·군 고객)
   updated_at TEXT
 );
 

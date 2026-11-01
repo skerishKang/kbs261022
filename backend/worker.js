@@ -170,6 +170,11 @@ function isAdmin(request, env) {
 
 async function isSuperAdmin(request, db, env) {
   if (isAdmin(request, env)) return true;
+  // Cookie-authenticated staff requests are browser state and must clear the
+  // same Origin + X-CSRF-Token gate as /api/me; otherwise a malicious page
+  // could fire refund / quote-convert / ERP-resend calls with a live session.
+  const origin = request.headers.get('Origin');
+  if (!origin || !csrfOk(request, env)) return false;
   const member = await requireMember(request, db, env);
   if (!member || member.status !== 'active' || !member.email_verified_at) return false;
   const email = String(member.email || '').trim().toLowerCase();
@@ -178,12 +183,32 @@ async function isSuperAdmin(request, db, env) {
 
 async function isAdminOrMember(request, db, env) {
   if (isAdmin(request, env)) return true;
+  const origin = request.headers.get('Origin');
+  if (!origin || !csrfOk(request, env)) return false;
   const member = await requireMember(request, db, env);
   if (!member) return false;
   if (member.status !== 'active') return false;
   if (!member.email_verified_at) return false;
   const role = member.role || (SUPERADMIN_EMAILS.has(String(member.email || '').trim().toLowerCase()) ? 'superadmin' : 'member');
   return role === 'admin' || role === 'superadmin';
+}
+
+/** Quote intake shared validation (guest + member): the privacy consent gate
+ *  and the optional invoice / public-procurement fields. */
+function validateQuoteIntake(body) {
+  if (body.privacy_consent !== true) {
+    return { error: 'privacy consent required', detail: '개인정보 수집·이용 동의가 필요합니다.' };
+  }
+  const invoiceType = body.invoice_type == null || body.invoice_type === '' ? null : String(body.invoice_type);
+  if (invoiceType !== null && !['none', 'tax_invoice', 'cash_receipt'].includes(invoiceType)) {
+    return { error: 'invalid invoice_type' };
+  }
+  const bizNoRaw = body.biz_no == null || body.biz_no === '' ? null : String(body.biz_no).trim().slice(0, 20);
+  const bizNo = bizNoRaw === null ? null : bizNoRaw.replace(/[^0-9]/g, '');
+  if (bizNoRaw !== null && !/^[0-9]{10}$/.test(bizNo)) return { error: 'invalid biz_no', detail: '사업자등록번호는 10자리 숫자입니다.' };
+  if (invoiceType === 'tax_invoice' && !bizNo) return { error: 'biz_no required', detail: '세금계산서 발행에는 사업자등록번호가 필요합니다.' };
+  const agencyNo = body.agency_no == null || body.agency_no === '' ? null : String(body.agency_no).trim().slice(0, 40);
+  return { ok: true, privacy_consent: 1, invoice_type: invoiceType, biz_no: bizNo, agency_no: agencyNo };
 }
 
 async function readJson(request) {
@@ -307,6 +332,21 @@ async function getOrderFull(db, id) {
   if (!order) return null;
   const items = await getOrderItems(db, id);
   return { ...order, items };
+}
+
+function minimalOrderView(order) {
+  if (!order) return null;
+  return {
+    id: order.id,
+    kind: order.kind,
+    status: order.status,
+    status_label: ORDER_STATUS_LABELS[order.status] || order.status,
+    payment_status: order.payment_status,
+    delivery_status: order.delivery_status,
+    created_at: order.created_at,
+    restricted: true,
+    note: '이메일 확인이 필요한 조회입니다. 주문 시 입력한 이메일과 함께 다시 요청하세요.',
+  };
 }
 
 function publicOrderView(order, items) {
@@ -597,8 +637,14 @@ async function confirmPayment(db, body, env, pg) {
     return { status: 409, body: { error: 'payment_key_reused', detail: `paymentKey already used with status ${existingPayment.status}` } };
   }
 
-  // Client-reported authentication failure (no approval call needed).
+  // Client-reported authentication failure (no approval call needed). Recording
+  // it flips the order to failed, so it requires the email factor: without one,
+  // anyone who guesses an order id could mark a live payment attempt as failed.
   if (body.failure || body.failed) {
+    const declaredEmail = String(body.customer_email || '').trim().toLowerCase();
+    if (!declaredEmail || declaredEmail !== String(order.customer_email || '').trim().toLowerCase()) {
+      return { status: 403, body: { error: 'email factor required', detail: 'a payment failure report must confirm the order email' } };
+    }
     const code = String(body.failure_code || 'PAY_PROCESS_CANCELED');
     const message = String(body.failure_message || '');
     await recordPaymentOutcome(db, {
@@ -639,6 +685,9 @@ async function confirmPayment(db, body, env, pg) {
       status: 'failed',
       failureCode: e && e.code ? String(e.code) : 'PG_ERROR',
       failureMessage: e && e.message ? String(e.message).slice(0, 500) : String(e),
+      // A rejection means the supplied paymentKey never proved anything about
+      // THIS order — log it, but leave the order awaiting_payment and retryable.
+      touchOrder: false,
     };
   }
 
@@ -758,8 +807,12 @@ async function applyNicepayWebhook(db, env, pg, payload) {
   return new Response(ack.body, { status: ack.status, headers: { 'Content-Type': ack.headers['Content-Type'] } });
 }
 
-/** Persist a payment outcome and keep the order/payment status consistent. */
-async function recordPaymentOutcome(db, { order, paymentKey, amount, status, failureCode, failureMessage, method, requestedAt, approvedAt, suppliedAmount, vat, balanceAmount, raw, provider, providerMode }) {
+/** Persist a payment outcome and keep the order/payment status consistent.
+ *  touchOrder=false records the payment row + event without flipping the order
+ *  to failed: a PG rejection seen through an attacker-supplied paymentKey must
+ *  not damage a live order — the customer can simply retry while it stays
+ *  awaiting_payment. */
+async function recordPaymentOutcome(db, { order, paymentKey, amount, status, failureCode, failureMessage, method, requestedAt, approvedAt, suppliedAmount, vat, balanceAmount, raw, provider, providerMode, touchOrder = true }) {
   const ts = nowIso();
   const stmts = [];
 
@@ -788,12 +841,14 @@ async function recordPaymentOutcome(db, { order, paymentKey, amount, status, fai
         .bind(order.id, 'payment_confirmed', 'pg', order.status, 'paid', JSON.stringify({ payment_key: paymentKey, amount }), ts)
     );
   } else {
-    stmts.push(
-      db.prepare('UPDATE orders SET payment_status = ?, updated_at = ? WHERE id = ?').bind('failed', ts, order.id)
-    );
+    if (touchOrder) {
+      stmts.push(
+        db.prepare('UPDATE orders SET payment_status = ?, updated_at = ? WHERE id = ?').bind('failed', ts, order.id)
+      );
+    }
     stmts.push(
       db.prepare('INSERT INTO order_events (order_id, type, actor, from_status, to_status, meta, error, created_at) VALUES (?,?,?,?,?,?,?,?)')
-        .bind(order.id, 'payment_failed', 'pg', order.status, null, JSON.stringify({ payment_key: paymentKey, amount }),
+        .bind(order.id, 'payment_failed', 'pg', order.status, null, JSON.stringify({ payment_key: paymentKey, amount, order_touched: !!touchOrder }),
           `${failureCode || 'PG_ERROR'}: ${failureMessage || ''}`.slice(0, 500), ts)
     );
   }
@@ -953,12 +1008,25 @@ async function cancelPayment(db, env, order, paymentKey, body, pg) {
   }
   const cancelAmount = Math.min(requested, refundable);
 
-  // A retry for the same (payment, reason) returns the recorded outcome instead
-  // of refunding twice. Exact JSON match, so "환불" never shadows "부분 환불".
-  const prior = await db
-    .prepare("SELECT meta FROM order_events WHERE order_id = ? AND type = 'payment_cancelled' AND json_extract(meta, '$.payment_key') = ? AND json_extract(meta, '$.reason') = ? ORDER BY created_at DESC LIMIT 1")
-    .bind(order.id, paymentKey, reason)
-    .first();
+  // A retry for the same (payment, reason, amount) returns the recorded outcome
+  // instead of refunding twice. An explicit cancelAmount is part of the key: a
+  // SECOND partial refund of a different size is a new intent, not a duplicate.
+  // An amount-less call means "refund whatever is left for this reason": it only
+  // dedupes once nothing is left (a true replay of the completed full refund);
+  // while a balance remains it is a fresh refund, which is what previously got
+  // wrongly swallowed as "already processed".
+  let prior = null;
+  if (hasAmount) {
+    prior = await db
+      .prepare("SELECT meta FROM order_events WHERE order_id = ? AND type = 'payment_cancelled' AND json_extract(meta, '$.payment_key') = ? AND json_extract(meta, '$.reason') = ? AND json_extract(meta, '$.cancel_amount') = ? ORDER BY created_at DESC LIMIT 1")
+      .bind(order.id, paymentKey, reason, cancelAmount)
+      .first();
+  } else if (refundable <= 0) {
+    prior = await db
+      .prepare("SELECT meta FROM order_events WHERE order_id = ? AND type = 'payment_cancelled' AND json_extract(meta, '$.payment_key') = ? AND json_extract(meta, '$.reason') = ? ORDER BY created_at DESC LIMIT 1")
+      .bind(order.id, paymentKey, reason)
+      .first();
+  }
   if (prior) {
     let meta = {};
     try { meta = JSON.parse(prior.meta) || {}; } catch (e) { meta = {}; }
@@ -1587,13 +1655,26 @@ async function handleGoogleCallback(request, db, env) {
       // Find by email (account linking)
       member = await getMemberByEmail(db, userInfo.email);
       if (member) {
-        // Link Google ID to existing account
         const now = nowIso();
-        await db.prepare('UPDATE members SET google_id = ?, updated_at = ? WHERE id = ?')
-          .bind(userInfo.subject, now, member.id).run();
+        // A member that never verified its mailbox may be a squatted placeholder:
+        // whoever typed this email first, nobody proved ownership through email.
+        // Google proves it now, so the Google identity takes the account over —
+        // but the pre-set password must stop working and old sessions must die,
+        // or the squatter keeps a back door (and superadmin if the email is on
+        // the designated list).
+        if (!member.email_verified_at) {
+          await db.prepare('UPDATE members SET google_id = ?, password_hash = ?, updated_at = ? WHERE id = ?')
+            .bind(userInfo.subject, 'revoked$google-takeover$0$0', now, member.id).run();
+          await revokeMemberSessions(db, member.id);
+          await db.prepare('INSERT INTO member_events (member_id, type, meta, created_at) VALUES (?, ?, ?, ?)')
+            .bind(member.id, 'google_takeover_unclaimed', JSON.stringify({ google_id: userInfo.subject, password_revoked: true }), now).run();
+        } else {
+          await db.prepare('UPDATE members SET google_id = ?, updated_at = ? WHERE id = ?')
+            .bind(userInfo.subject, now, member.id).run();
+          await db.prepare('INSERT INTO member_events (member_id, type, meta, created_at) VALUES (?, ?, ?, ?)')
+            .bind(member.id, 'google_linked', JSON.stringify({ google_id: userInfo.subject }), now).run();
+        }
         member = { ...member, google_id: userInfo.subject };
-        await db.prepare('INSERT INTO member_events (member_id, type, meta, created_at) VALUES (?, ?, ?, ?)')
-          .bind(member.id, 'google_linked', JSON.stringify({ google_id: userInfo.subject }), now).run();
       } else {
         // Create new member
         const now = nowIso();
@@ -1733,7 +1814,13 @@ async function handleAuthRoute(pathname, method, request, db, env) {
       return authJson({ error: 'member_id required' }, 400);
     }
     if (!body.token) return authJson({ error: 'token required' }, 400);
-    const limit = await rateLimitCheck(db, policy, 'email-verify', String(providedMemberId || 'token'));
+    // Bucket per member when an id is sent, otherwise per token digest. The old
+    // constant 'token' key shared one global bucket: ten failed clicks by anyone
+    // locked email verification out for every customer for a day.
+    const verifyBucketKey = providedMemberId != null
+      ? String(providedMemberId)
+      : `tok:${await tokenDigest(String(body.token || ''))}`;
+    const limit = await rateLimitCheck(db, policy, 'email-verify', verifyBucketKey);
     if (limit.error) return authJson({ error: limit.error, detail: limit.detail }, 429);
 
     const row = await getAuthToken(db, body.token);
@@ -2088,14 +2175,17 @@ async function handleMeRoute(pathname, method, url, request, db, env) {
     if (!body.company || !body.name || !body.phone) {
       return authJson({ error: 'company, name, phone required' }, 400);
     }
+    const intake = validateQuoteIntake(body);
+    if (!intake.ok) return authJson(intake, 400);
     const id = 'Q-' + Date.now() + '-' + Math.random().toString(36).slice(2, 8);
     const createdAt = nowIso();
     await db.prepare(
-      `INSERT INTO quote_requests (id, created_at, company, contact_name, phone, email, location, note, services, items, status, member_id, updated_at)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'received', ?, ?)`
+      `INSERT INTO quote_requests (id, created_at, company, contact_name, phone, email, location, note, services, items, status, member_id, updated_at, privacy_consent, invoice_type, biz_no, agency_no)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'received', ?, ?, ?, ?, ?, ?)`
     ).bind(
       id, createdAt, body.company, body.name, body.phone, body.email || null, body.location || null, body.note || null,
-      JSON.stringify(body.services || []), JSON.stringify(body.items), member.id, createdAt
+      JSON.stringify(body.services || []), JSON.stringify(body.items), member.id, createdAt,
+      intake.privacy_consent, intake.invoice_type, intake.biz_no, intake.agency_no
     ).run();
     return authJson({ id, created_at: createdAt, status: 'received', member_id: member.id }, 201);
   }
@@ -2295,6 +2385,8 @@ const worker = {
       if (!body.company || !body.name || !body.phone) {
         return badRequest('company, name, phone required');
       }
+      const intake = validateQuoteIntake(body);
+      if (!intake.ok) return badRequest(intake.error, intake.detail);
       const id = 'Q-' + Date.now() + '-' + Math.random().toString(36).slice(2, 8);
       const createdAt = nowIso();
       // A signed-in member is linked only when the request also clears the
@@ -2305,11 +2397,12 @@ const worker = {
         if (quoteMember) quoteMemberId = quoteMember.id;
       }
       await env.DB.prepare(
-        `INSERT INTO quote_requests (id, created_at, company, contact_name, phone, email, location, note, services, items, status, member_id, updated_at)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'received', ?, ?)`
+        `INSERT INTO quote_requests (id, created_at, company, contact_name, phone, email, location, note, services, items, status, member_id, updated_at, privacy_consent, invoice_type, biz_no, agency_no)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'received', ?, ?, ?, ?, ?, ?)`
       ).bind(
         id, createdAt, body.company, body.name, body.phone, body.email || null, body.location || null, body.note || null,
-        JSON.stringify(body.services || []), JSON.stringify(body.items), quoteMemberId, createdAt
+        JSON.stringify(body.services || []), JSON.stringify(body.items), quoteMemberId, createdAt,
+        intake.privacy_consent, intake.invoice_type, intake.biz_no, intake.agency_no
       ).run();
       return json({ id, created_at: createdAt, status: 'received', member_id: quoteMemberId }, 201);
     }
@@ -2577,7 +2670,18 @@ const worker = {
       const id = decodeURIComponent(orderMatch[1]);
       const order = await getOrderFull(env.DB, id);
       if (!order) return notFound();
-      return json(publicOrderView(order, order.items));
+      // PII gate: the order number alone must not reveal name/phone/address.
+      // Full view requires the customer email factor, an owning member session,
+      // or staff auth; everyone else gets a status-only view.
+      const emailFactor = String(url.searchParams.get('email') || '').trim().toLowerCase();
+      const ownsEmail = emailFactor && emailFactor === String(order.customer_email || '').trim().toLowerCase();
+      const sessionMember = await requireMember(request, env.DB, env);
+      const ownsSession = !!(sessionMember && order.member_id && sessionMember.id === order.member_id);
+      const isStaff = await isAdminOrMember(request, env.DB, env);
+      if (ownsEmail || ownsSession || isStaff) {
+        return json(publicOrderView(order, order.items));
+      }
+      return json(minimalOrderView(order));
     }
 
     // ---------------- orders (admin) ----------------

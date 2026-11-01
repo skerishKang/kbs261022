@@ -17,6 +17,15 @@ window.CGI_SITE_CONFIG = {
   homepageUrl: 'https://cgihomepage.pages.dev/',
   // 견적 API (Cloudflare Worker). 비어 있으면 localStorage 정적 시연 모드.
   quoteApiUrl: 'https://cgi-quote-api.charliekant.workers.dev',
+  // ── 전자상거래법 필수 표기 (2026-11-01 구조 추가 — 값은 대표 확정 후 입력) ──
+  // 비어 있으면 쇼핑몰 푸터에 "확인 예정"으로 표시된다. 실제 번호 확정 시
+  // 이 한 블록만 채우면 전 화면에 반영된다.
+  legal: {
+    bizRegNo: '',        // 사업자등록번호 (000-00-00000)
+    mailOrderNo: '',     // 통신판매업 신고번호
+    privacyOfficerName: '',  // 개인정보보호책임자
+    privacyOfficerEmail: '', // 책임자 연락처
+  },
   // 주문·결제 API. 비어 있으면 quoteApiUrl 을 재사용한다.
   orderApiUrl: 'https://cgi-quote-api.charliekant.workers.dev',
   // 결제 게이트웨이 선택. 'tosspayments' 가 기본값이고, 'nicepay' 로 바꾸면

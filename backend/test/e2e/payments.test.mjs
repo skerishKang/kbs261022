@@ -57,10 +57,17 @@ test('rejects a payment amount that does not match the order total', async () =>
   assert.equal(tampered.json.detail.expected, TOTAL);
   assert.equal(tampered.json.detail.received, TOTAL - 1);
 
-  const stillWaiting = await call(env, 'GET', `/api/orders/${created.json.id}`);
+  const stillWaiting = await call(env, 'GET', `/api/orders/${created.json.id}?email=${encodeURIComponent(CUSTOMER.email)}`);
   assert.equal(stillWaiting.json.status, 'awaiting_payment');
   assert.equal(stillWaiting.json.payment_status, 'pending');
   assert.equal(stillWaiting.json.payment.payment_key, null);
+
+  // Without the email factor the same lookup is status-only: no payment block.
+  const stranger = await call(env, 'GET', `/api/orders/${created.json.id}`);
+  assert.equal(stranger.status, 200);
+  assert.equal(stranger.json.restricted, true);
+  assert.equal(stranger.json.payment, undefined);
+  assert.equal(stranger.json.customer, undefined);
 });
 
 test('rejects invalid confirm payloads', async () => {
@@ -133,21 +140,43 @@ test('a rejected card leaves the order payable again', async () => {
   assert.equal(failed.json.approved, false);
   assert.equal(failed.json.error, 'REJECT_CARD_COMPANY');
   assert.equal(failed.json.order_status, 'awaiting_payment');
-  assert.equal(failed.json.payment_status, 'failed');
+  // A PG rejection proves nothing about THIS order (the key was never bound to
+  // it server-side), so the order stays pending and fully payable.
+  assert.equal(failed.json.payment_status, 'pending');
 
-  const after = await call(env, 'GET', `/api/orders/${created.json.id}`);
+  const after = await call(env, 'GET', `/api/orders/${created.json.id}?email=${encodeURIComponent(CUSTOMER.email)}`);
   assert.equal(after.json.status, 'awaiting_payment');
-  assert.equal(after.json.payment_status, 'failed');
-  assert.equal(after.json.payable, false, 'payment_status is failed, so the UI must offer a retry');
+  assert.equal(after.json.payment_status, 'pending');
+  assert.equal(after.json.payable, true, 'a rejection leaves the order retryable');
 
   const retry = await call(env, 'POST', '/api/payments/confirm', { orderId: created.json.id, paymentKey: 'pk_retry_ok', amount: TOTAL });
   assert.equal(retry.status, 200);
   assert.equal(retry.json.order.status, 'paid');
 });
 
-test('a client-reported auth failure is recorded without calling the PG', async () => {
+test('a client-reported auth failure requires the email factor', async () => {
   const env = makeEnv();
   const created = await call(env, 'POST', '/api/orders', { ...purchaseCart(), ...CUSTOMER });
+
+  // Without the email factor a stranger must not be able to mark someone
+  // else's live order as failed.
+  const unauth = await call(env, 'POST', '/api/payments/confirm', {
+    orderId: created.json.id,
+    paymentKey: 'pk_attacker_cancel',
+    amount: TOTAL,
+    failure: true,
+  });
+  assert.equal(unauth.status, 403);
+  assert.equal(unauth.json.error, 'email factor required');
+
+  const wrongEmail = await call(env, 'POST', '/api/payments/confirm', {
+    orderId: created.json.id,
+    paymentKey: 'pk_attacker_cancel2',
+    amount: TOTAL,
+    failure: true,
+    customer_email: 'not-the-owner@example.com',
+  });
+  assert.equal(wrongEmail.status, 403);
 
   const failed = await call(env, 'POST', '/api/payments/confirm', {
     orderId: created.json.id,
@@ -155,6 +184,7 @@ test('a client-reported auth failure is recorded without calling the PG', async 
     amount: TOTAL,
     failure: true,
     failure_code: 'PAY_PROCESS_CANCELED',
+    customer_email: CUSTOMER.email,
   });
   assert.equal(failed.status, 402);
   assert.equal(failed.json.error, 'payment_auth_failed');
