@@ -96,7 +96,7 @@ const DUPLICATE_WINDOW_SECONDS = 120;
 // Smallest partial refund the backend will accept (KRW). Anything below this is
 // rounding dust rather than a refund; override with the MIN_PARTIAL_REFUND var.
 const MIN_PARTIAL_REFUND = 1000;
-const BACKEND_VERSION = '1.5.0';
+const BACKEND_VERSION = '1.5.1';
 const SUPERADMIN_EMAILS = new Set(['charliekant@gmail.com', 'skerish@naver.com']);
 
 // Legacy credential-free header set: quote intake, order, payment and admin
