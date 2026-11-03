@@ -1,0 +1,56 @@
+[
+  {
+    "id": "fake-shop-model-exact",
+    "name": "SQ5+",
+    "brand": "ALLEN&HEATH",
+    "manufacturer": "Allen&Heath",
+    "model": "AH-SQ5-REV-B",
+    "barcode": "880000000001",
+    "specs": []
+  },
+  {
+    "id": "fake-shop-name-format",
+    "name": "QU-6 (NEW)",
+    "brand": "ALLEN&HEATH",
+    "manufacturer": "Allen&Heath",
+    "model": "",
+    "barcode": "",
+    "specs": []
+  },
+  {
+    "id": "fake-shop-barcode",
+    "name": "QU-7 (NEW)",
+    "brand": "ALLEN&HEATH",
+    "manufacturer": "Allen&Heath",
+    "model": "",
+    "barcode": "880000000007",
+    "specs": []
+  },
+  {
+    "id": "fake-shop-score-tie",
+    "name": "Dual Tone Mixer",
+    "brand": "Test Brand",
+    "manufacturer": "Test Brand",
+    "model": "",
+    "barcode": "",
+    "specs": []
+  },
+  {
+    "id": "fake-shop-no-candidate",
+    "name": "ZYXWV Never Seen Product 998877",
+    "brand": "",
+    "manufacturer": "",
+    "model": "",
+    "barcode": "",
+    "specs": []
+  },
+  {
+    "id": "fake-shop-qu7-number-conflict",
+    "name": "QU-7 (NEW)",
+    "brand": "ALLEN&HEATH",
+    "manufacturer": "Allen&Heath",
+    "model": "",
+    "barcode": "",
+    "specs": []
+  }
+]

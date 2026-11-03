@@ -60,6 +60,8 @@ function notConfigured(mode, reason, orderId, lineCount) {
   };
 }
 
+// The env JSON fallback is restricted to explicit mock mode for existing fixtures.
+// Test and production modes read only records explicitly approved into D1.
 function parseItemMap(raw) {
   if (!raw) return { ok: false, reason: 'item_mapping_missing', map: {} };
   try {
@@ -83,7 +85,7 @@ function parseItemMap(raw) {
  * currently a proposed SS-/SM- code, so only the explicit product map is
  * accepted as proof that an ECOUNT item exists.
  */
-export function prepareEcountSaleOrder({ env = {}, order, items = [], generatedAt = new Date() } = {}) {
+export function prepareEcountSaleOrder({ env = {}, order, items = [], approvedItemMap = null, generatedAt = new Date() } = {}) {
   const mode = ecountOrderMode(env);
   if (!order?.id) return notConfigured(mode, 'order_id_missing', '', items.length);
   if (order.payment_status !== 'paid' || order.status !== 'paid') {
@@ -109,7 +111,10 @@ export function prepareEcountSaleOrder({ env = {}, order, items = [], generatedA
   if (!Array.isArray(items) || items.length === 0) return notConfigured(mode, 'order_lines_missing', order.id, 0);
   if (items.length > MAX_LINES_PER_ORDER) return notConfigured(mode, 'order_line_limit_exceeded', order.id, items.length);
 
-  const { ok: mapReady, reason: mapReason, map } = parseItemMap(env.ECOUNT_ITEM_CODE_MAP_JSON);
+  const approvedMap = approvedItemMap === null || approvedItemMap === undefined
+    ? (text(env.ERP_MODE).toLowerCase() === 'mock' ? parseItemMap(env.ECOUNT_ITEM_CODE_MAP_JSON) : { ok: false, reason: 'item_mapping_missing', map: {} })
+    : normalizeApprovedItemMap(approvedItemMap);
+  const { ok: mapReady, reason: mapReason, map } = approvedMap;
   if (!mapReady) return notConfigured(mode, mapReason, order.id, items.length);
   const unmapped = items.filter((item) => !map[text(item.product_id)]);
   if (unmapped.length) return notConfigured(mode, 'product_mapping_missing', order.id, items.length);
@@ -159,6 +164,16 @@ export function prepareEcountSaleOrder({ env = {}, order, items = [], generatedA
     plan,
     payload: plan,
   };
+}
+
+function normalizeApprovedItemMap(value) {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return { ok: false, reason: 'item_mapping_invalid', map: {} };
+  const map = Object.create(null);
+  for (const [productId, prodCd] of Object.entries(value)) {
+    if (!text(productId) || !text(prodCd)) return { ok: false, reason: 'item_mapping_invalid', map: {} };
+    map[text(productId)] = text(prodCd);
+  }
+  return Object.keys(map).length ? { ok: true, map } : { ok: false, reason: 'item_mapping_missing', map: {} };
 }
 
 /** Send a prepared single-order plan through the documented Zone → Login → SaveSaleOrder flow. */
