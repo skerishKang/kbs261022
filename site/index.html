@@ -7,7 +7,7 @@
 <meta name="description" content="㈜시지아이(CGI) B2B 상품 카탈로그. 음향·영상·조명 장비를 브랜드·카테고리로 찾고 견적을 요청하세요.">
 <meta name="theme-color" content="#07913A">
 <link rel="icon" href="../website/assets/img/cgi-mark-green.png">
-<link rel="stylesheet" href="assets/css/cgi-catalog.css?v=79a">
+<link rel="stylesheet" href="assets/css/cgi-catalog.css?v=80a">
 </head>
 <body>
 
@@ -43,22 +43,23 @@
       <a href="#/my-page" data-nav="my-page">마이페이지</a>
       <a href="#/about" data-nav="about">이용 안내</a>
       <a href="../website/index.html" data-home-link data-nav="company">회사 홈페이지</a>
+      <div class="header-auth">
+        <div class="auth-links-guest">
+          <a href="#/login" data-auth-guest>로그인</a>
+          <a href="#/signup" class="btn btn-small btn-primary" data-auth-guest>회원가입</a>
+        </div>
+        <div class="auth-links-member" hidden>
+          <a href="#/my-page" data-auth-member>
+            <span class="auth-name" data-auth-name>회원님</span>
+          </a>
+          <a href="#/auth/verify" data-auth-verified-badge class="auth-badge-unverified" hidden>인증 대기</a>
+          <a href="orders.html" data-auth-admin hidden>관리자 페이지</a>
+          <button type="button" class="btn btn-small btn-ghost" data-action="logout">로그아웃</button>
+        </div>
+      </div>
     </nav>
 
-    <div class="header-auth">
-      <div class="auth-links-guest">
-        <a href="#/login" data-auth-guest>로그인</a>
-        <a href="#/signup" class="btn btn-small btn-primary" data-auth-guest>회원가입</a>
-      </div>
-      <div class="auth-links-member" hidden>
-        <a href="#/my-page" data-auth-member>
-          <span class="auth-name" data-auth-name>회원님</span>
-        </a>
-        <a href="#/auth/verify" data-auth-verified-badge class="auth-badge-unverified" hidden>인증 대기</a>
-        <a href="orders.html" data-auth-admin hidden>관리자 페이지</a>
-        <button type="button" class="btn btn-small btn-ghost" data-action="logout">로그아웃</button>
-      </div>
-    </div>
+
   </div>
 </header>
 
@@ -94,6 +95,21 @@
       </ul>
     </div>
   </div>
+  <section class="footer-seller" aria-labelledby="sellerInfoTitle">
+    <div class="footer-seller-inner">
+      <h2 id="sellerInfoTitle">판매자 정보</h2>
+      <dl>
+        <div><dt>상호</dt><dd>주식회사 시지아이</dd></div>
+        <div><dt>대표자</dt><dd>김범신</dd></div>
+        <div><dt>사업자등록번호</dt><dd>410-86-46283</dd></div>
+        <!-- [대표 결정] 통신판매업 신고번호 확정 후 기재 -->
+        <div><dt>통신판매업 신고번호</dt><dd>[대표 결정]</dd></div>
+        <div><dt>주소</dt><dd>[57248] 전라남도 장성군 남면 나노산단로 102 (삼태리)</dd></div>
+        <div><dt>연락처</dt><dd><a href="tel:0625768100">062) 576-8100</a> · <a href="tel:0618018100">061) 801-8100</a></dd></div>
+      </dl>
+    </div>
+  </section>
+
   <div class="footer-bottom">
     <p data-legal-info>© 주식회사 시지아이. All rights reserved. · <a href="returns.html" style="color:inherit">교환·반품·환불 안내</a></p>
     <p>공개 판매가는 참고 정보이며, 재고·배송·최종 판매가는 CGI 확인 후 안내됩니다.</p>
@@ -109,6 +125,6 @@
 <script src="assets/js/cgi-header.js"></script>
 <script src="assets/js/cgi-auth.js?v=79a"></script>
 <script src="assets/js/cgi-order.js?v=73a"></script>
-<script src="assets/js/cgi-catalog.js?v=79a"></script>
+<script src="assets/js/cgi-catalog.js?v=80a"></script>
 </body>
 </html>

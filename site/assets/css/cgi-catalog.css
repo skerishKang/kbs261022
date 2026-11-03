@@ -1271,3 +1271,33 @@ p:last-child { margin-bottom: 0; }
 }
 .filter-subhead:first-child { margin-top: 0; }
 .filter-subhead .subhead-cnt { margin-left: auto; font-size: 10px; color: var(--cgi-muted); font-weight: 600; }
+
+/* CGI UX 2026-11: compact mobile header, home quick links, and seller disclosures */
+@media (max-width: 899px) {
+  .header-inner { padding: 8px 12px; gap: 8px; }
+  .notice-bar { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.3; }
+  .notice-bar #noticeText { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+  .header-nav .header-auth { order: 5; width: 100%; margin: 0; padding: 12px 4px; border-left: 0; border-top: 1px solid #2a2a2a; }
+}
+.hero-quicklinks { display: grid; gap: 10px; margin-top: 20px; }
+.hero-quick-group { display: flex; align-items: center; flex-wrap: wrap; gap: 7px; }
+.hero-quick-label { min-width: 62px; color: #d9e8dc; font-size: 12px; font-weight: 800; }
+.hero-quicklinks .chip { background: rgba(255,255,255,.12); border-color: rgba(255,255,255,.24); color: #fff; }
+.hero-quicklinks .chip:hover { background: rgba(255,255,255,.22); }
+.card-img.no-image { display: grid; place-content: center; gap: 6px; color: var(--cgi-muted); text-align: center; }
+.footer-seller { border-top: 1px solid #303030; background: #171717; color: #e5e5e5; }
+.footer-seller-inner { max-width: 1280px; margin: 0 auto; padding: 22px 24px; }
+.footer-seller h2 { margin: 0 0 12px; color: #fff; font-size: 15px; }
+.footer-seller dl { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 24px; margin: 0; }
+.footer-seller dl > div { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 10px; line-height: 1.55; }
+.footer-seller dt { color: #a8b8ab; font-size: 12px; font-weight: 700; }
+.footer-seller dd { margin: 0; font-size: 13px; overflow-wrap: anywhere; }
+.footer-seller a { color: inherit; }
+@media (max-width: 639px) {
+  .hero-quicklinks { gap: 8px; margin-top: 16px; }
+  .hero-quick-group { gap: 6px; }
+  .hero-quick-label { min-width: 100%; }
+  .footer-seller-inner { padding: 20px 16px; }
+  .footer-seller dl { grid-template-columns: minmax(0, 1fr); gap: 9px; }
+  .footer-seller dl > div { grid-template-columns: 124px minmax(0, 1fr); gap: 8px; }
+}
