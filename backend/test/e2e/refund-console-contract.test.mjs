@@ -11,7 +11,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 
 import { PRICE_INDEX } from '../../data/price_index.mjs';
-import { makeEnv, call, auth, CUSTOMER } from '../helpers.mjs';
+import { makeTossEnv, call, auth, CUSTOMER } from '../helpers.mjs';
 
 const SITE_HELPER = new URL('../../../site/assets/js/cgi-refund.js', import.meta.url);
 await import(SITE_HELPER.href);
@@ -43,7 +43,7 @@ const cancel = (env, order, body) =>
   call(env, 'POST', `/api/orders/${order.id}/payments/${order.key}/cancel`, body, auth());
 
 test('the console can refund every order in full, including one below the floor', async () => {
-  const env = makeEnv();
+  const env = makeTossEnv();
   assert.ok(CHEAP_PRICE < FLOOR, `needs a sub-floor product, cheapest is ${CHEAP_PRICE}`);
 
   for (const qty of [1, 2, 15]) {
@@ -60,7 +60,7 @@ test('the console can refund every order in full, including one below the floor'
 });
 
 test('every body the console accepts, the server accepts too', async () => {
-  const env = makeEnv();
+  const env = makeTossEnv();
   const balance = CHEAP_PRICE * 15;
   assert.ok(balance > FLOOR, 'this tier needs an order above the floor');
   const inputs = ['', '   ', '1000', '2500', String(balance)];
@@ -87,7 +87,7 @@ test('every body the console accepts, the server accepts too', async () => {
 });
 
 test('every partial the console blocks below the floor, the server blocks as well', async () => {
-  const env = makeEnv();
+  const env = makeTossEnv();
   const order = await paidOrder(env, 15);
   const balance = order.balance;
 
@@ -108,7 +108,7 @@ test('every partial the console blocks below the floor, the server blocks as wel
 });
 
 test('an amount equal to the balance never reaches the floor rule', async () => {
-  const env = makeEnv();
+  const env = makeTossEnv();
   const order = await paidOrder(env, 1);
   assert.ok(order.balance < FLOOR);
 
@@ -122,7 +122,7 @@ test('an amount equal to the balance never reaches the floor rule', async () => 
 });
 
 test('a console partial leaves a balance the console can finish in full', async () => {
-  const env = makeEnv();
+  const env = makeTossEnv();
   const order = await paidOrder(env, 15);
 
   const first = build('1000', order.balance, '최소 부분 환불');
@@ -151,7 +151,7 @@ test('a console partial leaves a balance the console can finish in full', async 
 });
 
 test('a partial refund does not count the same money twice in the ledger', async () => {
-  const env = makeEnv();
+  const env = makeTossEnv();
   const order = await paidOrder(env, 15);
 
   for (const n of [1, 2, 3]) {

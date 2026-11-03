@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 
 import { PRICE_INDEX } from '../../data/price_index.mjs';
-import { makeEnv, call, auth, CUSTOMER, purchaseCart, mixedCart, pricedProductIds, inquiryProductId } from '../helpers.mjs';
+import { makeTossEnv, call, auth, CUSTOMER, purchaseCart, mixedCart, pricedProductIds, inquiryProductId } from '../helpers.mjs';
 
 const [PA, PB] = pricedProductIds(2);
 const PRICE_A = PRICE_INDEX[PA].p;
@@ -23,7 +23,7 @@ async function paidPurchase(env) {
 }
 
 test('confirms a payment and marks the order paid', async () => {
-  const env = makeEnv();
+  const env = makeTossEnv();
   const { confirmed } = await paidPurchase(env);
 
   assert.equal(confirmed.approved, true);
@@ -43,7 +43,7 @@ test('confirms a payment and marks the order paid', async () => {
 });
 
 test('rejects a payment amount that does not match the order total', async () => {
-  const env = makeEnv();
+  const env = makeTossEnv();
   const created = await call(env, 'POST', '/api/orders', { ...purchaseCart(), ...CUSTOMER });
   assert.equal(created.status, 201);
 
@@ -71,7 +71,7 @@ test('rejects a payment amount that does not match the order total', async () =>
 });
 
 test('rejects invalid confirm payloads', async () => {
-  const env = makeEnv();
+  const env = makeTossEnv();
   assert.equal((await call(env, 'POST', '/api/payments/confirm', {})).json.error, 'orderId and paymentKey required');
   assert.equal((await call(env, 'POST', '/api/payments/confirm', { orderId: 'ORD-19990101-ABCDE', paymentKey: 'pk' })).status, 404);
   const created = await call(env, 'POST', '/api/orders', { ...purchaseCart(), ...CUSTOMER });
@@ -80,7 +80,7 @@ test('rejects invalid confirm payloads', async () => {
 });
 
 test('a quote order can never be paid', async () => {
-  const env = makeEnv();
+  const env = makeTossEnv();
   const created = await call(env, 'POST', '/api/orders', { ...mixedCart(), ...CUSTOMER });
   assert.equal(created.status, 201);
   assert.equal(created.json.kind, 'quote');
@@ -99,7 +99,7 @@ test('a quote order can never be paid', async () => {
 });
 
 test('the same paymentKey is idempotent and never double approves', async () => {
-  const env = makeEnv();
+  const env = makeTossEnv();
   const created = await call(env, 'POST', '/api/orders', { ...purchaseCart(), ...CUSTOMER });
   const body = { orderId: created.json.id, paymentKey: 'pk_once', amount: TOTAL };
 
@@ -117,7 +117,7 @@ test('the same paymentKey is idempotent and never double approves', async () => 
 });
 
 test('a second paymentKey on a paid order is reported as already paid', async () => {
-  const env = makeEnv();
+  const env = makeTossEnv();
   const created = await call(env, 'POST', '/api/orders', { ...purchaseCart(), ...CUSTOMER });
   await call(env, 'POST', '/api/payments/confirm', { orderId: created.json.id, paymentKey: 'pk_one', amount: TOTAL });
   const second = await call(env, 'POST', '/api/payments/confirm', { orderId: created.json.id, paymentKey: 'pk_two', amount: TOTAL });
@@ -127,7 +127,7 @@ test('a second paymentKey on a paid order is reported as already paid', async ()
 });
 
 test('a rejected card leaves the order payable again', async () => {
-  const env = makeEnv();
+  const env = makeTossEnv();
   const created = await call(env, 'POST', '/api/orders', { ...purchaseCart(), ...CUSTOMER });
   assert.equal(created.status, 201);
 
@@ -155,7 +155,7 @@ test('a rejected card leaves the order payable again', async () => {
 });
 
 test('a client-reported auth failure requires the email factor', async () => {
-  const env = makeEnv();
+  const env = makeTossEnv();
   const created = await call(env, 'POST', '/api/orders', { ...purchaseCart(), ...CUSTOMER });
 
   // Without the email factor a stranger must not be able to mark someone
@@ -195,7 +195,7 @@ test('a client-reported auth failure requires the email factor', async () => {
 });
 
 test('a payment cannot confirm a closed order', async () => {
-  const env = makeEnv();
+  const env = makeTossEnv();
   const { id } = await paidPurchase(env);
 
   const shipped = await call(env, 'PATCH', `/api/orders/${id}`, { status: 'processing' }, auth());
@@ -209,7 +209,7 @@ test('a payment cannot confirm a closed order', async () => {
 });
 
 test('full refund records the amount and moves the order to refunding', async () => {
-  const env = makeEnv();
+  const env = makeTossEnv();
   const { id } = await paidPurchase(env);
 
   const result = await call(env, 'POST', `/api/orders/${id}/payments/pk_approved_1/cancel`, {
@@ -230,7 +230,7 @@ test('full refund records the amount and moves the order to refunding', async ()
 });
 
 test('refunds are idempotent and cannot over-refund', async () => {
-  const env = makeEnv();
+  const env = makeTossEnv();
   const { id } = await paidPurchase(env);
   const path = `/api/orders/${id}/payments/pk_approved_1/cancel`;
   const body = { cancelReason: '중복 환불 방지' };
@@ -246,7 +246,7 @@ test('refunds are idempotent and cannot over-refund', async () => {
 });
 
 test('partial refunds accumulate and stop at the order total', async () => {
-  const env = makeEnv();
+  const env = makeTossEnv();
   const created = await call(env, 'POST', '/api/orders', { ...purchaseCart(), ...CUSTOMER });
   await call(env, 'POST', '/api/payments/confirm', { orderId: created.json.id, paymentKey: 'pk_partial', amount: TOTAL });
 
@@ -269,7 +269,7 @@ test('partial refunds accumulate and stop at the order total', async () => {
 });
 
 test('requires authentication for refunds and rejects bad amounts', async () => {
-  const env = makeEnv();
+  const env = makeTossEnv();
   const { id } = await paidPurchase(env);
   const path = `/api/orders/${id}/payments/pk_approved_1/cancel`;
   assert.equal((await call(env, 'POST', path, { cancelReason: 'x' })).status, 401);
@@ -279,7 +279,7 @@ test('requires authentication for refunds and rejects bad amounts', async () => 
 });
 
 test('staff can confirm prices on a quote order and convert it to a payable purchase', async () => {
-  const env = makeEnv();
+  const env = makeTossEnv();
   const created = await call(env, 'POST', '/api/orders', {
     ...CUSTOMER,
     items: [{ product_id: PA, qty: 1 }, { product_id: inquiryProductId(), qty: 2 }],
@@ -316,7 +316,7 @@ test('staff can confirm prices on a quote order and convert it to a payable purc
 });
 
 test('price confirmation requires every item price and admin auth', async () => {
-  const env = makeEnv();
+  const env = makeTossEnv();
   const created = await call(env, 'POST', '/api/orders', {
     ...CUSTOMER,
     items: [{ product_id: PA, qty: 1 }, { product_id: inquiryProductId(), qty: 1 }],
@@ -334,7 +334,7 @@ test('price confirmation requires every item price and admin auth', async () => 
 });
 
 test('price confirmation is rejected for a purchase order', async () => {
-  const env = makeEnv();
+  const env = makeTossEnv();
   const created = await call(env, 'POST', '/api/orders', { ...purchaseCart(), ...CUSTOMER });
   const res = await call(env, 'POST', `/api/orders/${created.json.id}/quote/prices`, { admin_prices: { [PA]: 100 } }, auth());
   assert.equal(res.status, 409);

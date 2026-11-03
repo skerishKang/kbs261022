@@ -20,6 +20,8 @@ function env(overrides = {}) {
   return {
     DB: openD1(),
     ADMIN_TOKEN,
+    PG_PROVIDER: 'tosspayments',
+    SITE_PG_PROVIDER: 'tosspayments',
     PG_PROVIDER_MODE: 'mock',
     ERP_LIVE_WRITE: 'NO',
     ERP_MODE: 'test',

@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 
 import { PRICE_INDEX } from '../../data/price_index.mjs';
 import { openD1 } from '../../d1-shim.mjs';
-import { makeEnv, call, auth, CUSTOMER, purchaseCart, pricedProductIds } from '../helpers.mjs';
+import { makeTossEnv, call, auth, CUSTOMER, purchaseCart, pricedProductIds } from '../helpers.mjs';
 
 const ORIGIN = 'https://skerishkang.github.io';
 const PASSWORD = 'Test!2026-abc';
@@ -35,14 +35,14 @@ async function seed(env) {
 }
 
 test('requires admin auth for the order list', async () => {
-  const env = makeEnv();
+  const env = makeTossEnv();
   await seed(env);
   assert.equal((await call(env, 'GET', '/api/orders')).status, 401);
   assert.equal((await call(env, 'GET', '/api/orders', undefined, { Authorization: 'Bearer wrong' })).status, 401);
 });
 
 test('lists orders newest first and applies filters', async () => {
-  const env = makeEnv();
+  const env = makeTossEnv();
   const orders = await seed(env);
 
   const all = await call(env, 'GET', '/api/orders', undefined, auth());
@@ -70,7 +70,7 @@ test('lists orders newest first and applies filters', async () => {
 });
 
 test('searches by id, company, contact and phone', async () => {
-  const env = makeEnv();
+  const env = makeTossEnv();
   const orders = await seed(env);
 
   const byCompany = await call(env, 'GET', '/api/orders?q=Alpha', undefined, auth());
@@ -94,7 +94,7 @@ test('searches by id, company, contact and phone', async () => {
 });
 
 test('kind filter separates quote and purchase orders', async () => {
-  const env = makeEnv();
+  const env = makeTossEnv();
   const purchase = await call(env, 'POST', '/api/orders', { ...purchaseCart(), ...CUSTOMER, phone: '010-1111-0001' });
   assert.equal(purchase.status, 201);
   const [a] = pricedProductIds(1);
@@ -115,7 +115,7 @@ test('kind filter separates quote and purchase orders', async () => {
 });
 
 test('walks the fulfillment statuses and rejects illegal transitions', async () => {
-  const env = makeEnv();
+  const env = makeTossEnv();
   const orders = await seed(env);
   const id = orders.b.id;
 
@@ -146,7 +146,7 @@ test('walks the fulfillment statuses and rejects illegal transitions', async () 
 });
 
 test('rejects unknown statuses and delivery statuses', async () => {
-  const env = makeEnv();
+  const env = makeTossEnv();
   const orders = await seed(env);
   const id = orders.a.id;
 
@@ -165,7 +165,7 @@ test('rejects unknown statuses and delivery statuses', async () => {
 });
 
 test('a quote order follows the quote status path', async () => {
-  const env = makeEnv();
+  const env = makeTossEnv();
   const created = await call(env, 'POST', '/api/orders', {
     ...purchaseCart(),
     ...CUSTOMER,
@@ -185,7 +185,7 @@ test('a quote order follows the quote status path', async () => {
 });
 
 test('sets admin notes and tracks them in the audit log', async () => {
-  const env = makeEnv();
+  const env = makeTossEnv();
   const orders = await seed(env);
   const id = orders.a.id;
 
@@ -198,7 +198,7 @@ test('sets admin notes and tracks them in the audit log', async () => {
 });
 
 test('requires admin auth and validates event lookup', async () => {
-  const env = makeEnv();
+  const env = makeTossEnv();
   const created = await call(env, 'POST', '/api/orders', { ...purchaseCart(), ...CUSTOMER });
   const id = created.json.id;
 
@@ -215,7 +215,7 @@ test('requires admin auth and validates event lookup', async () => {
 });
 
 test('ERP sync is built in test mode and never transmitted', async () => {
-  const env = makeEnv();
+  const env = makeTossEnv();
   const orders = await seed(env);
   const id = orders.b.id;
 
@@ -240,7 +240,7 @@ test('ERP sync is built in test mode and never transmitted', async () => {
 });
 
 test('ERP sync is deduplicated and retry increments attempts', async () => {
-  const env = makeEnv();
+  const env = makeTossEnv();
   const created = await call(env, 'POST', '/api/orders', { ...purchaseCart(), ...CUSTOMER, phone: '010-3333-0001' });
   const id = created.json.id;
 
@@ -257,7 +257,7 @@ test('ERP sync is deduplicated and retry increments attempts', async () => {
 });
 
 test('ERP sync requires admin auth', async () => {
-  const env = makeEnv();
+  const env = makeTossEnv();
   const created = await call(env, 'POST', '/api/orders', { ...purchaseCart(), ...CUSTOMER });
   assert.equal((await call(env, 'POST', `/api/orders/${created.json.id}/erp`, {})).status, 401);
   assert.equal((await call(env, 'POST', `/api/orders/${created.json.id}/erp/retry`, {})).status, 401);
@@ -265,7 +265,7 @@ test('ERP sync requires admin auth', async () => {
 });
 
 test('health reports the active modes without leaking secrets', async () => {
-  const env = makeEnv({ PG_PROVIDER_MODE: 'auto', TOSS_WIDGET_SECRET_KEY: 'example_gsk_DOCS_SECRET_DO_NOT_LEAK' });
+  const env = makeTossEnv({ PG_PROVIDER: 'tosspayments', PG_PROVIDER_MODE: 'auto', TOSS_WIDGET_SECRET_KEY: 'example_gsk_DOCS_SECRET_DO_NOT_LEAK' });
   const res = await call(env, 'GET', '/api/admin/health');
   assert.equal(res.status, 200);
   const body = res.json;
@@ -283,7 +283,7 @@ test('health reports the active modes without leaking secrets', async () => {
 });
 
 test('schema init is admin only and idempotent', async () => {
-  const env = makeEnv();
+  const env = makeTossEnv();
   await seed(env);
   assert.equal((await call(env, 'POST', '/api/admin/schema/init')).status, 401);
 
@@ -301,7 +301,7 @@ test('schema init is admin only and idempotent', async () => {
 });
 
 test('PATCH on an unknown order returns 404', async () => {
-  const env = makeEnv();
+  const env = makeTossEnv();
   assert.equal((await call(env, 'PATCH', '/api/orders/ORD-19990101-ABCDE', { status: 'paid' }, auth())).status, 404);
 });
 
@@ -340,7 +340,7 @@ async function adminCookie(env) {
 }
 
 test('admin member endpoints require superadmin auth', async () => {
-  const env = makeEnv({ MAIL_MODE: 'echo', AUTH_PBKDF2_ITERATIONS: '1000' });
+  const env = makeTossEnv({ MAIL_MODE: 'echo', AUTH_PBKDF2_ITERATIONS: '1000' });
 
   // Anonymous -> 401
   assert.equal((await call(env, 'GET', '/api/admin/members')).status, 401);
@@ -362,7 +362,7 @@ test('admin member endpoints require superadmin auth', async () => {
 });
 
 test('ordinary admin cannot manage members (superadmin only)', async () => {
-  const env = makeEnv({ MAIL_MODE: 'echo', AUTH_PBKDF2_ITERATIONS: '1000' });
+  const env = makeTossEnv({ MAIL_MODE: 'echo', AUTH_PBKDF2_ITERATIONS: '1000' });
 
   const cookie = await adminCookie(env);
   const list = await call(env, 'GET', '/api/admin/members', undefined, { ...csrf, Cookie: cookie });
@@ -373,7 +373,7 @@ test('ordinary admin cannot manage members (superadmin only)', async () => {
 });
 
 test('superadmin can list members and see roles', async () => {
-  const env = makeEnv({ MAIL_MODE: 'echo', AUTH_PBKDF2_ITERATIONS: '1000' });
+  const env = makeTossEnv({ MAIL_MODE: 'echo', AUTH_PBKDF2_ITERATIONS: '1000' });
 
   await signUpAndVerify(env, { email: 'kim@example.com', name: '김회원' });
   const superCookie = await superadminCookie(env);
@@ -390,7 +390,7 @@ test('superadmin can list members and see roles', async () => {
 });
 
 test('superadmin can promote a member to admin', async () => {
-  const env = makeEnv({ MAIL_MODE: 'echo', AUTH_PBKDF2_ITERATIONS: '1000' });
+  const env = makeTossEnv({ MAIL_MODE: 'echo', AUTH_PBKDF2_ITERATIONS: '1000' });
 
   await signUpAndVerify(env, { email: 'worker@example.com', name: 'Worker' });
   const superCookie = await superadminCookie(env);
@@ -404,7 +404,7 @@ test('superadmin can promote a member to admin', async () => {
 });
 
 test('superadmin can demote an admin back to member', async () => {
-  const env = makeEnv({ MAIL_MODE: 'echo', AUTH_PBKDF2_ITERATIONS: '1000' });
+  const env = makeTossEnv({ MAIL_MODE: 'echo', AUTH_PBKDF2_ITERATIONS: '1000' });
 
   await signUpAndVerify(env, { email: 'worker@example.com', name: 'Worker' });
   const superCookie = await superadminCookie(env);
@@ -420,7 +420,7 @@ test('superadmin can demote an admin back to member', async () => {
 });
 
 test('superadmin role is immutable for the two hardcoded emails', async () => {
-  const env = makeEnv({ MAIL_MODE: 'echo', AUTH_PBKDF2_ITERATIONS: '1000' });
+  const env = makeTossEnv({ MAIL_MODE: 'echo', AUTH_PBKDF2_ITERATIONS: '1000' });
 
   await signUpAndVerify(env, { email: 'skerish@naver.com', name: 'Skerish' });
   const superCookie = await superadminCookie(env);
@@ -436,7 +436,7 @@ test('superadmin role is immutable for the two hardcoded emails', async () => {
 });
 
 test('role PATCH rejects invalid role values', async () => {
-  const env = makeEnv({ MAIL_MODE: 'echo', AUTH_PBKDF2_ITERATIONS: '1000' });
+  const env = makeTossEnv({ MAIL_MODE: 'echo', AUTH_PBKDF2_ITERATIONS: '1000' });
 
   await signUpAndVerify(env, { email: 'worker@example.com', name: 'Worker' });
   const superCookie = await superadminCookie(env);
@@ -452,7 +452,7 @@ test('role PATCH rejects invalid role values', async () => {
 });
 
 test('role PATCH on non-existent member returns 404', async () => {
-  const env = makeEnv({ MAIL_MODE: 'echo', AUTH_PBKDF2_ITERATIONS: '1000' });
+  const env = makeTossEnv({ MAIL_MODE: 'echo', AUTH_PBKDF2_ITERATIONS: '1000' });
 
   const superCookie = await superadminCookie(env);
 
@@ -461,7 +461,7 @@ test('role PATCH on non-existent member returns 404', async () => {
 });
 
 test('role PATCH with invalid member id returns 400', async () => {
-  const env = makeEnv({ MAIL_MODE: 'echo', AUTH_PBKDF2_ITERATIONS: '1000' });
+  const env = makeTossEnv({ MAIL_MODE: 'echo', AUTH_PBKDF2_ITERATIONS: '1000' });
 
   const superCookie = await superadminCookie(env);
 

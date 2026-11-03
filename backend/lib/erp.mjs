@@ -91,7 +91,7 @@ export function buildEcountSalesSlip({ order, items, mode = 'test', liveWrite = 
       customer_addr_detail: order.customer_addr_detail || null,
     },
     payment: {
-      provider: order.pg_provider || 'tosspayments',
+      provider: order.pg_provider || 'nicepay',
       provider_mode: order.pg_provider_mode || mode,
       payment_key: order.payment_key || null,
       payment_method: order.payment_method || null,

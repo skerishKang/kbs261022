@@ -13,7 +13,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 
 import { PRICE_INDEX } from '../../data/price_index.mjs';
-import { makeEnv, call, auth, CUSTOMER } from '../helpers.mjs';
+import { makeTossEnv, call, auth, CUSTOMER } from '../helpers.mjs';
 
 /** Cheapest confirmed price — the real-world 340원 case, below the partial floor. */
 function cheapestProductId() {
@@ -43,7 +43,7 @@ async function paidCheapOrder(env) {
 const cancelPath = (id, key) => `/api/orders/${id}/payments/${key}/cancel`;
 
 test('an order below the partial floor can be fully refunded', async () => {
-  const env = makeEnv();
+  const env = makeTossEnv();
   const { id, amount } = await paidCheapOrder(env);
 
   const res = await call(env, 'POST', cancelPath(id, `pk_cheap_${CHEAP}`), {
@@ -58,7 +58,7 @@ test('an order below the partial floor can be fully refunded', async () => {
 });
 
 test('sending that same sub-floor amount explicitly is still rejected', async () => {
-  const env = makeEnv();
+  const env = makeTossEnv();
   const { id, amount } = await paidCheapOrder(env);
 
   const res = await call(env, 'POST', cancelPath(id, `pk_cheap_${CHEAP}`), {
@@ -75,7 +75,7 @@ test('sending that same sub-floor amount explicitly is still rejected', async ()
 });
 
 test('the floor is a partial-refund rule, not a full-refund rule', async () => {
-  const env = makeEnv();
+  const env = makeTossEnv();
   const { id } = await paidCheapOrder(env);
   const key = `pk_cheap_${CHEAP}`;
 
@@ -89,7 +89,7 @@ test('the floor is a partial-refund rule, not a full-refund rule', async () => {
 });
 
 test('the floor follows MIN_PARTIAL_REFUND exactly as the server reads it', async () => {
-  const env = makeEnv({ MIN_PARTIAL_REFUND: '100' });
+  const env = makeTossEnv({ MIN_PARTIAL_REFUND: '100' });
   const { id, amount } = await paidCheapOrder(env);
 
   const rejected = await call(env, 'POST', cancelPath(id, `pk_cheap_${CHEAP}`), {
@@ -113,7 +113,7 @@ test('the floor follows MIN_PARTIAL_REFUND exactly as the server reads it', asyn
 });
 
 test('an above-floor order keeps normal partial refunds', async () => {
-  const env = makeEnv();
+  const env = makeTossEnv();
   const created = await call(env, 'POST', '/api/orders', {
     items: [
       { product_id: CHEAP, qty: 6 },

@@ -203,7 +203,7 @@ test('a NICEPAY row is refunded through NICEPAY even when the deployment default
   // Same database, deployment now defaults to Toss. Routing by the row's provider
   // must still reach NICEPAY; routing by the deployment default would hand the tid
   // to the Toss mock, which has never heard of it.
-  const asToss = { ...env, PG_PROVIDER: 'tosspayments', TOSS_WIDGET_SECRET_KEY: 'test_gsk_dummy' };
+  const asToss = { ...env, PG_PROVIDER: 'tosspayments', SITE_PG_PROVIDER: 'tosspayments', TOSS_WIDGET_SECRET_KEY: 'test_gsk_dummy' };
   const res = await call(asToss, 'POST', `/api/orders/${order.id}/payments/${tid}/cancel`, { reason: '상호 제공자 취소' }, auth());
   assert.equal(res.status, 200, JSON.stringify(res.json));
   assert.equal(res.json.refunded, true);
@@ -299,8 +299,24 @@ test('NICEPAY without credentials fails closed instead of using the Toss path', 
   assert.equal(confirm.status, 503, 'the active provider is nicepay, so no Toss approval may happen');
 });
 
-test('the Toss path is untouched when no provider is selected', async () => {
+test('NICEPAY is the default payment provider', async () => {
   const env = makeEnv();
+  delete env.PG_PROVIDER;
+  delete env.SITE_PG_PROVIDER;
+  const cfg = await call(env, 'GET', '/api/payments/config');
+  assert.equal(cfg.status, 200);
+  assert.equal(cfg.json.provider, 'nicepay');
+});
+
+test('site and Worker provider mismatch fails closed', async () => {
+  const env = makeEnv({ PG_PROVIDER: 'nicepay', SITE_PG_PROVIDER: 'tosspayments' });
+  const res = await call(env, 'GET', '/api/payments/config');
+  assert.equal(res.status, 503);
+  assert.equal(res.json.error, 'pg_provider_configuration_invalid');
+  assert.equal(res.json.detail, 'provider_mismatch');
+});
+test('Toss remains selectable through PG_PROVIDER', async () => {
+  const env = makeEnv({ PG_PROVIDER: 'tosspayments' });
   const order = await newPurchase(env);
   const cfg = await call(env, 'GET', '/api/payments/config');
   assert.equal(cfg.status, 200);

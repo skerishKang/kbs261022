@@ -10,7 +10,12 @@
     "test:e2e": "node --test --experimental-sqlite \"test/e2e/*.test.mjs\"",
     "dry-run": "node tools/erp-naver-dry-run.mjs",
     "smoke": "node --experimental-sqlite test/smoke.mjs",
-    "test:integration": "node --test --experimental-sqlite \"test/integration/*.test.mjs\""
+    "test:integration": "node --test --experimental-sqlite \"test/integration/*.test.mjs\"",
+    "check:pg-provider": "node tools/check-pg-provider.mjs",
+    "predeploy": "npm run check:pg-provider",
+    "predeploy:sandbox": "npm run check:pg-provider",
+    "deploy": "wrangler deploy -c wrangler.toml",
+    "deploy:sandbox": "wrangler deploy -c wrangler.sandbox.toml"
   },
   "devDependencies": {
     "wrangler": "^4.0.0"
