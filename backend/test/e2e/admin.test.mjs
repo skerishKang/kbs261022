@@ -214,7 +214,7 @@ test('requires admin auth and validates event lookup', async () => {
   assert.equal(missing.json.items.length, 0);
 });
 
-test('ERP sync is built in test mode and never transmitted', async () => {
+test('ERP sync remains not configured and never transmits while the switch is off', async () => {
   const env = makeTossEnv();
   const orders = await seed(env);
   const id = orders.b.id;
@@ -222,38 +222,43 @@ test('ERP sync is built in test mode and never transmitted', async () => {
   const first = await call(env, 'POST', `/api/orders/${id}/erp`, {}, auth());
   assert.equal(first.status, 200, first.text);
   const result = first.json;
-  assert.equal(result.status, 'skipped');
-  assert.equal(result.mode, 'test');
+  assert.equal(result.status, 'not_configured');
+  assert.equal(result.mode, 'disabled');
   assert.equal(result.delivered, false);
   assert.equal(result.live_write, false);
-  assert.equal(result.attempts, 1);
+  assert.equal(result.attempts, 0);
   assert.equal(result.payload_lines, 2);
-  assert.match(result.note, /ERP_LIVE_WRITE=NO/);
-  assert.match(result.dedupe_key, /^ecount-test:sales_slip_create:order:/);
+  assert.match(result.note, /switch_off/);
+  assert.match(result.dedupe_key, /^ecount-oapi-v2:sale_order_create:order:/);
 
   const order = await call(env, 'GET', `/api/orders/${id}`, undefined, auth());
-  assert.equal(order.json.erp_status, 'skipped');
+  assert.equal(order.json.erp_status, 'not_configured');
   assert.equal(order.json.erp_sent_at, null, 'nothing was transmitted');
 
   const events = await call(env, 'GET', `/api/orders/${id}/events`, undefined, auth());
-  assert.ok(events.json.items.some((e) => e.type === 'erp_skipped'));
+  assert.ok(events.json.items.some((e) => e.type === 'erp_not_configured'));
 });
 
-test('ERP sync is deduplicated and retry increments attempts', async () => {
+test('ERP sync is deduplicated and the off switch keeps attempts at zero', async () => {
   const env = makeTossEnv();
   const created = await call(env, 'POST', '/api/orders', { ...purchaseCart(), ...CUSTOMER, phone: '010-3333-0001' });
   const id = created.json.id;
+
+  const payment = await call(env, 'POST', '/api/payments/confirm', {
+    orderId: id, paymentKey: 'pk_erp_dedupe', amount: created.json.totals.total_amount,
+  });
+  assert.equal(payment.status, 200, payment.text);
 
   await call(env, 'POST', `/api/orders/${id}/erp`, {}, auth());
   const duplicate = await call(env, 'POST', `/api/orders/${id}/erp`, {}, auth());
   assert.equal(duplicate.status, 200);
   assert.equal(duplicate.json.idempotent, true);
-  assert.equal(duplicate.json.attempts, 1, 'no duplicate transmission is enqueued');
+  assert.equal(duplicate.json.attempts, 0, 'off switch records no transmission attempt');
 
   const retried = await call(env, 'POST', `/api/orders/${id}/erp/retry`, {}, auth());
   assert.equal(retried.status, 200);
-  assert.equal(retried.json.attempts, 2);
-  assert.equal(retried.json.idempotent, undefined);
+  assert.equal(retried.json.attempts, 0);
+  assert.equal(retried.json.status, 'not_configured');
 });
 
 test('ERP sync requires admin auth', async () => {
@@ -264,8 +269,12 @@ test('ERP sync requires admin auth', async () => {
   assert.equal((await call(env, 'POST', '/api/orders/ORD-19990101-ABCDE/erp', {}, auth())).status, 404);
 });
 
-test('health reports the active modes without leaking secrets', async () => {
-  const env = makeTossEnv({ PG_PROVIDER: 'tosspayments', PG_PROVIDER_MODE: 'auto', TOSS_WIDGET_SECRET_KEY: 'example_gsk_DOCS_SECRET_DO_NOT_LEAK' });
+test('health reports the active modes without leaking payment or ECOUNT secrets', async () => {
+  const env = makeTossEnv({
+    PG_PROVIDER: 'tosspayments', PG_PROVIDER_MODE: 'auto', TOSS_WIDGET_SECRET_KEY: 'example_gsk_DOCS_SECRET_DO_NOT_LEAK',
+    ECOUNT_COM_CODE: 'EXAMPLE-COM-DO-NOT-LEAK', ECOUNT_USER_ID: 'EXAMPLE-USER-DO-NOT-LEAK',
+    ECOUNT_API_CERT_KEY: 'EXAMPLE-CERT-DO-NOT-LEAK',
+  });
   const res = await call(env, 'GET', '/api/admin/health');
   assert.equal(res.status, 200);
   const body = res.json;
@@ -273,13 +282,15 @@ test('health reports the active modes without leaking secrets', async () => {
   assert.equal(body.pg.mode, 'test', 'a test_ secret key selects the test environment');
   assert.equal(body.pg.sandbox, true);
   assert.equal(body.pg.live, false);
-  assert.equal(body.erp.adapter, 'ecount-test');
-  assert.equal(body.erp.mode, 'test');
+  assert.equal(body.erp.adapter, 'ecount-oapi-v2');
+  assert.equal(body.erp.mode, 'disabled');
+  assert.equal(body.erp.enabled, false);
   assert.equal(body.erp.live_write, false);
   assert.equal(body.cors_origin, 'https://skerishkang.github.io');
   assert.equal(body.shipping_fee_default, 0);
   assert.ok(body.price_index.products_with_price > 2000);
   assert.equal(res.text.includes('DO_NOT_LEAK'), false, 'no secret material in the response');
+  assert.doesNotMatch(res.text, /EXAMPLE-COM|EXAMPLE-USER|EXAMPLE-CERT/);
 });
 
 test('schema init is admin only and idempotent', async () => {

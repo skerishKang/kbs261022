@@ -45,6 +45,12 @@ AUTH_ORIGIN_STRICT = "NO"
 # Nothing in this environment may transmit to the ERP or send mail.
 ERP_LIVE_WRITE = "NO"
 ERP_MODE = "test"
+ECOUNT_ORDER_SYNC_ENABLED = "NO"
+ECOUNT_TARGET = "test"
+ECOUNT_DEFAULT_CUST_CODE = ""
+ECOUNT_DEFAULT_WH_CD = ""
+ECOUNT_ITEM_CODE_MAP_JSON = "{}"
+ECOUNT_SHIPPING_ITEM_CODE = ""
 ERP_DRY_RUN = "YES"
 MAIL_MODE = "console"   # no outbound mail from the sandbox (valid modes: console|echo|resend|sendgrid)
 

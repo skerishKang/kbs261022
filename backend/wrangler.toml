@@ -38,8 +38,9 @@ secret_name = "B66_ALERT_RESEND_API_KEY"
 #   PG_NICEPAY_ENV            test | operating (default test)
 #   PG_PROVIDER_MODE          "auto" | "mock" | "live"   (default "auto": live keys -> live, none -> mock)
 #   PG_PUBLIC_BASE_URL        https://api.tosspayments.com
-#   ERP_LIVE_WRITE            "NO" | "YES"                (default "NO": Ecount OAPI is not enabled)
-#   ERP_MODE                  "test" | "live"             (default "test")
+#   ECOUNT_ORDER_SYNC_ENABLED "NO" | "YES"                (default "NO": order sync stays off)
+#   ECOUNT_TARGET             "test" | "prod"             (default "test")
+#   ERP_LIVE_WRITE            legacy OAPI client guard; does not enable order sync
 #   ALLOWED_ORIGINS           comma separated extra origins for CORS
 #   SHIPPING_FEE_DEFAULT      default shipping fee in KRW  (default 0)
 #   MIN_PARTIAL_REFUND        smallest accepted partial refund in KRW (default 1000)
@@ -71,6 +72,12 @@ PG_PROVIDER_MODE = "auto"
 PG_PUBLIC_BASE_URL = "https://api.tosspayments.com"
 ERP_LIVE_WRITE = "NO"
 ERP_MODE = "test"
+ECOUNT_ORDER_SYNC_ENABLED = "NO"
+ECOUNT_TARGET = "test"
+ECOUNT_DEFAULT_CUST_CODE = ""
+ECOUNT_DEFAULT_WH_CD = ""
+ECOUNT_ITEM_CODE_MAP_JSON = "{}"
+ECOUNT_SHIPPING_ITEM_CODE = ""
 SHIPPING_FEE_DEFAULT = "0"
 MAIL_MODE = "resend"
 MAIL_FROM = "CGI <noreply@notify.padiem.net>"

@@ -164,4 +164,4 @@ export const PAYMENT_STATUS_LABELS = {
   refunded: '환불 완료',
 };
 
-export const ERP_SYNC_STATUSES = ['pending', 'sent', 'confirmed', 'failed', 'skipped'];
+export const ERP_SYNC_STATUSES = ['pending', 'sent', 'confirmed', 'failed', 'skipped', 'not_configured', 'unknown'];
