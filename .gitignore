@@ -37,3 +37,7 @@ reports/screenshots/
 
 # local payment lab databases (never commit)
 .lab-payments-*.sqlite
+
+# wrangler dev secrets
+.dev.vars*
+!.dev.vars.example
