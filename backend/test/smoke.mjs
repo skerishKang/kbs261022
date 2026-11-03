@@ -216,12 +216,12 @@ await check('unpriced cart becomes an unpaid quote order', async () => {
 });
 
 // 8. ERP payloads are built but never transmitted in test mode.
-await check('ERP sync is built, never transmitted', async () => {
+await check('ERP sync is off by default and never transmitted', async () => {
   const res = await request('POST', `/api/orders/${order.id}/erp`, {}, authedOrigin);
   assert.equal(res.status, 200, res.text);
   assert.equal(res.json.delivered, false);
-  assert.equal(res.json.mode, 'test');
-  assert.ok(res.json.payload_lines > 0);
+  assert.equal(res.json.mode, 'disabled');
+  assert.equal(res.json.status, 'not_configured');
 });
 
 console.log(`# smoke: ${passed}/${checks.length}`);
