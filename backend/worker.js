@@ -71,7 +71,15 @@ import {
   createNicepayMockAdapter,
 } from './lib/pg-nicepay-adapter.mjs';
 import { resolveNicepayEnv } from './lib/pg-nicepay-env.mjs';
-import { buildEcountSalesSlip, erpCodeFor, createErpDriver, erpModeFromEnv, ERP_ADAPTER } from './lib/erp.mjs';
+import { erpCodeFor } from './lib/erp.mjs';
+import {
+  ECOUNT_ORDER_ACTION,
+  ECOUNT_ORDER_ADAPTER,
+  ecountOrderDedupeKey,
+  ecountOrderMode,
+  prepareEcountSaleOrder,
+  transmitEcountSaleOrder,
+} from './lib/ecount-order-adapter.mjs';
 import { PRICE_INDEX, PRICE_INDEX_META } from './data/price_index.mjs';
 import {
   AUTH_POLICY,
@@ -602,16 +610,18 @@ async function confirmPayment(db, body, env, pg) {
     return { status: 409, body: { error: 'order_closed', detail: `order status is ${order.status}` } };
   }
   if (order.payment_status === 'paid') {
+    const updated = await getOrderFull(db, order.id);
+    const erpSync = await safeEnqueueErpSync(db, env, updated, updated.items);
     // A retry carrying the same paymentKey is the idempotent replay of the
     // payment that already succeeded.
     const replay = await db.prepare('SELECT status FROM payments WHERE payment_key = ?').bind(paymentKey).first();
     if (replay && replay.status === 'paid') {
       return {
         status: 200,
-        body: { idempotent: true, already_paid: true, payment_key: paymentKey, order: publicOrderView(order, await getOrderItems(db, orderId)) },
+        body: { idempotent: true, already_paid: true, payment_key: paymentKey, order: publicOrderView(updated, updated.items), erp_sync: erpSync },
       };
     }
-    return { status: 200, body: { already_paid: true, order: publicOrderView(order, await getOrderItems(db, orderId)) } };
+    return { status: 200, body: { already_paid: true, order: publicOrderView(updated, updated.items), erp_sync: erpSync } };
   }
 
   // Server-side amount verification. The amount must equal the amount the
@@ -699,7 +709,7 @@ async function confirmPayment(db, body, env, pg) {
 
   const updated = await getOrderFull(db, order.id);
   if (outcome.status === 'paid') {
-    const enqueued = await enqueueErpSync(db, env, updated, updated.items);
+    const enqueued = await safeEnqueueErpSync(db, env, updated, updated.items);
     return {
       status: 200,
       body: {
@@ -805,6 +815,10 @@ async function applyNicepayWebhook(db, env, pg, payload) {
     'INSERT INTO order_events (order_id, type, actor, from_status, to_status, meta, created_at) VALUES (?,?,?,?,?,?,?)'
   ).bind(order.id, 'payment_webhook', 'pg', row.status, outcome.status, JSON.stringify({ dedupe_key: key, status: outcome.status, tid }), ts));
   await db.batch(stmts);
+  if (outcome.status === 'paid') {
+    const updated = await getOrderFull(db, order.id);
+    await safeEnqueueErpSync(db, env, updated, updated.items);
+  }
   return new Response(ack.body, { status: ack.status, headers: { 'Content-Type': ack.headers['Content-Type'] } });
 }
 
@@ -1132,73 +1146,153 @@ async function cancelPayment(db, env, order, paymentKey, body, pg) {
   };
 }
 
-/** Build (and attempt to transmit) the ERP payload for an order. */
-async function enqueueErpSync(db, env, order, items, force = false) {
-  const mode = erpModeFromEnv(env);
-  const driver = createErpDriver(env);
-  const orderForPayload = { ...order, pg_provider: order.pg_provider || env.PG_PROVIDER || 'nicepay', pg_provider_mode: mode };
-  const payload = buildEcountSalesSlip({ order: orderForPayload, items, mode, liveWrite: false });
-
-  const existing = await db.prepare('SELECT * FROM erp_sync WHERE dedupe_key = ?').bind(payload.dedupe_key).first();
-  if (existing && !force) {
-    return {
-      idempotent: true,
-      id: existing.id,
-      status: existing.status,
-      mode: existing.mode,
-      delivered: false,
-      live_write: false,
-      attempts: existing.attempts,
-      dedupe_key: existing.dedupe_key,
-      payload_lines: payload.lines.length,
-      note: existing.last_error,
-    };
-  }
-
-  let result;
-  try {
-    result = await driver.transmit(payload);
-  } catch (e) {
-    result = {
-      delivered: false,
-      status: 'failed',
-      error: `ERP transmission error: ${(e && e.message) ? String(e.message) : String(e)}`.slice(0, 500),
-    };
-  }
-  const status = result.delivered ? 'sent' : result.status === 'failed' ? 'failed' : 'skipped';
-  const ts = nowIso();
-  const attempts = existing ? toNonNegInt(existing.attempts, 0) + 1 : 1;
-
-  if (existing) {
-    await db.prepare('UPDATE erp_sync SET payload = ?, status = ?, attempts = ?, last_error = ?, mode = ?, updated_at = ? WHERE id = ?')
-      .bind(JSON.stringify(payload), status, attempts, result.note || result.error || null, mode, ts, existing.id).run();
-  } else {
-    await db.prepare(
-      `INSERT INTO erp_sync (order_id, adapter, mode, action, dedupe_key, payload, status, attempts, last_error, created_at, updated_at)
-       VALUES (?,?,?,?,?,?,?,?,?,?,?)`
-    ).bind(order.id, ERP_ADAPTER, mode, payload.target.action, payload.dedupe_key, JSON.stringify(payload), status, attempts,
-      result.note || result.error || null, ts, ts).run();
-  }
-
-  await db.batch([
-    db.prepare('UPDATE orders SET erp_status = ?, erp_sent_at = ?, updated_at = ? WHERE id = ?').bind(status, status === 'sent' ? ts : null, ts, order.id),
-    db.prepare('INSERT INTO order_events (order_id, type, actor, from_status, to_status, meta, error, created_at) VALUES (?,?,?,?,?,?,?,?)')
-      .bind(order.id, status === 'sent' ? 'erp_sent' : status === 'failed' ? 'erp_failed' : 'erp_skipped', 'erp',
-        order.status, null, JSON.stringify({ adapter: ERP_ADAPTER, mode, delivered: result.delivered, attempts }),
-        result.error || null, ts),
-  ]);
-
+function erpSyncSummary(row, { idempotent = false, note = null } = {}) {
   return {
-    id: existing ? existing.id : null,
-    status,
-    mode,
-    delivered: result.delivered,
-    attempts,
-    dedupe_key: payload.dedupe_key,
-    note: result.note || result.error || null,
-    payload_lines: payload.lines.length,
-    live_write: result.delivered,
+    ...(idempotent ? { idempotent: true } : {}),
+    id: row?.id ?? null,
+    status: row?.status || 'not_configured',
+    mode: row?.mode || 'disabled',
+    delivered: row?.status === 'sent',
+    attempts: toNonNegInt(row?.attempts, 0),
+    dedupe_key: row?.dedupe_key || null,
+    payload_lines: (() => {
+      try { return JSON.parse(row?.payload || '{}')?.line_count ?? JSON.parse(row?.payload || '{}')?.batches?.[0]?.rowCount ?? 0; }
+      catch { return 0; }
+    })(),
+    live_write: row?.status === 'sent' && row?.mode === 'prod',
+    note: note || row?.last_error || null,
   };
+}
+
+async function recordErpSyncState(db, order, row, errorCode = null) {
+  const ts = nowIso();
+  const eventType = row.status === 'sent' ? 'erp_sent'
+    : row.status === 'not_configured' ? 'erp_not_configured'
+    : row.status === 'unknown' ? 'erp_review_required'
+    : row.status === 'failed' ? 'erp_failed' : 'erp_skipped';
+  await db.batch([
+    db.prepare('UPDATE orders SET erp_status = ?, erp_sent_at = ?, updated_at = ? WHERE id = ?')
+      .bind(row.status, row.status === 'sent' ? ts : null, ts, order.id),
+    db.prepare('INSERT INTO order_events (order_id, type, actor, from_status, to_status, meta, error, created_at) VALUES (?,?,?,?,?,?,?,?)')
+      .bind(order.id, eventType, 'erp', order.status, null,
+        JSON.stringify({ adapter: ECOUNT_ORDER_ADAPTER, mode: row.mode, attempts: row.attempts, status: row.status }),
+        errorCode, ts),
+  ]);
+}
+
+async function latestErpSyncForOrder(db, orderId) {
+  return db.prepare('SELECT * FROM erp_sync WHERE order_id = ? ORDER BY id DESC LIMIT 1').bind(orderId).first();
+}
+
+/** Build and persist an order-id claim before any ECOUNT request is sent. */
+async function enqueueErpSync(db, env, order, items, force = false) {
+  if (!order?.id || order.payment_status !== 'paid' || order.status !== 'paid') {
+    return { status: 'not_configured', mode: ecountOrderMode(env), delivered: false, attempts: 0, live_write: false, note: 'payment_not_complete' };
+  }
+
+  const prepared = prepareEcountSaleOrder({ env, order, items });
+  const dedupeKey = prepared.dedupeKey || ecountOrderDedupeKey(order.id);
+  const ts = nowIso();
+  let existing = await latestErpSyncForOrder(db, order.id);
+
+  if (existing && ['sent', 'pending', 'unknown'].includes(existing.status)) {
+    return erpSyncSummary(existing, { idempotent: true });
+  }
+  if (existing?.status === 'failed' && !force) return erpSyncSummary(existing, { idempotent: true });
+
+  if (!prepared.ready) {
+    const notConfiguredNote = `not_configured:${prepared.reason}`;
+    if (existing?.status === 'not_configured' && existing.last_error === notConfiguredNote) {
+      return erpSyncSummary(existing, { idempotent: true });
+    }
+    if (existing) {
+      if (existing.status === 'failed' && !force) return erpSyncSummary(existing, { idempotent: true });
+      const updated = await db.prepare(
+        `UPDATE erp_sync SET adapter = ?, mode = ?, action = ?, dedupe_key = ?, payload = ?, status = 'not_configured',
+           last_error = ?, updated_at = ? WHERE id = ? AND status IN ('not_configured','skipped','failed')`
+      ).bind(ECOUNT_ORDER_ADAPTER, prepared.mode, ECOUNT_ORDER_ACTION, dedupeKey, JSON.stringify(prepared.payload), notConfiguredNote, ts, existing.id).run();
+      if (Number(updated?.meta?.changes || 0) === 0) {
+        existing = await latestErpSyncForOrder(db, order.id);
+        return erpSyncSummary(existing, { idempotent: true });
+      }
+      existing = await latestErpSyncForOrder(db, order.id);
+      await recordErpSyncState(db, order, existing, prepared.reason);
+      return erpSyncSummary(existing, { note: notConfiguredNote });
+    }
+
+    const inserted = await db.prepare(
+      `INSERT OR IGNORE INTO erp_sync (order_id, adapter, mode, action, dedupe_key, payload, status, attempts, last_error, created_at, updated_at)
+       VALUES (?,?,?,?,?,?,'not_configured',0,?,?,?)`
+    ).bind(order.id, ECOUNT_ORDER_ADAPTER, prepared.mode, ECOUNT_ORDER_ACTION, dedupeKey, JSON.stringify(prepared.payload), notConfiguredNote, ts, ts).run();
+    if (Number(inserted?.meta?.changes || 0) === 0) {
+      existing = await latestErpSyncForOrder(db, order.id);
+      return erpSyncSummary(existing, { idempotent: true });
+    }
+    existing = await latestErpSyncForOrder(db, order.id);
+    await recordErpSyncState(db, order, existing, prepared.reason);
+    return erpSyncSummary(existing, { note: notConfiguredNote });
+  }
+
+  let claimedId = null;
+  if (existing) {
+    const retryableStatus = ['not_configured', 'skipped'].includes(existing.status)
+      || (existing.status === 'failed' && force && existing.adapter === ECOUNT_ORDER_ADAPTER);
+    if (!retryableStatus) return erpSyncSummary(existing, { idempotent: true });
+    const claim = await db.prepare(
+      `UPDATE erp_sync SET adapter = ?, mode = ?, action = ?, dedupe_key = ?, payload = ?, status = 'pending',
+         attempts = attempts + 1, last_error = NULL, updated_at = ? WHERE id = ? AND status = ?`
+    ).bind(ECOUNT_ORDER_ADAPTER, prepared.mode, ECOUNT_ORDER_ACTION, dedupeKey, JSON.stringify(prepared.payload), ts, existing.id, existing.status).run();
+    if (Number(claim?.meta?.changes || 0) !== 1) {
+      existing = await latestErpSyncForOrder(db, order.id);
+      return erpSyncSummary(existing, { idempotent: true });
+    }
+    claimedId = existing.id;
+  } else {
+    const claim = await db.prepare(
+      `INSERT OR IGNORE INTO erp_sync (order_id, adapter, mode, action, dedupe_key, payload, status, attempts, last_error, created_at, updated_at)
+       VALUES (?,?,?,?,?,?,'pending',1,NULL,?,?)`
+    ).bind(order.id, ECOUNT_ORDER_ADAPTER, prepared.mode, ECOUNT_ORDER_ACTION, dedupeKey, JSON.stringify(prepared.payload), ts, ts).run();
+    if (Number(claim?.meta?.changes || 0) !== 1) {
+      existing = await latestErpSyncForOrder(db, order.id);
+      return erpSyncSummary(existing, { idempotent: true });
+    }
+    existing = await db.prepare('SELECT * FROM erp_sync WHERE dedupe_key = ?').bind(dedupeKey).first();
+    claimedId = existing?.id ?? null;
+  }
+
+  const storedPayload = existing?.payload ? (() => { try { return JSON.parse(existing.payload); } catch { return null; } })() : null;
+  const persistedPlan = storedPayload?.plan?.batches?.length === 1 ? storedPayload.plan : null;
+  const planToSend = persistedPlan ? { ...prepared, plan: persistedPlan } : prepared;
+  let sent;
+  try {
+    sent = await transmitEcountSaleOrder(planToSend, { env });
+  } catch {
+    sent = { status: 'failed', retryable: true, errorCode: 'adapter_error' };
+  }
+
+  const finalStatus = ['sent', 'failed', 'unknown'].includes(sent.status) ? sent.status : 'failed';
+  const finalPayload = JSON.stringify({
+    adapter: ECOUNT_ORDER_ADAPTER,
+    action: ECOUNT_ORDER_ACTION,
+    order_id: order.id,
+    line_count: prepared.lineCount,
+    plan: planToSend.plan,
+    result: finalStatus === 'sent' ? { slip_nos: sent.slipNos || [], trace_id: sent.traceId || null } : undefined,
+  });
+  const errorCode = finalStatus === 'sent' ? null : String(sent.errorCode || 'oapi_error').slice(0, 80);
+  const note = finalStatus === 'unknown' ? `delivery_uncertain:${errorCode}` : errorCode;
+  await db.prepare(
+    'UPDATE erp_sync SET payload = ?, status = ?, last_error = ?, mode = ?, updated_at = ? WHERE id = ? AND status = \'pending\''
+  ).bind(finalPayload, finalStatus, note, prepared.mode, nowIso(), claimedId).run();
+  const finalRow = await db.prepare('SELECT * FROM erp_sync WHERE id = ?').bind(claimedId).first();
+  await recordErpSyncState(db, order, finalRow, errorCode);
+  return erpSyncSummary(finalRow, { note });
+}
+
+// ERP persistence and transport failures must never turn a confirmed payment into a failed response.
+async function safeEnqueueErpSync(db, env, order, items) {
+  try { return await enqueueErpSync(db, env, order, items); }
+  catch { return { status: 'failed', mode: ecountOrderMode(env), delivered: false, attempts: 0, live_write: false, note: 'erp_queue_unavailable' }; }
 }
 
 // ---------------------------------------------------------------------------
@@ -2463,7 +2557,12 @@ const worker = {
         version: BACKEND_VERSION,
         ok: true,
         pg: { provider: pg.provider, mode: pg.mode, sandbox: pg.sandbox, live: pg.live },
-        erp: { adapter: ERP_ADAPTER, mode: erpModeFromEnv(env), live_write: String(env.ERP_LIVE_WRITE || 'NO').toUpperCase() === 'YES' },
+        erp: {
+          adapter: ECOUNT_ORDER_ADAPTER,
+          mode: ecountOrderMode(env),
+          enabled: String(env.ECOUNT_ORDER_SYNC_ENABLED || 'NO').toUpperCase() === 'YES',
+          live_write: ecountOrderMode(env) === 'prod',
+        },
         shipping_fee_default: toNonNegInt(env.SHIPPING_FEE_DEFAULT, 0),
         price_index: { products_total: PRICE_INDEX_META.products_total, products_with_price: PRICE_INDEX_META.products_with_price },
         cors_origin: ALLOWED_ORIGIN,

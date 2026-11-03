@@ -23,6 +23,7 @@
     pending: '배송 대기', processing: '준비 중', shipped: '배송 중', delivered: '배송 완료', returned: '반품'
   };
   var ERP_LABELS = {
+    not_configured: '\uBBF8\uC124\uC815', unknown: '\uD655\uC778 \uD544\uC694',
     not_sent: '미전송', pending: '전송 대기', sent: '전송 완료', confirmed: '등록 확인',
     failed: '실패', skipped: '건너뜀(테스트)'
   };

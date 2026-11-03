@@ -72,6 +72,10 @@ export async function startMockOapiServer(overrides = {}) {
     loginError: null,          // {Code, Message} returned inside Status 200
     requireSession: true,
     rateLimitNext: false,
+    networkFailNextPath: null,
+    dropSaleOrderResponseAfterWrite: false,
+    expireSessionOnWrite: false,
+    saleOrderCreatedCount: 0,
     consecutiveErrors: 0,
     consecutiveErrorLimit: 30,
     hourlyUsed: 3,
@@ -104,6 +108,12 @@ export async function startMockOapiServer(overrides = {}) {
       };
       state.calls.push(record);
 
+      if (state.networkFailNextPath === path) {
+        state.networkFailNextPath = null;
+        req.socket.destroy();
+        return;
+      }
+
       const respond = (status, payload) => {
         if (state.rateLimitNext) {
           state.rateLimitNext = false;
@@ -130,6 +140,25 @@ export async function startMockOapiServer(overrides = {}) {
             Timestamp: null,
           }));
           return;
+        }
+        if (path === '/OAPI/V2/SaleOrder/SaveSaleOrder' && state.expireSessionOnWrite) {
+          state.expireSessionOnWrite = false;
+          state.sessionId = 'MOCK_SESSION_ID_RENEWED';
+          res.writeHead(500, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({
+            Status: '500',
+            Error: { Code: 'EXP00001', Message: 'Please login.', MessageDetail: '' },
+            Data: null,
+          }));
+          return;
+        }
+        if (path === '/OAPI/V2/SaleOrder/SaveSaleOrder' && payload?.Data?.SlipNos) {
+          state.saleOrderCreatedCount += 1;
+          if (state.dropSaleOrderResponseAfterWrite) {
+            state.dropSaleOrderResponseAfterWrite = false;
+            res.destroy();
+            return;
+          }
         }
         res.writeHead(status, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify(payload));

@@ -75,7 +75,7 @@ CREATE TABLE IF NOT EXISTS orders (
 
   admin_prices TEXT,                  -- JSON object productId -> confirmed unit price
   admin_note TEXT,
-  erp_status TEXT NOT NULL DEFAULT 'not_sent', -- not_sent|sent|confirmed|failed|skipped
+  erp_status TEXT NOT NULL DEFAULT 'not_sent', -- not_sent|pending|sent|confirmed|failed|skipped|not_configured|unknown
   erp_sent_at TEXT,
   source_quote_id TEXT                -- link to quote_requests.id when converted
 );
