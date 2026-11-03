@@ -517,7 +517,7 @@
       '<dl class="stat-row">' +
         '<div class="stat-card"><dt>전체 상품</dt><dd>' + total.toLocaleString('ko-KR') + '<small>브랜드·카테고리 기준</small></dd></div>' +
         '<div class="stat-card"><dt>취급 브랜드</dt><dd>' + brands.length + '<small>카탈로그 등록 브랜드</small></dd></div>' +
-        '<div class="stat-card"><dt>공개 판매가</dt><dd>' + priced.toLocaleString('ko-KR') + '<small>가격은 변동될 수 있습니다</small></dd></div>' +
+        '<div class="stat-card"><dt>가격</dt><dd>' + priced.toLocaleString('ko-KR') + '<small>가격은 변동될 수 있습니다</small></dd></div>' +
         '<div class="stat-card"><dt>가격 문의</dt><dd>' + inquiry.toLocaleString('ko-KR') + '<small>담당자 확인 후 안내</small></dd></div>' +
       '</dl>' +
 
@@ -667,7 +667,7 @@
             '<span class="detail-price ' + price.cls + '">' + esc(price.text) + '</span>' +
             '<span class="detail-price-note">' + (price.inquiry
               ? '이 상품의 가격은 담당자 확인 후 안내드립니다.'
-              : '표시 가격은 참고가이며 변동될 수 있고, 최종 견적은 CGI 확인 후 안내합니다.') + '</span>' +
+              : '가격은 변동될 수 있으며, 최종 견적은 CGI 확인 후 안내합니다.') + '</span>' +
           '</div>' +
 
           '<div class="detail-block"><h3>추가 서비스 (선택)</h3>' +
@@ -693,7 +693,7 @@
         '</div>' +
       '</div>' +
       '<div class="mobile-cta">' +
-        '<div class="mobile-cta-price"><small>공개 판매가</small><strong>' + esc(price.text) + '</strong></div>' +
+        '<div class="mobile-cta-price"><small>가격</small><strong>' + esc(price.text) + '</strong></div>' +
         '<button type="button" class="btn btn-primary" data-action="quote-now" data-product-id="' + esc(product.id) + '">견적 요청</button>' +
       '</div>';
 
@@ -858,8 +858,8 @@
             '</div>' +
           '</div>' +
         '</td>' +
-        '<td class="c-price" data-label="공개가">' +
-          '<span class="cell-label">공개가</span>' +
+        '<td class="c-price" data-label="가격">' +
+          '<span class="cell-label">가격</span>' +
           '<span class="price ' + price.cls + '">' + esc(price.text) + '</span>' +
         '</td>' +
         '<td class="c-qty" data-label="수량">' +
@@ -889,7 +889,7 @@
           '<section class="cart-panel">' +
             '<div class="cart-panel-head"><h2>담은 상품</h2><span>수량을 확인해 주세요</span></div>' +
             '<table class="spec-table cart-table">' +
-              '<thead><tr><th>상품</th><th>공개가</th><th>수량</th><th><span class="sr-only">삭제</span></th></tr></thead>' +
+              '<thead><tr><th>상품</th><th>가격</th><th>수량</th><th><span class="sr-only">삭제</span></th></tr></thead>' +
               '<tbody>' + rows + '</tbody>' +
             '</table>' +
             '<details class="cart-summary">' +
@@ -1090,10 +1090,10 @@
     items.forEach(function (x, idx) {
       var p = x.product;
       lines.push((idx + 1) + '. ' + p.name + ' | ' + displayBrand(p) + ' | ' + p._cat +
-        ' | 수량 ' + x.cart.qty + ' | 공개가 ' + priceText(p));
+        ' | 수량 ' + x.cart.qty + ' | 가격 ' + priceText(p));
     });
     lines.push('');
-    lines.push('※ 공개 판매가는 참고 정보이며, 최종 금액은 CGI 담당자가 확인 후 안내합니다.');
+    lines.push('※ 최종 금액은 CGI 담당자가 확인 후 안내합니다.');
     return lines.join('\n');
   }
 
@@ -1111,9 +1111,9 @@
         '<p>㈜시지아이가 취급하는 음향·영상·조명 장비를 한곳에서 살펴보는 B2B 카탈로그입니다. 브랜드·카테고리로 상품을 찾고, 필요한 상품을 견적 목록에 담아 한 번에 요청할 수 있습니다.</p>' +
         '<h2>가격과 재고</h2>' +
         '<ul>' +
-          '<li>표시 가격은 참고가이며, 최종 판매가와 다를 수 있습니다.</li>' +
-          '<li>가격이 공개되지 않은 상품은 추정하지 않고 <strong>가격 문의</strong>로 표시합니다.</li>' +
-          '<li>재고·배송 일정은 실시간 정보가 아니며, 담당자 확인 후 안내합니다.</li>' +
+          '<li>가격은 변동될 수 있으며, 최종 판매가는 담당자 확인 후 안내됩니다.</li>' +
+          '<li>가격이 표시되지 않은 상품은 <strong>가격 문의</strong>로 확인하실 수 있습니다.</li>' +
+          '<li>재고·배송 일정은 담당자 확인 후 안내드립니다.</li>' +
         '</ul>' +
         '<h2>견적 요청 방법</h2>' +
         '<ul>' +
@@ -2201,7 +2201,7 @@
         (services.length ? '<dt>추가 서비스</dt><dd>' + esc(services.join(', ')) + '</dd>' : '') +
         (q.note ? '<dt>요청 사항</dt><dd>' + esc(q.note) + '</dd>' : '') +
       '</dl>' +
-      (items.length ? '<table class="spec-table quote-items"><thead><tr><th>상품</th><th>수량</th><th>공개가</th></tr></thead><tbody>' + rowsHtml + '</tbody></table>' : '') +
+      (items.length ? '<table class="spec-table quote-items"><thead><tr><th>상품</th><th>수량</th><th>가격</th></tr></thead><tbody>' + rowsHtml + '</tbody></table>' : '') +
       '<p class="quote-detail-total"><span>합계</span><strong>' + esc(totalText) + '</strong></p>';
   }
 
@@ -2362,7 +2362,7 @@
       return;
     }
     var lines = [];
-    lines.push('요청번호,요청일시,회사,담당자,연락처,이메일,장소,서비스,상품명,브랜드,카테고리,수량,공개가');
+    lines.push('요청번호,요청일시,회사,담당자,연락처,이메일,장소,서비스,상품명,브랜드,카테고리,수량,가격');
     request.items.forEach(function (it) {
       lines.push([request.id, request.createdAt, request.company, request.name, request.phone, request.email,
         request.location, (request.services || []).map(serviceName).join('|'), it.name, it.brand, it.category, it.qty, it.publicPrice || '']

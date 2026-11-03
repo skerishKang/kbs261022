@@ -66,10 +66,15 @@ test('both profile phone numbers and the fax are published everywhere', () => {
   }
 });
 
-test('employee count and credentials are labelled with the profile year', () => {
-  assert.match(home, /6명[\s\S]{0,120}2025년 지명원 기준/);
-  assert.match(home, /2025년 발간 공식 지명원 기준/);
-  assert.match(home, /현재 유효성은 별도 확인이 필요합니다/);
+test('the launch copy carries no provenance labels for the profile year', () => {
+  // 출시 본문 계약(2026-11-04): 화면 문구에서 출처·면책 표기(지명원·발간·
+  // 문서 발간 당시 값)를 모두 뺀다. 데이터 필드(meta.source 등)는 화면에
+  // 렌더링되지 않으므로 company.js 는 그대로 둔다.
+  assert.ok(home.includes('6명'), '직원 수가 없다');
+  assert.doesNotMatch(home, /지명원/);
+  assert.doesNotMatch(home, /발간/);
+  assert.doesNotMatch(home, /문서 발간 당시 값/);
+  assert.doesNotMatch(home, /현재 유효성은 별도 확인이 필요합니다/);
 });
 
 test('business areas cover all 12 profile keywords', () => {
@@ -114,7 +119,7 @@ test('certificate originals and personal data are never published', () => {
   const scan = allPages.replace(/010[-\s]?0{4}[-\s]?0{4}/g, '[form-placeholder]');
   assert.doesNotMatch(scan, /010[-\s]?\d{4}[-\s]?\d{4}/, '휴대전화 번호가 게시되어 있다');
   assert.doesNotMatch(scan, /\d{6}-\d{7}/, '주민등록번호 형태 문자열이 있다');
-  assert.ok(home.includes('개인정보가 포함되어 공개 게시하지 않습니다'));
+  assert.ok(!home.includes('개인정보가 포함되어 공개 게시하지 않습니다'), '증명원 미게시 안내 문구가 남아 있다');
   // 지명원 10쪽 세미나 포스터에 적힌 개인 성명·휴대전화는 이미지 제외 대상으로 판정했다.
   for (const rel of ['website/index.html', 'site/index.html', 'website/assets/company.js', 'website/assets/main.js']) {
     const t = read(rel);

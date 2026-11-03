@@ -215,7 +215,7 @@ test('the stepper moves the header aggregate and the total, not only the preview
   assert.equal(input.value, '3', 'the field itself shows the stepped quantity');
   assert.equal(env.screen('cartSummary'), '2개 상품 · 총 4점', 'the header count moves with the stepper');
   assert.equal(env.screen('cartTotalValue'), '1,353,000원', 'and so does the order amount');
-  assert.match(env.screen('quoteCartText'), /SHURE RMCE-TW2.*수량 3.*공개가 368,000원/,
+  assert.match(env.screen('quoteCartText'), /SHURE RMCE-TW2.*수량 3.*가격 368,000원/,
     'the preview text reports the same quantity');
   assert.deepEqual(JSON.parse(env.storage.data.cgiQuoteCart), [{ id: PRODUCT_A.id, qty: 3 }, { id: PRODUCT_B.id, qty: 1 }],
     'the persisted cart matches what the screen says');
