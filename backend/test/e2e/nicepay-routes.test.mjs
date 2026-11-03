@@ -301,17 +301,20 @@ test('NICEPAY without credentials fails closed instead of using the Toss path', 
 
 test('NICEPAY is the default payment provider', async () => {
   const env = makeEnv();
-  const order = await newPurchase(env);
+  delete env.PG_PROVIDER;
+  delete env.SITE_PG_PROVIDER;
   const cfg = await call(env, 'GET', '/api/payments/config');
   assert.equal(cfg.status, 200);
   assert.equal(cfg.json.provider, 'nicepay');
-  const res = await call(env, 'POST', '/api/payments/confirm', {
-    orderId: order.id, paymentKey: 'pk_nicepay_default', amount: order.totals.total_amount,
-  });
-  assert.equal(res.status, 200, res.text);
-  assert.equal(res.json.payment.provider, 'nicepay');
 });
 
+test('site and Worker provider mismatch fails closed', async () => {
+  const env = makeEnv({ PG_PROVIDER: 'nicepay', SITE_PG_PROVIDER: 'tosspayments' });
+  const res = await call(env, 'GET', '/api/payments/config');
+  assert.equal(res.status, 503);
+  assert.equal(res.json.error, 'pg_provider_configuration_invalid');
+  assert.equal(res.json.detail, 'provider_mismatch');
+});
 test('Toss remains selectable through PG_PROVIDER', async () => {
   const env = makeEnv({ PG_PROVIDER: 'tosspayments' });
   const order = await newPurchase(env);

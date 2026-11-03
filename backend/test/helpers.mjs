@@ -23,6 +23,10 @@ export function makeEnv(overrides = {}) {
   };
 }
 
+export function makeTossEnv(overrides = {}) {
+  return makeEnv({ PG_PROVIDER: 'tosspayments', ...overrides });
+}
+
 /** Find a product id that has a confirmed public price, optionally by price. */
 export function pricedProductIds(count = 2) {
   return Object.entries(PRICE_INDEX)
