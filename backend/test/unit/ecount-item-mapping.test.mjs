@@ -42,6 +42,16 @@ test('approved CSV parser rejects a code that is not one of the row candidates',
   );
 });
 
+test('recommendation alone does not create an approval', () => {
+  const recommendedCsv = [
+    'shop_product_id,candidate1_code,candidate2_code,candidate3_code,recommendation,approved_ecount_code',
+    `shop-1,ERP-001,,,\uCD94\uCC9C,`,
+  ].join('\n');
+  const parsed = parseApprovedEcountMappingCsv(recommendedCsv);
+  assert.equal(parsed.approvals.length, 0);
+  assert.equal(parsed.unapprovedRows, 1);
+});
+
 test('approved CSV parser rejects duplicate shop IDs but permits shared ECOUNT codes', () => {
   assert.throws(
     () => parseApprovedEcountMappingCsv([

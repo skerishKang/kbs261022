@@ -46,7 +46,9 @@ class EcountItemMappingTests(unittest.TestCase):
         rows = mapping.score_candidates(self.products, mapping.read_ecount_items(FIXTURES / "fake_items_korean.csv"))
         result = next(row for row in rows if row["shop_product_id"] == "fake-shop-name-format")
         self.assertEqual(result["candidate1_code"], "FAKE-003")
-        self.assertIn("normalized name similarity (100%)", result["candidate1_evidence"])
+        self.assertEqual(result["model"], "QU-6")
+        self.assertIn("model exact", result["candidate1_evidence"])
+        self.assertEqual(result["recommendation"], "\uCD94\uCC9C")
 
     def test_barcode_match_ranks_before_a_similar_name(self) -> None:
         rows = mapping.score_candidates(self.products, mapping.read_ecount_items(FIXTURES / "fake_items_api_fields.xlsx"))
@@ -76,6 +78,64 @@ class EcountItemMappingTests(unittest.TestCase):
                 records = list(csv.DictReader(handle))
             self.assertEqual(len(records), len(self.products))
             self.assertEqual(records[0]["\uC2B9\uC778"], "")
+            self.assertIn("\uCD94\uCC9C", records[0])
+
+    def test_model_extraction_normalizes_common_label_variants(self) -> None:
+        cases = {
+            "QU-5": "QU5",
+            "qu 5": "QU5",
+            "CQ-18T": "CQ18T",
+            "CQ 18 t": "CQ18T",
+            "SQ5+": "SQ5+",
+            "SQ 5 +": "SQ5+",
+            "ME-500": "ME500",
+            "64x64": "64X64",
+        }
+        for text, expected in cases.items():
+            with self.subTest(text=text):
+                self.assertIn(expected, mapping.extract_model_mentions(text)[0])
+
+    def test_qu7_and_cq12_do_not_recommend_different_model_numbers(self) -> None:
+        cases = [
+            ("QU-7 (NEW)", "qu 6 new"),
+            ("CQ-12T", "CQ-18T"),
+        ]
+        for index, (shop_name, ecount_name) in enumerate(cases):
+            with self.subTest(shop=shop_name, ecount=ecount_name):
+                product = mapping.product_record({"id": f"model-conflict-{index}", "name": shop_name, "model": ""})
+                item = {"code": f"BAD-{index}", "name": ecount_name, "spec": "", "unit": "EA", "barcode": ""}
+                result = mapping.score_candidates([product], [item])[0]
+                self.assertEqual(result["candidate1_code"], "")
+                self.assertEqual(result["recommendation"], "")
+
+    def test_qu7_does_not_get_the_qu6_candidate_from_the_mixed_fixture(self) -> None:
+        rows = mapping.score_candidates(self.products, mapping.read_ecount_items(FIXTURES / "fake_items_korean.csv"))
+        result = next(row for row in rows if row["shop_product_id"] == "fake-shop-qu7-number-conflict")
+        self.assertNotIn(result["candidate1_code"], {"FAKE-003", "FAKE-CAT-006"})
+
+    def test_suffix_mismatch_is_retained_only_as_low_confidence_with_evidence(self) -> None:
+        product = mapping.product_record({"id": "sq5", "name": "SQ5", "model": ""})
+        item = {"code": "SQ5-PLUS", "name": "SQ5+", "spec": "", "unit": "EA", "barcode": ""}
+        result = mapping.score_candidates([product], [item])[0]
+        self.assertEqual(result["candidate1_code"], "SQ5-PLUS")
+        self.assertLessEqual(int(result["candidate1_score"]), 30)
+        self.assertIn("\uBAA8\uB378 \uC811\uBBF8 \uD45C\uAE30 \uBD88\uC77C\uCE58", result["candidate1_evidence"])
+        self.assertEqual(result["recommendation"], "")
+
+    def test_solo_suffix_presence_is_penalized(self) -> None:
+        product = mapping.product_record({"id": "avantis", "name": "Avantis", "model": ""})
+        item = {"code": "AVANTIS-SOLO", "name": "Avantis Solo", "spec": "", "unit": "EA", "barcode": ""}
+        result = mapping.score_candidates([product], [item])[0]
+        self.assertEqual(result["candidate1_code"], "AVANTIS-SOLO")
+        self.assertLessEqual(int(result["candidate1_score"]), 30)
+        self.assertIn("\uBAA8\uB378 \uC811\uBBF8 \uD45C\uAE30 \uBD88\uC77C\uCE58", result["candidate1_evidence"])
+
+    def test_recommendation_requires_exact_model_and_a_fifteen_point_margin(self) -> None:
+        exact = {"model_exact": True, "numeric_conflict": False, "suffix_mismatch": False, "score": "100"}
+        self.assertEqual(mapping.recommendation_for(exact, {"score": "85"}), "\uCD94\uCC9C")
+        self.assertEqual(mapping.recommendation_for(exact, {"score": "86"}), "")
+        self.assertEqual(mapping.recommendation_for({**exact, "model_exact": False}, None), "")
+        self.assertEqual(mapping.recommendation_for({**exact, "numeric_conflict": True}, None), "")
 
 
 if __name__ == "__main__":

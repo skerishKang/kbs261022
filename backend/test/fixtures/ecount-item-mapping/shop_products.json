@@ -43,5 +43,14 @@
     "model": "",
     "barcode": "",
     "specs": []
+  },
+  {
+    "id": "fake-shop-qu7-number-conflict",
+    "name": "QU-7 (NEW)",
+    "brand": "ALLEN&HEATH",
+    "manufacturer": "Allen&Heath",
+    "model": "",
+    "barcode": "",
+    "specs": []
   }
 ]

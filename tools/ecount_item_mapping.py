@@ -24,6 +24,17 @@ from xml.etree import ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_PRODUCTS = ROOT / "site" / "data" / "products.json"
+MODEL_PATTERN = re.compile(
+    r"(?<![A-Z0-9])(?:"
+    r"[A-Z]{1,12}(?:[ -]?[A-Z]{1,6})?[ -]?\d{1,4}(?:[.,]\d+)?(?:[ -]?[A-Z]{1,4})?(?:\s*\+)?"
+    r"|\d{1,4}\s*[xX×]\s*\d{1,4}"
+    r")(?![A-Z0-9])",
+    re.IGNORECASE,
+)
+SOLO_MODEL_PATTERN = re.compile(
+    r"(?<![A-Z0-9])([A-Z][A-Z0-9-]*(?:\s+[A-Z][A-Z0-9-]*)?)\s+SOLO(?![A-Z0-9])",
+    re.IGNORECASE,
+)
 
 FIELD_ALIASES = {
     "code": {
@@ -53,6 +64,7 @@ OUTPUT_FIELDS = [
         f"candidate{index}_code", f"candidate{index}_name",
         f"candidate{index}_score", f"candidate{index}_evidence",
     )],
+    "recommendation",
     "approved_ecount_code",
 ]
 
@@ -76,6 +88,76 @@ def normalize_text(value: Any) -> str:
 def compact(value: Any) -> str:
     value = unicodedata.normalize("NFKC", str(value or "")).casefold()
     return "".join(char for char in value if char.isalnum())
+
+
+def canonical_model(value: Any) -> str:
+    text = unicodedata.normalize("NFKC", str(value or "")).upper()
+    return "".join(char for char in text if char.isalnum() or char == "+")
+
+
+def extract_model_mentions(value: Any) -> tuple[list[str], list[str]]:
+    """Return normalized model signatures and display forms from product text."""
+    text = unicodedata.normalize("NFKC", str(value or ""))
+    signatures: list[str] = []
+    displays: list[str] = []
+    for match in MODEL_PATTERN.finditer(text):
+        display = re.sub(r"\s+(?:NEW|SOLO)$", "", match.group(0).strip(), flags=re.IGNORECASE)
+        signature = canonical_model(display)
+        if signature and signature not in signatures:
+            signatures.append(signature)
+            displays.append(display)
+    for match in SOLO_MODEL_PATTERN.finditer(text):
+        display = f"{match.group(1).strip()} Solo"
+        signature = canonical_model(match.group(1)) + "SOLO"
+        if signature and signature not in signatures:
+            signatures.append(signature)
+            displays.append(display)
+    return signatures, displays
+
+
+def model_profile(signature: str) -> tuple[str, str, str] | None:
+    dimension = re.fullmatch(r"(\d{1,4})X(\d{1,4})", signature)
+    if dimension:
+        return "DIMENSION", f"{dimension.group(1)}X{dimension.group(2)}", ""
+    model = re.fullmatch(r"([A-Z]+)(\d+(?:[.,]\d+)?)([A-Z]*)(\+?)", signature)
+    if not model:
+        return None
+    return model.group(1), model.group(2), model.group(3) + model.group(4)
+
+
+def model_mismatch(shop_models: list[str], ecount_models: list[str], shop_text: str, ecount_text: str) -> tuple[bool, bool]:
+    """Return numeric-conflict and suffix-variant flags for comparable models."""
+    numeric_conflict = False
+    suffix_mismatch = False
+    for shop_model in shop_models:
+        shop_profile = model_profile(shop_model)
+        if not shop_profile:
+            continue
+        for ecount_model in ecount_models:
+            ecount_profile = model_profile(ecount_model)
+            if not ecount_profile or shop_profile[0] != ecount_profile[0]:
+                continue
+            if shop_profile[1] != ecount_profile[1]:
+                numeric_conflict = True
+            elif shop_profile[2] != ecount_profile[2]:
+                suffix_mismatch = True
+
+    shop_solo = bool(re.search(r"\bsolo\b", str(shop_text), re.IGNORECASE))
+    ecount_solo = bool(re.search(r"\bsolo\b", str(ecount_text), re.IGNORECASE))
+    if shop_solo != ecount_solo:
+        shop_base = compact(re.sub(r"\bsolo\b", "", str(shop_text), flags=re.IGNORECASE))
+        ecount_base = compact(re.sub(r"\bsolo\b", "", str(ecount_text), flags=re.IGNORECASE))
+        if (len(shop_base) >= 4 and shop_base in ecount_base) or (len(ecount_base) >= 4 and ecount_base in shop_base):
+            suffix_mismatch = True
+    return numeric_conflict, suffix_mismatch
+
+
+def recommendation_for(first: dict[str, Any] | None, second: dict[str, Any] | None = None) -> str:
+    if not first or not first.get("model_exact") or first.get("numeric_conflict") or first.get("suffix_mismatch"):
+        return ""
+    first_score = int(first.get("score", 0))
+    second_score = int(second.get("score", 0)) if second else 0
+    return "\uCD94\uCC9C" if first_score - second_score >= 15 else ""
 
 
 def first_value(record: dict[str, Any], names: tuple[str, ...]) -> str:
@@ -295,14 +377,30 @@ def product_record(record: dict[str, Any]) -> dict[str, Any] | None:
             barcode_values.append(value)
         else:
             other_specs.append(value)
-    models = sorted({compact(value) for value in model_values if compact(value)})
+    explicit_model_values = [value for value in model_values if value.strip()]
+    model_source_values = explicit_model_values or [name]
+    models: list[str] = []
+    for value in model_source_values:
+        signatures, _ = extract_model_mentions(value)
+        for signature in signatures:
+            if signature not in models:
+                models.append(signature)
+        if not signatures and value.strip():
+            signature = canonical_model(value)
+            if signature and signature not in models:
+                models.append(signature)
+    if explicit_model_values:
+        model_display = explicit_model_values[0]
+    else:
+        _, name_model_displays = extract_model_mentions(name)
+        model_display = name_model_displays[0] if name_model_displays else ""
     barcodes = sorted({compact(value) for value in barcode_values if compact(value)})
     searchable = " ".join([name, manufacturer, *model_values, *other_specs]).strip()
     return {
         "id": product_id,
         "name": name,
         "manufacturer": manufacturer,
-        "model_display": next((value for value in model_values if value.strip()), ""),
+        "model_display": model_display,
         "models": models,
         "barcodes": barcodes,
         "other_specs": other_specs,
@@ -342,19 +440,24 @@ def score_candidates(products: list[dict[str, Any]], items: list[dict[str, str]]
         name_text = " ".join((item["name"], item["spec"]))
         name_normalized = normalize_text(item["name"])
         name_compact = compact(item["name"])
-        spec_compact = compact(item["spec"])
         search_normalized = normalize_text(name_text)
         search_compact = compact(name_text)
+        item_models: list[str] = []
+        for value in (item["name"], item["spec"]):
+            signatures, _ = extract_model_mentions(value)
+            for signature in signatures:
+                if signature not in item_models:
+                    item_models.append(signature)
         prepared_items.append({
             **item,
             "name_normalized": name_normalized,
             "name_compact": name_compact,
-            "spec_compact": spec_compact,
+            "models": item_models,
             "search_normalized": search_normalized,
             "search_compact": search_compact,
         })
-        if spec_compact:
-            code_by_model.setdefault(spec_compact, set()).add(index)
+        for model in item_models:
+            code_by_model.setdefault(model, set()).add(index)
         barcode = compact(item["barcode"])
         if barcode:
             code_by_barcode.setdefault(barcode, set()).add(index)
@@ -376,8 +479,7 @@ def score_candidates(products: list[dict[str, Any]], items: list[dict[str, str]]
             barcode_matches.update(code_by_barcode.get(barcode, set()))
 
         possible: set[int] = set(model_matches) | set(barcode_matches)
-        query_name = product["name_compact"]
-        for gram in ngrams(query_name):
+        for gram in ngrams(product["name_compact"]):
             ids = gram_index.get(gram, set())
             if len(ids) <= gram_limit:
                 possible.update(ids)
@@ -388,42 +490,57 @@ def score_candidates(products: list[dict[str, Any]], items: list[dict[str, str]]
             if len(ids) <= token_limit:
                 possible.update(ids)
 
-        candidates: list[tuple[int, int, str, dict[str, str]]] = []
+        candidates: list[tuple[int, int, str, dict[str, Any]]] = []
         for item_index in possible:
             item = prepared_items[item_index]
-            model_exact = item_index in model_matches
             barcode_exact = item_index in barcode_matches
-            if model_exact:
-                priority, score = 0, 100
-                evidence = "model exact (shop model ↔ ECOUNT SIZE_DES)"
+            numeric_conflict, suffix_mismatch = model_mismatch(
+                product["models"], item["models"], product["name"], f"{item['name']} {item['spec']}"
+            )
+            # Same model family with different digits is a different product.
+            if numeric_conflict:
+                continue
+            model_exact = bool(set(product["models"]) & set(item["models"])) and not suffix_mismatch
+            ratio = difflib.SequenceMatcher(None, product["name_compact"], item["name_compact"], autojunk=False).ratio()
+            brand_exact = bool(product["manufacturer_compact"] and product["manufacturer_compact"] in item["search_compact"])
+            matching_specs = [value for value in product["other_specs"] if len(compact(value)) >= 5 and compact(value) in item["search_compact"]]
+            name_score = min(95, round(ratio * 85 + (5 if brand_exact else 0) + (4 if matching_specs else 0)))
+            evidence_parts = [f"normalized name similarity ({round(ratio * 100)}%)"]
+            if brand_exact:
+                evidence_parts.append("manufacturer/brand exact in ECOUNT name/spec")
+            if matching_specs:
+                evidence_parts.append("shop specification exact in ECOUNT name/spec")
+
+            if suffix_mismatch:
+                priority, score = 2, min(30, name_score)
+                evidence_parts.append("\uBAA8\uB378 \uC811\uBBF8 \uD45C\uAE30 \uBD88\uC77C\uCE58")
                 if barcode_exact:
-                    evidence += "; barcode exact"
+                    evidence_parts.append("barcode exact (shop barcode versus ECOUNT BAR_CODE)")
+            elif model_exact:
+                priority, score = 0, 100
+                evidence_parts = ["model exact (shop model/name versus ECOUNT item name/spec)"]
+                if barcode_exact:
+                    evidence_parts.append("barcode exact")
             elif barcode_exact:
                 priority, score = 1, 98
-                evidence = "barcode exact (shop barcode ↔ ECOUNT BAR_CODE)"
+                evidence_parts = ["barcode exact (shop barcode versus ECOUNT BAR_CODE)"]
             else:
-                ratio = difflib.SequenceMatcher(None, product["name_compact"], item["name_compact"], autojunk=False).ratio()
-                brand_exact = bool(product["manufacturer_compact"] and product["manufacturer_compact"] in item["search_compact"])
-                matching_specs = [value for value in product["other_specs"] if len(compact(value)) >= 5 and compact(value) in item["search_compact"]]
-                score = min(95, round(ratio * 85 + (5 if brand_exact else 0) + (4 if matching_specs else 0)))
-                if score < min_name_score:
+                if name_score < min_name_score:
                     continue
-                priority = 2
-                evidence_parts = [f"normalized name similarity ({round(ratio * 100)}%)"]
-                if brand_exact:
-                    evidence_parts.append("manufacturer/brand exact in ECOUNT name/spec")
-                if matching_specs:
-                    evidence_parts.append("shop specification exact in ECOUNT name/spec")
-                evidence = "; ".join(evidence_parts)
+                priority, score = 2, name_score
+            evidence = "; ".join(evidence_parts)
             candidate = {
                 "code": item["code"],
                 "name": item["name"],
                 "score": str(score),
                 "evidence": evidence,
+                "model_exact": model_exact,
+                "numeric_conflict": numeric_conflict,
+                "suffix_mismatch": suffix_mismatch,
             }
             candidates.append((priority, -score, item["code"], candidate))
         candidates.sort(key=lambda entry: (entry[0], entry[1], entry[2]))
-        selected: list[dict[str, str]] = []
+        selected: list[dict[str, Any]] = []
         seen_codes: set[str] = set()
         for _, _, code, candidate in candidates:
             if code in seen_codes:
@@ -433,10 +550,14 @@ def score_candidates(products: list[dict[str, Any]], items: list[dict[str, str]]
             if len(selected) == 3:
                 break
 
-        row = {
+        row: dict[str, str] = {
             "shop_product_id": product["id"],
             "shop_product_name": product["name"],
             "model": product["model_display"],
+            "recommendation": recommendation_for(
+                selected[0] if selected else None,
+                selected[1] if len(selected) > 1 else None,
+            ),
             "approved_ecount_code": "",
         }
         for index in range(1, 4):
@@ -469,6 +590,7 @@ def korean_output_fields() -> list[str]:
             f"\uD6C4\uBCF4{index} \uC810\uC218",
             f"\uD6C4\uBCF4{index} \uADFC\uAC70",
         ])
+    fields.append("\uCD94\uCC9C")
     fields.append("\uC2B9\uC778")
     return fields
 

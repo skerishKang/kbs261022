@@ -4,6 +4,6 @@ These files contain 30 fabricated ERP items and are not an ECOUNT export. Item c
 
 - `fake_items_korean.csv`: Korean export-style column names.
 - `fake_items_api_fields.xlsx`: ECOUNT Open API field names.
-- `shop_products.json`: synthetic cases for model priority, formatting variation, barcode match, score ties, and no candidate.
+- `shop_products.json`: synthetic cases for model priority, formatting variation, barcode match, score ties, no candidate, and a QU-7 number collision.
 
 No customer, payment, or real ERP account data is included.

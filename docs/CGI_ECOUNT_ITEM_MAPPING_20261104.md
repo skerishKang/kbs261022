@@ -22,7 +22,11 @@ Run locally after the export arrives:
 python tools/ecount_item_mapping.py --ecount-file C:\private\ecount-items.xlsx --output C:\private\ecount-item-candidates.csv
 ```
 
-The output contains one row per shop product, with its ID, name, model, up to three ECOUNT candidates, integer score, evidence, and a blank `승인` column. Match priority is model exact (`SIZE_DES`) first, barcode exact (`BAR_CODE`) second, then normalized name similarity. Manufacturer and other exact specification evidence can raise a name candidate's score. Candidate generation is advisory; it does not approve a mapping.
+`site/data/products.json` has a `model` field on all 4,575 product records; 1,740 values are populated and the rest are blank. The tool prefers that field (or a model-labeled specification), then extracts model strings from the product name when those fields are empty. It recognizes forms such as `QU-5`/`qu 5`, `CQ-18T`/`CQ 18 t`, `SQ5+`, `ME-500`, and `64x64`. It applies the same extraction to ECOUNT item name and `SIZE_DES`.
+
+The output contains one row per shop product, with its ID, name, extracted model, up to three ECOUNT candidates, integer score, evidence, `추천`, and a blank `승인` column. Match priority is model exact first, barcode exact (`BAR_CODE`) second, then normalized name similarity. Products with a comparable model family but different digits (for example `QU-7` vs `QU-6`) are excluded. Suffix variants such as `SQ5` vs `SQ5+` or `Solo` presence remain visible at a score of at most 30 with a mismatch reason. Manufacturer and other exact specification evidence can raise a name candidate's score.
+
+`추천` is filled only when the first candidate has an exact extracted model match, no numeric or suffix conflict, and scores at least 15 points above the second candidate (an absent second candidate scores 0). A recommendation is advisory; the importer still writes only a code entered in `승인` and ignores `추천`.
 
 When reviewing in Excel, import the candidate code columns as **Text** so numeric-looking codes keep leading zeroes. For the ECOUNT source export, prefer text-formatted code and barcode columns; if Excel stored a numeric value without a zero-preserving format, missing leading zeroes cannot be reconstructed. Save the approved file as UTF-8 CSV when possible; the import route also accepts Windows Korean CSV encoding.
 
