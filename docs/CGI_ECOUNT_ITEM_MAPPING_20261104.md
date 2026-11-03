@@ -39,3 +39,15 @@ POST /api/admin/ecount/item-mappings/import
 The route requires the existing administrator authorization, validates the approval column and candidate list, then upserts only approved pairs. It records the approver role, timestamp, and CSV SHA-256. A shop product has one approved code; multiple shop products may share an ECOUNT item code.
 
 Migration `0008_ecount_item_mapping.sql` defines the table. It was added to the repository schema for local initialization; **no remote D1 migration was applied**. No ECOUNT export file has been received, no review CSV has been generated, and no product mapping has been approved in this change.
+
+## Local test fixtures
+
+`backend/test/fixtures/ecount-item-mapping/` contains fabricated 30-row Korean-header CSV and Open API-field XLSX exports, plus synthetic shop cases. The ERP item codes and barcodes are fake; selected item names overlap the public shop catalog for realistic matching coverage.
+
+Run the candidate/importer tests with:
+
+```powershell
+python -m unittest discover -s tools -p 'test_ecount_item_mapping.py' -v
+cd backend
+npm test
+```

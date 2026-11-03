@@ -101,7 +101,12 @@ def cell_text(cell: ET.Element, shared_strings: list[str], number_formats: dict[
             return raw
     if cell_type == "inlineStr":
         inline = cell.find("{*}is")
-        return "".join(part.text or "" for part in inline.iter("{*}t")) if inline is not None else ""
+        if inline is None:
+            return ""
+        return "".join(
+            part.text or "" for part in inline.iter()
+            if part.tag == "t" or part.tag.endswith("}t")
+        )
     if cell_type in {"str", "e", "b"} or not raw:
         return raw
 
@@ -335,12 +340,11 @@ def score_candidates(products: list[dict[str, Any]], items: list[dict[str, str]]
     prepared_items: list[dict[str, Any]] = []
     for index, item in enumerate(items):
         name_text = " ".join((item["name"], item["spec"]))
-        name_normalized = normalize_text(name_text)
-        name_compact = compact(name_text)
+        name_normalized = normalize_text(item["name"])
+        name_compact = compact(item["name"])
         spec_compact = compact(item["spec"])
-        search_text = " ".join((item["name"], item["spec"]))
-        search_normalized = normalize_text(search_text)
-        search_compact = compact(search_text)
+        search_normalized = normalize_text(name_text)
+        search_compact = compact(name_text)
         prepared_items.append({
             **item,
             "name_normalized": name_normalized,
