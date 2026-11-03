@@ -11,6 +11,11 @@ const html = read('website/index.html');
 const js = read('website/assets/main.js');
 const css = read('website/assets/style.css');
 
+test('footer shows the confirmed mail-order number once', () => {
+  assert.equal((html.match(/통신판매업신고 2025-전남장성-94/g) || []).length, 1);
+  assert.doesNotMatch(html, /개인정보보호책임자/);
+});
+
 test('business images use local company photos with visible SVG field-icon fallbacks', () => {
   const sandbox = createContext({ window: {} });
   runInContext(read('website/assets/company.js'), sandbox);

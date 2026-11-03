@@ -17,13 +17,11 @@ window.CGI_SITE_CONFIG = {
   homepageUrl: 'https://cgihomepage.pages.dev/',
   // 견적 API (Cloudflare Worker). 비어 있으면 localStorage 정적 시연 모드.
   quoteApiUrl: 'https://cgi-quote-api.charliekant.workers.dev',
-  // ── 전자상거래법 필수 표기 (2026-11-01 구조 추가 — 값은 대표 확정 후 입력) ──
-  // 값이 확정된 항목만 쇼핑몰 푸터 약관 줄에 표기하고, 비어 있는 항목은
-  // "확인 예정" 같은 자리 문구 없이 그 항목 자체를 만들지 않는다(2026-11-03 대표 결정).
-  // 실제 번호 확정 시 이 한 블록만 채우면 전 화면에 반영된다.
+  // ── 전자상거래법 필수 표기 ────────────────────────────────
+  // 확정된 항목만 쇼핑몰 푸터 약관 줄에 표기한다. 미확정 항목은 숨긴다.
   legal: {
     bizRegNo: '410-86-46283', // 사업자등록번호 (홈페이지·company.js와 같은 값)
-    mailOrderNo: '',          // 통신판매업 신고번호 — 확정 전에는 표기하지 않는다
+    mailOrderNo: '2025-전남장성-94', // 스마트스토어센터 판매자 정보에서 대표 확인
     privacyOfficerName: '',   // 개인정보보호책임자 — 확정 전에는 표기하지 않는다
     privacyOfficerEmail: '',  // 책임자 연락처
   },

@@ -71,8 +71,11 @@ function legalLine(cfg) {
 
 test('약관 줄은 확정된 사업자등록번호를 한 번만 표기하고 확인 예정 문구를 쓰지 않는다', () => {
   assert.equal(CFG.legal.bizRegNo, '410-86-46283', 'config 의 사업자등록번호가 사이트 값과 같아야 한다');
+  assert.equal(CFG.legal.mailOrderNo, '2025-전남장성-94', '대표가 확인한 신고번호를 사용해야 한다');
   const line = legalLine(CFG);
   assert.equal((line.match(/410-86-46283/g) || []).length, 1, '사업자등록번호는 한 번만 나와야 한다');
+  assert.equal((line.match(/통신판매업신고 2025-전남장성-94/g) || []).length, 1, '신고번호는 한 번만 나와야 한다');
+  assert.doesNotMatch(line, /개인정보보호책임자/, '확정되지 않은 책임자는 표시하지 않는다');
   assert.doesNotMatch(line, /확인 예정/, '미확정 자리 문구가 약관 줄에 남아 있다');
   assert.doesNotMatch(line, /사업자등록번호 확인/, '사업자등록번호 뒤에 기본 문구가 붙는다');
   assert.match(line, /© 주식회사 시지아이/);
