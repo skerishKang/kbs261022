@@ -43,6 +43,15 @@
     });
   }
 
+  function applyQuoteLinks() {
+    var url = mallBase().replace(/#.*$/, '') + '#/quote-cart';
+    $$('[data-quote-link]').forEach(function (a) {
+      a.setAttribute('href', url);
+      a.setAttribute('target', '_blank');
+      a.setAttribute('rel', 'noopener');
+    });
+  }
+
   /* ------------------------------------------------------ 브랜드 목록 */
   /* #126: 브랜드 칩 초기 노출 개수를 줄여 시각 밀도를 낮춘다(접기/더보기 토글).
    * 전체 브랜드는 DOM에 유지되며 브랜드 검색 중에는 접기 상태를 무시한다. */
@@ -287,20 +296,26 @@
       li.appendChild(sub);
       host.appendChild(li);
     });
+    var disclosure = document.getElementById('orgDisclosure');
+    if (disclosure) { disclosure.open = false; }
   }
 
   function renderHistory() {
-    var host = document.getElementById('historyList');
-    if (!host) { return; }
-    host.innerHTML = '';
+    var recent = document.getElementById('historyRecent');
+    var older = document.getElementById('historyOlder');
+    if (!recent || !older) { return; }
+    recent.innerHTML = '';
+    older.innerHTML = '';
     CO.history.forEach(function (row) {
       var li = el('li', 'tl-row');
       li.appendChild(el('span', 'year', row.year));
       var ul = el('ul', 'tl-items');
       row.items.forEach(function (it) { ul.appendChild(el('li', null, it)); });
       li.appendChild(ul);
-      host.appendChild(li);
+      (Number(row.year) >= 2023 ? recent : older).appendChild(li);
     });
+    var disclosure = document.getElementById('historyMore');
+    if (disclosure) { disclosure.open = false; }
   }
 
   function renderKeywords() {
@@ -310,6 +325,68 @@
     CO.keywords.forEach(function (k) { host.appendChild(el('li', 'kw', k)); });
   }
 
+  var FIELD_ICON_MARKS = {
+    'Media & Broadcast': '<rect x="18" y="24" width="60" height="48" rx="5"/><path d="M28 48h8l6-12 10 25 8-18 6 9h9"/><path d="M30 80h36"/>',
+    'LED Screen': '<rect x="16" y="20" width="64" height="48" rx="4"/><path d="M28 32h8v8h-8zm16 0h8v8h-8zm16 0h8v8h-8zM28 48h8v8h-8zm16 0h8v8h-8zm16 0h8v8h-8zM36 80h24m-12-12v12"/>',
+    'Stage & Lighting': '<path d="M20 26h56L64 48H32z"/><path d="M36 50 26 76m18-26-3 28m19-28 10 26m-18-26v28"/><circle cx="48" cy="32" r="5"/>',
+    'CCTV & Smart Farm': '<path d="M22 34h42l12 10v20l-12 10H22z"/><circle cx="48" cy="54" r="10"/><path d="M48 44c-10-8-18 2-12 9 6 6 12 2 12-9zm0 0c10-8 18 2 12 9-6 6-12 2-12-9zm0 1v28"/>',
+    'Control System': '<rect x="16" y="20" width="64" height="48" rx="4"/><path d="M24 30h18v13H24zm30 0h18v13H54zM24 49h18v11H24zm30 0h18v11H54zM36 80h24m-12-12v12"/>',
+    'Rental': '<rect x="27" y="20" width="42" height="58" rx="5"/><circle cx="48" cy="39" r="10"/><circle cx="48" cy="64" r="5"/><path d="M39 20v-6h18v6"/>',
+    'Training': '<path d="M18 25h27a9 9 0 0 1 9 9v42H27a9 9 0 0 0-9 5z"/><path d="M78 25H57a9 9 0 0 0-9 9v42h21a9 9 0 0 1 9 5zM29 41h9m-9 10h9m20-10h9m-9 10h9"/>',
+    'Maintenance': '<path d="M60 17a21 21 0 0 0-24 27L17 63a9 9 0 0 0 13 13l19-19a21 21 0 0 0 27-25L64 44 52 32z"/>',
+    'Interior Architecture': '<path d="M18 78V32l30-15 30 15v46z"/><path d="M28 40h12v12H28zm28 0h12v12H56zM28 61h12v17H28zm28-1h12v18H56z"/>',
+    'R&D & Manufacturing': '<path d="M36 19h24v14l16 28a12 12 0 0 1-10 18H30a12 12 0 0 1-10-18l16-28z"/><path d="M30 58h36M40 70h16"/>'
+  };
+  function fieldIcon(key, label) {
+    var wrap = el('div', 'field-icon');
+    wrap.setAttribute('aria-hidden', 'true');
+    var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('viewBox', '0 0 96 96');
+    svg.setAttribute('class', 'field-icon-svg');
+    svg.setAttribute('focusable', 'false');
+    svg.innerHTML = FIELD_ICON_MARKS[key] || FIELD_ICON_MARKS['Media & Broadcast'];
+    wrap.appendChild(svg);
+    if (label) { wrap.appendChild(el('span', 'field-icon-label', label)); }
+    return wrap;
+  }
+
+  function addPhoto(media, img) {
+    img.classList.add('field-photo');
+    img.addEventListener('load', function () { media.classList.add('has-photo'); });
+    img.addEventListener('error', function () { media.classList.remove('has-photo'); });
+    media.appendChild(img);
+    if (img.complete && img.naturalWidth > 0) { media.classList.add('has-photo'); }
+  }
+
+  function fieldMedia(key, label, source, alt) {
+    var media = el('div', 'field-media');
+    media.appendChild(fieldIcon(key, label));
+    if (source) {
+      var img = el('img');
+      img.alt = alt || label;
+      img.width = 800; img.height = 500; img.loading = 'lazy';
+      img.src = source;
+      addPhoto(media, img);
+    }
+    return media;
+  }
+
+  function initPhotoGridFallbacks() {
+    $$('.photo-grid .figure-frame img').forEach(function (img) {
+      var figure = img.parentNode;
+      var caption = (figure.querySelector('figcaption') || {}).textContent || '';
+      var text = ((img.alt || '') + ' ' + caption).toLowerCase();
+      var key = text.indexOf('led') >= 0 ? 'LED Screen'
+        : (text.indexOf('조명') >= 0 || text.indexOf('lighting') >= 0) ? 'Stage & Lighting'
+        : (text.indexOf('관제') >= 0 || text.indexOf('control') >= 0) ? 'Control System'
+        : (text.indexOf('팜') >= 0 || text.indexOf('farm') >= 0) ? 'CCTV & Smart Farm'
+        : 'Media & Broadcast';
+      var media = fieldMedia(key, caption);
+      figure.replaceChild(media, img);
+      addPhoto(media, img);
+    });
+  }
+
   function renderBusiness() {
     var host = document.getElementById('bizGrid');
     if (!host) { return; }
@@ -317,9 +394,7 @@
     CO.business.forEach(function (b) {
       var art = el('article', 'biz biz-card');
       art.appendChild(el('span', 'biz-no', b.no));
-      var img = el('img');
-      img.src = b.img; img.alt = b.alt; img.loading = 'lazy'; img.width = 800; img.height = 500;
-      art.appendChild(img);
+      art.appendChild(fieldMedia(b.en, b.name, b.img, b.alt));
       var h = el('h3', null, b.name);
       h.appendChild(el('span', 'en', ' ' + b.en));
       art.appendChild(h);
@@ -349,21 +424,38 @@
     if (!host) { return; }
     host.innerHTML = '';
     var byCat = {};
+    var cover = {
+      'AV시스템': { key: 'Media & Broadcast', src: 'assets/img/ref_hall.jpg', alt: '회사 보유 공연장 음향·영상 시공 사진' },
+      'LED 스크린': { key: 'LED Screen', src: 'assets/img/biz_led.jpg', alt: '회사 보유 LED 스크린 설치 사진' },
+      '레퍼런스': { key: 'Control System', src: 'assets/img/ref_broadcast.jpg', alt: '회사 보유 방송 제어실 사진' }
+    };
     CO.references.forEach(function (r) {
       (byCat[r.cat] = byCat[r.cat] || []).push(r);
     });
     Object.keys(byCat).forEach(function (cat) {
+      var rows = byCat[cat];
       var box = el('div', 'ref-cat');
       box.appendChild(el('h4', 'ref-cat-name', cat));
+      var photo = cover[cat];
+      if (photo) { box.appendChild(fieldMedia(photo.key, cat + ' 분야 대표 사진', photo.src, photo.alt)); }
       var ul = el('ul', 'ref-cards');
-      byCat[cat].forEach(function (r) {
+      var moreList = el('ul', 'ref-cards ref-cards-more');
+      rows.forEach(function (r, index) {
         var li = el('li', 'ref-card');
         li.appendChild(el('strong', 'ref-place', r.place));
         li.appendChild(el('span', 'ref-spec', r.spec));
         li.appendChild(el('span', 'ref-gear', r.gear));
-        ul.appendChild(li);
+        (index === 0 ? ul : moreList).appendChild(li);
       });
       box.appendChild(ul);
+      if (rows.length > 1) {
+        var more = el('details', 'ref-more');
+        var summary = el('summary', null, '이 분야 사례 더 보기 (' + (rows.length - 1) + ')');
+        more.appendChild(summary);
+        more.appendChild(moreList);
+        more.open = false;
+        box.appendChild(more);
+      }
       host.appendChild(box);
     });
   }
@@ -428,8 +520,10 @@
   /* ------------------------------------------------------ 시작 */
   function boot() {
     applyMallLinks();
+    applyQuoteLinks();
     loadMasterBrands();
     renderCompany();
+    initPhotoGridFallbacks();
     initNav();
     initScrollSpy();
     initRefTabs();
