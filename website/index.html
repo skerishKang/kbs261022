@@ -10,7 +10,7 @@
 <meta property="og:description" content="2011년 설립 · 통합방송·음향·영상·CCTV·LED전광판·무대조명·관제시스템·스마트팜 설계/시공/제조/렌탈/유지보수 전문 ㈜시지아이">
 <meta property="og:type" content="website">
 <link rel="icon" type="image/png" href="assets/img/cgi-mark-green.png">
-<link rel="stylesheet" href="assets/style.css?v=98a">
+<link rel="stylesheet" href="assets/style.css?v=99a">
 </head>
 <body>
 
@@ -60,9 +60,9 @@
         통합방송·음향·영상·CCTV·LED전광판·무대조명부터 관제시스템과 스마트팜,
         공연렌탈과 각종 유지보수까지 하나의 흐름으로 설계하고 시공합니다.
       </p>
-      <p class="hero-en">영상장비, 음향장비 및 각종 설계·시공·제작 전문업체</p>
       <div class="hero-actions">
         <a class="btn btn-primary" href="#" id="mallLinkHero" data-mall-link>제품 보기 (쇼핑몰) <span aria-hidden="true">→</span></a>
+        <a class="btn btn-primary" href="#" data-quote-link>견적·상담 문의</a>
         <a class="btn btn-ghost" href="#products">취급 브랜드 보기</a>
       </div>
     </div>
@@ -108,7 +108,7 @@
         </p>
         <dl class="kv" data-cgi-kv>
           <div><dt>회사명</dt><dd>주식회사 시지아이 (CGI Inc.)</dd></div>
-          <div><dt>대표이사</dt><dd>김범신</dd></div>
+          <div><dt>대표이사</dt><dd>김범신, 백정아</dd></div>
           <div><dt>설립</dt><dd>2011년 1월</dd></div>
           <div><dt>직원 수</dt><dd>6명 <span class="asof">2025년 지명원 기준</span></dd></div>
           <div><dt>사업자등록번호</dt><dd>410-86-46283</dd></div>
@@ -124,16 +124,45 @@
       </div>
 
       <!-- 조직도 -->
-      <div class="panel orgchart">
-        <h3>조직도 <span class="en">ORGANIZATION</span></h3>
+      <details class="panel orgchart content-disclosure" id="orgDisclosure" open>
+        <summary><h3>조직도 <span class="en">ORGANIZATION</span></h3><span class="disclosure-hint">조직도 전체 보기</span></summary>
         <p class="org-ceo">대표이사</p>
         <ul class="org-div" id="orgChart"><!-- JS 로 주입 (company.js) --></ul>
-      </div>
+        <noscript>
+          <ul class="noscript-org">
+            <li><strong>경영기획부</strong><ul><li>사업 총괄</li><li>경영 총괄</li><li>관리 총괄</li></ul></li>
+            <li><strong>사업개발부</strong><ul><li>연구개발팀 — 제품 연구개발</li><li>제조팀 — 제품 생산·관리</li><li>영업팀 — 영업, 마케팅, 유통</li><li>기술지원팀 — 음향·방송설계, 시공, 사후관리</li></ul></li>
+          </ul>
+        </noscript>
+      </details>
 
       <!-- HISTORY -->
       <div class="panel history">
         <h3>주요연혁 <span class="en">HISTORY</span></h3>
-        <ol class="timeline timeline-full" id="historyList"><!-- JS 로 주입 (company.js) --></ol>
+        <ol class="timeline timeline-full history-recent" id="historyRecent"><!-- 최근 연혁 --></ol>
+        <details class="history-more" id="historyMore" open>
+          <summary>전체 연혁 보기 (2011~2025)</summary>
+          <ol class="timeline timeline-full" id="historyOlder"><!-- 이전 연혁 --></ol>
+        </details>
+        <noscript>
+          <details class="noscript-history" open>
+            <summary>전체 연혁 보기 (2011~2025)</summary>
+            <ol class="timeline timeline-full">
+              <li class="tl-row"><span class="year">2011</span><ul class="tl-items"><li>01 ㈜시지아이 법인설립 및 공장등록</li><li>02 중소기업청 공로상 표창</li><li>03 한국산업기술진흥협회 기업부설연구소(연구개발전담부서) 인정</li><li>05 광주광역시광산구청 비디오물 시청 제공업 등록 · 중소기업중앙회 직접생산확인증명(방송장치, 구내)(경관조명기구)</li></ul></li>
+              <li class="tl-row"><span class="year">2012</span><ul class="tl-items"><li>01 광주광역시청 유망 중소·중견기업 선정</li><li>04 특허청 상표등록(제40-0914713호)</li><li>12 중소기업중앙회 직접생산확인증명(비디오물)</li></ul></li>
+              <li class="tl-row"><span class="year">2013</span><ul class="tl-items"><li>07 본점 소재지 변경 &amp; 정부창업성장개발과제 선정</li></ul></li>
+              <li class="tl-row"><span class="year">2014</span><ul class="tl-items"><li>04 여성가족부·고용노동부 여성친화기업 지정 · 중소기업청 중소기업확인서(소기업·소상공인) 인정</li><li>05 광주대학교 LINC사업단 산학협력 협약 체결</li></ul></li>
+              <li class="tl-row"><span class="year">2015</span><ul class="tl-items"><li>03 전라남도교육청 MC교육 MOU 체결</li><li>04 기술보증기금 벤처기업확인서 취득 · 중소기업중앙회 직접생산확인증명(인쇄, 광고물 외)</li><li>08 특허청 특허등록(제10-1544181호)</li><li>09 특허청 상표등록(제40-1125714호) · 디자인등록(제30-0788466호, 제30-0798629호, 제30-0798630호)</li></ul></li>
+              <li class="tl-row"><span class="year">2016</span><ul class="tl-items"><li>04 삼아프로사운드㈜ 대리점 지정</li></ul></li>
+              <li class="tl-row"><span class="year">2017</span><ul class="tl-items"><li>01 ㈜시지아이 장성지점 등록 · ㈜금호전기 특약도매 대리점 지정</li><li>05 ㈜시지아이 장성공장 준공</li><li>06 ㈜시지아이 장성공장 가동</li><li>07 본점소재지(관내) 변경 · ㈜시지아이 자본 증자</li><li>08 ㈜시지아이 장성지점 사업개시</li></ul></li>
+              <li class="tl-row"><span class="year">2018</span><ul class="tl-items"><li>07 크리스시스템 대리점 지정</li></ul></li>
+              <li class="tl-row"><span class="year">2019</span><ul class="tl-items"><li>01 본·지점 합병 및 본점 이전</li><li>11 벤처기업 등록</li></ul></li>
+              <li class="tl-row"><span class="year">2020</span><ul class="tl-items"><li>03 기업부설연구소 설립</li></ul></li>
+              <li class="tl-row"><span class="year">2022</span><ul class="tl-items"><li>04 정보통신공사업 등록</li></ul></li>
+              <li class="tl-row"><span class="year">2025</span><ul class="tl-items"><li>06 중소기업중앙회 직접생산확인증명(구내방송장치, 안내전광판)</li></ul></li>
+            </ol>
+          </details>
+        </noscript>
         <p class="note">
           연혁은 2025년 지명원 기재 사항입니다(2011 법인설립 ~ 2025). 등록·인증의 발급 연도와 유효기간은
           문서에 표시되지 않아 현재 유효 여부와 별도로 확인합니다.
@@ -162,7 +191,7 @@
               나노바이오연구센터 인근 · 국립과학수사연구원 인근 · 광주연구개발특구 첨단3지구 · 윤수IC(하남·진곡산단) · 북광주IC(담양)
             </p>
             <p class="map-links">
-              <a class="btn btn-primary" href="https://map.naver.com/p/search/%EC%A0%84%EB%9D%BC%EB%82%A8%EB%8F%84%20%EC%9E%A5%EC%84%B1%EA%B5%B0%20%EB%82%A8%EB%A9%B4%20%EB%82%98%EB%85%B8%EC%82%B0%EB%8B%A8%EB%A1%9C%20102" target="_blank" rel="noopener">네이버지도에서 보기</a>
+              <a class="btn btn-primary btn-map" href="https://map.naver.com/p/search/%EC%A0%84%EB%9D%BC%EB%82%A8%EB%8F%84%20%EC%9E%A5%EC%84%B1%EA%B5%B0%20%EB%82%A8%EB%A9%B4%20%EB%82%98%EB%85%B8%EC%82%B0%EB%8B%A8%EB%A1%9C%20102" target="_blank" rel="noopener">네이버지도에서 보기 <span aria-hidden="true">↗</span></a>
               <a class="btn btn-ghost" href="https://www.google.com/maps/search/?api=1&amp;query=%EC%A0%84%EB%9D%BC%EB%82%A8%EB%8F%84+%EC%9E%A5%EC%84%B1%EA%B5%B0+%EB%82%A8%EB%A9%B4+%EB%82%98%EB%85%B8%EC%82%B0%EB%8B%A8%EB%A1%9C+102" target="_blank" rel="noopener">구글지도</a>
             </p>
             <p class="note">
@@ -277,6 +306,33 @@
           아래는 2025년 지명원에 기재된 시공 사례와 설치 사양입니다.
         </p>
         <div id="refGrid"><!-- JS 로 주입 (company.js references) --></div>
+        <noscript>
+          <div class="noscript-references">
+            <details open><summary>AV시스템 전체 사례 보기</summary><ul>
+              <li>광주 새순교회 — 수용인원 2,500석 · 중이층, 부채꼴 구조 / dV-DOSC(14ea), dV-SUB(4ea), SB118(4ea), ARCS(4ea), MTD115a(2ea), MTD112b(4ea), MTD108a(2ea)</li>
+              <li>신안교회 — 수용인원 1,500석 · 중이층, 직사각형 구조 / KARAi(16ea), SB18i(4ea), X12(6ea), X8</li>
+              <li>향기교회 — 수용인원 800석 · 중이층, 직사각형 구조 / KARAi(12ea), SB18i(2ea), 5XT(4ea)</li>
+              <li>장흥효성교회 — 대 예배실 · 소 예배실 / 대 예배실 dV-DOSC(12ea), SB18m(2ea) / 소 예배실 112p(2ea)</li>
+              <li>대구시민문화회관 — 대공연장 1,618석 · 소공연장 342석 / 대공연장 KIVA(10ea), KILO(3ea), 12XT(4ea), 8XT(6ea), 8XTi(8ea), 스테이지 모니터 / 소공연장 KIVA(8ea), KILO(2ea), 12XT(4ea), 8XTi(2ea)</li>
+              <li>전주 KBS — 공개홀 450석 · 교양홀 / 공개홀 KARAi(10ea), SB18i(4ea), 12XT(4ea), LA8(4ea), LA4(3ea) / 교양홀 12XT(2ea), LA4(1ea)</li>
+              <li>창원 성산아트홀 — 수용인원 1,720석 / KARAi(24ea), DV-DOSC(10ea), SB18i(12ea)</li>
+              <li>화순 키즈라라 — 뉴스스튜디오 · 더빙실 · 1인미디어실 / 영상장비, 조명장비, 오디오장비</li>
+            </ul></details>
+            <details open><summary>LED 스크린 전체 사례 보기</summary><ul>
+              <li>빛고을중앙교회 — 본당 LED DISPLAY 3.91mm · 200인치 / cabinet 500×500mm, size 4×2.5m, cabinet 전압 350W</li>
+              <li>광주서현교회 — 본당 LED DISPLAY 2.5mm · 203인치 / 디스플레이 4480×2560mm, 해상도 1920×768 Pixels</li>
+              <li>고흥읍교회 — 본당 LED DISPLAY 2.5mm · 147인치 / 디스플레이 W3200×H1920mm, 해상도 1280×768</li>
+              <li>대한예수교장로회 은광교회 — 본당 LED DISPLAY 2.5mm · 169인치 / 디스플레이 W3840×H1920mm, 해상도 1536×768</li>
+            </ul></details>
+            <details open><summary>레퍼런스 전체 보기</summary><ul>
+              <li>부산문화회관 대공연장 — 1,403석 복합 예술공간 / 오페라·실내악·뮤지컬 등 다용도 공연, 높은 층고와 발코니층, 전 좌석 고른 음향 환경</li>
+              <li>서울 손기정 기념관 — 전시 IT 시스템 / 관람객 인지와 중앙서버 싱크로 각 전시관에 영상·음성 컨텐츠 자동 전송</li>
+              <li>FnC 엔터테인먼트 — 사옥 신축 이전 실내건축·음향 인스톨 턴키 / 밴드 음압 수음에 무리 없는 방음·차음·흡음 시공</li>
+              <li>여수엑스포 빅-O — 극한 환경 시스템 설비 / 염분이 많은 해변가와 극한의 온도차에서도 안전을 확신할 수 있는 인스톨 노하우</li>
+              <li>담양 담빛 라디오 — 지역주민 참여 문화콘텐츠 제작 스튜디오 / 실시간 SNS 스트리밍, 지역축제 연계 시스템</li>
+            </ul></details>
+          </div>
+        </noscript>
       </div>
 
       <div class="ref-panel" id="panelRecords" role="tabpanel" aria-labelledby="tabRecords" hidden>
@@ -366,7 +422,10 @@
         <h2>CGI 상품 쇼핑몰</h2>
         <p>취급 브랜드별 제품 목록과 상세 정보, 옵션·규격을 확인하실 수 있습니다.</p>
       </div>
-      <a class="btn btn-light" href="#" id="mallLinkCta" data-mall-link>제품 보기 <span aria-hidden="true">→</span></a>
+      <div class="cta-actions">
+        <a class="btn btn-light" href="#" id="mallLinkCta" data-mall-link>제품 보기 <span aria-hidden="true">→</span></a>
+        <a class="btn btn-light" href="#" data-quote-link>견적·상담 문의 <span aria-hidden="true">→</span></a>
+      </div>
     </div>
   </section>
 
@@ -390,7 +449,7 @@
       </ul>
     </nav>
     <div class="foot-info" data-cgi-footer>
-      <p>㈜시지아이 · 대표이사 김범신 · 사업자등록번호 410-86-46283</p>
+      <p>㈜시지아이 · 대표이사 김범신, 백정아 · 사업자등록번호 410-86-46283</p>
       <p>[57248] 전라남도 장성군 남면 나노산단로 102 (삼태리)</p>
       <p>TEL 062) 576-8100 · 061) 801-8100 · FAX 062) 576-8181</p>
       <p><a href="http://blog.naver.com/cgiinc" target="_blank" rel="noopener">blog.naver.com/cgiinc</a></p>
@@ -407,6 +466,6 @@
 
 <script src="assets/config.js?v=98a"></script>
 <script src="assets/company.js?v=97a"></script>
-<script src="assets/main.js?v=97a"></script>
+<script src="assets/main.js?v=98a"></script>
 </body>
 </html>

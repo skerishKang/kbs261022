@@ -176,12 +176,22 @@
   }
   // 공급처 서버 hotlink 이미지는 결려 로드 실패가 발생한다 — 빈 칸 대신
   // 중립 플레이스홀더로 폴백한다 (추가 네트워크 요청 없음).
-  var IMG_FALLBACK = "data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect width='400' height='300' fill='%23eef0f6'/%3E%3C/svg%3E";
-  function imageHtml(product, className) {
+  function imageHtml(product, className, priority) {
     if (!product.images.length) {
       return '<div class="' + className + ' no-image"><span class="no-image-logo">CGI</span><span>이미지 준비 중</span></div>';
     }
-    return '<img class="' + className + '" src="' + esc(product.images[0]) + '" alt="' + esc(product.name) + '" loading="lazy" decoding="async" data-fallback="' + IMG_FALLBACK + '" onerror="this.onerror=null;this.src=this.dataset.fallback">';
+    return '<img class="' + className + '" src="' + esc(product.images[0]) + '" alt="' + esc(product.name) +
+      '" width="400" height="400" loading="' + (priority ? 'eager' : 'lazy') + '" decoding="async"' +
+      (priority ? ' fetchpriority="high"' : '') + ' onerror="window.cgiHandleImageError(this)">';
+  }
+  window.cgiHandleImageError = function (img) {
+    if (!img || !img.parentNode) return;
+    var placeholder = document.createElement('div');
+    placeholder.className = (img.className || 'card-img') + ' no-image';
+    placeholder.setAttribute('role', 'img');
+    placeholder.setAttribute('aria-label', (img.alt || '상품') + ' 이미지 준비 중');
+    placeholder.innerHTML = '<span class="no-image-logo">CGI</span><span>이미지 준비 중</span>';
+    img.parentNode.replaceChild(placeholder, img);
   }
   function fallbackBlock(className) {
     return '<div class="' + className + ' no-image"><span class="no-image-logo">CGI</span><span>이미지 준비 중</span></div>';
@@ -275,12 +285,13 @@
   /* ------------------------------------------------------------- fragments */
   /* #126: 상품명 선두 [태그] 중 실제 상품 상태만 분리해 배지로 표시한다(표시 전용).
    * 브랜드명·한정판 등 상태가 아닌 접두사는 원본 상품명 그대로 노출한다. */
-  var CONDITION_TAGS = ['박스손상', '리퍼비쉬', '전시상품', '전시제품', '전시/단종 클리어런스', '단순개봉', '교환상품', '미세흠집'];
+  var CONDITION_TAGS = ['박스손상', '리퍼비쉬', '전시상품', '전시제품', '전시/단종 클리어런스', '단순개봉', '교환상품', '미세흠집', '입고후발송', '커버 무료증정'];
   function splitConditionTag(name) {
     var s = String(name || '');
-    var m = s.match(/^\[([^\]]+)\]\s*/);
-    if (m && CONDITION_TAGS.indexOf(m[1]) !== -1) {
-      return { tag: m[1], name: s.slice(m[0].length) };
+    var m = s.match(/^(?:\[([^\]]+)\]|\(([^)]+)\))\s*/);
+    var tag = m && (m[1] || m[2]);
+    if (tag && CONDITION_TAGS.indexOf(tag) !== -1) {
+      return { tag: tag, name: s.slice(m[0].length) };
     }
     return { tag: null, name: s };
   }
@@ -288,16 +299,15 @@
   window.cgiDebug = window.cgiDebug || {};
   window.cgiDebug.splitConditionTag = splitConditionTag;
   window.cgiDebug.CONDITION_TAGS = CONDITION_TAGS;
+  window.cgiDebug.renderLegalInfo = renderLegalInfo;
 
-  function cardHtml(product) {
+  function cardHtml(product, priority) {
     var price = fmtPrice(product);
-    var badge = price.inquiry
-      ? '<span class="badge inquiry">가격 문의</span>'
-      : '<span class="badge">공개 판매가</span>';
+    var badge = price.inquiry ? '<span class="badge inquiry">가격 문의</span>' : '';
     var cond = splitConditionTag(product.name);
     return '' +
       '<a class="product-card" href="' + esc(productUrl(product.id)) + '" data-product-id="' + esc(product.id) + '">' +
-        '<div class="thumb">' + badge + imageHtml(product, 'card-img') + '</div>' +
+        '<div class="thumb">' + badge + imageHtml(product, 'card-img', priority) + '</div>' +
         '<div class="card-body">' +
           '<span class="card-brand">' + esc(displayBrand(product)) + '</span>' +
           (cond.tag ? '<div class="card-flags"><span class="badge cond">' + esc(cond.tag) + '</span></div>' : '') +
@@ -310,7 +320,7 @@
       '</a>';
   }
 
-  function gridHtml(list) {
+  function gridHtml(list, priority) {
     if (!list.length) {
       return '<div class="empty-state">' +
         '<div class="empty-icon" aria-hidden="true">?</div>' +
@@ -322,7 +332,7 @@
         '</div>' +
       '</div>';
     }
-    return '<div class="product-grid">' + list.map(cardHtml).join('') + '</div>';
+    return '<div class="product-grid">' + list.map(function (product) { return cardHtml(product, priority); }).join('') + '</div>';
   }
 
   function orderedFacetValues(counts, selected) {
@@ -485,21 +495,23 @@
     var priced = state.products.filter(function (p) { return p.price && p.price.state === 'public'; }).length;
     var inquiry = state.products.filter(function (p) { return !p.price || p.price.state !== 'public'; }).length;
     var featured = pickFeatured(8);
+    var quickCategories = cats.slice(0, 4).map(function (v) { return chipHtml(v, catCounts[v], 'cat'); }).join('');
+    var quickBrands = brands.slice(0, 4).map(function (v) { return chipHtml(v, brandCounts[v], 'brand'); }).join('');
 
     app.innerHTML =
       '<section class="hero">' +
         '<p class="hero-eyebrow">CGI B2B CATALOG</p>' +
         '<h1>CGI 상품 카탈로그</h1>' +
         '<p class="hero-copy">음향·영상·조명 장비를 브랜드와 카테고리로 찾고, 필요한 상품을 견적 목록에 담아 요청하세요.</p>' +
-        '<form class="hero-search" data-action="hero-search">' +
-          '<input type="search" name="q" placeholder="상품명·모델명·브랜드 검색" aria-label="상품 검색">' +
-          '<button type="submit">상품 검색</button>' +
-        '</form>' +
+        '<div class="hero-quicklinks" aria-label="대표 카테고리와 브랜드 바로가기">' +
+          '<div class="hero-quick-group"><span class="hero-quick-label">카테고리</span>' + quickCategories + '</div>' +
+          '<div class="hero-quick-group"><span class="hero-quick-label">브랜드</span>' + quickBrands + '</div>' +
+        '</div>' +
       '</section>' +
 
       '<section class="section">' +
         '<div class="section-head"><h2>추천 상품</h2><a class="more" href="#/products">전체 상품 보기 →</a></div>' +
-        gridHtml(featured) +
+        gridHtml(featured, true) +
       '</section>' +
 
       '<dl class="stat-row">' +
@@ -1272,22 +1284,25 @@
   }
 
   /* 전자상거래법 필수 표기(사업자등록번호·통신판매업신고·개인정보보호책임자).
-     값은 config.js legal 블록에서 주입되며 미확정 항목만 "확인 예정"으로 표시한다. */
+     값은 config.js legal 블록에서 주입된다. 확정된 항목만 표기하고, 비어 있는 항목은
+     "확인 예정" 같은 자리 문구 없이 그 항목 자체를 만들지 않는다(2026-11-03 대표 결정). */
   function renderLegalInfo(cfg) {
     var el = document.querySelector('[data-legal-info]');
     if (!el) return;
     var legal = cfg.legal || {};
-    function val(v, label) {
-      var text = String(v || '').trim();
-      return text || label + ' 확인 예정';
-    }
-    var officer = legal.privacyOfficerName
-      ? esc(legal.privacyOfficerName + (legal.privacyOfficerEmail ? ' (' + legal.privacyOfficerEmail + ')' : ''))
-      : '확인 예정';
-    el.innerHTML = '© 주식회사 시지아이 · 사업자등록번호 ' + esc(val(legal.bizRegNo, '확인 예정')) +
-      ' · 통신판매업신고 ' + esc(val(legal.mailOrderNo, '확인 예정')) +
-      ' · 개인정보보호책임자 ' + officer +
-      ' · <a href="terms.html" style="color:inherit">이용약관</a> · <a href="privacy.html" style="color:inherit">개인정보처리방침</a> · <a href="returns.html" style="color:inherit">교환·반품·환불 안내</a>';
+    function text(v) { return String(v || '').trim(); }
+    var bizRegNo = text(legal.bizRegNo);
+    var mailOrderNo = text(legal.mailOrderNo);
+    var officerName = text(legal.privacyOfficerName);
+    var officerEmail = text(legal.privacyOfficerEmail);
+    var parts = ['© 주식회사 시지아이'];
+    if (bizRegNo) parts.push('사업자등록번호 ' + esc(bizRegNo));
+    if (mailOrderNo) parts.push('통신판매업신고 ' + esc(mailOrderNo));
+    if (officerName) parts.push('개인정보보호책임자 ' + esc(officerName + (officerEmail ? ' (' + officerEmail + ')' : '')));
+    parts.push('<a href="terms.html" style="color:inherit">이용약관</a>');
+    parts.push('<a href="privacy.html" style="color:inherit">개인정보처리방침</a>');
+    parts.push('<a href="returns.html" style="color:inherit">교환·반품·환불 안내</a>');
+    el.innerHTML = parts.join(' · ');
   }
 
   /* --------------------------------------------------------------- events */

@@ -1,8 +1,7 @@
-// #126 상품 상태 태그 분리(splitConditionTag) 회귀 테스트.
+// #126 상품명 머리말 분리(splitConditionTag) 회귀 테스트.
 //
-// 상품 이름의 선두 [태그] 중 실제 상품 상태(박스손상/리퍼비쉬/전시상품 등)만
-// 배지로 분리 표시한다. 브랜드명·한정판·마케팅 문구 접두사는 상품명에 그대로
-// 남겨야 한다(원본 데이터 보존 원칙 — 표시만 분리).
+// 상품 이름의 선두 [태그] 또는 (태그) 중 상태·배송·증정 안내는 배지로 분리한다.
+// 브랜드명·한정판 표기는 상품명에 남긴다(원본 데이터 보존 원칙 — 표시만 분리).
 //
 //   node --test site/test/*.test.mjs
 
@@ -77,6 +76,20 @@ test('데이터에 관측된 8종 상태 태그를 모두 인정한다', async (
     const r = splitConditionTag('[' + tag + '] 본문 이름');
     assert.equal(r.tag, tag);
     assert.equal(r.name, '본문 이름');
+  }
+});
+
+test('배송·증정 안내 머리말도 배지로 분리된다', async () => {
+  const { splitConditionTag, CONDITION_TAGS } = boot();
+  await settle();
+  for (const [prefix, tag, name] of [
+    ['(입고후발송)', '입고후발송', 'M35X 카트리지'],
+    ['[커버 무료증정]', '커버 무료증정', 'StudioLive 믹서'],
+  ]) {
+    assert.ok(CONDITION_TAGS.includes(tag));
+    const r = splitConditionTag(prefix + ' ' + name);
+    assert.equal(r.tag, tag);
+    assert.equal(r.name, name);
   }
 });
 

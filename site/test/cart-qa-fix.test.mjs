@@ -62,7 +62,7 @@ test('P2-B: the desktop stepper still fits the fixed cart table column', () => {
 });
 
 test('P3: small green text uses the AA-passing dark green', () => {
-  assert.match(CSS, /\.page-eyebrow \{\n  margin: 0 0 6px; color: var\(--cgi-primary-dark\);/,
+  assert.match(CSS, /\.page-eyebrow \{\r?\n  margin: 0 0 6px; color: var\(--cgi-primary-dark\);/,
     '11px eyebrow measured 3.79:1 with the base green');
   assert.match(CSS, /\.section-head \.more \{ color: var\(--cgi-primary-dark\);/);
   assert.match(WEB_CSS, /\.sec-no \{[^}]*color: var\(--cgi-green-dark\);/s);

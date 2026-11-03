@@ -491,3 +491,50 @@ ul.cred-items li {
   font-size: 13.5px; font-weight: 700; cursor: pointer;
 }
 .btn-more:hover { border-color: var(--cgi-green); color: var(--cgi-green-dark); background: var(--cgi-green-soft); }
+
+/* CGI UX 2026-11: visible photo fallbacks, concise case/history panels, and clearer actions */
+.field-media {
+  position: relative; display: grid; place-items: center; overflow: hidden;
+  min-height: 172px; background: var(--cgi-green-soft); color: var(--cgi-green-dark);
+}
+.field-icon { position: relative; z-index: 0; display: grid; justify-items: center; gap: 8px; padding: 18px; text-align: center; transition: opacity .2s ease; }
+.field-icon-svg { width: 58px; height: 58px; fill: none; stroke: currentColor; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.field-icon-label { max-width: 100%; font-size: 12px; line-height: 1.35; font-weight: 700; }
+.field-media .field-photo {
+  position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; object-fit: cover;
+  opacity: 0; background: transparent; transition: opacity .2s ease;
+}
+.field-media.has-photo .field-photo { opacity: 1; }
+.field-media.has-photo .field-icon { opacity: 0; }
+.biz-card .field-media { height: 172px; min-height: 172px; }
+.photo-grid .field-media { min-height: 200px; aspect-ratio: 3 / 2; }
+.ref-cat > .field-media { min-height: 150px; height: 150px; margin: 0 0 14px; border-radius: var(--cgi-radius); }
+.content-disclosure > summary { display: flex; align-items: center; justify-content: space-between; gap: 14px; cursor: pointer; list-style: none; }
+.content-disclosure > summary::-webkit-details-marker { display: none; }
+.content-disclosure > summary h3 { margin: 0; }
+.disclosure-hint { display: inline-flex; align-items: center; gap: 8px; color: var(--cgi-green-dark); font-size: 13px; font-weight: 800; }
+.disclosure-hint::after, .history-more > summary::after, .ref-more > summary::after { content: "＋"; color: var(--cgi-green); font-weight: 900; }
+.content-disclosure[open] > summary .disclosure-hint::after,
+.history-more[open] > summary::after,
+.ref-more[open] > summary::after { content: "－"; }
+.history-more { margin-top: 14px; border-top: 1px solid var(--cgi-line); padding-top: 12px; }
+.history-more > summary, .ref-more > summary {
+  display: flex; justify-content: space-between; gap: 12px; align-items: center;
+  cursor: pointer; color: var(--cgi-green-dark); font-size: 13.5px; font-weight: 800;
+}
+.ref-more { margin-top: 10px; }
+.noscript-org, .noscript-org ul, .noscript-references ul { line-height: 1.7; }
+.noscript-org { padding-left: 22px; }
+.noscript-org > li { margin: 8px 0; }
+.noscript-history, .noscript-references details { margin: 10px 0; }
+.noscript-history > summary, .noscript-references summary { cursor: pointer; color: var(--cgi-green-dark); font-weight: 800; }
+.cta-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; }
+.btn-map { min-height: 48px; padding: 0 22px; font-weight: 800; box-shadow: 0 5px 16px rgba(7,145,58,.22); }
+.btn-map span { margin-left: 6px; font-size: 17px; }
+@media (max-width: 620px) {
+  .content-disclosure > summary { align-items: flex-start; }
+  .disclosure-hint { white-space: nowrap; font-size: 12px; }
+  .cta-actions { width: 100%; }
+  .cta-actions .btn { flex: 1 1 100%; }
+  .ref-cat > .field-media { height: 132px; min-height: 132px; }
+}
