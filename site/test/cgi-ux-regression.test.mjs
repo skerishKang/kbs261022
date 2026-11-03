@@ -38,18 +38,20 @@ test('cards keep useful inquiry badges and omit the public-sale badge', () => {
   assert.doesNotMatch(js, /class="badge">공개 판매가/);
 });
 
-test('seller footer uses confirmed company facts and hides the unresolved disclosure', () => {
+test('seller footer shows confirmed company facts and the configured mail-order number', () => {
   const seller = html.match(/<section class="footer-seller"[\s\S]*?<\/section>/)?.[0] || '';
   for (const value of ['주식회사 시지아이', '김범신, 백정아', '410-86-46283', '전라남도 장성군 남면 나노산단로 102', '062) 576-8100']) {
     assert.ok(seller.includes(value), '판매자 정보에 누락: ' + value);
   }
-  assert.doesNotMatch(seller, /<dt>통신판매업/, '미확정 신고번호 줄이 화면에 남아 있다');
+  assert.match(seller, /<div data-mail-order-row hidden><dt>통신판매업신고<\/dt><dd data-mail-order-no><\/dd><\/div>/);
+  assert.match(js, /mailOrderEl\.textContent = mailOrderNo/);
+  assert.match(js, /mailOrderRow\.hidden = !mailOrderNo/);
 });
 
-test('unresolved disclosure placeholder never reaches a customer screen', () => {
+test('seller footer no longer contains the stale hidden disclosure placeholder', () => {
   const visible = html.replace(/<!--[\s\S]*?-->/g, '');
   assert.doesNotMatch(visible, /\[대표 결정\]/, '미확정 값이 화면에 노출된다');
-  assert.match(html, /<!--[\s\S]*통신판매업 신고번호[\s\S]*-->/, '신고번호 자리 주석이 사라졌다');
+  assert.doesNotMatch(html, /<!--[\s\S]*통신판매업 신고번호[\s\S]*-->/, '지난 신고번호 숨김 주석이 남아 있다');
   assert.doesNotMatch(js, /\[대표 결정\]/);
   assert.match(js, /if \(mailOrderNo\) parts\.push\('통신판매업신고 ' \+ esc\(mailOrderNo\)\)/,
     '신고번호는 값이 확정된 경우에만 표기해야 한다');

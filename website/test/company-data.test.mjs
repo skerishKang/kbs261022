@@ -33,7 +33,7 @@ test('company.js exposes the 2025 profile as the single source', () => {
 
 test('identity facts match the 2025 profile', () => {
   assert.equal(CO.identity.nameKo, '주식회사 시지아이');
-  // 2026-11-03 대표 결정: 공동대표 2인 표기(예전 cgiinc.co.kr 바닥글 "김범신, 백정아(공동 2인)")
+  // 2026-11-03 대표 결정: 화면에는 대표자 두 사람의 이름을 그대로 표기한다.
   assert.equal(CO.identity.ceo, '김범신, 백정아');
   assert.ok(home.includes('김범신, 백정아'), '홈페이지 표기가 company.js 와 일치해야 한다');
   assert.equal(CO.identity.founded, '2011년 1월');

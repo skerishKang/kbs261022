@@ -1293,8 +1293,12 @@
     function text(v) { return String(v || '').trim(); }
     var bizRegNo = text(legal.bizRegNo);
     var mailOrderNo = text(legal.mailOrderNo);
+    var mailOrderEl = document.querySelector('[data-mail-order-no]');
+    var mailOrderRow = document.querySelector('[data-mail-order-row]');
     var officerName = text(legal.privacyOfficerName);
     var officerEmail = text(legal.privacyOfficerEmail);
+    if (mailOrderEl) mailOrderEl.textContent = mailOrderNo;
+    if (mailOrderRow) mailOrderRow.hidden = !mailOrderNo;
     var parts = ['© 주식회사 시지아이'];
     if (bizRegNo) parts.push('사업자등록번호 ' + esc(bizRegNo));
     if (mailOrderNo) parts.push('통신판매업신고 ' + esc(mailOrderNo));

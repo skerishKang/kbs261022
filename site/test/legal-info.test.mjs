@@ -40,7 +40,7 @@ function stubElement() {
   return el;
 }
 
-function boot(legalEl) {
+function boot(legalEl, mailOrderEl = stubElement(), mailOrderRow = stubElement()) {
   const window = {
     addEventListener() {}, scrollTo() {}, setTimeout, clearTimeout,
     location: { hash: '', search: '', href: 'https://skerishkang.github.io/site/index.html' },
@@ -49,7 +49,12 @@ function boot(legalEl) {
     readyState: 'loading',
     getElementById() { return stubElement(); },
     createElement() { return stubElement(); },
-    querySelector(sel) { return sel === '[data-legal-info]' ? legalEl : stubElement(); },
+    querySelector(sel) {
+      if (sel === '[data-legal-info]') return legalEl;
+      if (sel === '[data-mail-order-no]') return mailOrderEl;
+      if (sel === '[data-mail-order-row]') return mailOrderRow;
+      return stubElement();
+    },
     querySelectorAll() { return []; },
     body: stubElement(),
     addEventListener() {},
@@ -89,6 +94,20 @@ test('값이 비어 있는 항목은 약관 줄에서 만들지 않는다', () =
   assert.doesNotMatch(line, /통신판매업신고/);
   assert.doesNotMatch(line, /개인정보보호책임자/);
   assert.match(line, /© 주식회사 시지아이/);
+});
+
+test('판매자 정보는 설정된 신고번호만 표시하고 빈 값이면 행을 숨긴다', () => {
+  const mailOrderEl = stubElement();
+  const mailOrderRow = stubElement();
+  boot(stubElement(), mailOrderEl, mailOrderRow).renderLegalInfo(CFG);
+  assert.equal(mailOrderEl.textContent, '2025-전남장성-94');
+  assert.equal(mailOrderRow.hidden, false);
+
+  const emptyMailOrderEl = stubElement();
+  const emptyMailOrderRow = stubElement();
+  boot(stubElement(), emptyMailOrderEl, emptyMailOrderRow).renderLegalInfo({ legal: {} });
+  assert.equal(emptyMailOrderEl.textContent, '');
+  assert.equal(emptyMailOrderRow.hidden, true);
 });
 
 test('확정된 신고번호와 책임자는 값이 있을 때 한 번만 표기된다', () => {
