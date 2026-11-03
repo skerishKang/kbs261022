@@ -9,9 +9,12 @@ export const EVIL_ORIGIN = 'http://evil.example.com';
 export const ADMIN_TOKEN = 'example-admin-token';
 
 export function makeEnv(overrides = {}) {
+  const pgProvider = String(overrides.PG_PROVIDER || 'nicepay').trim().toLowerCase();
   return {
     DB: openD1(),
     ADMIN_TOKEN,
+    PG_PROVIDER: pgProvider,
+    SITE_PG_PROVIDER: pgProvider,
     PG_PROVIDER_MODE: 'mock',
     ERP_LIVE_WRITE: 'NO',
     ERP_MODE: 'test',

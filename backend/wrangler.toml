@@ -25,10 +25,14 @@ secret_name = "B66_ALERT_RESEND_API_KEY"
 #   ADMIN_TOKEN               staff/admin API bearer token (existing)
 #   TOSS_WIDGET_SECRET_KEY    test_gsk_... / live_gsk_...  (order-form widget confirm)
 #   TOSS_API_SECRET_KEY       test_sk_...  / live_sk_...   (core API: query / cancel)
+#   NICEPAY_TEST_CLIENT_KEY / NICEPAY_TEST_SECRET_KEY (NICEPAY test store only)
 #   B66_ALERT_RESEND_API_KEY  Resend API key (from Secrets Store, issue #79)
 #   SENDGRID_API_KEY          SendGrid API key for email delivery (issue #72)
 #
 # Optional variables (defaults are safe):
+#   PG_PROVIDER               nicepay | tosspayments (default nicepay)
+#   SITE_PG_PROVIDER          must match site/config.js pgProvider (predeploy check)
+#   PG_NICEPAY_ENV            test | operating (default test)
 #   PG_PROVIDER_MODE          "auto" | "mock" | "live"   (default "auto": live keys -> live, none -> mock)
 #   PG_PUBLIC_BASE_URL        https://api.tosspayments.com
 #   ERP_LIVE_WRITE            "NO" | "YES"                (default "NO": Ecount OAPI is not enabled)
@@ -57,6 +61,9 @@ secret_name = "B66_ALERT_RESEND_API_KEY"
 #   4. When unset, Google login returns 503
 # ------------------------------------------------------------
 [vars]
+PG_PROVIDER = "nicepay"
+SITE_PG_PROVIDER = "nicepay"
+PG_NICEPAY_ENV = "test"
 PG_PROVIDER_MODE = "auto"
 PG_PUBLIC_BASE_URL = "https://api.tosspayments.com"
 ERP_LIVE_WRITE = "NO"

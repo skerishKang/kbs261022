@@ -13,7 +13,7 @@
   var API = cfg.orderApiUrl || cfg.quoteApiUrl || '';
   var TOSS_CLIENT_ID = cfg.tossClientId || '';
   var TOSS_JS_URL = cfg.tossJsUrl || 'https://js.tosspayments.com/v2/standard';
-  var PG_PROVIDER = String(cfg.pgProvider || 'tosspayments').toLowerCase();
+  var PG_PROVIDER = String(cfg.pgProvider || 'nicepay').toLowerCase();
 
   function esc(s) {
     return String(s == null ? '' : s)
@@ -380,7 +380,54 @@
     });
   }
 
+  function renderNicepayRepayPayment(host, pay) {
+    host.innerHTML =
+      '<div class="payment-card">' +
+        '<p class="test-payment-badge">재결제 — ' + esc(pay.order_id) + '</p>' +
+        '<p class="order-total">결제 금액 <strong>' + money(pay.amount) + '</strong></p>' +
+        '<div id="repayNicepayNotice"></div>' +
+        '<div id="repayNicepayStatus"></div>' +
+        '<div class="order-actions"><button type="button" class="btn" id="repayNicepayPayBtn">NICEPAY 결제창 열기</button></div>' +
+      '</div>';
+
+    var notice = host.querySelector('#repayNicepayNotice');
+    var statusBox = host.querySelector('#repayNicepayStatus');
+    var payBtn = host.querySelector('#repayNicepayPayBtn');
+    payBtn.disabled = true;
+
+    api('GET', '/api/payments/config').then(function (res) {
+      if (!res.ok || !res.data || res.data.provider !== 'nicepay') {
+        payBtn.textContent = '결제를 시작할 수 없습니다';
+        notice.innerHTML = flash('서버 결제 설정이 사이트와 일치하지 않습니다. 결제 설정을 확인해 주세요.', 'flash-error');
+        return;
+      }
+      notice.innerHTML = nicepayBadge(res.data);
+      payBtn.disabled = false;
+      payBtn.addEventListener('click', function () {
+        payBtn.disabled = true;
+        payBtn.textContent = '결제창 준비 중…';
+        api('POST', '/api/payments/nicepay/window', { orderId: pay.order_id, method: 'card' }).then(function (w) {
+          if (!w.ok) {
+            statusBox.innerHTML = flash('결제창을 열 수 없습니다. (' + esc(w.data && w.data.error || ('HTTP ' + w.status)) + ')', 'flash-error');
+            payBtn.disabled = false;
+            payBtn.textContent = 'NICEPAY 결제창 열기';
+            return;
+          }
+          launchNicepayWindow(w.data, function () {
+            payBtn.disabled = false;
+            payBtn.textContent = 'NICEPAY 결제창 열기';
+            statusBox.innerHTML = flash('결제창을 불러오지 못했습니다. 네트워크나 팝업 차단 설정을 확인해 주세요.', 'flash-error');
+          });
+        });
+      });
+    });
+  }
+
   function renderRepayPayment(host, pay) {
+    if (PG_PROVIDER === 'nicepay') {
+      renderNicepayRepayPayment(host, pay);
+      return;
+    }
     if (!TOSS_CLIENT_ID) {
       host.innerHTML = flash('결제 키가 설정되어 있지 않아 재결제를 진행할 수 없습니다. 관리자에게 문의해 주세요.', 'flash-error');
       return;

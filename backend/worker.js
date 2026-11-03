@@ -823,7 +823,7 @@ async function recordPaymentOutcome(db, { order, paymentKey, amount, status, fai
          failure_code, failure_message, raw, created_at, updated_at)
        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
     ).bind(
-      order.id, paymentKey, provider || 'tosspayments', providerMode || 'mock', order.id, amount,
+      order.id, paymentKey, provider || 'nicepay', providerMode || 'mock', order.id, amount,
       suppliedAmount || 0, vat || 0, method || null, status, requestedAt || null, approvedAt || null,
       balanceAmount != null ? balanceAmount : amount,
       failureCode || null, failureMessage || null, raw || null, ts, ts
@@ -1135,7 +1135,7 @@ async function cancelPayment(db, env, order, paymentKey, body, pg) {
 async function enqueueErpSync(db, env, order, items, force = false) {
   const mode = erpModeFromEnv(env);
   const driver = createErpDriver(env);
-  const orderForPayload = { ...order, pg_provider: 'tosspayments', pg_provider_mode: mode };
+  const orderForPayload = { ...order, pg_provider: order.pg_provider || env.PG_PROVIDER || 'nicepay', pg_provider_mode: mode };
   const payload = buildEcountSalesSlip({ order: orderForPayload, items, mode, liveWrite: false });
 
   const existing = await db.prepare('SELECT * FROM erp_sync WHERE dedupe_key = ?').bind(payload.dedupe_key).first();
@@ -1233,7 +1233,7 @@ CREATE TABLE IF NOT EXISTS order_items (
 CREATE INDEX IF NOT EXISTS idx_order_items_product_id ON order_items(product_id);
 CREATE TABLE IF NOT EXISTS payments (
   id INTEGER PRIMARY KEY, order_id TEXT NOT NULL, payment_key TEXT UNIQUE NOT NULL,
-  provider TEXT NOT NULL DEFAULT 'tosspayments', provider_mode TEXT NOT NULL DEFAULT 'test',
+  provider TEXT NOT NULL DEFAULT 'nicepay', provider_mode TEXT NOT NULL DEFAULT 'test',
   pg_order_id TEXT NOT NULL, amount INTEGER NOT NULL, supplied_amount INTEGER NOT NULL DEFAULT 0,
   vat INTEGER NOT NULL DEFAULT 0, method TEXT, status TEXT NOT NULL, requested_at TEXT, approved_at TEXT,
   balance_amount INTEGER NOT NULL DEFAULT 0, cancel_amount INTEGER NOT NULL DEFAULT 0,
@@ -2334,7 +2334,14 @@ function buildNicepayPg(env) {
 }
 
 function buildPg(env) {
-  const provider = String(env.PG_PROVIDER || 'tosspayments').trim().toLowerCase();
+  const provider = String(env.PG_PROVIDER || 'nicepay').trim().toLowerCase();
+  const siteProvider = String(env.SITE_PG_PROVIDER || 'nicepay').trim().toLowerCase();
+  if (!['nicepay', 'tosspayments'].includes(provider)) {
+    return { provider, configured: false, reason: 'provider_unknown', mode: null, sandbox: false, live: false };
+  }
+  if (siteProvider !== provider) {
+    return { provider, configured: false, reason: 'provider_mismatch', siteProvider, mode: null, sandbox: false, live: false };
+  }
   return provider === 'nicepay' ? buildNicepayPg(env) : buildTossPg(env);
 }
 
@@ -2356,6 +2363,9 @@ const worker = {
     }
 
     const pg = buildPg(env);
+    if (pg && (pg.reason === 'provider_mismatch' || pg.reason === 'provider_unknown')) {
+      return json({ error: 'pg_provider_configuration_invalid', detail: pg.reason }, 503);
+    }
 
     // ---------------- customer accounts (cookie + CSRF guarded) ----------------
 

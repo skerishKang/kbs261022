@@ -28,7 +28,7 @@ test('confirms a payment and marks the order paid', async () => {
 
   assert.equal(confirmed.approved, true);
   assert.equal(confirmed.payment.payment_key, 'pk_approved_1');
-  assert.equal(confirmed.payment.provider, 'tosspayments');
+  assert.equal(confirmed.payment.provider, 'nicepay');
   assert.equal(confirmed.payment.provider_mode, 'mock');
   assert.equal(confirmed.payment.method, '카드');
 

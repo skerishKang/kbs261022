@@ -22,8 +22,9 @@ database_id = "e8705a5a-e4a3-4562-a245-d09d8f4a4670"
 
 [vars]
 # Which gateway this deployment speaks, and which of its two environments.
-# Production (cgi-quote-api) keeps PG_PROVIDER at its default: tosspayments.
+# Production and sandbox both use NICEPAY test by default. Toss remains selectable with PG_PROVIDER.
 PG_PROVIDER = "nicepay"
+SITE_PG_PROVIDER = "nicepay"
 PG_NICEPAY_ENV = "test"
 PG_PROVIDER_MODE = "auto"
 

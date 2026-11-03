@@ -129,7 +129,7 @@ CREATE TABLE IF NOT EXISTS payments (
   id INTEGER PRIMARY KEY,
   order_id TEXT NOT NULL,
   payment_key TEXT UNIQUE NOT NULL,
-  provider TEXT NOT NULL DEFAULT 'tosspayments',
+  provider TEXT NOT NULL DEFAULT 'nicepay',
   provider_mode TEXT NOT NULL DEFAULT 'test', -- test|mock|live
   pg_order_id TEXT NOT NULL,
   amount INTEGER NOT NULL,

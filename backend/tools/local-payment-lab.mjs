@@ -46,6 +46,7 @@ const nicepayPresent = ['NICEPAY_TEST_CLIENT_KEY', 'NICEPAY_TEST_SECRET_KEY']
 
 const labControls = {
   PG_PROVIDER: provider,
+  SITE_PG_PROVIDER: provider,
   PG_PROVIDER_MODE: mode,
   PG_NICEPAY_ENV: 'test',
   NICEPAY_SITE_BASE_URL: `http://localhost:${port}`,
