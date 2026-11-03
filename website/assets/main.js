@@ -132,10 +132,7 @@
     applyBrandCollapse();
     var note = $('#brandNote');
     if (note && list.length && list[0].count) {
-      var total = list.reduce(function (s, b) { return s + (b.count || 0); }, 0);
-      var withData = list.filter(function (b) { return b.count; }).length;
-      note.textContent = '현재 쇼핑몰 데이터 기준 ' + total + '건 · 데이터 보유 브랜드 ' + withData + '종 / '
-        + '취급 브랜드 ' + list.length + '종 (데이터 준비 중 브랜드는 목록이 비어 보일 수 있습니다)';
+      note.textContent = '취급 브랜드 ' + list.length + '종';
     }
   }
 
@@ -468,7 +465,7 @@
       var det = el('details', 'rec-year');
       var sum = el('summary');
       sum.appendChild(el('span', 'rec-badge', row.year));
-      sum.appendChild(el('span', 'rec-count', '지명원 기재 ' + row.count + '건'));
+      sum.appendChild(el('span', 'rec-count', '실적 ' + row.count + '건'));
       det.appendChild(sum);
       var ul = el('ul', 'rec-samples');
       row.samples.forEach(function (s) { ul.appendChild(el('li', null, s)); });

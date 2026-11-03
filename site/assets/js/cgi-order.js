@@ -129,7 +129,7 @@
         '<div class="quote-branch">' +
           '<h2>이 장바구니는 결제 대신 견적 요청으로 접수됩니다</h2>' +
           '<p>아래 상품은 판매가가 미확정 상태라서 온라인 결제를 할 수 없습니다. 견적 요청을 보내면 담당자가 가격을 확인 후 안내해 드립니다.</p>' +
-          '<table class="order-items"><thead><tr><th>상품</th><th>수량</th><th>공개가</th></tr></thead><tbody>' +
+          '<table class="order-items"><thead><tr><th>상품</th><th>수량</th><th>가격</th></tr></thead><tbody>' +
           items.map(function (x) {
             return '<tr><td>' + esc(x.product.name) + '</td><td>' + x.cart.qty + '</td><td>' +
               (isPublicPrice(x.product) ? money(x.product.price.value) : '<span class="badge inquiry">가격 문의</span>') + '</td></tr>';
