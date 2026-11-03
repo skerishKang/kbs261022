@@ -51,6 +51,6 @@ test('unresolved disclosure placeholder never reaches a customer screen', () => 
   assert.doesNotMatch(visible, /\[대표 결정\]/, '미확정 값이 화면에 노출된다');
   assert.match(html, /<!--[\s\S]*통신판매업 신고번호[\s\S]*-->/, '신고번호 자리 주석이 사라졌다');
   assert.doesNotMatch(js, /\[대표 결정\]/);
-  assert.match(js, /if \(String\(legal\.mailOrderNo \|\| ''\)\.trim\(\)\)[\s\S]*?통신판매업신고/,
+  assert.match(js, /if \(mailOrderNo\) parts\.push\('통신판매업신고 ' \+ esc\(mailOrderNo\)\)/,
     '신고번호는 값이 확정된 경우에만 표기해야 한다');
 });
