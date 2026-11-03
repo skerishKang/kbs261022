@@ -17,6 +17,7 @@
 //   POST   /api/orders/:id/erp       (admin)   build + transmit ERP payload
 //   POST   /api/orders/:id/erp/retry (admin)   retry ERP sync
 //   POST   /api/admin/schema/init    (admin)   apply schema.sql to D1
+//   POST   /api/admin/ecount/item-mappings/import (admin) import reviewed CSV approvals
 //   GET    /api/admin/health         (public)  mode readout, no secrets
 //
 // Customer accounts (issue #69) - cookie session + X-CSRF-Token, origin pinned:
@@ -80,6 +81,11 @@ import {
   prepareEcountSaleOrder,
   transmitEcountSaleOrder,
 } from './lib/ecount-order-adapter.mjs';
+import {
+  loadApprovedEcountItemMap,
+  parseApprovedEcountMappingCsv,
+  sha256Hex,
+} from './lib/ecount-item-mapping.mjs';
 import { PRICE_INDEX, PRICE_INDEX_META } from './data/price_index.mjs';
 import {
   AUTH_POLICY,
@@ -1190,7 +1196,12 @@ async function enqueueErpSync(db, env, order, items, force = false) {
     return { status: 'not_configured', mode: ecountOrderMode(env), delivered: false, attempts: 0, live_write: false, note: 'payment_not_complete' };
   }
 
-  const prepared = prepareEcountSaleOrder({ env, order, items });
+  let approvedItemMap = null;
+  if (order.status === 'paid' && order.payment_status === 'paid' && ecountOrderMode(env) !== 'disabled') {
+    const storedMap = await loadApprovedEcountItemMap(db, items);
+    if (Object.keys(storedMap).length) approvedItemMap = storedMap;
+  }
+  const prepared = prepareEcountSaleOrder({ env, order, items, approvedItemMap });
   const dedupeKey = prepared.dedupeKey || ecountOrderDedupeKey(order.id);
   const ts = nowIso();
   let existing = await latestErpSyncForOrder(db, order.id);
@@ -1350,6 +1361,11 @@ CREATE TABLE IF NOT EXISTS erp_sync (
 );
 CREATE INDEX IF NOT EXISTS idx_erp_sync_order_id ON erp_sync(order_id);
 CREATE INDEX IF NOT EXISTS idx_erp_sync_status ON erp_sync(status);
+CREATE TABLE IF NOT EXISTS ecount_item_mapping (
+  cgi_product_id TEXT PRIMARY KEY, ecount_prod_cd TEXT NOT NULL,
+  approved_by TEXT NOT NULL, approved_at TEXT NOT NULL, source_sha256 TEXT NOT NULL,
+  created_at TEXT NOT NULL, updated_at TEXT NOT NULL
+);
 CREATE TABLE IF NOT EXISTS members (
   id INTEGER PRIMARY KEY, email TEXT NOT NULL UNIQUE, password_hash TEXT NOT NULL, name TEXT NOT NULL,
   phone TEXT, company TEXT, email_verified_at TEXT, role TEXT NOT NULL DEFAULT 'member',
@@ -1388,7 +1404,7 @@ async function initSchema(db) {
   const columns = await ensureColumns(db, COLUMN_UPGRADES);
   const tables = [];
   for (const name of [
-    'orders', 'order_items', 'payments', 'order_events', 'erp_sync', 'quote_requests',
+    'orders', 'order_items', 'payments', 'order_events', 'erp_sync', 'ecount_item_mapping', 'quote_requests',
     'members', 'member_addresses', 'auth_tokens', 'auth_attempts', 'member_events',
   ]) {
     const row = await db.prepare("SELECT name FROM sqlite_master WHERE type = 'table' AND name = ?").bind(name).first();
@@ -2589,6 +2605,53 @@ const worker = {
         return json(result, 200);
       } catch (e) {
         return json({ error: 'schema init failed', detail: String(e && e.message || e) }, 500);
+      }
+    }
+
+    if (url.pathname === '/api/admin/ecount/item-mappings/import' && request.method === 'POST') {
+      if (!(await isAdminOrMember(request, env.DB, env))) return unauthorized();
+      const contentType = String(request.headers.get('content-type') || '').toLowerCase();
+      if (!contentType.includes('text/csv') && !contentType.includes('text/plain') && !contentType.includes('application/vnd.ms-excel')) {
+        return json({ error: 'content_type_must_be_csv' }, 415);
+      }
+      const csvBytes = new Uint8Array(await request.arrayBuffer());
+      if (csvBytes.byteLength > 5_000_000) return json({ error: 'csv_too_large' }, 413);
+      let csvText = null;
+      for (const encoding of ['utf-8', 'windows-949', 'euc-kr']) {
+        try { csvText = new TextDecoder(encoding, { fatal: true }).decode(csvBytes); break; }
+        catch { /* try the next supported text encoding */ }
+      }
+      if (csvText === null) return badRequest('csv_encoding_unsupported');
+      let parsed;
+      try {
+        parsed = parseApprovedEcountMappingCsv(csvText);
+      } catch (error) {
+        return badRequest(String(error?.message || 'invalid_mapping_csv').slice(0, 120));
+      }
+      const sourceHash = await sha256Hex(csvText);
+      if (!parsed.approvals.length) {
+        return json({ ok: true, imported: 0, unapproved_rows: parsed.unapprovedRows, source_sha256: sourceHash });
+      }
+
+      try {
+        const approvedAt = nowIso();
+        for (let offset = 0; offset < parsed.approvals.length; offset += 100) {
+          const statements = parsed.approvals.slice(offset, offset + 100).map((approval) => env.DB.prepare(
+            `INSERT INTO ecount_item_mapping
+               (cgi_product_id, ecount_prod_cd, approved_by, approved_at, source_sha256, created_at, updated_at)
+             VALUES (?,?, 'admin', ?, ?, ?, ?)
+             ON CONFLICT(cgi_product_id) DO UPDATE SET
+               ecount_prod_cd = excluded.ecount_prod_cd,
+               approved_by = excluded.approved_by,
+               approved_at = excluded.approved_at,
+               source_sha256 = excluded.source_sha256,
+               updated_at = excluded.updated_at`
+          ).bind(approval.cgiProductId, approval.ecountProdCd, approvedAt, sourceHash, approvedAt, approvedAt));
+          await env.DB.batch(statements);
+        }
+        return json({ ok: true, imported: parsed.approvals.length, unapproved_rows: parsed.unapprovedRows, source_sha256: sourceHash });
+      } catch {
+        return json({ error: 'ecount_mapping_import_failed' }, 500);
       }
     }
 

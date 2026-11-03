@@ -24,8 +24,9 @@ Secrets (values are intentionally absent from this repository):
 - `ECOUNT_TARGET=test` (use `prod` only for the production step)
 - `ECOUNT_DEFAULT_CUST_CODE` (approved online sales customer code)
 - `ECOUNT_DEFAULT_WH_CD` (approved warehouse code)
-- `ECOUNT_ITEM_CODE_MAP_JSON` (JSON object mapping each CGI product ID to an approved ECOUNT product code)
 - `ECOUNT_SHIPPING_ITEM_CODE` (required when an order has a non-zero shipping fee)
+
+Approved CGI product ID to ECOUNT product code pairs are imported through the administrator-only mapping CSV route and stored in the `ecount_item_mapping` D1 table. Test and production send modes read that table. The legacy JSON map is retained only for explicit `ERP_MODE=mock` fixtures.
 
 Never derive the customer code from a buyer's name, email, phone, or address. Do not enable order sync until every item in a paid order has a verified product mapping.
 
