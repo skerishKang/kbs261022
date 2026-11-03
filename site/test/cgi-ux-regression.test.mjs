@@ -38,10 +38,19 @@ test('cards keep useful inquiry badges and omit the public-sale badge', () => {
   assert.doesNotMatch(js, /class="badge">공개 판매가/);
 });
 
-test('seller footer uses confirmed company facts and marks unresolved disclosure for decision', () => {
+test('seller footer uses confirmed company facts and hides the unresolved disclosure', () => {
   const seller = html.match(/<section class="footer-seller"[\s\S]*?<\/section>/)?.[0] || '';
-  for (const value of ['주식회사 시지아이', '김범신', '410-86-46283', '전라남도 장성군 남면 나노산단로 102', '062) 576-8100', '[대표 결정]']) {
+  for (const value of ['주식회사 시지아이', '김범신, 백정아', '410-86-46283', '전라남도 장성군 남면 나노산단로 102', '062) 576-8100']) {
     assert.ok(seller.includes(value), '판매자 정보에 누락: ' + value);
   }
-  assert.match(seller, /통신판매업 신고번호/);
+  assert.doesNotMatch(seller, /<dt>통신판매업/, '미확정 신고번호 줄이 화면에 남아 있다');
+});
+
+test('unresolved disclosure placeholder never reaches a customer screen', () => {
+  const visible = html.replace(/<!--[\s\S]*?-->/g, '');
+  assert.doesNotMatch(visible, /\[대표 결정\]/, '미확정 값이 화면에 노출된다');
+  assert.match(html, /<!--[\s\S]*통신판매업 신고번호[\s\S]*-->/, '신고번호 자리 주석이 사라졌다');
+  assert.doesNotMatch(js, /\[대표 결정\]/);
+  assert.match(js, /if \(String\(legal\.mailOrderNo \|\| ''\)\.trim\(\)\)[\s\S]*?통신판매업신고/,
+    '신고번호는 값이 확정된 경우에만 표기해야 한다');
 });

@@ -1282,8 +1282,9 @@
     }
   }
 
-  /* 전자상거래법 필수 표기(사업자등록번호·통신판매업신고·개인정보보호책임자).
-     값은 config.js legal 블록에서 주입되며 미확정 항목만 "확인 예정"으로 표시한다. */
+  /* 전자상거래법 필수 표기(사업자등록번호·개인정보보호책임자).
+     값은 config.js legal 블록에서 주입된다. 통신판매업 신고번호는 값이 확정될 때만
+     표기하고, 확정 전에는 그 항목 자체를 화면에 만들지 않는다(2026-11-03 대표 결정). */
   function renderLegalInfo(cfg) {
     var el = document.querySelector('[data-legal-info]');
     if (!el) return;
@@ -1295,10 +1296,18 @@
     var officer = legal.privacyOfficerName
       ? esc(legal.privacyOfficerName + (legal.privacyOfficerEmail ? ' (' + legal.privacyOfficerEmail + ')' : ''))
       : '확인 예정';
-    el.innerHTML = '© 주식회사 시지아이 · 사업자등록번호 ' + esc(val(legal.bizRegNo, '확인 예정')) +
-      ' · 통신판매업신고 ' + esc(val(legal.mailOrderNo, '확인 예정')) +
-      ' · 개인정보보호책임자 ' + officer +
-      ' · <a href="terms.html" style="color:inherit">이용약관</a> · <a href="privacy.html" style="color:inherit">개인정보처리방침</a> · <a href="returns.html" style="color:inherit">교환·반품·환불 안내</a>';
+    var parts = [
+      '© 주식회사 시지아이',
+      '사업자등록번호 ' + esc(val(legal.bizRegNo, '확인 예정'))
+    ];
+    if (String(legal.mailOrderNo || '').trim()) {
+      parts.push('통신판매업신고 ' + esc(String(legal.mailOrderNo).trim()));
+    }
+    parts.push('개인정보보호책임자 ' + officer);
+    parts.push('<a href="terms.html" style="color:inherit">이용약관</a>');
+    parts.push('<a href="privacy.html" style="color:inherit">개인정보처리방침</a>');
+    parts.push('<a href="returns.html" style="color:inherit">교환·반품·환불 안내</a>');
+    el.innerHTML = parts.join(' · ');
   }
 
   /* --------------------------------------------------------------- events */

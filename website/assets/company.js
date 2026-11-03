@@ -16,7 +16,7 @@ window.CGI_COMPANY = {
     nameKo: "주식회사 시지아이",
     nameEn: "CGI Inc.",
     shortName: "㈜시지아이",
-    ceo: "김범신",
+    ceo: "김범신, 백정아",
     ceoTitle: "대표이사",
     founded: "2011년 1월",
     bizRegNo: "410-86-46283",
