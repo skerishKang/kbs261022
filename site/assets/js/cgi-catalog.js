@@ -627,10 +627,10 @@
 
     var thumbs = images.map(function (img, idx) {
       return '<button type="button" class="' + (idx === 0 ? 'is-active' : '') + '" data-gallery-index="' + idx + '" data-img-url="' + esc(img) + '" aria-label="이미지 ' + (idx + 1) + '">' +
-        '<img src="' + esc(img) + '" alt="' + esc(product.name) + ' 이미지 ' + (idx + 1) + '" loading="lazy" decoding="async" data-fallback="' + IMG_FALLBACK + '" onerror="this.onerror=null;this.src=this.dataset.fallback"></button>';
+        '<img src="' + esc(img) + '" alt="' + esc(product.name) + ' 이미지 ' + (idx + 1) + '" loading="lazy" decoding="async"></button>';
     }).join('');
     var mainImg = images.length
-      ? '<img id="galleryMain" src="' + esc(images[0]) + '" data-img-url="' + esc(images[0]) + '" alt="' + esc(product.name) + '" decoding="async" data-fallback="' + IMG_FALLBACK + '" onerror="this.onerror=null;this.src=this.dataset.fallback">'
+      ? '<img id="galleryMain" src="' + esc(images[0]) + '" data-img-url="' + esc(images[0]) + '" alt="' + esc(product.name) + '" decoding="async">'
       : fallbackBlock('gallery-no-image');
 
     var optionsHtml = '';
