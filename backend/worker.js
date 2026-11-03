@@ -87,6 +87,7 @@ import {
   validatePassword,
 } from './lib/auth.mjs';
 import { ensureColumns, COLUMN_UPGRADES } from './lib/migrate.mjs';
+import { purgeExpiredShopLogs } from './lib/retention.mjs';
 import { createMailAdapter } from './lib/mail.mjs';
 import { createOAuthState, decodeOAuthState, normalizeOAuthReturn, resolveOAuthRedirect, buildAuthorizationUrl, exchangeCode, fetchUserInfo, OAUTH_STATE_COOKIE, oauthStateCookieOptions } from './lib/google-oauth.mjs';
 
@@ -1285,7 +1286,8 @@ CREATE TABLE IF NOT EXISTS member_events (
   id INTEGER PRIMARY KEY, member_id INTEGER, type TEXT NOT NULL, meta TEXT, created_at TEXT NOT NULL
 );
 CREATE INDEX IF NOT EXISTS idx_member_events_member_id ON member_events(member_id);
-CREATE INDEX IF NOT EXISTS idx_member_events_type ON member_events(type);`;
+CREATE INDEX IF NOT EXISTS idx_member_events_type ON member_events(type);
+CREATE INDEX IF NOT EXISTS idx_member_events_created_at ON member_events(created_at);`;
 
 async function initSchema(db) {
   await db.exec(SCHEMA_STATEMENTS);
@@ -2826,6 +2828,19 @@ return notFound();
 // responses must advertise credentials or the browser discards them. The
 // origin stays pinned to the production site; only the credential flag is added.
 export default {
+  async scheduled(_controller, env, ctx) {
+    const work = purgeExpiredShopLogs(env.DB)
+      .then((counts) => {
+        console.log(`SHOP_RETENTION_PURGE=ok detail=${JSON.stringify(counts)}`);
+      })
+      .catch(() => {
+        // Never print database error values or row data from a scheduled pass.
+        console.error('SHOP_RETENTION_PURGE=ERROR');
+        throw new Error('shop retention purge failed');
+      });
+    ctx.waitUntil(work);
+  },
+
   async fetch(request, env) {
     let response = await worker.fetch(request, env);
 

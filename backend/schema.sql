@@ -276,3 +276,4 @@ CREATE TABLE IF NOT EXISTS member_events (
 
 CREATE INDEX IF NOT EXISTS idx_member_events_member_id ON member_events(member_id);
 CREATE INDEX IF NOT EXISTS idx_member_events_type ON member_events(type);
+CREATE INDEX IF NOT EXISTS idx_member_events_created_at ON member_events(created_at);

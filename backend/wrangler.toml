@@ -8,6 +8,9 @@ binding = "DB"
 database_name = "cgi_quotes"
 database_id = "602346ac-b0f3-4503-befd-b921a6a5cfd9"
 
+[triggers]
+crons = ["0 3 * * *"]
+
 # ------------------------------------------------------------
 # Secrets Store bindings (issue #79)
 # Reuses the existing PADIEM Resend API key from the shared
