@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>공고 상세 | CGI 입찰정보</title>
+<meta name="description" content="나라장터 입찰공고 상세 정보 — 추정가격·투찰마감·개찰일시와 발주기관 개찰 통계.">
+<meta name="theme-color" content="#07913A">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2307913A'/%3E%3Ctext x='16' y='22' font-size='17' font-weight='800' text-anchor='middle' fill='white' font-family='Arial'%3EC%3C/text%3E%3C/svg%3E">
+<script>(function(){try{var t=localStorage.getItem("bid-theme");if(t==="light"||t==="dark"){document.documentElement.dataset.theme=t;}}catch(e){}})();</script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="assets/css/bid.css?v=261105">
+</head>
+<body>
+<a class="skip-link" href="#main">본문으로 건너뛰기</a>
+<header id="appHeader"></header>
+
+<main id="main" class="page container">
+  <nav class="crumbs" aria-label="위치" id="crumbs"></nav>
+  <div id="detailBody">
+    <div class="detail-head">
+      <div class="head-badges" id="headBadges"></div>
+      <h1 id="bidTitle">—</h1>
+    </div>
+
+    <div class="two-col" style="margin-top:16px">
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <section class="panel" aria-labelledby="basicTitle">
+          <h2 class="panel-title" id="basicTitle">공고 기본 정보</h2>
+          <table class="spec-table" id="specBasic"><tbody></tbody></table>
+        </section>
+
+        <section class="panel" aria-labelledby="memberTitle">
+          <h2 class="panel-title" id="memberTitle">회원 전용 정보</h2>
+          <table class="spec-table" id="specLocked"><tbody>
+            <tr class="row-locked">
+              <th scope="row">기초금액</th>
+              <td><span class="lock-body num">1,295,850,000원</span>
+                <span class="lock-overlay"><span class="lock-chip"><span class="lock-ico">🔒</span>회원 전용 · 로그인 후 확인</span></span></td>
+            </tr>
+            <tr class="row-locked">
+              <th scope="row">낙찰하한율</th>
+              <td><span class="lock-body num">89.745%</span>
+                <span class="lock-overlay"><span class="lock-chip"><span class="lock-ico">🔒</span>회원 전용 · 로그인 후 확인</span></span></td>
+            </tr>
+            <tr class="row-locked">
+              <th scope="row">적격심사 세부기준</th>
+              <td><span class="lock-body">배점표 및 통과점수 적용 내역</span>
+                <span class="lock-overlay"><span class="lock-chip"><span class="lock-ico">🔒</span>회원 전용 · 발주기관 기준 적용</span></span></td>
+            </tr>
+            <tr class="row-locked">
+              <th scope="row">공고 원문 요약</th>
+              <td><span class="lock-body">참가자격·입찰보증금·제출서류 등 원문 요약</span>
+                <span class="lock-overlay"><span class="lock-chip"><span class="lock-ico">🔒</span>회원 전용 · 로그인 후 확인</span></span></td>
+            </tr>
+          </tbody></table>
+          <div style="padding:12px 18px;border-top:1px solid var(--cgi-line-soft)">
+            <a class="btn btn-primary btn-sm" href="pricing.html">회원가입하고 확인하기</a>
+            <a class="btn btn-ghost btn-sm" href="pricing.html">무료·회원 차이 보기</a>
+          </div>
+        </section>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <section class="panel" aria-labelledby="statsTitle">
+          <h2 class="panel-title" id="statsTitle">같은 발주기관 낙찰 통계</h2>
+          <div style="padding:14px 16px;display:flex;flex-direction:column;gap:10px">
+            <div class="stat-cards" style="grid-template-columns:1fr 1fr">
+              <div class="stat-card accent"><div class="stat-k">수집 공고</div><div class="stat-num num" id="stTotal">—</div><div class="stat-sub">기준일까지 수집</div></div>
+              <div class="stat-card"><div class="stat-k">개찰 완료</div><div class="stat-num num" id="stOpened">—</div><div class="stat-sub">개찰 결과 반영 분</div></div>
+              <div class="stat-card"><div class="stat-k">진행 중</div><div class="stat-num num" id="stProgress">—</div><div class="stat-sub">투찰 접수 가능 분</div></div>
+              <div class="stat-card"><div class="stat-k">평균 추정가격</div><div class="stat-num num" id="stAvg">—</div><div class="stat-sub">금액 공개 공고 기준</div></div>
+            </div>
+            <a class="btn btn-outline btn-sm" id="agencyLink" href="agency.html">이 기관 페이지 보기 →</a>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2 class="panel-title">나라장터 공고 원문</h2>
+          <div style="padding:14px 16px;display:flex;flex-direction:column;gap:10px">
+            <p style="margin:0;font-size:12.5px;color:var(--cgi-muted)">공고 첨부파일·참가자격 원문은 나라장터에서 확인할 수 있습니다. 낙찰 결과는 개찰 후 이 페이지에 반영됩니다.</p>
+            <a class="btn btn-outline btn-sm" id="g2bLink" href="#" target="_blank" rel="noopener">나라장터에서 공고 열기 ↗</a>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <section class="section" aria-labelledby="similarTitle">
+      <div class="section-head">
+        <h2 id="similarTitle">같은 발주기관 최근 공고</h2>
+        <a class="section-more" id="agencyMore" href="agency.html">기관 페이지 전체 보기 →</a>
+      </div>
+      <div class="grid-cards" id="similarGrid"></div>
+    </section>
+  </div>
+
+  <div class="empty-state" id="notFound" hidden>
+    <strong>공고를 찾을 수 없습니다</strong>
+    공고번호가 변경되었거나 수집 기준 이전 공고일 수 있습니다. <a href="bids.html">목록에서 다시 찾아보십시오.</a>
+  </div>
+</main>
+
+<footer id="appFooter"></footer>
+
+<script src="assets/data/bid-data.js"></script>
+<script src="assets/js/bid-ui.js"></script>
+<script>
+(function () {
+  "use strict";
+  var U = window.BID_UI;
+  U.renderHeader("bids");
+  U.renderFooter();
+
+  var no = U.param("no");
+  var b = U.byNo(no);
+  if (!b) {
+    document.getElementById("detailBody").hidden = true;
+    document.getElementById("notFound").hidden = false;
+    return;
+  }
+
+  document.title = b.t + " | CGI 입찰정보";
+  document.getElementById("crumbs").innerHTML =
+    '<a href="index.html">홈</a><span aria-hidden="true">›</span>' +
+    '<a href="bids.html?cat=' + encodeURIComponent(b.c) + '">' + U.esc(b.c) + " 입찰공고</a>" +
+    '<span aria-hidden="true">›</span><span>' + U.esc(b.t.length > 26 ? b.t.slice(0, 26) + "…" : b.t) + "</span>";
+
+  document.getElementById("headBadges").innerHTML =
+    U.badgeCat(b.c) + U.badgeStatus(b.s) +
+    '<span class="badge">' + U.esc(b.k) + "</span>" + U.chipDd(b);
+  document.getElementById("bidTitle").textContent = b.t;
+
+  var rows = [
+    ["공고번호", '<span class="num">' + U.esc(b.no) + "</span>"],
+    ["발주기관", '<a href="agency.html?name=' + encodeURIComponent(b.a) + '">' + U.esc(b.a) + "</a>"],
+    ["지역", U.esc(U.regionText(b))],
+    ["추정가격", '<span class="num">' + U.esc(U.fmtWon(b.ep)) + "</span>" + (b.ab ? '<span class="sub">예산금액 <span class="num">' + U.esc(U.fmtWon(b.ab)) + "</span></span>" : "")],
+    ["공고일", '<span class="num">' + U.esc(U.fmtDate(b.pd)) + "</span>"],
+    ["투찰 마감", '<span class="num">' + U.esc(U.fmtDt(b.cd)) + "</span>"],
+    ["개찰 일시", '<span class="num">' + U.esc(U.fmtDt(b.od)) + "</span>"],
+    ["계약 방법", U.esc(b.cm || "—")],
+    ["낙찰자 결정 방법", U.esc(b.am || "—")],
+    ["낙찰 결과", "개찰 후 이 페이지와 낙찰 결과 목록에 공개됩니다."]
+  ];
+  document.querySelector("#specBasic tbody").innerHTML = rows.map(function (r) {
+    return '<tr><th scope="row">' + r[0] + "</th><td>" + r[1] + "</td></tr>";
+  }).join("");
+
+  var st = U.agencyStats(b.a);
+  document.getElementById("stTotal").textContent = st.total + "건";
+  document.getElementById("stOpened").textContent = st.opened + "건";
+  document.getElementById("stProgress").textContent = st.inProgress + "건";
+  document.getElementById("stAvg").textContent = st.avgPrice ? U.fmtWon(st.avgPrice) : "—";
+  document.getElementById("agencyLink").href = "agency.html?name=" + encodeURIComponent(b.a);
+  document.getElementById("agencyMore").href = "agency.html?name=" + encodeURIComponent(b.a);
+  if (b.cu) document.getElementById("g2bLink").href = b.cu;
+  else document.getElementById("g2bLink").setAttribute("aria-disabled", "true");
+
+  var similar = st.list.filter(function (x) { return x.no !== b.no; })
+    .sort(function (x, y) { return String(y.pd || "").localeCompare(x.pd || ""); }).slice(0, 3);
+  document.getElementById("similarGrid").innerHTML = similar.length
+    ? similar.map(U.cardHtml).join("")
+    : '<div class="empty-state" style="grid-column:1/-1">같은 발주기관의 다른 공고가 수집 데이터에 없습니다.</div>';
+})();
+</script>
+</body>
+</html>

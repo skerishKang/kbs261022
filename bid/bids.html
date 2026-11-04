@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>입찰공고 목록 | CGI 입찰정보</title>
+<meta name="description" content="나라장터 입찰공고를 구매·공사·용역·매각 분류와 지역·금액·마감 기간으로 걸러 보는 목록.">
+<meta name="theme-color" content="#07913A">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2307913A'/%3E%3Ctext x='16' y='22' font-size='17' font-weight='800' text-anchor='middle' fill='white' font-family='Arial'%3EC%3C/text%3E%3C/svg%3E">
+<script>(function(){try{var t=localStorage.getItem("bid-theme");if(t==="light"||t==="dark"){document.documentElement.dataset.theme=t;}}catch(e){}})();</script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="assets/css/bid.css?v=261105">
+</head>
+<body>
+<a class="skip-link" href="#main">본문으로 건너뛰기</a>
+<header id="appHeader"></header>
+
+<main id="main" class="page container">
+  <nav class="crumbs" aria-label="위치">
+    <a href="index.html">홈</a><span aria-hidden="true">›</span><span>입찰공고 목록</span>
+  </nav>
+
+  <h1 style="margin:0 0 4px;font-size:22px;letter-spacing:-.4px">입찰공고 목록</h1>
+  <p style="margin:0 0 18px;color:var(--cgi-muted);font-size:13.5px">
+    공고 데이터 기준일 <span class="num" id="snapshotDate">—</span> · 기초금액과 낙찰하한율은 <a href="pricing.html">회원 전용</a>입니다.
+  </p>
+
+  <div class="tabs" role="tablist" aria-label="분류" id="catTabs"></div>
+
+  <div class="list-toolbar">
+    <span class="result-count">총 <strong class="num" id="countNum">0</strong>건</span>
+    <button type="button" class="btn btn-outline btn-sm only-mobile" id="openFilter" aria-haspopup="dialog">
+      필터 <span class="num" id="filterCount"></span>
+    </button>
+    <div class="toolbar-right">
+      <div class="view-toggle" role="group" aria-label="보기 방식">
+        <button type="button" id="viewCard" aria-pressed="true">카드</button>
+        <button type="button" id="viewTable" aria-pressed="false">표</button>
+      </div>
+    </div>
+  </div>
+
+  <form class="filterbar" id="filterBar" aria-label="상세 필터">
+    <div class="sheet-drag" aria-hidden="true"></div>
+    <div class="filter-grid">
+      <div class="f-item">
+        <label for="fRegion">지역</label>
+        <select id="fRegion"><option value="">전체</option></select>
+      </div>
+      <div class="f-item">
+        <label for="fAgency">발주기관</label>
+        <input type="search" id="fAgency" placeholder="기관명 입력" list="agencyNames">
+        <datalist id="agencyNames"></datalist>
+      </div>
+      <div class="f-item">
+        <label for="fPrice">추정가격</label>
+        <select id="fPrice">
+          <option value="">전체</option>
+          <option value="u50">5천만원 미만</option>
+          <option value="50to100">5천만원~1억원</option>
+          <option value="100to1000">1억원~10억원</option>
+          <option value="over1000">10억원 이상</option>
+        </select>
+      </div>
+      <div class="f-item">
+        <label for="fPeriod">마감 기간</label>
+        <select id="fPeriod">
+          <option value="">전체</option>
+          <option value="today">오늘 마감</option>
+          <option value="week">7일 이내</option>
+          <option value="month">30일 이내</option>
+        </select>
+      </div>
+      <div class="f-item">
+        <label for="fStatus">공고 상태</label>
+        <select id="fStatus">
+          <option value="">전체</option>
+          <option>등록공고</option>
+          <option>재공고</option>
+          <option>변경공고</option>
+          <option>긴급공고</option>
+        </select>
+      </div>
+    </div>
+    <div class="filter-actions">
+      <button type="button" class="btn btn-outline" id="resetFilter">초기화</button>
+      <button type="button" class="btn btn-primary" id="applyFilter">결과 보기</button>
+    </div>
+  </form>
+
+  <div class="sortbar">
+    <label for="sortSel">정렬</label>
+    <select id="sortSel">
+      <option value="close">마감임박순</option>
+      <option value="new">최신공고순</option>
+      <option value="pricedesc">금액 높은순</option>
+      <option value="priceasc">금액 낮은순</option>
+    </select>
+  </div>
+
+  <div id="listArea"></div>
+  <nav class="pager" id="pager" aria-label="페이지 이동"></nav>
+</main>
+
+<footer id="appFooter"></footer>
+
+<script src="assets/data/bid-data.js"></script>
+<script src="assets/js/bid-ui.js"></script>
+<script>
+(function () {
+  "use strict";
+  var U = window.BID_UI;
+  var PAGE_SIZE = 20;
+  var CATS = ["전체", "구매", "공사", "용역", "매각"];
+
+  U.renderHeader("bids");
+  U.renderFooter();
+  document.getElementById("snapshotDate").textContent = U.SNAPSHOT;
+
+  var st = {
+    cat: U.param("cat") || "전체",
+    q: U.param("q"),
+    region: U.param("region") || "",
+    agency: U.param("agency") || "",
+    price: U.param("price") || "",
+    period: U.param("period") || "",
+    status: U.param("status") || "",
+    sort: U.param("sort") || "close",
+    view: U.param("view") || "card",
+    page: parseInt(U.param("page") || "1", 10) || 1
+  };
+
+  /* 탭 */
+  var tabsEl = document.getElementById("catTabs");
+  var act = U.activeBids();
+  tabsEl.innerHTML = CATS.map(function (c) {
+    var n = c === "전체" ? act.length : act.filter(function (b) { return b.c === c; }).length;
+    return '<button type="button" class="tab" role="tab" data-cat="' + c + '" aria-selected="' + (st.cat === c) + '">' +
+      U.esc(c) + '<span class="t-count num">' + n + "</span></button>";
+  }).join("");
+  tabsEl.addEventListener("click", function (e) {
+    var btn = e.target.closest(".tab");
+    if (!btn) return;
+    st.cat = btn.dataset.cat; st.page = 1; sync(); render();
+    tabsEl.querySelectorAll(".tab").forEach(function (t) {
+      t.setAttribute("aria-selected", String(t.dataset.cat === st.cat));
+    });
+  });
+
+  /* 필터 옵션 */
+  var regions = {};
+  act.forEach(function (b) { if (b.r) regions[b.r] = 1; });
+  var fRegion = document.getElementById("fRegion");
+  Object.keys(regions).sort().forEach(function (r) {
+    var o = document.createElement("option"); o.value = r; o.textContent = r; fRegion.appendChild(o);
+  });
+  var agencies = {};
+  act.forEach(function (b) { if (b.a) agencies[b.a] = 1; });
+  document.getElementById("agencyNames").innerHTML = Object.keys(agencies).sort()
+    .map(function (a) { return "<option value=\"" + U.esc(a) + "\"></option>"; }).join("");
+
+  fRegion.value = st.region;
+  document.getElementById("fAgency").value = st.agency;
+  document.getElementById("fPrice").value = st.price;
+  document.getElementById("fPeriod").value = st.period;
+  document.getElementById("fStatus").value = st.status;
+  document.getElementById("sortSel").value = st.sort;
+
+  /* 하단 시트 (모바일) */
+  var bar = document.getElementById("filterBar");
+  var sheet = U.bindSheet(bar, document.getElementById("openFilter"), document.getElementById("applyFilter"));
+  document.getElementById("resetFilter").addEventListener("click", function () {
+    st.region = st.agency = st.price = st.period = st.status = "";
+    fRegion.value = ""; document.getElementById("fAgency").value = "";
+    document.getElementById("fPrice").value = ""; document.getElementById("fPeriod").value = "";
+    document.getElementById("fStatus").value = "";
+    st.page = 1; sync(); render();
+  });
+  document.getElementById("applyFilter").addEventListener("click", function () { sheet.close(); });
+  ["fRegion", "fAgency", "fPrice", "fPeriod", "fStatus"].forEach(function (id) {
+    document.getElementById(id).addEventListener("change", function () { st.page = 1; readFilters(); sync(); render(); });
+  });
+  document.getElementById("sortSel").addEventListener("change", function () {
+    st.sort = this.value; st.page = 1; sync(); render();
+  });
+  function readFilters() {
+    st.region = fRegion.value; st.agency = document.getElementById("fAgency").value.trim();
+    st.price = document.getElementById("fPrice").value; st.period = document.getElementById("fPeriod").value;
+    st.status = document.getElementById("fStatus").value;
+  }
+
+  /* 보기 전환 */
+  var vc = document.getElementById("viewCard"), vt = document.getElementById("viewTable");
+  vc.addEventListener("click", function () { st.view = "card"; sync(); render(); });
+  vt.addEventListener("click", function () { st.view = "table"; sync(); render(); });
+
+  function sync() {
+    var p = new URLSearchParams();
+    if (st.cat !== "전체") p.set("cat", st.cat);
+    if (st.q) p.set("q", st.q);
+    if (st.region) p.set("region", st.region);
+    if (st.agency) p.set("agency", st.agency);
+    if (st.price) p.set("price", st.price);
+    if (st.period) p.set("period", st.period);
+    if (st.status) p.set("status", st.status);
+    if (st.sort !== "close") p.set("sort", st.sort);
+    if (st.view !== "card") p.set("view", st.view);
+    if (st.page > 1) p.set("page", String(st.page));
+    var qs = p.toString();
+    history.replaceState(null, "", "bids.html" + (qs ? "?" + qs : ""));
+    vc.setAttribute("aria-pressed", String(st.view === "card"));
+    vt.setAttribute("aria-pressed", String(st.view === "table"));
+    var fActive = [st.region, st.agency, st.price, st.period, st.status].filter(Boolean).length;
+    document.getElementById("filterCount").textContent = fActive ? "(" + fActive + ")" : "";
+    document.title = (st.cat === "전체" ? "입찰공고 목록" : st.cat + " 입찰공고") + " | CGI 입찰정보";
+  }
+
+  function filtered() {
+    var list = act.slice();
+    if (st.cat !== "전체") list = list.filter(function (b) { return b.c === st.cat; });
+    if (st.q) {
+      var q = st.q.toLowerCase();
+      list = list.filter(function (b) {
+        return (b.t || "").toLowerCase().indexOf(q) >= 0 ||
+               (b.a || "").toLowerCase().indexOf(q) >= 0 ||
+               (b.no || "").toLowerCase().indexOf(q) >= 0;
+      });
+    }
+    if (st.region) list = list.filter(function (b) { return b.r === st.region; });
+    if (st.agency) list = list.filter(function (b) { return (b.a || "").indexOf(st.agency) >= 0; });
+    if (st.price) list = list.filter(function (b) {
+      var v = b.ep;
+      if (v == null) return false;
+      if (st.price === "u50") return v < 50000000;
+      if (st.price === "50to100") return v >= 50000000 && v < 100000000;
+      if (st.price === "100to1000") return v >= 100000000 && v < 1000000000;
+      if (st.price === "over1000") return v >= 1000000000;
+      return true;
+    });
+    if (st.period) {
+      list = list.filter(function (b) {
+        var d = U.ddState(b.cd, b.od);
+        if (st.period === "today") return d.diff === 0;
+        if (st.period === "week") return !d.over && d.diff <= 7;
+        if (st.period === "month") return !d.over && d.diff <= 30;
+        return true;
+      });
+    }
+    if (st.status) list = list.filter(function (b) { return b.s === st.status; });
+    if (st.sort === "close") list.sort(function (a, b) {
+      var ka = U.ddState(a.cd, a.od).over ? 1 : 0;
+      var kb = U.ddState(b.cd, b.od).over ? 1 : 0;
+      if (ka !== kb) return ka - kb;
+      return String(a.cd || "9999").localeCompare(b.cd || "9999");
+    });
+    else if (st.sort === "new") list.sort(function (a, b) { return String(b.pd || "").localeCompare(a.pd || ""); });
+    else if (st.sort === "pricedesc") list.sort(function (a, b) { return (b.ep || -1) - (a.ep || -1); });
+    else if (st.sort === "priceasc") list.sort(function (a, b) { return (a.ep == null ? Infinity : a.ep) - (b.ep == null ? Infinity : b.ep); });
+    return list;
+  }
+
+  function rowHtml(b) {
+    return "<tr>" +
+      '<td class="t-title"><a href="bid.html?no=' + encodeURIComponent(b.no) + '">' + U.esc(b.t) + "</a>" +
+        '<span style="font-size:11.5px;color:var(--cgi-faint)" class="num">' + U.esc(b.no) + "</span></td>" +
+      "<td>" + U.badgeCat(b.c) + "</td>" +
+      '<td class="t-agency">' + U.esc(b.a) + "</td>" +
+      '<td class="t-right num price">' + U.esc(U.fmtWon(b.ep)) + "</td>" +
+      '<td class="t-right" style="white-space:nowrap"><span class="lock-chip" style="padding:3px 9px;font-size:11.5px"><span class="lock-ico">🔒</span>회원 전용</span></td>' +
+      '<td class="t-right num">' + U.esc(U.fmtDt(b.cd)) + "</td>" +
+      "<td style=\"text-align:right\">" + U.chipDd(b) + "</td>" +
+      "</tr>";
+  }
+
+  function render() {
+    var list = filtered();
+    document.getElementById("countNum").textContent = list.length;
+    var area = document.getElementById("listArea");
+    var pages = Math.max(1, Math.ceil(list.length / PAGE_SIZE));
+    if (st.page > pages) st.page = pages;
+    var slice = list.slice((st.page - 1) * PAGE_SIZE, st.page * PAGE_SIZE);
+
+    if (!list.length) {
+      area.innerHTML = '<div class="empty-state"><strong>조건에 맞는 공고가 없습니다</strong>필터를 초기화하거나 다른 분류를 선택해 보십시오.</div>';
+      document.getElementById("pager").innerHTML = "";
+      return;
+    }
+    if (st.view === "table") {
+      area.innerHTML =
+        '<div class="table-scroll"><table class="bid-table"><thead><tr>' +
+        "<th>공고명</th><th>분류</th><th>발주기관</th><th style=\"text-align:right\">추정가격</th>" +
+        "<th style=\"text-align:right\">기초금액</th><th style=\"text-align:right\">투찰마감</th><th style=\"text-align:right\">마감</th>" +
+        "</tr></thead><tbody>" + slice.map(rowHtml).join("") + "</tbody></table></div>";
+    } else {
+      area.innerHTML = '<div class="grid-cards">' + slice.map(U.cardHtml).join("") + "</div>";
+    }
+
+    var pager = document.getElementById("pager");
+    var html = [];
+    html.push('<button type="button" data-p="' + (st.page - 1) + '"' + (st.page <= 1 ? " disabled" : "") + ' aria-label="이전 페이지">‹</button>');
+    var from = Math.max(1, st.page - 2), to = Math.min(pages, st.page + 2);
+    for (var i = from; i <= to; i++) {
+      html.push('<button type="button" data-p="' + i + '"' + (i === st.page ? ' class="cur" aria-current="page"' : "") + ">" + i + "</button>");
+    }
+    html.push('<button type="button" data-p="' + (st.page + 1) + '"' + (st.page >= pages ? " disabled" : "") + ' aria-label="다음 페이지">›</button>');
+    html.push('<span class="pager-info num">' + st.page + " / " + pages + "페이지</span>");
+    pager.innerHTML = html.join("");
+    pager.querySelectorAll("button[data-p]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var p = parseInt(b.dataset.p, 10);
+        if (p >= 1 && p <= pages) { st.page = p; sync(); render(); window.scrollTo({ top: 0 }); }
+      });
+    });
+  }
+
+  sync();
+  render();
+})();
+</script>
+</body>
+</html>
