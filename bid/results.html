@@ -31,8 +31,8 @@
 
   <div class="summary-strip" aria-label="낙찰 결과 요약">
     <div class="stat-big sm"><div class="s-k">개찰 완료</div><div class="s-n num" id="sumOpened">—</div><div class="s-sub">기준일까지 개찰된 공고</div></div>
-    <div class="stat-big sm"><div class="s-k">평균 경쟁</div><div class="s-n">개찰 후 반영</div><div class="s-sub">참가업체 수 기준</div></div>
-    <div class="stat-big sm"><div class="s-k">평균 낙찰률</div><div class="s-n">개찰 후 반영</div><div class="s-sub">낙찰금액 기준</div></div>
+    <div class="stat-big sm"><div class="s-k">평균 경쟁</div><div class="s-n" id="sumComp">개찰 후 반영</div><div class="s-sub">참가업체 수 기준</div></div>
+    <div class="stat-big sm"><div class="s-k">평균 낙찰률</div><div class="s-n" id="sumRate">개찰 후 반영</div><div class="s-sub">낙찰금액 기준</div></div>
   </div>
 
   <section class="panel" aria-labelledby="agencyTitle">
@@ -70,6 +70,9 @@
 <footer id="appFooter"></footer>
 
 <script src="assets/data/bid-data.js"></script>
+<!-- 낙찰정보 수집기(tools/procurement/g2b_openapi_collector.py --write-result-data)가 생성.
+     파일이 없으면 아래 코드는 전부 '개찰 후 반영'을 유지한다. -->
+<script src="assets/data/result-data.js"></script>
 <script src="assets/js/bid-ui.js"></script>
 <script>
 (function () {
@@ -83,6 +86,17 @@
   var opened = U.activeBids().filter(function (b) { return U.openPhase(b) === "개찰 완료"; })
     .sort(function (a, b) { return String(b.od || "").localeCompare(a.od || ""); });
   document.getElementById("sumOpened").textContent = opened.length + "건";
+  // (RD/RM 정의 후 요약 재계산은 아래에서 다시 실행된다)
+
+  // 낙찰정보 수집 결과(있을 때만 값 사용 — 없으면 '개찰 후 반영' 유지)
+  var RD = (window.CGI_RESULT_DATA && Array.isArray(window.CGI_RESULT_DATA.results)) ? window.CGI_RESULT_DATA : null;
+  var RM = {};
+  if (RD) RD.results.forEach(function (r) { RM[r.no] = r; });
+  var PENDING = '<span style="color:var(--cgi-faint)">개찰 후 반영</span>';
+  function num(v, unit) {
+    if (v == null || isNaN(v)) return PENDING;
+    return '<span class="num">' + (unit === "won" ? U.fmtWon(v) : v) + (unit ? (unit === "won" ? "" : unit) : "") + "</span>";
+  }
 
   // 발주기관별 개찰 완료 건수 (평균 경쟁·낙찰률은 데이터 수집 후 반영)
   var byAgency = {};
@@ -90,16 +104,24 @@
   var ranked = Object.keys(byAgency).map(function (k) { return { name: k, n: byAgency[k] }; })
     .sort(function (x, y) { return y.n - x.n || x.name.localeCompare(y.name, "ko"); }).slice(0, 10);
   document.getElementById("agencyRows").innerHTML = ranked.length ? ranked.map(function (t) {
+    var bs = opened.filter(function (b) { return b.a === t.name && RM[b.no] && RM[b.no].bidder_count != null; });
+    var avgC = bs.length ? bs.reduce(function (a, b) { return a + RM[b.no].bidder_count; }, 0) / bs.length : null;
+    var rs = opened.filter(function (b) { return b.a === t.name && RM[b.no] && RM[b.no].success_rate != null; });
+    var avgR = rs.length ? rs.reduce(function (a, b) { return a + RM[b.no].success_rate; }, 0) / rs.length : null;
     return "<tr>" +
       '<td><a href="agency.html?name=' + encodeURIComponent(t.name) + '">' + U.esc(t.name) + "</a></td>" +
       '<td class="t-right num">' + t.n + "건</td>" +
-      '<td class="t-right" style="color:var(--cgi-faint)">개찰 후 반영</td>' +
-      '<td class="t-right" style="color:var(--cgi-faint)">개찰 후 반영</td>' +
+      '<td class="t-right">' + num(avgC, "개사") + "</td>" +
+      '<td class="t-right">' + num(avgR, "%") + "</td>" +
       "</tr>";
   }).join("") : '<tr><td colspan="4" style="text-align:center;color:var(--cgi-faint);padding:24px">개찰 완료 공고가 수집 데이터에 없습니다.</td></tr>';
 
   var rowsHtml = function (list) {
     return list.map(function (b) {
+      var r = RM[b.no];
+      var result = r && (r.winner || r.bid_amount != null)
+        ? (r.winner ? U.esc(r.winner) : "") + (r.bid_amount != null ? (r.winner ? " · " : "") + '<span class="num">' + U.fmtWon(r.bid_amount) + "</span>" : "")
+        : PENDING;
       return "<tr>" +
         '<td class="t-title"><a href="bid.html?no=' + encodeURIComponent(b.no) + '">' + U.esc(b.t) + "</a>" +
         '<span style="font-size:11.5px;color:var(--cgi-faint)" class="num">' + U.esc(b.no) + "</span></td>" +
@@ -107,10 +129,21 @@
         '<td class="t-agency">' + U.esc(b.a) + "</td>" +
         '<td class="t-right num price">' + U.esc(U.fmtWon(b.ep)) + "</td>" +
         '<td class="t-right num">' + U.esc(U.fmtDt(b.od)) + "</td>" +
-        '<td class="t-right" style="color:var(--cgi-faint)">개찰 후 반영</td>' +
+        '<td class="t-right">' + result + "</td>" +
         "</tr>";
     }).join("");
   };
+
+  if (RD) {
+    var cs = opened.filter(function (b) { return RM[b.no] && RM[b.no].bidder_count != null; });
+    if (cs.length) {
+      document.getElementById("sumComp").innerHTML = '<span class="num">' + Math.round(cs.reduce(function (a, b) { return a + RM[b.no].bidder_count; }, 0) / cs.length * 10) / 10 + '</span>개사';
+    }
+    var rs = opened.filter(function (b) { return RM[b.no] && RM[b.no].success_rate != null; });
+    if (rs.length) {
+      document.getElementById("sumRate").innerHTML = '<span class="num">' + Math.round(rs.reduce(function (a, b) { return a + RM[b.no].success_rate; }, 0) / rs.length * 100) / 100 + '</span>%';
+    }
+  }
 
   var pages = Math.max(1, Math.ceil(opened.length / PAGE_SIZE));
   var page = parseInt(U.param("page") || "1", 10) || 1;
