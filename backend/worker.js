@@ -525,6 +525,9 @@ async function createOrder(db, body, env, options = {}) {
     erp_status: 'not_sent',
     erp_sent_at: null,
     source_quote_id: null,
+    terms_consent: 1,
+    privacy_consent: 1,
+    consent_at: createdAt,
   };
 
   try {
@@ -533,15 +536,16 @@ async function createOrder(db, body, env, options = {}) {
          `INSERT INTO orders (id, kind, idempotency_key, cart_hash, status, created_at, updated_at,
            customer_company, customer_name, customer_phone, customer_email, customer_addr, customer_addr_detail,
            customer_note, services, item_total, shipping_fee, total_amount, supplied_amount, vat_amount,
-           payment_status, erp_status, source_quote_id, customer_id)
-          VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
+           payment_status, erp_status, source_quote_id, customer_id,
+           terms_consent, privacy_consent, consent_at)
+          VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
        ).bind(
          orderRow.id, orderRow.kind, orderRow.idempotency_key, orderRow.cart_hash, orderRow.status,
          orderRow.created_at, orderRow.updated_at, orderRow.customer_company, orderRow.customer_name,
          orderRow.customer_phone, orderRow.customer_email, orderRow.customer_addr, orderRow.customer_addr_detail,
          orderRow.customer_note, orderRow.services, orderRow.item_total, orderRow.shipping_fee, orderRow.total_amount,
          orderRow.supplied_amount, orderRow.vat_amount, orderRow.payment_status, orderRow.erp_status, orderRow.source_quote_id,
-         orderRow.customer_id
+         orderRow.customer_id, orderRow.terms_consent, orderRow.privacy_consent, orderRow.consent_at
        ),
       db.prepare(
         'INSERT INTO order_events (order_id, type, actor, from_status, to_status, meta, created_at) VALUES (?,?,?,?,?,?,?)'

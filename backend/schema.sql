@@ -89,8 +89,11 @@ CREATE TABLE IF NOT EXISTS orders (
   admin_note TEXT,
    erp_status TEXT NOT NULL DEFAULT 'not_sent', -- not_sent|pending|sent|confirmed|failed|skipped|not_configured|unknown
    erp_sent_at TEXT,
-   source_quote_id TEXT,                -- link to quote_requests.id when converted
-   customer_id INTEGER                  -- null for guest checkout (issue #69)
+  source_quote_id TEXT,                -- link to quote_requests.id when converted
+  customer_id INTEGER,                 -- null for guest checkout (issue #69)
+  terms_consent INTEGER NOT NULL DEFAULT 0,
+  privacy_consent INTEGER NOT NULL DEFAULT 0,
+  consent_at TEXT
 );
 
 CREATE INDEX IF NOT EXISTS idx_orders_created_at ON orders(created_at);
