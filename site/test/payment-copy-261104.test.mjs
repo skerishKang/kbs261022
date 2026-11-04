@@ -20,6 +20,7 @@ function visibleHtml(html) {
 
 test('홈페이지는 결제를 언급하지 않는다', () => {
   const html = read('website/index.html');
+  assert.doesNotMatch(visibleHtml(html), /결제/);
   assert.doesNotMatch(html, /토스페이먼츠/);
   assert.doesNotMatch(html, /결제는 토스/);
   assert.doesNotMatch(html, /결제.*확인 단계/);
