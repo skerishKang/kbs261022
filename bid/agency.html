@@ -38,6 +38,21 @@
       적격심사 배점·통과점수 등 기관 심사 기준은 <a href="pricing.html">회원 전용</a>입니다.
     </p>
 
+    <div class="chart-panel panel" aria-labelledby="chartTitle">
+      <h2 class="panel-title" id="chartTitle">수집 데이터 기준 현황</h2>
+      <div style="padding:14px 18px;display:grid;grid-template-columns:1fr 1fr;gap:22px" class="chart-grid">
+        <div>
+          <div style="font-size:13px;font-weight:700;margin-bottom:6px">월별 공고 수</div>
+          <div class="chart-bars" id="monthBars" aria-label="월별 공고 수 막대"></div>
+        </div>
+        <div>
+          <div style="font-size:13px;font-weight:700;margin-bottom:8px">분류 비율</div>
+          <div class="mix-bar" id="mixBar" aria-label="분류 비율"></div>
+          <div class="mix-legend" id="mixLegend"></div>
+        </div>
+      </div>
+    </div>
+
     <section class="section" aria-labelledby="recentTitle">
       <div class="section-head">
         <h2 id="recentTitle">이 기관의 최근 공고</h2>
@@ -103,6 +118,35 @@
   document.getElementById("stProgress").textContent = st.inProgress + "건";
   document.getElementById("stOpened").textContent = st.opened + "건";
   document.getElementById("stAvg").textContent = st.avgPrice ? U.fmtWon(st.avgPrice) : "—";
+
+  // 월별 공고 수 막대 (수집 데이터 기준)
+  var months = {};
+  st.list.forEach(function (b) {
+    if (!b.pd) return;
+    var m = b.pd.slice(0, 7);
+    months[m] = (months[m] || 0) + 1;
+  });
+  var mKeys = Object.keys(months).sort();
+  var mMax = Math.max.apply(null, mKeys.map(function (k) { return months[k]; }).concat([1]));
+  document.getElementById("monthBars").innerHTML = mKeys.length ? mKeys.map(function (k) {
+    var h = Math.max(6, Math.round(months[k] / mMax * 100));
+    return '<div class="cb"><span class="cb-n num">' + months[k] + '</span><i style="height:' + h + '%"></i><span class="cb-k num">' + k.slice(2).replace("-", ".") + '</span></div>';
+  }).join("") : '<div class="sp-empty">월별 데이터가 없습니다.</div>';
+
+  // 분류 비율 (원본 업무구분 우선 분류)
+  var CAT_COLORS = { "구매": "var(--cat-purchase)", "공사": "var(--cgi-primary)", "용역": "var(--cat-service)", "매각": "var(--cat-sale)" };
+  var catCount = {};
+  st.list.forEach(function (b) { catCount[b.c] = (catCount[b.c] || 0) + 1; });
+  var cKeys = Object.keys(catCount).sort(function (x, y) { return catCount[y] - catCount[x]; });
+  var total = st.list.length || 1;
+  document.getElementById("mixBar").innerHTML = cKeys.map(function (k) {
+    var pct = Math.round(catCount[k] / total * 1000) / 10;
+    return '<span style="width:' + pct + '%;background:' + CAT_COLORS[k] + '" title="' + k + " " + pct + '%"></span>';
+  }).join("");
+  document.getElementById("mixLegend").innerHTML = cKeys.map(function (k) {
+    var pct = Math.round(catCount[k] / total * 1000) / 10;
+    return '<span><span class="sw" style="background:' + CAT_COLORS[k] + '"></span>' + k + ' <strong class="num">' + pct + '%</strong> (' + catCount[k] + '건)</span>';
+  }).join("");
 
   var recent = st.list.slice().sort(function (a, b) { return String(b.pd || "").localeCompare(a.pd || ""); }).slice(0, 6);
   if (recent.length) {

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>낙찰 결과 | CGI 입찰정보</title>
+<meta name="description" content="개찰이 끝난 공고의 낙찰 결과 — 개찰 완료 목록과 발주기관별 평균 경쟁·낙찰률.">
+<meta name="theme-color" content="#07913A">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2307913A'/%3E%3Ctext x='16' y='22' font-size='17' font-weight='800' text-anchor='middle' fill='white' font-family='Arial'%3EC%3C/text%3E%3C/svg%3E">
+<script>(function(){try{var t=localStorage.getItem("bid-theme");if(t==="light"||t==="dark"){document.documentElement.dataset.theme=t;}}catch(e){}})();</script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="assets/css/bid.css?v=261105">
+</head>
+<body>
+<a class="skip-link" href="#main">본문으로 건너뛰기</a>
+<header id="appHeader"></header>
+
+<main id="main" class="page container">
+  <nav class="crumbs" aria-label="위치">
+    <a href="index.html">홈</a><span aria-hidden="true">›</span><span>낙찰 결과</span>
+  </nav>
+
+  <h1 style="margin:0 0 4px;font-size:22px;letter-spacing:-.4px">낙찰 결과</h1>
+  <p style="margin:0 0 16px;color:var(--cgi-muted);font-size:13.5px">
+    개찰이 끝난 공고를 모아 보는 화면입니다. 공고 데이터 기준일 <span class="num" id="snapshotDate">—</span>.
+  </p>
+
+  <div class="result-soon">
+    낙찰업체·낙찰금액·낙찰률은 개찰 결과 데이터 수집 후 이 화면에 반영됩니다. 아래 표의 낙찰 칸은 아직 <strong>개찰 후 반영</strong> 상태이며, 추정가격·개찰일시 등 공고 정보는 수집 데이터 기준으로 표시됩니다.
+  </div>
+
+  <div class="summary-strip" aria-label="낙찰 결과 요약">
+    <div class="stat-big sm"><div class="s-k">개찰 완료</div><div class="s-n num" id="sumOpened">—</div><div class="s-sub">기준일까지 개찰된 공고</div></div>
+    <div class="stat-big sm"><div class="s-k">평균 경쟁</div><div class="s-n">개찰 후 반영</div><div class="s-sub">참가업체 수 기준</div></div>
+    <div class="stat-big sm"><div class="s-k">평균 낙찰률</div><div class="s-n">개찰 후 반영</div><div class="s-sub">낙찰금액 기준</div></div>
+  </div>
+
+  <section class="panel" aria-labelledby="agencyTitle">
+    <h2 class="panel-title" id="agencyTitle">발주기관별 낙찰 결과 — 개찰 완료 건수 기준</h2>
+    <div class="table-scroll">
+      <table class="bid-table" style="min-width:640px">
+        <thead><tr>
+          <th>발주기관</th><th style="text-align:right">개찰 완료</th>
+          <th style="text-align:right">평균 경쟁</th><th style="text-align:right">평균 낙찰률</th>
+        </tr></thead>
+        <tbody id="agencyRows"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="listTitle">
+    <div class="section-head">
+      <h2 id="listTitle">개찰 완료 공고</h2>
+      <span class="section-desc">개찰일시 최신순</span>
+    </div>
+    <div class="table-scroll">
+      <table class="bid-table" style="min-width:760px">
+        <thead><tr>
+          <th>공고명</th><th>분류</th><th>발주기관</th>
+          <th style="text-align:right">추정가격</th><th style="text-align:right">개찰일시</th>
+          <th style="text-align:right">낙찰 결과</th>
+        </tr></thead>
+        <tbody id="resultRows"></tbody>
+      </table>
+    </div>
+    <nav class="pager" id="pager" aria-label="페이지 이동"></nav>
+  </section>
+</main>
+
+<footer id="appFooter"></footer>
+
+<script src="assets/data/bid-data.js"></script>
+<script src="assets/js/bid-ui.js"></script>
+<script>
+(function () {
+  "use strict";
+  var U = window.BID_UI;
+  var PAGE_SIZE = 20;
+  U.renderHeader("results");
+  U.renderFooter();
+  document.getElementById("snapshotDate").textContent = U.SNAPSHOT;
+
+  var opened = U.activeBids().filter(function (b) { return U.openPhase(b) === "개찰 완료"; })
+    .sort(function (a, b) { return String(b.od || "").localeCompare(a.od || ""); });
+  document.getElementById("sumOpened").textContent = opened.length + "건";
+
+  // 발주기관별 개찰 완료 건수 (평균 경쟁·낙찰률은 데이터 수집 후 반영)
+  var byAgency = {};
+  opened.forEach(function (b) { byAgency[b.a] = (byAgency[b.a] || 0) + 1; });
+  var ranked = Object.keys(byAgency).map(function (k) { return { name: k, n: byAgency[k] }; })
+    .sort(function (x, y) { return y.n - x.n || x.name.localeCompare(y.name, "ko"); }).slice(0, 10);
+  document.getElementById("agencyRows").innerHTML = ranked.length ? ranked.map(function (t) {
+    return "<tr>" +
+      '<td><a href="agency.html?name=' + encodeURIComponent(t.name) + '">' + U.esc(t.name) + "</a></td>" +
+      '<td class="t-right num">' + t.n + "건</td>" +
+      '<td class="t-right" style="color:var(--cgi-faint)">개찰 후 반영</td>' +
+      '<td class="t-right" style="color:var(--cgi-faint)">개찰 후 반영</td>' +
+      "</tr>";
+  }).join("") : '<tr><td colspan="4" style="text-align:center;color:var(--cgi-faint);padding:24px">개찰 완료 공고가 수집 데이터에 없습니다.</td></tr>';
+
+  var rowsHtml = function (list) {
+    return list.map(function (b) {
+      return "<tr>" +
+        '<td class="t-title"><a href="bid.html?no=' + encodeURIComponent(b.no) + '">' + U.esc(b.t) + "</a>" +
+        '<span style="font-size:11.5px;color:var(--cgi-faint)" class="num">' + U.esc(b.no) + "</span></td>" +
+        "<td>" + U.badgeCat(b.c) + "</td>" +
+        '<td class="t-agency">' + U.esc(b.a) + "</td>" +
+        '<td class="t-right num price">' + U.esc(U.fmtWon(b.ep)) + "</td>" +
+        '<td class="t-right num">' + U.esc(U.fmtDt(b.od)) + "</td>" +
+        '<td class="t-right" style="color:var(--cgi-faint)">개찰 후 반영</td>' +
+        "</tr>";
+    }).join("");
+  };
+
+  var pages = Math.max(1, Math.ceil(opened.length / PAGE_SIZE));
+  var page = parseInt(U.param("page") || "1", 10) || 1;
+  if (page > pages) page = pages;
+  var slice = opened.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+  document.getElementById("resultRows").innerHTML = slice.length ? rowsHtml(slice)
+    : '<tr><td colspan="6" style="text-align:center;color:var(--cgi-faint);padding:24px">개찰 완료 공고가 아직 없습니다.</td></tr>';
+
+  var pager = document.getElementById("pager");
+  if (pages > 1) {
+    var html = [];
+    html.push('<button type="button" data-p="' + (page - 1) + '"' + (page <= 1 ? " disabled" : "") + ' aria-label="이전 페이지">‹</button>');
+    var from = Math.max(1, page - 2), to = Math.min(pages, page + 2);
+    for (var i = from; i <= to; i++) {
+      html.push('<button type="button" data-p="' + i + '"' + (i === page ? ' class="cur" aria-current="page"' : "") + ">" + i + "</button>");
+    }
+    html.push('<button type="button" data-p="' + (page + 1) + '"' + (page >= pages ? " disabled" : "") + ' aria-label="다음 페이지">›</button>');
+    html.push('<span class="pager-info num">' + page + " / " + pages + "페이지</span>");
+    pager.innerHTML = html.join("");
+    pager.querySelectorAll("button[data-p]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var p = parseInt(btn.dataset.p, 10);
+        if (p >= 1 && p <= pages) location.href = "results.html?page=" + p;
+      });
+    });
+  }
+})();
+</script>
+</body>
+</html>

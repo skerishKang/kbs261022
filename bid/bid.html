@@ -23,6 +23,13 @@
       <h1 id="bidTitle">—</h1>
     </div>
 
+    <div class="spec-hero stat-cards" style="margin-top:16px">
+      <div class="stat-card"><div class="stat-k">추정가격</div><div class="stat-num num price" id="heroPrice">—</div><div class="stat-sub" id="heroBudget"></div></div>
+      <div class="stat-card"><div class="stat-k">남은 시간</div><div id="heroDd"></div><div class="stat-sub" id="heroClose"></div></div>
+      <div class="stat-card"><div class="stat-k">발주기관</div><div class="stat-num" style="font-size:15px;letter-spacing:-.2px" id="heroAgency">—</div><div class="stat-sub">기관 페이지 연결</div></div>
+      <div class="stat-card"><div class="stat-k">분류</div><div class="stat-num" style="font-size:15px" id="heroCat">—</div><div class="stat-sub" id="heroKind"></div></div>
+    </div>
+
     <div class="two-col" style="margin-top:16px">
       <div style="display:flex;flex-direction:column;gap:16px">
         <section class="panel" aria-labelledby="basicTitle">
@@ -62,6 +69,32 @@
       </div>
 
       <div style="display:flex;flex-direction:column;gap:16px">
+        <section class="panel" aria-labelledby="aiTitle">
+          <div style="display:flex;align-items:center;gap:8px;padding:14px 18px;border-bottom:1px solid var(--cgi-line-soft)">
+            <h2 class="panel-title" id="aiTitle" style="padding:0;border:0;margin:0">AI 투찰가 분석</h2>
+            <span class="badge" style="background:var(--cgi-primary);color:#fff;border-color:var(--cgi-primary)">준비 중</span>
+          </div>
+          <div class="row-locked" style="padding:0 18px">
+            <div class="lock-body" style="padding:12px 0">
+              <div style="font-size:12.5px;color:var(--cgi-muted);margin-bottom:8px">추천 투찰 구간</div>
+              <div style="display:flex;gap:8px;align-items:baseline;gap:12px">
+                <span class="num" style="font-size:19px;font-weight:800">542,113,000원 ~ 552,480,000원</span>
+              </div>
+              <div class="an-chart" style="margin-top:14px" aria-hidden="true">
+                <i style="height:34%"></i><i style="height:58%"></i><i style="height:82%"></i><i style="height:100%"></i><i style="height:74%"></i><i style="height:46%"></i><i style="height:28%"></i>
+              </div>
+              <div style="font-size:11px;color:var(--cgi-faint);margin-top:4px">같은 발주기관·공종 과거 사정률 분포</div>
+              <div class="an-kv"><span class="k">낙찰하한가</span><span class="v num">502,905,000원</span></div>
+              <div class="an-kv"><span class="k">예상 경쟁 수</span><span class="v num">약 21개사</span></div>
+            </div>
+            <span class="lock-overlay"><span class="lock-chip"><span class="lock-ico">🔒</span>회원 전용 · 로그인 후 확인</span></span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;padding:12px 18px;border-top:1px solid var(--cgi-line-soft)">
+            <a class="btn btn-primary btn-sm" href="pricing.html">회원가입하고 이용하기</a>
+            <span class="an-note" style="padding:0">개찰 결과 데이터 수집 후 활성화 — 값은 추정하지 않습니다</span>
+          </div>
+        </section>
+
         <section class="panel" aria-labelledby="statsTitle">
           <h2 class="panel-title" id="statsTitle">같은 발주기관 낙찰 통계</h2>
           <div style="padding:14px 16px;display:flex;flex-direction:column;gap:10px">
@@ -129,6 +162,16 @@
     U.badgeCat(b.c) + U.badgeStatus(b.s) +
     '<span class="badge">' + U.esc(b.k) + "</span>" + U.chipDd(b);
   document.getElementById("bidTitle").textContent = b.t;
+
+  document.getElementById("heroPrice").textContent = U.fmtWon(b.ep);
+  document.getElementById("heroBudget").textContent = b.ab ? "예산금액 " + U.fmtWon(b.ab) : "예산금액 미공개";
+  var dd = U.ddState(b.cd, b.od);
+  document.getElementById("heroDd").innerHTML = '<span class="chip-dd ' + dd.cls + '">' + U.esc(dd.label) + "</span>";
+  document.getElementById("heroClose").textContent = "투찰 마감 " + U.fmtDt(b.cd);
+  var ag = document.getElementById("heroAgency");
+  ag.innerHTML = '<a href="agency.html?name=' + encodeURIComponent(b.a) + '">' + U.esc(b.a) + "</a>";
+  document.getElementById("heroCat").textContent = b.c + " · " + b.k;
+  document.getElementById("heroKind").textContent = b.s + " · 나라장터 " + U.fmtDate(b.pd) + " 공고";
 
   var rows = [
     ["공고번호", '<span class="num">' + U.esc(b.no) + "</span>"],

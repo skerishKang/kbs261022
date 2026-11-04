@@ -522,7 +522,7 @@ main.page { flex: 1; padding-top: 26px; padding-bottom: 48px; }
 .detail-head .head-badges { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
 .detail-head .head-badges .chip-dd { margin-left: auto; }
 
-.panel { background: var(--cgi-card); border: 1px solid var(--cgi-line); border-radius: var(--radius); }
+.panel { background: var(--cgi-card); border: 1px solid var(--cgi-line); border-radius: 12px; }
 .panel .panel-title {
   font-size: 15px; font-weight: 700; padding: 14px 18px; margin: 0;
   border-bottom: 1px solid var(--cgi-line-soft); letter-spacing: -.2px;
@@ -556,7 +556,7 @@ main.page { flex: 1; padding-top: 26px; padding-bottom: 48px; }
 
 .stat-cards { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
 .stat-card {
-  background: var(--cgi-card); border: 1px solid var(--cgi-line); border-radius: var(--radius);
+  background: var(--cgi-card); border: 1px solid var(--cgi-line); border-radius: 12px;
   padding: 14px 16px;
 }
 .stat-card .stat-k { font-size: 12px; color: var(--cgi-muted); }
@@ -572,7 +572,7 @@ main.page { flex: 1; padding-top: 26px; padding-bottom: 48px; }
 
 /* ── 요금 ─────────────────────────────────────────────────────── */
 .plan-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
-.plan-card { background: var(--cgi-card); border: 1px solid var(--cgi-line); border-radius: var(--radius); padding: 20px; display: flex; flex-direction: column; gap: 12px; }
+.plan-card { background: var(--cgi-card); border: 1px solid var(--cgi-line); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 12px; box-shadow: var(--shadow-sm); }
 .plan-card .plan-name { font-size: 16px; font-weight: 800; letter-spacing: -.3px; }
 .plan-card .plan-desc { font-size: 13px; color: var(--cgi-muted); }
 .plan-price { font-size: 24px; font-weight: 800; letter-spacing: -.5px; }
@@ -666,4 +666,62 @@ main.page { flex: 1; padding-top: 26px; padding-bottom: 48px; }
   .spec-table th { width: 128px; padding: 10px 14px; }
   .spec-table td { padding: 10px 14px; }
   .hero-search { border-radius: 10px; }
+}
+
+/* ── 4차: 목록 요약·필터 칩 · 상세 핵심 카드 · 기관 차트 · 낙찰 결과 · 투찰가 분석 ── */
+.summary-strip { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin: 14px 0 16px; }
+.stat-big.sm { padding: 10px 14px; border-radius: 10px; }
+.stat-big.sm .s-n { font-size: 22px; }
+.chip-bar { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 12px; }
+.chip-bar .fchip {
+  display: inline-flex; align-items: center; gap: 7px;
+  border: 1px solid var(--cgi-line); background: var(--cgi-card); color: var(--cgi-ink);
+  border-radius: 999px; padding: 5px 7px 5px 12px; font-size: 12.5px;
+}
+.chip-bar .fchip .f-k { color: var(--cgi-muted); }
+.chip-bar .fchip .f-x {
+  border: 0; background: var(--cgi-bg); color: var(--cgi-muted);
+  width: 18px; height: 18px; border-radius: 999px; cursor: pointer;
+  font-size: 11px; line-height: 1; display: grid; place-items: center; padding: 0;
+}
+.chip-bar .fchip .f-x:hover { background: var(--cgi-danger-soft); color: var(--cgi-danger); }
+
+.spec-hero { margin: 16px 0 0; }
+.spec-hero .stat-card { padding: 12px 16px; }
+.spec-hero .stat-card .stat-num { font-size: 20px; }
+.spec-hero .stat-card .stat-num.price { color: var(--cgi-primary-dark); font-size: 24px; }
+:root[data-theme="dark"] .spec-hero .stat-card .stat-num.price { color: var(--cgi-primary); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .spec-hero .stat-card .stat-num.price { color: var(--cgi-primary); } }
+.spec-hero .stat-card .chip-dd { margin-top: 8px; }
+.spec-hero .stat-card .stat-dt { font-size: 12px; font-weight: 700; margin-top: 4px; }
+
+.an-chart { height: 96px; display: flex; align-items: flex-end; gap: 5px; padding: 2px 2px 0; }
+.an-chart i { flex: 1; background: var(--cgi-primary); opacity: .85; border-radius: 3px 3px 0 0; }
+.an-kv { display: flex; justify-content: space-between; align-items: baseline; padding: 9px 0; border-top: 1px solid var(--cgi-line-soft); font-size: 13.5px; }
+.an-kv .k { color: var(--cgi-muted); }
+.an-kv .v { font-weight: 800; }
+.an-note { font-size: 11.5px; color: var(--cgi-faint); padding-bottom: 12px; }
+
+.chart-panel { margin-top: 16px; }
+.chart-bars { display: flex; align-items: flex-end; gap: 10px; height: 130px; padding: 8px 4px 0; }
+.chart-bars .cb { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; gap: 5px; height: 100%; }
+.chart-bars .cb i { width: 100%; background: var(--cgi-primary); opacity: .85; border-radius: 4px 4px 0 0; min-height: 3px; }
+.chart-bars .cb .cb-n { font-size: 11px; font-weight: 700; }
+.chart-bars .cb .cb-k { font-size: 10.5px; color: var(--cgi-faint); white-space: nowrap; }
+.mix-bar { display: flex; height: 16px; border-radius: 999px; overflow: hidden; margin-top: 4px; }
+.mix-bar span { display: block; height: 100%; }
+.mix-legend { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 10px; font-size: 12px; color: var(--cgi-muted); }
+.mix-legend .sw { width: 10px; height: 10px; border-radius: 3px; display: inline-block; margin-right: 5px; vertical-align: -1px; }
+
+.result-soon {
+  font-size: 12.5px; color: var(--cgi-ink);
+  background: var(--cgi-warn-soft); border: 1px solid var(--cgi-warn-line);
+  border-radius: 10px; padding: 10px 14px; margin-bottom: 14px;
+}
+@media (max-width: 599.98px) {
+  .summary-strip { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+  .summary-strip .s-n { font-size: 15px; letter-spacing: -.3px; }
+  .spec-hero { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+  .spec-hero .stat-card .stat-num.price { font-size: 16.5px; }
+  .spec-hero .stat-card .stat-num { font-size: 14px; }
 }

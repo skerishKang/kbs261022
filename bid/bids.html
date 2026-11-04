@@ -25,10 +25,11 @@
     공고 데이터 기준일 <span class="num" id="snapshotDate">—</span> · 기초금액과 낙찰하한율은 <a href="pricing.html">회원 전용</a>입니다.
   </p>
 
+  <div class="summary-strip" id="summaryStrip" aria-label="결과 요약"></div>
+  <div class="chip-bar" id="chipBar" hidden></div>
   <div class="tabs" role="tablist" aria-label="분류" id="catTabs"></div>
 
   <div class="list-toolbar">
-    <span class="result-count">총 <strong class="num" id="countNum">0</strong>건</span>
     <button type="button" class="btn btn-outline btn-sm only-mobile" id="openFilter" aria-haspopup="dialog">
       필터 <span class="num" id="filterCount"></span>
     </button>
@@ -272,9 +273,70 @@
       "</tr>";
   }
 
+  var PRICE_LABELS = { u50: "5천만원 미만", "50to100": "5천만원~1억원", "100to1000": "1억원~10억원", over1000: "10억원 이상" };
+  var PERIOD_LABELS = { today: "오늘 마감", week: "7일 이내", month: "30일 이내" };
+
+  function chipDefs() {
+    var defs = [];
+    if (st.q) defs.push({ k: "q", html: '<span class="f-k">검색어</span>' + U.esc(st.q) });
+    if (st.cat !== "전체") defs.push({ k: "cat", html: '<span class="f-k">분류</span>' + U.esc(st.cat), clear: "전체" });
+    if (st.region) defs.push({ k: "region", html: '<span class="f-k">지역</span>' + U.esc(st.region) });
+    if (st.agency) defs.push({ k: "agency", html: '<span class="f-k">발주기관</span>' + U.esc(st.agency) });
+    if (st.price) defs.push({ k: "price", html: '<span class="f-k">추정가격</span>' + PRICE_LABELS[st.price] });
+    if (st.period) defs.push({ k: "period", html: '<span class="f-k">마감 기간</span>' + PERIOD_LABELS[st.period] });
+    if (st.status) defs.push({ k: "status", html: '<span class="f-k">공고 상태</span>' + U.esc(st.status) });
+    return defs;
+  }
+
+  function renderSummary(list) {
+    var withP = list.filter(function (b) { return b.ep != null; });
+    var avg = withP.length ? withP.reduce(function (a, b) { return a + b.ep; }, 0) / withP.length : null;
+    var soon = list.filter(function (b) { var d = U.ddState(b.cd, b.od); return !d.over && d.diff <= 7; }).length;
+    document.getElementById("summaryStrip").innerHTML =
+      '<div class="stat-big sm"><div class="s-k">결과</div><div class="s-n num">' + list.length + '건</div><div class="s-sub">적용 필터 기준</div></div>' +
+      '<div class="stat-big sm"><div class="s-k">평균 추정가격</div><div class="s-n num">' + (avg ? U.fmtWon(Math.round(avg)) : "—") + '</div><div class="s-sub">금액 공개 ' + withP.length + '건 기준</div></div>' +
+      '<div class="stat-big sm accent"><div class="s-k">마감 임박</div><div class="s-n num">' + soon + '건</div><div class="s-sub">7일 내 마감</div></div>';
+    var defs = chipDefs();
+    var bar = document.getElementById("chipBar");
+    if (!defs.length) { bar.hidden = true; bar.innerHTML = ""; return; }
+    bar.hidden = false;
+    bar.innerHTML = defs.map(function (d, i) {
+      return '<span class="fchip">' + d.html + '<button type="button" class="f-x" data-i="' + i + '" aria-label="필터 해제">✕</button></span>';
+    }).join("");
+    bar.querySelectorAll(".f-x").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var d = defs[parseInt(btn.dataset.i, 10)];
+        if (d.k === "q") st.q = "";
+        else if (d.k === "cat") st.cat = "전체";
+        else st[d.k] = "";
+        st.page = 1;
+        readFiltersBack();
+        sync(); render();
+      });
+    });
+  }
+
+  /* 칩에서 필터를 지우면 select/input 값도 되돌린다 */
+  function readFiltersBack() {
+    fRegion.value = st.region;
+    document.getElementById("fAgency").value = st.agency;
+    document.getElementById("fPrice").value = st.price;
+    document.getElementById("fPeriod").value = st.period;
+    document.getElementById("fStatus").value = st.status;
+    if (st.cat !== "전체") {
+      tabsEl.querySelectorAll(".tab").forEach(function (t) {
+        t.setAttribute("aria-selected", String(t.dataset.cat === st.cat));
+      });
+    } else {
+      tabsEl.querySelectorAll(".tab").forEach(function (t) {
+        t.setAttribute("aria-selected", String(t.dataset.cat === "전체"));
+      });
+    }
+  }
+
   function render() {
     var list = filtered();
-    document.getElementById("countNum").textContent = list.length;
+    renderSummary(list);
     var area = document.getElementById("listArea");
     var pages = Math.max(1, Math.ceil(list.length / PAGE_SIZE));
     if (st.page > pages) st.page = pages;
