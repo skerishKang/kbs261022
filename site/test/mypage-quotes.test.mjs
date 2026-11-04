@@ -42,8 +42,10 @@ test('empty, loading, error and detail states exist', () => {
   assert.match(CATALOG, /quote-detail-meta/, '상세 메타');
 });
 
-test('styles reuse existing tokens and shell version is bumped', () => {
+test('styles reuse existing tokens and the shell cache-busts its scripts', () => {
   assert.match(CSS, /\.quote-status\.received \{ background: var\(--cgi-warn-soft\)/, '기존 토큰 재사용');
-  assert.match(SHELL, /cgi-catalog\.js\?v=81a/, '카탈로그 스크립트 버전 81a');
-  assert.match(SHELL, /cgi-auth\.js\?v=79a/, '인증 스크립트 버전 79a');
+  // 버전 문자열은 asset-version-consistency.test.mjs가 페이지 전체에서 검사한다.
+  // 여기서 특정 버전을 고정하면 자산을 올릴 때마다 시험이 낡는다.
+  assert.match(SHELL, /cgi-catalog\.js\?v=[0-9a-z]+/, '카탈로그 스크립트 캐시버스터');
+  assert.match(SHELL, /cgi-auth\.js\?v=[0-9a-z]+/, '인증 스크립트 캐시버스터');
 });

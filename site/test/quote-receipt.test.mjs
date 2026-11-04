@@ -43,7 +43,8 @@ test('detail view keeps bottom padding for the fixed bar', () => {
   assert.match(CSS, /body\[data-view="detail"\] \.app \{ padding-bottom: 96px; \}/, '고정 바가 본문을 가리지 않도록 여백이 있어야 한다');
 });
 
-test('asset cache-busting version is bumped on the shell', () => {
-  assert.match(SHELL, /cgi-catalog\.js\?v=81a/, '스크립트 버전이 81a로 갱신되어야 한다');
-  assert.match(SHELL, /cgi-catalog\.css\?v=81a/, '스타일 버전이 81a로 갱신되어야 한다');
+test('asset cache-busting version is present on the shell', () => {
+  // 실제 버전 값은 asset-version-consistency.test.mjs가 전 페이지에서 검사한다.
+  assert.match(SHELL, /cgi-catalog\.js\?v=[0-9a-z]+/, '스크립트에 캐시버스터가 있어야 한다');
+  assert.match(SHELL, /cgi-catalog\.css\?v=[0-9a-z]+/, '스타일에 캐시버스터가 있어야 한다');
 });

@@ -3,7 +3,7 @@
 > Issue #18 · 2026-10-22
 > 이 문서는 **실주소 배포를 위해 대표님/관리자에게 필요한 항목**을 정리한 것입니다.
 > 현재 산출물은 **정적 파일**이며 빌드 단계·서버측 코드·DB가 없습니다.
-> **배포 메모(2026-11-03):** `cgishop`·`cgihomepage` Pages 프로젝트는 Git 연동이 없는 **수동 업로드**라 **main에 머지한다고 라이브가 바뀌지 않습니다** — `wrangler pages deploy <배포 루트> --project-name cgishop|cgihomepage --branch main`(계정 Charliekant)으로 올려야 반영되고, 올리는 내용은 저장소 루트의 `site/`·`website/` 두 폴더이며 라이브 `/`의 302(각 프로젝트 주 섹션)는 저장소에 없는 `functions/index.js`를 배포 폴더에 넣어 채웁니다(2026-11-03 커밋 `03bd3d70` 반영).
+> **배포 메모(2026-11-03):** `cgishop`·`cgihomepage` Pages 프로젝트는 Git 연동이 없는 **수동 업로드**라 **main에 머지한다고 라이브가 바뀌지 않습니다** — `wrangler pages deploy <배포 루트> --project-name cgishop|cgihomepage --branch main`(계정 Charliekant)으로 올려야 반영되고, 올리는 내용은 저장소 루트의 `site/`·`website/` 두 폴더입니다. 라이브 `/`의 302(각 프로젝트 주 섹션)는 저장소 루트의 `_redirects`를 배포 루트에 그대로 복사해 채웁니다 — 사본을 따로 만들지 않습니다. `cgishop`은 `/ /site/ 302`, `cgihomepage`는 배포 시 대상만 `/website/`로 바꿉니다.
 
 ---
 
