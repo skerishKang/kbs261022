@@ -31,6 +31,7 @@
       <input type="search" id="heroSearchInput" placeholder="공고명·발주기관·공고번호로 검색">
       <button type="submit">검색</button>
     </form>
+    <div class="stat-row" id="statRow" aria-label="오늘 현황"></div>
     <div class="cat-grid" id="catGrid" aria-label="분류 바로가기"></div>
   </section>
 
@@ -85,14 +86,21 @@
   });
 
   var act = U.activeBids();
+  var st = U.statsSummary();
+  document.getElementById("statRow").innerHTML =
+    '<div class="stat-big accent"><div class="s-k">오늘 마감</div><div class="s-n num">' + st.today + '건</div><div class="s-sub">기준일(' + U.SNAPSHOT + ') 마감</div></div>' +
+    '<div class="stat-big"><div class="s-k">진행 중</div><div class="s-n num">' + st.inProgress + '건</div><div class="s-sub">투찰 접수 가능</div></div>' +
+    '<div class="stat-big"><div class="s-k">이번 주 개찰</div><div class="s-n num">' + st.weekOpen + '건</div><div class="s-sub">7일 내 개찰 예정</div></div>';
+
   var cats = ["구매", "공사", "용역", "매각"];
-  var hints = { 구매: "물품 구매·설치", 공사: "건설·시설 공사", 용역: "용역·임대·운영", 매각: "재산 매각·처분" };
-  document.getElementById("catGrid").innerHTML = cats.map(function (c) {
+  document.getElementById("catGrid").innerHTML = cats.filter(function (c) {
+    return act.some(function (b) { return b.c === c; });
+  }).map(function (c) {
     var n = act.filter(function (b) { return b.c === c; }).length;
-    return '<a class="cat-card" href="bids.html?cat=' + encodeURIComponent(c) + '">' +
-      '<span class="cat-name">' + U.esc(c) + ' 입찰</span>' +
-      '<span class="cat-count"><strong class="num">' + n + '</strong>건</span>' +
-      '<span class="cat-hint">' + hints[c] + "</span></a>";
+    return '<a class="cat-card" data-cat="' + c + '" href="bids.html?cat=' + encodeURIComponent(c) + '">' +
+      '<span class="cat-ico" aria-hidden="true">' + U.CAT_ICONS[c] + "</span>" +
+      '<span class="cat-body"><span class="cat-name">' + c + ' 입찰</span>' +
+      '<span class="cat-count"><strong class="num">' + n + '</strong>건</span></span></a>';
   }).join("");
 
   var today = act.filter(function (b) { var d = U.ddState(b.cd, b.od); return d.diff === 0; })

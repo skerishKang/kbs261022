@@ -132,8 +132,10 @@
 
   var rows = [
     ["공고번호", '<span class="num">' + U.esc(b.no) + "</span>"],
-    ["발주기관", '<a href="agency.html?name=' + encodeURIComponent(b.a) + '">' + U.esc(b.a) + "</a>"],
-    ["지역", U.esc(U.regionText(b))],
+    ["발주기관", '<a href="agency.html?name=' + encodeURIComponent(b.a) + '">' + U.esc(b.a) + "</a>"]
+  ];
+  if (b.r) rows.push(["지역", U.esc(b.r)]);  // 지역 미판별 공고는 칸 자체를 숨긴다
+  rows.push(
     ["추정가격", '<span class="num">' + U.esc(U.fmtWon(b.ep)) + "</span>" + (b.ab ? '<span class="sub">예산금액 <span class="num">' + U.esc(U.fmtWon(b.ab)) + "</span></span>" : "")],
     ["공고일", '<span class="num">' + U.esc(U.fmtDate(b.pd)) + "</span>"],
     ["투찰 마감", '<span class="num">' + U.esc(U.fmtDt(b.cd)) + "</span>"],
@@ -141,7 +143,7 @@
     ["계약 방법", U.esc(b.cm || "—")],
     ["낙찰자 결정 방법", U.esc(b.am || "—")],
     ["낙찰 결과", "개찰 후 이 페이지와 낙찰 결과 목록에 공개됩니다."]
-  ];
+  );
   document.querySelector("#specBasic tbody").innerHTML = rows.map(function (r) {
     return '<tr><th scope="row">' + r[0] + "</th><td>" + r[1] + "</td></tr>";
   }).join("");

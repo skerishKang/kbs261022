@@ -124,10 +124,18 @@
             '<button type="submit">검색</button>' +
           '</form>' +
           '<div class="topbar-actions">' +
+            '<button type="button" class="icon-btn search-toggle" id="searchToggle" aria-expanded="false" aria-controls="mobileSearch" aria-label="공고 검색 열기">⌕</button>' +
             '<button type="button" class="icon-btn" id="themeToggle"></button>' +
             '<a class="btn btn-ghost btn-sm btn-auth-text" href="pricing.html">로그인</a>' +
             '<a class="btn btn-primary btn-sm" href="pricing.html">회원가입</a>' +
           '</div>' +
+        '</div>' +
+        '<div class="mobile-search" id="mobileSearch">' +
+          '<form role="search">' +
+            '<label class="sr-only" for="mobileSearchInput">공고 검색</label>' +
+            '<input type="search" id="mobileSearchInput" placeholder="공고명·발주기관·공고번호 검색" value="' + esc(param("q")) + '">' +
+            '<button type="submit">검색</button>' +
+          '</form>' +
         '</div>' +
         '<nav class="navbar" aria-label="주요 메뉴"><div class="navbar-inner">' +
           NAV.map(function (n) {
@@ -139,6 +147,21 @@
     form.addEventListener("submit", function (ev) {
       ev.preventDefault();
       var q = document.getElementById("topSearchInput").value.trim();
+      location.href = "bids.html?q=" + encodeURIComponent(q);
+    });
+    var panel = document.getElementById("mobileSearch");
+    var toggle = document.getElementById("searchToggle");
+    toggle.addEventListener("click", function () {
+      var open = panel.classList.toggle("open");
+      toggle.setAttribute("aria-expanded", String(open));
+      toggle.setAttribute("aria-label", open ? "공고 검색 닫기" : "공고 검색 열기");
+      if (open) document.getElementById("mobileSearchInput").focus();
+    });
+    panel.querySelector("form").addEventListener("submit", function (ev) {
+      ev.preventDefault();
+      var q = document.getElementById("mobileSearchInput").value.trim();
+      panel.classList.remove("open");
+      toggle.setAttribute("aria-expanded", "false");
       location.href = "bids.html?q=" + encodeURIComponent(q);
     });
     window.bindThemeToggle(document.getElementById("themeToggle"));
@@ -179,14 +202,22 @@
   function badgeStatus(s) { return '<span class="badge badge-status" data-re="' + esc(s) + '">' + esc(s) + "</span>"; }
   function chipDd(b) { var d = ddState(b.cd, b.od); return '<span class="chip-dd ' + d.cls + '">' + esc(d.label) + "</span>"; }
 
+  var CAT_ICONS = {
+    "구매": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="21" r="1.6"/><circle cx="19" cy="21" r="1.6"/><path d="M2.5 3h2l2.6 12.4a2 2 0 0 0 2 1.6h9.2a2 2 0 0 0 2-1.6L22 7H6"/></svg>',
+    "공사": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 20h20"/><path d="M5 20V9l7-6 7 6v11"/><path d="M9 20v-6h6v6"/></svg>',
+    "용역": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a4.5 4.5 0 0 0-6.4 6.4l-5.6 5.6L4 21.5l3.2-1.3 5.6-5.6a4.5 4.5 0 0 0 6.4-6.4l-2.9 2.9-2.5-2.5 2.9-2.9z"/></svg>',
+    "매각": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9.5 9.6c0-1.1 1.1-1.9 2.5-1.9s2.5.8 2.5 1.9c0 2.6-5 1.7-5 4.3 0 1.1 1.1 1.9 2.5 1.9s2.5-.8 2.5-1.9"/></svg>'
+  };
+
   function cardHtml(b) {
+    var region = b.r ? '<span class="region">' + esc(b.r) + "</span>" : "";
     return (
       '<article class="bid-card">' +
         '<div class="card-badges">' + badgeCat(b.c) + badgeStatus(b.s) + chipDd(b) + "</div>" +
         '<h3 class="bid-card-title"><a href="bid.html?no=' + encodeURIComponent(b.no) + '">' + esc(b.t) + "</a></h3>" +
-        '<div class="bid-card-meta"><span class="agency">' + esc(b.a) + "</span><span>" + esc(regionText(b)) + "</span></div>" +
+        '<div class="bid-card-meta"><span class="agency" title="' + esc(b.a) + '">' + esc(b.a) + "</span>" + region + "</div>" +
+        '<div class="price-line"><span class="p-k">추정가격</span><span class="p-v num">' + esc(fmtWon(b.ep)) + "</span></div>" +
         '<div class="bid-card-nums">' +
-          '<span class="k">추정가격</span><span class="v price num">' + esc(fmtWon(b.ep)) + "</span>" +
           '<span class="k">투찰마감</span><span class="v num">' + esc(fmtDt(b.cd)) + "</span>" +
           '<span class="k">공고번호</span><span class="v num">' + esc(b.no) + "</span>" +
         "</div>" +
@@ -194,13 +225,30 @@
     );
   }
 
+  /* 상단 숫자 카드용 집계 (기준일 대비) */
+  function statsSummary() {
+    var act = activeBids();
+    var today = 0, inProgress = 0, weekOpen = 0;
+    var base = new Date(SNAPSHOT + "T00:00:00+09:00").getTime();
+    act.forEach(function (b) {
+      var d = ddState(b.cd, b.od);
+      if (d.diff === 0) today++;
+      if (!d.over) inProgress++;
+      if (b.od) {
+        var o = new Date(String(b.od).replace(" ", "T") + "+09:00").getTime();
+        if (!isNaN(o) && o >= base && o <= base + 7 * 86400000) weekOpen++;
+      }
+    });
+    return { total: act.length, today: today, inProgress: inProgress, weekOpen: weekOpen };
+  }
+
   window.BID_UI = {
     DATA: DATA, SNAPSHOT: SNAPSHOT,
     esc: esc, param: param, fmtWon: fmtWon, fmtDate: fmtDate, fmtDt: fmtDt,
     ddState: ddState, activeBids: activeBids, byNo: byNo,
-    agencyStats: agencyStats, regionText: regionText,
+    agencyStats: agencyStats, regionText: regionText, statsSummary: statsSummary,
     renderHeader: renderHeader, renderFooter: renderFooter,
     badgeCat: badgeCat, badgeStatus: badgeStatus, chipDd: chipDd,
-    cardHtml: cardHtml, bindSheet: window.bindSheet
+    cardHtml: cardHtml, bindSheet: window.bindSheet, CAT_ICONS: CAT_ICONS
   };
 })();
