@@ -9,6 +9,8 @@ import worker from '../worker.js';
 import { openD1 } from '../d1-shim.mjs';
 import { PRICE_INDEX } from '../data/price_index.mjs';
 
+const ORDER_CONSENT = { terms_consent: true, privacy_consent: true };
+
 const ORIGIN = 'https://skerishkang.github.io';
 const EVIL = 'http://evil.example.com';
 const TOKEN = 'example-smoke-token';
@@ -109,6 +111,7 @@ await check('CORS is pinned for real requests', async () => {
 let order;
 await check('order creation uses the server price index', async () => {
   const tampered = await request('POST', '/api/orders', {
+    ...ORDER_CONSENT,
     items: [{ product_id: priced[0], qty: 1, unit_price: 1 }],
     company: 'smoke', name: 'smoke', phone: '010-0000-0000',
   });
@@ -116,6 +119,7 @@ await check('order creation uses the server price index', async () => {
   assert.equal(tampered.json.error, 'price mismatch');
 
   const created = await request('POST', '/api/orders', {
+    ...ORDER_CONSENT,
     items: [{ product_id: priced[0], qty: 2 }, { product_id: priced[1], qty: 1 }],
     company: '[SMOKE] 회사', name: '[SMOKE] 담당자', phone: '010-0000-0001',
     idempotency_key: 'smoke-key-1',
@@ -129,6 +133,7 @@ await check('order creation uses the server price index', async () => {
 
 await check('idempotency key replays the same order', async () => {
   const again = await request('POST', '/api/orders', {
+    ...ORDER_CONSENT,
     items: [{ product_id: priced[0], qty: 2 }, { product_id: priced[1], qty: 1 }],
     company: '[SMOKE] 회사', name: '[SMOKE] 담당자', phone: '010-0000-0001',
     idempotency_key: 'smoke-key-1',
@@ -157,6 +162,7 @@ await check('payment confirm marks the order paid', async () => {
 
 await check('amount tampering is rejected', async () => {
   const created = await request('POST', '/api/orders', {
+    ...ORDER_CONSENT,
     items: [{ product_id: priced[0], qty: 1 }],
     company: '[SMOKE] 회사', name: '[SMOKE] 담당자', phone: '010-0000-0002',
     idempotency_key: 'smoke-key-2',
@@ -200,6 +206,7 @@ await check('refund honours the paid balance', async () => {
 // 7. Unpriced carts become quote orders and cannot be paid.
 await check('unpriced cart becomes an unpaid quote order', async () => {
   const created = await request('POST', '/api/orders', {
+    ...ORDER_CONSENT,
     items: [{ product_id: '__no_price__', qty: 1 }],
     company: '[SMOKE] 회사', name: '[SMOKE] 담당자', phone: '010-0000-0003',
   }, { Origin: ORIGIN });
