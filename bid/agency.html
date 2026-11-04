@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>발주기관 | CGI 입찰정보</title>
+<meta name="description" content="발주기관별 입찰공고 현황과 개찰 통계 — 진행 중 공고, 개찰 완료 건수, 평균 추정가격.">
+<meta name="theme-color" content="#07913A">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2307913A'/%3E%3Ctext x='16' y='22' font-size='17' font-weight='800' text-anchor='middle' fill='white' font-family='Arial'%3EC%3C/text%3E%3C/svg%3E">
+<script>(function(){try{var t=localStorage.getItem("bid-theme");if(t==="light"||t==="dark"){document.documentElement.dataset.theme=t;}}catch(e){}})();</script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="assets/css/bid.css?v=261105">
+</head>
+<body>
+<a class="skip-link" href="#main">본문으로 건너뛰기</a>
+<header id="appHeader"></header>
+
+<main id="main" class="page container">
+  <nav class="crumbs" aria-label="위치">
+    <a href="index.html">홈</a><span aria-hidden="true">›</span><span>발주기관</span>
+  </nav>
+
+  <div id="agencyBody">
+    <div class="detail-head">
+      <div class="head-badges"><span class="badge">발주기관</span><span class="badge" id="agRank"></span></div>
+      <h1 id="agName">—</h1>
+    </div>
+
+    <div class="stat-cards" style="margin-top:16px">
+      <div class="stat-card accent"><div class="stat-k">수집 공고</div><div class="stat-num num" id="stTotal">—</div><div class="stat-sub">데이터 기준일까지</div></div>
+      <div class="stat-card"><div class="stat-k">진행 중</div><div class="stat-num num" id="stProgress">—</div><div class="stat-sub">투찰 접수 가능</div></div>
+      <div class="stat-card"><div class="stat-k">개찰 완료</div><div class="stat-num num" id="stOpened">—</div><div class="stat-sub">결과 반영 분</div></div>
+      <div class="stat-card"><div class="stat-k">평균 추정가격</div><div class="stat-num num" id="stAvg">—</div><div class="stat-sub">금액 공개 공고 기준</div></div>
+    </div>
+
+    <p style="margin:12px 0 0;font-size:12.5px;color:var(--cgi-faint)">
+      통계는 나라장터 공고 수집 데이터(기준일 <span class="num" id="snapshotDate">—</span>)로 산출한 값입니다.
+      적격심사 배점·통과점수 등 기관 심사 기준은 <a href="pricing.html">회원 전용</a>입니다.
+    </p>
+
+    <section class="section" aria-labelledby="recentTitle">
+      <div class="section-head">
+        <h2 id="recentTitle">이 기관의 최근 공고</h2>
+        <span class="section-desc">공고일 최신순</span>
+      </div>
+      <div class="grid-cards" id="agGrid"></div>
+      <div class="empty-state" id="agEmpty" hidden>
+        <strong>공고가 없습니다</strong>
+        수집 기준일 이전에 마감된 공고만 있거나 아직 수집되지 않았습니다.
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="allTitle">
+      <div class="section-head"><h2 id="allTitle">전체 발주기관</h2><span class="section-desc">수집 공고 수 기준</span></div>
+      <div class="panel"><div class="line-list" id="allAgencies"></div></div>
+    </section>
+  </div>
+
+  <div class="empty-state" id="notFound" hidden>
+    <strong>발주기관을 찾을 수 없습니다</strong>
+    <a href="index.html">메인의 발주기관 인기 목록</a>에서 기관을 선택하십시오.
+  </div>
+</main>
+
+<footer id="appFooter"></footer>
+
+<script src="assets/data/bid-data.js"></script>
+<script src="assets/js/bid-ui.js"></script>
+<script>
+(function () {
+  "use strict";
+  var U = window.BID_UI;
+  U.renderHeader("agency");
+  U.renderFooter();
+  document.getElementById("snapshotDate").textContent = U.SNAPSHOT;
+
+  var act = U.activeBids();
+  var byAgency = {};
+  act.forEach(function (b) { byAgency[b.a] = (byAgency[b.a] || 0) + 1; });
+  var ranked = Object.keys(byAgency).map(function (k) { return { name: k, n: byAgency[k] }; })
+    .sort(function (x, y) { return y.n - x.n || x.name.localeCompare(y.name, "ko"); });
+
+  document.getElementById("allAgencies").innerHTML = ranked.slice(0, 30).map(function (t, i) {
+    return '<div class="line-item">' +
+      '<span class="num" style="color:var(--cgi-faint);width:20px;flex:none">' + (i + 1) + "</span>" +
+      '<span class="li-title"><a href="agency.html?name=' + encodeURIComponent(t.name) + '">' + U.esc(t.name) + "</a></span>" +
+      '<span class="li-meta">공고 <span class="num">' + t.n + "</span>건</span></div>";
+  }).join("");
+
+  var name = U.param("name");
+  var idx = ranked.findIndex(function (t) { return t.name === name; });
+  if (!name || idx < 0) {
+    document.getElementById("agencyBody").hidden = true;
+    document.getElementById("notFound").hidden = false;
+    return;
+  }
+
+  var st = U.agencyStats(name);
+  document.title = name + " 입찰공고·개찰 통계 | CGI 입찰정보";
+  document.getElementById("agName").textContent = name;
+  document.getElementById("agRank").textContent = "수집 공고 수 " + (idx + 1) + "위";
+  document.getElementById("stTotal").textContent = st.total + "건";
+  document.getElementById("stProgress").textContent = st.inProgress + "건";
+  document.getElementById("stOpened").textContent = st.opened + "건";
+  document.getElementById("stAvg").textContent = st.avgPrice ? U.fmtWon(st.avgPrice) : "—";
+
+  var recent = st.list.slice().sort(function (a, b) { return String(b.pd || "").localeCompare(a.pd || ""); }).slice(0, 6);
+  if (recent.length) {
+    document.getElementById("agGrid").innerHTML = recent.map(U.cardHtml).join("");
+  } else {
+    document.getElementById("agGrid").hidden = true;
+    document.getElementById("agEmpty").hidden = false;
+  }
+})();
+</script>
+</body>
+</html>

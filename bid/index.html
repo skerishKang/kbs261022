@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CGI 입찰정보 | 나라장터 입찰공고 검색·분류</title>
+<meta name="description" content="나라장터 입찰공고를 분류·지역·금액·마감일로 한눈에 비교하고, 발주기관별 개찰 통계까지 확인하는 CGI 입찰정보 서비스.">
+<meta name="theme-color" content="#07913A">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2307913A'/%3E%3Ctext x='16' y='22' font-size='17' font-weight='800' text-anchor='middle' fill='white' font-family='Arial'%3EC%3C/text%3E%3C/svg%3E">
+<script>(function(){try{var t=localStorage.getItem("bid-theme");if(t==="light"||t==="dark"){document.documentElement.dataset.theme=t;}}catch(e){}})();</script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="assets/css/bid.css?v=261105">
+</head>
+<body>
+<a class="skip-link" href="#main">본문으로 건너뛰기</a>
+<header id="appHeader"></header>
+
+<main id="main" class="page container">
+  <div class="notice-bar"><div class="notice-bar-inner">
+    <span>공고 데이터 기준일 <span class="num" id="snapshotDate">—</span></span>
+    <span aria-hidden="true">·</span>
+    <span>기초금액·낙찰하한율·적격심사 세부기준은 <a href="pricing.html">회원 전용</a></span>
+    <a href="bids.html">전체 공고 보기 →</a>
+  </div></div>
+
+  <section class="hero">
+    <h1>나라장터 입찰공고, 분류해서 한눈에</h1>
+    <p class="hero-sub">공사·용역·구매 입찰공고를 지역·금액·마감일로 걸러 보고, 발주기관 개찰 통계로 참여 판단을 빠르게 합니다.</p>
+    <form class="hero-search" id="heroSearch" role="search">
+      <label class="sr-only" for="heroSearchInput">공고 검색</label>
+      <input type="search" id="heroSearchInput" placeholder="공고명·발주기관·공고번호로 검색">
+      <button type="submit">검색</button>
+    </form>
+    <div class="stat-row" id="statRow" aria-label="오늘 현황"></div>
+    <div class="cat-grid" id="catGrid" aria-label="분류 바로가기"></div>
+  </section>
+
+  <section class="section" aria-labelledby="closingTodayTitle">
+    <div class="section-head">
+      <h2 id="closingTodayTitle">오늘 마감</h2>
+      <span class="section-desc">기준일(<span class="num" id="snapshotDate2">—</span>)에 투찰이 마감되는 공고</span>
+      <a class="section-more" href="bids.html?period=today">전체 보기 →</a>
+    </div>
+    <div class="grid-cards" id="todayGrid"></div>
+    <div class="empty-state" id="todayEmpty" hidden>
+      <strong>오늘 마감 공고가 없습니다</strong>
+      마감이 임박한 공고는 <a href="bids.html?period=week">마감 7일 이내 목록</a>에서 확인할 수 있습니다.
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="recentTitle">
+    <div class="section-head">
+      <h2 id="recentTitle">최근 등록 공고</h2>
+      <a class="section-more" href="bids.html?sort=new">전체 보기 →</a>
+    </div>
+    <div class="grid-cards" id="recentGrid"></div>
+  </section>
+
+  <section class="section" aria-labelledby="agencyTitle">
+    <div class="section-head">
+      <h2 id="agencyTitle">발주기관 인기 목록</h2>
+      <span class="section-desc">수집 공고 수 기준</span>
+      <a class="section-more" href="agency.html">전체 보기 →</a>
+    </div>
+    <div class="panel"><div class="line-list" id="agencyList"></div></div>
+  </section>
+</main>
+
+<footer id="appFooter"></footer>
+
+<script src="assets/data/bid-data.js"></script>
+<script src="assets/js/bid-ui.js"></script>
+<script>
+(function () {
+  "use strict";
+  var U = window.BID_UI;
+  U.renderHeader("home");
+  U.renderFooter();
+  document.getElementById("snapshotDate").textContent = U.SNAPSHOT;
+  document.getElementById("snapshotDate2").textContent = U.SNAPSHOT;
+
+  document.getElementById("heroSearch").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var q = document.getElementById("heroSearchInput").value.trim();
+    location.href = "bids.html?q=" + encodeURIComponent(q);
+  });
+
+  var act = U.activeBids();
+  var st = U.statsSummary();
+  document.getElementById("statRow").innerHTML =
+    '<div class="stat-big accent"><div class="s-k">오늘 마감</div><div class="s-n num">' + st.today + '건</div><div class="s-sub">기준일(' + U.SNAPSHOT + ') 마감</div></div>' +
+    '<div class="stat-big"><div class="s-k">진행 중</div><div class="s-n num">' + st.inProgress + '건</div><div class="s-sub">투찰 접수 가능</div></div>' +
+    '<div class="stat-big"><div class="s-k">이번 주 개찰</div><div class="s-n num">' + st.weekOpen + '건</div><div class="s-sub">7일 내 개찰 예정</div></div>';
+
+  var cats = ["구매", "공사", "용역", "매각"];
+  document.getElementById("catGrid").innerHTML = cats.filter(function (c) {
+    return act.some(function (b) { return b.c === c; });
+  }).map(function (c) {
+    var n = act.filter(function (b) { return b.c === c; }).length;
+    return '<a class="cat-card" data-cat="' + c + '" href="bids.html?cat=' + encodeURIComponent(c) + '">' +
+      '<span class="cat-ico" aria-hidden="true">' + U.CAT_ICONS[c] + "</span>" +
+      '<span class="cat-body"><span class="cat-name">' + c + ' 입찰</span>' +
+      '<span class="cat-count"><strong class="num">' + n + '</strong>건</span></span></a>';
+  }).join("");
+
+  var today = act.filter(function (b) { var d = U.ddState(b.cd, b.od); return d.diff === 0; })
+    .sort(function (a, b) { return String(a.cd).localeCompare(b.cd); });
+  var todayGrid = document.getElementById("todayGrid");
+  if (today.length) {
+    todayGrid.innerHTML = today.slice(0, 6).map(U.cardHtml).join("");
+  } else {
+    document.getElementById("todayEmpty").hidden = false;
+    todayGrid.remove();
+  }
+
+  var recent = act.slice().sort(function (a, b) { return String(b.pd).localeCompare(a.pd); }).slice(0, 6);
+  document.getElementById("recentGrid").innerHTML = recent.map(U.cardHtml).join("");
+
+  var byAgency = {};
+  act.forEach(function (b) { byAgency[b.a] = (byAgency[b.a] || 0) + 1; });
+  var top = Object.keys(byAgency).map(function (k) { return { name: k, n: byAgency[k] }; })
+    .sort(function (x, y) { return y.n - x.n; }).slice(0, 8);
+  document.getElementById("agencyList").innerHTML = top.map(function (t, i) {
+    var st = U.agencyStats(t.name);
+    return '<div class="line-item">' +
+      '<span class="num" style="color:var(--cgi-faint);width:20px;flex:none">' + (i + 1) + "</span>" +
+      '<span class="li-title"><a href="agency.html?name=' + encodeURIComponent(t.name) + '">' + U.esc(t.name) + "</a></span>" +
+      '<span class="li-meta">공고 <span class="num">' + st.total + "</span>건 · 진행 <span class=\"num\">" + st.inProgress + "</span>건</span>" +
+      "</div>";
+  }).join("");
+})();
+</script>
+</body>
+</html>
