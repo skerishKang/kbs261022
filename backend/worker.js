@@ -430,6 +430,13 @@ async function createOrder(db, body, env, options = {}) {
     return { status: 400, body: { error: 'company, name, phone required' } };
   }
 
+  // 주문 직전 필수 동의(2026-11-04 대표 결정). 클라이언트 체크만으로 끝내지 않고
+  // 서버에서도 두 동의가 모두 true 일 때만 주문을 만든다. 동의 시각을 저장할
+  // orders 컬럼은 아직 없으므로 여기서는 생성 차단만 한다.
+  if (body.terms_consent !== true || body.privacy_consent !== true) {
+    return { status: 400, body: { error: 'order consent required', detail: '주문 조건 및 개인정보 수집·이용 동의가 필요합니다.' } };
+  }
+
   const services = Array.isArray(body.services) ? body.services.filter((s) => typeof s === 'string').slice(0, 20) : [];
   const idempotencyKey = String(body.idempotency_key || options.idempotencyKey || '').slice(0, 100);
 

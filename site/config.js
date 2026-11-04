@@ -22,8 +22,9 @@ window.CGI_SITE_CONFIG = {
   legal: {
     bizRegNo: '410-86-46283', // 사업자등록번호 (홈페이지·company.js와 같은 값)
     mailOrderNo: '2025-전남장성-94', // 스마트스토어센터 판매자 정보에서 대표 확인
-    privacyOfficerName: '',   // 개인정보보호책임자 — 확정 전에는 표기하지 않는다
-    privacyOfficerEmail: '',  // 책임자 연락처
+    privacyOfficerName: '김범신',   // 대표 확정(2026-11-04)
+    privacyOfficerPhone: '062-576-8100',
+    privacyOfficerEmail: 'cgiinc@naver.com',
   },
   // 주문·결제 API. 비어 있으면 quoteApiUrl 을 재사용한다.
   orderApiUrl: 'https://cgi-quote-api.charliekant.workers.dev',

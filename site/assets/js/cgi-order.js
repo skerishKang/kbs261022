@@ -166,19 +166,37 @@
             '<div id="orderTotal" class="order-total"></div>' +
           '</aside>' +
         '</div>' +
+        '<div class="order-consents">' +
+          '<label class="auth-check"><input type="checkbox" name="terms_consent"> <span>주문 내용과 구매 조건을 확인했으며 결제 진행에 동의합니다. (필수)</span></label>' +
+          '<label class="auth-check"><input type="checkbox" name="privacy_consent"> <span>개인정보 수집·이용(주문·배송 목적)에 동의합니다. (필수) <a href="privacy.html" target="_blank" rel="noopener">개인정보처리방침</a></span></label>' +
+        '</div>' +
         '<div id="orderStatus"></div>' +
         '<div class="order-actions">' +
-          '<button type="submit" class="btn">주문 생성 후 결제</button>' +
+          '<button type="submit" class="btn" disabled>주문 생성 후 결제</button>' +
           '<a class="btn btn-secondary" href="#/quote-cart">취소</a>' +
         '</div>' +
       '</form>'
     );
 
     var form = app.querySelector('#orderForm');
+    var termsEl = form.querySelector('[name="terms_consent"]');
+    var privacyEl = form.querySelector('[name="privacy_consent"]');
+    var submitBtn = form.querySelector('button[type="submit"]');
+    function syncConsent() {
+      submitBtn.disabled = !(termsEl.checked && privacyEl.checked);
+    }
+    termsEl.addEventListener('change', syncConsent);
+    privacyEl.addEventListener('change', syncConsent);
+    syncConsent();
     form.addEventListener('submit', function (ev) {
       ev.preventDefault();
       var status = app.querySelector('#orderStatus');
       var btn = form.querySelector('button[type="submit"]');
+      if (!termsEl.checked || !privacyEl.checked) {
+        status.innerHTML = flash('주문 전 필수 동의 항목을 확인해 주세요.', 'flash-error');
+        syncConsent();
+        return;
+      }
       btn.disabled = true;
       btn.textContent = '주문 생성 중…';
       status.innerHTML = '';
@@ -190,12 +208,14 @@
       });
       if (!customer.company || !customer.name || !customer.phone) {
         status.innerHTML = flash('회사명, 담당자명, 연락처는 필수입니다.', 'flash-error');
-        btn.disabled = false;
+        syncConsent();
         btn.textContent = '주문 생성 후 결제';
         return;
       }
 
       var payload = orderPayload(customer);
+      payload.terms_consent = true;
+      payload.privacy_consent = true;
       payload.idempotency_key = requestKey();
       var member = window.CGI_AUTH && window.CGI_AUTH.isLoggedIn();
       var send = member
@@ -204,7 +224,7 @@
       send(member ? '/api/me/orders' : '/api/orders', payload).then(function (res) {
         if (!res.ok) {
           status.innerHTML = flash('주문 생성 실패: ' + (res.data.error || ('HTTP ' + res.status)), 'flash-error');
-          btn.disabled = false;
+          syncConsent();
           btn.textContent = '다시 시도';
           return;
         }
