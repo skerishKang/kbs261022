@@ -110,6 +110,19 @@ test('rejects orders without items or without a customer', async () => {
   assert.equal((await call(env, 'POST', '/api/orders', { name: 'x', phone: 'x', items: [{ product_id: PA, qty: 1 }] })).status, 400);
 });
 
+test('rejects order creation without both required consents', async () => {
+  const env = makeEnv();
+  const body = { ...purchaseCart(), ...CUSTOMER };
+  delete body.terms_consent;
+  delete body.privacy_consent;
+  const missing = await call(env, 'POST', '/api/orders', body);
+  assert.equal(missing.status, 400);
+  assert.equal(missing.json.error, 'order consent required');
+  const one = await call(env, 'POST', '/api/orders', { ...body, terms_consent: true });
+  assert.equal(one.status, 400);
+  assert.equal(one.json.error, 'order consent required');
+});
+
 test('rejects malformed and oversized orders', async () => {
   const env = makeEnv();
   assert.equal((await call(env, 'POST', '/api/orders', { ...CUSTOMER, items: 'nope' })).json.error, 'items required');

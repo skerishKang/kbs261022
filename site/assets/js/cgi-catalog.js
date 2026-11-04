@@ -1296,13 +1296,15 @@
     var mailOrderEl = document.querySelector('[data-mail-order-no]');
     var mailOrderRow = document.querySelector('[data-mail-order-row]');
     var officerName = text(legal.privacyOfficerName);
+    var officerPhone = text(legal.privacyOfficerPhone);
     var officerEmail = text(legal.privacyOfficerEmail);
     if (mailOrderEl) mailOrderEl.textContent = mailOrderNo;
     if (mailOrderRow) mailOrderRow.hidden = !mailOrderNo;
     var parts = ['© 주식회사 시지아이'];
     if (bizRegNo) parts.push('사업자등록번호 ' + esc(bizRegNo));
     if (mailOrderNo) parts.push('통신판매업신고 ' + esc(mailOrderNo));
-    if (officerName) parts.push('개인정보보호책임자 ' + esc(officerName + (officerEmail ? ' (' + officerEmail + ')' : '')));
+    var officerContact = [officerPhone, officerEmail].filter(Boolean).join(', ');
+    if (officerName) parts.push('개인정보보호책임자 ' + esc(officerName + (officerContact ? ' (' + officerContact + ')' : '')));
     parts.push('<a href="terms.html" style="color:inherit">이용약관</a>');
     parts.push('<a href="privacy.html" style="color:inherit">개인정보처리방침</a>');
     parts.push('<a href="returns.html" style="color:inherit">교환·반품·환불 안내</a>');

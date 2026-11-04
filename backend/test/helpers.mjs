@@ -77,6 +77,8 @@ export const CUSTOMER = {
   addr: '광주광역시 광산구 테스트로 1',
   addr_detail: '101호',
   note: 'E2E 자동화 테스트 주문입니다.',
+  terms_consent: true,
+  privacy_consent: true,
 };
 
 /** Default purchasable cart (all items have confirmed public prices). */

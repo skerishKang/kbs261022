@@ -44,6 +44,6 @@ test('detail view keeps bottom padding for the fixed bar', () => {
 });
 
 test('asset cache-busting version is bumped on the shell', () => {
-  assert.match(SHELL, /cgi-catalog\.js\?v=80a/, '스크립트 버전이 80a로 갱신되어야 한다');
-  assert.match(SHELL, /cgi-catalog\.css\?v=80a/, '스타일 버전이 80a로 갱신되어야 한다');
+  assert.match(SHELL, /cgi-catalog\.js\?v=81a/, '스크립트 버전이 81a로 갱신되어야 한다');
+  assert.match(SHELL, /cgi-catalog\.css\?v=81a/, '스타일 버전이 81a로 갱신되어야 한다');
 });

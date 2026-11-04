@@ -47,12 +47,13 @@ test('worker rejects signup without consent and records a consent event', () => 
   assert.match(WORKER, /terms_version: termsVersion, privacy_version: privacyVersion/);
 });
 
-test('policy draft documents exist and are marked as drafts', () => {
+test('policy documents are confirmed and carry the effective date', () => {
   for (const file of ['terms.html', 'privacy.html']) {
     const path = join(HERE, '..', file);
     assert.ok(existsSync(path), `${file} 이(가) 존재해야 한다`);
     const html = readFileSync(path, 'utf8');
-    assert.match(html, /초안/, `${file} 은(는) 초안임이 명시되어야 한다(대표 확정 전)`);
-    assert.match(html, /draft-2026-10-28/, `${file} 은(는) 버전 표기가 있어야 한다`);
+    assert.doesNotMatch(html, /초안/, `${file} 에 초안 표시가 남아 있다`);
+    assert.doesNotMatch(html, /draft-2026-10-28/, `${file} 에 임시 버전 표기가 남아 있다`);
+    assert.match(html, /2026년 11월 4일/, `${file} 시행일`);
   }
 });

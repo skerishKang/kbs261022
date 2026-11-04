@@ -1005,6 +1005,8 @@ p:last-child { margin-bottom: 0; }
 .order-items td:last-child,
 .order-items th:last-child { text-align: right; white-space: nowrap; }
 
+.order-consents { display: grid; gap: 8px; margin: 16px 0; padding: 12px 14px; border: 1px solid var(--cgi-primary-line); border-radius: 10px; background: var(--cgi-primary-soft); }
+.order-consents .auth-check { font-size: 13px; }
 .order-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
 .order-actions .btn-block { width: 100%; }
 

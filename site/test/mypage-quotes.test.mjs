@@ -44,6 +44,6 @@ test('empty, loading, error and detail states exist', () => {
 
 test('styles reuse existing tokens and shell version is bumped', () => {
   assert.match(CSS, /\.quote-status\.received \{ background: var\(--cgi-warn-soft\)/, '기존 토큰 재사용');
-  assert.match(SHELL, /cgi-catalog\.js\?v=80a/, '카탈로그 스크립트 버전 80a');
+  assert.match(SHELL, /cgi-catalog\.js\?v=81a/, '카탈로그 스크립트 버전 81a');
   assert.match(SHELL, /cgi-auth\.js\?v=79a/, '인증 스크립트 버전 79a');
 });

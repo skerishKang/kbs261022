@@ -11,9 +11,12 @@ const html = read('website/index.html');
 const js = read('website/assets/main.js');
 const css = read('website/assets/style.css');
 
-test('footer shows the confirmed mail-order number once', () => {
+test('footer shows the confirmed mail-order number and privacy officer', () => {
   assert.equal((html.match(/통신판매업신고 2025-전남장성-94/g) || []).length, 1);
-  assert.doesNotMatch(html, /개인정보보호책임자/);
+  assert.match(html, /개인정보보호책임자 김범신/);
+  assert.match(html, /062-576-8100/);
+  assert.match(html, /cgiinc@naver\.com/);
+  assert.match(html, /개인정보처리방침/);
 });
 
 test('business images use local company photos with visible SVG field-icon fallbacks', () => {

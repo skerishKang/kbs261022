@@ -11,6 +11,8 @@ import worker from '../../worker.js';
 import { openD1 } from '../../d1-shim.mjs';
 import { PRICE_INDEX } from '../../data/price_index.mjs';
 
+const ORDER_CONSENT = { terms_consent: true, privacy_consent: true };
+
 const ORIGIN = 'https://skerishkang.github.io';
 const EVIL = 'http://evil.example.com';
 const ADMIN_TOKEN = 'example-admin-token';
@@ -88,6 +90,7 @@ async function login(environment, opts = {}) {
 
 async function seedPaidOrder(environment, cookie) {
   const created = await call(environment, 'POST', '/api/orders', {
+    ...ORDER_CONSENT,
     items: [{ product_id: priced[0], qty: 2 }],
     company: '[E2E] 회사', name: '[E2E] 김회원', phone: '010-1111-2222', email: 'kim@example.com',
     idempotency_key: `e2e-${Date.now()}-${Math.random().toString(36).slice(2)}`,
@@ -625,6 +628,7 @@ test('a signed-in checkout is linked to the member and appears on my orders', as
   assert.equal(me.status, 401);
 
   const created = await call(environment, 'POST', '/api/orders', {
+    ...ORDER_CONSENT,
     items: [{ product_id: priced[0], qty: 2 }, { product_id: priced[1], qty: 1 }],
     company: '[E2E] 회사', name: '[E2E] 김회원', phone: '010-1111-2222',
     idempotency_key: 'e2e-linked-1',
@@ -657,6 +661,7 @@ test('a signed-in checkout is linked to the member and appears on my orders', as
 test('guest checkout is unchanged and has no member link', async () => {
   const environment = env();
   const created = await call(environment, 'POST', '/api/orders', {
+    ...ORDER_CONSENT,
     items: [{ product_id: priced[0], qty: 1 }],
     company: '[E2E] 업체', name: '[E2E] 김고객', phone: '010-5555-6666',
     idempotency_key: 'e2e-guest-1',
@@ -673,6 +678,7 @@ test('member-scoped checkout and quote intake link the member without touching t
   const memberId = (await call(environment, 'GET', '/api/me', undefined, { ...csrf, Cookie: cookie })).json.member.id;
 
   const created = await call(environment, 'POST', '/api/me/orders', {
+    ...ORDER_CONSENT,
     items: [{ product_id: priced[0], qty: 2 }],
     company: '[E2E] 회사', name: '[E2E] 김회원', phone: '010-1111-2222',
     idempotency_key: 'e2e-memberscoped-1',
@@ -699,6 +705,7 @@ test('member-scoped checkout and quote intake link the member without touching t
 
   // The legacy guest paths stay credential-free in their CORS response.
   const guestOrder = await call(environment, 'POST', '/api/orders', {
+    ...ORDER_CONSENT,
     items: [{ product_id: priced[0], qty: 1 }],
     privacy_consent: true,
     company: '[E2E] 업체', name: '[E2E] 김고객', phone: '010-5555-6666',
@@ -709,6 +716,7 @@ test('member-scoped checkout and quote intake link the member without touching t
   assert.equal(guestOrder.headers['access-control-allow-credentials'], undefined);
 
   const scoped = await call(environment, 'POST', '/api/me/orders', {
+    ...ORDER_CONSENT,
     items: [{ product_id: priced[0], qty: 1 }],
     company: '[E2E] 회사', name: '[E2E] 김회원', phone: '010-1111-2222',
     idempotency_key: 'e2e-memberscoped-2',
@@ -722,6 +730,7 @@ test('a member can cancel an unpaid order, not a paid one', async () => {
   const { cookie } = await verifiedSession(environment);
 
   const created = await call(environment, 'POST', '/api/orders', {
+    ...ORDER_CONSENT,
     items: [{ product_id: priced[0], qty: 1 }],
     company: '[E2E] 회사', name: '[E2E] 김회원', phone: '010-1111-2222',
     idempotency_key: 'e2e-cancel-1',
@@ -747,6 +756,7 @@ test('a member can cancel an unpaid order, not a paid one', async () => {
 
 async function unpaidOrder(environment, cookie, idempotencyKey, qty = 1) {
   const created = await call(environment, 'POST', '/api/orders', {
+    ...ORDER_CONSENT,
     items: [{ product_id: priced[0], qty }],
     company: '[E2E] 회사', name: '[E2E] 김회원', phone: '010-1111-2222',
     idempotency_key: idempotencyKey,
@@ -866,6 +876,7 @@ test("someone else's order cannot be re-opened", async () => {
   assert.equal(res.json.error, 'order not found', 'ownership is checked on the server, not in the browser');
 
   const guest = await call(environment, 'POST', '/api/orders', {
+    ...ORDER_CONSENT,
     items: [{ product_id: priced[1], qty: 3 }],
     company: '[E2E] 업체', name: '[E2E] 김고객', phone: '010-5555-6666',
     idempotency_key: 'e2e-repay-guest',
@@ -884,6 +895,7 @@ test('a quote order is never payable', async () => {
   const environment = env();
   const { cookie } = await verifiedSession(environment);
   const created = await call(environment, 'POST', '/api/orders', {
+    ...ORDER_CONSENT,
     items: [{ product_id: priced[0], qty: 1 }, { product_id: 'no-such-product-id', qty: 1 }],
     company: '[E2E] 회사', name: '[E2E] 김회원', phone: '010-1111-2222',
     idempotency_key: 'e2e-repay-quote',
@@ -973,6 +985,7 @@ test('refund requests are refused for unpaid or already refunded orders', async 
   const environment = env();
   const { cookie } = await verifiedSession(environment);
   const created = await call(environment, 'POST', '/api/orders', {
+    ...ORDER_CONSENT,
     items: [{ product_id: priced[0], qty: 1 }],
     company: '[E2E] 회사', name: '[E2E] 김회원', phone: '010-1111-2222',
     idempotency_key: 'e2e-refund-guard-1',
@@ -1151,6 +1164,7 @@ test('an unpaid order blocks deletion until it is cancelled, then everything is 
   const { cookie } = await verifiedSession(environment);
 
   const created = await call(environment, 'POST', '/api/orders', {
+    ...ORDER_CONSENT,
     items: [{ product_id: priced[0], qty: 1 }],
     company: '[E2E] 회사', name: '[E2E] 김회원', phone: '010-1111-2222',
     idempotency_key: 'e2e-delete-1',
