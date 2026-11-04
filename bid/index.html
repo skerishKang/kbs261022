@@ -31,8 +31,20 @@
       <input type="search" id="heroSearchInput" placeholder="공고명·발주기관·공고번호로 검색">
       <button type="submit">검색</button>
     </form>
-    <div class="stat-row" id="statRow" aria-label="오늘 현황"></div>
-    <div class="cat-grid" id="catGrid" aria-label="분류 바로가기"></div>
+    <div class="hero-grid">
+      <div class="hero-left">
+        <div class="stat-row" id="statRow" aria-label="오늘 현황"></div>
+        <div class="cat-grid" id="catGrid" aria-label="분류 바로가기"></div>
+      </div>
+      <aside class="side-panel" aria-labelledby="spTitle">
+        <div class="sp-head">
+          <h2 id="spTitle">마감 임박 TOP 5</h2>
+          <span class="sp-sub">7일 내 마감</span>
+          <a href="bids.html?period=week">전체 보기 →</a>
+        </div>
+        <div id="spList"></div>
+      </aside>
+    </div>
   </section>
 
   <section class="section" aria-labelledby="closingTodayTitle">
@@ -102,6 +114,22 @@
       '<span class="cat-body"><span class="cat-name">' + c + ' 입찰</span>' +
       '<span class="cat-count"><strong class="num">' + n + '</strong>건</span></span></a>';
   }).join("");
+
+  // 마감 임박 TOP 5 — 진행 중 공고 중 7일 내 마감, 마감 가까운 순
+  var soon = act.filter(function (b) {
+    var d = U.ddState(b.cd, b.od);
+    return !d.over && d.diff <= 7;
+  }).sort(function (a, b) { return String(a.cd).localeCompare(b.cd); }).slice(0, 5);
+  var spList = document.getElementById("spList");
+  if (soon.length) {
+    spList.innerHTML = soon.map(function (b) {
+      return '<div class="sp-item">' + U.chipDd(b) +
+        '<a class="sp-title" href="bid.html?no=' + encodeURIComponent(b.no) + '" title="' + U.esc(b.t) + '">' + U.esc(b.t) + "</a>" +
+        '<span class="sp-price num">' + U.esc(U.fmtWon(b.ep)) + "</span></div>";
+    }).join("");
+  } else {
+    spList.innerHTML = '<div class="sp-empty">7일 내 마감 공고가 없습니다.</div>';
+  }
 
   var today = act.filter(function (b) { var d = U.ddState(b.cd, b.od); return d.diff === 0; })
     .sort(function (a, b) { return String(a.cd).localeCompare(b.cd); });
