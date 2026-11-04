@@ -105,6 +105,7 @@
   var NAV = [
     { href: "index.html", label: "홈", key: "home" },
     { href: "bids.html", label: "입찰공고", key: "bids" },
+    { href: "results.html", label: "낙찰 결과", key: "results" },
     { href: "agency.html", label: "발주기관", key: "agency" },
     { href: "pricing.html", label: "요금 안내", key: "pricing" }
   ];
@@ -242,10 +243,19 @@
     return { total: act.length, today: today, inProgress: inProgress, weekOpen: weekOpen };
   }
 
+  /* 개찰 단계: 기준일 대비 개찰일시로 판정(개찰 결과 데이터와 무관) */
+  function openPhase(b) {
+    if (!b.od) return "개찰 후 반영";
+    var open = new Date(String(b.od).replace(" ", "T") + "+09:00").getTime();
+    var base = new Date(SNAPSHOT + "T13:00:00+09:00").getTime();
+    if (isNaN(open) || isNaN(base)) return "개찰 후 반영";
+    return Math.floor(open / 86400000) <= Math.floor(base / 86400000) ? "개찰 완료" : "개찰 대기";
+  }
+
   window.BID_UI = {
     DATA: DATA, SNAPSHOT: SNAPSHOT,
     esc: esc, param: param, fmtWon: fmtWon, fmtDate: fmtDate, fmtDt: fmtDt,
-    ddState: ddState, activeBids: activeBids, byNo: byNo,
+    ddState: ddState, activeBids: activeBids, byNo: byNo, openPhase: openPhase,
     agencyStats: agencyStats, regionText: regionText, statsSummary: statsSummary,
     renderHeader: renderHeader, renderFooter: renderFooter,
     badgeCat: badgeCat, badgeStatus: badgeStatus, chipDd: chipDd,
