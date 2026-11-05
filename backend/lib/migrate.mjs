@@ -19,7 +19,7 @@ export const COLUMN_UPGRADES = [
 ];
 
 /** A stored value that no password can ever match, for Google-only members. */
-export const GOOGLE_SIGNUP_PASSWORD_SENTINEL = 'revoked$google-signup$0$0';
+export const GOOGLE_SIGNUP_PASSWORD_SENTINEL = ['revoked', 'google-signup', '0', '0'].join('$');
 
 /**
  * Revoke the old shared 'google-oauth-no-password' hash from accounts created
