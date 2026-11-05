@@ -196,8 +196,14 @@
       document.body.classList.toggle('nav-open', open);
       if (open) {
         // 키보드 사용자가 열린 메뉴 안에서 바로 이동할 수 있게 첫 링크로 포커스.
+        // 메뉴가 display:none 에서 열린 직후에는 같은 틱의 focus()가 무시되므로
+        // 다음 프레임으로 미룬다.
         var first = nav.querySelector('a');
-        if (first) first.focus();
+        if (first) {
+          var focusFirst = function () { try { first.focus(); } catch (e) {} };
+          if (window.requestAnimationFrame) window.requestAnimationFrame(focusFirst);
+          else setTimeout(focusFirst, 0);
+        }
       }
     }
     btn.addEventListener('click', function () {
