@@ -61,7 +61,8 @@ test('the mobile menu swaps its label and focuses the first link when opened', (
   assert.match(js, /메뉴 닫기/);
   assert.match(js, /메뉴 열기/);
   assert.match(js, /nav\.querySelector\('a'\)/);
-  assert.match(js, /requestAnimationFrame\(focusFirst\)/);
+  assert.match(js, /void nav\.offsetWidth/, 'force the open styles before focusing');
+  assert.match(js, /setTimeout\(focusFirst, 60\)/, 'retry once when the first focus is ignored');
 });
 
 test('homepage actions use real URLs so they work without JavaScript', () => {
