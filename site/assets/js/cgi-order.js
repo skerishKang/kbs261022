@@ -8,7 +8,9 @@
   'use strict';
 
   var cfg = window.CGI_SITE_CONFIG || {};
-  var PRODUCTS = window.CGI_PRODUCTS || [];
+  // 목록 데이터는 cgi-catalog.js 가 비동기로 읽는다. 이 파일이 먼저 실행되므로
+// 배열을 복사해 두지 말고, 필요할 때 window.CGI_PRODUCTS 를 다시 읽는다.
+  function allProducts() { return window.CGI_PRODUCTS || []; }
   var SERVICES = window.CGI_SERVICES || [];
   var API = cfg.orderApiUrl || cfg.quoteApiUrl || '';
   // Checkout consent (2026-11-04 대표 결정). The booleans are a client gate;
@@ -28,7 +30,8 @@
     return isNaN(d.getTime()) ? String(value) : d.toLocaleString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' });
   }
   function findProduct(id) {
-    for (var i = 0; i < PRODUCTS.length; i++) if (PRODUCTS[i].id === id) return PRODUCTS[i];
+    var list = allProducts();
+    for (var i = 0; i < list.length; i++) if (list[i].id === id) return list[i];
     return null;
   }
   function isPublicPrice(product) {

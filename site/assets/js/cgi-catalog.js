@@ -198,23 +198,96 @@
   }
 
   /* ------------------------------------------------------------- data load */
+  /**
+   * ?data= 는 같은 오리진의 data/ 하위 .json 만 허용한다. 외부 URL·상위 경로·
+   * 비JSON 은 조용히 무시하고 기본 경량 목록으로 돌아간다(SSRF/피싱 방지).
+   */
+  function allowedDataUrl(raw) {
+    if (!raw) return null;
+    try {
+      var url = new URL(raw, location.href);
+      if (url.origin !== location.origin) return null;
+      var dataBase = new URL('data/', location.href).pathname;
+      if (url.pathname.indexOf(dataBase) !== 0) return null;
+      if (!/\.json$/i.test(url.pathname)) return null;
+      return url.toString();
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function applyCatalog(rows) {
+    var list = (rows && rows.products) || rows || [];
+    state.products = list.map(prepare);
+    if (rows && rows.meta) state.meta = Object.assign(state.meta, rows.meta);
+    // cgi-order.js · cgi-staff.js 는 window.CGI_PRODUCTS 를 그대로 쓴다.
+    window.CGI_PRODUCTS = state.products;
+    return state.products;
+  }
+
   function loadProducts() {
-    var params = new URLSearchParams(location.search);
-    var dataParam = params.get('data');
-    if (dataParam) {
-      return fetch(dataParam).then(function (res) {
+    // A page may preload the list (file:// or a test harness). Otherwise the
+    // light catalog.json is fetched.
+    if (Array.isArray(window.CGI_PRODUCTS) && window.CGI_PRODUCTS.length) {
+      state.products = window.CGI_PRODUCTS.map(prepare);
+      if (window.CGI_PRODUCT_META) state.meta = Object.assign(state.meta, window.CGI_PRODUCT_META);
+      return Promise.resolve(state.products);
+    }
+    var dataUrl = allowedDataUrl(new URLSearchParams(location.search).get('data'));
+    if (dataUrl) {
+      return fetch(dataUrl).then(function (res) {
         if (!res.ok) throw new Error('데이터 파일을 읽지 못했습니다: ' + res.status);
         return res.json();
-      }).then(function (rows) {
-        state.products = (rows.products || rows).map(prepare);
-        if (rows.meta) state.meta = Object.assign(state.meta, rows.meta);
-        return state.products;
-      });
+      }).then(applyCatalog);
     }
-    var rows = window.CGI_PRODUCTS || [];
-    state.products = rows.map(prepare);
-    if (window.CGI_PRODUCT_META) state.meta = Object.assign(state.meta, window.CGI_PRODUCT_META);
-    return Promise.resolve(state.products);
+    var url = new URL('data/catalog.json', location.href).toString();
+    return fetch(url, { cache: 'no-cache' }).then(function (res) {
+      if (!res.ok) throw new Error('상품 목록을 읽지 못했습니다: ' + res.status);
+      return res.json();
+    }).then(applyCatalog);
+  }
+
+  var detailCache = {};
+
+  /** 상세 분할 파일(part-XXXX.json)을 한 번만 읽어 상품에 병합한다. */
+  function loadDetail(product) {
+    if (!product) return Promise.resolve(null);
+    if (product._detailLoaded || !product.shard) {
+      product._detailLoaded = true;
+      return Promise.resolve(product);
+    }
+    var shardNumber = String(product.shard).replace(/[^0-9]/g, '');
+    if (!shardNumber) {
+      product._detailLoaded = true;
+      return Promise.resolve(product);
+    }
+    var key = 'data/details/part-' + shardNumber.padStart(4, '0') + '.json';
+    var pending = detailCache[key];
+    if (!pending) {
+      pending = fetch(new URL(key, location.href).toString()).then(function (res) {
+        if (!res.ok) throw new Error('상세 데이터를 읽지 못했습니다: ' + res.status);
+        return res.json();
+      });
+      detailCache[key] = pending;
+    }
+    return pending.then(function (payload) {
+      var rows = (payload && payload.products) || [];
+      for (var i = 0; i < rows.length; i++) {
+        if (rows[i].id !== product.id) continue;
+        var d = rows[i];
+        if (d.images && d.images.length) product.images = cleanImages(d.images);
+        product.specs = d.specs || [];
+        product.options = d.options || [];
+        product.source = Object.assign({}, product.source, d.source || {});
+        break;
+      }
+      product._detailLoaded = true;
+      return product;
+    }).catch(function () {
+      // 상세 파일을 못 읽어도 목록 정보로 화면을 유지한다(전체 페이지 실패 방지).
+      product._detailLoaded = true;
+      return product;
+    });
   }
 
   function prepare(product) {
@@ -223,7 +296,7 @@
     p.options = p.options || [];
     p.source = p.source || {};
     p.images = cleanImages(p.images);
-    p._search = norm([p.name, p.model, p.brand, p.brand_raw, p.manufacturer, categoryLabel(p),
+    p._search = norm(p.search_text || [p.name, p.model, p.brand, p.brand_raw, p.manufacturer, categoryLabel(p),
       (p.category_path || []).join(' '),
       (p.specs || []).map(function (s) { return s.label + ' ' + s.value; }).join(' ')].join(' '));
     p._cat = categoryLabel(p);
@@ -616,6 +689,17 @@
         '<div class="empty-actions"><a class="btn btn-primary" href="#/products">상품 목록으로</a></div></div>';
       return;
     }
+    // 목록 데이터에는 사양·옵션·전체 이미지가 없다. 상세 진입 때 해당 분할 파일만
+    // 읽고, 그동안은 로딩 화면을 보여 준다.
+    if (product.shard && !product._detailLoaded) {
+      app.innerHTML = '<div class="loading" id="detailLoading">상품 정보를 불러오는 중입니다…</div>';
+      loadDetail(product).then(function () { renderDetailBody(product); });
+      return;
+    }
+    renderDetailBody(product);
+  }
+
+  function renderDetailBody(product) {
     var price = fmtPrice(product);
     var images = product.images;
     var specRows = (product.specs || []).filter(function (s) { return s.label && s.value; });
@@ -1191,6 +1275,9 @@
       route.view = 'auth-verify';
     } else if (parts[0] === 'auth' && parts[1] === 'reset') {
       route.view = 'auth-reset';
+    } else if (parts[0] === 'auth' && parts[1] === 'google-consent') {
+      route.view = 'google-consent';
+      route.token = params.get('token') || '';
     }
     return route;
   }
@@ -1273,6 +1360,7 @@
     else if (view === 'forgot-password') renderForgotPassword(app);
     else if (view === 'auth-verify') renderAuthVerify(app);
     else if (view === 'auth-reset') renderAuthReset(app);
+    else if (view === 'google-consent') renderGoogleConsent(app);
     else if (view === 'my-page') renderMyPage(app);
     else renderAbout();
     // 뷰 렌더로 새로 만들어진 [data-home-link](이용 안내 등)에도 정본 URL을 적용한다.
@@ -1952,6 +2040,70 @@
         });
       });
     }
+  }
+
+  /** Google 최초 로그인 동의 화면 — 동의 전에는 서버에 회원이 만들어지지 않는다. */
+  function renderGoogleConsent(app) {
+    var p = authApi();
+    var token = state.route.token || '';
+    if (!p) {
+      app.innerHTML = authShell('Google 가입 동의',
+        authAlert('로그인 서비스를 사용할 수 없습니다. API 주소를 확인하세요.', 'error'), true);
+      return;
+    }
+    if (!token) {
+      app.innerHTML = authShell('Google 가입 동의',
+        authAlert('동의 링크가 올바르지 않습니다. Google 로그인을 다시 시도해 주세요.', 'error') +
+        '<a class="btn btn-primary btn-block" href="#/login">로그인으로 돌아가기</a>', true);
+      return;
+    }
+    app.innerHTML = authShell('Google 가입 동의',
+      '<p class="auth-muted">Google 계정으로 처음 방문하셨어요. 가입을 마치려면 아래 두 항목에 동의해 주세요.</p>' +
+      '<div class="auth-consent">' +
+        '<label class="auth-check"><input type="checkbox" name="agreeTerms"> <span>[필수] <a href="terms.html" target="_blank" rel="noopener">이용약관</a>에 동의합니다.</span></label>' +
+        '<label class="auth-check"><input type="checkbox" name="agreePrivacy"> <span>[필수] <a href="privacy.html" target="_blank" rel="noopener">개인정보 수집·이용 안내</a>에 동의합니다.</span></label>' +
+      '</div>' +
+      '<div id="googleConsentStatus"></div>' +
+      '<button type="button" class="btn btn-primary btn-block" id="googleConsentSubmit" disabled>동의하고 가입 완료</button>' +
+      '<div class="auth-alt"><a href="#/login">취소</a></div>', true);
+
+    var terms = app.querySelector('input[name="agreeTerms"]');
+    var privacy = app.querySelector('input[name="agreePrivacy"]');
+    var submit = app.querySelector('#googleConsentSubmit');
+    var status = app.querySelector('#googleConsentStatus');
+    function sync() { submit.disabled = !(terms.checked && privacy.checked); }
+    terms.addEventListener('change', sync);
+    privacy.addEventListener('change', sync);
+    submit.addEventListener('click', function () {
+      if (!terms.checked || !privacy.checked) {
+        status.innerHTML = authAlert('이용약관과 개인정보 수집·이용 동의가 필요합니다.', 'error');
+        return;
+      }
+      submit.disabled = true;
+      submit.textContent = '가입 처리 중…';
+      status.innerHTML = '';
+      p.googleConsent(token, {
+        terms: true,
+        privacy: true,
+        terms_version: 'draft-2026-10-28',
+        privacy_version: 'draft-2026-10-28'
+      }).then(function (res) {
+        if (!res.ok) {
+          submit.disabled = false;
+          submit.textContent = '동의하고 가입 완료';
+          status.innerHTML = authAlert(
+            res.data && res.data.error === 'token expired'
+              ? '동의 시간이 만료되었습니다. Google 로그인을 다시 시도해 주세요.'
+              : '가입을 완료하지 못했습니다. Google 로그인을 다시 시도해 주세요.', 'error'
+          ) + '<a class="btn btn-secondary btn-block" href="#/login">로그인으로 돌아가기</a>';
+          return;
+        }
+        window.cgiSyncAuthHeader && window.cgiSyncAuthHeader();
+        showToast(res.created ? '가입이 완료되었습니다.' : '동의가 저장되었습니다.');
+        if (res.redirect) window.location.href = res.redirect;
+        else navigate('#/');
+      });
+    });
   }
 
   function renderAuthReset(app) {

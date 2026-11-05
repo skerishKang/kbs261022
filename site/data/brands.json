@@ -1,0 +1,262 @@
+{
+ "generated_at": "2026-11-05T13:54:22Z",
+ "product_count": 4575,
+ "brands": [
+  {
+   "name": "SHURE",
+   "count": 1074
+  },
+  {
+   "name": "KLOTZ",
+   "count": 327
+  },
+  {
+   "name": "PRESONUS",
+   "count": 317
+  },
+  {
+   "name": "NEUTRIK",
+   "count": 256
+  },
+  {
+   "name": "GENELEC",
+   "count": 174
+  },
+  {
+   "name": "APOGEE",
+   "count": 133
+  },
+  {
+   "name": "HK AUDIO",
+   "count": 133
+  },
+  {
+   "name": "ARTURIA",
+   "count": 132
+  },
+  {
+   "name": "NASH GUITARS",
+   "count": 128
+  },
+  {
+   "name": "REAN",
+   "count": 125
+  },
+  {
+   "name": "MICHAEL TUTTLE GUITARS",
+   "count": 124
+  },
+  {
+   "name": "MESA/BOOGIE",
+   "count": 119
+  },
+  {
+   "name": "JICO",
+   "count": 96
+  },
+  {
+   "name": "NATIVE INSTRUMENTS",
+   "count": 96
+  },
+  {
+   "name": "RADIAL",
+   "count": 95
+  },
+  {
+   "name": "WAVES",
+   "count": 87
+  },
+  {
+   "name": "IK MULTIMEDIA",
+   "count": 82
+  },
+  {
+   "name": "PRIMACOUSTIC",
+   "count": 79
+  },
+  {
+   "name": "MARTIN AUDIO",
+   "count": 77
+  },
+  {
+   "name": "KÖNIG & MEYER",
+   "count": 69
+  },
+  {
+   "name": "자체제작",
+   "count": 66
+  },
+  {
+   "name": "QED",
+   "count": 61
+  },
+  {
+   "name": "K&M",
+   "count": 55
+  },
+  {
+   "name": "COMPLY",
+   "count": 52
+  },
+  {
+   "name": "OVERLOUD",
+   "count": 46
+  },
+  {
+   "name": "Q ACOUSTICS",
+   "count": 46
+  },
+  {
+   "name": "VICOUSTIC",
+   "count": 41
+  },
+  {
+   "name": "IZOTOPE",
+   "count": 40
+  },
+  {
+   "name": "POSITIVE GRID",
+   "count": 38
+  },
+  {
+   "name": "EV",
+   "count": 35
+  },
+  {
+   "name": "DYNAUDIO",
+   "count": 34
+  },
+  {
+   "name": "ANTARES",
+   "count": 31
+  },
+  {
+   "name": "ALLEN&HEATH",
+   "count": 29
+  },
+  {
+   "name": "QSC",
+   "count": 27
+  },
+  {
+   "name": "ROTOSOUND",
+   "count": 26
+  },
+  {
+   "name": "CELEMONY",
+   "count": 25
+  },
+  {
+   "name": "FABFILTER",
+   "count": 21
+  },
+  {
+   "name": "VADDIO",
+   "count": 21
+  },
+  {
+   "name": "AUDIOSCAPE",
+   "count": 20
+  },
+  {
+   "name": "RICKENBACKER",
+   "count": 20
+  },
+  {
+   "name": "ROSCOE GUITARS",
+   "count": 13
+  },
+  {
+   "name": "ROCK AND ROLL RELICS",
+   "count": 11
+  },
+  {
+   "name": "MERCURIALL",
+   "count": 10
+  },
+  {
+   "name": "GRAY LONDON GUITARS",
+   "count": 9
+  },
+  {
+   "name": "CLOUD",
+   "count": 8
+  },
+  {
+   "name": "GENZLER",
+   "count": 8
+  },
+  {
+   "name": "TUTTLE GUITARS",
+   "count": 8
+  },
+  {
+   "name": "TC ELECTRONIC",
+   "count": 6
+  },
+  {
+   "name": "IMAG SYSTEMS",
+   "count": 4
+  },
+  {
+   "name": "MATRIX AUDIO",
+   "count": 4
+  },
+  {
+   "name": "브랜드 미확인",
+   "count": 4
+  },
+  {
+   "name": "ACOUSTIC GROVE SYSTEM",
+   "count": 3
+  },
+  {
+   "name": "AGS",
+   "count": 3
+  },
+  {
+   "name": "CLEAR-COM",
+   "count": 3
+  },
+  {
+   "name": "FENDER STUDIO",
+   "count": 3
+  },
+  {
+   "name": "FIDELICE",
+   "count": 3
+  },
+  {
+   "name": "KEN SMITH",
+   "count": 3
+  },
+  {
+   "name": "안전사",
+   "count": 3
+  },
+  {
+   "name": "자체브랜드",
+   "count": 3
+  },
+  {
+   "name": "AROBAS MUSIC",
+   "count": 2
+  },
+  {
+   "name": "LANDR",
+   "count": 2
+  },
+  {
+   "name": "TC HELICON",
+   "count": 2
+  },
+  {
+   "name": "UNITED",
+   "count": 2
+  },
+  {
+   "name": "HEXACHORDS",
+   "count": 1
+  }
+ ]
+}

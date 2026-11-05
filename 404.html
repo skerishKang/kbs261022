@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>페이지를 찾을 수 없습니다 | (주)시지아이 CGI</title>
+<meta name="description" content="요청하신 페이지를 찾을 수 없습니다. CGI 쇼핑몰과 회사 홈페이지로 이동해 주세요.">
+<meta name="theme-color" content="#07913A">
+<link rel="icon" type="image/png" href="/website/assets/img/cgi-mark-green.png">
+<style>
+  :root { --green:#07913A; --ink:#1c2321; --muted:#5c6764; --line:#e3e7e5; --bg:#f6f8f7; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family:"Noto Sans KR","Apple SD Gothic Neo",system-ui,sans-serif; color:var(--ink); background:var(--bg); }
+  a { color:inherit; }
+  .skip { position:absolute; left:-999px; }
+  .skip:focus { left:8px; top:8px; z-index:10; background:#fff; padding:8px 12px; border-radius:6px; }
+  .site-head { background:#111614; color:#fff; }
+  .head-inner { max-width:1120px; margin:0 auto; padding:14px 20px; display:flex; align-items:center; gap:24px; flex-wrap:wrap; }
+  .logo img { display:block; }
+  .head-nav { margin-left:auto; display:flex; gap:18px; flex-wrap:wrap; font-size:14px; }
+  .head-nav a { text-decoration:none; opacity:.9; }
+  .head-nav a:hover { opacity:1; text-decoration:underline; }
+  main { max-width:760px; margin:0 auto; padding:72px 20px 88px; text-align:center; }
+  .code { font-size:13px; letter-spacing:.18em; color:var(--green); font-weight:700; }
+  h1 { font-size:clamp(26px,4vw,40px); margin:12px 0 12px; }
+  p { color:var(--muted); line-height:1.7; margin:0 0 28px; }
+  .actions { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+  .btn { display:inline-block; padding:12px 22px; border-radius:8px; text-decoration:none; font-weight:600; border:1px solid var(--green); }
+  .btn-primary { background:var(--green); color:#fff; }
+  .btn-ghost { background:#fff; color:var(--green); }
+  .site-foot { border-top:1px solid var(--line); background:#fff; }
+  .foot-inner { max-width:1120px; margin:0 auto; padding:28px 20px; color:var(--muted); font-size:13px; line-height:1.7; }
+  .foot-inner strong { color:var(--ink); }
+  .foot-info a { color:var(--green); }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">본문 바로가기</a>
+
+<header class="site-head">
+  <div class="head-inner">
+    <a class="logo" href="/website/" aria-label="CGI (주)시지아이 홈">
+      <img src="/website/assets/img/cgi-mark-white.png" alt="CGI (주)시지아이" width="132" height="42">
+    </a>
+    <nav class="head-nav" aria-label="주 메뉴">
+      <a href="/website/">회사 홈페이지</a>
+      <a href="/site/">상품 쇼핑몰</a>
+      <a href="/site/#/products">전체 상품</a>
+      <a href="/site/#/quote-cart">견적 목록</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <p class="code">404 · NOT FOUND</p>
+  <h1>페이지를 찾을 수 없습니다</h1>
+  <p>주소가 바뀌었거나 삭제된 페이지입니다. 아래에서 원하시는 화면으로 이동해 주세요.</p>
+  <div class="actions">
+    <a class="btn btn-primary" href="/site/">상품 쇼핑몰</a>
+    <a class="btn btn-ghost" href="/website/">회사 홈페이지</a>
+  </div>
+</main>
+
+<footer class="site-foot">
+  <div class="foot-inner foot-info">
+    <p><strong>㈜시지아이</strong> · 대표이사 김범신, 백정아 · 사업자등록번호 410-86-46283 · 통신판매업신고 2025-전남장성-94</p>
+    <p>[57248] 전라남도 장성군 남면 나노산단로 102 (삼태리) · TEL <a href="tel:0625768100">062) 576-8100</a> · FAX 062) 576-8181</p>
+    <p>개인정보보호책임자 김범신 · <a href="mailto:cgiinc@naver.com">cgiinc@naver.com</a></p>
+    <p><a href="/site/privacy.html">개인정보처리방침</a> · <a href="/site/terms.html">이용약관</a> · <a href="/site/returns.html">교환·반품·환불 안내</a></p>
+  </div>
+</footer>
+</body>
+</html>

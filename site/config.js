@@ -33,9 +33,9 @@ window.CGI_SITE_CONFIG = {
   pgProvider: 'nicepay',
   homepageLabel: '회사 홈페이지',
 
-  // ── 상품 데이터 경로 (이슈 #19 전체 마스터 반영 지점) ────────
-  // 기본값은 data/products.js. ?data=<경로> 로 다른 JSON 을 지정할 수도 있습니다.
-  //   예) site/index.html?data=data/products.json
-  // #19 산출물이 오면 site/data/products.json / products.js 를 교체하면 됩니다.
-  dataFile: 'data/products.js'
+  // ── 상품 데이터 (이슈 #19) ────────────────────────────────
+  // 쇼핑몰은 data/catalog.json(목록용 경량)을 먼저 읽고, 상세 진입 때
+  // data/details/part-XXXX.json 을 읽습니다. 원본 data/products.json 은
+  // 빌드 입력이며 배포 루트에서 제외합니다(tools/build_pages_root.mjs).
+  // ?data= 는 같은 오리진의 data/ 하위 .json 만 허용합니다.
 };

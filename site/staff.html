@@ -84,11 +84,22 @@
   </div>
 </footer>
 
-<script src="config.js?v=100a"></script>
-<script src="data/products.js"></script>
+<script src="config.js?v=101a"></script>
 <script src="data/services.js"></script>
 <script src="assets/js/cgi-header.js"></script>
 <script src="assets/js/cgi-auth.js?v=80a"></script>
-<script src="assets/js/cgi-staff.js?v=74a"></script>
+<script>
+(function () {
+  function loadStaff() {
+    var s = document.createElement("script");
+    s.src = "assets/js/cgi-staff.js?v=75a";
+    document.body.appendChild(s);
+  }
+  fetch("data/catalog.json", { cache: "no-cache" }).then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (d) { if (d && d.products) window.CGI_PRODUCTS = d.products; })
+    .catch(function () {})
+    .then(loadStaff);
+})();
+</script>
 </body>
 </html>

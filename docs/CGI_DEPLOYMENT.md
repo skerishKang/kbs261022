@@ -1,117 +1,160 @@
-# CGI 통합 시연본 — 배포 설정 및 필요한 도메인 정보
+# CGI 주문·결제·상품 카탈로그
 
-> Issue #18 · 2026-10-22
-> 이 문서는 **실주소 배포를 위해 대표님/관리자에게 필요한 항목**을 정리한 것입니다.
-> 현재 산출물은 **정적 파일**이며 빌드 단계·서버측 코드·DB가 없습니다.
-> **배포 메모(2026-11-03):** `cgishop`·`cgihomepage` Pages 프로젝트는 Git 연동이 없는 **수동 업로드**라 **main에 머지한다고 라이브가 바뀌지 않습니다** — `wrangler pages deploy <배포 루트> --project-name cgishop|cgihomepage --branch main`(계정 Charliekant)으로 올려야 반영되고, 올리는 내용은 저장소 루트의 `site/`·`website/` 두 폴더입니다. 라이브 `/`의 302(각 프로젝트 주 섹션)는 저장소 루트의 `_redirects`를 배포 루트에 그대로 복사해 채웁니다 — 사본을 따로 만들지 않습니다. `cgishop`은 `/ /site/ 302`, `cgihomepage`는 배포 시 대상만 `/website/`로 바꿉니다.
+(주)시지아이(CGI) 쇼핑몰(`site/`)·회사 홈페이지(`website/`)와 Cloudflare 백엔드의 현재 운영 구조입니다.
 
----
+## 구성
 
-## 1. 배포 대상 물리 구성
-
-```
-<배포 루트>/
-├── website/          ← CGI 회사 홈페이지 (index.html, assets/)
-└── site/             ← CGI 상품 쇼핑몰 (index.html, product.html, assets/, data/, config.js)
-```
-
-**두 폴더는 반드시 같은 오리진(도메인)의 같은 루트 아래에 있어야 합니다.**
-링크가 상대경로(`../website/index.html`, `../site/index.html#/products`)이기 때문입니다.
-
-### 권장 배치 3가지
-
-| 배치 | URL 형태 | 설정 |
+| 구성 | 이름 | 비고 |
 |---|---|---|
-| **A. 도메인 루트** (권장) | `https://<도메인>/website/` , `https://<도메인>/site/` | 기본값 그대로 사용. 변경 없음 |
-| **B. 서브경로** | `https://<도메인>/catalog/` (쇼핑몰), `https://<도메인>/` (홈페이지) | `site/config.js` 의 `homepageUrl` → `../` , `website/assets/config.js` 의 `mallUrl`·`mallListUrl` → `../catalog/index.html` / `../catalog/index.html#/products` |
-| **C. 별도 서브도메인** | `https://cgi.co.kr/` (홈페이지), `https://catalog.cgi.co.kr/` (쇼핑몰) | `website/assets/config.js` 의 `mallUrl` → `https://catalog.cgi.co.kr/index.html`, `mallListUrl` → `.../#/products` ; `site/config.js` 의 `homepageUrl` → `https://cgi.co.kr/` |
+| 쇼핑몰 | Cloudflare Pages `cgishop` → https://cgishop.pages.dev/site/ | Git 연동 없는 **수동 업로드** |
+| 홈페이지 | 같은 `cgishop` 배포의 `/website/` | https://cgishop.pages.dev/website/ |
+| Worker(운영) | `cgi-quote-api` + D1 `cgi_quotes` | 견적·주문·결제·회원 API |
+| Worker(샌드박스) | `cgi-nicepay-sandbox` + D1 `cgi_quotes_sandbox` | `-c wrangler.sandbox.toml` |
+| 리다이렉트 전용 | Pages `cgihomepage` | `cgishop`으로 302만 한다. 콘텐츠를 올리지 않는다. |
 
-설정 파일은 **2곳뿐**이며, 코드 수정이 아니라 값 교체만 하면 됩니다.
+결제는 NICEPAY TEST(샌드박스 계약)로 동작하며 화면에 `TEST 결제` 배지가 유지된다.
+운영 키로 전환하기 전에는 이 배지를 제거하지 않는다. 가격은 대리점 계약 값이며
+코드·데이터 빌드에서 임의로 바꾸지 않는다.
 
-| 파일 | 키 | 기본값 |
-|---|---|---|
-| `website/assets/config.js` | `mallUrl` | `../site/index.html` |
-| `website/assets/config.js` | `mallListUrl` | `../site/index.html#/products` |
-| `website/assets/config.js` | `mallDataUrl` | `../site/data/products.js` |
-| `site/config.js` | `homepageUrl` | `../website/index.html` |
-| `site/config.js` | `dataFile` | `data/products.js` |
+## 사전 준비
 
----
-
-## 2. 필요한 도메인·호스팅 정보 (대표님/관리자 확인 사항)
-
-| # | 필요 항목 | 현재 확인된 사실 | 필요한 것 |
-|---|---|---|---|
-| 1 | 사용할 도메인 | `cgiinc.kr` DNS가 Cloudflare에 등록되어 있음(검증 완료). **https://cgiinc.kr 현재 521(origin down)**, `http://` 는 오리진이 "도메인 셋팅이 잘못 되었습니다" 를 반환 | **신규 시연 주소** 권장. 예: `https://cgi.co.kr/` 또는 `https://demo.cgiinc.kr/`. 기존 운영 홈페이지와 분리된 신규 주소 |
-| 2 | 오리진 서버 상태 | 521 발생 중 = 오리진이 HTTPS 연결을 응답하지 않음. HTTP 는 한국어 오류 페이지를 반환(Host 불일치) | **오리진 웹서버의 도메인 설정 확인** 또는 **Cloudflare → 오리진 경로 점검**. 사내 서버에 도메인을 등록하지 않았을 가능성 |
-| 3 | DNS 관리 권한 | `cgiinc.kr` 가 Cloudflare DNS 사용 중(과거 접속 이력으로 확인) | Cloudflare zones / DNS 레코드 **수정 권한** (또는 DNS 담당자 지정) |
-| 4 | HTTPS 인증서 | Cloudflare proxied 도메인 → 서버리스 인증서(Origin CA) 방식 | 인증서 방식 확정(Cloudflare 자동 / 사내 인증서) |
-| 5 | 정적 호스팅 계정 | 미확인 | Netlify / Vercel / Cloudflare Pages / GitHub Pages / 사내 웹서버 중 **하나** + 계정/키. **GitHub Pages 는 사내 DNS 와 연결 제약이 있으므로 DNS 권한이 있을 때 유리** |
-| 6 | 배포 대상 폴더 | `website/` + `site/` | 두 폴더를 함께 배포할 단위(루트 또는 서브경로) |
-| 7 | 개편업체 협의 | `Z:\홈페이지\홈페이지제작가이드` 가 존재 → 이전에 홈페이지 개편을 의뢰한 흔적 | **기존 운영 홈페이지 교체 여부/범위**, 개편업체 담당 범위. **허가 없이 교체하지 않습니다** |
-| 8 | 사업자 표시 정책 | 사업자등록증명 410-86-46283 확인(법인등기 기준) | 쇼핑몰·홈페이지 하단에 **사업자등록번호 표시 여부**(일반적 표시 권장). 법인등록번호는 게시하지 않겠습니다 |
-| 9 | 개인정보·약관 | 현재 수집·주문 기능 없음(쿠키·세션·결제 미사용) | 추후 주문 단계에서 개인정보처리방침·이용약관 필요. **현재는 해당 없음** |
-| 10 | 서버측 기능 | **없음** (순수 정적) | PHP/Node/DB 불필요. 정적 호스팅이면 충분 |
-
----
-
-## 3. 배포 절차 (권장 순서)
-
-1. **신규 시연 주소 확보** — 위 2번 항목(오리진/도메인 설정) 정리 후, 기존 운영 주소와 분리된 주소를 받습니다.
-2. **정적 호스팅 계정 준비** — 5번 항목.
-3. **폴더 배치** — `website/` 과 `site/` 을 §1 의 배치(권장 A)에 따라 업로드.
-4. **연결 주소 확인** — 배치에 따라 §1 표의 설정값을 `website/assets/config.js` / `site/config.js` 에 반영.
-5. **HTTPS + Mixed Content 확인** — 상대경로만 쓰므로 https→http 혼용 문제는 없습니다.
-6. **브라우저 검증** — 아래 체크리스트를 실제 브라우저(PC/모바일)로 통과시킨 뒤 보고드립니다.
-7. **기존 운영 홈페이지 연결** — 개편업체 협의(7번) 완료 후, "제품 보기" 를 기존 홈페이지 메뉴에 연결. **이번 시연본은 기존 홈페이지를 건드리지 않습니다.**
-
-### 배포 후 체크리스트
-
-| # | 항목 | 기준 |
-|---|---|---|
-| 1 | 홈페이지 진입 | `/website/index.html` 정상 표시 |
-| 2 | 쇼핑몰 진입 | `/site/index.html` 정상 표시 |
-| 3 | 홈페이지 → 쇼핑몰 | "제품 보기" 5곳 + 브랜드 칩 36개 이동 |
-| 4 | 쇼핑몰 → 홈페이지 | 상단 "회사 홈페이지" / 푸터 / 상세 브레드크럼 3곳 |
-| 5 | 브랜드 필터 | `?brand=SHURE` → 8건, `?brand=K%26M` → 정상 빈 화면 |
-| 6 | 반응형 | 1920 / 1440 / 820 / 390 — 가로 스크롤 0, 깨진 이미지 0 |
-| 7 | 콘솔 | 사이트 출처 오류 0 |
-| 8 | 데이터 교체(#19) | `site/data/products.js` 교체 → 양쪽 자동 반영 확인 |
-
----
-
-## 4. 이슈 #19 전체 상품 DB 연결 절차
-
-수집기·Excel 생성기는 **이 PR에서 만들지 않았습니다**(별도 이슈 #19 담당). 연결 경로만 준비되어 있습니다.
-
-```
-공통 상품 마스터 (이슈 #19 산출물: 전체 4,575건 CSV/XLSX)
-        │  python tools/build_catalog_data.py --master-csv <전체마스터.csv> \
-        │                                 --sample-json <샘플.json> --categories <카테고리.csv>
-        ▼
-site/data/products.json  +  site/data/products.js   (window.CGI_PRODUCTS)
-        │
-        ├─▶ 상품 쇼핑몰   : 목록·브랜드/카테고리/공급처 필터·상세가 자동 확장
-        ├─▶ 회사 홈페이지 : 브랜드 칩 36개 → 데이터 보유 브랜드 20종 → 전체로 자동 확장
-        └─▶ 추후 네이버 스마트스토어 등록 : 동일 마스터에서 등록 데이터 생성
+```powershell
+# Cloudflare 로그인 (OAuth, 계정 …6932)
+wrangler whoami
 ```
 
-**홈페이지 코드는 수정할 필요가 없습니다.** `website/assets/config.js` 의 `mallDataUrl` 이
-`../site/data/products.js` 를 읽고 브랜드·건수를 자동 표시하기 때문입니다.
+- `ADMIN_TOKEN`은 **운영·샌드박스 각각 다른 값**으로 Worker secret에 저장한다.
+  저장소·문서·PR에 값을 쓰지 않는다.
+- D1 변경 전에는 항상 time-travel 북마크를 기록한다.
+- Worker 배포 전에는 현재 버전 ID를 기록한다(롤백 대상).
 
-### 확인된 교체 방식 2가지
+```powershell
+wrangler d1 time-travel info cgi_quotes
+wrangler versions list --name cgi-quote-api
+wrangler versions list --name cgi-nicepay-sandbox
+```
 
-| 방식 | 방법 | 검증 |
-|---|---|---|
-| A. 기본 파일 교체 | `site/data/products.json` / `products.js` 를 재생성 → 양쪽 자동 반영 | 기본값 경로가 `mallDataUrl`·`dataFile` 에 설정됨 |
-| B. 대체 파일 지정 (실험용) | `site/index.html?data=data/<다른파일>.json` | **실측 확인 완료** — 대체 파일 5건 + 자체 meta(`supplier_catalog_totals`·`data_origin`)가 정상 적용됨 |
+## 배포 순서
 
-> 방식 B의 테스트 파일은 검증 후 삭제했습니다(저장소에 남지 않음).
+1. **D1 (운영·샌드박스 둘 다)** — 새 migration이 있으면 양쪽에 적용한다.
+2. **Worker (운영·샌드박스)** — `--keep-vars`로 배포한다.
+3. **Pages `cgishop`** — 배포 루트를 조립한 뒤 정식 명령으로 업로드한다.
 
----
+샌드박스 D1에 migration을 빼먹으면 새 코드가 참조하는 컬럼이 없어 회원가입 등이
+실패한다(예: 0011 이전에는 signup이 `email already used`로 보였다). 운영과 샌드박스는
+항상 같은 migration 집합을 유지한다.
 
-## 5. 하지 않은 것 (배포 관점)
+### 1) D1
 
-- **실주소 배포 없음** — 2번(도메인/오리진)·5번(호스팅) 항목이 정리되면 즉시 진행 가능합니다.
-- **기존 `cgiinc.kr` 을 건드리지 않았습니다.** 현재 접속 불가 상태이며, DNS·호스팅·개편업체 협의 없이는 교체하지 않습니다.
-- **서버측 코드·DB·빌드 파이프라인 없음** — 순수 정적 파일이라 별도 준비물이 없습니다.
+```powershell
+cd backend
+
+# 운영
+wrangler d1 time-travel info cgi_quotes
+wrangler d1 execute cgi_quotes --remote --file=migrations/0011_member_consent.sql
+
+# 샌드박스
+wrangler d1 time-travel info cgi_quotes_sandbox
+wrangler d1 execute cgi_quotes_sandbox --remote --file=migrations/0011_member_consent.sql
+```
+
+- migration 파일은 `backend/migrations/`에 0001~0011로 누적되어 있다.
+- `wrangler d1 execute`는 파일 단위로 실행된다. 이미 적용된 migration을 다시 실행하면
+  `duplicate column`으로 실패하므로, 새 파일만 적용한다.
+- 결과 확인 시 이메일·전화번호 등 개인정보를 출력하지 않는다(건수만 확인).
+
+### 2) Worker
+
+```powershell
+cd backend
+
+# 운영
+wrangler deploy --keep-vars
+
+# 샌드박스 (자기 D1·자기 사이트 설정을 그대로 유지)
+wrangler deploy -c wrangler.sandbox.toml --keep-vars
+```
+
+- `--keep-vars`가 없으면 대시보드에서 추가한 변수가 지워질 수 있다.
+- 배포 전 `wrangler versions list`로 이전 버전 ID를, 배포 후 출력의
+  `Current Version ID`를 기록한다.
+- 헬스 체크(토큰은 환경변수로만):
+
+```powershell
+$t = $env:CGI_ADMIN_TOKEN   # 로컬 비밀 저장소에서 읽어 환경변수로만 사용
+Invoke-RestMethod -Headers @{ Authorization = "Bearer $t" } `
+  https://cgi-quote-api.charliekant.workers.dev/api/admin/health
+```
+
+정상 기준: HTTP 200, `pg.provider=nicepay`, `pg.mode=sandbox`, `warnings=[]`,
+`site_base_url=https://cgishop.pages.dev/site`, `cors_allowed_origins`에 cgishop만.
+
+### 3) Pages `cgishop`
+
+배포 루트는 저장소에서 조립한다. `site/data/products.json`·`products.js`는 빌드
+입력이므로 **배포에서 제외**된다(`tools/build_pages_root.mjs`).
+
+```powershell
+node tools/build_pages_root.mjs --out C:\temp\cgishop-deploy
+wrangler pages deploy C:\temp\cgishop-deploy --project-name cgishop --branch main
+```
+
+배포 루트 구성:
+
+```
+<deploy-root>/
+├── site/        (data/products.json·products.js·_source_* 제외)
+├── website/
+├── _redirects   / → /site/ 302
+├── _headers     X-Robots-Tag: noindex 등 보안 헤더
+└── 404.html
+```
+
+- 업로드 전·후 배포 ID를 `wrangler pages deployment list --project-name cgishop`으로 기록한다.
+- `cgihomepage` 프로젝트는 `cgishop`으로의 302만 담당한다. 콘텐츠를 배포하지 않는다.
+
+## robots / 도메인
+
+`pages.dev`에는 아직 정식 도메인이 없으므로 모든 페이지를 검색엔진에서 제외한다.
+`noindex`는 루트 `_headers`의 `X-Robots-Tag: noindex` **한 곳**에서 관리한다.
+정식 도메인이 연결되고 색인을 허용할 때 그 한 줄만 제거한다(페이지별 meta 태그를
+추가하지 않는다).
+
+## 상품 데이터 빌드
+
+```powershell
+# 1) 전체 마스터 정규화 (원본 CSV/JSON → products.json, products.js)
+python tools/build_catalog_data.py --master-csv <전체마스터.csv> --out-dir site/data
+
+# 2) 기존 products.json에서 배포용 분할 산출물만 재생성
+python tools/build_catalog_data.py --split-only
+```
+
+산출물:
+
+| 파일 | 용도 |
+|---|---|
+| `site/data/products.json` | 전체 원본(빌드 입력, 배포 제외) |
+| `site/data/catalog.json` | 목록·필터·검색·장바구니용 경량 목록 |
+| `site/data/brands.json` | 홈페이지 브랜드 이름·건수 |
+| `site/data/details/part-*.json` | 상세 사양·옵션·전체 이미지(100건 단위) |
+
+쇼핑몰은 `catalog.json`만 먼저 읽고, 상세 진입 때 해당 `part-*.json`만 추가로 읽는다.
+홈페이지는 `brands.json`만 읽는다.
+
+## 롤백
+
+- D1: `wrangler d1 time-travel restore <db> --bookmark=<배포 전 북마크>`
+- Worker: `wrangler rollback --name <worker>` 또는 대시보드에서 이전 버전 선택
+- Pages: 이전 배포 ID의 프리뷰 URL을 확인한 뒤 해당 배포로 되돌린다.
+
+## 확인 체크리스트 (배포 후)
+
+- `/` → `/site/` 302, `/site/`·`/website/` 로드
+- 쇼핑몰 첫 화면 네트워크: `data/catalog.json`만 로드(11MB `products.js` 없음)
+- 목록·검색·상세·장바구니·견적 정상
+- 홈페이지 브랜드 건수 표시
+- 없는 주소 → `404.html`
+- 응답 헤더에 `X-Robots-Tag: noindex`, `X-Frame-Options: DENY`
+- 콘솔 오류 0(익명 `/api/me` 401 제외)
+- 결제 화면: 가상계좌 없음, `TEST 결제` 배지 유지

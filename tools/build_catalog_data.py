@@ -375,6 +375,167 @@ def dedupe(items: list[dict]) -> list[dict]:
     return list(seen.values())
 
 
+# ---------------------------------------------------------------------------
+# 배포용 분할 산출물 (PR-3)
+#
+# products.json 은 11MB 로 목록 한 번 보는 데 전부 필요하지 않다. 배포에서는
+#   catalog.json          목록·필터·검색·장바구니에 필요한 칸만
+#   brands.json           브랜드 이름 + 건수 (홈페이지 전용)
+#   details/part-XXXX.json 상세 화면 칸(사양·옵션·이미지 전체) 100건 단위
+# 만 내보내고 products.json / products.js 는 빌드 입력으로만 남긴다.
+# ---------------------------------------------------------------------------
+
+DETAIL_PART_SIZE = 100
+
+
+def _category_label(product: dict) -> str:
+    cat = product.get("category") or {}
+    if cat.get("name"):
+        return str(cat["name"])
+    path = product.get("category_path") or []
+    if path:
+        return str(path[-1])
+    return "미분류"
+
+
+def _search_text(product: dict) -> str:
+    """cgi-catalog.js prepare() 의 _search 입력과 같은 순서로 만든다."""
+    specs = product.get("specs") or []
+    parts = [
+        product.get("name") or "",
+        product.get("model") or "",
+        product.get("brand") or "",
+        product.get("brand_raw") or "",
+        product.get("manufacturer") or "",
+        _category_label(product),
+        " ".join(str(p) for p in (product.get("category_path") or [])),
+        " ".join(f"{s.get('label', '')} {s.get('value', '')}".strip() for s in specs),
+    ]
+    return " ".join(parts)
+
+
+def to_light(product: dict, shard: int) -> dict:
+    cat = product.get("category") or {}
+    source = product.get("source") or {}
+    images = product.get("images") or []
+    return {
+        "id": product.get("id", ""),
+        "name": product.get("name", ""),
+        "brand": product.get("brand", ""),
+        "brand_raw": product.get("brand_raw", ""),
+        "brand_norm": product.get("brand_norm", ""),
+        "manufacturer": product.get("manufacturer", ""),
+        "model": product.get("model", ""),
+        "category_path": product.get("category_path") or [],
+        "category": {
+            "id": cat.get("id", ""),
+            "name": cat.get("name", ""),
+            "path": cat.get("path", ""),
+        },
+        "price": product.get("price") or {"value": None, "text": "가격 미확인", "state": "unknown"},
+        "availability": product.get("availability", ""),
+        "images": images[:1],
+        "source": {
+            "site": source.get("site", ""),
+            "site_label": source.get("site_label", ""),
+            "updated_at": source.get("updated_at", ""),
+        },
+        "search_text": _search_text(product),
+        "shard": shard,
+    }
+
+
+def write_split_outputs(products: list[dict], out_dir: Path, meta: dict, detail_size: int = DETAIL_PART_SIZE) -> dict:
+    """목록 경량 파일·브랜드 파일·상세 분할 파일을 쓴다. 크기/건수를 돌려준다."""
+    if detail_size < 1:
+        raise ValueError("detail_size must be >= 1")
+    out_dir.mkdir(parents=True, exist_ok=True)
+    details_dir = out_dir / "details"
+    details_dir.mkdir(parents=True, exist_ok=True)
+
+    counts: dict[str, int] = {}
+    for p in products:
+        key = (p.get("brand_norm") or p.get("brand") or "").strip()
+        if not key:
+            continue
+        counts[key] = counts.get(key, 0) + 1
+
+    brands_payload = {
+        "generated_at": meta.get("generated_at"),
+        "product_count": len(products),
+        "brands": [
+            {"name": name, "count": count}
+            for name, count in sorted(counts.items(), key=lambda kv: (-kv[1], kv[0]))
+        ],
+    }
+    brands_path = out_dir / "brands.json"
+    brands_path.write_text(json.dumps(brands_payload, ensure_ascii=False, indent=1), encoding="utf-8")
+
+    # id 순서를 고정해 두면 재빌드 때 shard 번호가 흔들리지 않는다.
+    ordered = sorted(products, key=lambda p: str(p.get("id", "")))
+    light_products = []
+    detail_files = 0
+    for index, product in enumerate(ordered):
+        shard = index // detail_size + 1
+        light_products.append(to_light(product, shard))
+    for start in range(0, len(ordered), detail_size):
+        shard = start // detail_size + 1
+        chunk = ordered[start:start + detail_size]
+        payload = {
+            "part": shard,
+            "products": [
+                {
+                    "id": p.get("id", ""),
+                    "images": p.get("images") or [],
+                    "specs": p.get("specs") or [],
+                    "options": p.get("options") or [],
+                    "source": p.get("source") or {},
+                }
+                for p in chunk
+            ],
+        }
+        (details_dir / f"part-{shard:04d}.json").write_text(
+            json.dumps(payload, ensure_ascii=False, separators=(",", ":")), encoding="utf-8"
+        )
+        detail_files += 1
+
+    catalog_payload = {
+        "meta": {
+            "generated_at": meta.get("generated_at"),
+            "product_count": len(products),
+            "brands": sorted(counts),
+            "sources": meta.get("sources") or [],
+            "source_labels": meta.get("source_labels") or {},
+            "supplier_catalog_totals": meta.get("supplier_catalog_totals") or {},
+            "data_origin": meta.get("data_origin") or [],
+            "notes": meta.get("notes") or [],
+            "detail_part_size": detail_size,
+            "detail_parts": detail_files,
+        },
+        "products": light_products,
+    }
+    catalog_path = out_dir / "catalog.json"
+    # 6MB 목록 파일은 사람이 읽는 파일이 아니다 — 공백을 빼 전송 크기를 줄인다.
+    catalog_path.write_text(
+        json.dumps(catalog_payload, ensure_ascii=False, separators=(",", ":")), encoding="utf-8"
+    )
+
+    def size_of(path: Path) -> int:
+        return path.stat().st_size if path.exists() else 0
+
+    detail_bytes = sum(size_of(p) for p in details_dir.glob("part-*.json"))
+    return {
+        "brands": brands_path,
+        "brands_bytes": size_of(brands_path),
+        "catalog": catalog_path,
+        "catalog_bytes": size_of(catalog_path),
+        "detail_files": detail_files,
+        "detail_bytes": detail_bytes,
+        "brand_count": len(counts),
+        "product_count": len(products),
+    }
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description="CGI 카탈로그 사이트 데이터 정규화 빌더")
     root = Path(__file__).resolve().parents[1]
@@ -382,7 +543,46 @@ def main() -> int:
     ap.add_argument("--sample-json", default=str(root / "site/data/_source_sample-products.json"))
     ap.add_argument("--categories", default=str(root / "site/data/_source_category_catalog.csv"))
     ap.add_argument("--out-dir", default=str(root / "site/data"))
+    ap.add_argument(
+        "--split-only", action="store_true",
+        help="products.json을 다시 만들지 않고 배포용 분할 산출물만 다시 쓴다",
+    )
+    ap.add_argument(
+        "--from-json", default=str(root / "site/data/products.json"),
+        help="--split-only 입력 (정규화된 전체 상품 배열)",
+    )
+    ap.add_argument(
+        "--detail-part-size", type=int, default=DETAIL_PART_SIZE,
+        help="상세 분할 파일당 상품 수 (기본 100)",
+    )
     args = ap.parse_args()
+
+    if args.split_only:
+        source = Path(args.from_json)
+        if not source.exists():
+            print(f"[build_catalog_data] missing input: {source}", file=sys.stderr)
+            return 1
+        products = json.loads(source.read_text(encoding="utf-8"))
+        if not isinstance(products, list):
+            print("[build_catalog_data] products.json must be a JSON array", file=sys.stderr)
+            return 1
+        meta = {
+            "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z"),
+            "sources": sorted({(p.get("source") or {}).get("site", "") for p in products if (p.get("source") or {}).get("site")}),
+            "source_labels": SITE_LABEL,
+            "supplier_catalog_totals": SUPPLIER_CATALOG_TOTALS,
+            "data_origin": ["site/data/products.json"],
+            "notes": ["--split-only: 기존 products.json을 배포용으로 분할했다."],
+        }
+        result = write_split_outputs(products, Path(args.out_dir), meta, args.detail_part_size)
+        print(
+            f"[build_catalog_data] split-only products={result['product_count']} brands={result['brand_count']} "
+            f"catalog={result['catalog_bytes']}B brands={result['brands_bytes']}B "
+            f"details={result['detail_files']} files/{result['detail_bytes']}B"
+        )
+        print(f"[build_catalog_data] wrote {result['catalog']}")
+        print(f"[build_catalog_data] wrote {result['brands']}")
+        return 0
 
     cat_index = build_index(Path(args.categories))
     products = dedupe(
@@ -447,9 +647,16 @@ def main() -> int:
     )
     (out_dir / "products.js").write_text(js, encoding="utf-8")
 
+    # 배포용 경량 산출물 — products.json 이 단일 원본이고, 이것들은 파생물이다.
+    split = write_split_outputs(products, out_dir, meta, args.detail_part_size)
+
     print(f"[build_catalog_data] products={len(products)} brands={len(brands)} sources={sites}")
     print(f"[build_catalog_data] wrote {out_dir / 'products.json'}")
     print(f"[build_catalog_data] wrote {out_dir / 'products.js'}")
+    print(
+        f"[build_catalog_data] split catalog={split['catalog_bytes']}B brands={split['brands_bytes']}B "
+        f"details={split['detail_files']} files/{split['detail_bytes']}B"
+    )
     return 0
 
 

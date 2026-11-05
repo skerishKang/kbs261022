@@ -106,6 +106,18 @@
     });
   }
 
+  /** Google 최초/미동의 계정: 동의 화면의 토큰으로 회원 생성(또는 기존 계정 연결)을 마친다. */
+  function googleConsent(token, payload) {
+    var body = Object.assign({ token: token }, payload || {});
+    return api('POST', '/api/auth/google/consent', body).then(function (res) {
+      if (res.ok) {
+        user = res.data.member || null;
+        return { ok: true, member: user, created: !!res.data.created, redirect: res.data.redirect || '' };
+      }
+      return { ok: false, status: res.status, data: res.data || {} };
+    });
+  }
+
   function resendVerification() {
     return api('POST', '/api/auth/resend-verification').then(function (res) {
       return res.ok ? res.data : null;
@@ -264,6 +276,7 @@
     isLoggedIn: isLoggedIn,
     emailVerified: emailVerified,
     emailAvailable: emailAvailable,
+    googleConsent: googleConsent,
     signUp: signUp,
     verifyEmail: verifyEmail,
     resendVerification: resendVerification,

@@ -40,7 +40,9 @@ for (const [page, cfg] of Object.entries(PAGES)) {
     const missing = AUTH_IDS.filter((id) => !present.has(id));
     assert.deepEqual(missing, [], `${page} is missing ids referenced by ${cfg.script}: ${missing.join(', ')}`);
     assert.match(html, /<script src="[^"]*cgi-auth\.js/, `${page} must load the shared auth helper`);
-    assert.match(html, new RegExp(`<script src="[^"]*${cfg.script.replace('/', '\\/')}\\?v=`), `${page} must cache-bust ${cfg.script}`);
+    // staff.html loads its console after catalog.json, so the script tag is
+    // created inline; the cache-busting version must still be present.
+    assert.match(html, new RegExp(`${cfg.script.replace('/', '\\/')}\\?v=`), `${page} must cache-bust ${cfg.script}`);
   });
 
   test(`${page} logs in through the allowlisted Google return target`, () => {

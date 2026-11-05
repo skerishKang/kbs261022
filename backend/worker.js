@@ -101,7 +101,7 @@ import {
   validatePassword,
 } from './lib/auth.mjs';
 import { GOOGLE_SIGNUP_PASSWORD_SENTINEL } from './lib/migrate.mjs';
-import { purgeExpiredShopLogs } from './lib/retention.mjs';
+import { purgeExpiredShopLogs, purgeExpiredQuotePii } from './lib/retention.mjs';
 import { createMailAdapter } from './lib/mail.mjs';
 import { createOAuthState, decodeOAuthState, normalizeOAuthReturn, resolveOAuthRedirect, buildAuthorizationUrl, exchangeCode, fetchUserInfo, OAUTH_STATE_COOKIE, oauthStateCookieOptions } from './lib/google-oauth.mjs';
 
@@ -1759,6 +1759,72 @@ async function getMemberByGoogleId(db, googleId) {
   }
 }
 
+// Consent is a member-creation gate for Google sign-in. The callback no longer
+// creates a member: it parks the verified Google profile behind a short-lived
+// token and sends the browser to the consent screen. Only after both consents
+// are accepted does the member row exist (with 0011's version columns).
+const GOOGLE_CONSENT_TTL_SECONDS = 20 * 60;
+
+async function issueGoogleConsentToken(db, env, { memberId = null, profile, returnTo = 'site' }) {
+  const now = nowIso();
+  const expiresAt = shiftIso(now, GOOGLE_CONSENT_TTL_SECONDS);
+  await db.prepare(
+    "UPDATE auth_tokens SET status = 'revoked', revoked_at = ? WHERE kind = 'google_consent' AND email = ? AND status = 'pending'"
+  ).bind(now, profile.email).run();
+  const raw = randomToken();
+  await db.prepare(
+    'INSERT INTO auth_tokens (member_id, kind, token_hash, email, status, expires_at, created_at, meta) VALUES (?,?,?,?,?,?,?,?)'
+  ).bind(
+    memberId, 'google_consent', await tokenDigest(raw), profile.email, 'pending', expiresAt, now,
+    JSON.stringify({ subject: profile.subject, email: profile.email, name: profile.name || '', return: returnTo })
+  ).run();
+  return { token: raw, expires_at: expiresAt };
+}
+
+function googleConsentRedirectUrl(env, token) {
+  // siteBaseUrl may include a hash (tests pass ".../#/login"); the consent
+  // screen is its own hash route, so the old hash is dropped.
+  const base = siteBaseUrl(env).split('#')[0].replace(/\/$/, '');
+  return `${base}/#/auth/google-consent?token=${encodeURIComponent(token)}`;
+}
+
+function consentVersions(body) {
+  const termsVersion = typeof body.terms_version === 'string' && body.terms_version.trim()
+    ? body.terms_version.trim().slice(0, 40) : 'unknown';
+  const privacyVersion = typeof body.privacy_version === 'string' && body.privacy_version.trim()
+    ? body.privacy_version.trim().slice(0, 40) : 'unknown';
+  return { termsVersion, privacyVersion };
+}
+
+/** Link the Google identity to an existing member (same takeover rules as the
+ *  old callback) and store the consent versions on the member row. */
+async function linkExistingGoogleMember(db, member, profile, termsVersion, privacyVersion, ts) {
+  if (!member.email_verified_at) {
+    await db.prepare(
+      `UPDATE members SET google_id = ?, password_hash = ?, email_verified_at = ?,
+         terms_consent_version = ?, privacy_consent_version = ?, consented_at = ?, updated_at = ?
+       WHERE id = ?`
+    ).bind(
+      profile.subject, 'revoked$google-takeover$0$0', ts,
+      termsVersion, privacyVersion, ts, ts, member.id
+    ).run();
+    await revokeMemberSessions(db, member.id);
+    await db.prepare('INSERT INTO member_events (member_id, type, meta, created_at) VALUES (?, ?, ?, ?)')
+      .bind(member.id, 'google_takeover_unclaimed', JSON.stringify({ google_id: profile.subject, password_revoked: true }), ts).run();
+  } else {
+    await db.prepare(
+      `UPDATE members SET google_id = ?, terms_consent_version = ?, privacy_consent_version = ?, consented_at = ?, updated_at = ?
+       WHERE id = ?`
+    ).bind(profile.subject, termsVersion, privacyVersion, ts, ts, member.id).run();
+    await db.prepare('INSERT INTO member_events (member_id, type, meta, created_at) VALUES (?, ?, ?, ?)')
+      .bind(member.id, 'google_linked', JSON.stringify({ google_id: profile.subject }), ts).run();
+  }
+  await db.prepare('INSERT INTO member_events (member_id, type, meta, created_at) VALUES (?, ?, ?, ?)')
+    .bind(member.id, 'consent', JSON.stringify({
+      terms: true, privacy: true, terms_version: termsVersion, privacy_version: privacyVersion, source: 'google',
+    }), ts).run();
+}
+
 async function handleGoogleStart(request, db, env) {
   const clientId = env.GOOGLE_CLIENT_ID || env.GOOGLE_OAUTH_CLIENT_ID;
   const clientSecret = env.GOOGLE_CLIENT_SECRET || env.GOOGLE_OAUTH_CLIENT_SECRET;
@@ -1830,45 +1896,55 @@ async function handleGoogleCallback(request, db, env) {
     // Fetch user info
     const userInfo = await fetchUserInfo(accessToken);
 
-    // Find existing member by Google ID
-    let member = await getMemberByGoogleId(db, userInfo.subject);
+    // Find existing member by Google ID, then by email (account linking).
+    const profile = {
+      subject: userInfo.subject,
+      email: String(userInfo.email || '').trim().toLowerCase(),
+      name: userInfo.name || '',
+    };
+    if (!profile.subject || !profile.email) {
+      return authJson({ error: 'google auth failed' }, 400);
+    }
+    let member = await getMemberByGoogleId(db, profile.subject);
+    if (!member) member = await getMemberByEmail(db, profile.email);
 
-    if (!member) {
-      // Find by email (account linking)
-      member = await getMemberByEmail(db, userInfo.email);
-      if (member) {
-        const now = nowIso();
-        // A member that never verified its mailbox may be a squatted placeholder:
-        // whoever typed this email first, nobody proved ownership through email.
-        // Google proves it now, so the Google identity takes the account over —
-        // but the pre-set password must stop working and old sessions must die,
-        // or the squatter keeps a back door (and superadmin if the email is on
-        // the designated list).
-        if (!member.email_verified_at) {
-          await db.prepare('UPDATE members SET google_id = ?, password_hash = ?, updated_at = ? WHERE id = ?')
-            .bind(userInfo.subject, 'revoked$google-takeover$0$0', now, member.id).run();
-          await revokeMemberSessions(db, member.id);
-          await db.prepare('INSERT INTO member_events (member_id, type, meta, created_at) VALUES (?, ?, ?, ?)')
-            .bind(member.id, 'google_takeover_unclaimed', JSON.stringify({ google_id: userInfo.subject, password_revoked: true }), now).run();
-        } else {
-          await db.prepare('UPDATE members SET google_id = ?, updated_at = ? WHERE id = ?')
-            .bind(userInfo.subject, now, member.id).run();
-          await db.prepare('INSERT INTO member_events (member_id, type, meta, created_at) VALUES (?, ?, ?, ?)')
-            .bind(member.id, 'google_linked', JSON.stringify({ google_id: userInfo.subject }), now).run();
-        }
-        member = { ...member, google_id: userInfo.subject };
-      } else {
-        // Create new member
-        const now = nowIso();
-        const passwordHash = GOOGLE_SIGNUP_PASSWORD_SENTINEL;
-        const result = await db.prepare(
-          'INSERT INTO members (email, password_hash, name, google_id, status, email_verified_at, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)'
-        ).bind(userInfo.email, passwordHash, userInfo.name || userInfo.email.split('@')[0], userInfo.subject, 'active', now, now, now).run();
-        const memberId = result.meta.last_row_id ?? result.meta.last_rowid ?? 0;
-        member = await getMember(db, memberId);
+    // Consent gate: a brand-new Google account, or a Google-created member from
+    // before migration 0011 (consent columns NULL), does not get a member row or
+    // a session yet. Park the verified profile behind a short-lived token and
+    // send the browser to the consent screen.
+    if (!member || !member.consented_at) {
+      const pending = await issueGoogleConsentToken(db, env, {
+        memberId: member ? member.id : null,
+        profile,
+        returnTo: statePayload.u,
+      });
+      const headers = new Headers();
+      headers.set('Location', googleConsentRedirectUrl(env, pending.token));
+      headers.append('Set-Cookie', clearCookie);
+      return new Response(null, { status: 302, headers });
+    }
+
+    if (!member.google_id) {
+      const now = nowIso();
+      // A member that never verified its mailbox may be a squatted placeholder:
+      // whoever typed this email first, nobody proved ownership through email.
+      // Google proves it now, so the Google identity takes the account over —
+      // but the pre-set password must stop working and old sessions must die,
+      // or the squatter keeps a back door (and superadmin if the email is on
+      // the designated list).
+      if (!member.email_verified_at) {
+        await db.prepare('UPDATE members SET google_id = ?, password_hash = ?, updated_at = ? WHERE id = ?')
+          .bind(profile.subject, 'revoked$google-takeover$0$0', now, member.id).run();
+        await revokeMemberSessions(db, member.id);
         await db.prepare('INSERT INTO member_events (member_id, type, meta, created_at) VALUES (?, ?, ?, ?)')
-          .bind(memberId, 'google_signup', JSON.stringify({ google_id: userInfo.subject }), now).run();
+          .bind(member.id, 'google_takeover_unclaimed', JSON.stringify({ google_id: profile.subject, password_revoked: true }), now).run();
+      } else {
+        await db.prepare('UPDATE members SET google_id = ?, updated_at = ? WHERE id = ?')
+          .bind(profile.subject, now, member.id).run();
+        await db.prepare('INSERT INTO member_events (member_id, type, meta, created_at) VALUES (?, ?, ?, ?)')
+          .bind(member.id, 'google_linked', JSON.stringify({ google_id: profile.subject }), now).run();
       }
+      member = { ...member, google_id: profile.subject };
     }
 
     // Google has already verified this address, so an existing member matched
@@ -1985,6 +2061,93 @@ async function handleAuthRoute(pathname, method, request, db, env) {
       email_verify_required: emailVerifyRequired(env),
       mail: issued.mail,
     }, 201, { 'Set-Cookie': session.cookie });
+  }
+
+  // ---------------- Google consent ----------------
+
+  if (pathname === '/api/auth/google/consent' && method === 'POST') {
+    const consentToken = String(body.token || '').slice(0, 200);
+    if (!consentToken) return authJson({ error: 'token required' }, 400);
+    if (body.terms !== true || body.privacy !== true) {
+      return authJson({ error: 'consent required', detail: '이용약관과 개인정보 수집·이용 동의가 필요합니다.' }, 400);
+    }
+    const { termsVersion, privacyVersion } = consentVersions(body);
+    const row = await getAuthToken(db, consentToken);
+    if (!row || row.kind !== 'google_consent' || row.status !== 'pending') {
+      return authJson({ error: 'invalid token', detail: 'consent token is invalid or already used' }, 400);
+    }
+    const now = nowIso();
+    if (String(row.expires_at) <= now) {
+      await db.prepare("UPDATE auth_tokens SET status = 'expired', revoked_at = ? WHERE id = ?").bind(now, row.id).run();
+      return authJson({ error: 'token expired', detail: 'Google 로그인을 다시 시도해 주세요.' }, 400);
+    }
+    let meta = {};
+    try { meta = JSON.parse(row.meta || '{}') || {}; } catch (e) { meta = {}; }
+    const profile = {
+      subject: String(meta.subject || ''),
+      email: String(meta.email || row.email || '').trim().toLowerCase(),
+      name: String(meta.name || ''),
+    };
+    if (!profile.subject || !profile.email) return authJson({ error: 'invalid token' }, 400);
+
+    let member = null;
+    let created = false;
+    if (row.member_id) {
+      // Existing Google-created member from before migration 0011 (consent NULL).
+      member = await getMember(db, row.member_id);
+      if (!member || member.status === 'deleted') {
+        return authJson({ error: 'account not found' }, 404);
+      }
+      if (!member.consented_at) {
+        await linkExistingGoogleMember(db, member, profile, termsVersion, privacyVersion, now);
+      }
+      member = await getMember(db, member.id);
+    } else {
+      // New Google account. The email may have been registered between the
+      // callback and this screen; link to it instead of failing the insert.
+      member = await getMemberByEmail(db, profile.email);
+      if (member) {
+        if (!member.consented_at) {
+          await linkExistingGoogleMember(db, member, profile, termsVersion, privacyVersion, now);
+        }
+        member = await getMember(db, member.id);
+      } else {
+        const result = await db.prepare(
+          `INSERT INTO members (email, password_hash, name, google_id, status, email_verified_at,
+             terms_consent_version, privacy_consent_version, consented_at, created_at, updated_at)
+           VALUES (?,?,?,?,?,?,?,?,?,?,?)`
+        ).bind(
+          profile.email, GOOGLE_SIGNUP_PASSWORD_SENTINEL,
+          profile.name || profile.email.split('@')[0], profile.subject, 'active', now,
+          termsVersion, privacyVersion, now, now, now
+        ).run();
+        const memberId = result.meta.last_row_id ?? result.meta.last_rowid ?? 0;
+        member = await getMember(db, memberId);
+        created = true;
+        await db.batch([
+          db.prepare('INSERT INTO member_events (member_id, type, meta, created_at) VALUES (?, ?, ?, ?)')
+            .bind(memberId, 'google_signup', JSON.stringify({ google_id: profile.subject }), now),
+          db.prepare('INSERT INTO member_events (member_id, type, meta, created_at) VALUES (?, ?, ?, ?)')
+            .bind(memberId, 'email_verified', JSON.stringify({ source: 'google' }), now),
+          db.prepare('INSERT INTO member_events (member_id, type, meta, created_at) VALUES (?, ?, ?, ?)')
+            .bind(memberId, 'consent', JSON.stringify({
+              terms: true, privacy: true, terms_version: termsVersion, privacy_version: privacyVersion, source: 'google',
+            }), now),
+        ]);
+      }
+    }
+
+    await db.prepare("UPDATE auth_tokens SET status = 'consumed', consumed_at = ? WHERE id = ?").bind(now, row.id).run();
+    const session = await issueSession(db, env, member);
+    // After consent the browser returns to the page the member started from
+    // (staff/orders) — the target came from the signed OAuth state.
+    const redirect = resolveOAuthRedirect(env.SITE_BASE_URL, meta.return);
+    return authJson({
+      member: memberView(member),
+      created,
+      email_verified: !!member.email_verified_at,
+      redirect,
+    }, 200, { 'Set-Cookie': session.cookie });
   }
 
   // ---------------- email availability ----------------
@@ -3178,9 +3341,9 @@ return notFound();
 // origin stays pinned to the production site; only the credential flag is added.
 export default {
   async scheduled(_controller, env, ctx) {
-    const work = purgeExpiredShopLogs(env.DB)
-      .then((counts) => {
-        console.log(`SHOP_RETENTION_PURGE=ok detail=${JSON.stringify(counts)}`);
+    const work = Promise.all([purgeExpiredShopLogs(env.DB), purgeExpiredQuotePii(env.DB)])
+      .then(([counts, quotePii]) => {
+        console.log(`SHOP_RETENTION_PURGE=ok detail=${JSON.stringify({ ...counts, quote_requests_pii: quotePii })}`);
       })
       .catch(() => {
         // Never print database error values or row data from a scheduled pass.
