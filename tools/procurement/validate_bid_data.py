@@ -7,6 +7,8 @@
   - 날짜 형식(YYYY-MM-DD / YYYY-MM-DD HH:MM:SS), 공고일 ≤ 마감 ≤ 개찰(있을 때)
   - 마감이 공고일로부터 1년 넘게 뒤면 `lt`(장기 접수) 표시가 있어야 함
   - 취소공고는 포함하지 않음, 금액은 정수 또는 null
+  - `cgi_match`는 불리언이고 `mk`(적중 키워드)는 문자열 목록이며, true면 비어 있지 않고
+    false면 비어 있어야 한다(이슈 #188 7차)
 사용: python tools/procurement/validate_bid_data.py  (종료 코드 0=정상, 1=오류)
 """
 from __future__ import annotations
@@ -88,6 +90,16 @@ def validate_bids(data) -> list[str]:
             errs.append(f"{tag}: 날짜 해석 실패 {exc}")
         if b.get("cu") and not str(b["cu"]).startswith("https://www.g2b.go.kr"):
             errs.append(f"{tag}: 원문 주소가 나라장터가 아님 {b['cu']!r}")
+        # CGI 취급 품목 매칭 필드(이슈 #188 7차)
+        if not isinstance(b.get("cgi_match"), bool):
+            errs.append(f"{tag}: cgi_match 불리언 아님 {b.get('cgi_match')!r}")
+        mk = b.get("mk")
+        if not isinstance(mk, list) or not all(isinstance(x, str) for x in mk):
+            errs.append(f"{tag}: mk 문자열 목록 아님 {mk!r}")
+        elif b.get("cgi_match") is True and not mk:
+            errs.append(f"{tag}: CGI 매칭인데 적중 키워드가 비어 있음")
+        elif b.get("cgi_match") is False and mk:
+            errs.append(f"{tag}: CGI 매칭 아닌데 적중 키워드가 있음 {mk!r}")
     return errs
 
 

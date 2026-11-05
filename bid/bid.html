@@ -15,7 +15,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2307913A'/%3E%3Ctext x='16' y='22' font-size='17' font-weight='800' text-anchor='middle' fill='white' font-family='Arial'%3EC%3C/text%3E%3C/svg%3E">
 <script>(function(){try{var t=localStorage.getItem("bid-theme");if(t==="light"||t==="dark"){document.documentElement.dataset.theme=t;}}catch(e){}})();</script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-<link rel="stylesheet" href="assets/css/bid.css?v=261105c">
+<link rel="stylesheet" href="assets/css/bid.css?v=261106a">
 </head>
 <body>
 <a class="skip-link" href="#main">본문으로 건너뛰기</a>
@@ -75,6 +75,28 @@
       </div>
 
       <div style="display:flex;flex-direction:column;gap:16px">
+        <section class="panel" aria-labelledby="watchTitle" id="watchPanel">
+          <div style="display:flex;align-items:center;gap:8px;padding:14px 18px;border-bottom:1px solid var(--cgi-line-soft)">
+            <h2 class="panel-title" id="watchTitle" style="padding:0;border:0;margin:0">관심공고</h2>
+            <span class="f-note" style="padding:0;margin:0">이 기기에 저장됩니다</span>
+          </div>
+          <div style="padding:14px 18px;display:flex;flex-direction:column;gap:10px">
+            <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+              <button type="button" class="star-btn star-btn-lg" id="watchStar" aria-pressed="false">☆ 관심공고 저장</button>
+              <label class="sr-only" for="watchState">관심 상태</label>
+              <select id="watchState" disabled></select>
+            </div>
+            <div>
+              <label class="sr-only" for="watchMemo">관심 메모</label>
+              <textarea id="watchMemo" rows="3" maxlength="200" disabled placeholder="메모(최대 200자) — 검토 메모, 담당자 확인 사항 등"></textarea>
+              <div style="display:flex;justify-content:space-between;margin-top:4px">
+                <span class="f-note" id="watchSaved" role="status"></span>
+                <span class="f-note num" id="watchMemoLen">0 / 200</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
         <section class="panel" aria-labelledby="aiTitle">
           <div style="display:flex;align-items:center;gap:8px;padding:14px 18px;border-bottom:1px solid var(--cgi-line-soft)">
             <h2 class="panel-title" id="aiTitle" style="padding:0;border:0;margin:0">AI 투찰가 분석</h2>
@@ -139,10 +161,11 @@
 
 <footer id="appFooter"></footer>
 
-<script src="config.js?v=261105c"></script>
-<script src="assets/data/bid-data.js?v=261105c"></script>
-<script src="assets/data/result-data.js?v=261105c"></script>
-<script src="assets/js/bid-ui.js?v=261105c"></script>
+<script src="config.js?v=261106a"></script>
+<script src="assets/data/bid-data.js?v=261106a"></script>
+<script src="assets/data/result-data.js?v=261106a"></script>
+<script src="assets/js/bid-ui.js?v=261106a"></script>
+<script src="assets/js/bid-personal.js?v=261106a"></script>
 <script>
 (function () {
   "use strict";
@@ -166,8 +189,54 @@
 
   document.getElementById("headBadges").innerHTML =
     U.badgeCat(b.c) + U.methodBadge(b) + U.badgeStatus(b.s) +
-    '<span class="badge">' + U.esc(b.k) + "</span>" + U.chipDd(b);
+    '<span class="badge">' + U.esc(b.k) + "</span>" + U.chipDd(b) + U.mkChips(b, 6);
   document.getElementById("bidTitle").textContent = b.t;
+
+  /* 관심공고 (7차 — 별표·상태 4종·메모 200자, 이 기기에 저장) */
+  var P = window.BID_PERS;
+  var wStar = document.getElementById("watchStar");
+  var wState = document.getElementById("watchState");
+  var wMemo = document.getElementById("watchMemo");
+  var wSaved = document.getElementById("watchSaved");
+  var wLen = document.getElementById("watchMemoLen");
+  P.STAR_STATES.forEach(function (s) {
+    var o = document.createElement("option"); o.value = s; o.textContent = s; wState.appendChild(o);
+  });
+  function paintWatch() {
+    var st = P.getStar(b.no);
+    var on = !!st;
+    wStar.classList.toggle("on", on);
+    wStar.setAttribute("aria-pressed", String(on));
+    wStar.innerHTML = (on ? "★ " : "☆ ") + (on ? "관심공고 저장됨" : "관심공고 저장");
+    wState.disabled = wMemo.disabled = !on;
+    if (on) {
+      wState.value = st.state;
+      wMemo.value = st.memo || "";
+      wLen.textContent = (st.memo || "").length + " / " + P.MEMO_MAX;
+    } else {
+      wState.value = P.STAR_STATES[0];
+      wMemo.value = "";
+      wLen.textContent = "0 / " + P.MEMO_MAX;
+    }
+  }
+  wStar.addEventListener("click", function () {
+    P.toggleStar(b.no);
+    paintWatch();
+  });
+  wState.addEventListener("change", function () {
+    var cur = P.getStar(b.no) || { memo: "" };
+    P.setStar(b.no, { state: wState.value, memo: cur.memo });
+    wSaved.textContent = "상태를 저장했습니다: " + wState.value;
+    setTimeout(function () { wSaved.textContent = ""; }, 2500);
+  });
+  wMemo.addEventListener("input", function () {
+    var cur = P.getStar(b.no) || { state: P.STAR_STATES[0] };
+    P.setStar(b.no, { state: cur.state, memo: wMemo.value });
+    wLen.textContent = wMemo.value.length + " / " + P.MEMO_MAX;
+    wSaved.textContent = "메모를 저장했습니다";
+    setTimeout(function () { wSaved.textContent = ""; }, 2500);
+  });
+  paintWatch();
 
   document.getElementById("heroPrice").textContent = U.fmtWon(b.ep);
   document.getElementById("heroBudget").textContent = b.ab ? "예산금액 " + U.fmtWon(b.ab) : "예산금액 미공개";
