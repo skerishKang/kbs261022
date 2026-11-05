@@ -395,11 +395,15 @@ def main() -> int:
     if args.check:
         cur = current_payload()
         same = cur is not None and cur.get("bids") == data["bids"] and cur.get("snapshot") == data["snapshot"]
+        # generated는 실행일(현지 시간대)이라 시행 환경마다 다를 수 있으므로 비교에서 뺀다 — bid-data와 같은 원칙.
+        def _without_generated(d):
+            return {k: v for k, v in (d or {}).items() if k != "generated"}
+        new_stats = _without_generated(build_rate_stats_output(args.snapshot, load_price_records(), data["bids"]))
         cur_stats = None
         if RATE_STATS_DEST.exists():
             src = RATE_STATS_DEST.read_text(encoding="utf-8")
-            cur_stats = json.loads(src[src.index("=") + 1:].rstrip().rstrip(";"))
-        stats_same = cur_stats == build_rate_stats_output(args.snapshot, load_price_records(), data["bids"])
+            cur_stats = _without_generated(json.loads(src[src.index("=") + 1:].rstrip().rstrip(";")))
+        stats_same = cur_stats is not None and cur_stats == new_stats
         ok = same and stats_same
         print("bid-data.js 일치" if same else "bid-data.js 불일치 — 재생성 필요")
         print("rate-stats.js 일치" if stats_same else "rate-stats.js 불일치 — 재생성 필요")
