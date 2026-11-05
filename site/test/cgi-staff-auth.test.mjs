@@ -155,14 +155,14 @@ test('the staff login form starts a CGI member session and loads the console', a
   assert.equal(env.quotesCalls().length, 0, 'nothing may be fetched without a session');
 
   env.document.getElementById('memberEmail').value = '  owner@cgi.test  ';
-  env.document.getElementById('memberPassword').value = 'hunter2';
+  env.document.getElementById('memberPassword').value = 'test-hunter2';
   const handlers = env.loginButton().dispatch('click');
   await new Promise((resolve) => setTimeout(resolve, 0));
 
   assert.ok(handlers > 0, '#memberLoginBtn has no click handler — the login form is dead');
   const login = env.authCalls.find((c) => c.kind === 'login');
   assert.ok(login, 'clicking 로그인 must call CGI_AUTH.login');
-  assert.deepEqual(login.payload, { email: 'owner@cgi.test', password: 'hunter2' }, 'the email is trimmed and the password passed through');
+  assert.deepEqual(login.payload, { email: 'owner@cgi.test', password: 'test-hunter2' }, 'the email is trimmed and the password passed through');
   const quotes = env.quotesCalls()[0];
   assert.ok(quotes, 'an admin login must load /api/quotes');
   assert.equal(quotes.init.credentials, 'include', 'the member session rides the cookie, not a Bearer token');
@@ -236,18 +236,16 @@ test('a member-session admin can open a request from the server', async () => {
   assert.equal(env.document.getElementById('requestDetail').innerHTML !== '', true);
 });
 
-test('the legacy Bearer token path still reaches the server', async () => {
-  const env = await boot({ token: 'legacy-token' });
+test('a stored legacy Bearer token is discarded and never used', async () => {
+  const env = await boot({ token: 'legacy-fake-token' });
+  assert.equal(env.storage.getItem('cgiAdminToken'), null, 'the legacy token is wiped at boot');
   const quotes = env.quotesCalls()[0];
-  assert.ok(quotes, 'a stored cgiAdminToken must still be honoured');
-  assert.equal(quotes.init.headers.Authorization, 'Bearer legacy-token');
-
-  const card = env.document.getElementById('requestList').querySelectorAll('button[data-open]')[0];
-  card.dispatch('click');
-  await new Promise((resolve) => setTimeout(resolve, 0));
-  const detail = env.fetches.find((f) => f.url === API + '/api/quotes/Q1');
-  assert.ok(detail);
-  assert.equal(detail.init.headers.Authorization, 'Bearer legacy-token');
+  assert.equal(quotes, undefined, 'no /api/quotes call is made without a member session');
+  assert.equal(env.document.getElementById('authBox').hidden, false, 'the login box stays visible');
+  for (const call of env.fetches) {
+    assert.notEqual(call.init && call.init.headers && call.init.headers.Authorization,
+      'Bearer legacy-fake-token', 'no Bearer request is sent');
+  }
 });
 
 // ---------------------------------------------------------------------------

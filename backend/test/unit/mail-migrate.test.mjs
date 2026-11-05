@@ -10,7 +10,7 @@ const MESSAGE = {
   subject: 'CGI email verification',
   text: 'please verify your account',
   url: 'https://example.com/verify?token=tok_1',
-  token: 'tok_1',
+  token: 'test_tok_1',
 };
 
 test('console mode logs and never delivers', async () => {
@@ -33,7 +33,7 @@ test('echo mode returns the token so a local environment can verify', async () =
   const out = await mail.deliver(MESSAGE);
   assert.equal(out.delivered, false);
   assert.equal(out.channel, 'echo');
-  assert.equal(out.token, 'tok_1');
+  assert.equal(out.token, 'test_tok_1');
   assert.equal(out.url, MESSAGE.url);
 });
 

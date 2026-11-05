@@ -8,7 +8,9 @@
 
   var cfg = window.CGI_SITE_CONFIG || {};
   var API = cfg.orderApiUrl || cfg.quoteApiUrl || '';
-  var LS_KEY = 'cgiAdminToken';
+  // Legacy Bearer token path removed (PR-4). The console uses the admin member
+  // session only; a token left in this browser is discarded at boot.
+  try { localStorage.removeItem('cgiAdminToken'); } catch (e) {}
 
   var STATUS_LABELS = {
     awaiting_payment: '결제 대기', paid: '결제 완료', processing: '처리 중', shipped: '배송 중',
@@ -28,7 +30,7 @@
     failed: '실패', skipped: '건너뜀(테스트)'
   };
 
-  var state = { token: null, memberMode: false, member: null, orders: [], drawer: null, events: [], feedback: null };
+  var state = { memberMode: false, member: null, orders: [], drawer: null, events: [], feedback: null };
 
   function $(id) { return document.getElementById(id); }
   function esc(s) {
@@ -64,15 +66,9 @@
   }
 
   function request(method, path, body) {
-    if (!state.token && !state.memberMode) return Promise.reject(new Error('token'));
-    var headers = { 'Content-Type': 'application/json' };
-    var init = { method: method, headers: headers, body: body ? JSON.stringify(body) : undefined };
-    if (state.token) {
-      headers.Authorization = 'Bearer ' + state.token;
-    } else {
-      init.credentials = 'include';
-      headers['X-CSRF-Token'] = window.location.origin || '';
-    }
+    if (!state.memberMode) return Promise.reject(new Error('session'));
+    var headers = { 'Content-Type': 'application/json', 'X-CSRF-Token': window.location.origin || '' };
+    var init = { method: method, headers: headers, credentials: 'include', body: body ? JSON.stringify(body) : undefined };
     return fetch(API + path, init)
       .then(function (res) {
         return res.json().then(function (data) { return { ok: res.ok, status: res.status, data: data }; });
@@ -86,28 +82,20 @@
       $('authBox').insertAdjacentHTML('beforeend', '<p class="staff-msg error">API 주소가 설정되지 않았습니다.</p>');
       return;
     }
-    /* 정식 경로는 CGI 회원 세션(관리자·총관리자 role)이다. localStorage 의
-       cgiAdminToken 은 세션이 없을 때만 쓰는 레거시 폴백이므로 먼저 시도하지
-       않는다 — 총관리자 계정 관리 UI 는 회원 세션에서만 열린다. */
-    function legacyTokenFallback() {
-      var token = localStorage.getItem(LS_KEY);
-      if (!token) { $('authBox').hidden = false; return; }
-      state.token = token;
-      $('authBox').hidden = true;
-      $('ordersApp').hidden = false;
-      fillFilters();
-      load();
-    }
+    // 회원 세션(관리자·총관리자 role)만 정식 경로다. 레거시 Bearer 토큰 폴백은
+    // PR-4에서 제거했고, 브라우저에 남은 값은 로드 시 지운다.
     if (window.CGI_AUTH) {
       window.CGI_AUTH.refresh().then(function (member) {
         if (member && (member.role === 'admin' || member.role === 'superadmin' || member.is_admin)) {
           enterAsAdmin(member);
         } else {
-          legacyTokenFallback();
+          $('authBox').hidden = false;
         }
-      }).catch(legacyTokenFallback);
+      }).catch(function () {
+        $('authBox').hidden = false;
+      });
     } else {
-      legacyTokenFallback();
+      $('authBox').hidden = false;
     }
   }
 
@@ -116,7 +104,6 @@
   function enterAsAdmin(member) {
     state.memberMode = true;
     state.member = member;
-    state.token = null;
     $('authBox').hidden = true;
     $('ordersApp').hidden = false;
     if (member.role === 'superadmin') { $('adminManageBox').hidden = false; loadMembers(); }
@@ -155,7 +142,7 @@
     $('orderList').innerHTML = '<p class="staff-msg info">불러오는 중…</p>';
     request('GET', '/api/orders' + query).then(function (res) {
       if (!res.ok) {
-        if (res.status === 401) { state.token = null; localStorage.removeItem(LS_KEY); $('ordersApp').hidden = true; $('authBox').hidden = false; return; }
+        if (res.status === 401) { $('ordersApp').hidden = true; $('authBox').hidden = false; return; }
         msg($('orderList'), '주문 목록을 불러오지 못했습니다 (HTTP ' + res.status + ').');
         return;
       }
@@ -555,11 +542,9 @@
       window.CGI_AUTH.googleLogin('orders');
     });
     $('logoutBtn').addEventListener('click', function () {
-      state.token = null;
       state.memberMode = false;
       state.member = null;
       state.orders = [];
-      localStorage.removeItem(LS_KEY);
       if (window.CGI_AUTH) window.CGI_AUTH.logout();
       $('ordersApp').hidden = true;
       $('adminManageBox').hidden = true;

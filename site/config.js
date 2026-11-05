@@ -18,13 +18,20 @@ window.CGI_SITE_CONFIG = {
   quoteApiUrl: 'https://cgi-quote-api.charliekant.workers.dev',
   // ── 전자상거래법 필수 표기 ────────────────────────────────
   // 확정된 항목만 쇼핑몰 푸터 약관 줄에 표기한다. 미확정 항목은 숨긴다.
-  legal: {
-    bizRegNo: '410-86-46283', // 사업자등록번호 (홈페이지·company.js와 같은 값)
-    mailOrderNo: '2025-전남장성-94', // 스마트스토어센터 판매자 정보에서 대표 확인
-    privacyOfficerName: '김범신',   // 대표 확정(2026-11-04)
-    privacyOfficerPhone: '062-576-8100',
-    privacyOfficerEmail: 'cgiinc@naver.com',
-  },
+  // 값은 website/assets/company.js 한 곳에서 온다. 쇼핑몰 페이지는
+  // company.js를 config.js보다 먼저 로드한다(index/staff/sync/orders).
+  legal: (function () {
+    var company = window.CGI_COMPANY || {};
+    var legal = company.legal || {};
+    var officer = legal.privacyOfficer || {};
+    return {
+      bizRegNo: (company.identity && company.identity.bizRegNo) || '',
+      mailOrderNo: legal.mailOrderNo || '',
+      privacyOfficerName: officer.name || '',
+      privacyOfficerPhone: officer.phone || '',
+      privacyOfficerEmail: officer.email || '',
+    };
+  })(),
   // 주문·결제 API. 비어 있으면 quoteApiUrl 을 재사용한다.
   orderApiUrl: 'https://cgi-quote-api.charliekant.workers.dev',
   // 기본 결제 게이트웨이는 NICEPAY(test)다. 백엔드 PG_PROVIDER와 같아야 하며,

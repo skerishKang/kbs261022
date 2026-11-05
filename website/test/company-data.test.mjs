@@ -150,3 +150,28 @@ test('homepage loads the data module before the renderer', () => {
   assert.ok(c < m, 'company.js 가 main.js 보다 먼저 로드되어야 한다');
   assert.ok(read('website/assets/main.js').includes('renderCompany()'));
 });
+
+test('통신판매업신고·이메일·개인정보보호책임자는 company.js 한 곳에서 온다', () => {
+  assert.equal(CO.legal.mailOrderNo, '2025-전남장성-94');
+  assert.equal(CO.legal.privacyOfficer.name, '김범신');
+  assert.equal(CO.legal.privacyOfficer.phone, '062-576-8100');
+  assert.equal(CO.legal.privacyOfficer.email, 'cgiinc@naver.com');
+
+  // 홈페이지 푸터 표기가 같은 값을 쓴다.
+  assert.ok(home.includes(CO.legal.mailOrderNo), '홈페이지에 통신판매업신고가 없다');
+  assert.ok(home.includes(CO.legal.privacyOfficer.email), '홈페이지에 개인정보보호책임자 이메일이 없다');
+  assert.ok(home.includes(CO.legal.privacyOfficer.name), '홈페이지에 개인정보보호책임자 이름이 없다');
+
+  // 쇼핑몰 legal 은 값을 복제하지 않고 company.js 를 읽는다.
+  const config = read('site/config.js');
+  assert.ok(config.includes('window.CGI_COMPANY'), 'site/config.js 가 company.js 를 읽지 않는다');
+  assert.ok(!config.includes("'2025-전남장성-94'"), '통신판매업신고가 config.js 에 중복되어 있다');
+  assert.ok(!config.includes("'cgiinc@naver.com'"), '이메일이 config.js 에 중복되어 있다');
+  assert.ok(!config.includes("'김범신'"), '책임자 이름이 config.js 에 중복되어 있다');
+
+  // 값이 준비되려면 company.js 가 config.js 보다 먼저 실행되어야 한다.
+  const companyAt = mall.indexOf('assets/company.js');
+  const configAt = mall.indexOf('config.js');
+  assert.ok(companyAt > 0 && configAt > 0 && companyAt < configAt,
+    'site/index.html 에서 company.js 가 config.js 보다 먼저 로드되어야 한다');
+});

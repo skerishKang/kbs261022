@@ -89,6 +89,34 @@ class ScanTextTests(unittest.TestCase):
         self.assertEqual(rules_for("headers = {'X-CSRF-Token': ORIGIN}"), [])
         self.assertEqual(rules_for("headers = {'X-CSRF-Token': csrfToken}"), [])
 
+    def test_long_alnum_password_is_detected(self):
+        # Build the literal at runtime so this test file itself stays clean.
+        value = "".join(["a1b2c3d4", "e5f6g7"])
+        self.assertEqual(rules_for("PASSWORD = " + '"' + value + '"'),
+                         ["hardcoded-credential-assignment"])
+
+    def test_hunter2_style_value_is_detected(self):
+        value = "hunter" + "2"
+        self.assertEqual(rules_for("PASSWORD=" + '"' + value + '"'),
+                         ["hardcoded-credential-assignment"])
+
+    def test_known_key_prefixes_are_never_benign(self):
+        for prefix in ("sk_live_", "live_sk", "re_", "SG.", "AIza", "ghp_", "AKIA"):
+            line = "TOKEN = " + '"' + prefix + "abc" + '"'
+            self.assertEqual(rules_for(line), ["hardcoded-credential-assignment"], prefix)
+
+    def test_test_file_exemption_requires_a_fake_marker(self):
+        value = "hunter" + "2"
+        self.assertEqual(ss.scan_text("PASSWORD = " + '"' + value + '"', test_file=True),
+                         [("hardcoded-credential-assignment", 1)])
+        self.assertEqual(ss.scan_text("PASSWORD = " + '"FAKE_' + value + '"', test_file=True), [])
+        self.assertEqual(ss.scan_text("PASSWORD = " + '"TEST_pass"', test_file=True), [])
+        self.assertEqual(ss.scan_text("PASSWORD = " + '"example-value"', test_file=True), [])
+
+    def test_identifier_references_are_still_benign(self):
+        self.assertEqual(rules_for("var X_CSRF_TOKEN = ORIGIN"), [])
+        self.assertEqual(rules_for("headers = {'X-CSRF-Token': csrfToken}"), [])
+
     def test_hardcoded_assignment_is_allowed_in_test_files(self):
         line = f"const {ENV_VAR_NAME} = '{FAKE_VALUE}';"
         self.assertEqual(rules_for(line), ["hardcoded-credential-assignment"])

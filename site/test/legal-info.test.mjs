@@ -16,6 +16,8 @@ const HERE = dirname(fileURLToPath(import.meta.url));
 const SRC = readFileSync(join(HERE, '..', 'assets', 'js', 'cgi-catalog.js'), 'utf8');
 
 const cfgSandbox = createContext({ window: {} });
+// The page loads company.js before config.js; legal reads window.CGI_COMPANY.
+runInContext(readFileSync(join(HERE, '..', '..', 'website', 'assets', 'company.js'), 'utf8'), cfgSandbox);
 runInContext(readFileSync(join(HERE, '..', 'config.js'), 'utf8'), cfgSandbox);
 const CFG = cfgSandbox.window.CGI_SITE_CONFIG;
 

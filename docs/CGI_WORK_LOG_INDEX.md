@@ -1,7 +1,7 @@
 # CGI 사업 — 작업 현황 및 결과 기록
 
 > **대상:** CGI 고객A 대표 · PADIEM · 참여 AI 에이전트  
-> **갱신 기준:** 2026-10-29 (확인한 main `99fa446` = PR #146 병합 + CGI-1 전환 PR). 이 표는 연결된 GitHub 이슈/PR 및 보고서를 확인하는 **목차**입니다. 실시간 완료 여부는 해당 이슈/PR이 우선합니다.
+> **갱신 기준:** 2026-11-05 (main `62a147b` = PR #196 병합, PR #197 진행 중). 이 표는 연결된 GitHub 이슈/PR 및 보고서를 확인하는 **목차**입니다. 실시간 완료 여부는 해당 이슈/PR이 우선합니다.
 > **저장소:** https://github.com/skerishKang/kbs261022  
 > **누적 실적:** PR **35건 병합**(10-22 10건 · 10-23 25건) + 진행 중 PR #62(이 문서). 이슈는 #2·#7·#11·#18·#20·#33·#37·#39·#50·#52 **10건 닫힘**, #1·#5·#43 열림(#8·#9·#19는 완료 조건 검증 후 종료 처리 — 근거는 각 이슈 댓글과 아래 표). 아래 표의 실행 시간·비용 근거는 "[10-22 · 10-23 실행 기록](#10-22--10-23-실행-기록--시간과-비용-증거-기준)" 절에 커밋·PR 원장 기준으로 정리했습니다.
 
@@ -30,6 +30,27 @@
 | [#43 상품 DB 품질 개선](https://github.com/skerishKang/kbs261022/issues/43) | 4,575건의 모델명·제조사·브랜드·중복·출처 정합성 점검, 자동보완과 수동검토 분리 (Stage 1 자동 / Stage 2 교차 실측 / Stage 3 사람 검토) | `data/product_quality/` 9종 + [품질 보고서 D장](CGI_PRODUCT_QUALITY_REPORT.md) + [테스트 로그 §8](CGI_PRODUCT_QUALITY_TESTLOG.md), 테스트 88개 PASS(회귀 포함 275) (PR #46·#47·#51·#57) | 제조사 2,088건·모델명 408건 자동 확정(원본 보존·병합 0건). **검토후보 2,311건은 사람이 `product_quality_review_queue.xlsx` 로 승인/반려/보류 결정 대기**(모델 P1 148·P2 620·P3 239·P4 962 + 제조사 269·브랜드 65 P4·브랜드 제안 8 P1). 승인 0건 / 근거없음 463건은 공급처 원본 재확인 필요 |
 | [#130 네이버 실등록 레인](https://github.com/skerishKang/kbs261022/issues/130) | 판매자 인증→카테고리→파일럿 3건→대량 배치 확대·자동 보완(1,000건 실등록·전시 ON — 계정 한도 도달) + 4,575건 전수 분류 v2 + 중복 그룹 해소 + 재고 동기화 운영화 | 운영 Runbook [CGI_NCOM_RUNBOOK_20261029.md](CGI_NCOM_RUNBOOK_20261029.md) · [오류·교훈·위험 레지스터](CGI_NCOM_ERROR_REGISTER_20261029.md) · [배치 증적 수량표](CGI_NCOM_BATCH_EVIDENCE_20261029.md) · [CGI-1 전환 기록](CGI_NCOM_CGI1_CUTOVER_20261029.md) · 장부 `reports/data/registration/ncom_registration_ledger.json` · 배치5~9 증적 `bulk/register_{5th,6th,7th,9th}_batch_20261029.json` · 배치11 증적 `bulk/register_11th_batch_20261030.json` · 배치12 증적 `bulk/register_12th_batch_20261030.json` · 배치13 증적 `bulk/register_13th_batch_20261030.json` · 배치14 증적 `bulk/register_14th_batch_20261030.json` · 배치15 증적 `bulk/register_15th_batch_20261030.json` · 전수 분류 v2 `bulk/full_coverage_classification_v2_20261030.csv` · 후속 조사 `bulk/followup_analysis_20261030.json` · 계약 모듈 `backend/lib/ncom-batch-contracts.mjs`·`backend/lib/ncom-stock-sync.mjs` · 재고 운영 CLI `tools/naver/ncom-stock-sync.mjs` (PR #135~#156, 배치13~15 + #157 정합화 PR) | **(2026-10-30 배치15·계정 한도 기준)** 실등록 **1,000건**·전시 ON — **네이버 계정 상품 한도(1,000) 도달**(E33). 통합 마스터·채널 계약 준수 재분류(검토가드 제거·중복 원천 병합 분리·자체몰 카테고리 계약 24종·배치7 실측가 원천)로 AI 자의 차단을 제거하고 배치15에서 470건 등록. 잔여 3,575건은 전부 원천 부재(C)·기등록(E) 기반 보류 — 한도 상향·원천 확보 시 즉시 재개. **API 인증·허용 IP 복원**(Padiem-Command-Center=구 COM1, 토큰 발급·호출 실측 — E28 해소). 349건 가격 불변 재조회 349/349·재고 읽기 비교 쓰기 0. **E27 정정**: COM1 예약 작업 실체 확인 — 쓰기 작업 없음, 읽기 전용 재고점검 1건을 본 클론 경로로 갱신. 재고: 동기화 계약 C21·CLI 쓰기 가드 C22 유지. **잔여 4,045건은 전부 근거 있는 제외** — 사업자 검토 필요: 중복 1,997(그룹 해소 잔여)·검토가드 26·해외원산지 9 / 원천 필요: 가격문의 1,440·카테고리 462·모델명 111. 자동 복원 감지 지속 — 원천 확보분부터 후속 배치. 소비자 화면 검증·ERP 재고·가격 연동은 미검증(NOT_VERIFIED — Runbook §5) |
 
+
+## 2026-11-05 기준 최근 병합 (#183~#197)
+
+출시 전 정리와 PR-1~PR-4(출시 차단 해소·보안/장부·성능/데이터/검색/법정·정리/보강) 구간입니다.
+현재 기능 상태는 [CGI 기능 현황](project/CGI_FEATURE_STATUS_MATRIX.md)을, 대표 확인 대기 항목은 이슈 **#187**을 봅니다.
+
+| PR | 내용 | 결과 |
+|---|---|---|
+| [#183](https://github.com/skerishKang/kbs261022/pull/183) | 출시 전 화면 문구 정리 — 출처·면책 표기 제거, 가격 표기 통일 | 병합 |
+| [#184](https://github.com/skerishKang/kbs261022/pull/184) | 개인정보처리방침·약관 확정, 주문 전 동의 | 병합 |
+| [#185](https://github.com/skerishKang/kbs261022/pull/185) | 결제 업체 이름 제거, 주문 동의 시각 기록, 루트 `_redirects` | 병합 |
+| [#186](https://github.com/skerishKang/kbs261022/pull/186) | 홈페이지에서 결제 언급 제거 | 병합 |
+| [#189](https://github.com/skerishKang/kbs261022/pull/189) | 입찰정보 1단계 UI — 메인·공고목록·상세·발주기관·요금 | 병합 |
+| [#190](https://github.com/skerishKang/kbs261022/pull/190) | 입찰정보 3차 — 1440 사이드 패널·모바일 3열·오픈데이터 수집기 | 병합 |
+| [#191](https://github.com/skerishKang/kbs261022/pull/191) | 입찰정보 4차 — 화면 통일·낙찰 결과·AI 투찰가 분석 카드 | 병합 |
+| [#192](https://github.com/skerishKang/kbs261022/pull/192) | 입찰정보 5차 — 분석 설계 문서·낙찰정보 수집 골격·투찰 안내 | 병합 |
+| [#193](https://github.com/skerishKang/kbs261022/pull/193) | 출시 차단 해소 — NICEPAY 창 복귀 검증, Google 전용 계정 비밀번호, 배포 설정 | 병합 (PR-1) |
+| [#194](https://github.com/skerishKang/kbs261022/pull/194) | 쇼핑몰↔홈페이지 링크를 같은 배포 안 상대경로로 | 병합 (PR-1) |
+| [#195](https://github.com/skerishKang/kbs261022/pull/195) | 보안·장부 정리 — 주문 CSRF, 결제창 PII 팩터, 웹훅 취소, 미인증 차단, IP 레이트리밋, 동의 0011, 스키마 통일, mock/토스 제거 | 병합 (PR-2) |
+| [#196](https://github.com/skerishKang/kbs261022/pull/196) | 상품 데이터 분할, `?data`/`?mall` 제한, `_headers`·noindex·404, Google 동의 화면, 견적 1년 보관, 배포 문서, 관리자 토큰 교체 | 병합 (PR-3) |
+| [#197](https://github.com/skerishKang/kbs261022/pull/197) | 정리·보강 — 레거시 Bearer 경로 삭제, PBKDF2 100,000회+재해시, 계정 노출 축소, OAuth 폴백 제거, 홈페이지 접근성/무JS 링크, 법정 표기 단일 출처, 시크릿 스캐너 강화, 샌드박스 D1 재구성, 문서 통합 | 이 PR (PR-4) |
 
 ## 10-22 · 10-23 실행 기록 — 시간과 비용 (증거 기준)
 

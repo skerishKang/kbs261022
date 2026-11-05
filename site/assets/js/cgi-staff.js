@@ -4,7 +4,6 @@
   var services = window.CGI_SERVICES || [];
   var requests = [];
   var current = null;
-  var adminToken = null;
   var isServerMode = false;
   var memberMode = false;
   var member = null;
@@ -74,8 +73,8 @@
   }
 
   function openRequest(id) {
-    if (isServerMode && apiUrl && (adminToken || memberMode)) {
-      fetch(apiUrl + '/api/quotes/' + encodeURIComponent(id), memberMode ? { credentials: 'include', headers: { 'X-CSRF-Token': window.location.origin || '' } } : { headers: { 'Authorization': 'Bearer ' + adminToken } })
+    if (isServerMode && apiUrl && memberMode) {
+      fetch(apiUrl + '/api/quotes/' + encodeURIComponent(id), { credentials: 'include', headers: { 'X-CSRF-Token': window.location.origin || '' } })
         .then(function (res) { if (!res.ok) throw new Error('HTTP ' + res.status); return res.json(); })
         .then(function (row) {
           if (!row || !row.id) throw new Error('응답에 요청 정보가 없습니다.');
@@ -201,7 +200,7 @@
       });
     });
     document.getElementById('savePriceBtn').addEventListener('click', function () {
-        if (isServerMode && apiUrl && (adminToken || memberMode) && current) {
+        if (isServerMode && apiUrl && memberMode && current) {
         var total = 0;
         (current.items || []).forEach(function (it) {
           var unit = prices[it.id];
@@ -215,9 +214,7 @@
         Object.keys(prices).forEach(function (k) { combined[k] = prices[k]; });
         Object.keys(servicePrices).forEach(function (k) { combined[k] = servicePrices[k]; });
         var status = (document.getElementById('statusSelect') ? document.getElementById('statusSelect').value : (current.status || 'received'));
-          fetch(apiUrl + '/api/quotes/' + encodeURIComponent(current.id), memberMode
-            ? { method: 'PATCH', credentials: 'include', headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': window.location.origin || '' }, body: JSON.stringify({ status: status, admin_prices: combined, total: total }) }
-            : { method: 'PATCH', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + adminToken }, body: JSON.stringify({ status: status, admin_prices: combined, total: total }) })
+          fetch(apiUrl + '/api/quotes/' + encodeURIComponent(current.id), { method: 'PATCH', credentials: 'include', headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': window.location.origin || '' }, body: JSON.stringify({ status: status, admin_prices: combined, total: total }) })
         .then(function (res) { if (!res.ok) throw new Error('HTTP ' + res.status); return res.json(); })
           .then(function (data) {
             current.status = data.status || status;
@@ -355,7 +352,9 @@
     isServerMode = true;
     var authBox = document.getElementById('authBox');
     var authMsg = document.getElementById('authMsg');
-    var token = localStorage.getItem('cgiAdminToken');
+    // Legacy staff token path removed (PR-4): the console uses the CGI member
+    // session only. Any token a browser still holds is discarded at load.
+    localStorage.removeItem('cgiAdminToken');
     function setAuthMessage(text) { if (authMsg) authMsg.textContent = text || ''; }
     function memberHeaders() { return { 'X-CSRF-Token': window.location.origin || '' }; }
     function showLogout() {
@@ -396,7 +395,7 @@
             window.CGI_AUTH.logout();
             return;
           }
-          memberMode = true; member = m; adminToken = null;
+          memberMode = true; member = m;
           showLogout();
           loadQuotes(memberHeaders(), { credentials: 'include' });
         });
@@ -413,7 +412,7 @@
     });
     var logoutBtn = document.getElementById('logoutBtn');
     if (logoutBtn) logoutBtn.addEventListener('click', function () {
-      memberMode = false; member = null; adminToken = null;
+      memberMode = false; member = null;
       logoutBtn.hidden = true;
       localStorage.removeItem('cgiAdminToken');
       if (window.CGI_AUTH) window.CGI_AUTH.logout();
@@ -422,10 +421,7 @@
       renderList(); renderDetail();
       if (authBox) authBox.hidden = false;
     });
-    if (token) {
-      adminToken = token;
-      loadQuotes({ 'Authorization': 'Bearer ' + token });
-    } else if (window.CGI_AUTH) {
+    if (window.CGI_AUTH) {
       window.CGI_AUTH.refresh().then(function (m) {
         if (m && (m.role === 'admin' || m.role === 'superadmin' || m.is_admin)) {
           memberMode = true; member = m;

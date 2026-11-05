@@ -56,7 +56,7 @@ export async function createLocalNcomAuth({ env = process.env } = {}) {
  * returns the verdict. Used by tools/naver/auth-check.mjs --selftest so an
  * operator can prove the local primitive before M0 hands over real credentials.
  */
-export async function selfTestSignature({ clientId = 'aaaabbbbcccc', vendorStyleSecret = '$2a$10$abcdefghijklmnopqrstuu', timestampMs = 1643961623299 } = {}) {
+export async function selfTestSignature({ clientId = 'aaaabbbbcccc', vendorStyleSecret = 'NOT_A_REAL_SECRET', timestampMs = 1643961623299 } = {}) {
   const { buildClientSecretSign } = await import('../../backend/lib/ncommerce.mjs');
   const resolved = await resolveLocalBcrypt();
   if (!resolved.bcryptHashpw) return { ok: false, stage: 'bcrypt_resolve', reason: resolved.reason };

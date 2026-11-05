@@ -46,7 +46,7 @@ function adapter(over = {}) {
 function windowPayload(over = {}) {
   const body = {
     authResultCode: '0000', authResultMsg: '', tid: TID, clientId: CLIENT,
-    orderId: 'CGI-ORDER-4711', amount: AMOUNT, mallReserved: '', authToken: 'window-auth-token', ...over,
+    orderId: 'CGI-ORDER-4711', amount: AMOUNT, mallReserved: '', authToken: 'test-window-auth-token', ...over,
   };
   const signed = { ...body, signature: windowReturnSignature({ authToken: body.authToken, clientId: body.clientId, amount: body.amount, secretKey: SECRET }) };
   // an explicit signature in `over` must survive: re-signing it would make every

@@ -63,6 +63,27 @@ wrangler d1 execute cgi_quotes_sandbox --remote --file=migrations/0011_member_co
   `duplicate column`으로 실패하므로, 새 파일만 적용한다.
 - 결과 확인 시 이메일·전화번호 등 개인정보를 출력하지 않는다(건수만 확인).
 
+#### 샌드박스 D1 재구성 (손으로 칸을 더한 DB를 버릴 때)
+
+샌드박스는 시험 데이터를 버려도 되므로, migration 이력과 실제 스키마가 어긋났을 때
+새 DB를 만들어 0001부터 차례로 적용하는 편이 안전하다. **운영 DB에는 하지 않는다.**
+
+```powershell
+cd backend
+wrangler d1 time-travel info cgi_quotes_sandbox          # 1) 북마크 기록
+wrangler d1 delete cgi_quotes_sandbox -y                 # 2) 기존 샌드박스 삭제
+wrangler d1 create cgi_quotes_sandbox                    # 3) 새 DB 생성 → database_id 기록
+# 4) backend/wrangler.sandbox.toml 의 database_id 갱신
+foreach ($f in (Get-ChildItem migrations/*.sql | Sort-Object Name)) {
+  wrangler d1 execute cgi_quotes_sandbox --remote --file "$($f.FullName)"
+}
+# 5) 샌드박스 Worker 재배포 후 회원가입 201 · 주문 생성 201 확인
+wrangler deploy -c wrangler.sandbox.toml --keep-vars
+```
+
+2026-11-05에 이 절차로 재구성했다(이전 `e8705a5a…` → 새 `4d670527…`, migrations 0001~0011).
+샌드박스 D1을 재구성하면 기존 세션·회원·주문은 모두 사라진다.
+
 ### 2) Worker
 
 ```powershell

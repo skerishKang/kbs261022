@@ -6,13 +6,13 @@
 
   function $(id) { return document.getElementById(id); }
 
+  // Legacy Bearer token path removed (PR-4): the sync console uses the CGI
+  // member session only, and a token left in this browser is discarded.
+  try { localStorage.removeItem('cgiAdminToken'); } catch (e) {}
+
   async function authHeaders() {
-    const token = localStorage.getItem('cgiAdminToken') || '';
-    // Bearer 경로와 무관하게, 쿠키 세션으로 스태프 API를 쓰는 경우 서버가
-    // Origin + X-CSRF-Token을 요구한다 (CSRF 게이트).
-    const headers = { 'X-CSRF-Token': window.location.origin || '' };
-    if (token) headers.Authorization = 'Bearer ' + token;
-    return headers;
+    // 쿠키 세션 + Origin/X-CSRF-Token이 정식 경로다.
+    return { 'X-CSRF-Token': window.location.origin || '' };
   }
 
   async function fetchJson(path) {

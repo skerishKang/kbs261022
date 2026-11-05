@@ -17,8 +17,10 @@ compatibility_flags = ["nodejs_compat"]
 
 [[d1_databases]]
 binding = "DB"
+# 2026-11-05 (PR-4): rebuilt from migrations 0001-0011 because the previous
+# database had hand-added columns that collided with the migration history.
 database_name = "cgi_quotes_sandbox"
-database_id = "e8705a5a-e4a3-4562-a245-d09d8f4a4670"
+database_id = "4d670527-b0f1-458a-9526-d0972131b198"
 
 [vars]
 # Declared for the same reason as the production config; the sandbox is allowed
