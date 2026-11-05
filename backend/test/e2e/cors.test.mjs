@@ -62,7 +62,7 @@ test('existing quote route CORS and status behaviour is unchanged', async () => 
   const r = (method, path, body, headers = { Origin: ALLOWED }) => call(env, method, path, body, headers);
 
   assert.equal((await r('POST', '/api/quotes', { items: [] })).status, 400);
-  assert.equal((await r('POST', '/api/quotes', { items: [{ id: 'x' }] })).json.error, 'company, name, phone required');
+  assert.equal((await r('POST', '/api/quotes', { items: [{ id: 'x' }] })).json.error, 'company required');
   assert.equal((await r('GET', '/api/quotes')).status, 401);
   assert.equal((await r('PATCH', '/api/quotes/Q-ping', { status: 'in_progress' })).status, 401);
 

@@ -31,6 +31,12 @@
     return '';
   }
 
+  /** 403 email not verified — the site has to show the verify screen instead of
+   *  pretending the request failed for an unknown reason. */
+  function needsEmailVerification(res) {
+    return !!(res && res.status === 403 && res.data && res.data.error === 'email not verified');
+  }
+
   /**
    * credentialed fetch 래퍼.
    * X-CSRF-Token은 Origin 그 자체(서버의 기본 정책). 네트워크 실패도 JSON 형태로 돌려준다.
@@ -51,7 +57,11 @@
       body: body === undefined || body === null ? undefined : JSON.stringify(body)
     }).then(function (res) {
       return res.json().then(function (data) {
-        return { ok: res.ok, status: res.status, data: data || {}, headers: res.headers };
+        var result = { ok: res.ok, status: res.status, data: data || {}, headers: res.headers };
+        if (needsEmailVerification(result)) {
+          try { window.dispatchEvent(new CustomEvent('cgi:email-verify-required')); } catch (e) {}
+        }
+        return result;
       }).catch(function () {
         return { ok: res.ok, status: res.status, data: {}, headers: res.headers };
       });
@@ -248,6 +258,7 @@
     api: api,
     esc: esc,
     message: message,
+    needsEmailVerification: needsEmailVerification,
     refresh: refresh,
     me: me,
     isLoggedIn: isLoggedIn,

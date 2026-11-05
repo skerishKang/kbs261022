@@ -1025,7 +1025,16 @@
       };
       if (isMember) quoteInit.credentials = 'include';
       fetch(apiUrl + (isMember ? '/api/me/quotes' : '/api/quotes'), quoteInit).then(function (res) {
-        if (!res.ok) throw new Error('HTTP ' + res.status);
+        if (!res.ok) {
+          // 403 email not verified must not fall through to the local-storage
+          // "saved on this browser" path: the request never reached the server.
+          return res.json().catch(function () { return {}; }).then(function (data) {
+            var err = new Error((data && data.error) || ('HTTP ' + res.status));
+            err.status = res.status;
+            err.data = data || {};
+            throw err;
+          });
+        }
         return res.json();
       }).then(function (response) {
         request.id = response.id || request.id;
@@ -1040,6 +1049,11 @@
           '<p class="receipt-note">담당자가 내용을 확인한 뒤 입력하신 연락처로 안내드립니다.</p>'
         );
       }).catch(function (err) {
+        if (err && err.data && err.data.error === 'email not verified') {
+          done('<p class="form-error">인증 메일을 확인해 주세요. 메일함의 인증 링크를 누른 뒤 다시 요청해 주세요.</p>' +
+            '<p><a class="btn btn-secondary btn-small" href="#/auth/verify">인증 메일 재전송</a></p>', 'result-warn');
+          return;
+        }
         try {
           var list = JSON.parse(localStorage.getItem('cgiQuoteRequests') || '[]');
           list.unshift(request);
@@ -1237,7 +1251,7 @@
 
   function render() {
     var nicepayHandled = window.CGI_ORDER && typeof window.CGI_ORDER.handleNicepayRedirect === 'function' && window.CGI_ORDER.handleNicepayRedirect(app);
-    if (nicepayHandled || (window.CGI_ORDER && typeof window.CGI_ORDER.handleTossRedirect === 'function' && window.CGI_ORDER.handleTossRedirect(app))) {
+    if (nicepayHandled) {
       applySiteConfig();
       updateHeader();
       updateTitle();
@@ -2005,6 +2019,12 @@
 
   function renderMyPage(app) {
     var p = authApi();
+    if (p.isLoggedIn() && !p.emailVerified()) {
+      // EMAIL_VERIFY_REQUIRED=YES makes every member API answer 403. Send the
+      // member to the one screen that can fix it: the resend screen.
+      navigate('#/auth/verify');
+      return;
+    }
     if (!p.isLoggedIn()) {
       app.innerHTML = authShell('로그인이 필요해요',
         '<p class="auth-muted">마이페이지는 로그인한 회원만 볼 수 있어요.</p>' +
@@ -2380,6 +2400,13 @@
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
   };
+
+  // Any member API answering 403 email not verified lands here (cgi-auth.js
+  // dispatches this event): show the verification screen with the resend button.
+  window.addEventListener('cgi:email-verify-required', function () {
+    showToast('인증 메일을 확인해 주세요.');
+    if ((location.hash || '').indexOf('#/auth/verify') !== 0) navigate('#/auth/verify');
+  });
 
   window.addEventListener('hashchange', render);
 

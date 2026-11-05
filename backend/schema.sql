@@ -204,6 +204,46 @@ CREATE TABLE IF NOT EXISTS ecount_item_mapping (
   updated_at TEXT NOT NULL
 );
 
+-- ------------------------------------------------------------
+-- Part 4. Product sync state + change log (migration 0005)
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS product_sync_state (
+  cgi_id TEXT NOT NULL,
+  target TEXT NOT NULL CHECK (target IN ('erp','naver')),
+  status TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending','in_progress','success','failed','retry_pending','skipped')),
+  change_hash TEXT,
+  last_success_at TEXT,
+  last_attempt_at TEXT,
+  last_error TEXT,
+  retry_count INTEGER NOT NULL DEFAULT 0,
+  transmitted INTEGER NOT NULL DEFAULT 0,
+  locked INTEGER NOT NULL DEFAULT 0,
+  locked_at TEXT,
+  locked_by TEXT,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  updated_at TEXT NOT NULL DEFAULT (datetime('now')),
+  PRIMARY KEY (cgi_id, target)
+);
+
+CREATE INDEX IF NOT EXISTS idx_product_sync_state_status ON product_sync_state(status);
+CREATE INDEX IF NOT EXISTS idx_product_sync_state_target ON product_sync_state(target);
+CREATE INDEX IF NOT EXISTS idx_product_sync_state_cgi_id ON product_sync_state(cgi_id);
+
+CREATE TABLE IF NOT EXISTS product_change_log (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  cgi_id TEXT NOT NULL,
+  change_type TEXT NOT NULL CHECK (change_type IN ('created','updated','deleted')),
+  changed_fields TEXT, -- JSON array of field names
+  hash_before TEXT,
+  hash_after TEXT NOT NULL,
+  detected_at TEXT NOT NULL DEFAULT (datetime('now')),
+  synced_erp INTEGER NOT NULL DEFAULT 0,
+  synced_naver INTEGER NOT NULL DEFAULT 0
+);
+
+CREATE INDEX IF NOT EXISTS idx_product_change_log_cgi_id ON product_change_log(cgi_id);
+CREATE INDEX IF NOT EXISTS idx_product_change_log_detected_at ON product_change_log(detected_at);
+
 -- ============================================================
 -- Part 3. Customer accounts (issue #69)
 --
@@ -228,6 +268,12 @@ CREATE TABLE IF NOT EXISTS members (
   email_verified_at TEXT,
   role TEXT NOT NULL DEFAULT 'member',  -- member|admin|superadmin
   google_id TEXT,                        -- Google OAuth subject (issue #79)
+  -- Durable signup consent (migration 0011). member_events is purged after 90
+  -- days; this row is the record that has to survive. Google signup is still
+  -- consent-less and leaves these NULL.
+  terms_consent_version TEXT,
+  privacy_consent_version TEXT,
+  consented_at TEXT,
   status TEXT NOT NULL DEFAULT 'active',  -- active|suspended|deleted
   created_at TEXT NOT NULL,
   updated_at TEXT NOT NULL,
@@ -236,6 +282,8 @@ CREATE TABLE IF NOT EXISTS members (
 
 CREATE INDEX IF NOT EXISTS idx_members_status ON members(status);
 CREATE INDEX IF NOT EXISTS idx_members_created_at ON members(created_at);
+CREATE INDEX IF NOT EXISTS idx_members_role ON members(role);
+CREATE INDEX IF NOT EXISTS idx_members_google_id ON members(google_id);
 
 CREATE TABLE IF NOT EXISTS member_addresses (
   id INTEGER PRIMARY KEY,

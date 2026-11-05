@@ -41,7 +41,7 @@ test('the gateway readout announces NICEPAY without exposing the secret key', as
 test('the window request is built from the server order total, not a client claim', async () => {
   const env = niceEnv();
   const order = await newPurchase(env);
-  const res = await call(env, 'POST', '/api/payments/nicepay/window', { orderId: order.id, amount: 1 });
+  const res = await call(env, 'POST', '/api/payments/nicepay/window', { orderId: order.id, amount: 1, email: CUSTOMER.email });
   assert.equal(res.status, 200, res.text);
   assert.equal(res.json.request.amount, order.totals.total_amount, 'a client cannot lower the window amount');
   assert.equal(res.json.request.orderId, order.id);
@@ -54,7 +54,7 @@ test('the window endpoint refuses a quote order, a closed order and an unknown o
   assert.equal((await call(env, 'POST', '/api/payments/nicepay/window', { orderId: 'nope' })).status, 404);
   const order = await newPurchase(env);
   await call(env, 'PATCH', `/api/orders/${order.id}`, { status: 'cancelled' }, auth());
-  const closed = await call(env, 'POST', '/api/payments/nicepay/window', { orderId: order.id });
+  const closed = await call(env, 'POST', '/api/payments/nicepay/window', { orderId: order.id, email: CUSTOMER.email });
   assert.equal(closed.status, 409);
 });
 

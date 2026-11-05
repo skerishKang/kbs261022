@@ -21,6 +21,9 @@ database_name = "cgi_quotes_sandbox"
 database_id = "e8705a5a-e4a3-4562-a245-d09d8f4a4670"
 
 [vars]
+# Declared for the same reason as the production config; the sandbox is allowed
+# to use the mock gateway.
+WORKER_NAME = "cgi-nicepay-sandbox"
 # Which gateway this deployment speaks, and which of its two environments.
 # Production and sandbox both use NICEPAY test by default. Toss remains selectable with PG_PROVIDER.
 PG_PROVIDER = "nicepay"

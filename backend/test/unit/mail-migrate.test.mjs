@@ -299,7 +299,9 @@ test('COLUMN_UPGRADES lists every member link and role', () => {
   assert.deepEqual(
     COLUMN_UPGRADES.map((upgrade) => `${upgrade.table}.${upgrade.column}`),
     ['orders.customer_id', 'quote_requests.member_id', 'members.role', 'members.google_id',
-     'quote_requests.privacy_consent', 'quote_requests.invoice_type', 'quote_requests.biz_no', 'quote_requests.agency_no'],
+     'quote_requests.privacy_consent', 'quote_requests.invoice_type', 'quote_requests.biz_no', 'quote_requests.agency_no',
+     'orders.terms_consent', 'orders.privacy_consent', 'orders.consent_at',
+     'members.terms_consent_version', 'members.privacy_consent_version', 'members.consented_at'],
   );
   for (const upgrade of COLUMN_UPGRADES) {
     assert.match(upgrade.ddl, new RegExp(`ADD COLUMN ${upgrade.column}`));
@@ -310,7 +312,9 @@ test('tableColumns returns the column names or an empty list for a missing table
   const db = openD1();
   assert.deepEqual(await tableColumns(db, 'members'), [
     'id', 'email', 'password_hash', 'name', 'phone', 'company',
-    'email_verified_at', 'role', 'google_id', 'status', 'created_at', 'updated_at', 'deleted_at',
+    'email_verified_at', 'role', 'google_id',
+    'terms_consent_version', 'privacy_consent_version', 'consented_at',
+    'status', 'created_at', 'updated_at', 'deleted_at',
   ]);
   assert.deepEqual(await tableColumns(db, 'no_such_table'), []);
 });
@@ -326,7 +330,12 @@ test('ensureColumns is idempotent and reports what it applied', async () => {
     id TEXT PRIMARY KEY, status TEXT NOT NULL, created_at TEXT NOT NULL
   )`);
   const applied = await ensureColumns(db);
-  assert.deepEqual(applied, ['ALTER TABLE orders ADD COLUMN customer_id INTEGER']);
+  assert.deepEqual(applied, [
+    'ALTER TABLE orders ADD COLUMN customer_id INTEGER',
+    'ALTER TABLE orders ADD COLUMN terms_consent INTEGER NOT NULL DEFAULT 0',
+    'ALTER TABLE orders ADD COLUMN privacy_consent INTEGER NOT NULL DEFAULT 0',
+    'ALTER TABLE orders ADD COLUMN consent_at TEXT',
+  ]);
   assert.ok((await tableColumns(db, 'orders')).includes('customer_id'));
 
   // Now fully populated: nothing more to do.

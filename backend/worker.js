@@ -16,7 +16,6 @@
 //   POST   /api/orders/:id/payments/:paymentKey/cancel (admin) refund
 //   POST   /api/orders/:id/erp       (admin)   build + transmit ERP payload
 //   POST   /api/orders/:id/erp/retry (admin)   retry ERP sync
-//   POST   /api/admin/schema/init    (admin)   apply schema.sql to D1
 //   POST   /api/admin/ecount/item-mappings/import (admin) import reviewed CSV approvals
 //   GET    /api/admin/health         (admin)   mode readout, no secrets
 //
@@ -71,6 +70,7 @@ import {
   createNicepayAdapter,
   createNicepayMockAdapter,
 } from './lib/pg-nicepay-adapter.mjs';
+import { cancelAmountOf } from './lib/pg-nicepay.mjs';
 import { resolveNicepayEnv } from './lib/pg-nicepay-env.mjs';
 import { erpCodeFor } from './lib/erp.mjs';
 import {
@@ -100,7 +100,7 @@ import {
   validateText,
   validatePassword,
 } from './lib/auth.mjs';
-import { ensureColumns, COLUMN_UPGRADES, GOOGLE_SIGNUP_PASSWORD_SENTINEL, revokeGoogleSignupPasswords } from './lib/migrate.mjs';
+import { GOOGLE_SIGNUP_PASSWORD_SENTINEL } from './lib/migrate.mjs';
 import { purgeExpiredShopLogs } from './lib/retention.mjs';
 import { createMailAdapter } from './lib/mail.mjs';
 import { createOAuthState, decodeOAuthState, normalizeOAuthReturn, resolveOAuthRedirect, buildAuthorizationUrl, exchangeCode, fetchUserInfo, OAUTH_STATE_COOKIE, oauthStateCookieOptions } from './lib/google-oauth.mjs';
@@ -227,11 +227,52 @@ function validateQuoteIntake(body) {
   return { ok: true, privacy_consent: 1, invoice_type: invoiceType, biz_no: bizNo, agency_no: agencyNo };
 }
 
+/** Guest quote intake field checks: same caps the order path applies to the
+ *  same customer fields, plus a bounded item list. */
+function validateQuoteFields(body) {
+  if (!body || typeof body !== 'object' || Array.isArray(body)) return { error: 'invalid body' };
+  if (!Array.isArray(body.items) || !body.items.length) return { error: 'items required' };
+  if (body.items.length > 100) return { error: 'too many items', detail: 'maximum 100 items per quote request' };
+  if (!body.items.every((item) => item && typeof item === 'object' && !Array.isArray(item))) {
+    return { error: 'invalid item' };
+  }
+  const company = validateText(body.company, 'company', 200);
+  if (!company.ok) return { error: company.error, detail: company.detail };
+  const name = validateText(body.name, 'name', 100);
+  if (!name.ok) return { error: name.error, detail: name.detail };
+  const phone = validateText(body.phone, 'phone', 40);
+  if (!phone.ok) return { error: phone.error, detail: phone.detail };
+  const email = body.email == null || String(body.email).trim() === ''
+    ? { ok: true, value: null }
+    : validateOptionalText(body.email, 'email', 200);
+  if (email.error) return { error: email.error, detail: email.detail };
+  const location = validateOptionalText(body.location, 'location', 200);
+  if (location.error) return { error: location.error, detail: location.detail };
+  const note = validateOptionalText(body.note, 'note', 2000);
+  if (note.error) return { error: note.error, detail: note.detail };
+  const services = Array.isArray(body.services)
+    ? body.services.filter((s) => typeof s === 'string').slice(0, 20)
+    : [];
+  return {
+    ok: true,
+    company: company.value, name: name.value, phone: phone.value,
+    email: email.value, location: location.value, note: note.value, services,
+  };
+}
+
 async function readJson(request) {
   const length = Number(request.headers.get('Content-Length') || 0);
   if (length > MAX_BODY_BYTES) return { error: 'body too large' };
   const buffer = await request.arrayBuffer();
   if (buffer.byteLength > MAX_BODY_BYTES) return { error: 'body too large' };
+  if (buffer.byteLength === 0) return { body: {} };
+  // A body that is not announced as JSON is not parsed as JSON: a cross-site
+  // HTML form can post text/plain or form-encoded data without a preflight, and
+  // accepting it would reopen the CSRF hole this header check closes.
+  const type = String(request.headers.get('Content-Type') || '').toLowerCase();
+  if (!type.includes('application/json')) {
+    return { error: 'content_type_json_required', detail: 'JSON 헤더를 보내주세요' };
+  }
   let text;
   try {
     text = new TextDecoder('utf-8', { fatal: true }).decode(buffer);
@@ -563,7 +604,8 @@ async function createOrder(db, body, env, options = {}) {
       ),
     ]);
   } catch (e) {
-    return { status: 500, body: { error: 'order insert failed', detail: String(e && e.message || e) } };
+    // Never echo the D1 message: it can name constraints, columns or row values.
+    return { status: 500, body: { error: 'order insert failed' } };
   }
 
   // A quote order also writes the existing quote_requests row so the legacy
@@ -789,7 +831,15 @@ async function applyNicepayWebhook(db, env, pg, payload) {
     return json({ error: 'webhook_verification_failed', code: verified.reason }, 400);
   }
 
-  const key = pg.webhook.dedupeKey({ tid, status: String(payload.status || '') });
+  const payloadStatus = String(payload.status || '');
+  // (tid, status) is the at-least-once identity, but a partial cancel can repeat
+  // with the same status while moving a different amount. The balance the
+  // notification carries is part of the key so the second cancel is not
+  // swallowed as a replay.
+  const dedupeStatus = /cancel/i.test(payloadStatus)
+    ? `${payloadStatus}:${payload.balanceAmt ?? payload.cancelAmt ?? ''}`
+    : payloadStatus;
+  const key = pg.webhook.dedupeKey({ tid, status: dedupeStatus });
   const seen = await db.prepare(
     "SELECT id FROM order_events WHERE type = 'payment_webhook' AND json_extract(meta, '$.dedupe_key') = ? LIMIT 1"
   ).bind(key).first();
@@ -814,15 +864,39 @@ async function applyNicepayWebhook(db, env, pg, payload) {
     method: tx.payMethod || row.method,
     cancelledTid: tx.cancelledTid || null,
   };
-
-  const stmts = [];
   const ts = nowIso();
+
+  // Cancellation is not a failed payment. It has its own order/payment status
+  // vocabulary and it must never run through recordPaymentOutcome (which would
+  // flip the order to failed and replace the payment row with a zeroed one).
+  if (outcome.status === 'cancelled' || outcome.status === 'partialcancelled') {
+    await applyNicepayCancellation(db, { order, row, tx, provider: pg.provider, providerMode: pg.mode, key, ts });
+    return new Response(ack.body, { status: ack.status, headers: { 'Content-Type': ack.headers['Content-Type'] } });
+  }
+
+  // `ready` means a window (or a virtual-account order) exists but money has not
+  // moved. It is a pending state, not a failure. A late/out-of-order `ready`
+  // must never downgrade a row that has already moved money.
+  if (outcome.status === 'ready') {
+    const settled = ['paid', 'cancelled', 'partial_cancelled'].includes(String(row.status));
+    const stmts = [
+      db.prepare('INSERT INTO order_events (order_id, type, actor, from_status, to_status, meta, created_at) VALUES (?,?,?,?,?,?,?)')
+        .bind(order.id, 'payment_webhook', 'pg', row.status, 'ready', JSON.stringify({ dedupe_key: key, status: outcome.status, tid, applied: !settled }), ts),
+    ];
+    if (!settled) {
+      stmts.unshift(
+        db.prepare("UPDATE payments SET status = 'pending', balance_amount = ?, updated_at = ? WHERE payment_key = ?")
+          .bind(outcome.balanceAmount, ts, tid)
+      );
+    }
+    await db.batch(stmts);
+    return new Response(ack.body, { status: ack.status, headers: { 'Content-Type': ack.headers['Content-Type'] } });
+  }
+
   if (row.status !== outcome.status) {
     await recordPaymentOutcome(db, {
       order, paymentKey: tid, amount: outcome.amount,
-      status: outcome.status === 'paid' ? 'paid'
-        : outcome.status === 'cancelled' || outcome.status === 'partialcancelled' ? 'cancelled'
-        : outcome.status === 'failed' ? 'failed' : outcome.status,
+      status: outcome.status === 'paid' ? 'paid' : outcome.status === 'failed' ? 'failed' : outcome.status,
       method: outcome.method, balanceAmount: outcome.balanceAmount,
       provider: pg.provider, providerMode: pg.mode,
       approvedAt: outcome.status === 'paid' ? (tx.paidAt || ts) : (row.approved_at || null),
@@ -830,15 +904,59 @@ async function applyNicepayWebhook(db, env, pg, payload) {
       raw: JSON.stringify(tx).slice(0, 4000),
     });
   }
-  stmts.push(db.prepare(
+  await db.prepare(
     'INSERT INTO order_events (order_id, type, actor, from_status, to_status, meta, created_at) VALUES (?,?,?,?,?,?,?)'
-  ).bind(order.id, 'payment_webhook', 'pg', row.status, outcome.status, JSON.stringify({ dedupe_key: key, status: outcome.status, tid }), ts));
-  await db.batch(stmts);
+  ).bind(order.id, 'payment_webhook', 'pg', row.status, outcome.status, JSON.stringify({ dedupe_key: key, status: outcome.status, tid }), ts).run();
   if (outcome.status === 'paid') {
     const updated = await getOrderFull(db, order.id);
     await safeEnqueueErpSync(db, env, updated, updated.items);
   }
   return new Response(ack.body, { status: ack.status, headers: { 'Content-Type': ack.headers['Content-Type'] } });
+}
+
+/**
+ * A gateway-side cancel (the operator refunded in the NICE console, so no
+ * server-to-server cancel call ever ran through cancelPayment). Update the
+ * EXISTING payment row in place — never INSERT OR REPLACE, which reset
+ * cancel_amount to 0 — and derive the order status the same way the refund
+ * handler does. Full cancel -> 'cancelled'; partial -> 'partial_refunded'.
+ */
+async function applyNicepayCancellation(db, { order, row, tx, provider, providerMode, key, ts }) {
+  const gatewayStatus = String(tx.status || '').toLowerCase();
+  const totalAmount = toNonNegInt(tx.amount, row.amount);
+  const balanceAmount = toNonNegInt(tx.balanceAmt, row.balance_amount);
+  const previousCancelled = toNonNegInt(row.cancel_amount, 0);
+  const remainingBefore = Math.max(totalAmount - previousCancelled, 0);
+  const newest = cancelAmountOf(tx, 0);
+  const cancelledNow = newest > 0 ? newest : Math.max(remainingBefore - balanceAmount, 0);
+  const cumulativeCancelled = Math.min(totalAmount, previousCancelled + cancelledNow);
+  const full = gatewayStatus === 'cancelled' || balanceAmount <= 0;
+  const paymentRowStatus = full ? 'cancelled' : 'partial_cancelled';
+  const orderPaymentStatus = full ? 'cancelled' : 'partial_refunded';
+
+  await db.batch([
+    db.prepare('UPDATE payments SET status = ?, balance_amount = ?, cancel_amount = ?, method = ?, updated_at = ? WHERE payment_key = ?')
+      .bind(paymentRowStatus, balanceAmount, cumulativeCancelled, tx.payMethod || row.method || null, ts, row.payment_key),
+    db.prepare('UPDATE orders SET payment_status = ?, refunded_amount = ?, updated_at = ? WHERE id = ?')
+      .bind(orderPaymentStatus, cumulativeCancelled, ts, order.id),
+    db.prepare('INSERT INTO order_events (order_id, type, actor, from_status, to_status, meta, created_at) VALUES (?,?,?,?,?,?,?)')
+      .bind(
+        order.id, 'payment_cancelled', 'pg', order.status, null,
+        JSON.stringify({
+          payment_key: row.payment_key,
+          cancel_amount: cancelledNow,
+          cancelled_total: cumulativeCancelled,
+          balance_amount: balanceAmount,
+          source: 'webhook',
+          provider,
+          provider_mode: providerMode,
+          dedupe_key: key,
+        }),
+        ts
+      ),
+    db.prepare('INSERT INTO order_events (order_id, type, actor, from_status, to_status, meta, created_at) VALUES (?,?,?,?,?,?,?)')
+      .bind(order.id, 'payment_webhook', 'pg', row.status, paymentRowStatus, JSON.stringify({ dedupe_key: key, status: gatewayStatus, tid: row.payment_key }), ts),
+  ]);
 }
 
 /** Persist a payment outcome and keep the order/payment status consistent.
@@ -1320,114 +1438,6 @@ async function safeEnqueueErpSync(db, env, order, items) {
 }
 
 // ---------------------------------------------------------------------------
-// schema init (deploy aid: apply schema.sql to the live D1)
-// ---------------------------------------------------------------------------
-
-const SCHEMA_STATEMENTS = `CREATE TABLE IF NOT EXISTS orders (
-  id TEXT PRIMARY KEY, kind TEXT NOT NULL CHECK (kind IN ('purchase','quote')),
-  idempotency_key TEXT UNIQUE, cart_hash TEXT, status TEXT NOT NULL, created_at TEXT NOT NULL, updated_at TEXT NOT NULL,
-  customer_company TEXT NOT NULL, customer_name TEXT NOT NULL, customer_phone TEXT NOT NULL, customer_email TEXT,
-  customer_addr TEXT, customer_addr_detail TEXT, customer_note TEXT, services TEXT,
-  item_total INTEGER NOT NULL DEFAULT 0, shipping_fee INTEGER NOT NULL DEFAULT 0,
-  total_amount INTEGER NOT NULL DEFAULT 0, supplied_amount INTEGER NOT NULL DEFAULT 0, vat_amount INTEGER NOT NULL DEFAULT 0,
-  payment_status TEXT NOT NULL DEFAULT 'none', payment_method TEXT, payment_key TEXT, paid_at TEXT,
-  refunded_amount INTEGER NOT NULL DEFAULT 0,
-  delivery_status TEXT NOT NULL DEFAULT 'pending', delivery_tracking TEXT,
-  admin_prices TEXT, admin_note TEXT, erp_status TEXT NOT NULL DEFAULT 'not_sent', erp_sent_at TEXT,
-  source_quote_id TEXT, customer_id INTEGER
-);
-CREATE INDEX IF NOT EXISTS idx_orders_created_at ON orders(created_at);
-CREATE INDEX IF NOT EXISTS idx_orders_status ON orders(status);
-CREATE INDEX IF NOT EXISTS idx_orders_kind ON orders(kind);
-CREATE INDEX IF NOT EXISTS idx_orders_payment_status ON orders(payment_status);
-CREATE INDEX IF NOT EXISTS idx_orders_customer_company ON orders(customer_company);
-CREATE INDEX IF NOT EXISTS idx_orders_cart_hash ON orders(cart_hash);
-CREATE INDEX IF NOT EXISTS idx_orders_customer_id ON orders(customer_id);
-CREATE TABLE IF NOT EXISTS order_items (
-  order_id TEXT NOT NULL, seq INTEGER NOT NULL, product_id TEXT NOT NULL, product_name TEXT NOT NULL,
-  brand TEXT, category TEXT, option_label TEXT, price_state TEXT NOT NULL, unit_price INTEGER,
-  qty INTEGER NOT NULL, line_total INTEGER NOT NULL, erp_code TEXT,
-  PRIMARY KEY (order_id, seq)
-);
-CREATE INDEX IF NOT EXISTS idx_order_items_product_id ON order_items(product_id);
-CREATE TABLE IF NOT EXISTS payments (
-  id INTEGER PRIMARY KEY, order_id TEXT NOT NULL, payment_key TEXT UNIQUE NOT NULL,
-  provider TEXT NOT NULL DEFAULT 'nicepay', provider_mode TEXT NOT NULL DEFAULT 'test',
-  pg_order_id TEXT NOT NULL, amount INTEGER NOT NULL, supplied_amount INTEGER NOT NULL DEFAULT 0,
-  vat INTEGER NOT NULL DEFAULT 0, method TEXT, status TEXT NOT NULL, requested_at TEXT, approved_at TEXT,
-  balance_amount INTEGER NOT NULL DEFAULT 0, cancel_amount INTEGER NOT NULL DEFAULT 0,
-  failure_code TEXT, failure_message TEXT, raw TEXT, created_at TEXT NOT NULL, updated_at TEXT NOT NULL
-);
-CREATE INDEX IF NOT EXISTS idx_payments_order_id ON payments(order_id);
-CREATE INDEX IF NOT EXISTS idx_payments_status ON payments(status);
-CREATE TABLE IF NOT EXISTS order_events (
-  id INTEGER PRIMARY KEY, order_id TEXT NOT NULL, type TEXT NOT NULL, actor TEXT NOT NULL DEFAULT 'system',
-  from_status TEXT, to_status TEXT, meta TEXT, error TEXT, created_at TEXT NOT NULL
-);
-CREATE INDEX IF NOT EXISTS idx_order_events_order_id ON order_events(order_id);
-CREATE INDEX IF NOT EXISTS idx_order_events_type ON order_events(type);
-CREATE TABLE IF NOT EXISTS erp_sync (
-  id INTEGER PRIMARY KEY, order_id TEXT NOT NULL, adapter TEXT NOT NULL DEFAULT 'ecount-test',
-  mode TEXT NOT NULL DEFAULT 'test', action TEXT NOT NULL DEFAULT 'sales_slip_create',
-  dedupe_key TEXT UNIQUE NOT NULL, payload TEXT NOT NULL, status TEXT NOT NULL DEFAULT 'pending',
-  attempts INTEGER NOT NULL DEFAULT 0, last_error TEXT, created_at TEXT NOT NULL, updated_at TEXT NOT NULL
-);
-CREATE INDEX IF NOT EXISTS idx_erp_sync_order_id ON erp_sync(order_id);
-CREATE INDEX IF NOT EXISTS idx_erp_sync_status ON erp_sync(status);
-CREATE TABLE IF NOT EXISTS ecount_item_mapping (
-  cgi_product_id TEXT PRIMARY KEY, ecount_prod_cd TEXT NOT NULL,
-  approved_by TEXT NOT NULL, approved_at TEXT NOT NULL, source_sha256 TEXT NOT NULL,
-  created_at TEXT NOT NULL, updated_at TEXT NOT NULL
-);
-CREATE TABLE IF NOT EXISTS members (
-  id INTEGER PRIMARY KEY, email TEXT NOT NULL UNIQUE, password_hash TEXT NOT NULL, name TEXT NOT NULL,
-  phone TEXT, company TEXT, email_verified_at TEXT, role TEXT NOT NULL DEFAULT 'member',
-  status TEXT NOT NULL DEFAULT 'active', created_at TEXT NOT NULL, updated_at TEXT NOT NULL, deleted_at TEXT
-);
-CREATE INDEX IF NOT EXISTS idx_members_status ON members(status);
-CREATE INDEX IF NOT EXISTS idx_members_created_at ON members(created_at);
-CREATE INDEX IF NOT EXISTS idx_members_role ON members(role);
-CREATE TABLE IF NOT EXISTS member_addresses (
-  id INTEGER PRIMARY KEY, member_id INTEGER NOT NULL, label TEXT NOT NULL, recipient_name TEXT NOT NULL,
-  phone TEXT NOT NULL, addr TEXT NOT NULL, addr_detail TEXT, company TEXT,
-  is_default INTEGER NOT NULL DEFAULT 0, created_at TEXT NOT NULL, updated_at TEXT NOT NULL
-);
-CREATE INDEX IF NOT EXISTS idx_member_addresses_member_id ON member_addresses(member_id);
-CREATE TABLE IF NOT EXISTS auth_tokens (
-  id INTEGER PRIMARY KEY, member_id INTEGER, kind TEXT NOT NULL, token_hash TEXT NOT NULL UNIQUE,
-  email TEXT, status TEXT NOT NULL DEFAULT 'pending', expires_at TEXT NOT NULL,
-  consumed_at TEXT, revoked_at TEXT, created_at TEXT NOT NULL, meta TEXT
-);
-CREATE INDEX IF NOT EXISTS idx_auth_tokens_member_kind ON auth_tokens(member_id, kind);
-CREATE INDEX IF NOT EXISTS idx_auth_tokens_expires_at ON auth_tokens(expires_at);
-CREATE TABLE IF NOT EXISTS auth_attempts (
-  kind TEXT NOT NULL, key TEXT NOT NULL, count INTEGER NOT NULL DEFAULT 1,
-  first_at TEXT NOT NULL, last_at TEXT NOT NULL, locked_until TEXT, PRIMARY KEY (kind, key)
-);
-CREATE INDEX IF NOT EXISTS idx_auth_attempts_last_at ON auth_attempts(last_at);
-CREATE TABLE IF NOT EXISTS member_events (
-  id INTEGER PRIMARY KEY, member_id INTEGER, type TEXT NOT NULL, meta TEXT, created_at TEXT NOT NULL
-);
-CREATE INDEX IF NOT EXISTS idx_member_events_member_id ON member_events(member_id);
-CREATE INDEX IF NOT EXISTS idx_member_events_type ON member_events(type);
-CREATE INDEX IF NOT EXISTS idx_member_events_created_at ON member_events(created_at);`;
-
-async function initSchema(db) {
-  await db.exec(SCHEMA_STATEMENTS);
-  const columns = await ensureColumns(db, COLUMN_UPGRADES);
-  const revokedGoogleSignupPasswords = await revokeGoogleSignupPasswords(db);
-  const tables = [];
-  for (const name of [
-    'orders', 'order_items', 'payments', 'order_events', 'erp_sync', 'ecount_item_mapping', 'quote_requests',
-    'members', 'member_addresses', 'auth_tokens', 'auth_attempts', 'member_events',
-  ]) {
-    const row = await db.prepare("SELECT name FROM sqlite_master WHERE type = 'table' AND name = ?").bind(name).first();
-    if (row) tables.push(name);
-  }
-  return { ok: true, tables, upgraded_columns: columns, google_signup_passwords_revoked: revokedGoogleSignupPasswords };
-}
-
-// ---------------------------------------------------------------------------
 // customer accounts (issue #69)
 //
 // /api/auth/* and /api/me/* are the only cookie-based routes. Each one is
@@ -1469,7 +1479,7 @@ function authPolicy(env) {
   if (Number.isFinite(maxAddresses) && maxAddresses > 0) policy.maxAddressesPerMember = maxAddresses;
   // Buckets that must keep their own max/window and are not overridden by the
   // global AUTH_RATE_LIMIT_MAX / AUTH_RATE_LIMIT_WINDOW_SECONDS.
-  const protectedBuckets = new Set(['resend-verify-cooldown']);
+  const protectedBuckets = new Set(['resend-verify-cooldown', 'login-ip', 'signup-ip', 'password-reset-ip', 'quote-intake-ip']);
   for (const name of Object.keys(policy.rateLimit)) {
     if (protectedBuckets.has(name)) {
       if (name === 'resend-verify-cooldown' && Number.isFinite(cooldownSec) && cooldownSec >= 0) {
@@ -1574,6 +1584,18 @@ function memberQuoteView(row) {
   };
 }
 
+/** The Cloudflare-set source address, or null when the runtime did not supply one. */
+function clientIp(request) {
+  const value = String(request.headers.get('CF-Connecting-IP') || '').trim();
+  return value ? value.slice(0, 64) : null;
+}
+
+/** Clear one counter after a successful action (a successful login is not a strike). */
+async function clearRateLimit(db, kind, key) {
+  if (!key) return;
+  await db.prepare('DELETE FROM auth_attempts WHERE kind = ? AND key = ?').bind(kind, key).run();
+}
+
 /** Sliding-window rate limit over auth_attempts(kind, key). */
 async function rateLimitCheck(db, policy, kind, key) {
   const bucket = policy.rateLimit[kind];
@@ -1670,7 +1692,14 @@ async function loadSession(request, db, env) {
   const raw = request.headers.get('Cookie') || '';
   const part = raw.split(/;\s*/).find((piece) => piece.startsWith(`${name}=`));
   if (!part) return null;
-  const value = decodeURIComponent(part.slice(name.length + 1));
+  let value;
+  try {
+    value = decodeURIComponent(part.slice(name.length + 1));
+  } catch (e) {
+    // A malformed percent-escape in the cookie header must read as "no session",
+    // not crash the whole request with a URIError.
+    return null;
+  }
   if (!value) return null;
   const row = await getAuthToken(db, value);
   if (!row || row.kind !== 'session' || row.status !== 'pending') return null;
@@ -1678,7 +1707,17 @@ async function loadSession(request, db, env) {
   return row;
 }
 
-async function requireMember(request, db, env) {
+/** Raised when a live session belongs to a member whose email is unverified. */
+class EmailNotVerifiedError extends Error {
+  constructor(member) {
+    super('email not verified');
+    this.name = 'EmailNotVerifiedError';
+    this.code = 'email_not_verified';
+    this.member = member;
+  }
+}
+
+async function requireMember(request, db, env, { allowUnverified = false } = {}) {
   const session = await loadSession(request, db, env);
   if (!session) return null;
   const member = await getMember(db, session.member_id);
@@ -1691,6 +1730,14 @@ async function requireMember(request, db, env) {
   if (member.status === 'deleted') {
     await db.prepare("UPDATE auth_tokens SET status = 'revoked', revoked_at = ? WHERE id = ?").bind(nowIso(), session.id).run();
     return null;
+  }
+  // EMAIL_VERIFY_REQUIRED=YES used to gate login only; an already-issued session
+  // kept full member access for its 30-day lifetime. Enforce it on every
+  // requireMember call instead. GET /api/me, resend-verification and logout are
+  // the only sanctioned exceptions (the session itself must stay usable so the
+  // member can finish verification).
+  if (!allowUnverified && emailVerifyRequired(env) && !member.email_verified_at) {
+    throw new EmailNotVerifiedError(member);
   }
   return member;
 }
@@ -1847,7 +1894,9 @@ async function handleGoogleCallback(request, db, env) {
     return new Response(null, { status: 302, headers });
 
   } catch (e) {
-    return authJson({ error: 'google auth failed', detail: e.message }, 400);
+    // Upstream OAuth failures can embed request URLs, codes or fragments of a
+    // provider payload; the customer only needs to know the sign-in failed.
+    return authJson({ error: 'google auth failed' }, 400);
   }
 }
 
@@ -1895,6 +1944,11 @@ async function handleAuthRoute(pathname, method, request, db, env) {
     const termsVersion = typeof body.terms_version === 'string' && body.terms_version.trim() ? body.terms_version.trim().slice(0, 40) : 'unknown';
     const privacyVersion = typeof body.privacy_version === 'string' && body.privacy_version.trim() ? body.privacy_version.trim().slice(0, 40) : 'unknown';
 
+    const ip = clientIp(request);
+    if (ip) {
+      const ipLimit = await rateLimitCheck(db, policy, 'signup-ip', ip);
+      if (ipLimit.error) return authJson({ error: ipLimit.error, detail: ipLimit.detail }, 429);
+    }
     const limit = await rateLimitCheck(db, policy, 'signup', email.email);
     if (limit.error) return authJson({ error: limit.error, detail: limit.detail }, 429);
     if (await getMemberByEmail(db, email.email)) {
@@ -1906,8 +1960,13 @@ async function handleAuthRoute(pathname, method, request, db, env) {
     let memberId;
     try {
       const result = await db.prepare(
-        'INSERT INTO members (email, password_hash, name, phone, company, status, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)'
-      ).bind(email.email, passwordHash, name.name, phone.phone, company.value, 'active', now, now).run();
+        `INSERT INTO members (email, password_hash, name, phone, company, status,
+           terms_consent_version, privacy_consent_version, consented_at, created_at, updated_at)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+      ).bind(
+        email.email, passwordHash, name.name, phone.phone, company.value, 'active',
+        termsVersion, privacyVersion, now, now, now
+      ).run();
       memberId = result.meta.last_row_id ?? result.meta.last_rowid ?? 0;
     } catch (e) {
       return authJson({ error: 'email already used', detail: 'this email address is already registered' }, 409);
@@ -1995,7 +2054,7 @@ async function handleAuthRoute(pathname, method, request, db, env) {
   // ---------------- resend verification ----------------
 
   if (pathname === '/api/auth/resend-verification' && method === 'POST') {
-    const member = await requireMember(request, db, env);
+    const member = await requireMember(request, db, env, { allowUnverified: true });
     if (!member) return authJson({ error: 'unauthorized', detail: 'sign in to resend the verification email' }, 401);
     const policy = authPolicy(env);
     const cooldownLimit = await rateLimitCheck(db, policy, 'resend-verify-cooldown', member.email);
@@ -2015,6 +2074,11 @@ async function handleAuthRoute(pathname, method, request, db, env) {
     const email = validateEmail(body.email);
     if (!email.ok) return authJson({ error: email.error, detail: email.detail }, 400);
     const policy = authPolicy(env);
+    const ip = clientIp(request);
+    if (ip) {
+      const ipLimit = await rateLimitCheck(db, policy, 'login-ip', ip);
+      if (ipLimit.error) return authJson({ error: ipLimit.error, detail: ipLimit.detail }, 429);
+    }
     const limit = await rateLimitCheck(db, policy, 'login', email.email);
     if (limit.error) return authJson({ error: limit.error, detail: limit.detail }, 429);
     if (!body.password) return authJson({ error: 'password required' }, 400);
@@ -2031,6 +2095,10 @@ async function handleAuthRoute(pathname, method, request, db, env) {
     }
 
     const session = await issueSession(db, env, member);
+    // A successful sign-in clears the failure counter for this address: keeping
+    // successful attempts in the same bucket let an outsider lock a known
+    // address (the seeded admin addresses are in source) with five failures.
+    await clearRateLimit(db, 'login', email.email);
     await db.prepare('INSERT INTO member_events (member_id, type, created_at) VALUES (?, ?, ?)')
       .bind(member.id, 'login', nowIso()).run();
     return authJson({ member: memberView(member), email_verified: !!member.email_verified_at }, 200, { 'Set-Cookie': session.cookie });
@@ -2057,6 +2125,11 @@ async function handleAuthRoute(pathname, method, request, db, env) {
     const email = validateEmail(body.email);
     if (!email.ok) return authJson({ error: email.error, detail: email.detail }, 400);
     const policy = authPolicy(env);
+    const ip = clientIp(request);
+    if (ip) {
+      const ipLimit = await rateLimitCheck(db, policy, 'password-reset-ip', ip);
+      if (ipLimit.error) return authJson({ error: ipLimit.error, detail: ipLimit.detail }, 429);
+    }
     const limit = await rateLimitCheck(db, policy, 'password-reset', email.email);
     if (limit.error) return authJson({ error: limit.error, detail: limit.detail }, 429);
 
@@ -2109,7 +2182,12 @@ async function handleAuthRoute(pathname, method, request, db, env) {
 async function handleMeRoute(pathname, method, url, request, db, env) {
   const guard = guardAuth(request, env);
   if (guard) return guard;
-  const member = await requireMember(request, db, env);
+  // GET /api/me is the one member route an unverified session may still call:
+  // the site needs it to detect the account and show the "verify your email"
+  // screen instead of signing the member out.
+  const member = await requireMember(request, db, env, {
+    allowUnverified: pathname === '/api/me' && method === 'GET',
+  });
   if (!member) return authJson({ error: 'unauthorized', detail: 'sign in first' }, 401);
   const parsed = await readJson(request);
   if (parsed.error) return authJson({ error: parsed.error, detail: 'send the body encoded as UTF-8' }, 400);
@@ -2304,12 +2382,8 @@ async function handleMeRoute(pathname, method, url, request, db, env) {
   if (pathname === '/api/me/quotes' && method === 'POST') {
     // Member-scoped quote intake; POST /api/quotes stays the guest path.
     if (parsed.error) return authJson({ error: parsed.error }, 400);
-    if (!body || !Array.isArray(body.items) || !body.items.length) {
-      return authJson({ error: 'items required' }, 400);
-    }
-    if (!body.company || !body.name || !body.phone) {
-      return authJson({ error: 'company, name, phone required' }, 400);
-    }
+    const fields = validateQuoteFields(body);
+    if (!fields.ok) return authJson({ error: fields.error, detail: fields.detail }, 400);
     const intake = validateQuoteIntake(body);
     if (!intake.ok) return authJson(intake, 400);
     const id = 'Q-' + Date.now() + '-' + Math.random().toString(36).slice(2, 8);
@@ -2318,8 +2392,8 @@ async function handleMeRoute(pathname, method, url, request, db, env) {
       `INSERT INTO quote_requests (id, created_at, company, contact_name, phone, email, location, note, services, items, status, member_id, updated_at, privacy_consent, invoice_type, biz_no, agency_no)
        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'received', ?, ?, ?, ?, ?, ?)`
     ).bind(
-      id, createdAt, body.company, body.name, body.phone, body.email || null, body.location || null, body.note || null,
-      JSON.stringify(body.services || []), JSON.stringify(body.items), member.id, createdAt,
+      id, createdAt, fields.company, fields.name, fields.phone, fields.email, fields.location, fields.note,
+      JSON.stringify(fields.services), JSON.stringify(body.items), member.id, createdAt,
       intake.privacy_consent, intake.invoice_type, intake.biz_no, intake.agency_no
     ).run();
     return authJson({ id, created_at: createdAt, status: 'received', member_id: member.id }, 201);
@@ -2449,12 +2523,54 @@ async function handleMeRoute(pathname, method, url, request, db, env) {
  * mall to NICEPAY never strands a Toss-paid order (and vice versa).
  */
 function buildTossPg(env) {
-  return createPgAdapter({ secretKey: env.TOSS_WIDGET_SECRET_KEY, mode: env.PG_PROVIDER_MODE || 'auto' });
+  const mode = String(env.PG_PROVIDER_MODE || 'auto').trim().toLowerCase();
+  const secretKey = String(env.TOSS_WIDGET_SECRET_KEY || '').trim();
+  if (mode === 'mock') {
+    // The Toss mock approves any paymentKey. Sandbox and test environments may
+    // keep using it; production must not (same rule as NICEPAY).
+    if (mockForbidden(env)) {
+      return {
+        provider: 'tosspayments', configured: false, reason: 'mock_forbidden',
+        mode: 'mock', sandbox: false, live: false, missing: [],
+      };
+    }
+    return createPgAdapter({ secretKey, mode: 'mock' });
+  }
+  // A real Toss approval requires a live secret. No key used to fall through to
+  // the source-visible mock; a test key still talks to the test gateway. Both
+  // are refused: only live_* may approve, and never silently.
+  if (!secretKey.startsWith('live_')) {
+    return {
+      provider: 'tosspayments', configured: false, reason: 'toss_live_key_required',
+      mode: 'mock', sandbox: false, live: false, missing: ['TOSS_WIDGET_SECRET_KEY'],
+    };
+  }
+  return createPgAdapter({ secretKey, mode: 'live' });
+}
+
+/**
+ * A mock gateway approves anything that carries a correctly shaped payload
+ * (NICEPAY's mock keys are constants in this repository). That is acceptable in
+ * the sandbox Worker and fatal in production, so production refuses mock
+ * outright: PG_NICEPAY_ENV=operating, or the deployed script name is
+ * cgi-quote-api (WORKER_NAME is declared in each wrangler.toml).
+ */
+function mockForbidden(env) {
+  if (String(env.PG_NICEPAY_ENV || '').trim().toLowerCase() === 'operating') return true;
+  return String(env.WORKER_NAME || '').trim().toLowerCase() === 'cgi-quote-api';
 }
 
 function buildNicepayPg(env) {
   const mode = String(env.PG_PROVIDER_MODE || 'auto').trim().toLowerCase();
-  if (mode === 'mock') return createNicepayMockAdapter();
+  if (mode === 'mock') {
+    if (mockForbidden(env)) {
+      return {
+        provider: 'nicepay', configured: false, reason: 'mock_forbidden',
+        environment: 'mock', mode: 'mock', missing: [], sandbox: false, live: false,
+      };
+    }
+    return createNicepayMockAdapter();
+  }
   const config = resolveNicepayEnv(env);
   if (!config.ok) {
     // An unusable provider must not look like a working one, and must never fall
@@ -2521,15 +2637,22 @@ const worker = {
     // ---------------- existing quote routes ----------------
 
     if (url.pathname === '/api/quotes' && request.method === 'POST') {
+      // Unauthenticated intake: bound it per source address before parsing.
+      const quoteIp = clientIp(request);
+      if (quoteIp) {
+        const quoteLimit = await rateLimitCheck(env.DB, authPolicy(env), 'quote-intake-ip', quoteIp);
+        if (quoteLimit.error) return json({ error: quoteLimit.error, detail: quoteLimit.detail }, 429);
+      }
       const parsed = await readJson(request);
-      if (parsed.error) return badRequest(parsed.error);
+      if (parsed.error) {
+        if (parsed.error === 'content_type_json_required') {
+          return json({ error: parsed.error, detail: parsed.detail }, 415);
+        }
+        return badRequest(parsed.error);
+      }
       const body = parsed.body;
-      if (!body || !Array.isArray(body.items) || !body.items.length) {
-        return badRequest('items required');
-      }
-      if (!body.company || !body.name || !body.phone) {
-        return badRequest('company, name, phone required');
-      }
+      const fields = validateQuoteFields(body);
+      if (!fields.ok) return badRequest(fields.error, fields.detail);
       const intake = validateQuoteIntake(body);
       if (!intake.ok) return badRequest(intake.error, intake.detail);
       const id = 'Q-' + Date.now() + '-' + Math.random().toString(36).slice(2, 8);
@@ -2537,7 +2660,7 @@ const worker = {
       // A signed-in member is linked only when the request also clears the
       // Origin + CSRF gate; otherwise the legacy guest submission is unchanged.
       let quoteMemberId = null;
-      if (request.headers.get('Origin') && csrfOk(request, env)) {
+      if (originOk(request, env) && csrfOk(request, env)) {
         const quoteMember = await requireMember(request, env.DB, env);
         if (quoteMember) quoteMemberId = quoteMember.id;
       }
@@ -2545,8 +2668,8 @@ const worker = {
         `INSERT INTO quote_requests (id, created_at, company, contact_name, phone, email, location, note, services, items, status, member_id, updated_at, privacy_consent, invoice_type, biz_no, agency_no)
          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'received', ?, ?, ?, ?, ?, ?)`
       ).bind(
-        id, createdAt, body.company, body.name, body.phone, body.email || null, body.location || null, body.note || null,
-        JSON.stringify(body.services || []), JSON.stringify(body.items), quoteMemberId, createdAt,
+        id, createdAt, fields.company, fields.name, fields.phone, fields.email, fields.location, fields.note,
+        JSON.stringify(fields.services), JSON.stringify(body.items), quoteMemberId, createdAt,
         intake.privacy_consent, intake.invoice_type, intake.biz_no, intake.agency_no
       ).run();
       return json({ id, created_at: createdAt, status: 'received', member_id: quoteMemberId }, 201);
@@ -2593,10 +2716,21 @@ const worker = {
       if (!isAdmin(request, env)) return unauthorized();
       const policy = authPolicy(env);
       const mail = createMailAdapter(env, () => {});
+      // A refused gateway is surfaced here instead of staying a silent 503 on
+      // every payment route: the operator has to see that the deploy is
+      // mis-configured before a customer discovers it at checkout.
+      const warnings = [];
+      if (pg.reason === 'mock_forbidden') warnings.push('pg_mock_forbidden');
+      if (pg.reason === 'toss_live_key_required') warnings.push('toss_live_key_required');
       return json({
         version: BACKEND_VERSION,
         ok: true,
-        pg: { provider: pg.provider, mode: pg.mode, sandbox: pg.sandbox, live: pg.live },
+        warnings,
+        pg: {
+          provider: pg.provider, mode: pg.mode, sandbox: pg.sandbox, live: pg.live,
+          configured: pg.configured !== false, reason: pg.reason || null,
+          mock_forbidden: mockForbidden(env),
+        },
         erp: {
           adapter: ECOUNT_ORDER_ADAPTER,
           mode: ecountOrderMode(env),
@@ -2621,16 +2755,6 @@ const worker = {
           password_max: policy.passwordMax,
         },
       });
-    }
-
-    if (url.pathname === '/api/admin/schema/init' && request.method === 'POST') {
-      if (!(await isAdminOrMember(request, env.DB, env))) return unauthorized();
-      try {
-        const result = await initSchema(env.DB);
-        return json(result, 200);
-      } catch (e) {
-        return json({ error: 'schema init failed', detail: String(e && e.message || e) }, 500);
-      }
     }
 
     if (url.pathname === '/api/admin/ecount/item-mappings/import' && request.method === 'POST') {
@@ -2749,8 +2873,20 @@ const worker = {
 
     if (url.pathname === '/api/orders' && request.method === 'POST') {
       const parsed = await readJson(request);
-      if (parsed.error) return badRequest(parsed.error);
+      if (parsed.error) {
+        if (parsed.error === 'content_type_json_required') {
+          return json({ error: parsed.error, detail: parsed.detail }, 415);
+        }
+        return badRequest(parsed.error);
+      }
+      // A cookie session on the shared SameSite=None cookie changes the trust
+      // level of this call: the order will be linked to the member, so the
+      // request must clear the same Origin + X-CSRF-Token gate as /api/me.
+      // If it fails, reject — never silently downgrade to a guest order.
       const orderMember = await customerContext();
+      if (orderMember && (!originOk(request, env) || !csrfOk(request, env))) {
+        return json({ error: 'origin_csrf_required', detail: 'Origin과 X-CSRF-Token이 필요합니다.' }, 403);
+      }
       const result = await createOrder(env.DB, parsed.body || {}, env, {
         idempotencyKey: request.headers.get('Idempotency-Key') || '',
         customerId: orderMember ? orderMember.id : null,
@@ -2773,10 +2909,15 @@ const worker = {
 
     if (url.pathname === '/api/payments/config' && request.method === 'GET') {
       const active = pg;
+      // Every provider answers 503 when its adapter is unusable. Toss used to
+      // report ok:true here even with no key, which hid the fail-closed guard.
+      if (pgNotConfigured(active)) {
+        return json({
+          provider: active.provider, ok: false, reason: active.reason,
+          mode: active.mode || null, missing: active.missing || [],
+        }, 503);
+      }
       if (active.provider === 'nicepay') {
-        if (pgNotConfigured(active)) {
-          return json({ provider: 'nicepay', ok: false, reason: active.reason, missing: active.missing }, 503);
-        }
         return json({
           provider: 'nicepay', ok: true, environment: active.environment, mode: active.mode,
           jsSdkUrl: active.sdkUrl,
@@ -2797,12 +2938,25 @@ const worker = {
       const orderId = String((parsed.body || {}).orderId || (parsed.body || {}).order_id || '').slice(0, 64);
       const order = await getOrder(env.DB, orderId);
       if (!order) return notFound();
+      // The window carries the buyer's name, phone and email back to the browser.
+      // An order number alone is not proof of ownership, so require the same
+      // email factor GET /api/orders/:id uses, or an owning member session.
+      const windowEmail = String((parsed.body || {}).email || '').trim().toLowerCase();
+      const ownsEmail = windowEmail && windowEmail === String(order.customer_email || '').trim().toLowerCase();
+      const windowMember = await requireMember(request, env.DB, env, { allowUnverified: true });
+      const ownsSession = !!(windowMember && order.customer_id && windowMember.id === order.customer_id);
+      if (!ownsEmail && !ownsSession && !isAdmin(request, env)) {
+        return json({ error: 'email factor required', detail: '주문 이메일 확인이 필요합니다.' }, 403);
+      }
       if (order.kind !== 'purchase') return conflict('quote_order_not_payable');
       if (isTerminalStatus(order.status)) return conflict('order_closed', { status: order.status });
       if (order.payment_status === 'paid') return conflict('already_paid');
       // Only the payment means NICE documents for the window; anything else stays
       // on the default rather than reaching the gateway as an arbitrary string.
-      const WINDOW_METHODS = { card: 'card', bank: 'bank', vbank: 'vbank', cellphone: 'cellphone' };
+      // vbank (가상계좌) is deliberately absent: an accepted window leaves the
+      // order in `ready`, which the confirm path records as a failure. Virtual
+      // account design is tracked in issue #187.
+      const WINDOW_METHODS = { card: 'card', bank: 'bank', cellphone: 'cellphone' };
       const requested = String((parsed.body || {}).method || '').toLowerCase();
       const params = pg.windowParams({
         orderId: order.id,
@@ -2879,8 +3033,11 @@ const worker = {
       // or staff auth; everyone else gets a status-only view.
       const emailFactor = String(url.searchParams.get('email') || '').trim().toLowerCase();
       const ownsEmail = emailFactor && emailFactor === String(order.customer_email || '').trim().toLowerCase();
-      const sessionMember = await requireMember(request, env.DB, env);
-      const ownsSession = !!(sessionMember && order.member_id && sessionMember.id === order.member_id);
+      // The order table has no member_id column; ownership is orders.customer_id.
+      // Reading member_id made every member look like a stranger (undefined),
+      // so the feature silently degraded to the status-only view.
+      const sessionMember = await requireMember(request, env.DB, env, { allowUnverified: true });
+      const ownsSession = !!(sessionMember && order.customer_id && sessionMember.id === order.customer_id);
       const isStaff = await isAdminOrMember(request, env.DB, env);
       if (ownsEmail || ownsSession || isStaff) {
         return json(publicOrderView(order, order.items));
@@ -3034,7 +3191,23 @@ export default {
   },
 
   async fetch(request, env) {
-    let response = await worker.fetch(request, env);
+    let response;
+    try {
+      response = await worker.fetch(request, env);
+    } catch (e) {
+      if (e && e.code === 'email_not_verified') {
+        response = json({
+          error: 'email not verified',
+          detail: '인증 메일을 확인해 주세요.',
+          email_verified: false,
+        }, 403);
+      } else {
+        // Never surface an upstream/D1 message: it may carry row data or storage
+        // internals. The operator log keeps only the class of failure.
+        console.error(`WORKER_UNHANDLED=${e && e.name ? e.name : 'Error'}`);
+        response = json({ error: 'internal error' }, 500);
+      }
+    }
 
     // CORS_ALLOWED_ORIGINS decided whether a request was *accepted*, but the
     // response still named the production origin, so every allow-listed second
