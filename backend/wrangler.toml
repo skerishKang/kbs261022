@@ -37,7 +37,6 @@ secret_name = "B66_ALERT_RESEND_API_KEY"
 #   SITE_PG_PROVIDER          must match site/config.js pgProvider (predeploy check)
 #   PG_NICEPAY_ENV            test | operating (default test)
 #   PG_PROVIDER_MODE          "auto" | "mock" | "live"   (default "auto": live keys -> live, none -> mock)
-#   PG_PUBLIC_BASE_URL        https://api.tosspayments.com
 #   ECOUNT_ORDER_SYNC_ENABLED "NO" | "YES"                (default "NO": order sync stays off)
 #   ECOUNT_TARGET             "test" | "prod"             (default "test")
 #   ERP_LIVE_WRITE            legacy OAPI client guard; does not enable order sync
@@ -65,6 +64,9 @@ secret_name = "B66_ALERT_RESEND_API_KEY"
 #   4. When unset, Google login returns 503
 # ------------------------------------------------------------
 [vars]
+# The runtime does not expose the script name through env; declare it so the
+# Worker can refuse a mock payment gateway in production (see mockForbidden).
+WORKER_NAME = "cgi-quote-api"
 PG_PROVIDER = "nicepay"
 SITE_PG_PROVIDER = "nicepay"
 PG_NICEPAY_ENV = "test"
@@ -74,7 +76,6 @@ PG_PROVIDER_MODE = "auto"
 SITE_BASE_URL = "https://cgishop.pages.dev/site"
 NICEPAY_SITE_BASE_URL = "https://cgishop.pages.dev/site"
 CORS_ALLOWED_ORIGINS = "https://cgishop.pages.dev"
-PG_PUBLIC_BASE_URL = "https://api.tosspayments.com"
 ERP_LIVE_WRITE = "NO"
 ERP_MODE = "test"
 ECOUNT_ORDER_SYNC_ENABLED = "NO"

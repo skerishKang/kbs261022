@@ -271,7 +271,7 @@ test('ERP sync requires admin auth', async () => {
 
 test('health reports the active modes without leaking payment or ECOUNT secrets', async () => {
   const env = makeTossEnv({
-    PG_PROVIDER: 'tosspayments', PG_PROVIDER_MODE: 'auto', TOSS_WIDGET_SECRET_KEY: 'example_gsk_DOCS_SECRET_DO_NOT_LEAK',
+    PG_PROVIDER: 'tosspayments', PG_PROVIDER_MODE: 'auto', TOSS_WIDGET_SECRET_KEY: 'live_example_gsk_DOCS_SECRET_DO_NOT_LEAK',
     ECOUNT_COM_CODE: 'EXAMPLE-COM-DO-NOT-LEAK', ECOUNT_USER_ID: 'EXAMPLE-USER-DO-NOT-LEAK',
     ECOUNT_API_CERT_KEY: 'EXAMPLE-CERT-DO-NOT-LEAK',
   });
@@ -279,9 +279,9 @@ test('health reports the active modes without leaking payment or ECOUNT secrets'
   assert.equal(res.status, 200);
   const body = res.json;
   assert.equal(body.ok, true);
-  assert.equal(body.pg.mode, 'test', 'a test_ secret key selects the test environment');
-  assert.equal(body.pg.sandbox, true);
-  assert.equal(body.pg.live, false);
+  assert.equal(body.pg.mode, 'live', 'a live_ secret key selects the operating environment');
+  assert.equal(body.pg.sandbox, false);
+  assert.equal(body.pg.live, true);
   assert.equal(body.erp.adapter, 'ecount-oapi-v2');
   assert.equal(body.erp.mode, 'disabled');
   assert.equal(body.erp.enabled, false);
@@ -294,22 +294,14 @@ test('health reports the active modes without leaking payment or ECOUNT secrets'
   assert.doesNotMatch(res.text, /EXAMPLE-COM|EXAMPLE-USER|EXAMPLE-CERT/);
 });
 
-test('schema init is admin only and idempotent', async () => {
+test('the schema init route is gone (schema is owned by migrations)', async () => {
   const env = makeTossEnv();
   await seed(env);
-  assert.equal((await call(env, 'POST', '/api/admin/schema/init')).status, 401);
+  assert.equal((await call(env, 'POST', '/api/admin/schema/init')).status, 404);
+  assert.equal((await call(env, 'POST', '/api/admin/schema/init', {}, auth())).status, 404);
 
-  const first = await call(env, 'POST', '/api/admin/schema/init', {}, auth());
-  assert.equal(first.status, 200, first.text);
-  assert.equal(first.json.ok, true);
-  for (const table of ['orders', 'order_items', 'payments', 'order_events', 'erp_sync', 'quote_requests']) {
-    assert.ok(first.json.tables.includes(table), `table ${table} present`);
-  }
-
-  const second = await call(env, 'POST', '/api/admin/schema/init', {}, auth());
-  assert.equal(second.status, 200, 're-applying the schema does not fail');
   const stillThere = await call(env, 'GET', '/api/orders', undefined, auth());
-  assert.equal(stillThere.json.count, 3, 'existing rows survive schema init');
+  assert.equal(stillThere.json.count, 3, 'existing rows are untouched');
 });
 
 test('PATCH on an unknown order returns 404', async () => {

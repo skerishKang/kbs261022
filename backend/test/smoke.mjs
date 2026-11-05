@@ -73,14 +73,12 @@ const priced = Object.entries(PRICE_INDEX)
   .slice(0, 2)
   .map(([id]) => id);
 
-// 1. Schema must initialise behind admin auth and be idempotent.
-await check('schema init is admin-only and idempotent', async () => {
+// 1. The old schema-init endpoint is gone: schema is owned by migrations.
+await check('schema init route is removed', async () => {
   const denied = await request('POST', '/api/admin/schema/init', {});
-  assert.equal(denied.status, 401);
-  const first = await request('POST', '/api/admin/schema/init', {}, authedOrigin);
-  assert.equal(first.status, 200, first.text);
-  const second = await request('POST', '/api/admin/schema/init', {}, authedOrigin);
-  assert.equal(second.status, 200, second.text);
+  assert.equal(denied.status, 404);
+  const authedCall = await request('POST', '/api/admin/schema/init', {}, authedOrigin);
+  assert.equal(authedCall.status, 404);
 });
 
 // 2. Health reports the modes and never leaks secret material.

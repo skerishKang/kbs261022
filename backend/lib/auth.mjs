@@ -42,6 +42,15 @@ export const AUTH_POLICY = {
     'resend-verify': { max: 5, windowSeconds: 24 * 3600 },
     'resend-verify-cooldown': { max: 1, windowSeconds: 60 },
     'password-change': { max: 5, windowSeconds: 60 * 60 },
+    // Per-source-IP buckets. The email buckets above let anyone who knows an
+    // address lock that account's sign-in from outside; the IP buckets bound
+    // spraying across many addresses from one source. Fixed 30/15min so they are
+    // not swept up by AUTH_RATE_LIMIT_MAX tuning.
+    'login-ip': { max: 30, windowSeconds: 15 * 60 },
+    'signup-ip': { max: 30, windowSeconds: 15 * 60 },
+    'password-reset-ip': { max: 30, windowSeconds: 15 * 60 },
+    // Guest quote intake is unauthenticated; bound it per source address.
+    'quote-intake-ip': { max: 20, windowSeconds: 15 * 60 },
   },
 };
 

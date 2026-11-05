@@ -16,6 +16,14 @@ export const COLUMN_UPGRADES = [
   { table: 'quote_requests', column: 'invoice_type', ddl: 'ALTER TABLE quote_requests ADD COLUMN invoice_type TEXT' },
   { table: 'quote_requests', column: 'biz_no', ddl: 'ALTER TABLE quote_requests ADD COLUMN biz_no TEXT' },
   { table: 'quote_requests', column: 'agency_no', ddl: 'ALTER TABLE quote_requests ADD COLUMN agency_no TEXT' },
+  // Checkout consent audit trail (migration 0009).
+  { table: 'orders', column: 'terms_consent', ddl: 'ALTER TABLE orders ADD COLUMN terms_consent INTEGER NOT NULL DEFAULT 0' },
+  { table: 'orders', column: 'privacy_consent', ddl: 'ALTER TABLE orders ADD COLUMN privacy_consent INTEGER NOT NULL DEFAULT 0' },
+  { table: 'orders', column: 'consent_at', ddl: 'ALTER TABLE orders ADD COLUMN consent_at TEXT' },
+  // Durable signup consent (migration 0011).
+  { table: 'members', column: 'terms_consent_version', ddl: 'ALTER TABLE members ADD COLUMN terms_consent_version TEXT' },
+  { table: 'members', column: 'privacy_consent_version', ddl: 'ALTER TABLE members ADD COLUMN privacy_consent_version TEXT' },
+  { table: 'members', column: 'consented_at', ddl: 'ALTER TABLE members ADD COLUMN consented_at TEXT' },
 ];
 
 /** A stored value that no password can ever match, for Google-only members. */

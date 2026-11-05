@@ -1223,24 +1223,10 @@ test('admin endpoints are unreachable with a customer session', async () => {
   assert.equal(adminEvents.status, 401);
 
   const schemaInit = await call(environment, 'POST', '/api/admin/schema/init', {}, { ...csrf, Cookie: cookie });
-  assert.equal(schemaInit.status, 401);
+  assert.equal(schemaInit.status, 404, 'the schema init route was removed');
 
   const adminWorks = await call(environment, 'GET', '/api/orders', undefined, adminHeaders);
   assert.equal(adminWorks.status, 200, 'the bearer-token admin path still works');
-});
-
-test('the schema init stays idempotent after the customer tables exist', async () => {
-  const environment = env();
-  await signUp(environment);
-  const first = await call(environment, 'POST', '/api/admin/schema/init', {}, adminHeaders);
-  assert.equal(first.status, 200);
-  assert.ok(first.json.tables.includes('members'));
-  assert.ok(first.json.tables.includes('auth_tokens'));
-  assert.ok(first.json.tables.includes('auth_attempts'));
-  assert.ok(first.json.tables.includes('member_events'));
-  const second = await call(environment, 'POST', '/api/admin/schema/init', {}, adminHeaders);
-  assert.equal(second.status, 200);
-  assert.equal(second.json.tables.length, first.json.tables.length);
 });
 
 test('a suspended account cannot sign in', async () => {

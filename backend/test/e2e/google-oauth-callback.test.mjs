@@ -688,7 +688,7 @@ test('normal member cannot access admin API', async () => {
   assert.equal(adminQuotes.status, 401);
 
   const adminSchema = await call(env, 'POST', '/api/admin/schema/init', {}, { ...csrf, Cookie: cookie });
-  assert.equal(adminSchema.status, 401);
+  assert.equal(adminSchema.status, 404, 'the schema init route was removed');
 });
 
 test('superadmin can access admin API', async () => {
@@ -731,9 +731,9 @@ test('superadmin can access admin API', async () => {
   const adminQuotes = await call(env, 'GET', '/api/quotes', undefined, { ...csrf, Cookie: sessionCookie });
   assert.equal(adminQuotes.status, 200);
 
-  // Superadmin can access /api/admin/schema/init
+  // The removed schema init route stays removed even for a superadmin.
   const adminSchema = await call(env, 'POST', '/api/admin/schema/init', {}, { ...csrf, Cookie: sessionCookie });
-  assert.equal(adminSchema.status, 200);
+  assert.equal(adminSchema.status, 404);
 
   restoreAfter();
   restore();

@@ -14,8 +14,6 @@
   // Checkout consent (2026-11-04 대표 결정). The booleans are a client gate;
   // the server rejects an order without them and records their timestamp.
   var ORDER_CONSENT = { terms: true, privacy: true };
-  var TOSS_CLIENT_ID = cfg.tossClientId || '';
-  var TOSS_JS_URL = cfg.tossJsUrl || 'https://js.tosspayments.com/v2/standard';
   var PG_PROVIDER = String(cfg.pgProvider || 'nicepay').toLowerCase();
 
   function esc(s) {
@@ -249,104 +247,15 @@
 
   function renderPayment(app, order) {
     if (order && order.id && order.customer && order.customer.email) {
-      // 주문 상세·승인 조회의 이메일 팩터: 주문 생성 세션만 자기 주문 PII를 본다.
+      // 주문 상세·승인 조회·결제창의 이메일 팩터: 주문 생성 세션만 자기 주문 PII를 본다.
       try { localStorage.setItem('cgiOrderEmail:' + order.id, order.customer.email); } catch (e) {}
     }
     if (PG_PROVIDER === 'nicepay') return renderNicepayPayment(app, order);
-    var testMode = !TOSS_CLIENT_ID;
-    var sandboxMode = !!TOSS_CLIENT_ID && String(TOSS_CLIENT_ID).indexOf('test_') === 0;
     app.innerHTML = shell(
       '<div class="page-head"><p class="page-eyebrow">PAYMENT</p><h1>결제</h1></div>' +
-      '<div class="payment-card">' +
-        (sandboxMode ? '<p class="test-payment-badge">TEST 결제 — 테스트 환경 (실제 청구 없음)</p>' : '') +
-        '<div class="payment-order">' +
-          '<p><strong>' + esc(order.id) + '</strong></p>' +
-          '<p class="order-total">주문 금액 <strong>' + money(order.totals.total_amount) + '</strong></p>' +
-          '<p class="muted">공급가 ' + money(order.totals.supplied_amount) + ' + 부가세 ' + money(order.totals.vat_amount) + '</p>' +
-        '</div>' +
-        '<div class="payment-methods">' +
-          '<label><input type="radio" name="method" value="카드" checked> 카드</label>' +
-          '<label><input type="radio" name="method" value="간편결제"> 간편결제</label>' +
-          '<label><input type="radio" name="method" value="휴대폰"> 휴대폰</label>' +
-        '</div>' +
-        (testMode
-          ? '<div class="test-payment"><p class="test-payment-badge">테스트 결제</p>' +
-            '<p>결제 키가 서버에 등록되어 있지 않아 실제 결제 대신 <strong>모의 승인</strong>이 수행됩니다. 실제 결제가 진행되지 않습니다.</p></div>'
-          : '<div id="tossPayment"></div><div id="tossAgreement"></div>') +
-        '<div id="paymentStatus"></div>' +
-        '<div class="order-actions">' +
-          '<button type="button" class="btn" id="payBtn">결제 승인</button>' +
-          '<a class="btn btn-secondary" href="#/quote-cart">나중에 하기</a>' +
-        '</div>' +
-      '</div>'
+      flash('이 사이트는 NICEPAY 결제만 지원합니다. 결제 설정을 확인해 주세요.', 'flash-error') +
+      '<p><a class="btn" href="#/quote-cart">견적 목록으로</a></p>'
     );
-
-    var statusBox = app.querySelector('#paymentStatus');
-    var payBtn = app.querySelector('#payBtn');
-    function run(key) {
-      payBtn.disabled = true;
-      payBtn.textContent = '결제 처리 중…';
-      statusBox.innerHTML = '';
-      var method = (app.querySelector('input[name="method"]:checked') || {}).value || '카드';
-      api('POST', '/api/payments/confirm', { orderId: order.id, paymentKey: key, amount: order.totals.total_amount, paymentMethod: method })
-        .then(function (res) {
-          if (!res.ok) {
-            statusBox.innerHTML = flash('결제가 실패했습니다. (' + (res.data.error || 'HTTP ' + res.status) + ') 결제 정보를 다시 받아서 시도해 주세요.', 'flash-error');
-            payBtn.disabled = false;
-            payBtn.textContent = '결제 다시 시도';
-            return;
-          }
-          renderComplete(app, res.data.order, res.data);
-        });
-    }
-
-    if (testMode) {
-      payBtn.addEventListener('click', function () { run('test_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8)); });
-      return;
-    }
-
-    var script = document.createElement('script');
-    script.src = TOSS_JS_URL;
-    script.onload = function () {
-      if (!window.TossPayments) {
-        statusBox.innerHTML = flash('결제 모듈을 불러오지 못했습니다. 서버에서 테스트 결제 모드로 전환해 주세요.', 'flash-error');
-        return;
-      }
-      var tossPayments = window.TossPayments(TOSS_CLIENT_ID);
-      var widgets = tossPayments.widgets({ customerKey: 'ANONYMOUS' });
-      (async function () {
-        try {
-          await widgets.setAmount({ currency: 'KRW', value: order.totals.total_amount });
-          await Promise.all([
-            widgets.renderPaymentMethods({ selector: '#tossPayment', variantKey: 'DEFAULT' }),
-            widgets.renderAgreement({ selector: '#tossAgreement', variantKey: 'AGREEMENT' })
-          ]);
-        } catch (e) {
-          statusBox.innerHTML = flash('결제 모듈 렌더링 실패. (' + esc((e && e.message) || 'fail') + ')', 'flash-error');
-        }
-      })();
-      payBtn.addEventListener('click', async function () {
-        statusBox.innerHTML = '';
-        payBtn.disabled = true;
-        payBtn.textContent = '결제창 이동 중…';
-        try {
-          await widgets.requestPayment({
-            orderId: order.id,
-            orderName: 'CGI 상품 주문',
-            successUrl: window.location.origin + window.location.pathname + '?toss=success#/order/' + encodeURIComponent(order.id),
-            failUrl: window.location.origin + window.location.pathname + '?toss=fail#/order/' + encodeURIComponent(order.id)
-          });
-        } catch (err) {
-          statusBox.innerHTML = flash('결제 프로세스를 끝까지 마치지 못했습니다. (' + esc((err && err.message) || 'fail') + ')', 'flash-error');
-          payBtn.disabled = false;
-          payBtn.textContent = '결제 다시 시도';
-        }
-      });
-    };
-    script.onerror = function () {
-      statusBox.innerHTML = flash('결제 모듈 로드 실패. 결제 서버에서 테스트 결제 모드로 전환해 주세요.', 'flash-error');
-    };
-    document.head.appendChild(script);
   }
 
   function renderComplete(app, order, paymentInfo) {
@@ -432,7 +341,11 @@
       payBtn.addEventListener('click', function () {
         payBtn.disabled = true;
         payBtn.textContent = '결제창 준비 중…';
-        api('POST', '/api/payments/nicepay/window', { orderId: pay.order_id, method: 'card' }).then(function (w) {
+        api('POST', '/api/payments/nicepay/window', {
+          orderId: pay.order_id,
+          method: 'card',
+          email: orderEmailFor(pay.order_id)
+        }).then(function (w) {
           if (!w.ok) {
             statusBox.innerHTML = flash('결제창을 열 수 없습니다. (' + esc(w.data && w.data.error || ('HTTP ' + w.status)) + ')', 'flash-error');
             payBtn.disabled = false;
@@ -450,74 +363,7 @@
   }
 
   function renderRepayPayment(host, pay) {
-    if (PG_PROVIDER === 'nicepay') {
-      renderNicepayRepayPayment(host, pay);
-      return;
-    }
-    if (!TOSS_CLIENT_ID) {
-      host.innerHTML = flash('결제 키가 설정되어 있지 않아 재결제를 진행할 수 없습니다. 관리자에게 문의해 주세요.', 'flash-error');
-      return;
-    }
-    var sandboxBadge = String(TOSS_CLIENT_ID).indexOf('test_') === 0 ? ' (테스트 환경 — 실제 청구 없음)' : '';
-    host.innerHTML =
-      '<div class="payment-card">' +
-        '<p class="test-payment-badge">재결제 — ' + esc(pay.order_id) + esc(sandboxBadge) + '</p>' +
-        '<p class="order-total">결제 금액 <strong>' + money(pay.amount) + '</strong></p>' +
-        '<div id="repayMethods"></div><div id="repayAgreement"></div>' +
-        '<div id="repayStatus"></div>' +
-        '<div class="order-actions"><button type="button" class="btn" id="repayPayBtn">결제 창 열기</button></div>' +
-      '</div>';
-
-    var statusBox = host.querySelector('#repayStatus');
-    var payBtn = host.querySelector('#repayPayBtn');
-
-    function mount() {
-      if (!window.TossPayments) {
-        statusBox.innerHTML = flash('결제 모듈을 불러오지 못했습니다.', 'flash-error');
-        payBtn.disabled = false;
-        payBtn.textContent = '결제 창 열기';
-        return;
-      }
-      var widgets = window.TossPayments(TOSS_CLIENT_ID).widgets({ customerKey: 'ANONYMOUS' });
-      widgets.setAmount({ currency: 'KRW', value: pay.amount })
-        .then(function () {
-          return Promise.all([
-            widgets.renderPaymentMethods({ selector: '#repayMethods', variantKey: 'DEFAULT' }),
-            widgets.renderAgreement({ selector: '#repayAgreement', variantKey: 'AGREEMENT' })
-          ]);
-        })
-        .catch(function (e) {
-          statusBox.innerHTML = flash('결제 수단을 불러오지 못했습니다. (' + esc((e && e.message) || 'fail') + ')', 'flash-error');
-          payBtn.disabled = false;
-          payBtn.textContent = '결제 창 열기';
-        });
-      payBtn.addEventListener('click', function () {
-        statusBox.innerHTML = '';
-        payBtn.disabled = true;
-        payBtn.textContent = '결제창 이동 중…';
-        widgets.requestPayment({
-          orderId: pay.order_id,
-          orderName: pay.order_name || 'CGI 상품 주문',
-          successUrl: window.location.origin + window.location.pathname + '?toss=success#/order/' + encodeURIComponent(pay.order_id),
-          failUrl: window.location.origin + window.location.pathname + '?toss=fail#/order/' + encodeURIComponent(pay.order_id)
-        }).catch(function (err) {
-          statusBox.innerHTML = flash('결제창을 열지 못했습니다. (' + esc((err && err.message) || 'fail') + ')', 'flash-error');
-          payBtn.disabled = false;
-          payBtn.textContent = '결제 창 열기';
-        });
-      });
-    }
-
-    if (window.TossPayments) { mount(); return; }
-    var script = document.createElement('script');
-    script.src = TOSS_JS_URL;
-    script.onload = mount;
-    script.onerror = function () {
-      statusBox.innerHTML = flash('결제 모듈 로드 실패', 'flash-error');
-      payBtn.disabled = false;
-      payBtn.textContent = '결제 창 열기';
-    };
-    document.head.appendChild(script);
+    renderNicepayRepayPayment(host, pay);
   }
 
   function renderOrderDetail(app, id) {
@@ -538,40 +384,6 @@
       ? '<p><a class="btn" href="#/order/' + encodeURIComponent(orderId) + '">주문 상세에서 다시 결제</a></p>'
       : '<p><a class="btn" href="#/checkout">다시 시도</a></p>';
   }
-
-  function handleTossRedirect(app) {
-    var params = new URLSearchParams(window.location.search || '');
-    var toss = params.get('toss');
-    if (!toss) return false;
-    var paymentKey = params.get('paymentKey');
-    var orderId = params.get('orderId');
-    var amount = params.get('amount');
-    // clean query string so a reload does not re-trigger
-    try {
-      var cleanUrl = window.location.pathname + (location.hash || '');
-      window.history.replaceState({}, document.title, cleanUrl);
-    } catch (e) {}
-    if (toss === 'fail') {
-      var code = params.get('code') || '';
-      var message = params.get('message') || '결제가 취소되었거나 실패했습니다.';
-      app.innerHTML = shell('<div class="page-head"><p class="page-eyebrow">PAYMENT</p><h1>결제 실패</h1></div>' + flash(message + (code ? ' (' + esc(code) + ')' : ''), 'flash-error') + retryLink(orderId));
-      return true;
-    }
-    if (!paymentKey || !orderId || !amount) return false;
-    app.innerHTML = shell('<div class="page-head"><p class="page-eyebrow">PAYMENT</p><h1>결제 승인 중</h1></div><p class="muted">결제 승인 결과를 확인하고 있습니다…</p>');
-    api('POST', '/api/payments/confirm', { orderId: orderId, paymentKey: paymentKey, amount: Number(amount) }).then(function (res) {
-      if (!res.ok) {
-        app.innerHTML = shell('<div class="page-head"><p class="page-eyebrow">PAYMENT</p><h1>결제 승인 실패</h1></div>' + flash('결제 승인에 실패했습니다. (' + esc(res.data && res.data.error || ('HTTP ' + res.status)) + ')', 'flash-error') + retryLink(orderId));
-        return;
-      }
-      api('GET', orderLookupPath(orderId)).then(function (r) {
-        if (!r.ok) { app.innerHTML = shell(flash('주문 조회 실패', 'flash-error')); return; }
-        renderComplete(app, r.data, res.data);
-      });
-    });
-    return true;
-  }
-
 
   /* --------------------------------------------------- NICEPAY 결제창 (issue #106)
      창은 NICEPAY 도메인에서 뜨고, 승인 결과는 브라우저가 returnUrl(워커)로 POST 된다.
@@ -623,7 +435,11 @@
         payBtn.disabled = true;
         payBtn.textContent = '결제창 준비 중…';
         var method = (app.querySelector('input[name="method"]:checked') || {}).value || 'card';
-        api('POST', '/api/payments/nicepay/window', { orderId: order.id, method: method }).then(function (w) {
+        api('POST', '/api/payments/nicepay/window', {
+          orderId: order.id,
+          method: method,
+          email: orderEmailFor(order.id)
+        }).then(function (w) {
           if (!w.ok) {
             statusBox.innerHTML = flash('결제창을 열 수 없습니다. (' + esc(w.data && w.data.error || ('HTTP ' + w.status)) + ')', 'flash-error');
             payBtn.disabled = false;
@@ -699,9 +515,8 @@
     clearCart: function () { try { localStorage.removeItem('cgiQuoteCart'); } catch (e) {} },
     renderCheckout: renderCheckout,
     renderOrderDetail: renderOrderDetail,
-    handleTossRedirect: handleTossRedirect,
     handleNicepayRedirect: handleNicepayRedirect,
     statusLabel: statusLabel,
-    config: { api: API, tossClientId: !!TOSS_CLIENT_ID, pgProvider: PG_PROVIDER }
+    config: { api: API, pgProvider: PG_PROVIDER }
   };
 })();

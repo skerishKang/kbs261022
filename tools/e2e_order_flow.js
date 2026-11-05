@@ -140,7 +140,7 @@ const CUSTOMER = { company: MK + ' 테스트 회사', name: MK + ' 담당자', p
   const listDenied = await call('GET', '/api/orders');
   check('admin_list_requires_auth', listDenied.status === 401, listDenied.status);
   const initDenied = await call('POST', '/api/admin/schema/init', {});
-  check('schema_init_requires_auth', initDenied.status === 401, initDenied.status);
+  check('schema_init_route_removed', initDenied.status === 404, initDenied.status);
 
   const verdict = {
     target: WORKER,
