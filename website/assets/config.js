@@ -4,7 +4,7 @@
  * 1) 쇼핑몰(PR #17, main 병합본) 주소
  *    - website/ 와 site/ 가 같은 배포 루트에 있을 때의 기본값입니다.
  *    - 실제 도메인을 쓰게 되면 여기 한 줄만 바꾸면 됩니다.
- *    - URL 파라미터로도 덮어쓸 수 있습니다:  index.html?mall=https://example.com/site/
+ *    - URL 파라미터(?mall=) 덮어쓰기는 보안상 제거했습니다. 이 파일만 고치세요.
  *
  * 2) 쇼핑몰 라우팅 규칙 (PR #17 구현 기준 — 해시 라우터)
  *    - 홈        : index.html#/
@@ -18,11 +18,10 @@
  *    - 삼아사운드 공개 페이지를 실측해 확정한 31개 (Issue #5).
  *    - 각 항목은 쇼핑몰의 브랜드 필터로 연결됩니다.
  *
- * 4) 공통 상품 마스터 연동 (이슈 #19 대비 준비)
- *    - mallDataUrl 의 상품 데이터를 읽을 수 있으면 홈페이지 브랜드 목록·건수를
- *      마스터 기준으로 자동 표시합니다(샘플 39건 → 전체 4,575건 교체 시 자동 반영).
+ * 4) 브랜드 목록 연동 (이슈 #19)
+ *    - mallBrandsUrl 의 brands.json(브랜드 이름·건수만)을 읽어 자동 표시합니다.
+ *      상품 전체(11MB)를 읽지 않으므로 첫 화면이 가볍습니다.
  *    - 파일이 없으면 아래 brands 목록(31종)으로 graceful fallback 합니다.
- *    - 쇼핑몰 데이터 규격: 각 항목에 brand_norm(대문자) / brand / name / price.
  */
 window.CGI_CONFIG = {
   siteName: '(주)시지아이 CGI',
@@ -35,9 +34,8 @@ window.CGI_CONFIG = {
   mallBrandParam: 'brand',                       // 브랜드 필터 쿼리 키
   mallBrandCase: 'upper',                        // brand_norm 에 맞춰 대문자 정규화
 
-  // ── 공통 상품 마스터 연동 (있으면 자동 반영, 없으면 fallback) ──
-  mallDataUrl: '../site/data/products.js',        // window.CGI_PRODUCTS 를 expose 하는 파일
-  mallDataGlobal: 'CGI_PRODUCTS',
+  // ── 브랜드 목록 연동 (있으면 자동 반영, 없으면 fallback) ──
+  mallBrandsUrl: '../site/data/brands.json',      // 브랜드 이름 + 건수만
 
   // ── 취급 브랜드 (실측: samasound.co.kr 31개) ───────────────
   brands: [

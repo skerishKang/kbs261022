@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  var products = window.CGI_PRODUCTS || [];
+  function productList() { return window.CGI_PRODUCTS || []; }
   var services = window.CGI_SERVICES || [];
   var requests = [];
   var current = null;
@@ -21,7 +21,8 @@
   }
 
   function findProduct(id) {
-    for (var i = 0; i < products.length; i++) if (products[i].id === id) return products[i];
+    var list = productList();
+    for (var i = 0; i < list.length; i++) if (list[i].id === id) return list[i];
     return null;
   }
 

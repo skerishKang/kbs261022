@@ -5,7 +5,7 @@
  *  1) 모바일 메뉴 토글 (접기/펼치기 + 스크롤 잠금 + Esc 닫기)
  *  2) 스크롤 위치에 따른 헤더 고정/축소 + 현재 섹션 메뉴 활성화
  *  3) 취급 브랜드 목록 렌더링 → 클릭 시 쇼핑몰 브랜드 필터로 이동
- *  4) 쇼핑몰 링크 일괄 적용 (config.js 의 mallUrl, ?mall= 파라미터로 덮어쓰기 가능)
+ *  4) 쇼핑몰 링크 일괄 적용 (config.js 의 mallUrl 고정 — URL 파라미터로 덮어쓰지 않음)
  *  5) REFERENCE 탭 전환 (INSTALL / RENTAL)
  */
 (function () {
@@ -17,8 +17,8 @@
 
   /* ------------------------------------------------------ 쇼핑몰 주소 */
   function mallBase() {
-    var override = new URLSearchParams(location.search).get('mall');
-    if (override) { return override; }
+    // ?mall= 로 임의 주소를 주입할 수 있었지만, 홍보·피싱 링크에 악용될 수 있어
+    // 제거했다. 주소는 config.js 한 곳에서만 바꾼다.
     return CFG.mallUrl || '../site/index.html';
   }
 
@@ -93,17 +93,12 @@
     });
   }
 
-  function brandListFromMaster(items) {
-    var counts = {};
-    items.forEach(function (p) {
-      var b = p.brand_norm || p.brand || '';
-      if (!b) { return; }
-      b = (CFG.mallBrandCase === 'upper') ? String(b).toUpperCase() : String(b);
-      counts[b] = (counts[b] || 0) + 1;
-    });
-    return Object.keys(counts).map(function (b) {
-      return { name: b, count: counts[b] };
-    }).sort(function (a, b) { return b.count - a.count || a.name.localeCompare(b.name); });
+  function brandListFromBrands(rows) {
+    return (rows || []).map(function (row) {
+      var name = (CFG.mallBrandCase === 'upper') ? String(row.name || '').toUpperCase() : String(row.name || '');
+      return { name: name, count: Number(row.count) || 0 };
+    }).filter(function (row) { return !!row.name; })
+      .sort(function (a, b) { return b.count - a.count || a.name.localeCompare(b.name); });
   }
 
   function renderBrands(list) {
@@ -141,20 +136,18 @@
    *  config 의 정적 목록(31종)에 포함시켜 함께 보여준다(공급처 실측 목록 유지).
    *  파일이 없거나 읽지 못하면 config 의 정적 목록으로 graceful fallback 한다. */
   function loadMasterBrands() {
-    var url = CFG.mallDataUrl;
+    // 홈페이지는 브랜드 이름·건수만 필요하다. 11MB 상품 마스터 대신
+    // brands.json(약 3KB)만 읽어 첫 화면 전송량을 줄인다.
+    var url = CFG.mallBrandsUrl || '../site/data/brands.json';
     var staticList = (CFG.brands || []).map(function (b) { return { name: b, count: null }; });
-    if (!url) { renderBrands(staticList); return Promise.resolve(); }
-    return new Promise(function (resolve) {
-      var s = document.createElement('script');
-      s.src = url;
-      s.onload = function () {
-        var items = window[CFG.mallDataGlobal || 'CGI_PRODUCTS'];
-        if (!Array.isArray(items) || !items.length) {
-          renderBrands(staticList);
-          resolve();
-          return;
-        }
-        var master = brandListFromMaster(items);
+    return fetch(url, { cache: 'no-cache' })
+      .then(function (res) {
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        return res.json();
+      })
+      .then(function (payload) {
+        var master = brandListFromBrands(payload && payload.brands);
+        if (!master.length) { renderBrands(staticList); return; }
         var seen = {};
         master.forEach(function (m) { seen[m.name] = true; });
         var merged = master.slice();
@@ -166,11 +159,8 @@
           }
         });
         renderBrands(merged);
-        resolve();
-      };
-      s.onerror = function () { renderBrands(staticList); resolve(); };
-      document.head.appendChild(s);
-    });
+      })
+      .catch(function () { renderBrands(staticList); });
   }
 
   /* ------------------------------------------------------ 브랜드 칩 좁히기 */

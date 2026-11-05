@@ -53,7 +53,7 @@ window.CGI_COMPANY = {
     fax: "062) 576-8181",
     faxDial: "0625768181",
     blog: "blog.naver.com/cgiinc",
-    blogUrl: "http://blog.naver.com/cgiinc"
+    blogUrl: "https://blog.naver.com/cgiinc"
   },
 
   /* 지명원 2쪽 주요사업 키워드 12종 */

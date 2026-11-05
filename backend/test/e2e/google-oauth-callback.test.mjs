@@ -107,6 +107,23 @@ function getSetCookies(response) {
   return cookies;
 }
 
+/**
+ * New Google accounts now land on the consent screen before a member row or a
+ * session exists. This completes that screen and returns the consent response
+ * (which carries the session cookie and the signed return target).
+ */
+async function consentSession(env, callbackResp) {
+  const location = callbackResp.headers.get('location') || '';
+  const match = location.match(/#\/auth\/google-consent\?token=([^&]+)/);
+  assert.ok(match, `expected a consent redirect, got ${location}`);
+  const res = await call(env, 'POST', '/api/auth/google/consent', {
+    token: decodeURIComponent(match[1]), terms: true, privacy: true,
+    terms_version: 'draft-2026-10-28', privacy_version: 'draft-2026-10-28',
+  }, csrf);
+  assert.equal(res.status, 200, res.text);
+  return res;
+}
+
 // ---------------------------------------------------------------------------
 // 1. Google callback sends 2 separate Set-Cookie headers
 // ---------------------------------------------------------------------------
@@ -139,27 +156,25 @@ test('google callback issues session and state-clear cookies as separate Set-Coo
   );
   assert.equal(callbackResp.status, 302, `callback failed: ${await callbackResp.text()}`);
 
-  const cookies = [];
-  callbackResp.headers.forEach((v, k) => { if (k.toLowerCase() === 'set-cookie') cookies.push(v); });
-  assert.equal(cookies.length, 2, `expected 2 Set-Cookie headers, got ${cookies.length}: ${cookies.join(' | ')}`);
+  const cookies = getSetCookies(callbackResp);
+  assert.equal(cookies.length, 1, 'the callback only clears the state; the session comes after consent');
+  assert.match(cookies[0], /cgi_oauth_state=;/, 'cookie clears the state');
+  assert.match(cookies[0], /Max-Age=0/);
 
-  // First cookie: session
-  const sessionCookie = cookies[0];
-  assert.match(sessionCookie, /cgi_member=/, 'first cookie is the session');
+  // A brand-new Google account must accept the terms before a session exists.
+  const location = callbackResp.headers.get('location');
+  assert.match(location, /#\/auth\/google-consent\?token=/);
+  assert.equal(getSetCookies(callbackResp).filter((c) => c.startsWith('cgi_member=')).length, 0);
+
+  const consented = await consentSession(env, callbackResp);
+  const sessionCookie = consented.headers['set-cookie'];
+  assert.match(sessionCookie, /cgi_member=/, 'consent completes the session');
   assert.match(sessionCookie, /HttpOnly/i);
   assert.match(sessionCookie, /SameSite=None/i);
   assert.match(sessionCookie, /Secure/i);
   assert.match(sessionCookie, /Path=\//);
   assert.match(sessionCookie, /Max-Age=/);
-
-  // Second cookie: state clearing
-  const clearCookie = cookies[1];
-  assert.match(clearCookie, /cgi_oauth_state=;/, 'second cookie clears the state');
-  assert.match(clearCookie, /Max-Age=0/);
-
-  // Redirect to SITE_BASE_URL
-  const location = callbackResp.headers.get('location');
-  assert.equal(location, 'https://cgishop.pages.dev/site/#/login');
+  assert.match(consented.json.redirect, /#\/login$/);
 
   restoreAfter();
   restore();
@@ -184,7 +199,11 @@ test('google callback uses SITE_BASE_URL env var for redirect', async () => {
     env,
   );
   assert.equal(callbackResp.status, 302);
-  assert.equal(callbackResp.headers.get('location'), 'https://custom.example.com/app/#/login');
+  const consentLocation = callbackResp.headers.get('location');
+  assert.match(consentLocation, /^https:\/\/custom\.example\.com\/app\/#\/auth\/google-consent\?token=/,
+    'consent uses SITE_BASE_URL and drops the old hash');
+  const consented = await consentSession(env, callbackResp);
+  assert.match(consented.json.redirect, /^https:\/\/custom\.example\.com\/app\//);
 
   restoreAfter();
   restore();
@@ -335,10 +354,8 @@ test('session cookie has SameSite=None; Secure for cross-origin github.io <-> wo
     }),
     env,
   );
-  const cookies = [];
-  callbackResp.headers.forEach((v, k) => { if (k.toLowerCase() === 'set-cookie') cookies.push(v); });
-
-  const sessionCookie = cookies[0];
+  const consented = await consentSession(env, callbackResp);
+  const sessionCookie = consented.headers['set-cookie'];
   assert.match(sessionCookie, /SameSite=None/i, 'SameSite=None for cross-origin');
   assert.match(sessionCookie, /Secure/i, 'Secure for HTTPS-only');
   assert.match(sessionCookie, /HttpOnly/i, 'HttpOnly to prevent JS access');
@@ -404,21 +421,24 @@ test('google callback creates a new member with google_id', async () => {
     env,
   );
   assert.equal(callbackResp.status, 302);
+  assert.equal(Number(env.DB.prepare('SELECT COUNT(*) AS n FROM members').first().n), 0, 'no member before consent');
+  const consented = await consentSession(env, callbackResp);
 
   // Verify the member was created with google_id
-  const { results } = await env.DB.prepare('SELECT email, google_id, status, email_verified_at FROM members').all();
+  const { results } = await env.DB.prepare('SELECT email, google_id, status, email_verified_at, terms_consent_version, privacy_consent_version, consented_at FROM members').all();
   assert.equal(results.length, 1);
   assert.equal(results[0].email, 'newgoogleuser@example.com');
   assert.equal(results[0].google_id, 'new-google-user-123');
   assert.equal(results[0].status, 'active');
   assert.ok(results[0].email_verified_at, 'Google users are auto-verified');
+  assert.equal(results[0].terms_consent_version, 'draft-2026-10-28');
+  assert.equal(results[0].privacy_consent_version, 'draft-2026-10-28');
+  assert.ok(results[0].consented_at, 'consent timestamp is recorded');
 
   // Verify the session cookie works
-  const cookies = [];
-  callbackResp.headers.forEach((v, k) => { if (k.toLowerCase() === 'set-cookie') cookies.push(v); });
-  const sessionCookie = cookies[0];
+  const sessionCookie = consented.headers['set-cookie'];
 
-  const meResp = await call(env, 'GET', '/api/me', undefined, { ...csrf, Cookie: sessionCookie });
+  const meResp = await call(env, 'GET', '/api/me', undefined, { ...csrf, Cookie: sessionCookie.split(';')[0] });
   assert.equal(meResp.status, 200);
   assert.equal(meResp.json.member.email, 'newgoogleuser@example.com');
   assert.equal(meResp.json.member.role, 'member');
@@ -502,6 +522,7 @@ test('a Google-created member cannot use the old shared password and can recover
     env,
   );
   assert.equal(callbackResp.status, 302);
+  await consentSession(env, callbackResp);
   restore();
 
   const member = await env.DB.prepare('SELECT password_hash FROM members WHERE email = ?')
@@ -607,14 +628,14 @@ test('google callback verifies an existing google-linked superadmin member on lo
     env,
   );
   assert.equal(callbackResp.status, 302);
+  // The legacy member has no consent row (0011 columns NULL) -> consent screen.
+  const consented = await consentSession(env, callbackResp);
 
   const member = await env.DB.prepare('SELECT email, google_id, email_verified_at, role FROM members WHERE email = ?')
     .bind('charliekant@gmail.com').first();
-  assert.ok(member.email_verified_at, 'a google-linked member is marked verified on the next Google login');
+  assert.ok(member.email_verified_at, 'a google-linked member is marked verified after consent');
 
-  const cookies = [];
-  callbackResp.headers.forEach((v, k) => { if (k.toLowerCase() === 'set-cookie') cookies.push(v); });
-  const meResp = await call(env, 'GET', '/api/me', undefined, { ...csrf, Cookie: cookies[0] });
+  const meResp = await call(env, 'GET', '/api/me', undefined, { ...csrf, Cookie: consented.headers['set-cookie'].split(';')[0] });
   assert.equal(meResp.status, 200);
   assert.equal(meResp.json.member.email_verified, true);
   assert.equal(meResp.json.member.role, 'superadmin');
@@ -652,11 +673,10 @@ test('google callback creates a superadmin when email is in SUPERADMIN_EMAILS', 
   );
   assert.equal(callbackResp.status, 302);
 
-  const cookies = [];
-  callbackResp.headers.forEach((v, k) => { if (k.toLowerCase() === 'set-cookie') cookies.push(v); });
-  const sessionCookie = cookies[0];
+  const consented = await consentSession(env, callbackResp);
+  const sessionCookie = consented.headers['set-cookie'];
 
-  const meResp = await call(env, 'GET', '/api/me', undefined, { ...csrf, Cookie: sessionCookie });
+  const meResp = await call(env, 'GET', '/api/me', undefined, { ...csrf, Cookie: sessionCookie.split(';')[0] });
   assert.equal(meResp.status, 200);
   assert.equal(meResp.json.member.role, 'superadmin');
   assert.equal(meResp.json.member.is_admin, true);
@@ -719,9 +739,8 @@ test('superadmin can access admin API', async () => {
   );
   assert.equal(callbackResp.status, 302);
 
-  const cookies = [];
-  callbackResp.headers.forEach((v, k) => { if (k.toLowerCase() === 'set-cookie') cookies.push(v); });
-  const sessionCookie = cookies[0];
+  const consented = await consentSession(env, callbackResp);
+  const sessionCookie = consented.headers['set-cookie'].split(';')[0];
 
   // Superadmin can access /api/orders
   const adminOrders = await call(env, 'GET', '/api/orders', undefined, { ...csrf, Cookie: sessionCookie });
@@ -767,9 +786,8 @@ test('google session can be logged out and invalidated', async () => {
   );
   assert.equal(callbackResp.status, 302);
 
-  const cookies = [];
-  callbackResp.headers.forEach((v, k) => { if (k.toLowerCase() === 'set-cookie') cookies.push(v); });
-  const sessionCookie = cookies[0];
+  const consented = await consentSession(env, callbackResp);
+  const sessionCookie = consented.headers['set-cookie'].split(';')[0];
 
   // Verify session works
   const before = await call(env, 'GET', '/api/me', undefined, { ...csrf, Cookie: sessionCookie });
@@ -866,9 +884,8 @@ test('email verification is not required for Google OAuth users', async () => {
   );
   assert.equal(callbackResp.status, 302, 'Google callback succeeds even with EMAIL_VERIFY_REQUIRED=YES');
 
-  const cookies = [];
-  callbackResp.headers.forEach((v, k) => { if (k.toLowerCase() === 'set-cookie') cookies.push(v); });
-  const sessionCookie = cookies[0];
+  const consented = await consentSession(env, callbackResp);
+  const sessionCookie = consented.headers['set-cookie'].split(';')[0];
 
   // Session works — Google users are auto-verified
   const me = await call(env, 'GET', '/api/me', undefined, { ...csrf, Cookie: sessionCookie });
@@ -984,33 +1001,42 @@ async function googleReturnFlow(env, returnParam, extraCallbackQuery = '') {
     env,
   );
   restore();
-  return { status: callbackResp.status, location: callbackResp.headers.get('location') };
+  const consentLocation = callbackResp.headers.get('location') || '';
+  const match = consentLocation.match(/#\/auth\/google-consent\?token=([^&]+)/);
+  if (!match) return { status: callbackResp.status, location: consentLocation };
+  // A new Google account finishes consent, and the consent response carries the
+  // signed return target the OAuth state asked for.
+  const consented = await call(env, 'POST', '/api/auth/google/consent', {
+    token: decodeURIComponent(match[1]), terms: true, privacy: true,
+    terms_version: 'draft-2026-10-28', privacy_version: 'draft-2026-10-28',
+  }, csrf);
+  return { status: consented.status, location: consented.json.redirect };
 }
 
 const SITE_DIR = 'https://cgishop.pages.dev/site/';
 
 test('google login from staff.html returns to staff.html', async () => {
   const flow = await googleReturnFlow(makeEnv(), 'staff');
-  assert.equal(flow.status, 302);
+  assert.equal(flow.status, 200);
   assert.equal(flow.location, `${SITE_DIR}staff.html`);
 });
 
 test('google login from orders.html returns to orders.html', async () => {
   const flow = await googleReturnFlow(makeEnv(), 'orders');
-  assert.equal(flow.status, 302);
+  assert.equal(flow.status, 200);
   assert.equal(flow.location, `${SITE_DIR}orders.html`);
 });
 
 test('google login without a return target lands on the site login page', async () => {
   const flow = await googleReturnFlow(makeEnv());
-  assert.equal(flow.status, 302);
+  assert.equal(flow.status, 200);
   assert.equal(flow.location, `${SITE_DIR}#/login`);
 });
 
 test('an unknown return target falls back to the site login page', async () => {
   for (const bad of ['evil', 'Staff', '', 'SITE']) {
     const flow = await googleReturnFlow(makeEnv(), bad);
-    assert.equal(flow.status, 302, `return=${bad} should still complete`);
+    assert.equal(flow.status, 200, `return=${bad} should still complete`);
     assert.equal(flow.location, `${SITE_DIR}#/login`, `return=${bad} must not escape the allowlist`);
   }
 });
@@ -1018,7 +1044,7 @@ test('an unknown return target falls back to the site login page', async () => {
 test('path traversal in the return target cannot inject a page', async () => {
   for (const bad of ['..%2Fevil', '../../../etc/passwd', 'https://evil.example/staff', '//evil.example']) {
     const flow = await googleReturnFlow(makeEnv(), encodeURIComponent(bad));
-    assert.equal(flow.status, 302);
+    assert.equal(flow.status, 200);
     assert.equal(flow.location, `${SITE_DIR}#/login`);
     assert.ok(!flow.location.includes('evil'), flow.location);
   }
@@ -1027,7 +1053,7 @@ test('path traversal in the return target cannot inject a page', async () => {
 test('a return param on the callback URL is ignored in favour of the signed state', async () => {
   // The state was signed for staff.html; the attacker-appended query must not win.
   const flow = await googleReturnFlow(makeEnv(), 'staff', '&return=orders');
-  assert.equal(flow.status, 302);
+  assert.equal(flow.status, 200);
   assert.equal(flow.location, `${SITE_DIR}staff.html`);
 });
 
@@ -1056,19 +1082,19 @@ test('return target survives alongside the session and state-clear cookies', asy
     env,
   );
   assert.equal(callbackResp.status, 302);
-  assert.equal(callbackResp.headers.get('location'), `${SITE_DIR}staff.html`);
+  const callbackCookies = getSetCookies(callbackResp);
+  assert.equal(callbackCookies.length, 1, 'callback only clears the state cookie');
+  assert.match(callbackCookies[0], /cgi_oauth_state=;/);
 
-  const cookies = [];
-  callbackResp.headers.forEach((v, k) => { if (k.toLowerCase() === 'set-cookie') cookies.push(v); });
-  assert.equal(cookies.length, 2);
-  assert.match(cookies[0], /cgi_member=/);
-  assert.match(cookies[1], /cgi_oauth_state=;/);
+  const consented = await consentSession(env, callbackResp);
+  assert.match(consented.json.redirect, /staff\.html$/, 'the signed return target survives consent');
+  const sessionCookie = consented.headers['set-cookie'].split(';')[0];
 
   // The Google-only superadmin now has a working member session on the admin API.
-  const meResp = await call(env, 'GET', '/api/me', undefined, { ...csrf, Cookie: cookies[0] });
+  const meResp = await call(env, 'GET', '/api/me', undefined, { ...csrf, Cookie: sessionCookie });
   assert.equal(meResp.status, 200);
   assert.equal(meResp.json.member.role, 'superadmin');
-  const quotesResp = await call(env, 'GET', '/api/quotes', undefined, { ...csrf, Cookie: cookies[0] });
+  const quotesResp = await call(env, 'GET', '/api/quotes', undefined, { ...csrf, Cookie: sessionCookie });
   assert.equal(quotesResp.status, 200);
   restore();
 });
