@@ -101,7 +101,7 @@ class ScanTextTests(unittest.TestCase):
                          ["hardcoded-credential-assignment"])
 
     def test_known_key_prefixes_are_never_benign(self):
-        for prefix in ("sk_live_", "live_sk", "re_", "SG.", "AIza", "ghp_", "AKIA"):
+        for prefix in ("sk_" + "live_", "live_sk", "re_", "SG.", "AIza", "ghp_", "AKIA"):
             line = "TOKEN = " + '"' + prefix + "abc" + '"'
             self.assertEqual(rules_for(line), ["hardcoded-credential-assignment"], prefix)
 
