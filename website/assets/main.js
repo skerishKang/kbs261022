@@ -196,13 +196,15 @@
       document.body.classList.toggle('nav-open', open);
       if (open) {
         // 키보드 사용자가 열린 메뉴 안에서 바로 이동할 수 있게 첫 링크로 포커스.
-        // 메뉴가 display:none 에서 열린 직후에는 같은 틱의 focus()가 무시되므로
-        // 다음 프레임으로 미룬다.
+        // visibility/transform 전환이 적용되기 전에는 focus()가 무시될 수 있어
+        // 강제 리플로 후 시도하고, 실패하면 짧게 지연해 한 번 더 시도한다
+        // (백그라운드 탭에서는 requestAnimationFrame이 멈출 수 있다).
         var first = nav.querySelector('a');
         if (first) {
           var focusFirst = function () { try { first.focus(); } catch (e) {} };
-          if (window.requestAnimationFrame) window.requestAnimationFrame(focusFirst);
-          else setTimeout(focusFirst, 0);
+          void nav.offsetWidth;
+          focusFirst();
+          if (document.activeElement !== first) setTimeout(focusFirst, 60);
         }
       }
     }
