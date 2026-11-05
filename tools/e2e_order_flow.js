@@ -12,9 +12,10 @@
  *  - 환불은 전액이 아닌 부분 환불로 끝내 데이터 흔적을 최소화한다.
  */
 const args = process.argv.slice(2);
+const ADMIN_TOKEN = process.env.ADMIN_TOKEN || '';
 const WORKER = (args.indexOf('--worker') !== -1 && args[args.indexOf('--worker') + 1])
   || 'https://cgi-quote-api.charliekant.workers.dev';
-const ORIGIN = 'https://skerishkang.github.io';
+const ORIGIN = 'https://cgishop.pages.dev';
 const R = {};
 let failed = 0;
 
@@ -44,7 +45,7 @@ const CUSTOMER = { company: MK + ' 테스트 회사', name: MK + ' 담당자', p
 
 (async () => {
   // 0) 모드 확인 — live PG면 결제 단계 금지
-  const health = await call('GET', '/api/admin/health');
+  const health = await call('GET', '/api/admin/health', undefined, ADMIN_TOKEN);
   stage('health', { status: health.status, version: health.json && health.json.version, pg: health.json && health.json.pg, erp: health.json && health.json.erp, price_index: health.json && health.json.price_index });
   check('health_ok', health.status === 200 && health.json && health.json.ok === true);
   check('pg_not_live', health.json && health.json.pg && health.json.pg.live === false, health.json && health.json.pg && health.json.pg.mode);

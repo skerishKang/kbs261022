@@ -275,7 +275,7 @@ test('health reports the active modes without leaking payment or ECOUNT secrets'
     ECOUNT_COM_CODE: 'EXAMPLE-COM-DO-NOT-LEAK', ECOUNT_USER_ID: 'EXAMPLE-USER-DO-NOT-LEAK',
     ECOUNT_API_CERT_KEY: 'EXAMPLE-CERT-DO-NOT-LEAK',
   });
-  const res = await call(env, 'GET', '/api/admin/health');
+  const res = await call(env, 'GET', '/api/admin/health', undefined, auth());
   assert.equal(res.status, 200);
   const body = res.json;
   assert.equal(body.ok, true);
@@ -286,7 +286,8 @@ test('health reports the active modes without leaking payment or ECOUNT secrets'
   assert.equal(body.erp.mode, 'disabled');
   assert.equal(body.erp.enabled, false);
   assert.equal(body.erp.live_write, false);
-  assert.equal(body.cors_origin, 'https://skerishkang.github.io');
+  assert.deepEqual(body.cors_allowed_origins, ['https://skerishkang.github.io']);
+  assert.equal(body.site_base_url, 'https://cgishop.pages.dev/site');
   assert.equal(body.shipping_fee_default, 0);
   assert.ok(body.price_index.products_with_price > 2000);
   assert.equal(res.text.includes('DO_NOT_LEAK'), false, 'no secret material in the response');

@@ -219,6 +219,8 @@ CREATE TABLE IF NOT EXISTS ecount_item_mapping (
 CREATE TABLE IF NOT EXISTS members (
   id INTEGER PRIMARY KEY,
   email TEXT NOT NULL UNIQUE,
+  -- Google-only accounts carry 'revoked$google-signup$0$0' here (migration 0010);
+  -- no password string can verify against that sentinel.
   password_hash TEXT NOT NULL,
   name TEXT NOT NULL,
   phone TEXT,

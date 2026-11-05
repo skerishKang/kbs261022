@@ -5,10 +5,10 @@ import worker from '../../worker.js';
 import { openD1 } from '../../d1-shim.mjs';
 import { ORIGIN, EVIL_ORIGIN, ADMIN_TOKEN, call } from '../helpers.mjs';
 
-const ALLOWED = 'https://skerishkang.github.io';
+const ALLOWED = 'https://cgishop.pages.dev';
 
 async function raw(method, path, headers = {}) {
-  const response = await worker.fetch(new Request(`http://cgi.local${path}`, { method, headers }), { DB: openD1() });
+  const response = await worker.fetch(new Request(`http://cgi.local${path}`, { method, headers }), { DB: openD1(), CORS_ALLOWED_ORIGINS: ALLOWED });
   const text = await response.text();
   const out = {};
   response.headers.forEach((value, key) => {

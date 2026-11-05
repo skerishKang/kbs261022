@@ -19,6 +19,7 @@ export function makeEnv(overrides = {}) {
     ERP_LIVE_WRITE: 'NO',
     ERP_MODE: 'test',
     SHIPPING_FEE_DEFAULT: '0',
+    CORS_ALLOWED_ORIGINS: ORIGIN,
     ...overrides,
   };
 }

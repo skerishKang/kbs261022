@@ -171,11 +171,11 @@ test('normalizeOAuthReturn only accepts the allowlist', () => {
 });
 
 test('resolveOAuthRedirect rebuilds the location from the base directory plus an allowlisted page', () => {
-  const base = 'https://skerishkang.github.io/kbs261022/site/#/login';
-  assert.equal(resolveOAuthRedirect(base, 'site'), 'https://skerishkang.github.io/kbs261022/site/#/login');
-  assert.equal(resolveOAuthRedirect(base, 'staff'), 'https://skerishkang.github.io/kbs261022/site/staff.html');
-  assert.equal(resolveOAuthRedirect(base, 'orders'), 'https://skerishkang.github.io/kbs261022/site/orders.html');
-  assert.equal(resolveOAuthRedirect(base, 'evil'), 'https://skerishkang.github.io/kbs261022/site/#/login');
+  const base = 'https://cgishop.pages.dev/site/#/login';
+  assert.equal(resolveOAuthRedirect(base, 'site'), 'https://cgishop.pages.dev/site/#/login');
+  assert.equal(resolveOAuthRedirect(base, 'staff'), 'https://cgishop.pages.dev/site/staff.html');
+  assert.equal(resolveOAuthRedirect(base, 'orders'), 'https://cgishop.pages.dev/site/orders.html');
+  assert.equal(resolveOAuthRedirect(base, 'evil'), 'https://cgishop.pages.dev/site/#/login');
 });
 
 test('resolveOAuthRedirect honours a custom site base and never leaks the target string', () => {
@@ -186,6 +186,6 @@ test('resolveOAuthRedirect honours a custom site base and never leaks the target
 });
 
 test('resolveOAuthRedirect falls back to the production default for a broken base', () => {
-  assert.equal(resolveOAuthRedirect('not a url', 'staff'), 'https://skerishkang.github.io/kbs261022/site/staff.html');
-  assert.equal(resolveOAuthRedirect('', 'orders'), 'https://skerishkang.github.io/kbs261022/site/orders.html');
+  assert.equal(resolveOAuthRedirect('not a url', 'staff'), 'https://cgishop.pages.dev/site/staff.html');
+  assert.equal(resolveOAuthRedirect('', 'orders'), 'https://cgishop.pages.dev/site/orders.html');
 });

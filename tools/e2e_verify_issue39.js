@@ -9,7 +9,7 @@ const { chromium } = require(PW);
 const siteArgIdx = process.argv.indexOf('--site');
 const SITE = (siteArgIdx !== -1 && process.argv[siteArgIdx + 1])
   ? process.argv[siteArgIdx + 1].replace(/\/$/, '')
-  : 'https://skerishkang.github.io/kbs261022/site';
+  : 'https://cgishop.pages.dev/site';
 const WORKER = 'https://cgi-quote-api.charliekant.workers.dev';
 const WAIT = 20000;
 const R = {};

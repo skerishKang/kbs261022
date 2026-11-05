@@ -24,6 +24,7 @@ const env = {
   ERP_LIVE_WRITE: 'NO',
   ERP_MODE: 'test',
   SHIPPING_FEE_DEFAULT: '0',
+  CORS_ALLOWED_ORIGINS: ORIGIN,
 };
 
 let passed = 0;
@@ -84,7 +85,7 @@ await check('schema init is admin-only and idempotent', async () => {
 
 // 2. Health reports the modes and never leaks secret material.
 await check('health reports modes and leaks no secret', async () => {
-  const res = await request('GET', '/api/admin/health');
+  const res = await request('GET', '/api/admin/health', undefined, authed);
   assert.equal(res.status, 200);
   assert.equal(res.json.ok, true);
   assert.equal(res.json.pg.mode, 'mock');
@@ -96,7 +97,7 @@ await check('health reports modes and leaks no secret', async () => {
 // 3. CORS stays pinned to the one allowed origin.
 await check('CORS is pinned for real requests', async () => {
   const res = await request('GET', '/api/orders', undefined, authed);
-  assert.equal(res.headers['access-control-allow-origin'], ORIGIN);
+  assert.equal(res.headers['access-control-allow-origin'], 'https://cgishop.pages.dev');
   assert.equal(res.text.includes(EVIL), false);
   const preflight = await request('OPTIONS', '/api/orders', undefined, {
     Origin: EVIL,
@@ -104,7 +105,7 @@ await check('CORS is pinned for real requests', async () => {
     'Access-Control-Request-Headers': 'content-type,authorization',
   });
   assert.equal(preflight.status, 204);
-  assert.equal(preflight.headers['access-control-allow-origin'], ORIGIN);
+  assert.equal(preflight.headers['access-control-allow-origin'], 'https://cgishop.pages.dev');
 });
 
 // 4. Order creation is priced by the server, not the client.

@@ -81,6 +81,61 @@ export function transactionSignature({ tid, amount, ediDate, secretKey }) {
   return sha256Hex(`${tid}${amount}${ediDate}${secretKey}`);
 }
 
+/** The payment-window return digest: hex(sha256(authToken + clientId + amount + SecretKey)). */
+export function windowReturnSignature({ authToken, clientId, amount, secretKey }) {
+  if (!authToken || !clientId || amount === undefined || amount === null || !secretKey) return null;
+  return sha256Hex(`${authToken}${clientId}${amount}${secretKey}`);
+}
+
+/**
+ * Verify the fields NICE posts to returnUrl from the payment window. This is a
+ * different message from an approval/webhook: it has authResultCode and
+ * authToken, and deliberately has no ediDate. Success is exactly "0000"; every
+ * other code is an authentication failure and must never reach the approve call.
+ */
+export function verifyWindowReturn(body, { secretKey, clientId, expectedAmount, expectedOrderId } = {}) {
+  const tx = body && typeof body === 'object' ? body : {};
+  const authResultCode = String(tx.authResultCode ?? '');
+  if (authResultCode !== OK_CODE) {
+    return {
+      ok: false,
+      reason: 'auth_failed',
+      code: authResultCode || 'NICE_AUTH_FAILED',
+      message: String(tx.authResultMsg ?? ''),
+    };
+  }
+  if (!tx.tid) return { ok: false, reason: 'missing_tid' };
+  if (!tx.authToken) return { ok: false, reason: 'missing_auth_token' };
+  if (!tx.clientId) return { ok: false, reason: 'missing_client_id' };
+  if (!secretKey) return { ok: false, reason: 'missing_secret_key' };
+  if (!clientId) return { ok: false, reason: 'missing_client_id' };
+  if (String(tx.clientId) !== String(clientId)) return { ok: false, reason: 'client_id' };
+  if (tx.amount === undefined || tx.amount === null || String(tx.amount).trim() === '') {
+    return { ok: false, reason: 'missing_amount' };
+  }
+  if (!tx.signature) return { ok: false, reason: 'missing_signature' };
+  const expected = windowReturnSignature({
+    authToken: tx.authToken, clientId: tx.clientId, amount: tx.amount, secretKey,
+  });
+  if (!safeEqual(String(tx.signature).toLowerCase(), expected ?? '')) {
+    return { ok: false, reason: 'signature' };
+  }
+  if (expectedAmount !== undefined && Number(tx.amount) !== Number(expectedAmount)) {
+    return { ok: false, reason: 'amount' };
+  }
+  if (expectedOrderId !== undefined && String(tx.orderId ?? '') !== String(expectedOrderId)) {
+    return { ok: false, reason: 'order_id' };
+  }
+  return {
+    ok: true,
+    reason: '',
+    tid: tx.tid,
+    orderId: tx.orderId ?? null,
+    amount: Number(tx.amount),
+    authToken: tx.authToken,
+  };
+}
+
 /**
  * Verify an approval message (returnUrl POST or webhook) before anything is
  * written. resultCode and the amount are checked as well as the signature,

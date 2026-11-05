@@ -69,6 +69,11 @@ PG_PROVIDER = "nicepay"
 SITE_PG_PROVIDER = "nicepay"
 PG_NICEPAY_ENV = "test"
 PG_PROVIDER_MODE = "auto"
+# Public deployment URLs, not credentials. Keep these in vars so a deploy that
+# does not pass --keep-vars still points notifications and OAuth at cgishop.
+SITE_BASE_URL = "https://cgishop.pages.dev/site"
+NICEPAY_SITE_BASE_URL = "https://cgishop.pages.dev/site"
+CORS_ALLOWED_ORIGINS = "https://cgishop.pages.dev"
 PG_PUBLIC_BASE_URL = "https://api.tosspayments.com"
 ERP_LIVE_WRITE = "NO"
 ERP_MODE = "test"

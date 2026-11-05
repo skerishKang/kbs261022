@@ -21,7 +21,7 @@ const OAUTH_RETURN_TARGETS = {
   orders: { page: 'orders.html', hash: '' },
 };
 const OAUTH_DEFAULT_RETURN = 'site';
-const DEFAULT_SITE_BASE_URL = 'https://skerishkang.github.io/kbs261022/site/#/login';
+const DEFAULT_SITE_BASE_URL = 'https://cgishop.pages.dev/site/#/login';
 
 /**
  * Create an OAuth state token (signed, time-limited).

@@ -70,7 +70,7 @@ export function createMailAdapter(env, log = () => {}) {
   const mode = String(env.MAIL_MODE || 'console').toLowerCase();
   const from = String(env.MAIL_FROM || 'CGI no-reply <no-reply@cgi.example>');
   const base = String(env.MAIL_BASE_URL || '').replace(/\/+$/, '');
-  const siteBase = String(env.SITE_BASE_URL || base || 'https://skerishkang.github.io/kbs261022/site').replace(/\/+$/, '');
+  const siteBase = String(env.SITE_BASE_URL || base || 'https://cgishop.pages.dev/site').replace(/\/+$/, '');
   const sgEndpoint = String(env.SENDGRID_API_URL || 'https://api.sendgrid.com/v3/mail/send').replace(/\/+$/, '');
   const resendEndpoint = String(env.RESEND_API_URL || 'https://api.resend.com/emails').replace(/\/+$/, '');
 
