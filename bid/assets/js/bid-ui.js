@@ -139,6 +139,7 @@
     { href: "index.html", label: "홈", key: "home" },
     { href: "bids.html", label: "입찰공고", key: "bids" },
     { href: "results.html", label: "낙찰 결과", key: "results", soon: !RESULTS_READY },
+    { href: "watchlist.html", label: "관심공고", key: "watch" },
     { href: "agency.html", label: "발주기관", key: "agency" },
     { href: "pricing.html", label: "요금 안내", key: "pricing" }
   ];
@@ -246,15 +247,31 @@
     "매각": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9.5 9.6c0-1.1 1.1-1.9 2.5-1.9s2.5.8 2.5 1.9c0 2.6-5 1.7-5 4.3 0 1.1 1.1 1.9 2.5 1.9s2.5-.8 2.5-1.9"/></svg>'
   };
 
+  /* CGI 취급 품목 매칭 키워드 칩 (7차 — build_bid_data.py가 공고마다 cgi_match·mk를 만든다) */
+  function mkChips(b, max) {
+    var lim = max || 4;
+    if (!b.cgi_match || !Array.isArray(b.mk) || !b.mk.length) return "";
+    var shown = b.mk.slice(0, lim);
+    var rest = b.mk.length - shown.length;
+    return '<span class="mk-chips" aria-label="CGI 취급 품목 키워드">' +
+      shown.map(function (k) { return '<span class="mk-chip">' + esc(k) + "</span>"; }).join("") +
+      (rest > 0 ? '<span class="mk-chip mk-more">+' + rest + "</span>" : "") +
+      "</span>";
+  }
+
   function cardHtml(b) {
     var region = b.r ? '<span class="region">' + esc(b.r) + "</span>" : "";
     var dd = ddOf(b);
     var closeLabel = dd.lt ? "상시 접수" : (dd.noClose ? "개찰 " + fmtDt(b.od) : fmtDt(b.cd));
+    var pers = window.BID_PERS;
     return (
       '<article class="bid-card">' +
-        '<div class="card-badges">' + badgeCat(b.c) + methodBadge(b) + badgeStatus(b.s) + chipDd(b) + "</div>" +
+        '<div class="card-badges">' + badgeCat(b.c) + methodBadge(b) + badgeStatus(b.s) + chipDd(b) +
+          (pers ? '<span class="card-star">' + pers.starBtnHtml(b.no) + "</span>" : "") +
+        "</div>" +
         '<h3 class="bid-card-title"><a href="bid.html?no=' + encodeURIComponent(b.no) + '">' + esc(b.t) + "</a></h3>" +
         '<div class="bid-card-meta"><span class="agency" title="' + esc(b.a) + '">' + esc(b.a) + "</span>" + region + "</div>" +
+        mkChips(b) +
         '<div class="price-line"><span class="p-k">추정가격</span><span class="p-v num">' + esc(fmtWon(b.ep)) + "</span></div>" +
         '<div class="bid-card-nums">' +
           '<span class="k">' + (dd.noClose ? "개찰일시" : "투찰마감") + '</span><span class="v num">' + esc(closeLabel) + "</span>" +
@@ -295,7 +312,7 @@
     esc: esc, param: param, fmtWon: fmtWon, fmtDate: fmtDate, fmtDt: fmtDt,
     ddState: ddState, ddOf: ddOf, activeBids: activeBids, byNo: byNo, openPhase: openPhase,
     agencyStats: agencyStats, regionText: regionText, statsSummary: statsSummary,
-    methodBadge: methodBadge, methodList: methodList,
+    methodBadge: methodBadge, methodList: methodList, mkChips: mkChips,
     renderHeader: renderHeader, renderFooter: renderFooter,
     badgeCat: badgeCat, badgeStatus: badgeStatus, chipDd: chipDd,
     cardHtml: cardHtml, bindSheet: window.bindSheet, CAT_ICONS: CAT_ICONS

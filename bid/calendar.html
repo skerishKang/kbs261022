@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>관심공고 일정 | CGI 입찰정보</title>
+<meta name="description" content="관심공고의 공고일·투찰마감·개찰일을 월간 달력으로 보는 화면. 날짜는 한국시간 기준.">
+<link rel="canonical" href="https://cgishop.pages.dev/bid/calendar.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="CGI 입찰정보">
+<meta property="og:title" content="관심공고 일정 | CGI 입찰정보">
+<meta property="og:description" content="관심공고의 공고일·투찰마감·개찰일을 월간 달력으로 보는 화면. 날짜는 한국시간 기준.">
+<meta property="og:url" content="https://cgishop.pages.dev/bid/calendar.html">
+<meta name="theme-color" content="#07913A">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2307913A'/%3E%3Ctext x='16' y='22' font-size='17' font-weight='800' text-anchor='middle' fill='white' font-family='Arial'%3EC%3C/text%3E%3C/svg%3E">
+<script>(function(){try{var t=localStorage.getItem("bid-theme");if(t==="light"||t==="dark"){document.documentElement.dataset.theme=t;}}catch(e){}})();</script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="assets/css/bid.css?v=261106a">
+</head>
+<body>
+<a class="skip-link" href="#main">본문으로 건너뛰기</a>
+<header id="appHeader"></header>
+
+<main id="main" class="page container">
+  <nav class="crumbs" aria-label="위치">
+    <a href="index.html">홈</a><span aria-hidden="true">›</span><a href="watchlist.html">관심공고</a><span aria-hidden="true">›</span><span>일정</span>
+  </nav>
+
+  <h1 style="margin:0 0 4px;font-size:22px;letter-spacing:-.4px">관심공고 일정</h1>
+  <p style="margin:0 0 14px;color:var(--cgi-muted);font-size:13.5px">
+    별표 저장한 공고의 <strong>공고일 · 투찰마감 · 개찰일</strong>을 월간 달력에 표시합니다. 날짜는 한국시간 기준입니다.
+    마감일이 원문에 없는 공고는 개찰일만 표시하고, 장기(상시) 접수 공고는 달력에서 제외됩니다.
+  </p>
+
+  <div class="cal-toolbar">
+    <button type="button" class="btn btn-outline btn-sm" id="calToday">오늘</button>
+    <button type="button" class="btn btn-outline btn-sm" id="calPrev" aria-label="이전 달">‹</button>
+    <strong class="num" id="calTitle" aria-live="polite">—</strong>
+    <button type="button" class="btn btn-outline btn-sm" id="calNext" aria-label="다음 달">›</button>
+    <div class="cal-legend" aria-hidden="true">
+      <span class="cal-ev cal-ev-post">공고</span>
+      <span class="cal-ev cal-ev-close">투찰마감</span>
+      <span class="cal-ev cal-ev-open">개찰</span>
+    </div>
+    <a class="btn btn-outline btn-sm" href="bids.html" style="margin-left:auto">공고 목록 →</a>
+  </div>
+
+  <div class="cal-card">
+    <div class="cal-week" aria-hidden="true">
+      <span>일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span>
+    </div>
+    <div class="cal-grid" id="calGrid"></div>
+  </div>
+  <p class="f-note" id="calCount" style="margin-top:10px"></p>
+</main>
+
+<footer id="appFooter"></footer>
+
+<script src="config.js?v=261106a"></script>
+<script src="assets/data/bid-data.js?v=261106a"></script>
+<script src="assets/data/result-data.js?v=261106a"></script>
+<script src="assets/js/bid-ui.js?v=261106a"></script>
+<script src="assets/js/bid-personal.js?v=261106a"></script>
+<script>
+(function () {
+  "use strict";
+  var U = window.BID_UI;
+  var P = window.BID_PERS;
+  U.renderHeader("watch");
+  U.renderFooter();
+
+  /* 현재 달 (한국시간 오늘 기준) */
+  var todayKst = new Date(Date.now() + 9 * 3600000).toISOString().slice(0, 10);
+  var cur = todayKst ? todayKst.slice(0, 7) : "1970-01"; // "YYYY-MM"
+  var KIND_CLS = { "공고": "cal-ev-post", "투찰마감": "cal-ev-close", "개찰": "cal-ev-open" };
+  var KIND_ORDER = ["공고", "투찰마감", "개찰"];
+
+  function monthTitle(ym) {
+    return ym.slice(0, 4) + "년 " + parseInt(ym.slice(5, 7), 10) + "월";
+  }
+  function shiftMonth(ym, d) {
+    var y = parseInt(ym.slice(0, 4), 10), m = parseInt(ym.slice(5, 7), 10) + d;
+    y += Math.floor((m - 1) / 12);
+    m = ((m - 1) % 12 + 12) % 12 + 1;
+    return y + "-" + String(m).padStart(2, "0");
+  }
+
+  /* 이번 달의 관심공고 일정 */
+  function eventsOfMonth(ym) {
+    var map = {}; // date -> [{kind, no, title}]
+    var stars = P.getStars();
+    Object.keys(stars).forEach(function (no) {
+      var b = U.byNo(no);
+      if (!b) return; // 수집 데이터에 없는 공고번호는 달력에 낼 날짜가 없다
+      P.calEvents(b).forEach(function (ev) {
+        if (ev.date && ev.date.slice(0, 7) === ym) {
+          (map[ev.date] = map[ev.date] || []).push({ kind: ev.kind, no: no, title: b.t });
+        }
+      });
+    });
+    return map;
+  }
+
+  function render() {
+    document.getElementById("calTitle").textContent = monthTitle(cur);
+    var grid = document.getElementById("calGrid");
+    var evs = eventsOfMonth(cur);
+    // 달력 요일은 KST 날짜 기준으로 계산한다(UTC로 계산하면 1일이 하루씩 밀린다).
+    var first = new Date(Date.parse(cur + "-01T00:00:00+09:00") + 9 * 3600000);
+    var startDow = first.getUTCDay(); // 0=일
+    var daysIn = new Date(Date.UTC(parseInt(cur.slice(0, 4), 10), parseInt(cur.slice(5, 7), 10), 0)).getUTCDate();
+    var cells = [];
+    for (var i = 0; i < startDow; i++) cells.push('<div class="cal-day cal-blank" aria-hidden="true"></div>');
+    for (var d = 1; d <= daysIn; d++) {
+      var date = cur + "-" + String(d).padStart(2, "0");
+      var list = (evs[date] || []).slice().sort(function (a, b) {
+        return KIND_ORDER.indexOf(a.kind) - KIND_ORDER.indexOf(b.kind);
+      });
+      var isToday = date === todayKst;
+      cells.push(
+        '<div class="cal-day' + (isToday ? " cal-today" : "") + (list.length ? " cal-has" : "") + '">' +
+          '<div class="cal-date num">' + d + "</div>" +
+          (list.length
+            ? '<a class="cal-link" href="watchlist.html?date=' + date + '" aria-label="' + date + " 일정 공고 " + list.length + '건 보기">' +
+                list.slice(0, 3).map(function (ev) {
+                  return '<span class="cal-ev ' + KIND_CLS[ev.kind] + '" title="' + U.esc(ev.title) + '">' + ev.kind + "</span>";
+                }).join("") +
+                (list.length > 3 ? '<span class="cal-ev cal-more">+' + (list.length - 3) + "</span>" : "") +
+              "</a>"
+            : "") +
+        "</div>"
+      );
+    }
+    grid.innerHTML = cells.join("");
+    var total = Object.keys(evs).reduce(function (a, k) { return a + evs[k].length; }, 0);
+    var starred = P.starCount();
+    document.getElementById("calCount").textContent =
+      "관심공고 " + starred + "건 · 이번 달 일정 " + total + "건. 날짜를 누르면 그 날짜의 관심공고 목록으로 이동합니다.";
+  }
+
+  document.getElementById("calPrev").addEventListener("click", function () { cur = shiftMonth(cur, -1); render(); });
+  document.getElementById("calNext").addEventListener("click", function () { cur = shiftMonth(cur, 1); render(); });
+  document.getElementById("calToday").addEventListener("click", function () { cur = todayKst ? todayKst.slice(0, 7) : cur; render(); });
+  render();
+})();
+</script>
+</body>
+</html>

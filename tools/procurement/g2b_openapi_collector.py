@@ -38,6 +38,9 @@ import urllib.request
 from datetime import date, datetime, timedelta
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from build_bid_data import cgi_match_fields, load_keywords  # noqa: E402  # CGI 취급 품목 매칭(7차) 재사용
+
 REPO_ROOT = Path(__file__).resolve().parents[2]
 OUT_DIR = REPO_ROOT / "reports" / "data" / "procurement"
 BID_DATA_PATH = REPO_ROOT / "bid" / "assets" / "data" / "bid-data.js"
@@ -418,7 +421,8 @@ def _norm_dt(s):
 
 
 def build_payload(bids: list[dict], snapshot: str, source: str) -> dict:
-    """화면 레코드 목록 → bid-data.js 본문. 취소공고 제외, 장기 접수(lt) 표시."""
+    """화면 레코드 목록 → bid-data.js 본문. 취소공고 제외, 장기 접수(lt) 표시, CGI 매칭(7차)."""
+    kw = load_keywords()
     pub = []
     for b in bids:
         if "취소" in (b.get("s") or ""):
@@ -431,6 +435,7 @@ def build_payload(bids: list[dict], snapshot: str, source: str) -> dict:
             rec[k] = _int(rec.get(k))
         if not rec.get("c"):
             rec["c"] = "구매"  # 매핑에 없는 업무구분(기타 등)은 구매로 표기
+        rec.update(cgi_match_fields(rec.get("t"), kw))
         try:
             if rec["pd"] and rec["cd"] and (datetime.strptime(rec["cd"][:10], "%Y-%m-%d") - datetime.strptime(rec["pd"], "%Y-%m-%d")).days > 365:
                 rec["lt"] = True

@@ -17,6 +17,11 @@
     화면은 D-day 대신 "상시 접수"로 보여 주고 마감 임박 집계에서 뺀다.
   - 마감일이 원본에 없는 공고(`cd` 없음)는 그대로 둔다(화면이 개찰일시를 기준으로 상태를 판단).
 
+7차 추가(이슈 #188):
+  - `cgi_match`(bool)·`mk`(적중 키워드 목록): tools/procurement/cgi_bid_keywords.json 기준으로
+    공고 제목을 대조해 채운다. 부정 키워드(의료·소방 등)가 제목에 있으면 적중이 있어도 false.
+    라틴 키워드(PA·LED·AS·A/S)는 토큰 단위로만 적중한다(부분일치 오검출 방지).
+
 입력(저장소 내 공개 수집 결과만 사용):
   - data/procurement/g2b_real_bids.json                 (나라장터 입찰공고 목록)
   - reports/data/procurement/g2b_detail_enrichment.json (공고 상세 보강)
@@ -100,6 +105,39 @@ RE_MAINT = re.compile(r"유지보수|유지·보수|유지/보수|보수유지|�
 RE_CONS = re.compile(r"공사|건설|시공|철거|정화|신축|증축|포장|조성|준설|방수|토목|건축|복원|확장|보수|개선")
 RE_SVC = re.compile(r"용역|임대|판독|조사|연구|설계|감리|컨설팅|운영|평가서|수행능력|진단|교육|리스|정비|유지관리|모니터링|위탁|취급|제작|대행|사업자\s*선정")
 RE_CONS_EXPLICIT = re.compile(r"단가공사|공사")
+
+REPO_TOOLS = Path(__file__).resolve().parent
+KW_PATH = REPO_TOOLS / "cgi_bid_keywords.json"  # CGI 취급 품목 키워드(이슈 #188 7차)
+RE_LATIN_KW = re.compile(r"^[A-Za-z][A-Za-z/]*$")  # PA·LED·AS·A/S 같은 라틴 키워드
+
+
+def load_keywords(path: Path = KW_PATH) -> dict:
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def keyword_hit(kw: str, title: str) -> bool:
+    """키워드 적중. 라틴 키워드는 토큰 단위만(부분일치면 'AS'가 'case'에 걸린다), 한글은 부분일치."""
+    if RE_LATIN_KW.match(kw):
+        return re.search(r"(?<![A-Za-z])" + re.escape(kw) + r"(?![A-Za-z])", title, re.IGNORECASE) is not None
+    return kw in title
+
+
+def cgi_match_fields(title, keywords: dict | None = None) -> dict:
+    """공고 제목을 CGI 취급 키워드와 대조해 cgi_match(bool)·mk(적중 키워드)를 만든다(이슈 #188 7차).
+
+    - 적중 키워드는 JSON 카테고리 나열 순서대로 중복 없이 담는다(화면 칩이 그 순서로 표시된다).
+    - 부정 키워드(의료·소방 등)가 제목에 있으면 적중이 있어도 CGI 관련 아님으로 본다(mk는 비운다).
+    """
+    kw = keywords if keywords is not None else load_keywords()
+    t = title or ""
+    matched: list[str] = []
+    for kws in kw.get("cgi_categories", {}).values():
+        for k in kws:
+            if k not in matched and keyword_hit(k, t):
+                matched.append(k)
+    if any(keyword_hit(nk, t) for nk in kw.get("cgi_negative_keywords", [])):
+        return {"cgi_match": False, "mk": []}
+    return {"cgi_match": bool(matched), "mk": matched}
 
 
 def classify(title):
@@ -186,6 +224,7 @@ def build(snapshot: str) -> dict:
     bids = json.loads(SRC_BIDS.read_text(encoding="utf-8"))["bids"]
     enr = json.loads(SRC_ENR.read_text(encoding="utf-8"))
     enr_by_no = {e["bid_no"]: e for e in enr if e.get("fetch_status") == "ok"}
+    kw = load_keywords()
 
     out = []
     skipped_cancel = 0
@@ -223,6 +262,7 @@ def build(snapshot: str) -> dict:
             "am": e.get("award_method") or None,
             "cu": b.get("detail_url") or None,
         }
+        rec.update(cgi_match_fields(rec["t"], kw))
         if not rec["a"] or not rec["no"]:
             continue
         gap = _days_between(rec["pd"], rec["cd"])
@@ -239,6 +279,7 @@ def build(snapshot: str) -> dict:
         "counts": {
             "total": len(bids), "published": len(out), "cancelSkipped": skipped_cancel,
             "longTerm": long_term, "basis": basis_counter,
+            "cgiMatched": sum(1 for r in out if r["cgi_match"]),
         },
         "bids": out,
     }

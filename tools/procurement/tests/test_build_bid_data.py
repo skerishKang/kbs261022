@@ -40,6 +40,42 @@ class TestDates(unittest.TestCase):
         self.assertEqual(bbd.guess_region("서울시 강남구 공고", "x"), "서울")
 
 
+class TestCgiMatch(unittest.TestCase):
+    """CGI 취급 품목 매칭(이슈 #188 7차) — cgi_bid_keywords.json 기준."""
+
+    def test_positive_keywords_and_order(self):
+        f = bbd.cgi_match_fields("학교 교실방송 및 음향설비 구매")
+        self.assertTrue(f["cgi_match"])
+        # JSON 카테고리 나열 순서대로 적중 키워드가 담긴다
+        self.assertIn("음향", f["mk"])
+        self.assertIn("학교", f["mk"])
+
+    def test_latin_keyword_is_token_matched(self):
+        # 'AS' 부분일치 오검출 방지: 'case'에는 걸리지 않는다
+        self.assertFalse(bbd.keyword_hit("AS", "데이터베이스 CASE 도구 구매"))
+        self.assertFalse(bbd.keyword_hit("AS", "복사기 A/S 용역"), "'AS'는 'A/S'와 별개 토큰")
+        # 'A/S' 키워드가 'A/S' 표기에 걸린다
+        self.assertTrue(bbd.keyword_hit("A/S", "복사기 A/S 용역"))
+        self.assertTrue(bbd.cgi_match_fields("복사기 A/S 용역")["cgi_match"])
+        self.assertFalse(bbd.cgi_match_fields("데이터베이스 CASE 도구 구매")["cgi_match"])
+
+    def test_negative_keyword_blocks(self):
+        f = bbd.cgi_match_fields("음향기기 구매 — 의료기관용")
+        self.assertFalse(f["cgi_match"])
+        self.assertEqual(f["mk"], [])
+
+    def test_no_match(self):
+        f = bbd.cgi_match_fields("도서관 신축공사")
+        self.assertFalse(f["cgi_match"])
+        self.assertEqual(f["mk"], [])
+
+    def test_built_data_has_fields_and_validates(self):
+        data = bbd.build(bbd.DEFAULT_SNAPSHOT)
+        self.assertTrue(all(isinstance(r["cgi_match"], bool) and isinstance(r["mk"], list) for r in data["bids"]))
+        self.assertEqual(vbd.validate_bids(data), [])
+        self.assertEqual(data["counts"]["cgiMatched"], sum(1 for r in data["bids"] if r["cgi_match"]))
+
+
 class TestBuild(unittest.TestCase):
     def test_build_reproduces_committed_data(self):
         data = bbd.build(bbd.DEFAULT_SNAPSHOT)
