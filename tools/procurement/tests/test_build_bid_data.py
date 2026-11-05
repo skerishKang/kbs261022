@@ -63,17 +63,54 @@ class TestCgiMatch(unittest.TestCase):
         f = bbd.cgi_match_fields("음향기기 구매 — 의료기관용")
         self.assertFalse(f["cgi_match"])
         self.assertEqual(f["mk"], [])
+        self.assertEqual(f["cgi_tier"], "none")
 
     def test_no_match(self):
         f = bbd.cgi_match_fields("도서관 신축공사")
         self.assertFalse(f["cgi_match"])
         self.assertEqual(f["mk"], [])
+        self.assertEqual(f["cgi_tier"], "none")
+
+    def test_tier_core_beats_related(self):
+        # 음향(core) + 운영(related)이 같이 적중하면 core
+        self.assertEqual(bbd.cgi_match_fields("음향설비 운영")["cgi_tier"], "core")
+        # 학교·관리처럼 related만 적중하면 related
+        f = bbd.cgi_match_fields("학교 시설 관리")
+        self.assertTrue(f["cgi_match"])
+        self.assertEqual(f["cgi_tier"], "related")
 
     def test_built_data_has_fields_and_validates(self):
         data = bbd.build(bbd.DEFAULT_SNAPSHOT)
         self.assertTrue(all(isinstance(r["cgi_match"], bool) and isinstance(r["mk"], list) for r in data["bids"]))
+        self.assertTrue(all(r["cgi_tier"] in ("core", "related", "none") for r in data["bids"]))
+        for r in data["bids"]:
+            if r["cgi_tier"] in ("core", "related"):
+                self.assertTrue(r["cgi_match"])
+            else:
+                self.assertFalse(r["cgi_match"])
         self.assertEqual(vbd.validate_bids(data), [])
         self.assertEqual(data["counts"]["cgiMatched"], sum(1 for r in data["bids"] if r["cgi_match"]))
+
+    def test_rate_stats_output_empty_until_real_data(self):
+        stats = bbd.build_rate_stats_output(bbd.DEFAULT_SNAPSHOT, [], [])
+        self.assertFalse(stats["collected"])
+        self.assertEqual(stats["bundles"], {})
+        self.assertIn("낙찰 데이터 수집 전", stats["reason"])
+        self.assertEqual(vbd.validate_rate_stats(stats), [])
+
+    def test_rate_stats_output_from_price_records(self):
+        # 실수집 형식(예비가격상세 원본)을 넣으면 조인해 묶음 통계를 만든다
+        bids = [{"no": f"N{i}", "t": "음향장비 구매", "a": "기관A", "c": "구매", "ep": 500_000_000,
+                 "s": "등록공고", "cgi_match": True, "mk": ["음향"], "cgi_tier": "core"} for i in range(35)]
+        price = [{"bid_no": f"N{i}", "base_amount": 1_000_000_000, "presmpt_price": 995_000_000,
+                  "open_at": "2026-10-01 09:00:00", "multi_prepaid": "N", "lottery": "N"} for i in range(35)]
+        stats = bbd.build_rate_stats_output("2026-10-23", price, bids)
+        self.assertTrue(stats["collected"])
+        self.assertEqual(len(stats["bundles"]), 35)
+        s = stats["bundles"]["N0"]
+        self.assertEqual(s["n"], 35)
+        self.assertEqual(s["bundle"], "발주기관: 기관A")
+        self.assertEqual(vbd.validate_rate_stats(stats), [])
 
 
 class TestBuild(unittest.TestCase):

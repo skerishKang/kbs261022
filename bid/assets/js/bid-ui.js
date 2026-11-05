@@ -307,12 +307,56 @@
     return open <= base ? "개찰 완료" : "개찰 대기";
   }
 
+  /* ── 사정율 통계 패널 (8차) ──
+     collected:false면 숫자를 하나도 내보내지 않는다(가짜 수치 금지 — 실데이터가 모인 뒤에만 표시). */
+  function rateStatsPanel(hasData, bundle) {
+    if (!hasData || !bundle) {
+      var msg = hasData
+        ? "표본 부족 — 이 공고가 속한 묶음의 개찰 표본이 부족해 통계를 내지 않았습니다"
+        : "낙찰 데이터 수집 전 — 공개 개찰결과로 산출 예정";
+      return '<div class="empty-state rate-empty"><strong>사정율 통계</strong>' + esc(msg) +
+        '. 수치는 실데이터가 충분히 모인 뒤에만 표시합니다.</div>';
+    }
+    var hist = Array.isArray(bundle.histogram) ? bundle.histogram : [];
+    var maxCount = hist.reduce(function (a, h) { return Math.max(a, h.count); }, 0) || 1;
+    var lo = hist.length ? hist[0].bucket_low : 99;
+    var hi = hist.length ? hist[hist.length - 1].bucket_high : 101;
+    var span = Math.max(hi - lo, 0.2);
+    function bx(v) { return ((v - lo) / span) * 100; }
+    var bars = hist.map(function (h) {
+      var x = bx(h.bucket_low), w = bx(h.bucket_high) - x;
+      var hgt = Math.round((h.count / maxCount) * 100);
+      return '<rect x="' + x.toFixed(2) + '%" y="' + (100 - hgt) + '" width="' + w.toFixed(2) + '%" height="' + hgt + '" class="rs-bar"><title>' +
+        esc(h.bucket_low) + "~" + esc(h.bucket_high) + "% : " + esc(h.count) + "건</title></rect>";
+    }).join("");
+    var axis = hist.filter(function (_, i) { return i % Math.ceil(hist.length / 6) === 0; }).map(function (h) {
+      return '<span style="left:' + bx(h.bucket_low).toFixed(2) + '%">' + esc(h.bucket_low) + "</span>";
+    }).join("");
+    return (
+      '<div class="rs-wrap">' +
+        '<div class="rs-kv"><span class="k">사용한 묶음</span><span class="v">' + esc(bundle.bundle) + "</span></div>" +
+        '<div class="rs-nums">' +
+          '<span>평균 <strong class="num">' + esc(bundle.mean) + "%</strong></span>" +
+          "<span>중앙값 <strong class=\"num\">" + esc(bundle.median) + "%</strong></span>" +
+          "<span>표준편차 <strong class=\"num\">" + esc(bundle.stdev) + "%p</strong></span>" +
+          '<span>표본 <strong class="num">' + esc(bundle.n) + "건</strong></span>" +
+          '<span>기간 <strong class="num">' + esc(bundle.first_open) + " ~ " + esc(bundle.last_open) + "</strong></span>" +
+        "</div>" +
+        '<svg class="rs-chart" viewBox="0 0 100 100" preserveAspectRatio="none" role="img" aria-label="사정율 분포 히스토그램">' +
+          bars +
+        "</svg>" +
+        '<div class="rs-axis num">' + axis + "</div>" +
+        '<div class="rs-note">사정률 = 예정가격 ÷ 기초금액 × 100 · 표본 n이 ' + "30건 이상인 묶음만 계산합니다.</div>" +
+      "</div>"
+    );
+  }
+
   window.BID_UI = {
     DATA: DATA, SNAPSHOT: SNAPSHOT, CFG: CFG, RESULTS_READY: RESULTS_READY,
     esc: esc, param: param, fmtWon: fmtWon, fmtDate: fmtDate, fmtDt: fmtDt,
     ddState: ddState, ddOf: ddOf, activeBids: activeBids, byNo: byNo, openPhase: openPhase,
     agencyStats: agencyStats, regionText: regionText, statsSummary: statsSummary,
-    methodBadge: methodBadge, methodList: methodList, mkChips: mkChips,
+    methodBadge: methodBadge, methodList: methodList, mkChips: mkChips, rateStatsPanel: rateStatsPanel,
     renderHeader: renderHeader, renderFooter: renderFooter,
     badgeCat: badgeCat, badgeStatus: badgeStatus, chipDd: chipDd,
     cardHtml: cardHtml, bindSheet: window.bindSheet, CAT_ICONS: CAT_ICONS

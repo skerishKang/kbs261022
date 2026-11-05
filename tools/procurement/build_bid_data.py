@@ -41,10 +41,16 @@ import sys
 from datetime import date, datetime
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import rate_stats  # noqa: E402  # 사정율 계산(8차)
+
 REPO = Path(__file__).resolve().parents[2]
 SRC_BIDS = REPO / "data" / "procurement" / "g2b_real_bids.json"
 SRC_ENR = REPO / "reports" / "data" / "procurement" / "g2b_detail_enrichment.json"
+# 개찰결과 예비가격상세 수집분(수집기 --opening-price가 만든다, ★미검증 원본) — 없으면 사정율 통계는 빈 구조다.
+SRC_PRICE = REPO / "reports" / "data" / "procurement" / "openg_result_price.json"
 DEST = REPO / "bid" / "assets" / "data" / "bid-data.js"
+RATE_STATS_DEST = REPO / "bid" / "assets" / "data" / "rate-stats.js"
 DEFAULT_SNAPSHOT = "2026-10-23"  # 수집일(기준일). 수집기 재실행 성공 시에만 갱신한다.
 LONG_TERM_DAYS = 365
 
@@ -123,9 +129,11 @@ def keyword_hit(kw: str, title: str) -> bool:
 
 
 def cgi_match_fields(title, keywords: dict | None = None) -> dict:
-    """공고 제목을 CGI 취급 키워드와 대조해 cgi_match(bool)·mk(적중 키워드)를 만든다(이슈 #188 7차).
+    """공고 제목을 CGI 취급 키워드와 대조해 cgi_match(bool)·mk(적중 키워드)·cgi_tier(core/related/none)를 만든다.
 
     - 적중 키워드는 JSON 카테고리 나열 순서대로 중복 없이 담는다(화면 칩이 그 순서로 표시된다).
+    - 등급(8차): 적중 키워드 중 하나라도 keyword_tiers에서 core면 "core", 아니면 "related".
+      keyword_tiers에 없는 키워드는 related로 본다(보수적으로).
     - 부정 키워드(의료·소방 등)가 제목에 있으면 적중이 있어도 CGI 관련 아님으로 본다(mk는 비운다).
     """
     kw = keywords if keywords is not None else load_keywords()
@@ -136,8 +144,12 @@ def cgi_match_fields(title, keywords: dict | None = None) -> dict:
             if k not in matched and keyword_hit(k, t):
                 matched.append(k)
     if any(keyword_hit(nk, t) for nk in kw.get("cgi_negative_keywords", [])):
-        return {"cgi_match": False, "mk": []}
-    return {"cgi_match": bool(matched), "mk": matched}
+        return {"cgi_match": False, "mk": [], "cgi_tier": "none"}
+    tiers = kw.get("keyword_tiers", {})
+    if not matched:
+        return {"cgi_match": False, "mk": [], "cgi_tier": "none"}
+    tier = "core" if any(tiers.get(k, "related") == "core" for k in matched) else "related"
+    return {"cgi_match": True, "mk": matched, "cgi_tier": tier}
 
 
 def classify(title):
@@ -292,6 +304,76 @@ def render(data: dict) -> str:
     )
 
 
+def load_price_records(path: Path = SRC_PRICE) -> list[dict]:
+    """예비가격상세 수집분 → 사정율 계산용 레코드. 공고별 최신 차수만 남긴다. ★원본 자체는 미검증 수집분."""
+    if not path.exists():
+        return []
+    raw = json.loads(path.read_text(encoding="utf-8"))
+    best: dict[str, dict] = {}
+    for r in raw.get("records", []):
+        no = str(r.get("bid_no") or "")
+        if not no:
+            continue
+        rec = {
+            "no": no,
+            "base_amount": r.get("base_amount"),
+            "presmpt_price": r.get("presmpt_price"),
+            "open_at": r.get("open_at"),
+            "multi_prepaid": r.get("multi_prepaid"),
+            "lottery": r.get("lottery"),
+        }
+        cur = best.get(no)
+        if cur is None or str(rec["open_at"] or "") >= str(cur["open_at"] or ""):
+            best[no] = rec
+    return list(best.values())
+
+
+def build_rate_stats_output(snapshot: str, price_records: list[dict], bids: list[dict]) -> dict:
+    """사정율 통계 산출물. 실데이터(예비가격상세 수집분)가 없으면 collected:false 빈 구조만 내보낸다.
+
+    통계 숫자는 rate_stats.bid_stats가 표본 n≥30 묶음을 찾았을 때만 채워진다(가짜 수치 금지).
+    """
+    out = {
+        "snapshot": snapshot,
+        "generated": date.today().isoformat(),
+        "collected": False,
+        "reason": "낙찰 데이터 수집 전 — 공개 개찰결과(예비가격상세)로 산출 예정",
+        "bundles": {},
+    }
+    if not price_records or not bids:
+        return out
+    by_no = {b["no"]: b for b in bids}
+    records = []
+    for r in price_records:
+        no = r.get("no") or r.get("bid_no")  # load_price_records 형식과 수집기 원본 형식을 모두 받는다
+        b = by_no.get(no)
+        if not b:
+            continue  # 화면에 없는 공고(취소·오래된 차수 등)는 통계 대상에서 뺀다
+        records.append({**r, "no": no, "agency": b["a"], "category": b["c"], "ep": b["ep"]})
+    if not records:
+        return out
+    bundles = {}
+    for b in bids:
+        if not any(r["no"] == b["no"] for r in records):
+            continue
+        s = rate_stats.bid_stats({"agency": b["a"], "category": b["c"], "ep": b["ep"]}, records)
+        if s.get("collected"):
+            bundles[b["no"]] = {k: v for k, v in s.items() if k != "collected"}
+    if not bundles:
+        return out
+    out["collected"] = True
+    out["reason"] = None
+    out["bundles"] = bundles
+    return out
+
+
+def render_rate_stats(data: dict) -> str:
+    return (
+        "/* 사정율 통계 — 생성: tools/procurement/build_bid_data.py (수정 금지, 재생성으로 갱신) */\n"
+        "window.CGI_RATE_STATS = " + json.dumps(data, ensure_ascii=False, separators=(",", ":")) + ";\n"
+    )
+
+
 def current_payload(path: Path = DEST):
     if not path.exists():
         return None
@@ -313,11 +395,25 @@ def main() -> int:
     if args.check:
         cur = current_payload()
         same = cur is not None and cur.get("bids") == data["bids"] and cur.get("snapshot") == data["snapshot"]
+        # generated는 실행일(현지 시간대)이라 시행 환경마다 다를 수 있으므로 비교에서 뺀다 — bid-data와 같은 원칙.
+        def _without_generated(d):
+            return {k: v for k, v in (d or {}).items() if k != "generated"}
+        new_stats = _without_generated(build_rate_stats_output(args.snapshot, load_price_records(), data["bids"]))
+        cur_stats = None
+        if RATE_STATS_DEST.exists():
+            src = RATE_STATS_DEST.read_text(encoding="utf-8")
+            cur_stats = _without_generated(json.loads(src[src.index("=") + 1:].rstrip().rstrip(";")))
+        stats_same = cur_stats is not None and cur_stats == new_stats
+        ok = same and stats_same
         print("bid-data.js 일치" if same else "bid-data.js 불일치 — 재생성 필요")
-        return 0 if same else 1
+        print("rate-stats.js 일치" if stats_same else "rate-stats.js 불일치 — 재생성 필요")
+        return 0 if ok else 1
 
     DEST.parent.mkdir(parents=True, exist_ok=True)
     DEST.write_text(render(data), encoding="utf-8")
+    stats = build_rate_stats_output(args.snapshot, load_price_records(), data["bids"])
+    RATE_STATS_DEST.write_text(render_rate_stats(stats), encoding="utf-8")
+    print("rate-stats: collected=" + str(stats["collected"]) + ("" if stats["collected"] else " (" + str(stats["reason"]) + ")"))
     print("published:", data["counts"]["published"], "| cancel skipped:", data["counts"]["cancelSkipped"],
           "| long-term:", data["counts"]["longTerm"])
     print("categories:", cats)

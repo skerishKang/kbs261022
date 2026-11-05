@@ -22,9 +22,12 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parents[2]
 BID_DATA = REPO / "bid" / "assets" / "data" / "bid-data.js"
 RESULT_DATA = REPO / "bid" / "assets" / "data" / "result-data.js"
+RATE_STATS = REPO / "bid" / "assets" / "data" / "rate-stats.js"
 
 CATS = {"구매", "공사", "용역", "매각"}
 STATUSES = {"등록공고", "재공고", "변경공고", "긴급공고", "정정공고"}
+CGI_TIERS = {"core", "related", "none"}
+MIN_SAMPLE = 30
 REQUIRED = ("no", "t", "a", "c", "k", "s", "pd", "cu")
 RE_DATE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 RE_DT = re.compile(r"^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$")
@@ -100,6 +103,13 @@ def validate_bids(data) -> list[str]:
             errs.append(f"{tag}: CGI 매칭인데 적중 키워드가 비어 있음")
         elif b.get("cgi_match") is False and mk:
             errs.append(f"{tag}: CGI 매칭 아닌데 적중 키워드가 있음 {mk!r}")
+        # CGI 등급(8차): core/related/none — cgi_match와 정합해야 한다
+        if b.get("cgi_tier") not in CGI_TIERS:
+            errs.append(f"{tag}: cgi_tier 값 오류 {b.get('cgi_tier')!r}")
+        elif b.get("cgi_tier") == "none" and b.get("cgi_match") is True:
+            errs.append(f"{tag}: cgi_tier none인데 cgi_match true")
+        elif b.get("cgi_tier") in ("core", "related") and b.get("cgi_match") is not True:
+            errs.append(f"{tag}: cgi_tier {b.get('cgi_tier')}인데 cgi_match true 아님")
     return errs
 
 
@@ -121,10 +131,64 @@ def validate_results(data) -> list[str]:
     return errs
 
 
+def validate_rate_stats(data) -> list[str]:
+    """rate-stats.js 스키마(8차). collected:false면 숫자가 하나도 없어야 한다(가짜 수치 금지)."""
+    if not isinstance(data, dict):
+        return ["rate-stats.js: 객체가 아님"]
+    errs: list[str] = []
+    if not RE_DATE.match(str(data.get("snapshot") or "")):
+        errs.append(f"rate-stats: snapshot 형식 오류 {data.get('snapshot')!r}")
+    if not isinstance(data.get("collected"), bool):
+        errs.append(f"rate-stats: collected 불리언 아님 {data.get('collected')!r}")
+        return errs
+    bundles = data.get("bundles")
+    if data.get("collected") is False:
+        if bundles != {}:
+            errs.append("rate-stats: collected false인데 bundles가 비어 있지 않음")
+        if not str(data.get("reason") or ""):
+            errs.append("rate-stats: collected false인데 reason 없음")
+        return errs
+    if not isinstance(bundles, dict) or not bundles:
+        return errs + ["rate-stats: collected true인데 bundles가 비어 있음"]
+    for no, s in bundles.items():
+        tag = f"rate-stats[{no}]"
+        if not isinstance(s, dict):
+            errs.append(f"{tag}: 객체 아님")
+            continue
+        if not isinstance(s.get("n"), int) or s["n"] < MIN_SAMPLE:
+            errs.append(f"{tag}: 표본 n이 {MIN_SAMPLE} 미만인데 통계를 내고 있음 {s.get('n')!r}")
+        for k in ("mean", "median"):
+            v = s.get(k)
+            if not isinstance(v, (int, float)) or not (50 <= float(v) <= 120):
+                errs.append(f"{tag}: {k} 값 범위 밖 {v!r}")
+        sd = s.get("stdev")
+        if not isinstance(sd, (int, float)) or float(sd) < 0:
+            errs.append(f"{tag}: stdev 값 오류 {sd!r}")
+        hist = s.get("histogram")
+        if not isinstance(hist, list) or not all(
+            isinstance(h, dict) and isinstance(h.get("count"), int)
+            and isinstance(h.get("bucket_low"), (int, float)) and isinstance(h.get("bucket_high"), (int, float))
+            for h in hist
+        ):
+            errs.append(f"{tag}: histogram 구조 오류")
+        else:
+            total = sum(h["count"] for h in hist)
+            if total != s["n"]:
+                errs.append(f"{tag}: histogram 합계({total})가 n({s['n']})과 다름")
+        if not str(s.get("bundle") or ""):
+            errs.append(f"{tag}: 사용한 묶음 이름 없음")
+        for k in ("first_open", "last_open"):
+            if s.get(k) and not RE_DATE.match(str(s[k])):
+                errs.append(f"{tag}: {k} 형식 오류 {s[k]!r}")
+    return errs
+
+
 def main() -> int:
     errs = validate_bids(load_js(BID_DATA))
     if RESULT_DATA.exists():
         errs += validate_results(load_js(RESULT_DATA))
+    if RATE_STATS.exists():
+        errs += validate_rate_stats(load_js(RATE_STATS))
     if errs:
         print(f"bid 데이터 검증 실패 {len(errs)}건")
         for e in errs[:50]:

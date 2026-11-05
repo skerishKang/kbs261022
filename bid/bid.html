@@ -15,7 +15,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2307913A'/%3E%3Ctext x='16' y='22' font-size='17' font-weight='800' text-anchor='middle' fill='white' font-family='Arial'%3EC%3C/text%3E%3C/svg%3E">
 <script>(function(){try{var t=localStorage.getItem("bid-theme");if(t==="light"||t==="dark"){document.documentElement.dataset.theme=t;}}catch(e){}})();</script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-<link rel="stylesheet" href="assets/css/bid.css?v=261106a">
+<link rel="stylesheet" href="assets/css/bid.css?v=261106b">
 </head>
 <body>
 <a class="skip-link" href="#main">본문으로 건너뛰기</a>
@@ -97,6 +97,14 @@
           </div>
         </section>
 
+        <section class="panel" aria-labelledby="rateTitle" id="rateStatsPanel">
+          <div style="display:flex;align-items:center;gap:8px;padding:14px 18px;border-bottom:1px solid var(--cgi-line-soft)">
+            <h2 class="panel-title" id="rateTitle" style="padding:0;border:0;margin:0">사정율 통계</h2>
+            <span class="badge" id="rateBadge">수집 전</span>
+          </div>
+          <div id="rateStatsBody" style="padding:14px 16px"></div>
+        </section>
+
         <section class="panel" aria-labelledby="aiTitle">
           <div style="display:flex;align-items:center;gap:8px;padding:14px 18px;border-bottom:1px solid var(--cgi-line-soft)">
             <h2 class="panel-title" id="aiTitle" style="padding:0;border:0;margin:0">AI 투찰가 분석</h2>
@@ -161,11 +169,12 @@
 
 <footer id="appFooter"></footer>
 
-<script src="config.js?v=261106a"></script>
-<script src="assets/data/bid-data.js?v=261106a"></script>
-<script src="assets/data/result-data.js?v=261106a"></script>
-<script src="assets/js/bid-ui.js?v=261106a"></script>
-<script src="assets/js/bid-personal.js?v=261106a"></script>
+<script src="config.js?v=261106b"></script>
+<script src="assets/data/bid-data.js?v=261106b"></script>
+<script src="assets/data/result-data.js?v=261106b"></script>
+<script src="assets/data/rate-stats.js?v=261106b"></script>
+<script src="assets/js/bid-ui.js?v=261106b"></script>
+<script src="assets/js/bid-personal.js?v=261106b"></script>
 <script>
 (function () {
   "use strict";
@@ -237,6 +246,17 @@
     setTimeout(function () { wSaved.textContent = ""; }, 2500);
   });
   paintWatch();
+
+  /* 사정율 통계 (8차) — 실데이터가 모였을 때만 숫자를 표시한다(collected:false면 숫자 없음) */
+  var RS = window.CGI_RATE_STATS || { collected: false };
+  var rsBundle = RS.collected ? ((RS.bundles && RS.bundles[b.no]) || null) : null;
+  document.getElementById("rateStatsBody").innerHTML = U.rateStatsPanel(RS.collected, rsBundle);
+  var rBadge = document.getElementById("rateBadge");
+  if (RS.collected && rsBundle) {
+    rBadge.textContent = "산출";
+  } else if (RS.collected) {
+    rBadge.textContent = "표본 부족";
+  }
 
   document.getElementById("heroPrice").textContent = U.fmtWon(b.ep);
   document.getElementById("heroBudget").textContent = b.ab ? "예산금액 " + U.fmtWon(b.ab) : "예산금액 미공개";

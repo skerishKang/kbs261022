@@ -106,3 +106,55 @@ test('요금 화면에 사전 신청 영역과 개인정보 안내가 있다', (
   assert.match(html, /개인정보처리방침/);
   assert.doesNotMatch(html, /disabled>요금 확정 후 안내/);
 });
+
+test('사정율 통계: collected:false 빈 상태에는 숫자가 하나도 없다(8차)', () => {
+  const U = loadUi();
+  const empty = U.rateStatsPanel(false, null);
+  assert.match(empty, /낙찰 데이터 수집 전/);
+  assert.doesNotMatch(empty.replace(/&\w+;/g, ''), /\d/, '빈 상태에 숫자를 내보내지 않는다');
+  const short = U.rateStatsPanel(true, null);
+  assert.match(short, /표본 부족/);
+  assert.doesNotMatch(short.replace(/&\w+;/g, ''), /\d/, '표본 부족에도 숫자를 내보내지 않는다');
+});
+
+test('사정율 통계: 실데이터 묶음이 있으면 히스토그램·평균·n·기간·묶음 이름을 표시한다', () => {
+  const U = loadUi();
+  const bundle = {
+    bundle: '발주기관: 기관A', group: 'agency', n: 35, mean: 99.5, median: 99.5, stdev: 0.12,
+    histogram: [
+      { bucket_low: 99.4, bucket_high: 99.5, count: 8 },
+      { bucket_low: 99.5, bucket_high: 99.6, count: 27 },
+    ],
+    first_open: '2026-10-01', last_open: '2026-10-30',
+  };
+  const html = U.rateStatsPanel(true, bundle);
+  assert.match(html, /<svg/, '인라인 SVG 히스토그램');
+  assert.match(html, /99\.5/);
+  assert.match(html, /35/);
+  assert.match(html, /발주기관: 기관A/);
+  assert.match(html, /2026-10-01/);
+});
+
+test('rate-stats.js는 빌드 산출물로 존재하고 실데이터 전까지 통계를 내보내지 않는다', () => {
+  const src = read('assets/data/rate-stats.js');
+  assert.match(src, /window\.CGI_RATE_STATS = /);
+  const data = JSON.parse(src.slice(src.indexOf('=') + 1).trim().replace(/;$/, ''));
+  assert.equal(data.collected, false);
+  assert.deepEqual(Object.keys(data.bundles), []);
+  // 통계 숫자 필드(mean/median/stdev/histogram/n)가 산출물 어디에도 없어야 한다(날짜는 예외)
+  for (const key of ['"mean"', '"median"', '"stdev"', '"histogram"', '"bucket_low"']) {
+    assert.doesNotMatch(src, new RegExp(key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')), '통계 필드 없음: ' + key);
+  }
+});
+
+test('CGI 등급 탭: 목록은 CGI 핵심·CGI 연관 2종이고 데이터에는 cgi_tier가 있다', () => {
+  const html = read('bids.html');
+  assert.match(html, /CGI 핵심/);
+  assert.match(html, /CGI 연관/);
+  assert.doesNotMatch(html, /CGI 관련/, '7차 단일 탭 표기는 남아 있으면 안 된다');
+  const U = loadUi();
+  const tiers = new Set(U.DATA.bids.map((b) => b.cgi_tier));
+  for (const t of ['core', 'related', 'none']) assert.ok(tiers.has(t), '등급 ' + t + ' 데이터 존재');
+  assert.ok(U.DATA.bids.some((b) => b.cgi_tier === 'core'), '핵심 표본 존재');
+  assert.ok(U.DATA.bids.some((b) => b.cgi_tier === 'related'), '연관 표본 존재');
+});

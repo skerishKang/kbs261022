@@ -15,7 +15,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2307913A'/%3E%3Ctext x='16' y='22' font-size='17' font-weight='800' text-anchor='middle' fill='white' font-family='Arial'%3EC%3C/text%3E%3C/svg%3E">
 <script>(function(){try{var t=localStorage.getItem("bid-theme");if(t==="light"||t==="dark"){document.documentElement.dataset.theme=t;}}catch(e){}})();</script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-<link rel="stylesheet" href="assets/css/bid.css?v=261106a">
+<link rel="stylesheet" href="assets/css/bid.css?v=261106b">
 </head>
 <body>
 <a class="skip-link" href="#main">본문으로 건너뛰기</a>
@@ -141,11 +141,11 @@
 
 <footer id="appFooter"></footer>
 
-<script src="config.js?v=261106a"></script>
-<script src="assets/data/bid-data.js?v=261106a"></script>
-<script src="assets/data/result-data.js?v=261106a"></script>
-<script src="assets/js/bid-ui.js?v=261106a"></script>
-<script src="assets/js/bid-personal.js?v=261106a"></script>
+<script src="config.js?v=261106b"></script>
+<script src="assets/data/bid-data.js?v=261106b"></script>
+<script src="assets/data/result-data.js?v=261106b"></script>
+<script src="assets/js/bid-ui.js?v=261106b"></script>
+<script src="assets/js/bid-personal.js?v=261106b"></script>
 <script>
 (function () {
   "use strict";
@@ -153,7 +153,8 @@
   var P = window.BID_PERS;
   var PAGE_SIZE = 20;
   var CATS_ALL = ["전체", "구매", "공사", "용역", "매각"];
-  var CGI_TAB = "CGI 관련";
+  var CGI_CORE = "CGI 핵심";
+  var CGI_RELATED = "CGI 연관";
 
   U.renderHeader("bids");
   U.renderFooter();
@@ -180,11 +181,16 @@
   var act = U.activeBids();
   // 데이터가 없는 분류 탭은 숨긴다(나라장터 수집분에는 매각 공고가 거의 없다).
   var CATS = CATS_ALL.filter(function (c) { return c === "전체" || c === st.cat || act.some(function (b) { return b.c === c; }); });
-  var cgiCount = act.filter(function (b) { return b.cgi_match; }).length;
-  CATS.push(CGI_TAB); // CGI 관련 탭은 매칭 수와 무관하게 항상 보여 준다(7차)
+  var coreCount = act.filter(function (b) { return b.cgi_tier === "core"; }).length;
+  var relatedCount = act.filter(function (b) { return b.cgi_tier === "related"; }).length;
+  CATS.push(CGI_CORE);   // CGI 등급 탭은 매칭 수와 무관하게 항상 보여 준다(8차)
+  CATS.push(CGI_RELATED);
   tabsEl.innerHTML = CATS.map(function (c) {
-    var n = c === "전체" ? act.length : (c === CGI_TAB ? cgiCount : act.filter(function (b) { return b.c === c; }).length);
-    return '<button type="button" class="tab' + (c === CGI_TAB ? " tab-cgi" : "") + '" role="tab" data-cat="' + c + '" aria-selected="' + (st.cat === c) + '">' +
+    var n = c === "전체" ? act.length
+      : c === CGI_CORE ? coreCount
+      : c === CGI_RELATED ? relatedCount
+      : act.filter(function (b) { return b.c === c; }).length;
+    return '<button type="button" class="tab' + (c === CGI_CORE || c === CGI_RELATED ? " tab-cgi" : "") + '" role="tab" data-cat="' + c + '" aria-selected="' + (st.cat === c) + '">' +
       U.esc(c) + '<span class="t-count num">' + n + "</span></button>";
   }).join("");
   tabsEl.addEventListener("click", function (e) {
@@ -371,7 +377,8 @@
   function filtered() {
     // 제외 발주처는 다른 필터보다 먼저 적용한다(7차 — 설정에서 뺀 기관 공고는 목록 자체에서 뺀다).
     var list = P.applyExcludes(act.slice());
-    if (st.cat === CGI_TAB) list = list.filter(function (b) { return b.cgi_match; });
+    if (st.cat === CGI_CORE) list = list.filter(function (b) { return b.cgi_tier === "core"; });
+    else if (st.cat === CGI_RELATED) list = list.filter(function (b) { return b.cgi_tier === "related"; });
     else if (st.cat !== "전체") list = list.filter(function (b) { return b.c === st.cat; });
     if (st.star) list = list.filter(function (b) { return P.isStarred(b.no); });
     if (st.q) {

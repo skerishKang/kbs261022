@@ -91,6 +91,28 @@ OPENING_OPERATIONS = {
     "용역": "getOpengResultListInfoServc",
     "외자": "getOpengResultListInfoFrgcpt",
 }
+# 개찰결과 예비가격상세 목록 조회 (이슈 #188 8차).
+# 출처: 공공데이터포털 '조달청_나라장터 낙찰정보서비스'(15129397) 오퍼레이션 목록 —
+#   getOpengResultListInfo{Thng,Cnstwk,Servc,Frgcpt}PreparPcDetail ("개찰결과 물품/공사/용역/외자 예비가격상세 목록 조회")
+# ★ 미검증(키 발급 후 확정): 실호출 전이며 operation명은 공개 문서·스키마 확인분이다.
+#   실응답에서 operation명·파라미터·필드명이 다르면 이 표와 아래 필드 후보를 고쳐 잡는다.
+OPENING_PRICE_OPERATIONS = {
+    "물품": "getOpengResultListInfoThngPreparPcDetail",
+    "공사": "getOpengResultListInfoCnstwkPreparPcDetail",
+    "용역": "getOpengResultListInfoServcPreparPcDetail",
+    "외자": "getOpengResultListInfoFrgcptPreparPcDetail",
+}
+# 예비가격상세 응답 필드 후보 — 미검증(키 발급 후 확정). 실응답 키로 확정할 때까지 여러 후보를 허용한다.
+# 필요한 것: 기초금액, 예정가격, 복수예비가격 여부, 추첨 여부, 개찰일, 공고번호·차수.
+PREPAID_FIELD_CANDIDATES = {
+    "bid_no": ("bidNtceNo", "ntceNo"),
+    "ord": ("bidNtceOrd", "ntceOrd"),
+    "base_amount": ("bssamt", "bsisAmt", "baseAmt"),          # 기초금액
+    "presmpt_price": ("presmptPrce", "presmptPrceAmt", "prdctCmprQrytnPrce"),  # 예정가격(사전규격)
+    "multi_prepaid": ("mltplePbpcCd", "multplePbpcYn", "pbpcCd"),  # 복수예비가격 여부/코드
+    "lottery": ("lottryYn", "raffleYn"),                       # 추첨 여부
+    "open_at": ("rlOpengDt", "opengDt", "bidOpenDt"),          # 개찰일시
+}
 # 응답 필드 후보(서비스마다 명칭이 다르므로 여러 키를 허용). 키 발급 후 실응답 키로 확정한다.
 RESULT_FIELD_CANDIDATES = {
     "bid_no": ("bidNtceNo", "ntceNo"),
@@ -124,6 +146,7 @@ def guidance() -> None:
     print("키 발급: 공공데이터포털(data.go.kr)에서 무료 활용신청 후 ServiceKey 를 환경변수로 지정하십시오.")
     print("  · 입찰공고: '조달청_나라장터 입찰공고정보서비스'  https://www.data.go.kr/data/15129394/openapi.do")
     print("  · 낙찰정보: '조달청_나라장터 낙찰정보서비스'    https://www.data.go.kr/data/15129397/openapi.do (--results)")
+    print("    ↳ 같은 서비스에 개찰결과 예비가격상세 op가 있다(--opening-price, ★미검증 — 키 발급 후 확정)")
     print("  · 발급 화면의 '일반 인증키(Encoding)'·'(Decoding)' 둘 중 어느 것을 넣어도 된다(인코딩 여부를 자동 판별).")
     print("")
     print("  PowerShell :  $env:G2B_OPENAPI_KEY = \"발급받은 키\"")
@@ -247,6 +270,17 @@ def fetch_result_op(opname: str, key: str, bgn: str, end: str, timeout: int = 30
     errors: list[str] = []
     for cb, ce in date_chunks(bgn, end, chunk_days):
         r, e = fetch_pages(lambda page: build_result_url(opname, key, cb, ce, page), f"낙찰 {opname} {cb}~{ce}", timeout)
+        rows.extend(r)
+        errors.extend(e)
+    return rows, errors
+
+
+def fetch_opening_price_op(opname: str, key: str, bgn: str, end: str, timeout: int = 30, chunk_days: int = 1):
+    """개찰결과 예비가격상세 목록 — 미검증(키 발급 후 확정): operation·필드는 문서 확인분이다(8차)."""
+    rows: list[dict] = []
+    errors: list[str] = []
+    for cb, ce in date_chunks(bgn, end, chunk_days):
+        r, e = fetch_pages(lambda page: build_result_url(opname, key, cb, ce, page), f"예비가격 {opname} {cb}~{ce}", timeout)
         rows.extend(r)
         errors.extend(e)
     return rows, errors
@@ -524,6 +558,8 @@ def main() -> int:
     ap.add_argument("--enrich", action="store_true", help="기초금액·참가가능지역 보강 호출")
     ap.add_argument("--write-bid-data", action="store_true", help="bid-data.js 재생성")
     ap.add_argument("--results", action="store_true", help="낙찰정보(낙찰된 목록) 수집")
+    ap.add_argument("--opening-price", action="store_true",
+                    help="개찰결과 예비가격상세 수집(★미검증 — operation·필드는 키 발급 후 실응답으로 확정)")
     ap.add_argument("--write-result-data", action="store_true", help="result-data.js 재생성")
     ap.add_argument("--dry-run", action="store_true", help="요청 URL 미리보기(키 마스크)만 수행")
     args = ap.parse_args()
@@ -550,6 +586,9 @@ def main() -> int:
         if args.results:
             print("[dry-run] 낙찰정보(낙찰된 목록):")
             for _lbl, opname in _ops(args, RESULT_OPERATIONS):
+                print("  " + mask_url(build_result_url(opname, "MASKED", cb, ce, 1)))
+            print("[dry-run] 개찰결과 예비가격상세 — ★미검증(키 발급 후 확정):")
+            for _lbl, opname in _ops(args, OPENING_PRICE_OPERATIONS):
                 print("  " + mask_url(build_result_url(opname, "MASKED", cb, ce, 1)))
         print(f"[dry-run] 페이지당 {PAGE_ROWS}건, 구간·업무구분당 최대 {MAX_PAGES}페이지까지 순회.")
         return 0
@@ -599,6 +638,29 @@ def main() -> int:
             "results": results,
         }, ensure_ascii=False, indent=1), encoding="utf-8")
         print(f"저장: {out_r} ({len(results)}건)")
+
+    if args.opening_price:
+        # 개찰결과 예비가격상세 — ★미검증(키 발급 후 확정). 원본만 저장하고 bid-data 에는 섞지 않는다.
+        price_rows: list[dict] = []
+        for lbl, opname in _ops(args, OPENING_PRICE_OPERATIONS):
+            rows, errors = fetch_opening_price_op(opname, key, bgn, end, chunk_days=args.chunk_days)
+            print(f"[예비가격:{lbl}] {len(rows)}건 수집(미검증 operation)")
+            price_rows.extend(rows)
+            all_errors.extend(errors)
+        records = []
+        for it in price_rows:
+            rec = {k: first(it, *cands) for k, cands in PREPAID_FIELD_CANDIDATES.items()}
+            if rec.get("bid_no"):
+                records.append(rec)
+        OUT_DIR.mkdir(parents=True, exist_ok=True)
+        out_p = OUT_DIR / "openg_result_price.json"
+        out_p.write_text(json.dumps({
+            "meta": {"collected_at": today.isoformat(), "bgn": bgn, "end": end,
+                     "count": len(records), "verified": False,
+                     "note": "★미검증(키 발급 후 확정) — operation·필드명은 실응답으로 확정 필요"},
+            "records": records,
+        }, ensure_ascii=False, indent=1), encoding="utf-8")
+        print(f"저장: {out_p} ({len(records)}건) — 미검증 원본, bid-data에는 반영하지 않는다")
 
     if all_errors:
         print("경고:")
