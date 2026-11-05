@@ -56,3 +56,24 @@ test('the repeated hero sentence appears once at most and the Naver map action i
   assert.match(html, /class="btn btn-primary btn-map"[^>]*>네이버지도에서 보기/);
   assert.match(css, /\.btn-map[^}]*box-shadow/);
 });
+
+test('the mobile menu swaps its label and focuses the first link when opened', () => {
+  assert.match(js, /메뉴 닫기/);
+  assert.match(js, /메뉴 열기/);
+  assert.match(js, /nav\.querySelector\('a'\)/);
+  assert.match(js, /requestAnimationFrame\(focusFirst\)/);
+});
+
+test('homepage actions use real URLs so they work without JavaScript', () => {
+  assert.doesNotMatch(html, /href="#"/, 'href="#" placeholder must not remain');
+  const mallLinks = html.match(/<a [^>]*data-mall-link[^>]*>/g) || [];
+  assert.ok(mallLinks.length > 0, 'mall links exist');
+  for (const link of mallLinks) {
+    assert.match(link, /href="\.\.\/site\/index\.html"/, link);
+  }
+  const quoteLinks = html.match(/<a [^>]*data-quote-link[^>]*>/g) || [];
+  assert.ok(quoteLinks.length > 0, 'quote links exist');
+  for (const link of quoteLinks) {
+    assert.match(link, /href="\.\.\/site\/index\.html#\/quote-cart"/, link);
+  }
+});
