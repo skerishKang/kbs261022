@@ -55,9 +55,10 @@
   용역/외자 목록 조회, 예비가격상세 목록 조회, 개찰완료·유찰·재입찰 목록 조회 등
 - 수집 대상: **개찰결과 목록**(낙찰업체·낙찰금액), **낙찰된 목록**(사정률·투찰률), 참가(투찰) 업체 수,
   기초금액 공개 값 — 표본·기간은 §2와 같다.
-- REST 영문 operation 명은 카탈로그 개별 기능 가이드에서 확정해야 한다(카탈로그 화면에는 한국어
-  상세기능만 표시). `tools/procurement/g2b_openapi_collector.py`의 `RESULT_OPERATIONS` 맵에
-  후보를 두고 `--dry-run`으로 URL을 확인한 뒤, 키 발급 시 실응답으로 보정한다.
+- REST operation(3차 확인): 낙찰된 목록 `getScsbidListSttus{Thng,Cnstwk,Servc,Frgcpt}`, 개찰결과
+  `getOpengResultListInfo{Thng,Cnstwk,Servc,Frgcpt}`, 예비가격 상세 `getOpengResultListInfo{...}PreparPcDetail`.
+  기초금액은 입찰공고정보서비스의 `getBidPblancListInfo{Thng,Cnstwk,Servc}BsisAmount`로 받는다.
+  응답 필드명은 `RESULT_FIELD_CANDIDATES` 후보로 받고 키 발급 후 실응답으로 확정한다.
 - 저장 형식: `bid/assets/data/result-data.js`(`window.CGI_RESULT_DATA`) — results.html과
   분석 카드가 읽는다. 필드: `no`·`ord`·`base_amount`(기초금액)·`success_rate`(사정률)·
   `low_rate`(낙찰하한율)·`bid_amount`(낙찰금액)·`bidder_count`(참가 수)·`winner`(낙찰업체).

@@ -1,0 +1,70 @@
+{
+  "_note": "공공데이터포털 조달청 나라장터 API 응답 봉투 예시(가공한 시험용 값). 실응답 키 확정 시 이 파일을 실제 응답으로 교체한다. 키·실제 공고 값은 넣지 않는다.",
+  "bid_list": {
+    "response": {
+      "header": {"resultCode": "00", "resultMsg": "정상"},
+      "body": {
+        "pageNo": 1, "numOfRows": 100, "totalCount": 2,
+        "items": [
+          {
+            "bidNtceNo": "R26BK01900001", "bidNtceOrd": "000",
+            "bidNtceNm": "예시 체육관 음향·영상설비 설치공사",
+            "ntceInsttNm": "예시군", "dminsttNm": "예시군 문화체육과",
+            "bizDivNm": "공사", "cntrctCnclsMthdNm": "제한경쟁", "bidMethdNm": "전자입찰",
+            "sucsfbidMthdNm": "적격심사", "ntceKindNm": "등록공고",
+            "presmptPrce": "450000000", "asignBdgtAmt": "495000000",
+            "bidNtceDt": "2026-11-04 10:12:00", "bidClseDt": "2026-11-12 18:00:00", "opengDt": "2026-11-13 11:00:00",
+            "bidNtceDtlUrl": "https://www.g2b.go.kr#PNPE027_01?bidPbancNo=R26BK01900001&bidPbancOrd=000"
+          },
+          {
+            "bidNtceNo": "R26BK01900002", "bidNtceOrd": "001",
+            "bidNtceNm": "예시 도서관 LED 전광판 교체 (재공고)",
+            "ntceInsttNm": "예시시", "dminsttNm": "예시시립도서관",
+            "bizDivNm": "공사", "cntrctCnclsMthdNm": "일반경쟁", "ntceKindNm": "재공고",
+            "presmptPrce": "", "asignBdgtAmt": "120000000",
+            "bidNtceDt": "2026-11-05 09:00:00", "bidClseDt": "2026-11-14 18:00:00", "opengDt": "2026-11-17 10:00:00"
+          }
+        ]
+      }
+    }
+  },
+  "base_amount": {
+    "response": {
+      "header": {"resultCode": "00", "resultMsg": "정상"},
+      "body": {
+        "pageNo": 1, "numOfRows": 100, "totalCount": 1,
+        "items": [
+          {"bidNtceNo": "R26BK01900001", "bidNtceOrd": "000", "bssamt": "430000000",
+           "bssamtOpenDt": "2026-11-04 10:12:00", "rsrvtnPrceRngBgnRate": "-2", "rsrvtnPrceRngEndRate": "2"}
+        ]
+      }
+    }
+  },
+  "region": {
+    "response": {
+      "header": {"resultCode": "00", "resultMsg": "정상"},
+      "body": {
+        "pageNo": 1, "numOfRows": 100, "totalCount": 1,
+        "items": [
+          {"bidNtceNo": "R26BK01900001", "bidNtceOrd": "000", "prtcptPsblRgnNm": "전라남도"}
+        ]
+      }
+    }
+  },
+  "scsbid": {
+    "response": {
+      "header": {"resultCode": "00", "resultMsg": "정상"},
+      "body": {
+        "pageNo": 1, "numOfRows": 100, "totalCount": 1,
+        "items": [
+          {"bidNtceNo": "R26BK01900001", "bidNtceOrd": "000", "bidNtceNm": "예시 체육관 음향·영상설비 설치공사",
+           "dminsttNm": "예시군 문화체육과", "sucsfbidAmt": "401230000", "sucsfbidRate": "89.21",
+           "bidwinnrNm": "예시건설(주)", "prtcptCnum": "37", "rlOpengDt": "2026-11-05 11:00:00"}
+        ]
+      }
+    }
+  },
+  "nodata": {
+    "response": {"header": {"resultCode": "03", "resultMsg": "NODATA_ERROR"}, "body": {}}
+  }
+}
