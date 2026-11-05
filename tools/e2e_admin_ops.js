@@ -25,7 +25,7 @@ const R = {};
 const stage = (k, v) => { R[k] = v; console.log('[ADMIN]', k, JSON.stringify(v)); };
 
 function authHeaders(withJson) {
-  const h = { 'Authorization': 'Bearer ' + ADMIN_TOKEN, 'Origin': 'https://skerishkang.github.io' };
+  const h = { 'Authorization': 'Bearer ' + ADMIN_TOKEN, 'Origin': 'https://cgishop.pages.dev' };
   if (withJson) h['Content-Type'] = 'application/json';
   return h;
 }

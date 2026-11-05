@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 
 import { createNicepayAdapter, NicepayApiError } from '../../lib/pg-nicepay-adapter.mjs';
-import { approvePayload, transactionSignature } from '../../lib/pg-nicepay.mjs';
+import { approvePayload, transactionSignature, windowReturnSignature } from '../../lib/pg-nicepay.mjs';
 
 const CLIENT = 'nicepay-fixture-pubclient-notreal';
 const SECRET = 'zzserversecret-notreal-nicepay';
@@ -42,16 +42,27 @@ function adapter(over = {}) {
   return { a, t };
 }
 
-/** The window payload NICE posts to returnUrl; signed with the approval digest rule. */
+/** The window payload NICE posts to returnUrl; it deliberately has no ediDate. */
 function windowPayload(over = {}) {
   const body = {
-    resultCode: '0000', tid: TID, orderId: 'CGI-ORDER-4711', amount: AMOUNT,
-    ediDate: '20261027151500', status: 'paid', payMethod: 'card', ...over,
+    authResultCode: '0000', authResultMsg: '', tid: TID, clientId: CLIENT,
+    orderId: 'CGI-ORDER-4711', amount: AMOUNT, mallReserved: '', authToken: 'window-auth-token', ...over,
   };
-  const signed = { ...body, signature: transactionSignature({ tid: body.tid, amount: body.amount, ediDate: body.ediDate, secretKey: SECRET }) };
+  const signed = { ...body, signature: windowReturnSignature({ authToken: body.authToken, clientId: body.clientId, amount: body.amount, secretKey: SECRET }) };
   // an explicit signature in `over` must survive: re-signing it would make every
   // tamper case silently valid
   return over.signature === undefined ? signed : { ...signed, signature: over.signature };
+}
+
+/** The separate approval/webhook message shape still uses ediDate. */
+function approvalPayload(over = {}) {
+  const body = { resultCode: '0000', tid: TID, orderId: 'CGI-ORDER-4711', amount: AMOUNT, ediDate: '20261027151500', ...over };
+  return {
+    ...body,
+    signature: over.signature === undefined
+      ? transactionSignature({ tid: body.tid, amount: body.amount, ediDate: body.ediDate, secretKey: SECRET })
+      : over.signature,
+  };
 }
 
 test('the adapter needs both halves of the credential pair and refuses to guess', () => {
@@ -112,8 +123,12 @@ test('confirm verifies the window payload before it approves anything', async ()
     (e) => e.code === 'window_amount' && t.seen.length === 0,
   );
   await assert.rejects(
-    () => a.confirm({ paymentKey: TID, orderId: 'X', amount: AMOUNT, signatureData: windowPayload({ resultCode: '1111' }) }),
-    (e) => e.code === 'window_result_code' && t.seen.length === 0,
+    () => a.confirm({ paymentKey: TID, orderId: 'X', amount: AMOUNT, signatureData: windowPayload({ authResultCode: '1111' }) }),
+    (e) => e.code === 'window_auth_failed' && t.seen.length === 0,
+  );
+  await assert.rejects(
+    () => a.confirm({ paymentKey: TID, orderId: 'X', amount: AMOUNT, signatureData: windowPayload() }),
+    (e) => e.code === 'window_order_id' && t.seen.length === 0,
   );
 });
 
@@ -221,6 +236,6 @@ test('webhook helpers are reachable from the adapter the worker holds', async ()
   assert.equal(ack.body, 'OK');
   assert.equal(ack.headers['Content-Type'], 'text/html');
   assert.equal(a.webhook.dedupeKey({ tid: TID, status: 'paid' }), a.webhook.dedupeKey({ tid: TID, status: 'paid' }));
-  assert.equal(a.webhook.verify(windowPayload(), { expectedAmount: AMOUNT }).ok, true);
-  assert.equal(a.webhook.verify({ ...windowPayload(), signature: 'x' }, { expectedAmount: AMOUNT }).ok, false);
+  assert.equal(a.webhook.verify(approvalPayload(), { expectedAmount: AMOUNT }).ok, true);
+  assert.equal(a.webhook.verify({ ...approvalPayload(), signature: 'x' }, { expectedAmount: AMOUNT }).ok, false);
 });

@@ -31,6 +31,7 @@ function makeEnv(overrides = {}) {
     GOOGLE_CLIENT_ID: 'test-client-id.apps.googleusercontent.com',
     GOOGLE_CLIENT_SECRET: 'test-client-secret',
     AUTH_SESSION_SECRET: TEST_SECRET,
+    CORS_ALLOWED_ORIGINS: ORIGIN,
     ...overrides,
   };
 }
@@ -158,7 +159,7 @@ test('google callback issues session and state-clear cookies as separate Set-Coo
 
   // Redirect to SITE_BASE_URL
   const location = callbackResp.headers.get('location');
-  assert.equal(location, 'https://skerishkang.github.io/kbs261022/site/#/login');
+  assert.equal(location, 'https://cgishop.pages.dev/site/#/login');
 
   restoreAfter();
   restore();
@@ -480,6 +481,53 @@ test('google callback links to an existing member by email', async () => {
 
   restoreAfter();
   restore();
+});
+
+test('a Google-created member cannot use the old shared password and can recover by reset', async () => {
+  const env = makeEnv();
+  const restore = mockGoogleOAuth({
+    subject: 'google-only-password-id',
+    email: 'google-only-password@example.com',
+    name: 'Google Only',
+  });
+  const startResp = await worker.fetch(
+    new Request('http://cgi.local/api/auth/google/start', { method: 'GET', headers: { Origin: ORIGIN } }),
+    env,
+  );
+  const stateValue = startResp.headers.get('set-cookie').match(/cgi_oauth_state=([^;]+)/)[1];
+  const callbackResp = await worker.fetch(
+    new Request(`http://cgi.local/api/auth/google/callback?code=mock-code&state=${encodeURIComponent(stateValue)}`, {
+      method: 'GET', headers: { Origin: ORIGIN, Cookie: `cgi_oauth_state=${stateValue}` },
+    }),
+    env,
+  );
+  assert.equal(callbackResp.status, 302);
+  restore();
+
+  const member = await env.DB.prepare('SELECT password_hash FROM members WHERE email = ?')
+    .bind('google-only-password@example.com').first();
+  assert.equal(member.password_hash, 'revoked$google-signup$0$0');
+  const signupEvent = await env.DB.prepare("SELECT type FROM member_events WHERE type = 'google_signup'").first();
+  assert.equal(signupEvent.type, 'google_signup');
+
+  const oldSharedPassword = await call(env, 'POST', '/api/auth/login', {
+    email: 'google-only-password@example.com', password: 'google-oauth-no-password',
+  }, csrf);
+  assert.equal(oldSharedPassword.status, 401);
+
+  const requested = await call(env, 'POST', '/api/auth/password-reset/request', {
+    email: 'google-only-password@example.com',
+  }, csrf);
+  assert.equal(requested.status, 200);
+  const reset = await call(env, 'POST', '/api/auth/password-reset/confirm', {
+    token: requested.json.mail.echo_token, password: 'ResetPass!2026x',
+  }, csrf);
+  assert.equal(reset.status, 200, reset.text);
+
+  const recovered = await call(env, 'POST', '/api/auth/login', {
+    email: 'google-only-password@example.com', password: 'ResetPass!2026x',
+  }, csrf);
+  assert.equal(recovered.status, 200, recovered.text);
 });
 
 test('google callback takes over a squatted unverified account and kills its password', async () => {
@@ -939,7 +987,7 @@ async function googleReturnFlow(env, returnParam, extraCallbackQuery = '') {
   return { status: callbackResp.status, location: callbackResp.headers.get('location') };
 }
 
-const SITE_DIR = 'https://skerishkang.github.io/kbs261022/site/';
+const SITE_DIR = 'https://cgishop.pages.dev/site/';
 
 test('google login from staff.html returns to staff.html', async () => {
   const flow = await googleReturnFlow(makeEnv(), 'staff');

@@ -13,6 +13,7 @@ import { createHash } from 'node:crypto';
 import {
   NICEPAY_PROVIDER, NICEPAY_PROD_API, NICEPAY_SANDBOX_API, NICEPAY_WEBHOOK_ACK,
   TX_STATUS, niceApiBase, basicAuth, bearerAuth, transactionSignature,
+  windowReturnSignature, verifyWindowReturn,
   verifyTransactionMessage, cancelPayload, refundableAmount, canPartialCancel,
   latestCancel, cancelAmountOf, toCgiOutcome, webhookDedupeKey, webhookAck,
   recoveryRequests,
@@ -71,6 +72,66 @@ test('signature is hex(sha256(tid + amount + ediDate + SecretKey)) in that order
   assert.equal(transactionSignature({ tid: '', amount: 1, ediDate: EDI, secretKey: SECRET }), null);
   // amount 0 is a value, not a missing field
   assert.ok(transactionSignature({ tid: TID, amount: 0, ediDate: EDI, secretKey: SECRET }));
+});
+
+const AUTH_TOKEN = 'nicepay-window-auth-token';
+const CLIENT_ID = 'cgi-window-client';
+
+function windowMessage(overrides = {}) {
+  const body = {
+    authResultCode: '0000', authResultMsg: '', tid: TID, clientId: CLIENT_ID,
+    orderId: ORDER_ID, amount: 1_500_000, mallReserved: '', authToken: AUTH_TOKEN,
+    ...overrides,
+  };
+  return {
+    ...body,
+    signature: overrides.signature === undefined
+      ? windowReturnSignature({ authToken: body.authToken, clientId: body.clientId, amount: body.amount, secretKey: SECRET })
+      : overrides.signature,
+  };
+}
+
+test('window return signature is hex(sha256(authToken + clientId + amount + SecretKey))', () => {
+  assert.equal(windowReturnSignature({ authToken: AUTH_TOKEN, clientId: CLIENT_ID, amount: 1_500_000, secretKey: SECRET }),
+    sha256(`${AUTH_TOKEN}${CLIENT_ID}1500000${SECRET}`));
+  assert.equal(windowReturnSignature({ authToken: '', clientId: CLIENT_ID, amount: 1, secretKey: SECRET }), null);
+});
+
+test('a payment-window return verifies without ediDate and checks every binding', () => {
+  const verdict = verifyWindowReturn(windowMessage(), {
+    secretKey: SECRET, clientId: CLIENT_ID, expectedAmount: 1_500_000, expectedOrderId: ORDER_ID,
+  });
+  assert.equal(verdict.ok, true, verdict.reason);
+  assert.equal(verdict.tid, TID);
+  assert.equal(verdict.amount, 1_500_000);
+  assert.equal(Object.prototype.hasOwnProperty.call(windowMessage(), 'ediDate'), false);
+
+  const cases = [
+    ['auth_failed', windowMessage({ authResultCode: '9999', authResultMsg: '취소' })],
+    ['signature', windowMessage({ signature: 'deadbeef' })],
+    ['client_id', windowMessage({ clientId: 'other-client' })],
+    ['amount', windowMessage({ amount: 1 })],
+    ['order_id', windowMessage({ orderId: 'OTHER-ORDER' })],
+    ['missing_tid', windowMessage({ tid: '' })],
+    ['missing_auth_token', windowMessage({ authToken: '' })],
+    ['missing_client_id', windowMessage({ clientId: '' })],
+    ['missing_amount', windowMessage({ amount: '' })],
+    ['missing_signature', windowMessage({ signature: '' })],
+  ];
+  for (const [reason, body] of cases) {
+    const result = verifyWindowReturn(body, {
+      secretKey: SECRET, clientId: CLIENT_ID, expectedAmount: 1_500_000, expectedOrderId: ORDER_ID,
+    });
+    assert.equal(result.ok, false, reason);
+    assert.equal(result.reason, reason);
+    assert.ok(!JSON.stringify(result).includes(SECRET));
+  }
+
+  const authFailure = verifyWindowReturn(windowMessage({ authResultCode: '9999', authResultMsg: '카드 인증 취소' }), {
+    secretKey: SECRET, clientId: CLIENT_ID,
+  });
+  assert.equal(authFailure.code, '9999');
+  assert.equal(authFailure.message, '카드 인증 취소');
 });
 
 test('a valid approval message verifies and reports the transaction', () => {

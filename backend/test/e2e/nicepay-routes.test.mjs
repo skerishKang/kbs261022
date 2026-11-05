@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 
 import worker from '../../worker.js';
-import { signMockWindowPayload, resetMockNicepayTransactions } from '../../lib/pg-nicepay-adapter.mjs';
+import { signMockWindowPayload, signMockWebhookPayload, resetMockNicepayTransactions } from '../../lib/pg-nicepay-adapter.mjs';
 import { makeEnv, call, auth, CUSTOMER, purchaseCart, ORIGIN } from '../helpers.mjs';
 
 const niceEnv = (over = {}) => makeEnv({ PG_PROVIDER: 'nicepay', PG_PROVIDER_MODE: 'mock', ...over });
@@ -158,10 +158,9 @@ test('the webhook acks a verified cancellation and dedupes the replay', async ()
   await call(env, 'POST', `/api/orders/${order.id}/payments/${tid}/cancel`, { reason: '환불 요청' }, auth());
 
   const cancelled = await env.DB.prepare('SELECT * FROM payments WHERE payment_key = ?').bind(tid).first();
-  const payload = signMockWindowPayload({
-    tid, orderId: order.id, amount: order.totals.total_amount,
+  const signed = signMockWebhookPayload({
+    tid, orderId: order.id, amount: order.totals.total_amount, status: 'cancelled', balanceAmt: cancelled.balance_amount,
   });
-  const signed = { ...payload, status: 'cancelled', balanceAmt: cancelled.balance_amount };
   // re-sign for the mutated fields, since the digest covers tid+amount+ediDate only
   const res = await call(env, 'POST', '/api/payments/nicepay/webhook', signed);
   assert.equal(res.status, 200, res.text);
@@ -186,7 +185,7 @@ test('a webhook whose signature does not verify is not acked', async () => {
 
 test('a verified webhook for a tid we have never seen is refused, not acked', async () => {
   const env = niceEnv();
-  const payload = signMockWindowPayload({ tid: 'NICE-HOOK-ORPHAN', orderId: 'unknown-order', amount: 5000 });
+  const payload = signMockWebhookPayload({ tid: 'NICE-HOOK-ORPHAN', orderId: 'unknown-order', amount: 5000 });
   const res = await call(env, 'POST', '/api/payments/nicepay/webhook', payload);
   assert.equal(res.status, 409);
   assert.equal(res.json.error, 'unknown_tid');

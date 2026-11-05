@@ -18,7 +18,7 @@
 //   POST   /api/orders/:id/erp/retry (admin)   retry ERP sync
 //   POST   /api/admin/schema/init    (admin)   apply schema.sql to D1
 //   POST   /api/admin/ecount/item-mappings/import (admin) import reviewed CSV approvals
-//   GET    /api/admin/health         (public)  mode readout, no secrets
+//   GET    /api/admin/health         (admin)   mode readout, no secrets
 //
 // Customer accounts (issue #69) - cookie session + X-CSRF-Token, origin pinned:
 //   POST   /api/auth/signup
@@ -100,12 +100,13 @@ import {
   validateText,
   validatePassword,
 } from './lib/auth.mjs';
-import { ensureColumns, COLUMN_UPGRADES } from './lib/migrate.mjs';
+import { ensureColumns, COLUMN_UPGRADES, GOOGLE_SIGNUP_PASSWORD_SENTINEL, revokeGoogleSignupPasswords } from './lib/migrate.mjs';
 import { purgeExpiredShopLogs } from './lib/retention.mjs';
 import { createMailAdapter } from './lib/mail.mjs';
 import { createOAuthState, decodeOAuthState, normalizeOAuthReturn, resolveOAuthRedirect, buildAuthorizationUrl, exchangeCode, fetchUserInfo, OAUTH_STATE_COOKIE, oauthStateCookieOptions } from './lib/google-oauth.mjs';
 
-const ALLOWED_ORIGIN = 'https://skerishkang.github.io';
+const DEFAULT_ALLOWED_ORIGIN = 'https://cgishop.pages.dev';
+const DEFAULT_SITE_BASE_URL = 'https://cgishop.pages.dev/site';
 const MAX_BODY_BYTES = 64 * 1024;
 const DUPLICATE_WINDOW_SECONDS = 120;
 // Smallest partial refund the backend will accept (KRW). Anything below this is
@@ -118,7 +119,7 @@ const SUPERADMIN_EMAILS = new Set(['charliekant@gmail.com', 'skerish@naver.com']
 // routes. Kept exactly as it is because they are not cookie-based, and because
 // the CORS regression test asserts that these routes never grant credentials.
 const CORS_HEADERS = {
-  'Access-Control-Allow-Origin': ALLOWED_ORIGIN,
+  'Access-Control-Allow-Origin': DEFAULT_ALLOWED_ORIGIN,
   'Access-Control-Allow-Methods': 'GET,POST,PATCH,OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type,Authorization,Idempotency-Key,X-CSRF-Token',
   'Vary': 'Origin',
@@ -678,6 +679,7 @@ async function confirmPayment(db, body, env, pg) {
     await recordPaymentOutcome(db, {
       order, paymentKey, amount: order.total_amount, status: 'failed',
       failureCode: code, failureMessage: message, provider: pg.provider, providerMode: pg.mode,
+      touchOrder: false,
     });
     return { status: 402, body: { error: 'payment_auth_failed', code, order_status: order.status, payment_status: 'failed' } };
   }
@@ -1413,6 +1415,7 @@ CREATE INDEX IF NOT EXISTS idx_member_events_created_at ON member_events(created
 async function initSchema(db) {
   await db.exec(SCHEMA_STATEMENTS);
   const columns = await ensureColumns(db, COLUMN_UPGRADES);
+  const revokedGoogleSignupPasswords = await revokeGoogleSignupPasswords(db);
   const tables = [];
   for (const name of [
     'orders', 'order_items', 'payments', 'order_events', 'erp_sync', 'ecount_item_mapping', 'quote_requests',
@@ -1421,7 +1424,7 @@ async function initSchema(db) {
     const row = await db.prepare("SELECT name FROM sqlite_master WHERE type = 'table' AND name = ?").bind(name).first();
     if (row) tables.push(name);
   }
-  return { ok: true, tables, upgraded_columns: columns };
+  return { ok: true, tables, upgraded_columns: columns, google_signup_passwords_revoked: revokedGoogleSignupPasswords };
 }
 
 // ---------------------------------------------------------------------------
@@ -1490,11 +1493,20 @@ function authJson(data, status, extra) {
 function originOk(request, env) {
   const origin = request.headers.get('Origin');
   if (!origin) return false;
-  if (origin === ALLOWED_ORIGIN) return true;
-  const list = String(env.CORS_ALLOWED_ORIGINS || '').split(',').map((s) => s.trim()).filter(Boolean);
+  const list = corsAllowedOrigins(env);
+  // An empty allow list is a deliberate deny-all, not an invitation to fall
+  // back to the old GitHub Pages origin. Deployments must name their origin.
   if (!list.length) return false;
   if (!originStrict(env) && /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)) return true;
   return list.includes(origin);
+}
+
+function corsAllowedOrigins(env) {
+  return String(env.CORS_ALLOWED_ORIGINS || '').split(',').map((s) => s.trim()).filter(Boolean);
+}
+
+function siteBaseUrl(env) {
+  return String(env.SITE_BASE_URL || DEFAULT_SITE_BASE_URL).replace(/\/$/, '');
 }
 
 /** CSRF: the token must equal the request Origin, or a configured constant. */
@@ -1508,7 +1520,7 @@ function csrfOk(request, env) {
 
 function guardAuth(request, env) {
   if (!originOk(request, env)) {
-    return authJson({ error: 'origin not allowed', detail: { expected: ALLOWED_ORIGIN } }, 403);
+    return authJson({ error: 'origin not allowed', detail: { allowed: corsAllowedOrigins(env) } }, 403);
   }
   if (!csrfOk(request, env)) {
     return authJson({ error: 'csrf token required', detail: 'X-CSRF-Token must equal the request Origin' }, 403);
@@ -1801,7 +1813,7 @@ async function handleGoogleCallback(request, db, env) {
       } else {
         // Create new member
         const now = nowIso();
-        const passwordHash = await hashPassword('google-oauth-no-password', authPolicy(env));
+        const passwordHash = GOOGLE_SIGNUP_PASSWORD_SENTINEL;
         const result = await db.prepare(
           'INSERT INTO members (email, password_hash, name, google_id, status, email_verified_at, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)'
         ).bind(userInfo.email, passwordHash, userInfo.name || userInfo.email.split('@')[0], userInfo.subject, 'active', now, now, now).run();
@@ -2578,6 +2590,7 @@ const worker = {
     // ---------------- health ----------------
 
     if (url.pathname === '/api/admin/health' && request.method === 'GET') {
+      if (!isAdmin(request, env)) return unauthorized();
       const policy = authPolicy(env);
       const mail = createMailAdapter(env, () => {});
       return json({
@@ -2592,7 +2605,8 @@ const worker = {
         },
         shipping_fee_default: toNonNegInt(env.SHIPPING_FEE_DEFAULT, 0),
         price_index: { products_total: PRICE_INDEX_META.products_total, products_with_price: PRICE_INDEX_META.products_with_price },
-        cors_origin: ALLOWED_ORIGIN,
+        site_base_url: siteBaseUrl(env),
+        cors_allowed_origins: corsAllowedOrigins(env),
         auth: {
           enabled: true,
           cookie_name: authCookieName(env),
@@ -2808,7 +2822,7 @@ const worker = {
     const nicepayReturnMatch = url.pathname === '/api/payments/nicepay/return';
     if (nicepayReturnMatch && request.method === 'POST') {
       const payload = await readWindowForm(request);
-      const site = String(env.NICEPAY_SITE_BASE_URL || env.SITE_BASE_URL || ALLOWED_ORIGIN).replace(/\/$/, '');
+      const site = String(env.NICEPAY_SITE_BASE_URL || siteBaseUrl(env)).replace(/\/$/, '');
       const orderId = String(payload.orderId || payload.order_id || '').slice(0, 64);
       if (!orderId || !payload.tid) {
         return json({ error: 'window payload incomplete' }, 400);
@@ -2818,11 +2832,16 @@ const worker = {
       }
       const order = await getOrder(env.DB, orderId);
       if (!order) return notFound();
-      if (payload.failure || payload.authResultCode === 'FAIL') {
+      if (payload.authResultCode !== '0000') {
         const failed = await confirmPayment(env.DB, {
           orderId, paymentKey: String(payload.tid), amount: order.total_amount,
-          failure: true, failure_code: String(payload.resultCode || 'NICE_AUTH_FAILED'),
-          failure_message: String(payload.resultMsg || '').slice(0, 120),
+          failure: true,
+          failure_code: String(payload.authResultCode || 'NICE_AUTH_FAILED').slice(0, 80),
+          failure_message: String(payload.authResultMsg || payload.resultMsg || '').slice(0, 120),
+          customer_email: order.customer_email,
+          // Record the failed attempt, but leave the order payable: an unsigned
+          // window-cancel report is not proof that the customer abandoned it.
+          touchOrder: false,
         }, env, pg);
         return Response.redirect(redirectTarget(site, order.id, false), 302);
       }
@@ -3023,7 +3042,7 @@ export default {
     // when it tried to read the body. Reflect only origins the policy already
     // accepts; anything else keeps the pinned value, which is what fails closed.
     const origin = request.headers.get('Origin');
-    const reflected = !!origin && origin !== ALLOWED_ORIGIN && originOk(request, env);
+    const reflected = !!origin && origin !== DEFAULT_ALLOWED_ORIGIN && originOk(request, env);
     if (reflected) {
       const headers = new Headers(response.headers);
       headers.set('Access-Control-Allow-Origin', origin);
@@ -3038,7 +3057,7 @@ export default {
       request.method !== 'OPTIONS'
       && request.headers.get('Cookie')
       && contentType.includes('application/json')
-      && (servedOrigin === ALLOWED_ORIGIN || (reflected && servedOrigin === origin))
+      && (servedOrigin === DEFAULT_ALLOWED_ORIGIN || (reflected && servedOrigin === origin))
       && !response.headers.has('Access-Control-Allow-Credentials')
     ) {
       const headers = new Headers(response.headers);

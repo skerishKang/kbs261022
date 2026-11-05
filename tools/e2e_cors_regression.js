@@ -8,7 +8,7 @@
  */
 const WORKER = (process.argv.indexOf('--worker') !== -1 && process.argv[process.argv.indexOf('--worker') + 1])
   || 'https://cgi-quote-api.charliekant.workers.dev';
-const ALLOWED = 'https://skerishkang.github.io';
+const ALLOWED = 'https://cgishop.pages.dev';
 const EVIL = 'http://evil.example.com';
 
 const checks = [];
@@ -36,7 +36,7 @@ async function req(method, path, headers, body) {
     'Access-Control-Request-Headers': 'content-type,authorization',
   });
   check('OPTIONS allowed-origin -> 204', preOk.status === 204, 'status=' + preOk.status);
-  check('OPTIONS allowed-origin ACAO==github.io',
+  check('OPTIONS allowed-origin ACAO==cgishop',
     preOk.headers['access-control-allow-origin'] === ALLOWED,
     'ACAO=' + preOk.headers['access-control-allow-origin']);
   check('OPTIONS allowed-originMethods includes PATCH',
@@ -60,7 +60,7 @@ async function req(method, path, headers, body) {
 
   // 3) GET /api/quotes (인증 없음) — 헤더 정책 + 401
   const getEvil = await req('GET', '/api/quotes', { 'Origin': EVIL });
-  check('GET evil-origin ACAO==github.io (에코 없음)',
+  check('GET evil-origin ACAO==cgishop (에코 없음)',
     getEvil.headers['access-control-allow-origin'] === ALLOWED,
     'ACAO=' + getEvil.headers['access-control-allow-origin']);
   check('GET no-auth -> 401', getEvil.status === 401, 'status=' + getEvil.status);
@@ -68,7 +68,7 @@ async function req(method, path, headers, body) {
   // 4) POST /api/quotes — CORS 헤더 유지 + 유효성 400 (빈 items; 실제 견적 생성 안 함)
   const post = await req('POST', '/api/quotes',
     { 'Origin': ALLOWED, 'Content-Type': 'application/json' }, JSON.stringify({ items: [] }));
-  check('POST allowed-origin ACAO==github.io',
+  check('POST allowed-origin ACAO==cgishop',
     post.headers['access-control-allow-origin'] === ALLOWED,
     'ACAO=' + post.headers['access-control-allow-origin']);
   check('POST empty-items -> 400 (생성 없음)', post.status === 400, 'status=' + post.status);
@@ -76,7 +76,7 @@ async function req(method, path, headers, body) {
   // 5) PATCH /api/quotes/:id (인증 없음) — CORS 헤더 + 401
   const patch = await req('PATCH', '/api/quotes/Q-ping',
     { 'Origin': ALLOWED, 'Content-Type': 'application/json' }, JSON.stringify({ status: 'in_progress' }));
-  check('PATCH allowed-origin ACAO==github.io',
+  check('PATCH allowed-origin ACAO==cgishop',
     patch.headers['access-control-allow-origin'] === ALLOWED,
     'ACAO=' + patch.headers['access-control-allow-origin']);
   check('PATCH no-auth -> 401 (변경 없음)', patch.status === 401, 'status=' + patch.status);

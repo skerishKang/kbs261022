@@ -35,6 +35,7 @@ function env(overrides = {}) {
     AUTH_PBKDF2_ITERATIONS: '1000',
     AUTH_RATE_LIMIT_MAX: '100000',
     AUTH_RATE_LIMIT_WINDOW_SECONDS: '60',
+    CORS_ALLOWED_ORIGINS: ORIGIN,
     ...overrides,
   };
 }
@@ -118,7 +119,7 @@ test('auth routes reject a disallowed origin and a missing CSRF token', async ()
   });
   assert.equal(evilOrigin.status, 403);
   assert.equal(evilOrigin.json.error, 'origin not allowed');
-  assert.equal(evilOrigin.headers['access-control-allow-origin'], ORIGIN, 'ACAO is pinned, never echoed');
+  assert.equal(evilOrigin.headers['access-control-allow-origin'], 'https://cgishop.pages.dev', 'ACAO is pinned to the configured production origin, never echoed');
   assert.notEqual(evilOrigin.headers['access-control-allow-origin'], EVIL);
 
   const noCsrf = await call(environment, 'POST', '/api/auth/login', { email: 'a@b.com', password: PASSWORD }, { Origin: ORIGIN });
@@ -192,7 +193,7 @@ test('auth routes advertise credentials and DELETE, legacy routes grant none', a
 
 test('health reports the auth posture without leaking secrets', async () => {
   const environment = env({ ADMIN_TOKEN: 'super-secret-admin-token', MAIL_MODE: 'console' });
-  const res = await call(environment, 'GET', '/api/admin/health');
+  const res = await call(environment, 'GET', '/api/admin/health', undefined, { Authorization: `Bearer ${environment.ADMIN_TOKEN}` });
   assert.equal(res.status, 200);
   // The point is that health advertises a semver build id, not which release is
   // current — pinning the literal broke every version bump.
@@ -205,20 +206,22 @@ test('health reports the auth posture without leaking secrets', async () => {
   assert.equal(res.json.auth.csrf_configured, false);
   assert.equal(res.json.auth.pbkdf2_iterations, 1000, 'reports the effective iteration count');
   assert.equal(res.json.auth.password_min, 8);
+  assert.equal(res.json.site_base_url, 'https://cgishop.pages.dev/site');
+  assert.deepEqual(res.json.cors_allowed_origins, [ORIGIN]);
   assert.ok(!res.text.includes('super-secret-admin-token'));
   assert.ok(!res.text.includes('AUTH_TOKEN'));
 
   const bare = env({ ADMIN_TOKEN: ADMIN_TOKEN, MAIL_MODE: 'console' });
   delete bare.AUTH_PBKDF2_ITERATIONS;
   delete bare.AUTH_SESSION_TTL_DAYS;
-  const defaults = await call(bare, 'GET', '/api/admin/health');
+  const defaults = await call(bare, 'GET', '/api/admin/health', undefined, { Authorization: `Bearer ${bare.ADMIN_TOKEN}` });
   assert.equal(defaults.json.auth.pbkdf2_iterations, 30000, 'the default policy is used when unset');
   assert.equal(defaults.json.auth.session_ttl_seconds, 30 * 24 * 3600);
 });
 
 test('a configured AUTH_CSRF_TOKEN is accepted and reported', async () => {
   const environment = env({ AUTH_CSRF_TOKEN: 'fixed-site-token' });
-  const res = await call(environment, 'GET', '/api/admin/health');
+  const res = await call(environment, 'GET', '/api/admin/health', undefined, { Authorization: `Bearer ${environment.ADMIN_TOKEN}` });
   assert.equal(res.json.auth.csrf_configured, true);
   assert.ok(!res.text.includes('fixed-site-token'));
 

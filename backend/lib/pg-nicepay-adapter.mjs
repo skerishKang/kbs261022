@@ -23,6 +23,8 @@ import {
   toCgiOutcome,
   transactionSignature,
   verifyTransactionMessage,
+  verifyWindowReturn,
+  windowReturnSignature,
   webhookAck,
   webhookDedupeKey,
 } from './pg-nicepay.mjs';
@@ -69,10 +71,19 @@ const MOCK_TX = new Map();
  * matters for security: an approval without a verified window payload is refused.
  * Tests therefore exercise the real guard instead of a weaker stand-in.
  */
-export function signMockWindowPayload({ tid, orderId, amount, ediDate = '20260101000000', resultCode = '0000' }) {
+export function signMockWindowPayload({ tid, orderId, amount, authResultCode = '0000', authResultMsg = '', authToken = `mock-auth-${tid}`, clientId = MOCK_CLIENT }) {
   return {
-    resultCode, tid, orderId, amount, ediDate, status: 'paid', payMethod: 'card',
-    signature: transactionSignature({ tid, amount, ediDate, secretKey: MOCK_DIGEST_INPUT }),
+    authResultCode, authResultMsg, tid, clientId, orderId, amount, mallReserved: '', authToken,
+    signature: windowReturnSignature({ authToken, clientId, amount, secretKey: MOCK_DIGEST_INPUT }),
+  };
+}
+
+/** The approval/webhook shape (resultCode + ediDate), kept separate from the window return. */
+export function signMockWebhookPayload({ tid, orderId, amount, status = 'paid', ediDate = '20260101000000', resultCode = '0000', ...extra }) {
+  const body = { resultCode, tid, orderId, amount, ediDate, status, payMethod: 'card', balanceAmt: amount, ...extra };
+  return {
+    ...body,
+    signature: transactionSignature({ tid: body.tid, amount: body.amount, ediDate: body.ediDate, secretKey: MOCK_DIGEST_INPUT }),
   };
 }
 
@@ -113,12 +124,14 @@ export function createNicepayMockAdapter() {
         request: { clientId: MOCK_CLIENT, method, orderId, amount: Number(amount), goodsName: goodsName || 'CGI 주문', returnUrl },
       };
     },
-    verifyWindowPayload(payload, { expectedAmount } = {}) {
-      return verifyTransactionMessage(payload, { secretKey: MOCK_DIGEST_INPUT, expectedAmount });
+    verifyWindowPayload(payload, { expectedAmount, expectedOrderId } = {}) {
+      return verifyWindowReturn(payload, { secretKey: MOCK_DIGEST_INPUT, clientId: MOCK_CLIENT, expectedAmount, expectedOrderId });
     },
     async confirm({ paymentKey, orderId, amount, signatureData }) {
       if (!signatureData || typeof signatureData !== 'object') throw new TypeError('confirm needs the payment window payload to verify');
-      const verified = verifyTransactionMessage(signatureData, { secretKey: MOCK_DIGEST_INPUT, expectedAmount: amount });
+      const verified = verifyWindowReturn(signatureData, {
+        secretKey: MOCK_DIGEST_INPUT, clientId: MOCK_CLIENT, expectedAmount: amount, expectedOrderId: orderId,
+      });
       if (!verified.ok) throw new NicepayApiError({ code: `window_${verified.reason}`, message: 'mock window payload did not verify', endpoint: 'mock' });
       const row = seedIfMissing({ tid: paymentKey, orderId, amount, signatureData });
       return toCgiOutcome(row, { orderAmount: amount });
@@ -262,8 +275,8 @@ export function createNicepayAdapter({
     },
 
     /** The window's own signature, verified before the approve call is allowed. */
-    verifyWindowPayload(payload, { expectedAmount } = {}) {
-      return verifyTransactionMessage(payload, { secretKey, expectedAmount });
+    verifyWindowPayload(payload, { expectedAmount, expectedOrderId } = {}) {
+      return verifyWindowReturn(payload, { secretKey, clientId, expectedAmount, expectedOrderId });
     },
 
     async confirm({ paymentKey, orderId, amount, signatureData, idempotencyKey }) {
@@ -275,7 +288,9 @@ export function createNicepayAdapter({
       if (!signatureData || typeof signatureData !== 'object') {
         throw new TypeError('confirm needs the payment window payload to verify');
       }
-      const windowVerified = verifyTransactionMessage(signatureData, { secretKey, expectedAmount: amount });
+      const windowVerified = verifyWindowReturn(signatureData, {
+        secretKey, clientId, expectedAmount: amount, expectedOrderId: orderId,
+      });
       if (!windowVerified.ok) {
         throw new NicepayApiError({
           code: `window_${windowVerified.reason}`,

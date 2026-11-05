@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import worker from '../../worker.js';
 import { makeEnv, ORIGIN } from '../helpers.mjs';
 
-const PROD_ORIGIN = 'https://skerishkang.github.io';
+const PROD_ORIGIN = 'https://cgishop.pages.dev';
 const SECOND = 'https://sandbox.example.dev';
 const LOCAL = 'http://localhost:8901';
 
@@ -20,7 +20,7 @@ async function ask(env, path, { method = 'GET', origin = SECOND, headers = {} } 
   return { status: response.status, headers: h, text: await response.text() };
 }
 
-const multiEnv = (over = {}) => makeEnv({ CORS_ALLOWED_ORIGINS: `${SECOND},${LOCAL}`, ...over });
+const multiEnv = (over = {}) => makeEnv({ CORS_ALLOWED_ORIGINS: `${PROD_ORIGIN},${SECOND},${LOCAL}`, ...over });
 
 test('an allow-listed second origin gets its own origin reflected', async () => {
   const res = await ask(multiEnv(), '/api/orders');
@@ -55,9 +55,10 @@ test('an origin outside the list never gets reflected', async () => {
   assert.equal(evil.text.includes('evil.example.com'), false);
 });
 
-test('a deployment without an allow list behaves exactly as before', async () => {
-  const plain = makeEnv();
-  const res = await ask(plain, '/api/orders', { origin: SECOND });
+test('a deployment without an allow list refuses cookie-route origins (fail closed)', async () => {
+  const plain = makeEnv({ CORS_ALLOWED_ORIGINS: '' });
+  const res = await ask(plain, '/api/auth/login', { origin: SECOND });
+  assert.equal(res.status, 403);
   assert.equal(res.headers['access-control-allow-origin'], PROD_ORIGIN);
 });
 

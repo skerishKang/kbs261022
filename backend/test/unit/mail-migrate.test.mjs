@@ -273,7 +273,7 @@ test('urlFor builds a stable hash-routed link with a token query parameter', () 
 test('urlFor keeps the GitHub Pages route inside the hash so it never 404s', () => {
   const mail = createMailAdapter({});
   const url = mail.urlFor('/auth/verify', 'tok_1');
-  assert.equal(url, 'https://skerishkang.github.io/kbs261022/site/#/auth/verify?token=tok_1');
+  assert.equal(url, 'https://cgishop.pages.dev/site/#/auth/verify?token=tok_1');
   assert.match(url, /\/site\/#\/auth\/verify\?token=/);
 });
 
