@@ -128,27 +128,91 @@ def keyword_hit(kw: str, title: str) -> bool:
     return kw in title
 
 
-def cgi_match_fields(title, keywords: dict | None = None) -> dict:
+RE_HANGUL = re.compile(r"[가-힣]")
+
+
+def clean_title(title, agency, kw: dict) -> str:
+    """키워드 매칭용 본문 정제(9차).
+
+    - 발주기관명이 공고명에 그대로 들어 있으면 지운다(기관명 속 단어 오검출 방지).
+    - 고유명사 조각(~위원회·~센터·~학교·~관 등 시설·기관명)을 지운다('4D영상관'의 '영상').
+    - 제외 패턴(의무대·영상 제작·홍보영상·평가위원·정보시스템 등)에 걸친 구간을 지운다
+      ('의무대대'의 '무대', '홍보영상 제작'의 '영상').
+    """
+    t = title or ""
+    if agency and agency in t:
+        t = t.replace(agency, " ")
+    for pat in kw.get("propernoun_strip", []):
+        t = re.sub(pat, " ", t)
+    for pat in kw.get("exclusion_patterns", []):
+        t = re.sub(pat, " ", t)
+    return t
+
+
+def _hit_with_boundary(kw_word: str, text: str, allow_glued: list[str]) -> bool:
+    """한글 경계 처리(9차): 키워드 앞에 한글이 붙어 있으면 다른 단어의 일부로 보고 버린다
+    ('의무대대'의 '무대'). 단, glued_allow 복합어(마을방송·야외무대 등)는 예외로 인정한다."""
+    for m in re.finditer(re.escape(kw_word), text):
+        if m.start() == 0 or not RE_HANGUL.match(text[m.start() - 1]):
+            return True
+        if any(w.endswith(kw_word) and w in text for w in allow_glued):
+            return True
+    return False
+
+
+def cgi_match_fields(title, keywords: dict | None = None, agency=None) -> dict:
     """공고 제목을 CGI 취급 키워드와 대조해 cgi_match(bool)·mk(적중 키워드)·cgi_tier(core/related/none)를 만든다.
 
     - 적중 키워드는 JSON 카테고리 나열 순서대로 중복 없이 담는다(화면 칩이 그 순서로 표시된다).
-    - 등급(8차): 적중 키워드 중 하나라도 keyword_tiers에서 core면 "core", 아니면 "related".
-      keyword_tiers에 없는 키워드는 related로 본다(보수적으로).
+    - 등급(9차 정밀화): 짧은 단어(compound_rules 대상: 무대·영상·방송·공연·조명·중계·촬영)는
+      장비·설비를 뜻하는 말과 함께 나올 때만 core로 보고, 혼자 나오면 related까지만 허용한다.
+      한글 경계(앞 글자가 붙은 다른 단어의 일부 — '의무대대'의 '무대')에 걸리면 버린다.
     - 부정 키워드(의료·소방 등)가 제목에 있으면 적중이 있어도 CGI 관련 아님으로 본다(mk는 비운다).
     """
     kw = keywords if keywords is not None else load_keywords()
-    t = title or ""
+    t = clean_title(title, agency, kw)
     matched: list[str] = []
+    core_hit = False
+    rel_hit = False
+    compound_rules = kw.get("compound_rules", {})
+    allow_glued = kw.get("glued_allow", [])
+    tiers = kw.get("keyword_tiers", {})
     for kws in kw.get("cgi_categories", {}).values():
         for k in kws:
-            if k not in matched and keyword_hit(k, t):
-                matched.append(k)
+            if k in matched:
+                continue
+            if not keyword_hit(k, t):
+                continue
+            matched.append(k)
+            if k in compound_rules:
+                # 짧은 단어: 한글 경계를 통과하고 장비·설비 말과 함께 나올 때만 core.
+                if not _hit_with_boundary(k, t, allow_glued):
+                    rel_hit = True  # 다른 단어의 일부 — 버리는 대신 연관으로만 남긴다
+                    continue
+                # 보조어도 단어 경계를 지킨다: 1글자 보조어(실·국·차·막)는 뒤에 한글이 붙으면
+                # 다른 단어의 일부('실시'·'충북')다.
+                ok = False
+                for c in compound_rules[k]:
+                    if len(c) == 1:
+                        if re.search(re.escape(c) + r"(?![가-힣])", t):
+                            ok = True
+                            break
+                    elif re.search(re.escape(c), t):
+                        ok = True
+                        break
+                if ok:
+                    core_hit = True
+                else:
+                    rel_hit = True
+            elif tiers.get(k, "core") == "core":
+                core_hit = True  # 특정 품목 키워드(음향·스피커·확성기 등)
+            else:
+                rel_hit = True  # 대상 불명확 단어(학교·납품·운영 등)
     if any(keyword_hit(nk, t) for nk in kw.get("cgi_negative_keywords", [])):
         return {"cgi_match": False, "mk": [], "cgi_tier": "none"}
-    tiers = kw.get("keyword_tiers", {})
     if not matched:
         return {"cgi_match": False, "mk": [], "cgi_tier": "none"}
-    tier = "core" if any(tiers.get(k, "related") == "core" for k in matched) else "related"
+    tier = "core" if core_hit else "related"
     return {"cgi_match": True, "mk": matched, "cgi_tier": tier}
 
 
@@ -274,7 +338,7 @@ def build(snapshot: str) -> dict:
             "am": e.get("award_method") or None,
             "cu": b.get("detail_url") or None,
         }
-        rec.update(cgi_match_fields(rec["t"], kw))
+        rec.update(cgi_match_fields(rec["t"], kw, agency=rec["a"]))
         if not rec["a"] or not rec["no"]:
             continue
         gap = _days_between(rec["pd"], rec["cd"])
