@@ -532,7 +532,7 @@ test('a Google-created member cannot use the old shared password and can recover
   assert.equal(signupEvent.type, 'google_signup');
 
   const oldSharedPassword = await call(env, 'POST', '/api/auth/login', {
-    email: 'google-only-password@example.com', password: 'google-oauth-no-password',
+    email: 'google-only-password@example.com', password: 'test-google-oauth-no-password',
   }, csrf);
   assert.equal(oldSharedPassword.status, 401);
 
@@ -541,12 +541,12 @@ test('a Google-created member cannot use the old shared password and can recover
   }, csrf);
   assert.equal(requested.status, 200);
   const reset = await call(env, 'POST', '/api/auth/password-reset/confirm', {
-    token: requested.json.mail.echo_token, password: 'ResetPass!2026x',
+    token: requested.json.mail.echo_token, password: 'ResetTestPass!2026x',
   }, csrf);
   assert.equal(reset.status, 200, reset.text);
 
   const recovered = await call(env, 'POST', '/api/auth/login', {
-    email: 'google-only-password@example.com', password: 'ResetPass!2026x',
+    email: 'google-only-password@example.com', password: 'ResetTestPass!2026x',
   }, csrf);
   assert.equal(recovered.status, 200, recovered.text);
 });

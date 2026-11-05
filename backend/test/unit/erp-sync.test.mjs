@@ -100,9 +100,9 @@ test('EcountApiClient constructor with API key', () => {
     ECOUNT_USER_ID: 'cgiinc',
     ECOUNT_PASSWORD: 'test-password',
     ERP_OAPI_BASE_URL: 'https://erp.example.com/api',
-    ERP_OAPI_TOKEN: 'api-key-123',
+    ERP_OAPI_TOKEN: 'test-api-key-123',
   });
-  assert.equal(client.apiKey, 'api-key-123');
+  assert.equal(client.apiKey, 'test-api-key-123');
 });
 
 test('EcountApiClient login throws without credentials', async () => {
@@ -114,7 +114,7 @@ test('EcountApiClient login with mock fetch', async () => {
   const fetchMock = async (url, opts) => {
     return {
       ok: true,
-      json: async () => ({ token: 'session-token-123' }),
+      json: async () => ({ token: 'test-session-token-123' }),
     };
   };
 
@@ -126,8 +126,8 @@ test('EcountApiClient login with mock fetch', async () => {
   }, fetchMock);
 
   const token = await client.login();
-  assert.equal(token, 'session-token-123');
-  assert.equal(client.sessionToken, 'session-token-123');
+  assert.equal(token, 'test-session-token-123');
+  assert.equal(client.sessionToken, 'test-session-token-123');
 });
 
 test('EcountApiClient login detects lockout', async () => {

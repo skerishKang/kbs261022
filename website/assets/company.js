@@ -56,6 +56,17 @@ window.CGI_COMPANY = {
     blogUrl: "https://blog.naver.com/cgiinc"
   },
 
+  /* 전자상거래법 표기 값(단일 출처). 쇼핑몰 site/config.js legal 과 홈페이지
+     푸터가 같은 값을 쓰는지 website/test/company-data.test.mjs 가 검사한다. */
+  legal: {
+    mailOrderNo: "2025-전남장성-94",
+    privacyOfficer: {
+      name: "김범신",
+      phone: "062-576-8100",
+      email: "cgiinc@naver.com"
+    }
+  },
+
   /* 지명원 2쪽 주요사업 키워드 12종 */
   keywords: [
     "통합방송", "음향", "영상", "CCTV", "LED전광판", "무대조명",

@@ -19,7 +19,10 @@ export const HASH_ALGO = 'pbkdf2-sha512';
 
 /** Defaults. Every numeric field is overridable through worker env vars. */
 export const AUTH_POLICY = {
-  pbkdf2Iterations: 30000,
+  // 2026-11-05: raised from 30,000 after measuring the sandbox login at ~45ms
+  // CPU (Workers Paid allows far more). Existing hashes are upgraded on the
+  // next successful login.
+  pbkdf2Iterations: 100000,
   pbkdf2KeyBits: 256,
   saltBytes: 16,
   tokenBytes: 32,
@@ -48,6 +51,7 @@ export const AUTH_POLICY = {
     // not swept up by AUTH_RATE_LIMIT_MAX tuning.
     'login-ip': { max: 30, windowSeconds: 15 * 60 },
     'signup-ip': { max: 30, windowSeconds: 15 * 60 },
+    'email-check-ip': { max: 30, windowSeconds: 15 * 60 },
     'password-reset-ip': { max: 30, windowSeconds: 15 * 60 },
     // Guest quote intake is unauthenticated; bound it per source address.
     'quote-intake-ip': { max: 20, windowSeconds: 15 * 60 },

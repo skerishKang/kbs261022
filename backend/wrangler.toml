@@ -59,7 +59,7 @@ secret_name = "B66_ALERT_RESEND_API_KEY"
 #
 # Google OAuth (issue #79):
 #   1. Reuses PADIEM's existing Google OAuth Client ID
-#   2. Add authorized redirect URI: https://cgi-quote-api.skerishkang.workers.dev/api/auth/google/callback
+#   2. Add authorized redirect URI: https://cgi-quote-api.charliekant.workers.dev/api/auth/google/callback
 #   3. Set GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET via `wrangler secret put`
 #   4. When unset, Google login returns 503
 # ------------------------------------------------------------

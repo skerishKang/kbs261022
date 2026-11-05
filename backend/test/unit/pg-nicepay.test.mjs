@@ -20,7 +20,7 @@ import {
 } from '../../lib/pg-nicepay.mjs';
 
 const SHOP = 'cgiunitshop';
-const SECRET = 'unit-secret-key-0001';
+const SECRET = 'unit-test-secret-key-0001';
 const TID = 'UT0000113m01012110051656331001';
 const ORDER_ID = 'CGI-20261027-0002';
 const EDI = '2026-10-27T13:00:00+09:00';
@@ -74,7 +74,7 @@ test('signature is hex(sha256(tid + amount + ediDate + SecretKey)) in that order
   assert.ok(transactionSignature({ tid: TID, amount: 0, ediDate: EDI, secretKey: SECRET }));
 });
 
-const AUTH_TOKEN = 'nicepay-window-auth-token';
+const AUTH_TOKEN = 'test-nicepay-window-auth-token';
 const CLIENT_ID = 'cgi-window-client';
 
 function windowMessage(overrides = {}) {

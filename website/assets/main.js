@@ -178,16 +178,27 @@
     var btn = $('#navToggle');
     var nav = $('#primaryNav');
     if (!btn || !nav) { return; }
+    var navLabel = btn.querySelector('.sr-only');
 
+    function setLabel(open) {
+      if (navLabel) navLabel.textContent = open ? '메뉴 닫기' : '메뉴 열기';
+    }
     function close() {
       nav.classList.remove('open');
       btn.setAttribute('aria-expanded', 'false');
+      setLabel(false);
       document.body.classList.remove('nav-open');
     }
     function toggle() {
       var open = nav.classList.toggle('open');
       btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      setLabel(open);
       document.body.classList.toggle('nav-open', open);
+      if (open) {
+        // 키보드 사용자가 열린 메뉴 안에서 바로 이동할 수 있게 첫 링크로 포커스.
+        var first = nav.querySelector('a');
+        if (first) first.focus();
+      }
     }
     btn.addEventListener('click', function () {
       if (nav.classList.contains('open')) { close(); } else { toggle(); }

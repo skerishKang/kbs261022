@@ -99,6 +99,7 @@ import {
   validateOptionalText,
   validateText,
   validatePassword,
+  parseStoredPassword,
 } from './lib/auth.mjs';
 import { GOOGLE_SIGNUP_PASSWORD_SENTINEL } from './lib/migrate.mjs';
 import { purgeExpiredShopLogs, purgeExpiredQuotePii } from './lib/retention.mjs';
@@ -1479,7 +1480,7 @@ function authPolicy(env) {
   if (Number.isFinite(maxAddresses) && maxAddresses > 0) policy.maxAddressesPerMember = maxAddresses;
   // Buckets that must keep their own max/window and are not overridden by the
   // global AUTH_RATE_LIMIT_MAX / AUTH_RATE_LIMIT_WINDOW_SECONDS.
-  const protectedBuckets = new Set(['resend-verify-cooldown', 'login-ip', 'signup-ip', 'password-reset-ip', 'quote-intake-ip']);
+  const protectedBuckets = new Set(['resend-verify-cooldown', 'login-ip', 'signup-ip', 'password-reset-ip', 'quote-intake-ip', 'email-check-ip']);
   for (const name of Object.keys(policy.rateLimit)) {
     if (protectedBuckets.has(name)) {
       if (name === 'resend-verify-cooldown' && Number.isFinite(cooldownSec) && cooldownSec >= 0) {
@@ -1831,10 +1832,16 @@ async function handleGoogleStart(request, db, env) {
   if (!clientId || !clientSecret) {
     return authJson({ error: 'google oauth not configured' }, 503);
   }
+  // The OAuth state signature must not fall back to a repository constant: a
+  // deployment without AUTH_SESSION_SECRET cannot safely issue signed state.
+  const stateSecret = String(env.AUTH_SESSION_SECRET || '').trim();
+  if (!stateSecret) {
+    return authJson({ error: 'google oauth not configured', detail: 'AUTH_SESSION_SECRET is required' }, 503);
+  }
 
   const redirectUri = new URL('/api/auth/google/callback', request.url).toString();
   const returnTo = normalizeOAuthReturn(new URL(request.url).searchParams.get('return'));
-  const state = await createOAuthState(env.AUTH_SESSION_SECRET || 'cgi-dev-secret', Date.now(), returnTo);
+  const state = await createOAuthState(stateSecret, Date.now(), returnTo);
 
   const authUrl = buildAuthorizationUrl({ clientId, redirectUri }, state);
   if (!authUrl) return authJson({ error: 'google oauth not configured' }, 503);
@@ -1876,7 +1883,10 @@ async function handleGoogleCallback(request, db, env) {
   // Verify the state token's signature and expiry, and read the origin page it
   // carries. The return target comes from the signed payload — never the query
   // string — and is clamped to the allowlist inside resolveOAuthRedirect.
-  const stateSecret = env.AUTH_SESSION_SECRET || 'cgi-dev-secret';
+  const stateSecret = String(env.AUTH_SESSION_SECRET || '').trim();
+  if (!stateSecret) {
+    return authJson({ error: 'google oauth not configured', detail: 'AUTH_SESSION_SECRET is required' }, 503);
+  }
   const statePayload = await decodeOAuthState(stateSecret, state);
   if (!statePayload) {
     return authJson({ error: 'invalid state', detail: 'state expired or tampered' }, 400);
@@ -2156,6 +2166,13 @@ async function handleAuthRoute(pathname, method, request, db, env) {
     const email = validateEmail(body.email);
     if (!email.ok) return authJson({ error: email.error, detail: email.detail }, 400);
     const policy = authPolicy(env);
+    // Signup-screen probe: bound it per source address as well, so one client
+    // cannot enumerate addresses through many emails from the same origin.
+    const emailIp = clientIp(request);
+    if (emailIp) {
+      const ipLimit = await rateLimitCheck(db, policy, 'email-check-ip', emailIp);
+      if (ipLimit.error) return authJson({ error: ipLimit.error, detail: ipLimit.detail }, 429);
+    }
     const limit = await rateLimitCheck(db, policy, 'email-check', email.email);
     if (limit.error) return authJson({ error: limit.error, detail: limit.detail }, 429);
     const exists = !!(await getMemberByEmail(db, email.email));
@@ -2248,13 +2265,28 @@ async function handleAuthRoute(pathname, method, request, db, env) {
 
     const member = await getMemberByEmail(db, email.email);
     if (!member) return authJson({ error: 'invalid credentials', detail: 'email address or password is wrong' }, 401);
-    if (member.status === 'deleted') return authJson({ error: 'account deleted', detail: 'this account has been deleted' }, 403);
-    if (member.status === 'suspended') return authJson({ error: 'account suspended', detail: 'this account has been suspended' }, 403);
 
     const ok = await verifyPassword(body.password, member.password_hash, policy);
+    // Account state is disclosed only after the password proves the caller owns
+    // the account; otherwise deleted/suspended answers would let anyone map
+    // which addresses have accounts.
     if (!ok) return authJson({ error: 'invalid credentials', detail: 'email address or password is wrong' }, 401);
+    if (member.status === 'deleted') return authJson({ error: 'account deleted', detail: 'this account has been deleted' }, 403);
+    if (member.status === 'suspended') return authJson({ error: 'account suspended', detail: 'this account has been suspended' }, 403);
     if (emailVerifyRequired(env) && !member.email_verified_at) {
       return authJson({ error: 'email not verified', detail: 'verify the email address before signing in' }, 403);
+    }
+
+    // Transparent hash upgrade: a 30k-iteration hash is re-saved at the current
+    // policy after the first successful sign-in. A failure here must not block
+    // the login (the password was already verified).
+    const storedHash = parseStoredPassword(member.password_hash);
+    if (storedHash && storedHash.iterations < policy.pbkdf2Iterations) {
+      try {
+        const upgraded = await hashPassword(body.password, policy);
+        await db.prepare('UPDATE members SET password_hash = ?, updated_at = ? WHERE id = ?')
+          .bind(upgraded, nowIso(), member.id).run();
+      } catch (e) { /* keep the login; next successful login retries */ }
     }
 
     const session = await issueSession(db, env, member);
@@ -2516,7 +2548,14 @@ async function handleMeRoute(pathname, method, url, request, db, env) {
       await db.prepare('DELETE FROM member_addresses WHERE id = ?').bind(id).run();
       const remaining = await db.prepare('SELECT COUNT(*) AS c FROM member_addresses WHERE member_id = ?').bind(member.id).first();
       if (remaining && Number(remaining.c) > 0 && address.is_default) {
-        await db.prepare('UPDATE member_addresses SET is_default = 1 WHERE member_id = ? LIMIT 1').bind(member.id).run();
+        // SQLite builds differ on UPDATE ... LIMIT; the rowid subquery is
+        // portable and picks the oldest remaining address deterministically.
+        await db.prepare(
+          `UPDATE member_addresses SET is_default = 1
+            WHERE rowid = (
+              SELECT rowid FROM member_addresses WHERE member_id = ? ORDER BY id ASC LIMIT 1
+            )`
+        ).bind(member.id).run();
       }
       return authJson({ ok: true });
     }

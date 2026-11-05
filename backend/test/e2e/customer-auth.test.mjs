@@ -192,7 +192,7 @@ test('auth routes advertise credentials and DELETE, legacy routes grant none', a
 });
 
 test('health reports the auth posture without leaking secrets', async () => {
-  const environment = env({ ADMIN_TOKEN: 'super-secret-admin-token', MAIL_MODE: 'console' });
+  const environment = env({ ADMIN_TOKEN: 'example-super-secret-admin-token', MAIL_MODE: 'console' });
   const res = await call(environment, 'GET', '/api/admin/health', undefined, { Authorization: `Bearer ${environment.ADMIN_TOKEN}` });
   assert.equal(res.status, 200);
   // The point is that health advertises a semver build id, not which release is
@@ -215,18 +215,18 @@ test('health reports the auth posture without leaking secrets', async () => {
   delete bare.AUTH_PBKDF2_ITERATIONS;
   delete bare.AUTH_SESSION_TTL_DAYS;
   const defaults = await call(bare, 'GET', '/api/admin/health', undefined, { Authorization: `Bearer ${bare.ADMIN_TOKEN}` });
-  assert.equal(defaults.json.auth.pbkdf2_iterations, 30000, 'the default policy is used when unset');
+  assert.equal(defaults.json.auth.pbkdf2_iterations, 100000, 'the default policy is used when unset');
   assert.equal(defaults.json.auth.session_ttl_seconds, 30 * 24 * 3600);
 });
 
 test('a configured AUTH_CSRF_TOKEN is accepted and reported', async () => {
-  const environment = env({ AUTH_CSRF_TOKEN: 'fixed-site-token' });
+  const environment = env({ AUTH_CSRF_TOKEN: 'fixed-test-token' });
   const res = await call(environment, 'GET', '/api/admin/health', undefined, { Authorization: `Bearer ${environment.ADMIN_TOKEN}` });
   assert.equal(res.json.auth.csrf_configured, true);
-  assert.ok(!res.text.includes('fixed-site-token'));
+  assert.ok(!res.text.includes('fixed-test-token'));
 
   const fixed = await call(environment, 'POST', '/api/auth/email-available', { email: 'a@example.com' }, {
-    Origin: ORIGIN, 'X-CSRF-Token': 'fixed-site-token',
+    Origin: ORIGIN, 'X-CSRF-Token': 'fixed-test-token',
   });
   assert.equal(fixed.status, 200);
   assert.equal(fixed.json.available, true);
@@ -269,7 +269,7 @@ test('signup validates inputs and stores a PBKDF2 hash plus a digested token', a
   assert.equal(weak.json.error, 'password too short');
 
   const noSymbol = await call(environment, 'POST', '/api/auth/signup', {
-    email: 'kim@example.com', name: '김회원', password: 'abcdefgh1',
+    email: 'kim@example.com', name: '김회원', password: 'testweak1',
     terms: true, privacy: true, terms_version: 'draft-2026-10-28', privacy_version: 'draft-2026-10-28',
   }, csrf);
   assert.equal(noSymbol.status, 400);
@@ -519,7 +519,7 @@ test('the password can be changed and the other sessions are revoked', async () 
   const { cookie: first } = await verifiedSession(environment);
 
   const wrongCurrent = await call(environment, 'POST', '/api/me/password', {
-    current_password: 'wrong-pass-1', password: 'NewPass!2026x',
+    current_password: 'wrong-pass-1', password: 'NewTestPass!2026x',
   }, { ...csrf, Cookie: first });
   assert.equal(wrongCurrent.status, 401);
 
@@ -529,7 +529,7 @@ test('the password can be changed and the other sessions are revoked', async () 
   assert.equal(weakNext.status, 400);
 
   const changed = await call(environment, 'POST', '/api/me/password', {
-    current_password: PASSWORD, password: 'NewPass!2026x',
+    current_password: PASSWORD, password: 'NewTestPass!2026x',
   }, { ...csrf, Cookie: first });
   assert.equal(changed.status, 200);
   assert.match(changed.headers['set-cookie'], /cgi_member=/, 'a fresh session cookie is issued');
@@ -539,7 +539,7 @@ test('the password can be changed and the other sessions are revoked', async () 
 
   const oldPassword = await call(environment, 'POST', '/api/auth/login', { email: 'kim@example.com', password: PASSWORD }, csrf);
   assert.equal(oldPassword.status, 401);
-  const newPassword = await call(environment, 'POST', '/api/auth/login', { email: 'kim@example.com', password: 'NewPass!2026x' }, csrf);
+  const newPassword = await call(environment, 'POST', '/api/auth/login', { email: 'kim@example.com', password: 'NewTestPass!2026x' }, csrf);
   assert.equal(newPassword.status, 200);
 });
 
@@ -1122,7 +1122,7 @@ test('password reset issues a token, changes the password and revokes sessions',
   assert.equal(noSuchMember.json.mail.token, undefined, 'no token for a missing account');
 
   const badToken = await call(environment, 'POST', '/api/auth/password-reset/confirm', {
-    token: 'f'.repeat(64), password: 'NewPass!2026x',
+    token: 'f'.repeat(64), password: 'NewTestPass!2026x',
   }, csrf);
   assert.equal(badToken.status, 400);
 
@@ -1130,7 +1130,7 @@ test('password reset issues a token, changes the password and revokes sessions',
   assert.equal(weak.status, 400);
 
   const confirmed = await call(environment, 'POST', '/api/auth/password-reset/confirm', {
-    token, password: 'NewPass!2026x',
+    token, password: 'NewTestPass!2026x',
   }, csrf);
   assert.equal(confirmed.status, 200, confirmed.text);
   assert.match(confirmed.headers['set-cookie'], /cgi_member=/);
@@ -1139,11 +1139,11 @@ test('password reset issues a token, changes the password and revokes sessions',
   assert.equal(stale.status, 401, 'the old session is revoked');
 
   const replay = await call(environment, 'POST', '/api/auth/password-reset/confirm', {
-    token, password: 'Another!2026x',
+    token, password: 'AnotherTest!2026x',
   }, csrf);
   assert.equal(replay.status, 400, 'the token is single use');
 
-  const loginAgain = await call(environment, 'POST', '/api/auth/login', { email: 'kim@example.com', password: 'NewPass!2026x' }, csrf);
+  const loginAgain = await call(environment, 'POST', '/api/auth/login', { email: 'kim@example.com', password: 'NewTestPass!2026x' }, csrf);
   assert.equal(loginAgain.status, 200);
 });
 
@@ -1316,11 +1316,11 @@ test('password reset token is single-use and previous tokens are revoked', async
   assert.notEqual(token1, token2);
 
   // Token1 should be revoked
-  const confirm1 = await call(environment, 'POST', '/api/auth/password-reset/confirm', { token: token1, password: 'NewPass!2026' }, csrf);
+  const confirm1 = await call(environment, 'POST', '/api/auth/password-reset/confirm', { token: token1, password: 'NewTestPass!2026' }, csrf);
   assert.equal(confirm1.status, 400, 'revoked reset token should fail');
 
   // Token2 should work
-  const confirm2 = await call(environment, 'POST', '/api/auth/password-reset/confirm', { token: token2, password: 'NewPass!2026' }, csrf);
+  const confirm2 = await call(environment, 'POST', '/api/auth/password-reset/confirm', { token: token2, password: 'NewTestPass!2026' }, csrf);
   assert.equal(confirm2.status, 200);
   assert.equal(confirm2.json.ok, true);
 });

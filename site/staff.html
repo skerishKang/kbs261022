@@ -84,7 +84,8 @@
   </div>
 </footer>
 
-<script src="config.js?v=101a"></script>
+<script src="../website/assets/company.js?v=98a"></script>
+<script src="config.js?v=102a"></script>
 <script src="data/services.js"></script>
 <script src="assets/js/cgi-header.js"></script>
 <script src="assets/js/cgi-auth.js?v=80a"></script>
@@ -92,7 +93,7 @@
 (function () {
   function loadStaff() {
     var s = document.createElement("script");
-    s.src = "assets/js/cgi-staff.js?v=75a";
+    s.src = "assets/js/cgi-staff.js?v=76a";
     document.body.appendChild(s);
   }
   fetch("data/catalog.json", { cache: "no-cache" }).then(function (r) { return r.ok ? r.json() : null; })

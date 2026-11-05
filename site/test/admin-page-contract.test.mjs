@@ -106,10 +106,19 @@ test('cgi-auth.js sends the return target to the existing OAuth start route', ()
   assert.match(src, /\?return=' \+ encodeURIComponent\(returnTo\)/, 'googleLogin(returnTo) must forward the target');
 });
 
-test('the console scripts never invent an admin credential', () => {
-  for (const cfg of Object.values(PAGES)) {
-    const src = read(cfg.script);
+test('the console scripts never invent or read an admin token', () => {
+  const scripts = [
+    'assets/js/cgi-staff.js',
+    'assets/js/cgi-staff-orders.js',
+    'assets/js/cgi-sync-admin.js',
+  ];
+  for (const script of scripts) {
+    const src = read(script);
     assert.doesNotMatch(src, /localStorage\.setItem\(\s*'cgiAdminToken'/,
-      `${cfg.script} must not mint an admin token; the member session is the sanctioned path`);
+      `${script} must not mint an admin token; the member session is the sanctioned path`);
+    assert.doesNotMatch(src, /localStorage\.getItem\(\s*'cgiAdminToken'/,
+      `${script} must not read the removed legacy token`);
+    assert.doesNotMatch(src, /Authorization['"]?\s*:\s*['"]Bearer/,
+      `${script} must not send a Bearer header`);
   }
 });
