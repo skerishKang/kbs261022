@@ -5,11 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>CGI 입찰정보 | 나라장터 입찰공고 검색·분류</title>
 <meta name="description" content="나라장터 입찰공고를 분류·지역·금액·마감일로 한눈에 비교하고, 발주기관별 개찰 통계까지 확인하는 CGI 입찰정보 서비스.">
+<link rel="canonical" href="https://cgishop.pages.dev/bid/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="CGI 입찰정보">
+<meta property="og:title" content="CGI 입찰정보 | 나라장터 입찰공고 검색·분류">
+<meta property="og:description" content="나라장터 입찰공고를 분류·지역·금액·마감일로 한눈에 비교하고, 발주기관별 개찰 통계까지 확인하는 CGI 입찰정보 서비스.">
+<meta property="og:url" content="https://cgishop.pages.dev/bid/">
 <meta name="theme-color" content="#07913A">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2307913A'/%3E%3Ctext x='16' y='22' font-size='17' font-weight='800' text-anchor='middle' fill='white' font-family='Arial'%3EC%3C/text%3E%3C/svg%3E">
 <script>(function(){try{var t=localStorage.getItem("bid-theme");if(t==="light"||t==="dark"){document.documentElement.dataset.theme=t;}}catch(e){}})();</script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-<link rel="stylesheet" href="assets/css/bid.css?v=261105">
+<link rel="stylesheet" href="assets/css/bid.css?v=261105c">
 </head>
 <body>
 <a class="skip-link" href="#main">본문으로 건너뛰기</a>
@@ -80,8 +86,10 @@
 
 <footer id="appFooter"></footer>
 
-<script src="assets/data/bid-data.js"></script>
-<script src="assets/js/bid-ui.js"></script>
+<script src="config.js?v=261105c"></script>
+<script src="assets/data/bid-data.js?v=261105c"></script>
+<script src="assets/data/result-data.js?v=261105c"></script>
+<script src="assets/js/bid-ui.js?v=261105c"></script>
 <script>
 (function () {
   "use strict";
@@ -117,9 +125,9 @@
 
   // 마감 임박 TOP 5 — 진행 중 공고 중 7일 내 마감, 마감 가까운 순
   var soon = act.filter(function (b) {
-    var d = U.ddState(b.cd, b.od);
-    return !d.over && d.diff <= 7;
-  }).sort(function (a, b) { return String(a.cd).localeCompare(b.cd); }).slice(0, 5);
+    var d = U.ddOf(b);
+    return !d.over && !d.lt && d.diff <= 7;
+  }).sort(function (a, b) { return String(a.cd || a.od).localeCompare(b.cd || b.od); }).slice(0, 5);
   var spList = document.getElementById("spList");
   if (soon.length) {
     spList.innerHTML = soon.map(function (b) {
@@ -131,7 +139,7 @@
     spList.innerHTML = '<div class="sp-empty">7일 내 마감 공고가 없습니다.</div>';
   }
 
-  var today = act.filter(function (b) { var d = U.ddState(b.cd, b.od); return d.diff === 0; })
+  var today = act.filter(function (b) { var d = U.ddOf(b); return d.diff === 0 && !d.noClose; })
     .sort(function (a, b) { return String(a.cd).localeCompare(b.cd); });
   var todayGrid = document.getElementById("todayGrid");
   if (today.length) {

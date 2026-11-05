@@ -725,3 +725,17 @@ main.page { flex: 1; padding-top: 26px; padding-bottom: 48px; }
   .spec-hero .stat-card .stat-num.price { font-size: 16.5px; }
   .spec-hero .stat-card .stat-num { font-size: 14px; }
 }
+
+/* ── 3차(#188): 경쟁방식 배지·메뉴 준비 중 표시·잠금 자리표시자 ── */
+.badge-method { color: var(--cgi-muted); background: var(--cgi-bg); }
+.badge-method[data-method="수의계약"] { border-color: var(--cgi-warn-line); color: var(--cgi-warn); background: var(--cgi-warn-soft); }
+.nav-soon { font-size: 10.5px; font-weight: 700; color: var(--cgi-faint); border: 1px solid var(--cgi-line); border-radius: 999px; padding: 0 6px; margin-left: 4px; vertical-align: 1px; }
+.lock-placeholder { display: inline-block; height: 1em; border-radius: 4px; background: var(--cgi-line); vertical-align: middle; }
+.lock-placeholder.w-s { width: 72px; } .lock-placeholder.w-m { width: 140px; } .lock-placeholder.w-l { width: 220px; }
+.signup-form { display: grid; gap: 10px; grid-template-columns: 1fr 1fr auto; align-items: end; }
+.signup-form label { display: flex; flex-direction: column; gap: 4px; font-size: 12.5px; color: var(--cgi-muted); font-weight: 600; }
+.signup-form input, .signup-form select { padding: 9px 11px; border: 1px solid var(--cgi-line); border-radius: 8px; background: var(--cgi-card); color: var(--cgi-ink); font: inherit; }
+.signup-msg { font-size: 13px; margin-top: 8px; }
+@media (max-width: 700px) { .signup-form { grid-template-columns: 1fr; } }
+.spec-table td { overflow-wrap: anywhere; word-break: keep-all; }
+.spec-table { table-layout: fixed; width: 100%; }

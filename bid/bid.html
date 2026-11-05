@@ -5,11 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>공고 상세 | CGI 입찰정보</title>
 <meta name="description" content="나라장터 입찰공고 상세 정보 — 추정가격·투찰마감·개찰일시와 발주기관 개찰 통계.">
+<link rel="canonical" href="https://cgishop.pages.dev/bid/bids.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="CGI 입찰정보">
+<meta property="og:title" content="공고 상세 | CGI 입찰정보">
+<meta property="og:description" content="나라장터 입찰공고 상세 정보 — 추정가격·투찰마감·개찰일시와 발주기관 개찰 통계.">
+<meta property="og:url" content="https://cgishop.pages.dev/bid/bids.html">
 <meta name="theme-color" content="#07913A">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2307913A'/%3E%3Ctext x='16' y='22' font-size='17' font-weight='800' text-anchor='middle' fill='white' font-family='Arial'%3EC%3C/text%3E%3C/svg%3E">
 <script>(function(){try{var t=localStorage.getItem("bid-theme");if(t==="light"||t==="dark"){document.documentElement.dataset.theme=t;}}catch(e){}})();</script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-<link rel="stylesheet" href="assets/css/bid.css?v=261105">
+<link rel="stylesheet" href="assets/css/bid.css?v=261105c">
 </head>
 <body>
 <a class="skip-link" href="#main">본문으로 건너뛰기</a>
@@ -42,27 +48,27 @@
           <table class="spec-table" id="specLocked"><tbody>
             <tr class="row-locked">
               <th scope="row">기초금액</th>
-              <td><span class="lock-body num">1,295,850,000원</span>
-                <span class="lock-overlay"><span class="lock-chip"><span class="lock-ico">🔒</span>회원 전용 · 로그인 후 확인</span></span></td>
+              <td><span class="lock-body" aria-hidden="true"><span class="lock-placeholder w-m"></span></span>
+                <span class="lock-overlay"><span class="lock-chip"><span class="lock-ico" aria-hidden="true">🔒</span>회원 전용 · 로그인 후 확인</span></span></td>
             </tr>
             <tr class="row-locked">
               <th scope="row">낙찰하한율</th>
-              <td><span class="lock-body num">89.745%</span>
-                <span class="lock-overlay"><span class="lock-chip"><span class="lock-ico">🔒</span>회원 전용 · 로그인 후 확인</span></span></td>
+              <td><span class="lock-body" aria-hidden="true"><span class="lock-placeholder w-s"></span></span>
+                <span class="lock-overlay"><span class="lock-chip"><span class="lock-ico" aria-hidden="true">🔒</span>회원 전용 · 로그인 후 확인</span></span></td>
             </tr>
             <tr class="row-locked">
               <th scope="row">적격심사 세부기준</th>
-              <td><span class="lock-body">배점표 및 통과점수 적용 내역</span>
-                <span class="lock-overlay"><span class="lock-chip"><span class="lock-ico">🔒</span>회원 전용 · 발주기관 기준 적용</span></span></td>
+              <td><span class="lock-body" aria-hidden="true"><span class="lock-placeholder w-l"></span></span>
+                <span class="lock-overlay"><span class="lock-chip"><span class="lock-ico" aria-hidden="true">🔒</span>회원 전용 · 발주기관 기준 적용</span></span></td>
             </tr>
             <tr class="row-locked">
               <th scope="row">공고 원문 요약</th>
-              <td><span class="lock-body">참가자격·입찰보증금·제출서류 등 원문 요약</span>
-                <span class="lock-overlay"><span class="lock-chip"><span class="lock-ico">🔒</span>회원 전용 · 로그인 후 확인</span></span></td>
+              <td><span class="lock-body" aria-hidden="true"><span class="lock-placeholder w-l"></span></span>
+                <span class="lock-overlay"><span class="lock-chip"><span class="lock-ico" aria-hidden="true">🔒</span>회원 전용 · 로그인 후 확인</span></span></td>
             </tr>
           </tbody></table>
           <div style="padding:12px 18px;border-top:1px solid var(--cgi-line-soft)">
-            <a class="btn btn-primary btn-sm" href="pricing.html">회원가입하고 확인하기</a>
+            <a class="btn btn-primary btn-sm" href="pricing.html#signup">사전 신청하기</a>
             <a class="btn btn-ghost btn-sm" href="pricing.html">무료·회원 차이 보기</a>
           </div>
         </section>
@@ -75,22 +81,20 @@
             <span class="badge" style="background:var(--cgi-primary);color:#fff;border-color:var(--cgi-primary)">준비 중</span>
           </div>
           <div class="row-locked" style="padding:0 18px">
-            <div class="lock-body" style="padding:12px 0">
+            <div class="lock-body" style="padding:12px 0" aria-hidden="true">
               <div style="font-size:12.5px;color:var(--cgi-muted);margin-bottom:8px">추천 투찰 구간</div>
-              <div style="display:flex;gap:8px;align-items:baseline;gap:12px">
-                <span class="num" style="font-size:19px;font-weight:800">542,113,000원 ~ 552,480,000원</span>
-              </div>
-              <div class="an-chart" style="margin-top:14px" aria-hidden="true">
-                <i style="height:34%"></i><i style="height:58%"></i><i style="height:82%"></i><i style="height:100%"></i><i style="height:74%"></i><i style="height:46%"></i><i style="height:28%"></i>
+              <span class="lock-placeholder w-l"></span>
+              <div class="an-chart" style="margin-top:14px">
+                <i style="height:30%"></i><i style="height:55%"></i><i style="height:80%"></i><i style="height:100%"></i><i style="height:70%"></i><i style="height:45%"></i><i style="height:25%"></i>
               </div>
               <div style="font-size:11px;color:var(--cgi-faint);margin-top:4px">같은 발주기관·공종 과거 사정률 분포</div>
-              <div class="an-kv"><span class="k">낙찰하한가</span><span class="v num">502,905,000원</span></div>
-              <div class="an-kv"><span class="k">예상 경쟁 수</span><span class="v num">약 21개사</span></div>
+              <div class="an-kv"><span class="k">낙찰하한가</span><span class="v"><span class="lock-placeholder w-m"></span></span></div>
+              <div class="an-kv"><span class="k">예상 경쟁 수</span><span class="v"><span class="lock-placeholder w-s"></span></span></div>
             </div>
-            <span class="lock-overlay"><span class="lock-chip"><span class="lock-ico">🔒</span>회원 전용 · 로그인 후 확인</span></span>
+            <span class="lock-overlay"><span class="lock-chip"><span class="lock-ico" aria-hidden="true">🔒</span>회원 전용 · 개찰 데이터 수집 후 제공</span></span>
           </div>
           <div style="display:flex;align-items:center;gap:8px;padding:12px 18px;border-top:1px solid var(--cgi-line-soft)">
-            <a class="btn btn-primary btn-sm" href="pricing.html">회원가입하고 이용하기</a>
+            <a class="btn btn-primary btn-sm" href="pricing.html#signup">사전 신청하기</a>
             <span class="an-note" style="padding:0">개찰 결과 데이터 수집 후 활성화 — 값은 추정하지 않습니다</span>
           </div>
         </section>
@@ -135,8 +139,10 @@
 
 <footer id="appFooter"></footer>
 
-<script src="assets/data/bid-data.js"></script>
-<script src="assets/js/bid-ui.js"></script>
+<script src="config.js?v=261105c"></script>
+<script src="assets/data/bid-data.js?v=261105c"></script>
+<script src="assets/data/result-data.js?v=261105c"></script>
+<script src="assets/js/bid-ui.js?v=261105c"></script>
 <script>
 (function () {
   "use strict";
@@ -159,15 +165,15 @@
     '<span aria-hidden="true">›</span><span>' + U.esc(b.t.length > 26 ? b.t.slice(0, 26) + "…" : b.t) + "</span>";
 
   document.getElementById("headBadges").innerHTML =
-    U.badgeCat(b.c) + U.badgeStatus(b.s) +
+    U.badgeCat(b.c) + U.methodBadge(b) + U.badgeStatus(b.s) +
     '<span class="badge">' + U.esc(b.k) + "</span>" + U.chipDd(b);
   document.getElementById("bidTitle").textContent = b.t;
 
   document.getElementById("heroPrice").textContent = U.fmtWon(b.ep);
   document.getElementById("heroBudget").textContent = b.ab ? "예산금액 " + U.fmtWon(b.ab) : "예산금액 미공개";
-  var dd = U.ddState(b.cd, b.od);
+  var dd = U.ddOf(b);
   document.getElementById("heroDd").innerHTML = '<span class="chip-dd ' + dd.cls + '">' + U.esc(dd.label) + "</span>";
-  document.getElementById("heroClose").textContent = "투찰 마감 " + U.fmtDt(b.cd);
+  document.getElementById("heroClose").textContent = b.lt ? "상시 접수 공고" : (b.cd ? "투찰 마감 " + U.fmtDt(b.cd) : "개찰 " + U.fmtDt(b.od));
   var ag = document.getElementById("heroAgency");
   ag.innerHTML = '<a href="agency.html?name=' + encodeURIComponent(b.a) + '">' + U.esc(b.a) + "</a>";
   document.getElementById("heroCat").textContent = b.c + " · " + b.k;
@@ -181,7 +187,7 @@
   rows.push(
     ["추정가격", '<span class="num">' + U.esc(U.fmtWon(b.ep)) + "</span>" + (b.ab ? '<span class="sub">예산금액 <span class="num">' + U.esc(U.fmtWon(b.ab)) + "</span></span>" : "")],
     ["공고일", '<span class="num">' + U.esc(U.fmtDate(b.pd)) + "</span>"],
-    ["투찰 마감", '<span class="num">' + U.esc(U.fmtDt(b.cd)) + "</span>"],
+    ["투찰 마감", b.lt ? "상시 접수(장기 계약 공고) · 원문 기준 " + '<span class="num">' + U.esc(U.fmtDt(b.cd)) + "</span>" : (b.cd ? '<span class="num">' + U.esc(U.fmtDt(b.cd)) + "</span>" : "원문에 표시 없음 — 나라장터 공고 원문 확인")],
     ["개찰 일시", '<span class="num">' + U.esc(U.fmtDt(b.od)) + "</span>"],
     ["계약 방법", U.esc(b.cm || "—")],
     ["낙찰자 결정 방법", U.esc(b.am || "—")],

@@ -5,11 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>입찰공고 목록 | CGI 입찰정보</title>
 <meta name="description" content="나라장터 입찰공고를 구매·공사·용역·매각 분류와 지역·금액·마감 기간으로 걸러 보는 목록.">
+<link rel="canonical" href="https://cgishop.pages.dev/bid/bids.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="CGI 입찰정보">
+<meta property="og:title" content="입찰공고 목록 | CGI 입찰정보">
+<meta property="og:description" content="나라장터 입찰공고를 구매·공사·용역·매각 분류와 지역·금액·마감 기간으로 걸러 보는 목록.">
+<meta property="og:url" content="https://cgishop.pages.dev/bid/bids.html">
 <meta name="theme-color" content="#07913A">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2307913A'/%3E%3Ctext x='16' y='22' font-size='17' font-weight='800' text-anchor='middle' fill='white' font-family='Arial'%3EC%3C/text%3E%3C/svg%3E">
 <script>(function(){try{var t=localStorage.getItem("bid-theme");if(t==="light"||t==="dark"){document.documentElement.dataset.theme=t;}}catch(e){}})();</script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-<link rel="stylesheet" href="assets/css/bid.css?v=261105">
+<link rel="stylesheet" href="assets/css/bid.css?v=261105c">
 </head>
 <body>
 <a class="skip-link" href="#main">본문으로 건너뛰기</a>
@@ -73,6 +79,10 @@
         </select>
       </div>
       <div class="f-item">
+        <label for="fMethod">입찰 방식</label>
+        <select id="fMethod"><option value="">전체</option><option value="competitive">경쟁입찰만</option></select>
+      </div>
+      <div class="f-item">
         <label for="fStatus">공고 상태</label>
         <select id="fStatus">
           <option value="">전체</option>
@@ -105,14 +115,16 @@
 
 <footer id="appFooter"></footer>
 
-<script src="assets/data/bid-data.js"></script>
-<script src="assets/js/bid-ui.js"></script>
+<script src="config.js?v=261105c"></script>
+<script src="assets/data/bid-data.js?v=261105c"></script>
+<script src="assets/data/result-data.js?v=261105c"></script>
+<script src="assets/js/bid-ui.js?v=261105c"></script>
 <script>
 (function () {
   "use strict";
   var U = window.BID_UI;
   var PAGE_SIZE = 20;
-  var CATS = ["전체", "구매", "공사", "용역", "매각"];
+  var CATS_ALL = ["전체", "구매", "공사", "용역", "매각"];
 
   U.renderHeader("bids");
   U.renderFooter();
@@ -126,6 +138,7 @@
     price: U.param("price") || "",
     period: U.param("period") || "",
     status: U.param("status") || "",
+    method: U.param("method") || "",
     sort: U.param("sort") || "close",
     view: U.param("view") || "card",
     page: parseInt(U.param("page") || "1", 10) || 1
@@ -134,6 +147,8 @@
   /* 탭 */
   var tabsEl = document.getElementById("catTabs");
   var act = U.activeBids();
+  // 데이터가 없는 분류 탭은 숨긴다(나라장터 수집분에는 매각 공고가 거의 없다).
+  var CATS = CATS_ALL.filter(function (c) { return c === "전체" || c === st.cat || act.some(function (b) { return b.c === c; }); });
   tabsEl.innerHTML = CATS.map(function (c) {
     var n = c === "전체" ? act.length : act.filter(function (b) { return b.c === c; }).length;
     return '<button type="button" class="tab" role="tab" data-cat="' + c + '" aria-selected="' + (st.cat === c) + '">' +
@@ -160,6 +175,11 @@
   document.getElementById("agencyNames").innerHTML = Object.keys(agencies).sort()
     .map(function (a) { return "<option value=\"" + U.esc(a) + "\"></option>"; }).join("");
 
+  var fMethod = document.getElementById("fMethod");
+  U.methodList().forEach(function (k) {
+    var o = document.createElement("option"); o.value = k; o.textContent = k === "수의계약" ? "수의계약(견적제출)" : k; fMethod.appendChild(o);
+  });
+  fMethod.value = st.method;
   fRegion.value = st.region;
   document.getElementById("fAgency").value = st.agency;
   document.getElementById("fPrice").value = st.price;
@@ -171,14 +191,15 @@
   var bar = document.getElementById("filterBar");
   var sheet = U.bindSheet(bar, document.getElementById("openFilter"), document.getElementById("applyFilter"));
   document.getElementById("resetFilter").addEventListener("click", function () {
-    st.region = st.agency = st.price = st.period = st.status = "";
+    st.region = st.agency = st.price = st.period = st.status = st.method = "";
+    fMethod.value = "";
     fRegion.value = ""; document.getElementById("fAgency").value = "";
     document.getElementById("fPrice").value = ""; document.getElementById("fPeriod").value = "";
     document.getElementById("fStatus").value = "";
     st.page = 1; sync(); render();
   });
   document.getElementById("applyFilter").addEventListener("click", function () { sheet.close(); });
-  ["fRegion", "fAgency", "fPrice", "fPeriod", "fStatus"].forEach(function (id) {
+  ["fRegion", "fAgency", "fPrice", "fPeriod", "fStatus", "fMethod"].forEach(function (id) {
     document.getElementById(id).addEventListener("change", function () { st.page = 1; readFilters(); sync(); render(); });
   });
   document.getElementById("sortSel").addEventListener("change", function () {
@@ -188,6 +209,7 @@
     st.region = fRegion.value; st.agency = document.getElementById("fAgency").value.trim();
     st.price = document.getElementById("fPrice").value; st.period = document.getElementById("fPeriod").value;
     st.status = document.getElementById("fStatus").value;
+    st.method = fMethod.value;
   }
 
   /* 보기 전환 */
@@ -204,6 +226,7 @@
     if (st.price) p.set("price", st.price);
     if (st.period) p.set("period", st.period);
     if (st.status) p.set("status", st.status);
+    if (st.method) p.set("method", st.method);
     if (st.sort !== "close") p.set("sort", st.sort);
     if (st.view !== "card") p.set("view", st.view);
     if (st.page > 1) p.set("page", String(st.page));
@@ -211,7 +234,7 @@
     history.replaceState(null, "", "bids.html" + (qs ? "?" + qs : ""));
     vc.setAttribute("aria-pressed", String(st.view === "card"));
     vt.setAttribute("aria-pressed", String(st.view === "table"));
-    var fActive = [st.region, st.agency, st.price, st.period, st.status].filter(Boolean).length;
+    var fActive = [st.region, st.agency, st.price, st.period, st.status, st.method].filter(Boolean).length;
     document.getElementById("filterCount").textContent = fActive ? "(" + fActive + ")" : "";
     document.title = (st.cat === "전체" ? "입찰공고 목록" : st.cat + " 입찰공고") + " | CGI 입찰정보";
   }
@@ -240,19 +263,23 @@
     });
     if (st.period) {
       list = list.filter(function (b) {
-        var d = U.ddState(b.cd, b.od);
-        if (st.period === "today") return d.diff === 0;
+        var d = U.ddOf(b);
+        if (d.lt) return false;
+        if (st.period === "today") return d.diff === 0 && !d.noClose;
         if (st.period === "week") return !d.over && d.diff <= 7;
         if (st.period === "month") return !d.over && d.diff <= 30;
         return true;
       });
     }
     if (st.status) list = list.filter(function (b) { return b.s === st.status; });
+    if (st.method === "competitive") list = list.filter(function (b) { return /경쟁/.test(b.k || ""); });
+    else if (st.method) list = list.filter(function (b) { return b.k === st.method; });
     if (st.sort === "close") list.sort(function (a, b) {
-      var ka = U.ddState(a.cd, a.od).over ? 1 : 0;
-      var kb = U.ddState(b.cd, b.od).over ? 1 : 0;
+      var da = U.ddOf(a), db = U.ddOf(b);
+      var ka = da.over ? 2 : (da.lt ? 1 : 0);
+      var kb = db.over ? 2 : (db.lt ? 1 : 0);
       if (ka !== kb) return ka - kb;
-      return String(a.cd || "9999").localeCompare(b.cd || "9999");
+      return String(a.cd || a.od || "9999").localeCompare(b.cd || b.od || "9999");
     });
     else if (st.sort === "new") list.sort(function (a, b) { return String(b.pd || "").localeCompare(a.pd || ""); });
     else if (st.sort === "pricedesc") list.sort(function (a, b) { return (b.ep || -1) - (a.ep || -1); });
@@ -264,11 +291,10 @@
     return "<tr>" +
       '<td class="t-title"><a href="bid.html?no=' + encodeURIComponent(b.no) + '">' + U.esc(b.t) + "</a>" +
         '<span style="font-size:11.5px;color:var(--cgi-faint)" class="num">' + U.esc(b.no) + "</span></td>" +
-      "<td>" + U.badgeCat(b.c) + "</td>" +
+      "<td>" + U.badgeCat(b.c) + " " + U.methodBadge(b) + "</td>" +
       '<td class="t-agency">' + U.esc(b.a) + "</td>" +
       '<td class="t-right num price">' + U.esc(U.fmtWon(b.ep)) + "</td>" +
-      '<td class="t-right" style="white-space:nowrap"><span class="lock-chip" style="padding:3px 9px;font-size:11.5px"><span class="lock-ico">🔒</span>회원 전용</span></td>' +
-      '<td class="t-right num">' + U.esc(U.fmtDt(b.cd)) + "</td>" +
+      '<td class="t-right num">' + U.esc(b.lt ? "상시 접수" : (b.cd ? U.fmtDt(b.cd) : "개찰 " + U.fmtDt(b.od))) + "</td>" +
       "<td style=\"text-align:right\">" + U.chipDd(b) + "</td>" +
       "</tr>";
   }
@@ -285,13 +311,14 @@
     if (st.price) defs.push({ k: "price", html: '<span class="f-k">추정가격</span>' + PRICE_LABELS[st.price] });
     if (st.period) defs.push({ k: "period", html: '<span class="f-k">마감 기간</span>' + PERIOD_LABELS[st.period] });
     if (st.status) defs.push({ k: "status", html: '<span class="f-k">공고 상태</span>' + U.esc(st.status) });
+    if (st.method) defs.push({ k: "method", html: '<span class="f-k">입찰 방식</span>' + U.esc(st.method === "competitive" ? "경쟁입찰만" : st.method) });
     return defs;
   }
 
   function renderSummary(list) {
     var withP = list.filter(function (b) { return b.ep != null; });
     var avg = withP.length ? withP.reduce(function (a, b) { return a + b.ep; }, 0) / withP.length : null;
-    var soon = list.filter(function (b) { var d = U.ddState(b.cd, b.od); return !d.over && d.diff <= 7; }).length;
+    var soon = list.filter(function (b) { var d = U.ddOf(b); return !d.over && !d.lt && d.diff <= 7; }).length;
     document.getElementById("summaryStrip").innerHTML =
       '<div class="stat-big sm"><div class="s-k">결과</div><div class="s-n num">' + list.length + '건</div><div class="s-sub">적용 필터 기준</div></div>' +
       '<div class="stat-big sm"><div class="s-k">평균 추정가격</div><div class="s-n num">' + (avg ? U.fmtWon(Math.round(avg)) : "—") + '</div><div class="s-sub">금액 공개 ' + withP.length + '건 기준</div></div>' +
@@ -323,6 +350,7 @@
     document.getElementById("fPrice").value = st.price;
     document.getElementById("fPeriod").value = st.period;
     document.getElementById("fStatus").value = st.status;
+    fMethod.value = st.method;
     if (st.cat !== "전체") {
       tabsEl.querySelectorAll(".tab").forEach(function (t) {
         t.setAttribute("aria-selected", String(t.dataset.cat === st.cat));
@@ -351,7 +379,7 @@
       area.innerHTML =
         '<div class="table-scroll"><table class="bid-table"><thead><tr>' +
         "<th>공고명</th><th>분류</th><th>발주기관</th><th style=\"text-align:right\">추정가격</th>" +
-        "<th style=\"text-align:right\">기초금액</th><th style=\"text-align:right\">투찰마감</th><th style=\"text-align:right\">마감</th>" +
+        "<th style=\"text-align:right\">투찰마감</th><th style=\"text-align:right\">마감</th>" +
         "</tr></thead><tbody>" + slice.map(rowHtml).join("") + "</tbody></table></div>";
     } else {
       area.innerHTML = '<div class="grid-cards">' + slice.map(U.cardHtml).join("") + "</div>";

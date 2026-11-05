@@ -1,0 +1,45 @@
+name: Bid info tests
+
+on:
+  push:
+    paths:
+      - "bid/**"
+      - "tools/procurement/**"
+      - "data/procurement/**"
+      - "reports/data/procurement/g2b_detail_enrichment.json"
+      - ".github/workflows/bid-tests.yml"
+  pull_request:
+    paths:
+      - "bid/**"
+      - "tools/procurement/**"
+      - "data/procurement/**"
+      - "reports/data/procurement/g2b_detail_enrichment.json"
+      - ".github/workflows/bid-tests.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Every bid script still parses
+        run: |
+          for f in bid/config.js bid/assets/js/*.js bid/assets/data/*.js; do node --check "$f" || exit 1; done
+      - name: Bid page regression tests
+        run: node --test bid/test/*.test.mjs
+      - name: Bid data validation
+        run: python tools/procurement/validate_bid_data.py
+      - name: bid-data.js is reproducible from repository sources
+        run: python tools/procurement/build_bid_data.py --check
+      - name: Collector and builder unit tests (no network)
+        run: python -m unittest tools.procurement.tests.test_g2b_openapi_collector tools.procurement.tests.test_build_bid_data tools.procurement.tests.test_g2b_classifier tools.procurement.tests.test_procurement
+      - name: Collector dry-run (no key, no network)
+        run: python tools/procurement/g2b_openapi_collector.py --dry-run --days 2 --enrich --results

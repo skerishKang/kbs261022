@@ -22,7 +22,9 @@
 
 ## 데이터
 
-- `bid/assets/data/bid-data.js` — `scripts/build_data.py`(저장소 밖 작업 폴더)가 생성.
+- `bid/assets/data/bid-data.js` — `tools/procurement/build_bid_data.py`가 생성(3차에 저장소로 반입, CI가 `--check`로 재현성 확인).
+  장기(상시) 접수 공고는 `lt: true`로 표시해 D-day 대신 "상시 접수"로 보여 준다. 마감일이 원본에 없는 공고는 개찰일시로 상태를 정한다.
+  변경·재공고는 목록의 마감·개찰 날짜를 우선한다(상세 보강은 원 공고 차수를 읽어 날짜가 낡을 수 있음).
   원본: `data/procurement/g2b_real_bids.json`(384건) + `reports/data/procurement/g2b_detail_enrichment.json`
   (상세 보강: 추정가격·예산·계약방법·개찰일시). 취소공고 18건 제외 → 366건, 추정가격 314건.
 - `snapshot: 2026-10-23` — 수집일. 화면의 "오늘 마감", D-day, 진행/개찰 완료 상태는 이 기준일 대비로
@@ -49,10 +51,12 @@
   - 키는 환경변수 `G2B_OPENAPI_KEY`로만 받고, 코드·로그·커밋에 값을 남기지 않는다.
     키가 없으면 안내 출력 후 종료(0) — 기존 bid-data.js 는 유지.
   - `--dry-run`은 실제 전송 없이 요청 URL을 키 마스크로 미리보기한다.
-  - 물품·공사·용역 operation별 목록 수집(공고일 기준 `--days` N일, 페이지 100건×최대 10페이지),
+  - 물품·공사·용역·외자 operation별 목록 수집(`...Thng/Cnstwk/Servc/Frgcpt`, 공고일 기준 `--days` N일을 `--chunk-days` 구간으로 나눠 구간당 100건×최대 10페이지),
+  - `--enrich`: 기초금액(`...BsisAmount`)·참가가능지역(`...PrtcptPsblRgn`) 보강,
     `--write-bid-data`로 bid/assets/data/bid-data.js 재생성(기준일 = 수집일).
   - 업무구분은 응답 `bizDivNm`(원본)을 분류에 우선 사용(물품/외자/기타→구매 표기).
-  - operation 명(getBidPblancListInfoThng/Constr/Servc)은 키 발급 후 실응답으로 검증·보정할 항목이다.
+  - 3차 정정: 공사는 `Cnstwk`(이전 `Constr`는 없는 이름), 서비스 경로는 `ad/BidPublicInfoService`(env `G2B_OPENAPI_BASE`로 변경 가능).
+    응답 필드명은 키 발급 후 실응답으로 확정하고 `tools/procurement/fixtures/openapi_bid_list_sample.json`을 실응답으로 바꾼다.
 
 ## 구조·디자인 규약
 
@@ -82,6 +86,8 @@
   AI 도우미·사정율 분석·투찰가 계산기.
 
 ## 검증
+
+- CI `.github/workflows/bid-tests.yml`: 스크립트 문법, `bid/test/` 화면 회귀시험, 데이터 형식 검증(`validate_bid_data.py`), 데이터 재현성, 수집기 단위시험(네트워크 없음), 수집기 dry-run.
 
 - 화면별 데스크톱 1440 / 모바일 390 스크린샷: 작업 폴더 `evidence\`(저장소 외부, 커밋 제외).
 - 390px에서 가로 넘침 0(표는 카드 내부 가로 스크롤 컨테이너로 처리).

@@ -5,11 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>요금 안내 | CGI 입찰정보</title>
 <meta name="description" content="CGI 입찰정보 무료 서비스와 회원 서비스 차이 — 공고 검색·상세는 무료, 기초금액·낙찰하한율·적격심사 기준·원문 요약은 회원 전용.">
+<link rel="canonical" href="https://cgishop.pages.dev/bid/pricing.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="CGI 입찰정보">
+<meta property="og:title" content="요금 안내 | CGI 입찰정보">
+<meta property="og:description" content="CGI 입찰정보 무료 서비스와 회원 서비스 차이 — 공고 검색·상세는 무료, 기초금액·낙찰하한율·적격심사 기준·원문 요약은 회원 전용.">
+<meta property="og:url" content="https://cgishop.pages.dev/bid/pricing.html">
 <meta name="theme-color" content="#07913A">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2307913A'/%3E%3Ctext x='16' y='22' font-size='17' font-weight='800' text-anchor='middle' fill='white' font-family='Arial'%3EC%3C/text%3E%3C/svg%3E">
 <script>(function(){try{var t=localStorage.getItem("bid-theme");if(t==="light"||t==="dark"){document.documentElement.dataset.theme=t;}}catch(e){}})();</script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-<link rel="stylesheet" href="assets/css/bid.css?v=261105">
+<link rel="stylesheet" href="assets/css/bid.css?v=261105c">
 </head>
 <body>
 <a class="skip-link" href="#main">본문으로 건너뛰기</a>
@@ -77,8 +83,27 @@
           <li><span class="li-ico mark-o">✓</span>적격심사 세부기준·공고 원문 요약</li>
           <li><span class="li-ico mark-o">✓</span>맞춤 공고 알림·분석 리포트</li>
         </ul>
-        <div class="plan-wait"><button type="button" class="btn btn-primary btn-lg" style="width:100%" disabled>요금 확정 후 안내</button></div>
+        <div class="plan-wait"><a class="btn btn-primary btn-lg" style="width:100%" href="#signup">사전 신청하기</a></div>
       </div>
+    </div>
+  </section>
+
+  <section class="section" id="signup" aria-labelledby="signupTitle">
+    <div class="section-head"><h2 id="signupTitle">회원 사전 신청</h2><span class="section-desc">회원 서비스가 열리면 가장 먼저 안내해 드립니다</span></div>
+    <div class="panel" style="padding:16px 18px">
+      <form class="signup-form" id="signupForm" novalidate>
+        <label>회사명<input type="text" id="suCompany" autocomplete="organization" required></label>
+        <label>이메일<input type="email" id="suEmail" autocomplete="email" required></label>
+        <button type="submit" class="btn btn-primary">신청하기</button>
+        <label style="grid-column:1/-1">관심 분야
+          <select id="suField">
+            <option>음향·영상·방송 장비</option><option>LED·전광판</option><option>무대·조명</option>
+            <option>CCTV·통신</option><option>공사 일반</option><option>용역 일반</option><option>기타</option>
+          </select>
+        </label>
+      </form>
+      <p class="signup-msg" id="signupMsg" role="status"></p>
+      <p style="margin:6px 0 0;font-size:12px;color:var(--cgi-faint)">입력한 회사명·이메일·관심 분야는 회원 서비스 개시 안내에만 사용하며, 안내 후 지체 없이 파기합니다. 자세한 내용은 <a href="../site/privacy.html">개인정보처리방침</a>을 따릅니다.</p>
     </div>
   </section>
 
@@ -86,7 +111,7 @@
     <div class="panel" style="padding:16px 18px;font-size:13.5px;color:var(--cgi-muted);line-height:1.8">
       <strong style="color:var(--cgi-ink)">안내</strong><br>
       · 투찰(제출)은 회원사가 <strong style="color:var(--cgi-ink)">나라장터에서 공동인증서로 직접</strong> 합니다. 본 사이트는 공고 확인과 분석을 지원하며 투찰 대행을 하지 않습니다.<br>
-      · 회원 가입 절차와 요금 결제는 준비 중이며, 확정되면 이 페이지와 공지사항으로 알려드립니다.<br>
+      · 회원 가입 절차와 요금 결제는 준비 중입니다. 위 사전 신청을 남기시면 개시 시 먼저 안내해 드립니다.<br>
       · 회원 전용 정보가 표시된 화면에서는 값이 흐릿하게 보이고 자물쇠 표시가 함께 나타납니다.<br>
       · 공고 데이터는 나라장터에서 수집하며 기준일 이후 변경된 내용은 나라장터 원문이 우선합니다. 서비스 문의는 <a href="../website/index.html">회사 홈페이지 고객센터</a>를 이용하십시오.
     </div>
@@ -95,14 +120,33 @@
 
 <footer id="appFooter"></footer>
 
-<script src="assets/data/bid-data.js"></script>
-<script src="assets/js/bid-ui.js"></script>
+<script src="config.js?v=261105c"></script>
+<script src="assets/data/bid-data.js?v=261105c"></script>
+<script src="assets/data/result-data.js?v=261105c"></script>
+<script src="assets/js/bid-ui.js?v=261105c"></script>
 <script>
 (function () {
   "use strict";
   var U = window.BID_UI;
   U.renderHeader("pricing");
   U.renderFooter();
+  // 사전 신청: 서버(signupApiUrl)가 정해지기 전에는 메일 작성 창으로 받는다.
+  var form = document.getElementById("signupForm");
+  var msg = document.getElementById("signupMsg");
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var company = document.getElementById("suCompany").value.trim();
+    var email = document.getElementById("suEmail").value.trim();
+    var field = document.getElementById("suField").value;
+    if (!company || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+      msg.textContent = "회사명과 올바른 이메일을 입력해 주십시오.";
+      return;
+    }
+    var to = (U.CFG && U.CFG.contactEmail) || "cgiinc@naver.com";
+    var body = "회사명: " + company + "\n이메일: " + email + "\n관심 분야: " + field + "\n\n(CGI 입찰정보 회원 사전 신청)";
+    location.href = "mailto:" + to + "?subject=" + encodeURIComponent("[입찰정보] 회원 사전 신청 - " + company) + "&body=" + encodeURIComponent(body);
+    msg.textContent = "메일 작성 창이 열렸습니다. 보내기를 누르면 신청이 완료됩니다.";
+  });
 })();
 </script>
 </body>
