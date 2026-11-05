@@ -1,0 +1,36 @@
+{
+  "_comment": "★미검증(키 발급 후 확정) — 공공데이터포털 문서 예시 양식을 본뜬 견본. 실수집 결과가 아니며 테스트 전용이다. bid-data·rate-stats 산출물에 절대 섞지 않는다.",
+  "_source": "조달청_나라장터 낙찰정보서비스(15129397) getOpengResultListInfoThngPreparPcDetail — 개찰결과 물품 예비가격상세 목록 조회",
+  "_verified": false,
+  "response": {
+    "header": {
+      "resultCode": "00",
+      "resultMsg": "NORMAL_SERVICE"
+    },
+    "body": {
+      "totalCount": 2,
+      "items": {
+        "item": [
+          {
+            "bidNtceNo": "R26BK01764137",
+            "bidNtceOrd": "000",
+            "bssamt": 100000000,
+            "presmptPrce": 96500000,
+            "mltplePbpcCd": "N",
+            "lottryYn": "N",
+            "rlOpengDt": "2026-10-23 09:00:00"
+          },
+          {
+            "bidNtceNo": "R26BK01764137",
+            "bidNtceOrd": "001",
+            "bssamt": 100000000,
+            "presmptPrce": 96150000,
+            "mltplePbpcCd": "Y",
+            "lottryYn": "Y",
+            "rlOpengDt": "2026-10-30 09:00:00"
+          }
+        ]
+      }
+    }
+  }
+}
