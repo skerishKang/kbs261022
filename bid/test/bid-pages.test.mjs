@@ -10,14 +10,32 @@ const BID = join(dirname(fileURLToPath(import.meta.url)), '..');
 const read = (rel) => readFileSync(join(BID, rel), 'utf8');
 const pages = readdirSync(BID).filter((f) => f.endsWith('.html'));
 
-function loadUi() {
-  const win = {};
+function baseCtx(nowIso) {
+  const win = nowIso ? { CGI_BID_NOW: nowIso } : {};
   const ctx = createContext({
     window: win, URLSearchParams,
     document: { documentElement: { dataset: {} } },
     location: { search: '' },
     localStorage: { getItem() { return ''; }, setItem() {} },
   });
+  return { win, ctx };
+}
+
+function snapshotDate() {
+  const { win, ctx } = baseCtx();
+  runInContext(read('assets/data/bid-data.js'), ctx);
+  return win.CGI_BID_DATA.snapshot;
+}
+
+function plusDays(iso, n) {
+  const t = Date.parse((iso.length > 10 ? iso : iso + 'T00:00:00+09:00')) + n * 86400000;
+  return new Date(t + 9 * 3600000).toISOString().slice(0, 10);
+}
+
+/* 기준 시각을 고정해 UI를 적재한다. 기본값은 수집일 13시(한국) — 기존 시험이 snapshot 기준
+   D-day 계산을 그대로 검증하도록 두고, 11차 시험은 실제 오늘을 따로 주입한다. */
+function loadUi(nowIso) {
+  const { win, ctx } = baseCtx(nowIso || snapshotDate() + 'T13:00:00+09:00');
   for (const f of ['config.js', 'assets/data/bid-data.js', 'assets/data/result-data.js', 'assets/js/bid-ui.js', 'assets/js/bid-personal.js']) {
     runInContext(read(f), ctx);
   }
@@ -285,4 +303,93 @@ test('10차: 메인의 분류 링크는 목록에 있는 탭만 가리키고, �
   }
   assert.match(read('bids.html'), /if \(CATS\.indexOf\(st\.cat\) < 0\) st\.cat = "전체";/, '없는 cat 가드');
   assert.match(read('bids.html'), /<select id="fCat">\s*<option value="전체">전체<\/option>/, '분류 첫 값 = 전체');
+});
+
+test('11차: 상태·D-day 기준은 수집일이 아니라 실제 오늘이다', () => {
+  const snap = snapshotDate();
+  const onSnap = loadUi(snap + 'T13:00:00+09:00');
+  assert.ok(onSnap.activeBids().some((b) => onSnap.ddOf(b).label === '오늘 마감'), '수집일 당일에는 오늘 마감 표본이 있다');
+  const later = plusDays(snap, 14);
+  const U = loadUi(later + 'T12:00:00+09:00');
+  for (const b of U.activeBids()) {
+    if (String(b.cd || '').slice(0, 10) !== later) {
+      assert.notEqual(U.ddOf(b).label, '오늘 마감', b.no + ' 지난 공고에 오늘 마감');
+    }
+    if (String(b.od || '').slice(0, 10) !== later) {
+      assert.notEqual(U.ddOf(b).label, '오늘 개찰', b.no + ' 지난 공고에 오늘 개찰');
+    }
+  }
+});
+
+test('11차: 개찰 단계도 실제 오늘로 판정한다', () => {
+  const snap = snapshotDate();
+  const today = plusDays(snap, 14);
+  const U = loadUi(today + 'T12:00:00+09:00');
+  const past = U.DATA.bids.find((b) => b.od && String(b.od).slice(0, 10) < today);
+  assert.ok(past, '과거 개찰 표본');
+  assert.equal(U.openPhase(past), '개찰 완료');
+  const future = U.DATA.bids.find((b) => b.od && String(b.od).slice(0, 10) > today);
+  if (future) assert.equal(U.openPhase(future), '개찰 대기');
+});
+
+test('11차: 수집일이 오늘보다 2일 이상 전이면 시범 데이터다', () => {
+  const snap = snapshotDate();
+  const age = (n) => loadUi(plusDays(snap, n) + 'T12:00:00+09:00');
+  assert.equal(age(0).dataAgeDays(), 0);
+  assert.equal(age(0).isTrialData(), false);
+  assert.equal(age(1).isTrialData(), false, '어제 수집분은 실데이터');
+  assert.equal(age(2).isTrialData(), true, '이틀 전 수집분부터 시범 데이터');
+  assert.equal(age(14).dataAgeDays(), 14);
+});
+
+test('11차: 시범 데이터 띠는 모든 화면 머리말에 붙고 문구가 고정된다', () => {
+  const snap = snapshotDate();
+  const trial = loadUi(plusDays(snap, 14) + 'T12:00:00+09:00');
+  const bar = trial.trialBarHtml();
+  assert.match(bar, /class="trial-bar"/);
+  assert.ok(bar.includes('시범 데이터'), '시범 데이터 표기');
+  assert.ok(bar.includes(snap + ' 수집분입니다. 마감 여부는 나라장터 원문으로 확인하십시오.'), '문구 고정');
+  assert.equal(loadUi().trialBarHtml(), '', '실데이터에는 띠가 없다');
+  const ui = read('assets/js/bid-ui.js');
+  assert.match(ui, /function renderHeader[\s\S]*?trialBarHtml\(\)/, '머리말이 띠를 렌더한다');
+  for (const p of pages) assert.match(read(p), /U\.renderHeader\(/, p + ' 머리말 렌더');
+});
+
+test('11차: 시범 데이터면 메인이 오늘 마감·마감 임박을 숨기고 수집분 표만 보인다', () => {
+  const html = read('index.html');
+  assert.match(html, /id="soonSection"/);
+  assert.match(html, /soonSection"\)\.hidden = true/);
+  assert.match(html, /U\.SNAPSHOT\.slice\(5\) \+ " 수집 공고\(CGI 핵심\)"/, '수집일 제목');
+  assert.match(html, /"최근 수집 공고"/, '최근 수집 공고 제목');
+  assert.match(html, /var trial = U\.isTrialData\(\)/);
+  assert.match(html, /오늘 마감 <strong>/, '실데이터 분기의 기존 숫자는 유지');
+  assert.match(html, /if \(trial\) \{\s*coreSort\.sort\(/, '시범 데이터 핵심 표는 공고일 최신순');
+  assert.match(read('assets/css/bid.css'), /\.panel\[hidden\] \{ display: none; \}/);
+});
+
+test('11차: 목록 기본 정렬은 시범 데이터일 때 공고일 최신순이다', () => {
+  assert.match(read('bids.html'), /sort: U\.param\("sort"\) \|\| \(U\.isTrialData\(\) \? "new" : "close"\)/);
+  assert.match(read('bids.html'), /<option value="new">최신공고순<\/option>/);
+});
+
+test('11차: 마감 필터는 실제 오늘 기준이고 빈 기간에는 빈 상태 문구를 낸다', () => {
+  const snap = snapshotDate();
+  const U = loadUi(plusDays(snap, 14) + 'T12:00:00+09:00');
+  const sameDay = U.activeBids().filter((b) => String(b.cd || '').slice(0, 10) === snap);
+  assert.ok(sameDay.length > 0, '수집일 마감 표본');
+  for (const b of sameDay) assert.notEqual(U.ddOf(b).label, '오늘 마감', b.no);
+  assert.match(read('bids.html'), /선택한 기간\(" \+ PERIOD_LABELS\[st\.period\] \+ "\)에 마감하는 공고가 없습니다/);
+});
+
+test('11차: canonical·og:url 은 같은 clean URL 이다', () => {
+  for (const p of pages) {
+    const html = read(p);
+    const canon = (html.match(/<link rel="canonical" href="([^"]+)"/) || [])[1];
+    const og = (html.match(/<meta property="og:url" content="([^"]+)"/) || [])[1];
+    assert.ok(canon && og, p + ' canonical/og:url 존재');
+    assert.equal(canon, og, p + ' canonical·og:url 불일치');
+    assert.doesNotMatch(canon, /\.html$/, p + ' clean URL 아님: ' + canon);
+    assert.match(canon, /^https:\/\/cgishop\.pages\.dev\/bid\//, p);
+  }
+  assert.match(read('bid.html'), /canonical" href="https:\/\/cgishop\.pages\.dev\/bid\/bid"/, '상세는 자기 주소');
 });

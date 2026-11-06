@@ -5,16 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>관심공고 일정 | CGI 입찰정보</title>
 <meta name="description" content="관심공고의 공고일·투찰마감·개찰일을 월간 달력으로 보는 화면. 날짜는 한국시간 기준.">
-<link rel="canonical" href="https://cgishop.pages.dev/bid/calendar.html">
+<link rel="canonical" href="https://cgishop.pages.dev/bid/calendar">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="CGI 입찰정보">
 <meta property="og:title" content="관심공고 일정 | CGI 입찰정보">
 <meta property="og:description" content="관심공고의 공고일·투찰마감·개찰일을 월간 달력으로 보는 화면. 날짜는 한국시간 기준.">
-<meta property="og:url" content="https://cgishop.pages.dev/bid/calendar.html">
+<meta property="og:url" content="https://cgishop.pages.dev/bid/calendar">
 <meta name="theme-color" content="#1E3A6E">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2307913A'/%3E%3Ctext x='16' y='22' font-size='17' font-weight='800' text-anchor='middle' fill='white' font-family='Arial'%3EC%3C/text%3E%3C/svg%3E">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-<link rel="stylesheet" href="assets/css/bid.css?v=261106h">
+<link rel="stylesheet" href="assets/css/bid.css?v=261106i">
 </head>
 <body>
 <a class="skip-link" href="#main">본문으로 건너뛰기</a>
@@ -55,11 +55,11 @@
 
 <footer id="appFooter"></footer>
 
-<script src="config.js?v=261106h"></script>
-<script src="assets/data/bid-data.js?v=261106h"></script>
-<script src="assets/data/result-data.js?v=261106h"></script>
-<script src="assets/js/bid-ui.js?v=261106h"></script>
-<script src="assets/js/bid-personal.js?v=261106h"></script>
+<script src="config.js?v=261106i"></script>
+<script src="assets/data/bid-data.js?v=261106i"></script>
+<script src="assets/data/result-data.js?v=261106i"></script>
+<script src="assets/js/bid-ui.js?v=261106i"></script>
+<script src="assets/js/bid-personal.js?v=261106i"></script>
 <script>
 (function () {
   "use strict";
@@ -68,8 +68,8 @@
   U.renderHeader("watch");
   U.renderFooter();
 
-  /* 현재 달 (한국시간 오늘 기준) */
-  var todayKst = new Date(Date.now() + 9 * 3600000).toISOString().slice(0, 10);
+  /* 현재 달 (한국시간 오늘 기준 — 기준 시각 주입은 U.kstToday) */
+  var todayKst = U.kstToday();
   var cur = todayKst ? todayKst.slice(0, 7) : "1970-01"; // "YYYY-MM"
   var KIND_CLS = { "공고": "cal-ev-post", "투찰마감": "cal-ev-close", "개찰": "cal-ev-open" };
   var KIND_ORDER = ["공고", "투찰마감", "개찰"];

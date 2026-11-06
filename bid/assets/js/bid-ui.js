@@ -3,7 +3,9 @@
      g2b_openapi_collector.py 가 생성)
    - 낙찰 데이터: window.CGI_RESULT_DATA (bid/assets/data/result-data.js, 수집 전에는 null)
    - 연결 주소: window.CGI_BID_CONFIG (bid/config.js)
-   - 상태 표시·D-day는 데이터 기준일(snapshot) 대비로 계산한다. 수집이 매일 갱신되면 기준일도 함께 움직인다. */
+   - 상태 표시·D-day는 **실제 지금(한국 시간)** 대비로 계산한다. snapshot은 "수집일" 표시와
+     시범 데이터 판정에만 쓴다(수집일이 오늘보다 2일 이상 지나면 시범 데이터).
+   - 시험에서 기준 시각을 고정할 때는 window.CGI_BID_NOW(ISO 문자열 또는 epoch ms)를 준다. */
 (function () {
   "use strict";
 
@@ -41,11 +43,27 @@
     // 한국 날짜 기준으로 자른다(UTC로 자르면 오전 9시 이전 마감이 하루 앞당겨진다).
     return isNaN(t) ? null : Math.floor((t + KST_MS) / DAY_MS);
   }
-  /* snapshot 기준 D-day.
+  /* 기준 시각 = 실제 지금. window.CGI_BID_NOW 로 고정할 수 있다(시험·검증용). */
+  var NOW_FIXED = (function () {
+    var v = window.CGI_BID_NOW;
+    if (v == null || v === "") return null;
+    var ms = typeof v === "number" ? v : Date.parse(String(v));
+    return isNaN(ms) ? null : ms;
+  })();
+  function nowMs() { return NOW_FIXED != null ? NOW_FIXED : Date.now(); }
+  function nowDay() { return Math.floor((nowMs() + KST_MS) / DAY_MS); }
+  function kstToday() { return new Date(nowMs() + KST_MS).toISOString().slice(0, 10); }
+  /* 수집일 나이 → 시범 데이터 여부. 수집일이 오늘보다 2일 이상 전이면 시범 데이터로 본다. */
+  var SNAPSHOT_DAY = SNAPSHOT ? dayIndex(SNAPSHOT) : null;
+  var TRIAL_AFTER_DAYS = 2;
+  function dataAgeDays() { return SNAPSHOT_DAY == null ? 0 : nowDay() - SNAPSHOT_DAY; }
+  function isTrialData() { return dataAgeDays() >= TRIAL_AFTER_DAYS; }
+
+  /* 실제 기준 D-day.
      - 장기(상시) 접수 공고(lt: 다수공급자계약 등)는 D-day 대신 "상시 접수"로 보여 주고 마감 임박에서 뺀다.
      - 투찰 마감이 원본에 없는 공고(cd 없음)는 개찰일시를 기준으로 상태를 정한다(이전에는 모두 '지난 공고' 취급). */
   function ddState(closeIso, openIso, bid) {
-    var baseDay = dayIndex(SNAPSHOT, "13:00:00");
+    var baseDay = nowDay();
     if (bid && bid.lt) return { label: "상시 접수", cls: "dd-later", over: false, diff: 9999, lt: true };
     if (!closeIso) {
       var oDay = openIso ? dayIndex(openIso) : null;
@@ -113,6 +131,12 @@
     { href: "agency.html", label: "발주기관", key: "agency" },
     { href: "pricing.html", label: "요금 안내", key: "pricing" }
   ];
+  /* 시범 데이터 띠 — 수집일이 오늘보다 2일 이상 전이면 모든 화면 상단에 붙인다 */
+  function trialBarHtml() {
+    if (!isTrialData()) return "";
+    return '<div class="trial-bar" id="trialBar" role="status"><strong>시범 데이터</strong> — ' +
+      esc(SNAPSHOT) + " 수집분입니다. 마감 여부는 나라장터 원문으로 확인하십시오.</div>";
+  }
   function renderHeader(active) {
     var host = document.getElementById("appHeader");
     if (!host) return;
@@ -147,7 +171,7 @@
               (n.soon ? ' <span class="nav-soon">준비 중</span>' : "") + "</a>";
           }).join("") +
         "</div></nav>" +
-      "</div>";
+      "</div>" + trialBarHtml();
     var form = document.getElementById("topSearch");
     form.addEventListener("submit", function (ev) {
       ev.preventDefault();
@@ -249,11 +273,11 @@
     );
   }
 
-  /* 상단 숫자 카드용 집계 (기준일 대비) */
+  /* 상단 숫자 카드용 집계 (실제 오늘 기준) */
   function statsSummary() {
     var act = activeBids();
     var today = 0, inProgress = 0, weekOpen = 0;
-    var base = new Date(SNAPSHOT + "T00:00:00+09:00").getTime();
+    var base = nowDay() * DAY_MS - KST_MS; // 한국 시간 오늘 0시
     act.forEach(function (b) {
       var d = ddOf(b);
       if (d.diff === 0 && !d.noClose) today++;
@@ -266,11 +290,11 @@
     return { total: act.length, today: today, inProgress: inProgress, weekOpen: weekOpen };
   }
 
-  /* 개찰 단계: 기준일 대비 개찰일시로 판정(개찰 결과 데이터와 무관) */
+  /* 개찰 단계: 실제 오늘 대비 개찰일시로 판정(개찰 결과 데이터와 무관) */
   function openPhase(b) {
     if (!b.od) return "개찰 후 반영";
     var open = dayIndex(b.od);
-    var base = dayIndex(SNAPSHOT, "13:00:00");
+    var base = nowDay();
     if (open == null || base == null) return "개찰 후 반영";
     return open <= base ? "개찰 완료" : "개찰 대기";
   }
@@ -354,6 +378,8 @@
   window.BID_UI = {
     DATA: DATA, SNAPSHOT: SNAPSHOT, CFG: CFG, RESULTS_READY: RESULTS_READY,
     esc: esc, param: param, fmtWon: fmtWon, fmtDate: fmtDate, fmtDt: fmtDt,
+    nowMs: nowMs, kstToday: kstToday, dataAgeDays: dataAgeDays, isTrialData: isTrialData,
+    TRIAL_AFTER_DAYS: TRIAL_AFTER_DAYS, trialBarHtml: trialBarHtml,
     ddState: ddState, ddOf: ddOf, activeBids: activeBids, byNo: byNo, openPhase: openPhase,
     agencyStats: agencyStats, regionText: regionText, statsSummary: statsSummary,
     methodBadge: methodBadge, methodList: methodList, mkChips: mkChips, rateStatsPanel: rateStatsPanel,
