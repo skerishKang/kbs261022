@@ -12,36 +12,6 @@
   var CFG = window.CGI_BID_CONFIG || {};
   var RESULTS_READY = !!(window.CGI_RESULT_DATA && Array.isArray(window.CGI_RESULT_DATA.results) && window.CGI_RESULT_DATA.results.length);
 
-  /* ── 테마 (시스템 설정 기본, 버튼으로 직접 전환) ── */
-  function savedTheme() {
-    try { return localStorage.getItem("bid-theme") || ""; } catch (e) { return ""; }
-  }
-  function applyTheme(t) {
-    if (t === "light" || t === "dark") {
-      document.documentElement.dataset.theme = t;
-    } else {
-      delete document.documentElement.dataset.theme;
-    }
-  }
-  applyTheme(savedTheme());
-  window.bindThemeToggle = function (btn) {
-    if (!btn) return;
-    btn.addEventListener("click", function () {
-      var cur = document.documentElement.dataset.theme || savedTheme();
-      var dark = cur === "dark" || (!cur && window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches);
-      var next = dark ? "light" : "dark";
-      try { localStorage.setItem("bid-theme", next); } catch (e) {}
-      applyTheme(next);
-      paintThemeBtn(btn, next === "dark");
-    });
-    paintThemeBtn(btn, (document.documentElement.dataset.theme || savedTheme()) === "dark" ||
-      (!savedTheme() && window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches));
-  };
-  function paintThemeBtn(btn, isDark) {
-    btn.textContent = isDark ? "☀" : "☾";
-    btn.setAttribute("aria-label", isDark ? "라이트 모드로 전환" : "다크 모드로 전환");
-  }
-
   /* ── 공통 유틸 ── */
   function esc(s) {
     return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
@@ -154,13 +124,12 @@
             '<span class="brand-text"><strong>CGI 입찰정보</strong><small>COMPETITIVE BID PORTAL</small></span>' +
           '</a>' +
           '<form class="topbar-search" id="topSearch" role="search">' +
-            '<label class="sr-only" for="topSearchInput">공고 검색</label>' +
-            '<input type="search" id="topSearchInput" name="q" placeholder="공고명·발주기관·공고번호 검색" value="' + esc(param("q")) + '">' +
+            '<label class="sr-only" for="topSearchInput">공고 통합검색</label>' +
+            '<input type="search" id="topSearchInput" name="q" placeholder="공고명·발주기관·공고번호 통합검색" value="' + esc(param("q")) + '">' +
             '<button type="submit">검색</button>' +
           '</form>' +
           '<div class="topbar-actions">' +
             '<button type="button" class="icon-btn search-toggle" id="searchToggle" aria-expanded="false" aria-controls="mobileSearch" aria-label="공고 검색 열기">⌕</button>' +
-            '<button type="button" class="icon-btn" id="themeToggle"></button>' +
             '<a class="btn btn-ghost btn-sm btn-auth-text" href="pricing.html#signup">로그인</a>' +
             '<a class="btn btn-primary btn-sm" href="pricing.html#signup">회원가입</a>' +
           '</div>' +
@@ -200,7 +169,6 @@
       toggle.setAttribute("aria-expanded", "false");
       location.href = "bids.html?q=" + encodeURIComponent(q);
     });
-    window.bindThemeToggle(document.getElementById("themeToggle"));
   }
 
   function renderFooter() {
@@ -351,12 +319,45 @@
     );
   }
 
+  /* 업무형 목록 행 (10차 — 메인 3표는 mini, 목록 표는 전체 열)
+     목록 행은 2줄 고정: 1줄 제목+키워드 칩, 2줄 발주기관+공고번호.
+     칩을 2개로 줄이고 제목 줄 안에서 잘라 행 높이가 늘지 않게 한다. */
+  function bizRowHtml(b, seq, mini) {
+    var dd = ddOf(b);
+    var chips = (window.BID_PERS && b.cgi_match ? mkChips(b, mini ? 3 : 2) : "");
+    if (mini) {
+      return "<tr>" +
+        '<td class="t-title"><a href="bid.html?no=' + encodeURIComponent(b.no) + '">' + esc(b.t) + "</a>" +
+          '<span class="t-sub">' + esc(b.a) + ' <span class="num">' + esc(b.no) + "</span>" + chips + "</span>" +
+        "</td>" +
+        '<td class="t-right num">' + esc(fmtWon(b.ep)) + "</td>" +
+        '<td style="text-align:right">' + chipDd(b) + "</td>" +
+        "</tr>";
+    }
+    return "<tr>" +
+      '<td class="t-no num">' + (seq != null ? seq : "—") + "</td>" +
+      '<td class="t-cat">' + badgeCat(b.c) + (b.k && b.k !== "-" ? methodBadge(b) : "") + "</td>" +
+      '<td class="t-title">' +
+        '<span class="t-main"><a href="bid.html?no=' + encodeURIComponent(b.no) + '">' + esc(b.t) + "</a>" + chips + "</span>" +
+        '<span class="t-sub">' + esc(b.a) + ' <span class="num">' + esc(b.no) + "</span></span>" +
+      "</td>" +
+      '<td class="t-right num">' + esc(fmtWon(b.ep)) + "</td>" +
+      '<td class="t-region">' + esc(b.r || "—") + "</td>" +
+      '<td class="t-right num">' + esc(fmtDate(b.pd)) + "</td>" +
+      '<td class="t-right num">' + (dd.lt ? "상시 접수" : (b.cd ? esc(fmtDt(b.cd)) : "—")) + "</td>" +
+      '<td class="t-right num">' + esc(fmtDt(b.od)) + "</td>" +
+      '<td style="text-align:right">' + chipDd(b) + "</td>" +
+      (window.BID_PERS ? '<td class="t-star">' + window.BID_PERS.starBtnHtml(b.no) + "</td>" : "") +
+      "</tr>";
+  }
+
   window.BID_UI = {
     DATA: DATA, SNAPSHOT: SNAPSHOT, CFG: CFG, RESULTS_READY: RESULTS_READY,
     esc: esc, param: param, fmtWon: fmtWon, fmtDate: fmtDate, fmtDt: fmtDt,
     ddState: ddState, ddOf: ddOf, activeBids: activeBids, byNo: byNo, openPhase: openPhase,
     agencyStats: agencyStats, regionText: regionText, statsSummary: statsSummary,
     methodBadge: methodBadge, methodList: methodList, mkChips: mkChips, rateStatsPanel: rateStatsPanel,
+    bizRowHtml: bizRowHtml,
     renderHeader: renderHeader, renderFooter: renderFooter,
     badgeCat: badgeCat, badgeStatus: badgeStatus, chipDd: chipDd,
     cardHtml: cardHtml, bindSheet: window.bindSheet, CAT_ICONS: CAT_ICONS
