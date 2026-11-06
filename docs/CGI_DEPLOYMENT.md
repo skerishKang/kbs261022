@@ -8,6 +8,7 @@
 |---|---|---|
 | 쇼핑몰 | Cloudflare Pages `cgishop` → https://cgishop.pages.dev/site/ | Git 연동 없는 **수동 업로드** |
 | 홈페이지 | 같은 `cgishop` 배포의 `/website/` | https://cgishop.pages.dev/website/ |
+| 입찰정보 | 같은 `cgishop` 배포의 `/bid/` | https://cgishop.pages.dev/bid/ |
 | Worker(운영) | `cgi-quote-api` + D1 `cgi_quotes` | 견적·주문·결제·회원 API |
 | Worker(샌드박스) | `cgi-nicepay-sandbox` + D1 `cgi_quotes_sandbox` | `-c wrangler.sandbox.toml` |
 | 리다이렉트 전용 | Pages `cgihomepage` | `cgishop`으로 302만 한다. 콘텐츠를 올리지 않는다. |
@@ -126,6 +127,7 @@ wrangler pages deploy C:\temp\cgishop-deploy --project-name cgishop --branch mai
 <deploy-root>/
 ├── site/        (data/products.json·products.js·_source_* 제외)
 ├── website/
+├── bid/         (test/ 제외 — 화면 자산만)
 ├── _redirects   / → /site/ 302
 ├── _headers     X-Robots-Tag: noindex 등 보안 헤더
 └── 404.html
@@ -172,6 +174,7 @@ python tools/build_catalog_data.py --split-only
 ## 확인 체크리스트 (배포 후)
 
 - `/` → `/site/` 302, `/site/`·`/website/` 로드
+- `/bid/`(index·bids·bid·results·agency) 로드, 1440 첫 화면 표 행 8건 이상, 390 가로 넘침 0
 - 쇼핑몰 첫 화면 네트워크: `data/catalog.json`만 로드(11MB `products.js` 없음)
 - 목록·검색·상세·장바구니·견적 정상
 - 홈페이지 브랜드 건수 표시

@@ -4,9 +4,10 @@
 //   node tools/build_pages_root.mjs --out C:\temp\cgishop-deploy
 //   wrangler pages deploy C:\temp\cgishop-deploy --project-name cgishop --branch main
 //
-// 배포 루트에는 site/·website/와 루트의 _redirects·_headers·404.html 만 들어간다.
+// 배포 루트에는 site/·website/·bid/와 루트의 _redirects·_headers·404.html 이 들어간다.
 // site/data/products.json·products.js 는 빌드 입력이므로 배포에서 제외한다
 // (목록은 catalog.json, 상세는 details/part-*.json, 홈페이지는 brands.json).
+// bid/test/ 는 화면 자산이 아니므로 배포에서 제외한다.
 import { cpSync, existsSync, mkdirSync, readdirSync, rmSync, statSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -22,6 +23,7 @@ const EXCLUDE_DIRS = [
   join(ROOT, 'site', 'data', '_source_product_master_sample.csv'),
   join(ROOT, 'site', 'data', '_source_product-master.schema.json'),
   join(ROOT, 'site', 'data', '_source_sample-products.json'),
+  join(ROOT, 'bid', 'test'),
 ];
 
 function parseArgs(argv) {
@@ -75,6 +77,7 @@ if (target === ROOT || ROOT.startsWith(target)) {
 
 assertPresent('site');
 assertPresent('website');
+assertPresent('bid');
 assertPresent('_redirects');
 assertPresent('_headers');
 assertPresent('404.html');
@@ -86,6 +89,7 @@ rmSync(target, { recursive: true, force: true });
 mkdirSync(target, { recursive: true });
 cpSync(join(ROOT, 'site'), join(target, 'site'), { recursive: true, filter });
 cpSync(join(ROOT, 'website'), join(target, 'website'), { recursive: true, filter });
+cpSync(join(ROOT, 'bid'), join(target, 'bid'), { recursive: true, filter });
 for (const name of ['_redirects', '_headers', '404.html']) {
   cpSync(join(ROOT, name), join(target, name));
 }
@@ -96,4 +100,4 @@ const brandsBytes = statSync(join(target, 'site', 'data', 'brands.json')).size;
 console.log(`[pages-root] wrote ${target}`);
 console.log(`[pages-root] files=${total.files} bytes=${total.bytes}`);
 console.log(`[pages-root] catalog=${catalogBytes}B brands=${brandsBytes}B`);
-console.log('[pages-root] excluded site/data/products.json, site/data/products.js, _source_*');
+console.log('[pages-root] excluded site/data/products.json, site/data/products.js, _source_*, bid/test');
