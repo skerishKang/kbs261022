@@ -763,6 +763,18 @@ td.t-star { width: 36px; text-align: center; }
 .topbar-inner { padding: 4px 16px; }
 .brand-mark { width: 26px; height: 26px; font-size: 12px; }
 
+/* 11차: 시범 데이터 띠 — 수집일이 오늘보다 2일 이상 전이면 모든 화면 상단에 붙는다 */
+.trial-bar {
+  background: var(--cgi-warn-soft);
+  border-top: 1px solid var(--cgi-warn-line);
+  border-bottom: 1px solid var(--cgi-warn-line);
+  color: var(--cgi-warn);
+  font-size: 12.5px; font-weight: 600;
+  text-align: center; padding: 7px 14px; line-height: 1.45;
+}
+.trial-bar strong { font-weight: 800; letter-spacing: -.2px; }
+.panel[hidden] { display: none; }
+
 main.page { padding-top: 12px; padding-bottom: 40px; }
 .crumbs { margin-bottom: 4px; font-size: 12px; }
 .page-title { margin: 0 0 2px; font-size: 17px; letter-spacing: -.4px; }

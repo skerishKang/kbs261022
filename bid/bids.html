@@ -5,16 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>입찰공고 목록 | CGI 입찰정보</title>
 <meta name="description" content="나라장터 입찰공고를 구매·공사·용역·매각 분류와 지역·금액·마감 기간으로 걸러 보는 목록.">
-<link rel="canonical" href="https://cgishop.pages.dev/bid/bids.html">
+<link rel="canonical" href="https://cgishop.pages.dev/bid/bids">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="CGI 입찰정보">
 <meta property="og:title" content="입찰공고 목록 | CGI 입찰정보">
 <meta property="og:description" content="나라장터 입찰공고를 구매·공사·용역·매각 분류와 지역·금액·마감 기간으로 걸러 보는 목록.">
-<meta property="og:url" content="https://cgishop.pages.dev/bid/bids.html">
+<meta property="og:url" content="https://cgishop.pages.dev/bid/bids">
 <meta name="theme-color" content="#1E3A6E">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2307913A'/%3E%3Ctext x='16' y='22' font-size='17' font-weight='800' text-anchor='middle' fill='white' font-family='Arial'%3EC%3C/text%3E%3C/svg%3E">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-<link rel="stylesheet" href="assets/css/bid.css?v=261106h">
+<link rel="stylesheet" href="assets/css/bid.css?v=261106i">
 </head>
 <body>
 <a class="skip-link" href="#main">본문으로 건너뛰기</a>
@@ -157,11 +157,11 @@
 
 <footer id="appFooter"></footer>
 
-<script src="config.js?v=261106h"></script>
-<script src="assets/data/bid-data.js?v=261106h"></script>
-<script src="assets/data/result-data.js?v=261106h"></script>
-<script src="assets/js/bid-ui.js?v=261106h"></script>
-<script src="assets/js/bid-personal.js?v=261106h"></script>
+<script src="config.js?v=261106i"></script>
+<script src="assets/data/bid-data.js?v=261106i"></script>
+<script src="assets/data/result-data.js?v=261106i"></script>
+<script src="assets/js/bid-ui.js?v=261106i"></script>
+<script src="assets/js/bid-personal.js?v=261106i"></script>
 <script>
 (function () {
   "use strict";
@@ -186,7 +186,8 @@
     method: U.param("method") || "",
     star: U.param("star") === "1",
     rel: U.param("rel") === "1",
-    sort: U.param("sort") || "close",
+    /* 시범 데이터(수집일이 2일 이상 전)는 마감 D-day가 의미 없으므로 공고일 최신순이 기본 */
+    sort: U.param("sort") || (U.isTrialData() ? "new" : "close"),
     view: U.param("view") || "table",
     page: parseInt(U.param("page") || "1", 10) || 1
   };
@@ -565,7 +566,11 @@
     var view = effectiveView();
 
     if (!list.length) {
-      area.innerHTML = '<div class="empty-state"><strong>조건에 맞는 공고가 없습니다</strong>필터를 초기화하거나 다른 분류를 선택해 보십시오.</div>';
+      var emptyTitle = st.period
+        ? "선택한 기간(" + PERIOD_LABELS[st.period] + ")에 마감하는 공고가 없습니다"
+        : "조건에 맞는 공고가 없습니다";
+      area.innerHTML = '<div class="empty-state"><strong>' + U.esc(emptyTitle) +
+        "</strong>필터를 초기화하거나 다른 기간·분류를 선택해 보십시오.</div>";
       document.getElementById("pager").innerHTML = "";
       return;
     }
