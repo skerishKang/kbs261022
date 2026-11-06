@@ -11,11 +11,10 @@
 <meta property="og:title" content="공고 상세 | CGI 입찰정보">
 <meta property="og:description" content="나라장터 입찰공고 상세 정보 — 추정가격·투찰마감·개찰일시와 발주기관 개찰 통계.">
 <meta property="og:url" content="https://cgishop.pages.dev/bid/bids.html">
-<meta name="theme-color" content="#07913A">
+<meta name="theme-color" content="#1E3A6E">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2307913A'/%3E%3Ctext x='16' y='22' font-size='17' font-weight='800' text-anchor='middle' fill='white' font-family='Arial'%3EC%3C/text%3E%3C/svg%3E">
-<script>(function(){try{var t=localStorage.getItem("bid-theme");if(t==="light"||t==="dark"){document.documentElement.dataset.theme=t;}}catch(e){}})();</script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-<link rel="stylesheet" href="assets/css/bid.css?v=261106b">
+<link rel="stylesheet" href="assets/css/bid.css?v=261106h">
 </head>
 <body>
 <a class="skip-link" href="#main">본문으로 건너뛰기</a>
@@ -29,12 +28,6 @@
       <h1 id="bidTitle">—</h1>
     </div>
 
-    <div class="spec-hero stat-cards" style="margin-top:16px">
-      <div class="stat-card"><div class="stat-k">추정가격</div><div class="stat-num num price" id="heroPrice">—</div><div class="stat-sub" id="heroBudget"></div></div>
-      <div class="stat-card"><div class="stat-k">남은 시간</div><div id="heroDd"></div><div class="stat-sub" id="heroClose"></div></div>
-      <div class="stat-card"><div class="stat-k">발주기관</div><div class="stat-num" style="font-size:15px;letter-spacing:-.2px" id="heroAgency">—</div><div class="stat-sub">기관 페이지 연결</div></div>
-      <div class="stat-card"><div class="stat-k">분류</div><div class="stat-num" style="font-size:15px" id="heroCat">—</div><div class="stat-sub" id="heroKind"></div></div>
-    </div>
 
     <div class="two-col" style="margin-top:16px">
       <div style="display:flex;flex-direction:column;gap:16px">
@@ -169,12 +162,12 @@
 
 <footer id="appFooter"></footer>
 
-<script src="config.js?v=261106b"></script>
-<script src="assets/data/bid-data.js?v=261106b"></script>
-<script src="assets/data/result-data.js?v=261106b"></script>
-<script src="assets/data/rate-stats.js?v=261106b"></script>
-<script src="assets/js/bid-ui.js?v=261106b"></script>
-<script src="assets/js/bid-personal.js?v=261106b"></script>
+<script src="config.js?v=261106h"></script>
+<script src="assets/data/bid-data.js?v=261106h"></script>
+<script src="assets/data/result-data.js?v=261106h"></script>
+<script src="assets/data/rate-stats.js?v=261106h"></script>
+<script src="assets/js/bid-ui.js?v=261106h"></script>
+<script src="assets/js/bid-personal.js?v=261106h"></script>
 <script>
 (function () {
   "use strict";
@@ -258,23 +251,14 @@
     rBadge.textContent = "표본 부족";
   }
 
-  document.getElementById("heroPrice").textContent = U.fmtWon(b.ep);
-  document.getElementById("heroBudget").textContent = b.ab ? "예산금액 " + U.fmtWon(b.ab) : "예산금액 미공개";
-  var dd = U.ddOf(b);
-  document.getElementById("heroDd").innerHTML = '<span class="chip-dd ' + dd.cls + '">' + U.esc(dd.label) + "</span>";
-  document.getElementById("heroClose").textContent = b.lt ? "상시 접수 공고" : (b.cd ? "투찰 마감 " + U.fmtDt(b.cd) : "개찰 " + U.fmtDt(b.od));
-  var ag = document.getElementById("heroAgency");
-  ag.innerHTML = '<a href="agency.html?name=' + encodeURIComponent(b.a) + '">' + U.esc(b.a) + "</a>";
-  document.getElementById("heroCat").textContent = b.c + " · " + b.k;
-  document.getElementById("heroKind").textContent = b.s + " · 나라장터 " + U.fmtDate(b.pd) + " 공고";
 
   var rows = [
+    ["추정가격", '<span class="num">' + U.esc(U.fmtWon(b.ep)) + "</span>" + (b.ab ? '<span class="sub">예산금액 <span class="num">' + U.esc(U.fmtWon(b.ab)) + "</span></span>" : "")],
     ["공고번호", '<span class="num">' + U.esc(b.no) + "</span>"],
     ["발주기관", '<a href="agency.html?name=' + encodeURIComponent(b.a) + '">' + U.esc(b.a) + "</a>"]
   ];
   if (b.r) rows.push(["지역", U.esc(b.r)]);  // 지역 미판별 공고는 칸 자체를 숨긴다
   rows.push(
-    ["추정가격", '<span class="num">' + U.esc(U.fmtWon(b.ep)) + "</span>" + (b.ab ? '<span class="sub">예산금액 <span class="num">' + U.esc(U.fmtWon(b.ab)) + "</span></span>" : "")],
     ["공고일", '<span class="num">' + U.esc(U.fmtDate(b.pd)) + "</span>"],
     ["투찰 마감", b.lt ? "상시 접수(장기 계약 공고) · 원문 기준 " + '<span class="num">' + U.esc(U.fmtDt(b.cd)) + "</span>" : (b.cd ? '<span class="num">' + U.esc(U.fmtDt(b.cd)) + "</span>" : "원문에 표시 없음 — 나라장터 공고 원문 확인")],
     ["개찰 일시", '<span class="num">' + U.esc(U.fmtDt(b.od)) + "</span>"],

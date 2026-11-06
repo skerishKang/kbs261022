@@ -11,11 +11,10 @@
 <meta property="og:title" content="입찰공고 목록 | CGI 입찰정보">
 <meta property="og:description" content="나라장터 입찰공고를 구매·공사·용역·매각 분류와 지역·금액·마감 기간으로 걸러 보는 목록.">
 <meta property="og:url" content="https://cgishop.pages.dev/bid/bids.html">
-<meta name="theme-color" content="#07913A">
+<meta name="theme-color" content="#1E3A6E">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2307913A'/%3E%3Ctext x='16' y='22' font-size='17' font-weight='800' text-anchor='middle' fill='white' font-family='Arial'%3EC%3C/text%3E%3C/svg%3E">
-<script>(function(){try{var t=localStorage.getItem("bid-theme");if(t==="light"||t==="dark"){document.documentElement.dataset.theme=t;}}catch(e){}})();</script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-<link rel="stylesheet" href="assets/css/bid.css?v=261106b">
+<link rel="stylesheet" href="assets/css/bid.css?v=261106h">
 </head>
 <body>
 <a class="skip-link" href="#main">본문으로 건너뛰기</a>
@@ -26,12 +25,12 @@
     <a href="index.html">홈</a><span aria-hidden="true">›</span><span>입찰공고 목록</span>
   </nav>
 
-  <h1 style="margin:0 0 4px;font-size:22px;letter-spacing:-.4px">입찰공고 목록</h1>
-  <p style="margin:0 0 18px;color:var(--cgi-muted);font-size:13.5px">
+  <h1 class="page-title">입찰공고 목록</h1>
+  <p class="page-sub">
     공고 데이터 기준일 <span class="num" id="snapshotDate">—</span> · 기초금액과 낙찰하한율은 <a href="pricing.html">회원 전용</a>입니다.
   </p>
 
-  <div class="summary-strip" id="summaryStrip" aria-label="결과 요약"></div>
+  <p class="sum-line num" id="summaryStrip" aria-label="결과 요약"></p>
   <div class="chip-bar" id="chipBar" hidden></div>
   <div class="tabs" role="tablist" aria-label="분류" id="catTabs"></div>
 
@@ -40,100 +39,117 @@
       필터 <span class="num" id="filterCount"></span>
     </button>
     <div class="toolbar-right">
+      <label class="sort-k" for="sortSel">정렬</label>
+      <select id="sortSel" class="sort-sel">
+        <option value="close">마감임박순</option>
+        <option value="new">최신공고순</option>
+        <option value="pricedesc">금액 높은순</option>
+        <option value="priceasc">금액 낮은순</option>
+      </select>
       <a class="btn btn-outline btn-sm" href="calendar.html" title="관심공고 일정 캘린더">일정</a>
       <button type="button" class="btn btn-outline btn-sm" id="csvExport" title="현재 필터 결과를 CSV로 내려받습니다">CSV</button>
-      <div class="view-toggle" role="group" aria-label="보기 방식">
-        <button type="button" id="viewCard" aria-pressed="true">카드</button>
-        <button type="button" id="viewTable" aria-pressed="false">표</button>
+      <div class="view-toggle only-wide" role="group" aria-label="보기 방식">
+        <button type="button" id="viewTable" aria-pressed="true">표</button>
+        <button type="button" id="viewCard" aria-pressed="false">카드</button>
       </div>
     </div>
   </div>
 
   <form class="filterbar" id="filterBar" aria-label="상세 필터">
     <div class="sheet-drag" aria-hidden="true"></div>
-    <div class="filter-grid">
-      <div class="f-item">
-        <label for="fRegion">지역</label>
-        <select id="fRegion"><option value="">전체</option></select>
-      </div>
-      <div class="f-item">
-        <label for="fAgency">발주기관</label>
-        <input type="search" id="fAgency" placeholder="기관명 입력" list="agencyNames">
-        <datalist id="agencyNames"></datalist>
-      </div>
-      <div class="f-item">
-        <label for="fPrice">추정가격</label>
-        <select id="fPrice">
-          <option value="">전체</option>
-          <option value="u50">5천만원 미만</option>
-          <option value="50to100">5천만원~1억원</option>
-          <option value="100to1000">1억원~10억원</option>
-          <option value="over1000">10억원 이상</option>
-        </select>
-      </div>
-      <div class="f-item">
-        <label for="fPeriod">마감 기간</label>
-        <select id="fPeriod">
-          <option value="">전체</option>
-          <option value="today">오늘 마감</option>
-          <option value="week">7일 이내</option>
-          <option value="month">30일 이내</option>
-        </select>
-      </div>
-      <div class="f-item">
-        <label for="fMethod">입찰 방식</label>
-        <select id="fMethod"><option value="">전체</option><option value="competitive">경쟁입찰만</option></select>
-      </div>
-      <div class="f-item">
-        <label for="fStatus">공고 상태</label>
-        <select id="fStatus">
-          <option value="">전체</option>
-          <option>등록공고</option>
-          <option>재공고</option>
-          <option>변경공고</option>
-          <option>긴급공고</option>
-        </select>
-      </div>
-      <div class="f-item f-exclude">
-        <label for="fExclude">제외 발주처 <span class="num" id="excludeCount"></span></label>
-        <div class="ex-add">
-          <input type="text" id="fExclude" placeholder="기관명 일부 입력 후 추가" aria-describedby="excludeNote">
-          <button type="button" class="btn btn-outline btn-sm" id="addExclude">추가</button>
+    <div class="filter-grid2">
+      <div class="f-cell">
+        <label class="f-label" for="fCat">분류</label>
+        <div class="f-ctrl">
+          <select id="fCat">
+            <option value="전체">전체</option>
+            <option value="구매">구매</option><option value="공사">공사</option>
+            <option value="용역">용역</option><option value="매각">매각</option>
+            <option value="CGI 핵심">CGI 핵심</option>
+          </select>
         </div>
-        <div class="ex-chips" id="exChips"></div>
-        <p class="f-note" id="excludeNote">입력한 이름이 포함된 발주기관 공고를 목록에서 제외합니다(이 기기에 저장).</p>
       </div>
-      <div class="f-item f-staronly">
-        <label class="check-line"><input type="checkbox" id="fStarOnly"> 관심공고만 보기 <span class="num" id="starCountLabel"></span></label>
+      <div class="f-cell">
+        <label class="f-label" for="fMethod">입찰 방식</label>
+        <div class="f-ctrl"><select id="fMethod"><option value="">전체</option><option value="competitive">경쟁입찰만</option></select></div>
+      </div>
+      <div class="f-cell">
+        <label class="f-label" for="fRegion">지역</label>
+        <div class="f-ctrl"><select id="fRegion"><option value="">전체</option></select></div>
+      </div>
+      <div class="f-cell">
+        <label class="f-label" for="fAgency">발주기관</label>
+        <div class="f-ctrl"><input type="search" id="fAgency" placeholder="기관명 입력" list="agencyNames"><datalist id="agencyNames"></datalist></div>
+      </div>
+      <div class="f-cell">
+        <label class="f-label" for="fPrice">금액 범위</label>
+        <div class="f-ctrl">
+          <select id="fPrice">
+            <option value="">전체</option>
+            <option value="u50">5천만원 미만</option>
+            <option value="50to100">5천만원~1억원</option>
+            <option value="100to1000">1억원~10억원</option>
+            <option value="over1000">10억원 이상</option>
+          </select>
+        </div>
+      </div>
+      <div class="f-cell">
+        <label class="f-label" for="fStatus">공고 상태</label>
+        <div class="f-ctrl">
+          <select id="fStatus">
+            <option value="">전체</option><option>등록공고</option><option>재공고</option>
+            <option>변경공고</option><option>긴급공고</option>
+          </select>
+        </div>
+      </div>
+      <div class="f-cell">
+        <label class="f-label" id="periodLabel" for="fPeriod">기간</label>
+        <div class="f-ctrl">
+          <select id="fPeriod" aria-labelledby="periodLabel">
+            <option value="">전체</option>
+            <option value="today">오늘 마감</option>
+            <option value="week">7일 이내</option>
+            <option value="month">30일 이내</option>
+          </select>
+        </div>
+      </div>
+      <div class="f-cell">
+        <label class="f-label" for="fSearch">공고명</label>
+        <div class="f-ctrl"><input type="search" id="fSearch" placeholder="공고명·공고번호 입력"></div>
       </div>
     </div>
+
+    <div class="f-extra">
+      <span class="period-btns" role="group" aria-label="개월 단위 기간">
+        <button type="button" class="p-btn" data-period="m1">1개월</button>
+        <button type="button" class="p-btn" data-period="m3">3개월</button>
+        <button type="button" class="p-btn" data-period="m6">6개월</button>
+        <button type="button" class="p-btn" data-period="m12">12개월</button>
+      </span>
+      <label class="check-line"><input type="checkbox" id="fStarOnly"> 관심공고만 <span class="num" id="starCountLabel"></span></label>
+      <label class="check-line"><input type="checkbox" id="fRelated"> 검토 후보 포함(CGI 연관)</label>
+    </div>
+
+    <div class="pers-line">
+      <span class="pers-k">제외 발주처</span>
+      <input type="text" id="fExclude" placeholder="기관명 일부 입력 후 추가">
+      <button type="button" class="btn btn-outline btn-sm" id="addExclude">추가</button>
+      <span class="ex-chips" id="exChips"></span>
+      <span class="f-note num" id="excludeCount"></span>
+      <span class="pers-k">맞춤 조건 <span class="num" id="condCount"></span></span>
+      <input type="text" id="condName" placeholder="조건 이름(최대 40자)" maxlength="40">
+      <button type="button" class="btn btn-outline btn-sm" id="saveCond">저장</button>
+      <select id="condSel" aria-label="저장된 조건"><option value="">저장된 조건</option></select>
+      <button type="button" class="btn btn-outline btn-sm" id="loadCond">불러오기</button>
+      <button type="button" class="btn btn-outline btn-sm" id="delCond">삭제</button>
+      <span class="f-note" id="condMsg" role="status"></span>
+    </div>
+
     <div class="filter-actions">
-      <div class="cond-save">
-        <label class="sr-only" for="condName">조건 이름</label>
-        <input type="text" id="condName" placeholder="조건 이름(최대 40자)" maxlength="40">
-        <button type="button" class="btn btn-outline btn-sm" id="saveCond">조건 저장</button>
-        <label class="sr-only" for="condSel">저장된 조건</label>
-        <select id="condSel"><option value="">저장된 조건</option></select>
-        <button type="button" class="btn btn-outline btn-sm" id="loadCond">불러오기</button>
-        <button type="button" class="btn btn-outline btn-sm" id="delCond">삭제</button>
-        <span class="f-note" id="condMsg" role="status"></span>
-      </div>
-      <div class="filter-btns">
-        <button type="button" class="btn btn-outline" id="resetFilter">초기화</button>
-        <button type="button" class="btn btn-primary" id="applyFilter">결과 보기</button>
-      </div>
+      <button type="button" class="btn btn-outline" id="resetFilter">초기화</button>
+      <button type="button" class="btn btn-primary" id="applyFilter">검색</button>
     </div>
   </form>
-
-  <div class="sortbar">
-    <label for="sortSel">정렬</label>
-    <select id="sortSel">
-      <option value="close">마감임박순</option>
-      <option value="new">최신공고순</option>
-      <option value="pricedesc">금액 높은순</option>
-      <option value="priceasc">금액 낮은순</option>
-    </select>
-  </div>
 
   <div id="listArea"></div>
   <nav class="pager" id="pager" aria-label="페이지 이동"></nav>
@@ -141,11 +157,11 @@
 
 <footer id="appFooter"></footer>
 
-<script src="config.js?v=261106b"></script>
-<script src="assets/data/bid-data.js?v=261106b"></script>
-<script src="assets/data/result-data.js?v=261106b"></script>
-<script src="assets/js/bid-ui.js?v=261106b"></script>
-<script src="assets/js/bid-personal.js?v=261106b"></script>
+<script src="config.js?v=261106h"></script>
+<script src="assets/data/bid-data.js?v=261106h"></script>
+<script src="assets/data/result-data.js?v=261106h"></script>
+<script src="assets/js/bid-ui.js?v=261106h"></script>
+<script src="assets/js/bid-personal.js?v=261106h"></script>
 <script>
 (function () {
   "use strict";
@@ -154,7 +170,6 @@
   var PAGE_SIZE = 20;
   var CATS_ALL = ["전체", "구매", "공사", "용역", "매각"];
   var CGI_CORE = "CGI 핵심";
-  var CGI_RELATED = "CGI 연관";
 
   U.renderHeader("bids");
   U.renderFooter();
@@ -170,33 +185,32 @@
     status: U.param("status") || "",
     method: U.param("method") || "",
     star: U.param("star") === "1",
+    rel: U.param("rel") === "1",
     sort: U.param("sort") || "close",
-    view: U.param("view") || "card",
+    view: U.param("view") || "table",
     page: parseInt(U.param("page") || "1", 10) || 1
   };
   document.getElementById("fStarOnly").checked = st.star;
+  document.getElementById("fRelated").checked = st.rel;
 
-  /* 탭 (분류 + CGI 취급 품목) */
+  /* 탭: 전체 · 구매 · 공사 · 용역 · CGI 핵심 (연관은 '검토 후보 포함' 체크로만 — 10차) */
   var tabsEl = document.getElementById("catTabs");
   var act = U.activeBids();
-  // 데이터가 없는 분류 탭은 숨긴다(나라장터 수집분에는 매각 공고가 거의 없다).
   var CATS = CATS_ALL.filter(function (c) { return c === "전체" || c === st.cat || act.some(function (b) { return b.c === c; }); });
-  var coreCount = act.filter(function (b) { return b.cgi_tier === "core"; }).length;
-  var relatedCount = act.filter(function (b) { return b.cgi_tier === "related"; }).length;
-  CATS.push(CGI_CORE);   // CGI 등급 탭은 매칭 수와 무관하게 항상 보여 준다(8차)
-  CATS.push(CGI_RELATED);
+  if (CATS.indexOf(CGI_CORE) < 0) CATS.push(CGI_CORE);
+  /* 주소의 cat이 탭에 없으면(10차에서 뺀 'CGI 연관' 등) 빈 결과 대신 전체로 되돌린다 */
+  if (CATS.indexOf(st.cat) < 0) st.cat = "전체";
   tabsEl.innerHTML = CATS.map(function (c) {
-    var n = c === "전체" ? act.length
-      : c === CGI_CORE ? coreCount
-      : c === CGI_RELATED ? relatedCount
-      : act.filter(function (b) { return b.c === c; }).length;
-    return '<button type="button" class="tab' + (c === CGI_CORE || c === CGI_RELATED ? " tab-cgi" : "") + '" role="tab" data-cat="' + c + '" aria-selected="' + (st.cat === c) + '">' +
+    var n = c === "전체" ? act.length : (c === CGI_CORE ? act.filter(function (b) { return b.cgi_tier === "core"; }).length
+      : act.filter(function (b) { return b.c === c; }).length);
+    return '<button type="button" class="tab' + (c === CGI_CORE ? " tab-cgi" : "") + '" role="tab" data-cat="' + c + '" aria-selected="' + (st.cat === c) + '">' +
       U.esc(c) + '<span class="t-count num">' + n + "</span></button>";
   }).join("");
   tabsEl.addEventListener("click", function (e) {
     var btn = e.target.closest(".tab");
     if (!btn) return;
     st.cat = btn.dataset.cat; st.page = 1; sync(); render();
+    document.getElementById("fCat").value = st.cat;
     tabsEl.querySelectorAll(".tab").forEach(function (t) {
       t.setAttribute("aria-selected", String(t.dataset.cat === st.cat));
     });
@@ -224,9 +238,63 @@
   document.getElementById("fPrice").value = st.price;
   document.getElementById("fPeriod").value = st.period;
   document.getElementById("fStatus").value = st.status;
+  document.getElementById("fCat").value = st.cat;
+  document.getElementById("fSearch").value = st.q;
   document.getElementById("sortSel").value = st.sort;
 
-  /* 제외 발주처 (7차 — 이 기기에 저장, 발주기관명 부분일치로 제외) */
+  /* 하단 시트 (모바일) */
+  var bar = document.getElementById("filterBar");
+  var sheet = U.bindSheet(bar, document.getElementById("openFilter"), document.getElementById("applyFilter"));
+  document.getElementById("resetFilter").addEventListener("click", function () {
+    st.region = st.agency = st.price = st.period = st.status = st.method = st.q = "";
+    fMethod.value = ""; fRegion.value = "";
+    document.getElementById("fAgency").value = ""; document.getElementById("fPrice").value = "";
+    document.getElementById("fPeriod").value = ""; document.getElementById("fStatus").value = "";
+    document.getElementById("fSearch").value = "";
+    paintPeriodBtns("");
+    st.page = 1; sync(); render();
+  });
+  document.getElementById("applyFilter").addEventListener("click", function () { sheet.close(); });
+  ["fRegion", "fAgency", "fPrice", "fPeriod", "fStatus", "fMethod", "fCat", "fSearch"].forEach(function (id) {
+    document.getElementById(id).addEventListener("change", function () { readFilters(); st.page = 1; sync(); render(); });
+  });
+  document.getElementById("sortSel").addEventListener("change", function () {
+    st.sort = this.value; st.page = 1; sync(); render();
+  });
+  function readFilters() {
+    st.region = fRegion.value; st.agency = document.getElementById("fAgency").value.trim();
+    st.price = document.getElementById("fPrice").value; st.period = document.getElementById("fPeriod").value;
+    st.status = document.getElementById("fStatus").value; st.method = fMethod.value;
+    st.cat = document.getElementById("fCat").value || "전체";
+    st.q = document.getElementById("fSearch").value.trim();
+    paintPeriodBtns(st.period);
+    tabsEl.querySelectorAll(".tab").forEach(function (t) {
+      t.setAttribute("aria-selected", String(t.dataset.cat === st.cat));
+    });
+  }
+  /* 기간 개월 버튼 (10차 — 1·3·6·12개월) */
+  var PERIOD_DAYS = { m1: 30, m3: 90, m6: 180, m12: 365 };
+  function paintPeriodBtns(active) {
+    document.querySelectorAll(".p-btn").forEach(function (b) {
+      b.classList.toggle("on", b.dataset.period === active);
+    });
+  }
+  document.querySelectorAll(".p-btn").forEach(function (b) {
+    b.addEventListener("click", function () {
+      st.period = b.dataset.period;
+      document.getElementById("fPeriod").value = "";
+      paintPeriodBtns(st.period);
+      st.page = 1; sync(); render();
+    });
+  });
+  document.getElementById("fStarOnly").addEventListener("change", function () {
+    st.star = this.checked; st.page = 1; sync(); render();
+  });
+  document.getElementById("fRelated").addEventListener("change", function () {
+    st.rel = this.checked; st.page = 1; sync(); render();
+  });
+
+  /* 제외 발주처 (7차) */
   var exInput = document.getElementById("fExclude");
   var exChips = document.getElementById("exChips");
   function paintExcludes() {
@@ -246,6 +314,7 @@
     var m = n ? P.countExcluded(act) : 0;
     document.getElementById("excludeCount").textContent = n ? "(" + n + "곳 · 제외 " + m + "건)" : "";
     document.getElementById("starCountLabel").textContent = P.starCount() ? "(" + P.starCount() + ")" : "";
+    document.getElementById("condCount").textContent = "(" + P.listFilters().length + "/" + P.MAX_FILTERS + ")";
   }
   document.getElementById("addExclude").addEventListener("click", function () {
     var v = exInput.value.trim();
@@ -257,16 +326,14 @@
   exInput.addEventListener("keydown", function (e) {
     if (e.key === "Enter") { e.preventDefault(); document.getElementById("addExclude").click(); }
   });
-  document.getElementById("fStarOnly").addEventListener("change", function () {
-    st.star = this.checked; st.page = 1; sync(); render();
-  });
 
-  /* 맞춤 조건 저장 (7차 — 최대 10개, 이 기기에 저장) */
+  /* 맞춤 조건 저장 (7차) */
   var condSel = document.getElementById("condSel");
   var condMsg = document.getElementById("condMsg");
   function currentCond() {
     return { cat: st.cat, q: st.q, region: st.region, agency: st.agency, price: st.price,
-      period: st.period, status: st.status, method: st.method, sort: st.sort, view: st.view };
+      period: st.period, status: st.status, method: st.method, sort: st.sort, view: st.view,
+      star: st.star ? "1" : "", rel: st.rel ? "1" : "" };
   }
   function paintCondSel() {
     var list = P.listFilters();
@@ -282,7 +349,7 @@
     var r = P.saveFilter(document.getElementById("condName").value, currentCond());
     if (!r.ok) condNote({ "이름": "조건 이름을 1~40자로 입력하십시오.", "중복": "같은 이름의 조건이 이미 있습니다.", "최대": "최대 " + P.MAX_FILTERS + "개까지 저장합니다." }[r.reason] || "저장 실패");
     else { condNote("조건을 저장했습니다: " + document.getElementById("condName").value.trim(), true); document.getElementById("condName").value = ""; }
-    paintCondSel();
+    paintCondSel(); paintCounts();
   });
   document.getElementById("loadCond").addEventListener("click", function () {
     var name = condSel.value;
@@ -291,9 +358,15 @@
     if (!c) { condNote("조건을 찾을 수 없습니다."); return; }
     st.cat = c.cat || "전체"; st.q = c.q || ""; st.region = c.region || ""; st.agency = c.agency || "";
     st.price = c.price || ""; st.period = c.period || ""; st.status = c.status || ""; st.method = c.method || "";
-    st.sort = c.sort || "close"; st.view = c.view || "card"; st.page = 1;
+    st.sort = c.sort || "close"; st.view = c.view || "table"; st.page = 1;
+    st.star = c.star === "1"; st.rel = c.rel === "1";
+    document.getElementById("fStarOnly").checked = st.star;
+    document.getElementById("fRelated").checked = st.rel;
     readFiltersBack();
+    document.getElementById("fCat").value = st.cat;
+    document.getElementById("fSearch").value = st.q;
     document.getElementById("sortSel").value = st.sort;
+    paintPeriodBtns(st.period);
     tabsEl.querySelectorAll(".tab").forEach(function (t) { t.setAttribute("aria-selected", String(t.dataset.cat === st.cat)); });
     sync(); render();
     condNote("조건을 불러왔습니다: " + name, true);
@@ -302,12 +375,12 @@
     var name = condSel.value;
     if (!name) { condNote("삭제할 조건을 선택하십시오."); return; }
     P.deleteFilter(name);
-    paintCondSel();
+    paintCondSel(); paintCounts();
     condNote("조건을 삭제했습니다: " + name, true);
   });
   paintExcludes(); paintCondSel(); paintCounts();
 
-  /* CSV 내보내기 (7차 — 현재 필터 결과, UTF-8 BOM, 엑셀 호환) */
+  /* CSV 내보내기 (7차) */
   document.getElementById("csvExport").addEventListener("click", function () {
     var list = filtered();
     var headers = ["공고번호", "공고명", "발주기관", "분류", "추정가격(원)", "예산금액(원)", "투찰마감일시", "개찰일시", "상태", "원문링크"];
@@ -318,38 +391,18 @@
     P.downloadCsv("cgi-bids-" + U.SNAPSHOT + ".csv", headers, rows);
   });
 
-  /* 별표 (7차 — 목록에서 바로 저장/해제) */
+  /* 별표 (7차) */
   P.bindStars(document.getElementById("listArea"), function () { paintCounts(); });
 
-  /* 하단 시트 (모바일) */
-  var bar = document.getElementById("filterBar");
-  var sheet = U.bindSheet(bar, document.getElementById("openFilter"), document.getElementById("applyFilter"));
-  document.getElementById("resetFilter").addEventListener("click", function () {
-    st.region = st.agency = st.price = st.period = st.status = st.method = "";
-    fMethod.value = "";
-    fRegion.value = ""; document.getElementById("fAgency").value = "";
-    document.getElementById("fPrice").value = ""; document.getElementById("fPeriod").value = "";
-    document.getElementById("fStatus").value = "";
-    st.page = 1; sync(); render();
-  });
-  document.getElementById("applyFilter").addEventListener("click", function () { sheet.close(); });
-  ["fRegion", "fAgency", "fPrice", "fPeriod", "fStatus", "fMethod"].forEach(function (id) {
-    document.getElementById(id).addEventListener("change", function () { st.page = 1; readFilters(); sync(); render(); });
-  });
-  document.getElementById("sortSel").addEventListener("change", function () {
-    st.sort = this.value; st.page = 1; sync(); render();
-  });
-  function readFilters() {
-    st.region = fRegion.value; st.agency = document.getElementById("fAgency").value.trim();
-    st.price = document.getElementById("fPrice").value; st.period = document.getElementById("fPeriod").value;
-    st.status = document.getElementById("fStatus").value;
-    st.method = fMethod.value;
-  }
-
-  /* 보기 전환 */
+  /* 보기 전환 (10차 — 표 기본, 카드는 900px 미만에서만) */
   var vc = document.getElementById("viewCard"), vt = document.getElementById("viewTable");
   vc.addEventListener("click", function () { st.view = "card"; sync(); render(); });
   vt.addEventListener("click", function () { st.view = "table"; sync(); render(); });
+  var rsz;
+  window.addEventListener("resize", function () {
+    clearTimeout(rsz);
+    rsz = setTimeout(function () { render(); }, 200);
+  });
 
   function sync() {
     var p = new URLSearchParams();
@@ -361,26 +414,27 @@
     if (st.period) p.set("period", st.period);
     if (st.status) p.set("status", st.status);
     if (st.method) p.set("method", st.method);
-    if (st.sort !== "close") p.set("sort", st.sort);
-    if (st.view !== "card") p.set("view", st.view);
     if (st.star) p.set("star", "1");
+    if (st.rel) p.set("rel", "1");
+    if (st.sort !== "close") p.set("sort", st.sort);
+    if (st.view !== "table") p.set("view", st.view);
     if (st.page > 1) p.set("page", String(st.page));
     var qs = p.toString();
     history.replaceState(null, "", "bids.html" + (qs ? "?" + qs : ""));
     vc.setAttribute("aria-pressed", String(st.view === "card"));
     vt.setAttribute("aria-pressed", String(st.view === "table"));
-    var fActive = [st.region, st.agency, st.price, st.period, st.status, st.method].filter(Boolean).length;
+    var fActive = [st.region, st.agency, st.price, st.period, st.status, st.method, st.star ? "star" : "", st.rel ? "rel" : ""].filter(Boolean).length;
     document.getElementById("filterCount").textContent = fActive ? "(" + fActive + ")" : "";
     document.title = (st.cat === "전체" ? "입찰공고 목록" : st.cat + " 입찰공고") + " | CGI 입찰정보";
   }
 
   function filtered() {
-    // 제외 발주처는 다른 필터보다 먼저 적용한다(7차 — 설정에서 뺀 기관 공고는 목록 자체에서 뺀다).
     var list = P.applyExcludes(act.slice());
-    if (st.cat === CGI_CORE) list = list.filter(function (b) { return b.cgi_tier === "core"; });
-    else if (st.cat === CGI_RELATED) list = list.filter(function (b) { return b.cgi_tier === "related"; });
-    else if (st.cat !== "전체") list = list.filter(function (b) { return b.c === st.cat; });
-    if (st.star) list = list.filter(function (b) { return P.isStarred(b.no); });
+    if (st.cat === CGI_CORE) {
+      list = list.filter(function (b) { return st.rel ? b.cgi_match : b.cgi_tier === "core"; });
+    } else if (st.cat !== "전체") {
+      list = list.filter(function (b) { return b.c === st.cat; });
+    }
     if (st.q) {
       var q = st.q.toLowerCase();
       list = list.filter(function (b) {
@@ -405,6 +459,8 @@
         var d = U.ddOf(b);
         if (d.lt) return false;
         if (st.period === "today") return d.diff === 0 && !d.noClose;
+        var lim = PERIOD_DAYS[st.period];
+        if (lim) return !d.over && d.diff <= lim;
         if (st.period === "week") return !d.over && d.diff <= 7;
         if (st.period === "month") return !d.over && d.diff <= 30;
         return true;
@@ -413,6 +469,7 @@
     if (st.status) list = list.filter(function (b) { return b.s === st.status; });
     if (st.method === "competitive") list = list.filter(function (b) { return /경쟁/.test(b.k || ""); });
     else if (st.method) list = list.filter(function (b) { return b.k === st.method; });
+    if (st.star) list = list.filter(function (b) { return P.isStarred(b.no); });
     if (st.sort === "close") list.sort(function (a, b) {
       var da = U.ddOf(a), db = U.ddOf(b);
       var ka = da.over ? 2 : (da.lt ? 1 : 0);
@@ -426,35 +483,25 @@
     return list;
   }
 
-  function rowHtml(b) {
-    var catCell = U.badgeCat(b.c) + " " + U.methodBadge(b) + U.mkChips(b, 2);
-    return "<tr>" +
-      '<td class="t-star">' + P.starBtnHtml(b.no) + "</td>" +
-      '<td class="t-title"><a href="bid.html?no=' + encodeURIComponent(b.no) + '">' + U.esc(b.t) + "</a>" +
-        '<span style="font-size:11.5px;color:var(--cgi-faint)" class="num">' + U.esc(b.no) + "</span>" +
-        (b.cgi_match ? U.mkChips(b, 3) : "") + "</td>" +
-      "<td>" + catCell + "</td>" +
-      '<td class="t-agency">' + U.esc(b.a) + "</td>" +
-      '<td class="t-right num price">' + U.esc(U.fmtWon(b.ep)) + "</td>" +
-      '<td class="t-right num">' + U.esc(b.lt ? "상시 접수" : (b.cd ? U.fmtDt(b.cd) : "개찰 " + U.fmtDt(b.od))) + "</td>" +
-      "<td style=\"text-align:right\">" + U.chipDd(b) + "</td>" +
-      "</tr>";
+  function rowHtml(b, seq) {
+    return U.bizRowHtml(b, seq, false);
   }
 
   var PRICE_LABELS = { u50: "5천만원 미만", "50to100": "5천만원~1억원", "100to1000": "1억원~10억원", over1000: "10억원 이상" };
-  var PERIOD_LABELS = { today: "오늘 마감", week: "7일 이내", month: "30일 이내" };
+  var PERIOD_LABELS = { today: "오늘 마감", week: "7일 이내", month: "30일 이내", m1: "1개월 이내", m3: "3개월 이내", m6: "6개월 이내", m12: "12개월 이내" };
 
   function chipDefs() {
     var defs = [];
     if (st.q) defs.push({ k: "q", html: '<span class="f-k">검색어</span>' + U.esc(st.q) });
-    if (st.cat !== "전체") defs.push({ k: "cat", html: '<span class="f-k">분류</span>' + U.esc(st.cat), clear: "전체" });
+    if (st.cat !== "전체") defs.push({ k: "cat", html: '<span class="f-k">분류</span>' + U.esc(st.cat) });
     if (st.region) defs.push({ k: "region", html: '<span class="f-k">지역</span>' + U.esc(st.region) });
     if (st.agency) defs.push({ k: "agency", html: '<span class="f-k">발주기관</span>' + U.esc(st.agency) });
     if (st.price) defs.push({ k: "price", html: '<span class="f-k">추정가격</span>' + PRICE_LABELS[st.price] });
     if (st.period) defs.push({ k: "period", html: '<span class="f-k">마감 기간</span>' + PERIOD_LABELS[st.period] });
     if (st.status) defs.push({ k: "status", html: '<span class="f-k">공고 상태</span>' + U.esc(st.status) });
     if (st.method) defs.push({ k: "method", html: '<span class="f-k">입찰 방식</span>' + U.esc(st.method === "competitive" ? "경쟁입찰만" : st.method) });
-    if (st.star) defs.push({ k: "star", html: '<span class="f-k">관심</span>관심공고만', clear: false });
+    if (st.star) defs.push({ k: "star", html: '<span class="f-k">관심</span>관심공고만' });
+    if (st.rel) defs.push({ k: "rel", html: '<span class="f-k">CGI</span>검토 후보 포함' });
     return defs;
   }
 
@@ -465,10 +512,10 @@
     var exN = P.getExcludes().length;
     var exM = exN ? P.countExcluded(act) : 0;
     document.getElementById("summaryStrip").innerHTML =
-      '<div class="stat-big sm"><div class="s-k">결과</div><div class="s-n num">' + list.length + '건</div><div class="s-sub">적용 필터 기준</div></div>' +
-      '<div class="stat-big sm"><div class="s-k">평균 추정가격</div><div class="s-n num">' + (avg ? U.fmtWon(Math.round(avg)) : "—") + '</div><div class="s-sub">금액 공개 ' + withP.length + '건 기준</div></div>' +
-      '<div class="stat-big sm accent"><div class="s-k">마감 임박</div><div class="s-n num">' + soon + '건</div><div class="s-sub">7일 내 마감</div></div>' +
-      (exN ? '<div class="stat-big sm"><div class="s-k">제외 발주처</div><div class="s-n num">' + exN + '곳</div><div class="s-sub">제외된 공고 ' + exM + '건</div></div>' : "");
+      "결과 <strong>" + list.length + "건</strong>(적용 필터 기준)" +
+      " · 평균 추정가격 <strong>" + (avg ? U.fmtWon(Math.round(avg)) : "—") + "</strong>(금액 공개 " + withP.length + "건)" +
+      " · 마감 임박 <strong>" + soon + "건</strong>(7일 내)" +
+      (exN ? " · 제외 발주처 <strong>" + exN + "곳</strong>(제외된 공고 " + exM + "건)" : "");
     var defs = chipDefs();
     var bar = document.getElementById("chipBar");
     if (!defs.length) { bar.hidden = true; bar.innerHTML = ""; return; }
@@ -482,6 +529,7 @@
         if (d.k === "q") st.q = "";
         else if (d.k === "cat") st.cat = "전체";
         else if (d.k === "star") { st.star = false; document.getElementById("fStarOnly").checked = false; }
+        else if (d.k === "rel") { st.rel = false; document.getElementById("fRelated").checked = false; }
         else st[d.k] = "";
         st.page = 1;
         readFiltersBack();
@@ -490,23 +538,21 @@
     });
   }
 
-  /* 칩에서 필터를 지우면 select/input 값도 되돌린다 */
   function readFiltersBack() {
+    document.getElementById("fCat").value = st.cat;
     fRegion.value = st.region;
     document.getElementById("fAgency").value = st.agency;
     document.getElementById("fPrice").value = st.price;
     document.getElementById("fPeriod").value = st.period;
     document.getElementById("fStatus").value = st.status;
     fMethod.value = st.method;
-    if (st.cat !== "전체") {
-      tabsEl.querySelectorAll(".tab").forEach(function (t) {
-        t.setAttribute("aria-selected", String(t.dataset.cat === st.cat));
-      });
-    } else {
-      tabsEl.querySelectorAll(".tab").forEach(function (t) {
-        t.setAttribute("aria-selected", String(t.dataset.cat === "전체"));
-      });
-    }
+    tabsEl.querySelectorAll(".tab").forEach(function (t) {
+      t.setAttribute("aria-selected", String(t.dataset.cat === st.cat));
+    });
+  }
+
+  function effectiveView() {
+    return window.innerWidth < 900 ? "card" : st.view;
   }
 
   function render() {
@@ -516,18 +562,22 @@
     var pages = Math.max(1, Math.ceil(list.length / PAGE_SIZE));
     if (st.page > pages) st.page = pages;
     var slice = list.slice((st.page - 1) * PAGE_SIZE, st.page * PAGE_SIZE);
+    var view = effectiveView();
 
     if (!list.length) {
       area.innerHTML = '<div class="empty-state"><strong>조건에 맞는 공고가 없습니다</strong>필터를 초기화하거나 다른 분류를 선택해 보십시오.</div>';
       document.getElementById("pager").innerHTML = "";
       return;
     }
-    if (st.view === "table") {
+    if (view === "table") {
       area.innerHTML =
         '<div class="table-scroll"><table class="bid-table"><thead><tr>' +
-        '<th aria-label="관심"></th><th>공고명</th><th>분류</th><th>발주기관</th><th style="text-align:right">추정가격</th>' +
-        "<th style=\"text-align:right\">투찰마감</th><th style=\"text-align:right\">마감</th>" +
-        "</tr></thead><tbody>" + slice.map(rowHtml).join("") + "</tbody></table></div>";
+        '<th aria-label="번호">번호</th><th>분류</th><th>공고명 / 발주기관</th>' +
+        '<th style="text-align:right">추정가격</th><th>지역</th>' +
+        '<th style="text-align:right">공고일</th><th style="text-align:right">마감일시</th>' +
+        '<th style="text-align:right">개찰일시</th><th style="text-align:right">상태</th>' +
+        '<th aria-label="관심"></th>' +
+        "</tr></thead><tbody>" + slice.map(function (b, i) { return rowHtml(b, (st.page - 1) * PAGE_SIZE + i + 1); }).join("") + "</tbody></table></div>";
     } else {
       area.innerHTML = '<div class="grid-cards">' + slice.map(U.cardHtml).join("") + "</div>";
     }
