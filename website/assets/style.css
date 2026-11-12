@@ -475,10 +475,20 @@ ul.cred-items li {
 
 @media (max-width: 700px) {
   ul.org-div { grid-template-columns: 1fr; }
-  .biz-grid-full { grid-template-columns: 1fr; }
   .maint-list li { grid-template-columns: 1fr; }
   .mt-period { justify-self: start; }
   .rec-badge { min-width: 0; }
+
+  /* 사업 분야는 2열 작은 카드로 홈 길이를 줄인다 (#209 C1) */
+  .biz-grid-full { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .biz-card .field-media, .biz-card img { height: 96px; min-height: 96px; }
+  .field-icon-svg { width: 34px; height: 34px; }
+  .field-icon { padding: 10px; }
+  .field-icon-label { font-size: 10.5px; }
+  .biz-card h3 { font-size: 13.5px; margin: 10px 12px 4px; }
+  .biz-card h3 .en { font-size: 10.5px; margin-top: 2px; }
+  .biz-card .biz-no { padding: 10px 12px 0; font-size: 11px; }
+  .biz-card ul { padding: 0 12px 12px; font-size: 12px; }
 }
 
 /* ── #126 UI 개선 ───────────────────────────────────────────────────── */
@@ -507,6 +517,11 @@ ul.cred-items li {
 .field-media.has-photo .field-photo { opacity: 1; }
 .field-media.has-photo .field-icon { opacity: 0; }
 .biz-card .field-media { height: 172px; min-height: 172px; }
+
+/* 모바일 사업 분야 2열 작은 카드 — 위 700px 블록보다 뒤에서 다시 이긴다 (#209 C1) */
+@media (max-width: 700px) {
+  .biz-card .field-media, .biz-card img { height: 96px; min-height: 96px; }
+}
 .photo-grid .field-media { min-height: 200px; aspect-ratio: 3 / 2; }
 .ref-cat > .field-media { min-height: 150px; height: 150px; margin: 0 0 14px; border-radius: var(--cgi-radius); }
 .content-disclosure > summary { display: flex; align-items: center; justify-content: space-between; gap: 14px; cursor: pointer; list-style: none; }
@@ -518,6 +533,9 @@ ul.cred-items li {
 .history-more[open] > summary::after,
 .ref-more[open] > summary::after { content: "－"; }
 .history-more { margin-top: 14px; border-top: 1px solid var(--cgi-line); padding-top: 12px; }
+/* 사례·인증 접기 (#209 C1) */
+.ref-disclosure, .credentials.content-disclosure { margin-top: 18px; }
+.ref-disclosure > summary, .credentials.content-disclosure > summary { padding-bottom: 10px; border-bottom: 1px solid var(--cgi-line); }
 .history-more > summary, .ref-more > summary {
   display: flex; justify-content: space-between; gap: 12px; align-items: center;
   cursor: pointer; color: var(--cgi-green-dark); font-size: 13.5px; font-weight: 800;

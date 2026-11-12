@@ -351,7 +351,7 @@ def build(snapshot: str) -> dict:
     return {
         "snapshot": snapshot,
         "generated": date.today().isoformat(),
-        "source": f"나라장터(www.g2b.go.kr) 입찰공고 {snapshot} 수집분 · kbs261022 data/procurement",
+        "source": f"나라장터(www.g2b.go.kr) 입찰공고 {snapshot} 수집분",
         "counts": {
             "total": len(bids), "published": len(out), "cancelSkipped": skipped_cancel,
             "longTerm": long_term, "basis": basis_counter,

@@ -521,6 +521,16 @@
     renderRecords();
     renderMaintenance();
     renderCredentials();
+    collapseLongPanelsOnMobile();
+  }
+
+  /* 모바일 홈이 너무 길지 않게 사례·인증 패널을 접는다 (#209 C1). PC 는 펼친 채 둔다. */
+  function collapseLongPanelsOnMobile() {
+    if (!window.matchMedia('(max-width: 899px)').matches) { return; }
+    ['refDisclosure', 'credDisclosure'].forEach(function (id) {
+      var d = document.getElementById(id);
+      if (d) { d.open = false; }
+    });
   }
 
   /* ------------------------------------------------------ 시작 */
