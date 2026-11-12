@@ -145,7 +145,7 @@
           }).join('') +
           '</tbody></table>' +
         '</div>' +
-        '<p><a class="btn" href="#/quote-cart">견적 요청으로 접수하기</a> <a class="btn btn-secondary" href="#/products">상품 더 담기</a></p>'
+        '<p><a class="btn btn-primary" href="#/quote-cart">견적 요청으로 접수하기</a> <a class="btn btn-secondary" href="#/products">상품 더 담기</a></p>'
       );
       return;
     }
@@ -172,7 +172,7 @@
             }).join('') +
             '</tbody></table>' +
             '<p class="order-summary-note">금액은 서버에서 카탈로그 가격 기준으로 재계산됩니다. 고객님이 입력한 금액은 무시됩니다.</p>' +
-            '<div id="orderTotal" class="order-total"></div>' +
+            '<div id="orderTotal" class="order-sum-lines"></div>' +
           '</aside>' +
         '</div>' +
         '<div class="order-consents">' +
@@ -181,11 +181,33 @@
         '</div>' +
         '<div id="orderStatus"></div>' +
         '<div class="order-actions">' +
-          '<button type="submit" class="btn" disabled>주문 생성 후 결제</button>' +
+          '<button type="submit" class="btn btn-primary" disabled>주문 생성 후 결제</button>' +
           '<a class="btn btn-secondary" href="#/quote-cart">취소</a>' +
         '</div>' +
       '</form>'
     );
+
+    // 주문 화면 합계 (#209 A3): 상품 합계는 카탈로그 가격, 배송비는 서버 설정값(SHIPPING_FEE_DEFAULT).
+    var itemsTotal = items.reduce(function (sum, x) {
+      return sum + Number(x.product.price.value) * x.cart.qty;
+    }, 0);
+    var shippingFee = null; // 서버 설정을 확인하기 전까지는 미확정으로 둔다.
+    function renderOrderTotals() {
+      var host = app.querySelector('#orderTotal');
+      if (!host) return;
+      host.innerHTML =
+        '<div class="order-sum-line"><span>상품 합계</span><strong>' + money(itemsTotal) + '</strong></div>' +
+        '<div class="order-sum-line"><span>배송비</span><strong>' +
+          (shippingFee === null ? '주문 생성 시 확정' : (shippingFee > 0 ? money(shippingFee) : '무료')) + '</strong></div>' +
+        '<div class="order-sum-line order-sum-total"><span>총액</span><strong>' + money(itemsTotal + (shippingFee || 0)) + '</strong></div>';
+    }
+    renderOrderTotals();
+    api('GET', '/api/shop/config').then(function (res) {
+      if (res.ok && res.data && res.data.shipping_fee_default !== undefined) {
+        shippingFee = Number(res.data.shipping_fee_default) || 0;
+        renderOrderTotals();
+      }
+    });
 
     var form = app.querySelector('#orderForm');
     var termsEl = form.querySelector('[name="terms_consent"]');
@@ -278,7 +300,7 @@
         '</tbody></table>' +
         (order.status === 'awaiting_payment'
           ? '<div class="order-actions">' +
-              '<button type="button" class="btn" id="repayBtn">결제 다시 진행</button>' +
+              '<button type="button" class="btn btn-primary" id="repayBtn">결제 다시 진행</button>' +
               '<span class="muted">아직 결제되지 않은 주문입니다. 같은 주문번호로 결제를 이어갑니다(새 주문을 만들지 않습니다).</span>' +
             '</div><div id="repayHost"></div>'
           : '') +
@@ -325,7 +347,7 @@
         '<p class="order-total">결제 금액 <strong>' + money(pay.amount) + '</strong></p>' +
         '<div id="repayNicepayNotice"></div>' +
         '<div id="repayNicepayStatus"></div>' +
-        '<div class="order-actions"><button type="button" class="btn" id="repayNicepayPayBtn">결제창 열기</button></div>' +
+        '<div class="order-actions"><button type="button" class="btn btn-primary" id="repayNicepayPayBtn">결제창 열기</button></div>' +
       '</div>';
 
     var notice = host.querySelector('#repayNicepayNotice');
@@ -406,7 +428,8 @@
         '<div class="payment-order">' +
           '<p><strong>' + esc(order.id) + '</strong></p>' +
           '<p class="order-total">주문 금액 <strong>' + money(order.totals.total_amount) + '</strong></p>' +
-          '<p class="muted">공급가 ' + money(order.totals.supplied_amount) + ' + 부가세 ' + money(order.totals.vat_amount) + '</p>' +
+          '<p class="muted">상품 ' + money(order.totals.item_total) + ' + 배송비 ' + money(order.totals.shipping_fee) +
+            ' (공급가 ' + money(order.totals.supplied_amount) + ' + 부가세 ' + money(order.totals.vat_amount) + ' 포함)</p>' +
         '</div>' +
         '<div class="payment-methods">' +
           '<label><input type="radio" name="method" value="card" checked> 카드</label>' +
@@ -416,7 +439,7 @@
         '<div id="nicepayNotice"></div>' +
         '<div id="paymentStatus"></div>' +
         '<div class="order-actions">' +
-          '<button type="button" class="btn" id="payBtn">결제창 열기</button>' +
+          '<button type="button" class="btn btn-primary" id="payBtn">결제창 열기</button>' +
           '<a class="btn btn-secondary" href="#/quote-cart">나중에 하기</a>' +
         '</div>' +
       '</div>'

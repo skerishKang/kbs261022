@@ -29,21 +29,27 @@ test('P2-A: the pay/quote summary card is rendered inside the left cart column',
   const left = SRC.indexOf("'<div class=\"cart-left\">' +");
   const main = SRC.indexOf("'<div class=\"cart-main\">' +");
   const aside = SRC.indexOf("'<aside class=\"cart-request\">' +");
-  const pay = SRC.indexOf("'<div class=\"cart-pay-cta\">' +");
+  const payOpens = [...SRC.matchAll(/'<div class="cart-pay-cta[^"]*">' \+/g)].map((m) => m.index);
   assert.ok(left !== -1, 'render must open .cart-left');
-  assert.ok(left < main && main < pay && pay < aside,
+  assert.ok(left < main && main < aside,
     'order must be cart-left( cart-main, cart-pay-cta ) then cart-request — the summary may not sit in a second stretched grid row');
-  assert.equal(SRC.split("'<div class=\"cart-pay-cta\">' +").length, 2,
-    'exactly one pay CTA block — the old post-aside copy must not come back');
+  assert.equal(payOpens.length, 2, 'pay CTA has exactly the payable and inquiry branches (#209 A2)');
+  for (const at of payOpens) {
+    assert.ok(at > main && at < aside, 'every pay CTA branch stays inside the left column');
+  }
 });
 
-test('P2-A: mobile keeps the 담은 상품 → 견적 요청 → 결제 order via display:contents', () => {
+test('P2-A: mobile puts the primary CTA right below the cart items (#209 A2)', () => {
   assert.match(CSS, /\.cart-left \{ display: contents; \}/,
     'the ≤1099px block must dissolve .cart-left so the flex orders stay on main/request/pay');
   const tabletBlock = CSS.slice(CSS.indexOf('@media (max-width: 1099px)'), CSS.indexOf('@media (max-width: 899px)'));
   assert.match(tabletBlock, /\.cart-main \{ order: 1; \}/);
-  assert.match(tabletBlock, /\.cart-request \{ order: 2; position: static; \}/);
-  assert.match(tabletBlock, /\.cart-pay-cta \{ order: 3; \}/);
+  // 가격 확정: 결제 CTA가 주 → 담은 상품 바로 아래(order 2), 견적 폼은 뒤(order 3).
+  assert.match(tabletBlock, /\.cart-layout\.is-payable \.cart-pay-cta \{ order: 2; \}/);
+  assert.match(tabletBlock, /\.cart-layout\.is-payable \.cart-request \{ order: 3; \}/);
+  // 가격 문의 포함: 견적 요청이 주 → 견적 폼이 담은 상품 바로 아래(order 2).
+  assert.match(tabletBlock, /\.cart-layout\.is-inquiry \.cart-request \{ order: 2; \}/);
+  assert.match(tabletBlock, /\.cart-layout\.is-inquiry \.cart-pay-cta \{ order: 3; \}/);
 });
 
 test('P2-B: mobile qty stepper and 삭제 button reach the 44px touch size', () => {

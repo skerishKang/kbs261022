@@ -18,7 +18,7 @@
   var state = {
     products: [],
     meta: { product_count: 0, source_labels: {}, supplier_catalog_totals: {} },
-    route: { view: 'home', q: '', brands: [], cats: [], sites: [], sort: 'recent', page: 1, id: null },
+    route: { view: 'home', q: '', brands: [], cats: [], sites: [], sort: 'featured', page: 1, id: null },
     quoteCart: [],
     quoteServices: [],
     quoteCartServices: [],
@@ -114,7 +114,7 @@
     if (brands && brands.length) params.push('brand=' + encodeURIComponent(brands.join('|')));
     if (cats && cats.length) params.push('cat=' + encodeURIComponent(cats.join('|')));
     if (sites && sites.length) params.push('site=' + encodeURIComponent(sites.join('|')));
-    if (sort && sort !== 'recent') params.push('sort=' + encodeURIComponent(sort));
+    if (sort && sort !== 'featured') params.push('sort=' + encodeURIComponent(sort));
     return '#/products' + (params.length ? '?' + params.join('&') : '');
   }
   function countBy(list, keyFn) {
@@ -134,13 +134,42 @@
     if (at === bt) return a.name.localeCompare(b.name, 'ko');
     return at < bt ? 1 : -1;
   }
-  function showToast(message) {
+  /* 추천순 (#209 A5): 대표 상품(이미지·공개가·상태 태그 없음)을 앞에 두고,
+     리퍼·단순개봉·전시·박스손상 등 상태 태그 상품은 뒤로 보낸다. */
+  function featuredRank(p) {
+    if (splitConditionTag(p.name).tag) return 1;
+    if (!p.images.length) return 1;
+    if (!isPublicPriced(p)) return 1;
+    return 0;
+  }
+  function featuredCompare(a, b) {
+    var d = featuredRank(a) - featuredRank(b);
+    if (d) return d;
+    return recentCompare(a, b);
+  }
+  function showToast(message, action) {
     var box = document.getElementById('cgiToast');
     if (!box) return;
-    box.textContent = message;
+    box.innerHTML = '';
+    var text = document.createElement('span');
+    text.textContent = message;
+    box.appendChild(text);
+    if (action && action.label && action.href) {
+      var link = document.createElement('a');
+      link.className = 'toast-action';
+      link.href = action.href;
+      link.textContent = action.label;
+      box.appendChild(link);
+    }
     box.classList.add('is-on');
     if (toastTimer) clearTimeout(toastTimer);
-    toastTimer = setTimeout(function () { box.classList.remove('is-on'); }, 2400);
+    toastTimer = setTimeout(function () { box.classList.remove('is-on'); }, 3200);
+  }
+  function hideToast() {
+    var box = document.getElementById('cgiToast');
+    if (!box) return;
+    if (toastTimer) { clearTimeout(toastTimer); toastTimer = null; }
+    box.classList.remove('is-on');
   }
 
   /* --------------------------------------------------------------- images */
@@ -322,9 +351,9 @@
       return true;
     });
 
-    var sort = r.sort || 'recent';
-    // 검색어와 함께 기본 정렬이면 '최신순'이 아니라 관련도순으로 보인다.
-    var useRelevance = !!q && sort === 'recent';
+    var sort = r.sort || 'featured';
+    // 검색어와 함께 기본 정렬이면 '추천순'이 아니라 관련도순으로 보인다.
+    var useRelevance = !!q && (sort === 'featured' || sort === 'recent');
     var relevance = function (p) {
       var s = 0;
       var name = norm(p.name), model = norm(p.model), brand = norm(p._brand);
@@ -350,6 +379,7 @@
         return sort === 'price_asc' ? av - bv : bv - av;
       }
       if (sort === 'name') return a.name.localeCompare(b.name, 'ko');
+      if (sort === 'featured') return featuredCompare(a, b);
       return recentCompare(a, b);
     });
     return list;
@@ -497,11 +527,13 @@
     '</section>';
   }
 
+  var FEATURED_MIN_PRICE = 50000; // 홈 추천은 일정 가격 이상 대표 상품에서만 (#209 A5)
   function pickFeatured(limit) {
     var priority = ['SHURE', 'GENELEC', 'ALLEN&HEATH', 'PRESONUS', 'KLOTZ', 'NEUTRIK', 'APOGEE', 'ARTURIA'];
     var candidates = state.products.filter(function (p) {
       // 박스손상·리퍼 등 상태 태그 상품은 추천에서 제외 — 첫 화면은 정상 재고 면모.
-      return p.images.length && p.price && p.price.state === 'public' && !splitConditionTag(p.name).tag;
+      return p.images.length && p.price && p.price.state === 'public' &&
+        Number(p.price.value) >= FEATURED_MIN_PRICE && !splitConditionTag(p.name).tag;
     }).sort(recentCompare);
     var chosen = [], usedId = {}, usedBrand = {};
     priority.forEach(function (brand) {
@@ -643,6 +675,7 @@
           '<div class="list-toolbar">' +
             '<span class="result-count"><b>' + list.length.toLocaleString('ko-KR') + '</b>건' + (r.q ? ' · “' + esc(r.q) + '”' : '') + '</span>' +
             '<select class="sort-select" id="sortSelect" aria-label="정렬">' +
+              '<option value="featured"' + (r.sort === 'featured' ? ' selected' : '') + '>추천순</option>' +
               '<option value="recent"' + (r.sort === 'recent' ? ' selected' : '') + '>최신 등록순</option>' +
               '<option value="price_asc"' + (r.sort === 'price_asc' ? ' selected' : '') + '>가격 낮은순</option>' +
               '<option value="price_desc"' + (r.sort === 'price_desc' ? ' selected' : '') + '>가격 높은순</option>' +
@@ -708,6 +741,11 @@
     specRows = specRows.filter(function (s) {
       return !JUNK_SPEC_RE.test(String(s.label)) && !JUNK_SPEC_RE.test(String(s.value));
     });
+    // 공급처 사이트의 배송 정책·소비자가·원산지는 CGI 판매 정보가 아니다 — 표시 제외 (#209 A3).
+    var SUPPLIER_SPEC_RE = /^(배송비|소비자가|원산지)$/;
+    specRows = specRows.filter(function (s) {
+      return !SUPPLIER_SPEC_RE.test(String(s.label || '').trim());
+    });
 
     var thumbs = images.map(function (img, idx) {
       return '<button type="button" class="' + (idx === 0 ? 'is-active' : '') + '" data-gallery-index="' + idx + '" data-img-url="' + esc(img) + '" aria-label="이미지 ' + (idx + 1) + '">' +
@@ -771,6 +809,7 @@
           optionsHtml +
           '<div class="detail-block"><h3>판매 정보</h3><div class="source-box"><dl>' +
             '<dt>판매자</dt><dd>(주)시지아이 — 가격·재고·배송은 CGI 담당자 확인 후 안내</dd>' +
+            '<dt>배송 안내</dt><dd>배송비·배송 일정은 CGI 기준으로 안내됩니다. 담당자 확인 후 확정됩니다.</dd>' +
             '<dt>카테고리</dt><dd>' + esc(product._cat) + '</dd>' +
           '</dl></div></div>' +
           '<a class="back-link" href="' + esc(listUrl({})) + '">← 목록으로 돌아가기</a>' +
@@ -837,11 +876,13 @@
     if (existing) existing.qty += qty;
     else state.quoteCart.push({ id: productId, qty: qty });
     saveQuoteCart();
-    if (!silent) showToast('견적 목록에 추가했습니다. 상단 ‘견적 목록’에서 확인하세요.');
+    if (!silent) showToast('견적 목록에 추가했습니다.', { label: '견적 목록 보기', href: '#/quote-cart' });
+    updateHeaderCartCount();
   }
   function removeFromQuoteCart(productId) {
     state.quoteCart = state.quoteCart.filter(function (x) { return x.id !== productId; });
     saveQuoteCart();
+    updateHeaderCartCount();
   }
   function updateQuoteCartQty(productId, qty) {
     qty = Math.max(1, parseInt(qty || '1', 10) || 1);
@@ -849,7 +890,16 @@
       if (state.quoteCart[i].id === productId) { state.quoteCart[i].qty = qty; break; }
     }
     saveQuoteCart();
+    updateHeaderCartCount();
     return qty;
+  }
+  /* 머리말 장바구니 아이콘 개수 (#209 A4): PC·휴대폰 모두 항상 보인다. */
+  function updateHeaderCartCount() {
+    var el = document.querySelector('[data-cart-count]');
+    if (!el) return;
+    var count = cartItemCount(cartItems());
+    el.textContent = count > 99 ? '99+' : String(count);
+    el.hidden = count === 0;
   }
   function cartItems() {
     var items = state.quoteCart.map(function (c) {
@@ -967,7 +1017,7 @@
         '<h1>견적 목록</h1>' +
         '<p class="page-sub" id="cartSummary">' + cartSummaryText(items) + '</p>' +
       '</header>' +
-      '<div class="cart-layout">' +
+      '<div class="cart-layout ' + (allPublicPrice(items) ? 'is-payable' : 'is-inquiry') + '">' +
         '<div class="cart-left">' +
         '<div class="cart-main">' +
           '<section class="cart-panel">' +
@@ -990,9 +1040,10 @@
           '</section>' +
         '</div>' +
         (allPublicPrice(items)
-          ? '<div class="cart-pay-cta">' +
+          ? '<div class="cart-pay-cta is-primary">' +
               '<div class="cart-total-line"><span>주문 금액</span><strong id="cartTotalValue">' + money(cartTotal(items)) + '</strong></div>' +
               '<a class="btn btn-primary btn-block cart-pay-btn" href="#/checkout">결제 주문으로 계속</a>' +
+              '<button type="button" class="cart-alt-link" data-scroll-quote-form>견적 요청으로 접수</button>' +
             '</div>'
           : '<div class="cart-pay-cta cart-pay-inquiry">' +
               '<div class="cart-total-line"><span>최종 금액</span><strong>담당자 확인 후 안내</strong></div>' +
@@ -1023,7 +1074,9 @@
               '<p class="form-note">규격서·도면 등 첨부 파일이 있으면 접수 후 담당자 안내 메일로 보내주세요 (이 폼에서는 파일 업로드를 받지 않습니다).</p>' +
               '<label>요청 사항 <textarea name="note" rows="4" placeholder="설치 환경, 일정, 수량 등을 입력하세요."></textarea></label>' +
               '<label class="auth-check"><input type="checkbox" name="privacyConsent"> <span>[필수] 견적 응대 목적의 개인정보(회사·담당자·연락처·설치 장소) 수집·이용에 동의합니다. 목적 외 사용 금지, 문의 후 보관은 담당자 확인 범위로 한정합니다.</span></label>' +
-              '<button type="submit" class="btn btn-primary btn-block">견적 요청 보내기</button>' +
+              (allPublicPrice(items)
+                ? '<button type="submit" class="btn btn-block cart-quote-submit">견적 요청으로 접수</button>'
+                : '<button type="submit" class="btn btn-primary btn-block">견적 요청 보내기</button>') +
               '<p class="form-note">입력하신 정보는 견적 응대 목적으로만 사용됩니다.</p>' +
               '<div id="quoteCartResult" class="quote-result" role="status"></div>' +
             '</form>' +
@@ -1033,6 +1086,11 @@
       '<a class="back-link" href="#/products">← 상품 더 보기</a>';
 
     bindServiceInputs('cart');
+    var scrollBtn = app.querySelector('[data-scroll-quote-form]');
+    if (scrollBtn) scrollBtn.addEventListener('click', function () {
+      var target = document.getElementById('quoteCartForm');
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
     var form = document.getElementById('quoteCartForm');
     if (form) {
       form.addEventListener('submit', function (event) {
@@ -1237,14 +1295,14 @@
     if (qIndex !== -1) { query = raw.slice(qIndex + 1); raw = raw.slice(0, qIndex); }
     var params = new URLSearchParams(query);
     var parts = raw.split('/').filter(Boolean);
-    var route = { view: 'home', q: '', brands: [], cats: [], sites: [], sort: 'recent', page: 1, id: null };
+    var route = { view: 'home', q: '', brands: [], cats: [], sites: [], sort: 'featured', page: 1, id: null };
     if (parts[0] === 'products') {
       route.view = 'list';
       route.q = params.get('q') || '';
       route.brands = (params.get('brand') || '').split('|').filter(Boolean);
       route.cats = (params.get('cat') || '').split('|').filter(Boolean);
       route.sites = (params.get('site') || '').split('|').filter(Boolean);
-      route.sort = params.get('sort') || 'recent';
+      route.sort = params.get('sort') || 'featured';
       route.page = Math.max(1, parseInt(params.get('page') || '1', 10) || 1);
     } else if (parts[0] === 'product' && parts[1]) {
       route.view = 'detail';
@@ -1345,8 +1403,10 @@
       return;
     }
     state.route = parseHash();
+    hideToast(); // 화면이 바뀌면 담기 안내를 지운다 (#209 A4)
     applySiteConfig();
     updateHeader();
+    updateHeaderCartCount();
     var view = state.route.view;
     if (view === 'home') renderHome();
     else if (view === 'list') renderList();
@@ -2568,6 +2628,7 @@
   loadProducts().then(function () {
     loadQuoteCart();
     loadQuoteCartServices();
+    updateHeaderCartCount();
     var session = window.CGI_AUTH ? window.CGI_AUTH.refresh() : Promise.resolve(null);
     if (loadingBox && loadingBox.parentNode) loadingBox.parentNode.removeChild(loadingBox);
     return session.then(function () {

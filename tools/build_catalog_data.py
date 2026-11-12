@@ -103,6 +103,33 @@ def norm_brand(brand: str) -> str:
     return re.sub(r"\s+", " ", str(brand)).strip().upper()
 
 
+# 화면용 상품명 정리 (#209 A5): 공급처 문구 접두사([..])와 SCM 코드는 화면에서만 제거하고
+# 원본 products.json 의 name 은 그대로 둔다. 상품 상태 태그([리퍼비쉬] 등)는 사이트가
+# 배지로 분리해 보여 주므로 접두사에 남겨 둔다.
+CONDITION_DISPLAY_TAGS = {
+    "박스손상", "리퍼비쉬", "전시상품", "전시제품", "전시/단종 클리어런스",
+    "단순개봉", "교환상품", "미세흠집", "입고후발송", "커버 무료증정",
+}
+_SUPPLIER_PREFIX_RE = re.compile(r"^(?:\[([^\]]+)\]|\(([^)]+)\))\s*")
+_SCM_CODE_RE = re.compile(r"\bSCM[-_]?\s?\d+(?:\s*,\s*SCM[-_]?\s?\d+)*\b", re.IGNORECASE)
+
+
+def display_name(raw: str) -> str:
+    """원본 상품명에서 화면에 노출할 이름만 만든다 (products.json 은 불변)."""
+    original = re.sub(r"\s+", " ", str(raw or "")).strip()
+    s = _SCM_CODE_RE.sub(" ", original)
+    while True:
+        m = _SUPPLIER_PREFIX_RE.match(s)
+        if not m:
+            break
+        tag = (m.group(1) or m.group(2) or "").strip()
+        if tag in CONDITION_DISPLAY_TAGS:
+            break
+        s = s[m.end():].strip()
+    s = re.sub(r"\s{2,}", " ", s).strip(" -·,")
+    return s or original
+
+
 def split_category(raw: str) -> list[str]:
     """'상품분류[전체보기] > 마이크> 무선마이크' / '마이크 | 브랜드> SHURE' -> ['마이크','무선마이크',...]"""
     if not raw:
@@ -420,7 +447,7 @@ def to_light(product: dict, shard: int) -> dict:
     images = product.get("images") or []
     return {
         "id": product.get("id", ""),
-        "name": product.get("name", ""),
+        "name": display_name(product.get("name", "")),
         "brand": product.get("brand", ""),
         "brand_raw": product.get("brand_raw", ""),
         "brand_norm": product.get("brand_norm", ""),

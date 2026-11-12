@@ -3109,6 +3109,13 @@ const worker = {
 
     // ---------------- payment gateway readouts and NICEPAY callbacks ----------------
 
+    // 공개 상점 설정 (#209 A3): 주문 화면이 배송비 기준값을 미리 보여 줄 수 있도록 한다.
+    if (url.pathname === '/api/shop/config' && request.method === 'GET') {
+      return json({
+        shipping_fee_default: toNonNegInt(env.SHIPPING_FEE_DEFAULT, 0),
+      });
+    }
+
     if (url.pathname === '/api/payments/config' && request.method === 'GET') {
       const active = pg;
       // Every provider answers 503 when its adapter is unusable. Toss used to
