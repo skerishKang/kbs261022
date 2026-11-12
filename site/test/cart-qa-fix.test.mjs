@@ -75,7 +75,7 @@ test('P3: small green text uses the AA-passing dark green', () => {
 });
 
 test('P3: the header auth badge keeps its own color and size', () => {
-  assert.match(CSS, /\.auth-links-member a\.auth-badge-unverified \{ color: #a04000; font-size: 10\.5px; \}/,
+  assert.match(CSS, /\.auth-links-member a\.auth-badge-unverified \{ color: #a04000; font-size: 12px; \}/,
     'without this the white .auth-links-member a rule left 인증 대기 unreadable (1.1:1)');
-  assert.match(CSS, /\.auth-links-member a\.auth-badge-verified \{ color: var\(--cgi-ok\); font-size: 10\.5px; \}/);
+  assert.match(CSS, /\.auth-links-member a\.auth-badge-verified \{ color: var\(--cgi-ok\); font-size: 12px; \}/);
 });

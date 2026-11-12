@@ -38,6 +38,9 @@ function mapCategory(name) {
     for (const kw of rule.keywords) {
       if (name.includes(kw)) return rule.group;
     }
+    for (const kw of rule.exactKeywords || []) {
+      if (name === kw) return rule.group;
+    }
   }
   return map.fallback;
 }
@@ -69,7 +72,7 @@ test('B1: 화면·필터는 대분류를 쓰고 검색 텍스트는 원본 분�
   // 브랜드 코너 그룹핑은 더는 만들지 않는다.
   assert.match(catalogJs, /브랜드명 분류 코너는 더는 만들지 않는다/);
   // 매핑표는 페이지에서 읽는다.
-  assert.match(indexHtml, /<script src="data\/category_map.js"><\/script>/);
+  assert.match(indexHtml, /<script src="data\/category_map.js\?v=[0-9a-z]+"><\/script>/);
 });
 
 /* ------------------------------- B2 ------------------------------- */
