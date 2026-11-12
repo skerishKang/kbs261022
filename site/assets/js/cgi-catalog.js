@@ -328,10 +328,27 @@
     p._search = norm(p.search_text || [p.name, p.model, p.brand, p.brand_raw, p.manufacturer, categoryLabel(p),
       (p.category_path || []).join(' '),
       (p.specs || []).map(function (s) { return s.label + ' ' + s.value; }).join(' ')].join(' '));
-    p._cat = categoryLabel(p);
+    p._cat = mapCategory(categoryLabel(p));
     p._brand = displayBrand(p);
     state.brandSet[p._brand.toUpperCase()] = true;
     return p;
+  }
+
+  /* 공급처 분류 211종을 대분류로 묶는다 (#209 B1). 매핑표는 site/data/category_map.js.
+     원본 분류는 _search(검색 대상)에 그대로 남고, 화면·필터는 대분류만 쓴다. */
+  var CAT_MAP = window.CGI_CATEGORY_MAP || null;
+  function mapCategory(label) {
+    if (!CAT_MAP) return label;
+    var name = String(label || '');
+    if (CAT_MAP.exact && Object.prototype.hasOwnProperty.call(CAT_MAP.exact, name)) return CAT_MAP.exact[name];
+    var rules = CAT_MAP.rules || [];
+    for (var i = 0; i < rules.length; i++) {
+      var keywords = rules[i].keywords || [];
+      for (var j = 0; j < keywords.length; j++) {
+        if (name.indexOf(keywords[j]) !== -1) return rules[i].group;
+      }
+    }
+    return CAT_MAP.fallback || label;
   }
 
   /* --------------------------------------------------------------- filter */
@@ -460,7 +477,8 @@
   /** 카테고리 필터 표시 그룹핑(표시 전용): 값이 브랜드명과 동일하면 공급처 브랜드 코너로 묶는다.
    *  원본 데이터·식별자·필터 동작(체크박스/검색)은 변경하지 않는다. */
   function catGroupFn(value) {
-    return state.brandSet[String(value).toUpperCase()] ? '브랜드 코너 · 브랜드 분류' : '일반 카테고리';
+    // 대분류 재편(#209 B1)으로 브랜드명 분류 코너는 더는 만들지 않는다.
+    return '일반 카테고리';
   }
 
   function facetBlock(title, name, values, counts, selected, groupFn) {
@@ -598,7 +616,6 @@
     var brands = orderedFacetValues(brandCounts, []);
     var cats = orderedFacetValues(catCounts, []);
     var priced = state.products.filter(function (p) { return p.price && p.price.state === 'public'; }).length;
-    var inquiry = state.products.filter(function (p) { return !p.price || p.price.state !== 'public'; }).length;
     var featured = pickFeatured(8);
     var quickCategories = cats.slice(0, 4).map(function (v) { return chipHtml(v, catCounts[v], 'cat'); }).join('');
     var quickBrands = brands.slice(0, 4).map(function (v) { return chipHtml(v, brandCounts[v], 'brand'); }).join('');
@@ -623,7 +640,6 @@
         '<div class="stat-card"><dt>전체 상품</dt><dd>' + total.toLocaleString('ko-KR') + '<small>브랜드·카테고리 기준</small></dd></div>' +
         '<div class="stat-card"><dt>취급 브랜드</dt><dd>' + brands.length + '<small>카탈로그 등록 브랜드</small></dd></div>' +
         '<div class="stat-card"><dt>가격</dt><dd>' + priced.toLocaleString('ko-KR') + '<small>가격은 변동될 수 있습니다</small></dd></div>' +
-        '<div class="stat-card"><dt>가격 문의</dt><dd>' + inquiry.toLocaleString('ko-KR') + '<small>담당자 확인 후 안내</small></dd></div>' +
       '</dl>' +
 
       chipSection('브랜드별 찾기', brands, brandCounts, 'brand', HOME_CHIP_LIMIT) +

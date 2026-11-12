@@ -155,9 +155,10 @@
         '<div class="order-columns">' +
           '<fieldset class="order-fieldset">' +
             '<legend>결제자 · 배송 정보</legend>' +
-            '<label>회사/기관명<input name="company" required maxlength="200" placeholder="(주)예시 회사"></label>' +
-            '<label>담당자명<input name="name" required maxlength="100" placeholder="홍길동"></label>' +
-            '<label>연락처<input name="phone" required maxlength="40" inputmode="tel" placeholder="010-0000-0000"></label>' +
+            '<p class="form-note order-required-note"><b class="req-mark" aria-hidden="true">*</b> 표시는 필수 입력입니다.</p>' +
+            '<label>회사/기관명 <b class="req-mark" aria-hidden="true">*</b><input name="company" required maxlength="200" placeholder="(주)예시 회사"></label>' +
+            '<label>담당자명 <b class="req-mark" aria-hidden="true">*</b><input name="name" required maxlength="100" placeholder="홍길동"></label>' +
+            '<label>연락처 <b class="req-mark" aria-hidden="true">*</b><input name="phone" required maxlength="40" inputmode="tel" placeholder="010-0000-0000"></label>' +
             '<label>이메일<input name="email" type="email" maxlength="200" placeholder="you@company.com"></label>' +
             '<label>배송/설치 주소<input name="addr" maxlength="200" placeholder="도로명 주소"></label>' +
             '<label>상세 주소<input name="addr_detail" maxlength="200"></label>' +
@@ -178,6 +179,7 @@
         '<div class="order-consents">' +
           '<label class="auth-check"><input type="checkbox" name="terms_consent"> <span>주문 내용과 구매 조건을 확인했으며 결제 진행에 동의합니다. (필수)</span></label>' +
           '<label class="auth-check"><input type="checkbox" name="privacy_consent"> <span>개인정보 수집·이용(주문·배송 목적)에 동의합니다. (필수) <a href="privacy.html" target="_blank" rel="noopener">개인정보처리방침</a></span></label>' +
+          '<p class="form-note order-pay-note">결제 수단은 카드·계좌이체·휴대폰이며, 주문 생성 후 결제창에서 선택합니다.</p>' +
         '</div>' +
         '<div id="orderStatus"></div>' +
         '<div class="order-actions">' +
