@@ -408,6 +408,10 @@
       for (var j = 0; j < keywords.length; j++) {
         if (name.indexOf(keywords[j]) !== -1) return rules[i].group;
       }
+      var exactKeywords = rules[i].exactKeywords || [];
+      for (var k = 0; k < exactKeywords.length; k++) {
+        if (name === exactKeywords[k]) return rules[i].group;
+      }
     }
     return CAT_MAP.fallback || label;
   }
@@ -725,7 +729,7 @@
       '<dl class="stat-row">' +
         '<div class="stat-card"><dt>전체 상품</dt><dd>' + total.toLocaleString('ko-KR') + '<small>브랜드·카테고리 기준</small></dd></div>' +
         '<div class="stat-card"><dt>취급 브랜드</dt><dd>' + brandStat + '<small>카탈로그 등록 브랜드</small></dd></div>' +
-        '<div class="stat-card"><dt>가격</dt><dd>' + priced.toLocaleString('ko-KR') + '<small>가격은 변동될 수 있습니다</small></dd></div>' +
+        '<div class="stat-card"><dt>가격 공개 상품</dt><dd>' + priced.toLocaleString('ko-KR') + '<small>가격은 변동될 수 있습니다</small></dd></div>' +
       '</dl>' +
 
       chipSection('브랜드별 찾기', brands, brandCounts, 'brand', HOME_CHIP_LIMIT) +
@@ -1157,13 +1161,11 @@
               '<tbody>' + rows + '</tbody>' +
             '</table>' +
             '<details class="cart-summary">' +
-              '<summary>요청 내용 미리보기 · 복사/다운로드</summary>' +
+              '<summary>요청 내용 미리보기 · 복사</summary>' +
               '<div class="cart-summary-body">' +
                 '<pre id="quoteCartText" class="quote-text">' + esc(quoteText) + '</pre>' +
                 '<div class="cart-summary-actions">' +
                   '<button type="button" class="btn btn-secondary" data-action="copy-cart">요약 복사</button>' +
-                  '<button type="button" class="btn btn-secondary" data-action="download-json">JSON</button>' +
-                  '<button type="button" class="btn btn-secondary" data-action="download-csv">CSV</button>' +
                 '</div>' +
               '</div>' +
             '</details>' +
@@ -1400,6 +1402,13 @@
           '<li>가격은 변동될 수 있으며, 최종 판매가는 담당자 확인 후 안내됩니다.</li>' +
           '<li>가격이 표시되지 않은 상품은 <strong>가격 문의</strong>로 확인하실 수 있습니다.</li>' +
           '<li>재고·배송 일정은 담당자 확인 후 안내드립니다.</li>' +
+        '</ul>' +
+        '<h2>바로 구매 (가격 공개 상품)</h2>' +
+        '<ul>' +
+          '<li>가격이 공개된 상품은 <strong>담기 → 결제 주문 → 결제</strong> 흐름으로 바로 주문하실 수 있습니다.</li>' +
+          '<li>상품 상세에서 수량과 추가 서비스를 정해 <strong>견적 목록에 추가</strong>를 누릅니다.</li>' +
+          '<li>견적 목록에서 주문 금액을 확인하고 <strong>결제 주문으로 계속</strong>을 누르면 주문이 만들어집니다.</li>' +
+          '<li>주문 화면에서 결제 수단을 선택해 결제를 진행합니다. 결제 완료 후 주문 내역에서 확인할 수 있습니다.</li>' +
         '</ul>' +
         '<h2>견적 요청 방법</h2>' +
         '<ul>' +
@@ -1702,8 +1711,6 @@
       if (action === 'copy-receipt') { window.cgiCopyReceiptNumber(); return; }
       if (action === 'toggle-quote') { toggleQuoteDetail(target); return; }
       if (action === 'reload-quotes') { renderMyQuotes(document.getElementById('myPageBody')); return; }
-      if (action === 'download-json') { window.cgiDownloadQuoteCart(); return; }
-      if (action === 'download-csv') { window.cgiDownloadQuoteCartCsv(); return; }
       if (action === 'copy-quote') { window.cgiCopyQuote(); return; }
     }
 
@@ -2044,7 +2051,12 @@
           '<label class="auth-check"><input type="checkbox" name="agreePrivacy"> <span>[필수] <a href="privacy.html" target="_blank" rel="noopener">개인정보 수집·이용 안내</a>에 동의합니다.</span></label>' +
         '</div>' +
         '<button type="submit" class="btn btn-primary btn-block" data-auth-submit="signup">회원가입</button>' +
-      '</form>', true);
+      '</form>' +
+      '<div class="auth-divider"><span>또는</span></div>' +
+      '<button type="button" class="btn btn-google btn-block" data-auth-submit="google">' +
+        '<svg viewBox="0 0 24 24"><path d="M12 11h3.02c.69-1.02 1.42-1.58 2.44-1.64v-2.87c-1.13-.12-2.61.38-3.8 1.66L12 6.6v4.4z" fill="#4285F4"/><path d="M11.4 14.5l-3.5 2.5c-1.17-.82-1.92-2.24-1.92-3.89 0-.7.18-1.38.5-1.97L2.56 7.6A8.5 8.5 0 0 0 1 12.1c0 4.1 2.9 7.53 6.8 8.35l4.6-5.95z" fill="#34A853"/><path d="M20.1 8.5c-.38-.7-.86-1.32-1.42-1.83L15.9 5.6 11.4 8.1l4.2 3.2c.9-.5 1.5-1.36 1.76-2.4l2.74-1.4z" fill="#FBBC05"/><path d="M11.4 14.5l4.2 3.2c1.6-.9 2.8-2.4 3.2-4.1.24-1 .18-2-.1-2.9h-3.1c-.14 1.5-.87 2.6-1.7 3.2l-2.5-.4z" fill="#EA4335"/></svg>' +
+        'Google로 계속하기' +
+      '</button>', true);
     var form = document.getElementById('signupForm');
     if (!form) return;
     var emailInput = form.elements.email;
@@ -2095,6 +2107,7 @@
         navigate('#/auth/verify');
       });
     });
+    rebindGoogle(app);
   }
 
   function renderAuthVerify(app) {
@@ -2705,47 +2718,6 @@
       document.body.removeChild(ta);
     }
   }
-
-  window.cgiDownloadQuoteCart = function () {
-    var request = window.cgiLastQuoteCartRequest;
-    if (!request) {
-      showToast('먼저 견적 요청을 보내주세요.');
-      return;
-    }
-    var blob = new Blob([JSON.stringify(request, null, 2)], { type: 'application/json' });
-    var url = URL.createObjectURL(blob);
-    var a = document.createElement('a');
-    a.href = url;
-    a.download = request.id + '.json';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  };
-
-  window.cgiDownloadQuoteCartCsv = function () {
-    var request = window.cgiLastQuoteCartRequest;
-    if (!request) {
-      showToast('먼저 견적 요청을 보내주세요.');
-      return;
-    }
-    var lines = [];
-    lines.push('요청번호,요청일시,회사,담당자,연락처,이메일,장소,서비스,상품명,브랜드,카테고리,수량,가격');
-    request.items.forEach(function (it) {
-      lines.push([request.id, request.createdAt, request.company, request.name, request.phone, request.email,
-        request.location, (request.services || []).map(serviceName).join('|'), it.name, it.brand, it.category, it.qty, it.publicPrice || '']
-        .map(function (v) { return '"' + String(v).replace(/"/g, '""') + '"'; }).join(','));
-    });
-    var blob = new Blob([lines.join('\n')], { type: 'text/csv;charset=utf-8' });
-    var url = URL.createObjectURL(blob);
-    var a = document.createElement('a');
-    a.href = url;
-    a.download = request.id + '.csv';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  };
 
   // Any member API answering 403 email not verified lands here (cgi-auth.js
   // dispatches this event): show the verification screen with the resend button.

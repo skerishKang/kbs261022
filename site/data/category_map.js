@@ -1,7 +1,8 @@
 /*
  * category_map.js — 공급처 분류 211종을 CGI 대분류로 묶는 매핑표 (이슈 #209 B1)
  *
- * - rules 는 순서대로 첫 매칭이 이긴다. keywords 는 원본 카테고리 이름의 부분 문자열.
+ * - rules 는 순서대로 첫 매칭이 이긴다. keywords 는 원본 카테고리 이름의 부분 문자열,
+ *   exactKeywords 는 카테고리 이름 전체와 정확히 일치할 때만 적용한다 (#213 E8).
  * - exact 는 카테고리 이름 전체가 일치할 때 우선 적용한다.
  * - 어느 규칙에도 걸리지 않으면 fallback 을 쓴다.
  * - 대분류는 13개(10~15 범위)이고, 브랜드명 분류(KLOTZ·PRESONUS 등)는 남기지 않는다.
@@ -67,9 +68,11 @@ window.CGI_CATEGORY_MAP = {
     { group: '음향 튜닝·방음', keywords: ['어쿠스틱', '방음', '튜닝재', 'VICOUSTIC', 'AGS'] },
     {
       group: '마이크·무선',
-      keywords: ['마이크', '무선', 'KSM', 'BETA', 'SM', 'PGA', 'PG ALTA', 'BLX', 'GLX', 'ULX',
+      keywords: ['마이크', '무선', 'KSM', 'BETA', 'SM 시리즈', 'PGA', 'PG ALTA', 'BLX', 'GLX', 'ULX',
         'QLX', 'SLX', 'Axient', 'Nexadyne', 'TwinPlex', 'DuraPlex', 'MOTIV', 'MV', 'VP',
-        'CV 시리즈', '라발리어', 'Classic 시리즈', 'SVX']
+        'CV 시리즈', '라발리어', 'Classic 시리즈', 'SVX'],
+      // 'SM' 은 부분 문자열로 쓰면 KEN SMITH(베이스 기타)까지 잡는다 — 정확 일치만 (#213 E8)
+      exactKeywords: ['SM']
     },
     {
       group: '악기·앰프',
