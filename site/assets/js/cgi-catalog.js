@@ -109,6 +109,15 @@
     for (var i = 0; i < state.products.length; i++) {
       if (state.products[i].id === id) return state.products[i];
     }
+    /* 병합으로 없어진 id 는 남긴 상품으로 대신한다 (#216 G2) — 견적 목록·요청에 남은
+       링크가 깨지지 않게 하기 위함. 주소 이동은 renderDetail 이 처리한다. */
+    var mergeMap = window.CGI_PRODUCT_MERGE || {};
+    var keptId = mergeMap[id];
+    if (keptId) {
+      for (var j = 0; j < state.products.length; j++) {
+        if (state.products[j].id === keptId) return state.products[j];
+      }
+    }
     return null;
   }
   function listUrl(overrides) {
@@ -398,7 +407,7 @@
     p._search = norm(p.search_text || [p.name, p.model, p.brand, p.brand_raw, p.manufacturer, categoryLabel(p),
       (p.category_path || []).join(' '),
       (p.specs || []).map(function (s) { return s.label + ' ' + s.value; }).join(' ')].join(' '));
-    p._cat = mapCategory(categoryLabel(p));
+    p._cat = mapCategory(categoryLabel(p), p.name);
     p._brand = displayBrand(p);
     state.brandSet[p._brand.toUpperCase()] = true;
     return p;
@@ -407,10 +416,22 @@
   /* 공급처 분류 211종을 대분류로 묶는다 (#209 B1). 매핑표는 site/data/category_map.js.
      원본 분류는 _search(검색 대상)에 그대로 남고, 화면·필터는 대분류만 쓴다. */
   var CAT_MAP = window.CGI_CATEGORY_MAP || null;
-  function mapCategory(label) {
+  function mapCategory(label, productName) {
     if (!CAT_MAP) return label;
     var name = String(label || '');
     if (CAT_MAP.exact && Object.prototype.hasOwnProperty.call(CAT_MAP.exact, name)) return CAT_MAP.exact[name];
+    /* 넓은 분류에 남는 상품은 상품명 보조 규칙으로 먼저 나눈다 (#216 G3) */
+    var broad = CAT_MAP.broadCategories || [];
+    if (broad.indexOf(name) !== -1 && productName) {
+      var broadRules = CAT_MAP.broadRules || [];
+      var productNameNorm = String(productName);
+      for (var bi = 0; bi < broadRules.length; bi++) {
+        var broadKeywords = broadRules[bi].keywords || [];
+        for (var bk = 0; bk < broadKeywords.length; bk++) {
+          if (productNameNorm.indexOf(broadKeywords[bk]) !== -1) return broadRules[bi].group;
+        }
+      }
+    }
     var rules = CAT_MAP.rules || [];
     for (var i = 0; i < rules.length; i++) {
       var keywords = rules[i].keywords || [];
@@ -852,6 +873,13 @@
 
   function renderDetail(id) {
     state.quoteServices = [];
+    /* 병합으로 없어진 id 는 남긴 상품 주소로 이동시킨다 (#216 G2) */
+    var mergeMap = window.CGI_PRODUCT_MERGE || {};
+    var keptId = mergeMap[id];
+    if (keptId && findProduct(keptId)) {
+      location.replace('#/product/' + encodeURIComponent(keptId));
+      return;
+    }
     var product = findProduct(id);
     if (!product) {
       app.innerHTML = '<div class="empty-state"><div class="empty-icon" aria-hidden="true">?</div>' +

@@ -4,13 +4,27 @@
  * - rules 는 순서대로 첫 매칭이 이긴다. keywords 는 원본 카테고리 이름의 부분 문자열,
  *   exactKeywords 는 카테고리 이름 전체와 정확히 일치할 때만 적용한다 (#213 E8).
  * - exact 는 카테고리 이름 전체가 일치할 때 우선 적용한다.
- * - 어느 규칙에도 걸리지 않으면 fallback 을 쓴다.
+ * - 넓은 분류(broadCategories)에 남는 상품은 상품명 보조 규칙(broadRules)을 먼저 쓰고 (#216 G3),
+ *   어느 규칙에도 걸리지 않으면 fallback 을 쓴다.
  * - 대분류는 13개(10~15 범위)이고, 브랜드명 분류(KLOTZ·PRESONUS 등)는 남기지 않는다.
  * - 시험: site/test/category-map-209.test.mjs 가 catalog.json 전체를 대상으로 고정한다.
  */
 window.CGI_CATEGORY_MAP = {
   version: '2026-11-12',
   fallback: '액세서리·소모품',
+  // 공급처의 넓은 분류(#216 G3): 이 분류에 남는 상품은 상품명 보조 규칙(broadRules)으로
+  // 나눈다. 순서가 중요하다 — 예) "마이크 스탠드"는 스탠드·거치가 마이크·무선보다 먼저.
+  broadCategories: ['레코딩', '레코딩/음향', '악기/앰프', '액세서리', '스피커', '마이크'],
+  broadRules: [
+    { group: '소프트웨어·플러그인', keywords: ['플러그인', '전자배송', '소프트웨어', '라이선스', '다운로드'] },
+    { group: '음향 튜닝·방음', keywords: ['어쿠스틱 패널', '흡음', '방음', '디퓨저', '베이스 트랩'] },
+    { group: '스탠드·거치', keywords: ['스탠드', '랙 날개', '랙 마운트'] },
+    { group: '믹서·프로세서', keywords: ['믹서', '믹싱'] },
+    { group: '케이블·커넥터', keywords: ['케이블', '커넥터'] },
+    { group: '이어폰·헤드폰', keywords: ['이어폰', '헤드폰', '헤드셋'] },
+    { group: '마이크·무선', keywords: ['마이크'] },
+    { group: '스피커', keywords: ['스피커'] }
+  ],
   groups: [
     '마이크·무선',
     '스피커',
@@ -37,7 +51,10 @@ window.CGI_CATEGORY_MAP = {
     {
       group: '케이블·커넥터',
       keywords: ['케이블', '커넥터', 'XLR', '어댑터', '스플리터', '파워콘', '이더콘', 'D-Sub',
-        'RCA', 'Phone Plug', 'TS/TRS', '3.5mm', '1/4', 'Hi-Fi', 'KLOTZ', 'QED', '파워', '디지털']
+        'RCA', 'Phone Plug', 'TS/TRS', '3.5mm', '1/4', 'Hi-Fi', 'KLOTZ', 'QED'],
+      // '디지털'·'파워' 는 부분 문자열로 쓰면 디지털 믹서까지 케이블로 묶었다(#216 G3).
+      // 분류명이 정확히 이 둘인 건(파워콘·옵티컬콘 부품)만 케이블로 남긴다.
+      exactKeywords: ['파워', '디지털']
     },
     {
       group: '믹서·프로세서',
