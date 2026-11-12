@@ -168,7 +168,8 @@ img, svg { max-width: 100%; }
 main.page { flex: 1; padding-top: 26px; padding-bottom: 48px; }
 
 .notice-bar {
-  max-width: var(--maxw); margin: 14px auto 0; padding: 0 20px;
+  /* 이미 .container 안에 있으므로 이중 여백/폭 제한을 빼 본문과 폭을 맞춘다 (#209 C2) */
+  margin: 14px 0 0; padding: 0;
 }
 .notice-bar-inner {
   background: var(--cgi-primary-soft); border: 1px solid var(--cgi-primary-line);
@@ -183,6 +184,9 @@ main.page { flex: 1; padding-top: 26px; padding-bottom: 48px; }
 .section-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 14px; }
 .section-head h2 { margin: 0; font-size: 19px; letter-spacing: -.3px; }
 .section-head .section-desc { color: var(--cgi-muted); font-size: 13px; }
+/* 패널 안 제목줄은 패널 안쪽 여백을 가진다 (#209 C2) */
+.panel > .section-head { padding: 14px 16px 0; }
+.panel > .table-scroll { margin-top: 10px; }
 .section-head .section-more { margin-left: auto; font-size: 13px; font-weight: 600; white-space: nowrap; }
 
 /* ── 버튼 · 배지 · 칩 ──────────────────────────────────────────── */
@@ -415,6 +419,11 @@ main.page { flex: 1; padding-top: 26px; padding-bottom: 48px; }
   padding: 46px 20px; text-align: center; color: var(--cgi-muted); font-size: 14px;
 }
 .empty-state strong { display: block; color: var(--cgi-ink); font-size: 15.5px; margin-bottom: 4px; }
+/* 표 안 빈 상태 안내 (#209 C2) */
+.t-empty-cell { padding: 10px !important; }
+.empty-state-sm { padding: 26px 16px; font-size: 13px; }
+.empty-state-sm strong { font-size: 14px; }
+.empty-state-sm a { color: var(--cgi-link); font-weight: 600; }
 
 /* ── 상세 · 기관 · 통계 ───────────────────────────────────────── */
 .crumbs { font-size: 12.5px; color: var(--cgi-faint); margin-bottom: 12px; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }

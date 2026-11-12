@@ -198,7 +198,12 @@
   function renderFooter() {
     var host = document.getElementById("appFooter");
     if (!host) return;
-    var source = DATA.source || "나라장터(www.g2b.go.kr) 입찰공고 수집분";
+    /* 데이터 생성기가 붙이던 내부 저장소 경로는 화면에 내보내지 않는다 (#209 C2) */
+    var parts = String(DATA.source || "나라장터(www.g2b.go.kr) 입찰공고 수집분").split(" · ");
+    if (parts.length > 1 && /^[A-Za-z0-9_-]+([\/ ]|$)/.test(parts[parts.length - 1]) && parts[parts.length - 1].indexOf("www.") < 0) {
+      parts.pop();
+    }
+    var source = parts.join(" · ");
     host.innerHTML =
       '<footer class="footer"><div class="footer-inner">' +
         '<div class="foot-links">' +
