@@ -8,7 +8,7 @@
 (function () {
   'use strict';
 
-  var PER_PAGE = 12;
+  var PER_PAGE = 24; // 한 쪽 24개 (#213 D2)
   var HOME_CHIP_LIMIT = 10;
   var app = document.getElementById('app');
   var loadingBox = document.getElementById('loadingBox');
@@ -142,10 +142,65 @@
     if (!isPublicPriced(p)) return 1;
     return 0;
   }
+  /* 대분류 우선순위 (#213 D1) — 홈 칩·필터·추천순 정렬이 모두 이 순서를 쓴다. */
+  var CATEGORY_ORDER = [
+    '스피커', '믹서·프로세서', '마이크·무선', '네트워크·회의영상', '레코딩·인터페이스',
+    '이어폰·헤드폰', '음향 튜닝·방음', '스탠드·거치', '케이블·커넥터', '악기·앰프',
+    '소프트웨어·플러그인', '액세서리·소모품', '특가·기획',
+  ];
+  function catOrder(cat) {
+    var i = CATEGORY_ORDER.indexOf(cat);
+    return i === -1 ? CATEGORY_ORDER.length : i;
+  }
+  /* 고정 추천(#213 D1): site/data/featured.json 의 상품 id 는 맨 앞에 온다.
+     대표 상품을 정해 받으면 이 파일에 넣는다. */
+  function featuredFixedRank(p) {
+    return state.featuredIds && state.featuredIds.indexOf(p.id) !== -1 ? 0 : 1;
+  }
   function featuredCompare(a, b) {
-    var d = featuredRank(a) - featuredRank(b);
+    var d = featuredFixedRank(a) - featuredFixedRank(b);
     if (d) return d;
-    return recentCompare(a, b);
+    d = featuredRank(a) - featuredRank(b);
+    if (d) return d;
+    // 같은 브랜드가 연달아 나오지 않게: 브랜드 안 가격 높은 순 순번 (#213 D1)
+    d = (a._brandSeq || 0) - (b._brandSeq || 0);
+    if (d) return d;
+    d = catOrder(a._cat) - catOrder(b._cat);
+    if (d) return d;
+    var ca = (state.brandCounts && state.brandCounts[a._brand]) || 0;
+    var cb = (state.brandCounts && state.brandCounts[b._brand]) || 0;
+    if (ca !== cb) return cb - ca;
+    return a.name.localeCompare(b.name, 'ko');
+  }
+  /* 정렬 보조값: 브랜드별 순번·브랜드 상품 수. 상품 준비가 끝난 뒤 한 번 계산한다. */
+  function computeSortAux() {
+    var byBrand = {};
+    state.products.forEach(function (p) {
+      var b = p._brand;
+      if (!b) return;
+      (byBrand[b] = byBrand[b] || []).push(p);
+    });
+    Object.keys(byBrand).forEach(function (b) {
+      byBrand[b].sort(function (x, y) {
+        var px = x.price && x.price.state === 'public' ? Number(x.price.value) : -1;
+        var py = y.price && y.price.state === 'public' ? Number(y.price.value) : -1;
+        if (px !== py) return py - px;
+        return x.name.localeCompare(y.name, 'ko');
+      });
+      byBrand[b].forEach(function (p, i) { p._brandSeq = i; });
+    });
+    state.brandCounts = countBy(state.products, function (p) { return p._brand; });
+  }
+  /* featured.json 은 선택 파일이다 — 없어도 목록은 정상 동작한다. */
+  function loadFeaturedSet() {
+    var url = new URL('data/featured.json', location.href).toString();
+    return fetch(url, { cache: 'no-cache' }).then(function (res) {
+      return res.ok ? res.json() : [];
+    }).then(function (rows) {
+      state.featuredIds = Array.isArray(rows) ? rows : [];
+    }).catch(function () {
+      state.featuredIds = [];
+    });
   }
   function showToast(message, action) {
     var box = document.getElementById('cgiToast');
@@ -248,6 +303,7 @@
   function applyCatalog(rows) {
     var list = (rows && rows.products) || rows || [];
     state.products = list.map(prepare);
+    computeSortAux();
     if (rows && rows.meta) state.meta = Object.assign(state.meta, rows.meta);
     // cgi-order.js · cgi-staff.js 는 window.CGI_PRODUCTS 를 그대로 쓴다.
     window.CGI_PRODUCTS = state.products;
@@ -259,21 +315,26 @@
     // light catalog.json is fetched.
     if (Array.isArray(window.CGI_PRODUCTS) && window.CGI_PRODUCTS.length) {
       state.products = window.CGI_PRODUCTS.map(prepare);
+      computeSortAux();
       if (window.CGI_PRODUCT_META) state.meta = Object.assign(state.meta, window.CGI_PRODUCT_META);
-      return Promise.resolve(state.products);
+      return loadFeaturedSet().then(function () { return state.products; });
     }
     var dataUrl = allowedDataUrl(new URLSearchParams(location.search).get('data'));
     if (dataUrl) {
       return fetch(dataUrl).then(function (res) {
         if (!res.ok) throw new Error('데이터 파일을 읽지 못했습니다: ' + res.status);
         return res.json();
-      }).then(applyCatalog);
+      }).then(applyCatalog).then(function (products) {
+        return loadFeaturedSet().then(function () { return products; });
+      });
     }
     var url = new URL('data/catalog.json', location.href).toString();
     return fetch(url, { cache: 'no-cache' }).then(function (res) {
       if (!res.ok) throw new Error('상품 목록을 읽지 못했습니다: ' + res.status);
       return res.json();
-    }).then(applyCatalog);
+    }).then(applyCatalog).then(function (products) {
+      return loadFeaturedSet().then(function () { return products; });
+    });
   }
 
   var detailCache = {};
@@ -420,6 +481,10 @@
   window.cgiDebug.splitConditionTag = splitConditionTag;
   window.cgiDebug.CONDITION_TAGS = CONDITION_TAGS;
   window.cgiDebug.renderLegalInfo = renderLegalInfo;
+  window.cgiDebug.featuredCompare = featuredCompare;
+  window.cgiDebug.CATEGORY_ORDER = CATEGORY_ORDER;
+  window.cgiDebug.orderedCategoryValues = orderedCategoryValues;
+  window.cgiDebug.applyCatalog = applyCatalog;
 
   function cardHtml(product, priority) {
     var price = fmtPrice(product);
@@ -461,6 +526,24 @@
     var otherRank = function (v) { return /^기타/.test(v) ? 1 : 0; };
     values.sort(function (a, b) {
       if (otherRank(a) !== otherRank(b)) return otherRank(a) - otherRank(b);
+      if (counts[b] !== counts[a]) return counts[b] - counts[a];
+      return a.localeCompare(b, 'ko');
+    });
+    if (selected && selected.length) {
+      values.sort(function (a, b) {
+        var as = selected.indexOf(a) !== -1 ? 0 : 1;
+        var bs = selected.indexOf(b) !== -1 ? 0 : 1;
+        return as - bs;
+      });
+    }
+    return values;
+  }
+  /* 대분류는 개수순이 아니라 우선순위 순서로 나열한다 (#213 D1). */
+  function orderedCategoryValues(counts, selected) {
+    var values = Object.keys(counts);
+    values.sort(function (a, b) {
+      var oa = catOrder(a), ob = catOrder(b);
+      if (oa !== ob) return oa - ob;
       if (counts[b] !== counts[a]) return counts[b] - counts[a];
       return a.localeCompare(b, 'ko');
     });
@@ -614,7 +697,10 @@
     var brandCounts = countBy(state.products, function (p) { return p._brand; });
     var catCounts = countBy(state.products, function (p) { return p._cat; });
     var brands = orderedFacetValues(brandCounts, []);
-    var cats = orderedFacetValues(catCounts, []);
+    var cats = orderedCategoryValues(catCounts, []);
+    // '취급 브랜드' 수는 실제 브랜드만 세고, 비브랜드 묶음 '기타'는 뺀다 (#213 D4)
+    // — 홈페이지 브랜드 목록 수와 같게 맞춘다.
+    var brandStat = brands.filter(function (b) { return b !== '기타'; }).length;
     var priced = state.products.filter(function (p) { return p.price && p.price.state === 'public'; }).length;
     var featured = pickFeatured(8);
     var quickCategories = cats.slice(0, 4).map(function (v) { return chipHtml(v, catCounts[v], 'cat'); }).join('');
@@ -638,7 +724,7 @@
 
       '<dl class="stat-row">' +
         '<div class="stat-card"><dt>전체 상품</dt><dd>' + total.toLocaleString('ko-KR') + '<small>브랜드·카테고리 기준</small></dd></div>' +
-        '<div class="stat-card"><dt>취급 브랜드</dt><dd>' + brands.length + '<small>카탈로그 등록 브랜드</small></dd></div>' +
+        '<div class="stat-card"><dt>취급 브랜드</dt><dd>' + brandStat + '<small>카탈로그 등록 브랜드</small></dd></div>' +
         '<div class="stat-card"><dt>가격</dt><dd>' + priced.toLocaleString('ko-KR') + '<small>가격은 변동될 수 있습니다</small></dd></div>' +
       '</dl>' +
 
@@ -658,7 +744,7 @@
     var catCounts = countBy(state.products, function (p) { return p._cat; });
     var siteCounts = countBy(state.products, function (p) { return p.source.site; });
     var brandValues = orderedFacetValues(brandCounts, r.brands);
-    var catValues = orderedFacetValues(catCounts, r.cats);
+    var catValues = orderedCategoryValues(catCounts, r.cats);
     var siteValues = orderedFacetValues(siteCounts, r.sites);
 
     var pages = Math.max(1, Math.ceil(list.length / PER_PAGE));
@@ -718,15 +804,35 @@
   function paginationHtml(current, total) {
     if (total <= 1) return '';
     var items = [];
-    items.push('<button data-page="' + (current - 1) + '"' + (current === 1 ? ' disabled' : '') + '>이전</button>');
+    items.push('<button data-page="1"' + (current === 1 ? ' disabled' : '') + ' aria-label="첫 쪽">처음</button>');
+    items.push('<button data-page="' + (current - 1) + '"' + (current === 1 ? ' disabled' : '') + ' aria-label="이전 쪽">이전</button>');
     var start = Math.max(1, current - 2);
     var end = Math.min(total, start + 4);
     start = Math.max(1, end - 4);
     for (var i = start; i <= end; i++) {
       items.push('<button data-page="' + i + '" class="' + (i === current ? 'is-current' : '') + '" aria-current="' + (i === current ? 'page' : 'false') + '">' + i + '</button>');
     }
-    items.push('<button data-page="' + (current + 1) + '"' + (current === total ? ' disabled' : '') + '>다음</button>');
-    return '<nav class="pagination" aria-label="페이지네이션">' + items.join('') + '</nav>';
+    items.push('<button data-page="' + (current + 1) + '"' + (current === total ? ' disabled' : '') + ' aria-label="다음 쪽">다음</button>');
+    items.push('<button data-page="' + total + '"' + (current === total ? ' disabled' : '') + ' aria-label="끝 쪽">끝</button>');
+    return '<nav class="pagination" aria-label="페이지네이션">' +
+      '<span class="page-indicator" aria-live="polite">' + current + ' / ' + total + '쪽</span>' +
+      items.join('') + '</nav>';
+  }
+
+  /* 상세 수량 (#213 D3): −/＋ 스테퍼와 직접 입력. 담기·견적 요청·고정 바의 견적 요청이
+     모두 이 값을 쓴다. */
+  function readDetailQty() {
+    var input = document.getElementById('detailQty');
+    if (!input) return 1;
+    var n = parseInt(String(input.value).replace(/[^0-9]/g, ''), 10);
+    return Math.min(999, Math.max(1, n || 1));
+  }
+  function stepDetailQty(delta) {
+    var input = document.getElementById('detailQty');
+    if (!input) return;
+    var n = parseInt(String(input.value).replace(/[^0-9]/g, ''), 10) || 1;
+    n = Math.min(999, Math.max(1, n + delta));
+    input.value = String(n);
   }
 
   function renderDetail(id) {
@@ -814,6 +920,14 @@
           '</div>' +
 
           '<div class="detail-cta">' +
+            '<div class="qty-row">' +
+              '<label class="qty-label" for="detailQty">수량</label>' +
+              '<div class="qty-stepper">' +
+                '<button type="button" class="qty-btn" data-action="qty-step" data-detail-qty-step="-1" aria-label="수량 줄이기">−</button>' +
+                '<input type="text" inputmode="numeric" class="qty-input" id="detailQty" value="1" maxlength="3" aria-label="수량">' +
+                '<button type="button" class="qty-btn" data-action="qty-step" data-detail-qty-step="1" aria-label="수량 늘리기">＋</button>' +
+              '</div>' +
+            '</div>' +
             '<button type="button" class="btn btn-primary btn-lg" data-action="quote-now" data-product-id="' + esc(product.id) + '">견적 요청하기</button>' +
             '<button type="button" class="btn btn-secondary btn-lg" data-action="add-to-cart" data-product-id="' + esc(product.id) + '">견적 목록에 추가</button>' +
           '</div>' +
@@ -1569,12 +1683,16 @@
         return;
       }
       var productId = target.getAttribute('data-product-id');
+      if (action === 'qty-step') {
+        stepDetailQty(Number(target.getAttribute('data-detail-qty-step')) || 0);
+        return;
+      }
       if (action === 'add-to-cart' && productId) {
-        addToQuoteCart(productId, 1);
+        addToQuoteCart(productId, readDetailQty());
         return;
       }
       if (action === 'quote-now' && productId) {
-        addToQuoteCart(productId, 1, true);
+        addToQuoteCart(productId, readDetailQty(), true);
         state.quoteCartServices = (state.quoteServices || []).slice();
         saveQuoteCartServices();
         navigate('#/quote-cart');

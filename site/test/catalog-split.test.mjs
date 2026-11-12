@@ -99,19 +99,29 @@ test('search index is unchanged after the split (name/brand/model/category/spec 
 });
 
 test('brands.json counts match the full master', () => {
+  // 브랜드 별칭·비브랜드 묶음(#213 D4)을 빌드 스크립트와 같은 규칙으로 반영해 센다.
+  const BRAND_ALIASES = { 'K&M': 'KÖNIG & MEYER', AGS: 'ACOUSTIC GROVE SYSTEM', 'TUTTLE GUITARS': 'MICHAEL TUTTLE GUITARS' };
+  const NON_BRAND = new Set(['자체제작', '브랜드 미확인', '안전사', '자체브랜드']);
+  const canonical = (raw) => {
+    const b = String(raw || '').trim().toUpperCase();
+    if (!b) return '';
+    if (NON_BRAND.has(b)) return '기타';
+    return BRAND_ALIASES[b] || b;
+  };
   const counts = {};
   for (const p of full) {
-    const key = (p.brand_norm || p.brand || '').trim();
+    const key = canonical(p.brand_norm || p.brand || '');
     if (key) counts[key] = (counts[key] || 0) + 1;
   }
   assert.equal(brands.product_count, full.length);
-  // Order is by count then name; compare as a set of (name, count) pairs so a
-  // locale-specific tie order cannot make this brittle.
+  // Order is by count then name, with 기타 pinned last; compare as a set of
+  // (name, count) pairs so a locale-specific tie order cannot make this brittle.
   assert.deepEqual(
     Object.fromEntries(brands.brands.map((b) => [b.name, b.count])),
     counts,
   );
   assert.equal(brands.brands.length, Object.keys(counts).length);
+  assert.equal(brands.brands[brands.brands.length - 1].name, '기타');
 });
 
 test('the list file is materially smaller than the full master', () => {

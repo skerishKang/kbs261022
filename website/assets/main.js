@@ -97,7 +97,7 @@
     return (rows || []).map(function (row) {
       var name = (CFG.mallBrandCase === 'upper') ? String(row.name || '').toUpperCase() : String(row.name || '');
       return { name: name, count: Number(row.count) || 0 };
-    }).filter(function (row) { return !!row.name; })
+    }).filter(function (row) { return !!row.name && row.name !== '기타'; })
       .sort(function (a, b) { return b.count - a.count || a.name.localeCompare(b.name); });
   }
 
