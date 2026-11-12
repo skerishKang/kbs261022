@@ -538,6 +538,31 @@ p:last-child { margin-bottom: 0; }
 .cart-pay-cta { background: var(--cgi-card); border: 1px solid var(--cgi-line); border-radius: var(--radius); padding: 16px 18px; box-shadow: var(--shadow-sm); }
 .cart-pay-cta .cart-total-line { margin-top: 0; }
 .cart-pay-cta .cart-pay-btn { margin-top: 12px; }
+/* 가격 확정 장바구니: 견적은 작은 링크로 내려 놓는다 (#209 A2) */
+.cart-alt-link {
+  display: inline-flex; align-items: center; justify-content: center; width: 100%;
+  margin-top: 10px; padding: 6px 0; background: none; border: 0;
+  color: var(--cgi-primary-dark); font-size: 12.5px; font-weight: 700;
+  text-decoration: underline; text-underline-offset: 3px; cursor: pointer;
+}
+.cart-alt-link:hover { color: var(--cgi-primary); }
+.cart-layout.is-payable .quote-form .cart-quote-submit {
+  display: inline-flex; width: auto; min-width: 0; min-height: 32px; padding: 0 4px;
+  background: none; border: 0; color: var(--cgi-primary-dark);
+  font-size: 12.5px; font-weight: 700; text-decoration: underline; text-underline-offset: 3px;
+}
+.cart-layout.is-payable .quote-form .cart-quote-submit:hover { color: var(--cgi-primary); }
+/* 주문 화면 합계 줄 (#209 A3) */
+.order-sum-lines { display: grid; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--cgi-line); }
+.order-sum-line {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 12px;
+  padding: 7px 0; border-bottom: 1px dashed var(--cgi-line); font-size: 13px;
+}
+.order-sum-line span { color: var(--cgi-muted); font-weight: 700; }
+.order-sum-line strong { font-variant-numeric: tabular-nums; }
+.order-sum-total { border-bottom: 0; font-size: 14.5px; }
+.order-sum-total span { color: var(--cgi-ink); }
+.order-sum-total strong { color: var(--cgi-primary-dark); }
 .cart-panel {
   background: #fff; border: 1px solid var(--cgi-line); border-radius: var(--radius);
   padding: 18px; box-shadow: var(--shadow-sm);
@@ -724,6 +749,26 @@ p:last-child { margin-bottom: 0; }
   transition: opacity .18s ease, transform .18s ease;
 }
 .toast.is-on { opacity: 1; transform: translate(-50%, 0); }
+.toast-action {
+  margin-left: 10px; padding-left: 12px; border-left: 1px solid rgba(255,255,255,.35);
+  color: #7ee2a0; font-weight: 800; text-decoration: underline; text-underline-offset: 2px;
+}
+
+/* 머리말 장바구니 아이콘 (#209 A4): PC·휴대폰 모두 항상 보임 */
+.header-cart {
+  position: relative; display: inline-flex; align-items: center; justify-content: center;
+  width: 40px; height: 40px; flex: 0 0 auto; margin-left: 2px;
+  color: #fff; border: 1px solid rgba(255,255,255,.28); border-radius: 999px;
+}
+.header-cart:hover { background: rgba(255,255,255,.12); }
+.header-cart svg { display: block; }
+.header-cart-count {
+  position: absolute; top: -6px; right: -8px; min-width: 18px; height: 18px;
+  display: inline-flex; align-items: center; justify-content: center; padding: 0 5px;
+  background: var(--cgi-primary); color: #fff; border-radius: 999px;
+  font-size: 11px; font-weight: 800; line-height: 1; border: 1px solid #fff;
+}
+.header-cart-count[hidden] { display: none; }
 
 /* --------------------------------- buttons ------------------------------- */
 .btn {
@@ -767,14 +812,16 @@ p:last-child { margin-bottom: 0; }
   .product-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .stat-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .detail-grid { grid-template-columns: minmax(0, 420px) minmax(0, 1fr); gap: 28px; }
-  /* 태블릿·모바일(≤1099px): 견적 요청이 주 CTA, 결제는 보조 CTA로 재배치 */
+  /* 태블릿·모바일(≤1099px): 주 버튼 하나를 담은 상품 바로 아래에 (#209 A2)
+     - 가격 확정 장바구니: 결제 CTA가 주 → 담은 상품 바로 아래
+     - 가격 문의 포함: 견적 요청이 주 → 견적 폼이 담은 상품 바로 아래 */
   .cart-layout { display: flex; flex-direction: column; }
   .cart-left { display: contents; }
   .cart-main { order: 1; }
-  .cart-request { order: 2; position: static; }
-  .cart-pay-cta { order: 3; }
-  .cart-pay-cta .cart-pay-btn { background: #fff; color: var(--cgi-primary-dark); border: 1px solid var(--cgi-primary); }
-  .cart-pay-cta .cart-pay-btn:hover { background: var(--cgi-primary-soft); }
+  .cart-layout.is-payable .cart-pay-cta { order: 2; }
+  .cart-layout.is-payable .cart-request { order: 3; }
+  .cart-layout.is-inquiry .cart-request { order: 2; }
+  .cart-layout.is-inquiry .cart-pay-cta { order: 3; }
   .footer-inner { grid-template-columns: 1.1fr 1.2fr; }
   .footer-links { grid-column: 1 / -1; }
 }
@@ -905,6 +952,8 @@ p:last-child { margin-bottom: 0; }
   .footer-bottom { flex-direction: column; gap: 6px; }
   .staff-app .detail-block { padding: 15px; }
   .toast { bottom: 18px; }
+  /* 상세 화면의 아래 고정 바(견적 요청) 위로 담기 안내를 올린다 (#209 A4) */
+  body[data-view="detail"] .toast { bottom: 88px; }
 }
 
 @media (max-width: 399px) {

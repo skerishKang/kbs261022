@@ -48,7 +48,7 @@ test('체크아웃은 두 필수 동의 전에는 주문 버튼이 비활성이�
   assert.match(orderJs, /name="terms_consent"/);
   assert.match(orderJs, /name="privacy_consent"/);
   assert.match(orderJs, /개인정보처리방침<\/a>/);
-  assert.match(orderJs, /button type="submit" class="btn" disabled/);
+  assert.match(orderJs, /button type="submit" class="btn btn-primary" disabled/);
   assert.match(orderJs, /function syncConsent\(\)/);
   assert.match(orderJs, /submitBtn\.disabled = !\(termsEl\.checked && privacyEl\.checked\)/);
   assert.match(orderJs, /payload\.terms_consent = c\.terms === true/);

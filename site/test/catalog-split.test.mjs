@@ -30,6 +30,28 @@ function searchSource(p) {
     (p.specs || []).map((s) => s.label + ' ' + s.value).join(' ')].join(' ');
 }
 
+// catalog.json 의 name 은 화면용 이름이다 (#209 A5): 공급처 문구 접두사와 SCM 코드는
+// 빠지고, 상품 상태 태그([리퍼비쉬] 등)는 배지 분리를 위해 남는다. 원본 products.json
+// 의 name 은 그대로여야 한다. tools/build_catalog_data.py 의 display_name() 과 같은 규칙.
+const CONDITION_TAGS = new Set([
+  '박스손상', '리퍼비쉬', '전시상품', '전시제품', '전시/단종 클리어런스',
+  '단순개봉', '교환상품', '미세흠집', '입고후발송', '커버 무료증정',
+]);
+
+function displayName(raw) {
+  const original = String(raw || '').replace(/\s+/g, ' ').trim();
+  let s = original.replace(/\bSCM[-_]?\s?\d+(?:\s*,\s*SCM[-_]?\s?\d+)*\b/gi, ' ');
+  for (;;) {
+    const m = s.match(/^(?:\[([^\]]+)\]|\(([^)]+)\))\s*/);
+    if (!m) break;
+    const tag = (m[1] || m[2] || '').trim();
+    if (CONDITION_TAGS.has(tag)) break;
+    s = s.slice(m[0].length).trim();
+  }
+  s = s.replace(/\s{2,}/g, ' ').replace(/^[-·,\s]+|[-·,\s]+$/g, '');
+  return s || original;
+}
+
 test('catalog.json covers every product and keeps list fields identical', () => {
   assert.equal(light.length, full.length, 'product count is preserved');
   assert.deepEqual([...lightById.keys()].sort(), [...fullById.keys()].sort());
@@ -38,7 +60,7 @@ test('catalog.json covers every product and keeps list fields identical', () => 
   for (const source of sample) {
     const p = lightById.get(source.id);
     assert.ok(p, `missing light ${source.id}`);
-    assert.equal(p.name, source.name);
+    assert.equal(p.name, displayName(source.name), 'catalog name is the display name');
     assert.equal(p.brand, source.brand);
     assert.equal(p.brand_norm, source.brand_norm);
     assert.equal(p.model, source.model);
