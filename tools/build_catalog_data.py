@@ -103,6 +103,29 @@ def norm_brand(brand: str) -> str:
     return re.sub(r"\s+", " ", str(brand)).strip().upper()
 
 
+# 브랜드 별칭·비브랜드 값 정리 (#213 D4)
+# - 같은 브랜드의 다른 표기는 대표 표기(풀네임)로 합친다.
+# - 브랜드가 아닌 값(자체제작·브랜드 미확인·안전사·자체브랜드)은 "기타" 하나로 묶어
+#   브랜드 필터 맨 아래에 둔다(화면의 기타 후순 정렬과 짝을 이룬다).
+BRAND_ALIASES = {
+    "K&M": "KÖNIG & MEYER",
+    "AGS": "ACOUSTIC GROVE SYSTEM",
+    "TUTTLE GUITARS": "MICHAEL TUTTLE GUITARS",
+}
+NON_BRAND_VALUES = {"자체제작", "브랜드 미확인", "안전사", "자체브랜드"}
+OTHER_BRAND_LABEL = "기타"
+
+
+def canonical_brand(brand: str) -> str:
+    """brand_norm 을 화면·필터에 쓸 대표 브랜드 이름으로 정규화한다."""
+    b = norm_brand(brand)
+    if not b:
+        return ""
+    if b in NON_BRAND_VALUES:
+        return OTHER_BRAND_LABEL
+    return BRAND_ALIASES.get(b, b)
+
+
 # 화면용 상품명 정리 (#209 A5): 공급처 문구 접두사([..])와 SCM 코드는 화면에서만 제거하고
 # 원본 products.json 의 name 은 그대로 둔다. 상품 상태 태그([리퍼비쉬] 등)는 사이트가
 # 배지로 분리해 보여 주므로 접두사에 남겨 둔다.
@@ -450,7 +473,7 @@ def to_light(product: dict, shard: int) -> dict:
         "name": display_name(product.get("name", "")),
         "brand": product.get("brand", ""),
         "brand_raw": product.get("brand_raw", ""),
-        "brand_norm": product.get("brand_norm", ""),
+        "brand_norm": canonical_brand(product.get("brand_norm", "") or product.get("brand", "")),
         "manufacturer": product.get("manufacturer", ""),
         "model": product.get("model", ""),
         "category_path": product.get("category_path") or [],
@@ -482,7 +505,7 @@ def write_split_outputs(products: list[dict], out_dir: Path, meta: dict, detail_
 
     counts: dict[str, int] = {}
     for p in products:
-        key = (p.get("brand_norm") or p.get("brand") or "").strip()
+        key = canonical_brand((p.get("brand_norm") or p.get("brand") or "")).strip()
         if not key:
             continue
         counts[key] = counts.get(key, 0) + 1
@@ -490,9 +513,14 @@ def write_split_outputs(products: list[dict], out_dir: Path, meta: dict, detail_
     brands_payload = {
         "generated_at": meta.get("generated_at"),
         "product_count": len(products),
+        # "기타"(비브랜드 묶음)는 맨 아래에 고정 — 홈페이지 브랜드 목록 순서와 쇼핑몰
+        # 필터 순서를 맞춘다 (#213 D4).
         "brands": [
             {"name": name, "count": count}
-            for name, count in sorted(counts.items(), key=lambda kv: (-kv[1], kv[0]))
+            for name, count in sorted(
+                counts.items(),
+                key=lambda kv: (kv[0] == OTHER_BRAND_LABEL, -kv[1], kv[0]),
+            )
         ],
     }
     brands_path = out_dir / "brands.json"

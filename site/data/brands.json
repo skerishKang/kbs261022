@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-12T09:41:40Z",
+ "generated_at": "2026-11-12T12:52:47Z",
  "product_count": 4575,
  "brands": [
   {
@@ -35,6 +35,10 @@
    "count": 132
   },
   {
+   "name": "MICHAEL TUTTLE GUITARS",
+   "count": 132
+  },
+  {
    "name": "NASH GUITARS",
    "count": 128
   },
@@ -43,7 +47,7 @@
    "count": 125
   },
   {
-   "name": "MICHAEL TUTTLE GUITARS",
+   "name": "KÖNIG & MEYER",
    "count": 124
   },
   {
@@ -79,20 +83,8 @@
    "count": 77
   },
   {
-   "name": "KÖNIG & MEYER",
-   "count": 69
-  },
-  {
-   "name": "자체제작",
-   "count": 66
-  },
-  {
    "name": "QED",
    "count": 61
-  },
-  {
-   "name": "K&M",
-   "count": 55
   },
   {
    "name": "COMPLY",
@@ -187,8 +179,8 @@
    "count": 8
   },
   {
-   "name": "TUTTLE GUITARS",
-   "count": 8
+   "name": "ACOUSTIC GROVE SYSTEM",
+   "count": 6
   },
   {
    "name": "TC ELECTRONIC",
@@ -201,18 +193,6 @@
   {
    "name": "MATRIX AUDIO",
    "count": 4
-  },
-  {
-   "name": "브랜드 미확인",
-   "count": 4
-  },
-  {
-   "name": "ACOUSTIC GROVE SYSTEM",
-   "count": 3
-  },
-  {
-   "name": "AGS",
-   "count": 3
   },
   {
    "name": "CLEAR-COM",
@@ -228,14 +208,6 @@
   },
   {
    "name": "KEN SMITH",
-   "count": 3
-  },
-  {
-   "name": "안전사",
-   "count": 3
-  },
-  {
-   "name": "자체브랜드",
    "count": 3
   },
   {
@@ -257,6 +229,10 @@
   {
    "name": "HEXACHORDS",
    "count": 1
+  },
+  {
+   "name": "기타",
+   "count": 76
   }
  ]
 }

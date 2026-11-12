@@ -37,13 +37,16 @@ window.CGI_CONFIG = {
   // ── 브랜드 목록 연동 (있으면 자동 반영, 없으면 fallback) ──
   mallBrandsUrl: '../site/data/brands.json',      // 브랜드 이름 + 건수만
 
-  // ── 취급 브랜드 (실측: samasound.co.kr 31개) ───────────────
+  // ── 취급 브랜드 (실측: samasound.co.kr 목록) ───────────────
+  // 브랜드 별칭 정리(#213 D4)로 마스터(brands.json)와 겹치는 표기는 뺐다:
+  // K&M→KÖNIG & MEYER, TUTTLE GUITARS→MICHAEL TUTTLE GUITARS, iMAG→IMAG SYSTEMS,
+  // Q-SYS→QSC, 브랜드 미확인→기타(브랜드 목록에서 제외).
   brands: [
     'Shure', 'Genelec', 'PRESONUS', 'Allen&Heath', 'Neutrik', 'HK Audio',
-    'K&M', 'Martin Audio', 'Clear-Com', 'APOGEE', 'RADIAL', 'KLOTZ',
-    'ARTURIA', '브랜드 미확인', 'REAN', 'IK MULTIMEDIA', 'VICOUSTIC', 'DYNAUDIO',
-    'NATIVE INSTRUMENTS', 'iMAG', 'Q Acoustics', 'POSITIVE GRID', 'CLOUD',
-    'ROTOSOUND', 'NASH GUITARS', 'TUTTLE GUITARS', 'COMPLY', 'QED', 'JICO',
-    'Fidelice', 'Q-SYS'
+    'Martin Audio', 'Clear-Com', 'APOGEE', 'RADIAL', 'KLOTZ',
+    'ARTURIA', 'REAN', 'IK MULTIMEDIA', 'VICOUSTIC', 'DYNAUDIO',
+    'NATIVE INSTRUMENTS', 'Q Acoustics', 'POSITIVE GRID', 'CLOUD',
+    'ROTOSOUND', 'NASH GUITARS', 'COMPLY', 'QED', 'JICO',
+    'Fidelice'
   ]
 };

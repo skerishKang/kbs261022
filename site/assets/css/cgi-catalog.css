@@ -393,6 +393,7 @@ p:last-child { margin-bottom: 0; }
 .pagination button:hover:not(:disabled) { border-color: var(--cgi-primary); color: var(--cgi-primary-dark); }
 .pagination button.is-current { background: var(--cgi-primary); border-color: var(--cgi-primary); color: #fff; }
 .pagination button:disabled { opacity: .4; cursor: not-allowed; }
+.pagination .page-indicator { font-size: 12.5px; font-weight: 700; color: var(--cgi-muted); margin-right: 6px; white-space: nowrap; }
 
 .empty-state {
   background: var(--cgi-card); border: 1px dashed #cfd8d1; border-radius: var(--radius);
@@ -443,6 +444,15 @@ p:last-child { margin-bottom: 0; }
 
 .detail-cta { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0 8px; }
 .detail-cta .btn { flex: 1 1 auto; }
+/* 상세 수량 스테퍼 (#213 D3) — 담기 버튼 위에 두고, 휴대폰 고정 바와 겹치지 않게
+   흐름 안에 놓는다(고정 바 여백은 body[data-view=detail] 패딩이 처리). */
+.qty-row { display: flex; align-items: center; gap: 10px; flex: 1 1 100%; margin: 0 0 2px; }
+.qty-label { font-size: 13.5px; font-weight: 700; color: var(--cgi-ink); }
+.qty-stepper { display: inline-flex; align-items: stretch; border: 1px solid var(--cgi-line); border-radius: var(--radius-sm); background: #fff; overflow: hidden; }
+.qty-btn { width: 42px; height: 42px; border: 0; background: #fff; font-size: 18px; font-weight: 700; color: var(--cgi-ink); cursor: pointer; }
+.qty-btn:hover { background: var(--cgi-primary-soft); color: var(--cgi-primary-dark); }
+.qty-input { width: 58px; border: 0; border-left: 1px solid var(--cgi-line); border-right: 1px solid var(--cgi-line); text-align: center; font-size: 14px; font-weight: 700; color: var(--cgi-ink); }
+.qty-input:focus { outline: 2px solid var(--cgi-primary); outline-offset: -2px; }
 .detail-cta-note { font-size: 12px; color: var(--cgi-muted); margin: 0 0 20px; }
 
 .spec-table {
