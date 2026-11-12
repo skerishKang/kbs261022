@@ -1,78 +1,70 @@
 {
- "generated_at": "2026-11-12T21:52:58Z",
- "product_count": 4546,
+ "generated_at": "2026-11-12T22:11:54Z",
+ "product_count": 4026,
  "brands": [
   {
    "name": "SHURE",
-   "count": 1074
+   "count": 1006
   },
   {
    "name": "KLOTZ",
-   "count": 327
+   "count": 313
   },
   {
    "name": "PRESONUS",
-   "count": 317
-  },
-  {
-   "name": "NEUTRIK",
-   "count": 256
+   "count": 246
   },
   {
    "name": "GENELEC",
-   "count": 174
+   "count": 169
   },
   {
-   "name": "APOGEE",
-   "count": 133
-  },
-  {
-   "name": "HK AUDIO",
-   "count": 133
-  },
-  {
-   "name": "ARTURIA",
-   "count": 132
+   "name": "NEUTRIK",
+   "count": 154
   },
   {
    "name": "MICHAEL TUTTLE GUITARS",
    "count": 126
   },
   {
-   "name": "REAN",
-   "count": 125
+   "name": "APOGEE",
+   "count": 124
   },
   {
    "name": "KÖNIG & MEYER",
    "count": 124
   },
   {
-   "name": "MESA/BOOGIE",
-   "count": 119
-  },
-  {
-   "name": "NASH GUITARS",
+   "name": "HK AUDIO",
    "count": 117
   },
   {
+   "name": "NASH GUITARS",
+   "count": 107
+  },
+  {
+   "name": "ARTURIA",
+   "count": 99
+  },
+  {
+   "name": "MESA/BOOGIE",
+   "count": 97
+  },
+  {
    "name": "JICO",
-   "count": 96
-  },
-  {
-   "name": "NATIVE INSTRUMENTS",
-   "count": 96
-  },
-  {
-   "name": "RADIAL",
    "count": 95
   },
   {
-   "name": "WAVES",
-   "count": 87
+   "name": "RADIAL",
+   "count": 85
   },
   {
-   "name": "IK MULTIMEDIA",
-   "count": 82
+   "name": "WAVES",
+   "count": 85
+  },
+  {
+   "name": "NATIVE INSTRUMENTS",
+   "count": 83
   },
   {
    "name": "PRIMACOUSTIC",
@@ -80,35 +72,35 @@
   },
   {
    "name": "MARTIN AUDIO",
-   "count": 77
+   "count": 74
+  },
+  {
+   "name": "IK MULTIMEDIA",
+   "count": 72
+  },
+  {
+   "name": "REAN",
+   "count": 67
   },
   {
    "name": "QED",
-   "count": 61
+   "count": 60
   },
   {
    "name": "COMPLY",
    "count": 52
   },
   {
-   "name": "OVERLOUD",
-   "count": 46
-  },
-  {
    "name": "Q ACOUSTICS",
-   "count": 46
-  },
-  {
-   "name": "VICOUSTIC",
-   "count": 41
+   "count": 45
   },
   {
    "name": "IZOTOPE",
-   "count": 40
+   "count": 39
   },
   {
-   "name": "POSITIVE GRID",
-   "count": 38
+   "name": "OVERLOUD",
+   "count": 39
   },
   {
    "name": "EV",
@@ -116,7 +108,7 @@
   },
   {
    "name": "DYNAUDIO",
-   "count": 34
+   "count": 33
   },
   {
    "name": "ANTARES",
@@ -127,16 +119,20 @@
    "count": 29
   },
   {
+   "name": "POSITIVE GRID",
+   "count": 28
+  },
+  {
+   "name": "VICOUSTIC",
+   "count": 28
+  },
+  {
    "name": "QSC",
    "count": 27
   },
   {
-   "name": "ROTOSOUND",
-   "count": 26
-  },
-  {
    "name": "CELEMONY",
-   "count": 25
+   "count": 21
   },
   {
    "name": "FABFILTER",
@@ -147,20 +143,20 @@
    "count": 21
   },
   {
+   "name": "ROTOSOUND",
+   "count": 15
+  },
+  {
    "name": "AUDIOSCAPE",
-   "count": 20
+   "count": 14
   },
   {
    "name": "RICKENBACKER",
-   "count": 20
+   "count": 12
   },
   {
    "name": "ROSCOE GUITARS",
    "count": 12
-  },
-  {
-   "name": "ROCK AND ROLL RELICS",
-   "count": 11
   },
   {
    "name": "MERCURIALL",
@@ -175,19 +171,19 @@
    "count": 8
   },
   {
-   "name": "GRAY LONDON GUITARS",
-   "count": 8
+   "name": "ROCK AND ROLL RELICS",
+   "count": 7
   },
   {
    "name": "ACOUSTIC GROVE SYSTEM",
    "count": 6
   },
   {
-   "name": "IMAG SYSTEMS",
+   "name": "GRAY LONDON GUITARS",
    "count": 4
   },
   {
-   "name": "MATRIX AUDIO",
+   "name": "IMAG SYSTEMS",
    "count": 4
   },
   {
@@ -203,8 +199,8 @@
    "count": 3
   },
   {
-   "name": "AROBAS MUSIC",
-   "count": 2
+   "name": "MATRIX AUDIO",
+   "count": 3
   },
   {
    "name": "LANDR",
@@ -213,6 +209,10 @@
   {
    "name": "UNITED",
    "count": 2
+  },
+  {
+   "name": "AROBAS MUSIC",
+   "count": 1
   },
   {
    "name": "HEXACHORDS",

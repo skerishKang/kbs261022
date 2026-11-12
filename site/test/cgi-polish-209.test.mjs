@@ -55,7 +55,7 @@ test('B1: 대분류는 10~15개고 브랜드명 분류가 없다', () => {
 
 test('B1: catalog.json 의 모든 카테고리가 대분류로 매핑된다', () => {
   const cats = [...new Set(catalog.products.map((p) => p.category.name))];
-  assert.equal(cats.length, 208); // #216 G1 로 211 → 208
+  assert.equal(cats.length, 199); // #216 G1 로 211→208, G2 병합으로 208→199
   const groupSet = new Set(map.groups);
   for (const c of cats) {
     const g = mapCategory(c);
@@ -66,9 +66,9 @@ test('B1: catalog.json 의 모든 카테고리가 대분류로 매핑된다', ()
 });
 
 test('B1: 화면·필터는 대분류를 쓰고 검색 텍스트는 원본 분류를 유지한다', () => {
-  assert.match(catalogJs, /p\._cat = mapCategory\(categoryLabel\(p\)\)/);
+  assert.match(catalogJs, /p\._cat = mapCategory\(categoryLabel\(p\), p\.name\)/); // #216 G3: 상품명 보조 규칙
   assert.match(catalogJs, /var CAT_MAP = window\.CGI_CATEGORY_MAP \|\| null;/);
-  assert.match(catalogJs, /function mapCategory\(label\)/);
+  assert.match(catalogJs, /function mapCategory\(label, productName\)/);
   // 브랜드 코너 그룹핑은 더는 만들지 않는다.
   assert.match(catalogJs, /브랜드명 분류 코너는 더는 만들지 않는다/);
   // 매핑표는 페이지에서 읽는다.

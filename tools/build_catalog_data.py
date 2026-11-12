@@ -134,6 +134,82 @@ NON_PRODUCT_RE = re.compile(r"결제창|잔금|계약금")
 # 검색에서 뺄 공급처 구매 옵션 라벨 (#216 G4)
 SEARCH_NOISE_SPEC_LABELS = {"구매방법", "배송주기"}
 
+# 같은 상품 두 번 올라온 것을 병합한다 (#216 G2). 기준:
+#   - 브랜드(brand_norm)가 같고
+#   - 가격 공개 쪽 model 과 가격 문의 쪽 name 을 정규화(영문 대문자·숫자만)한 값이 같고
+#   - 정규화 값이 4자 이상이며 후보가 하나뿐이고
+#   - 어느 쪽에도 상태 태그([리퍼비쉬] 등)가 없다
+# 남기는 쪽은 가격 공개 상품(id·이름·가격·사진 그대로). 가격 문의 쪽에서는
+# 분류 경로("제품분류별 보기 > …")와 상품요약정보만 가져온다.
+_MODEL_KEY_RE = re.compile(r"[^A-Z0-9]")
+
+
+def model_key(value: str) -> str:
+    return _MODEL_KEY_RE.sub("", str(value or "").upper())
+
+
+def has_condition_tag(product: dict) -> bool:
+    m = re.match(r"^\[([^\]]+)\]", str(product.get("name") or "").strip())
+    return bool(m and m.group(1).strip() in CONDITION_DISPLAY_TAGS)
+
+
+def merge_duplicate_products(products: list[dict]) -> tuple[list[dict], dict[str, str], dict]:
+    """중복 상품을 병합한다. (남긴 상품 목록, removed→kept 치환표, 통계) (#216 G2)"""
+    priced, inquiry = [], []
+    for p in products:
+        state = (p.get("price") or {}).get("state")
+        (priced if state == "public" else inquiry).append(p)
+
+    inquiry_index: dict[tuple[str, str], list[dict]] = {}
+    for q in inquiry:
+        brand = (q.get("brand_norm") or "").strip()
+        key = model_key(q.get("name"))
+        if not brand or len(key) < 4:
+            continue
+        inquiry_index.setdefault((brand, key), []).append(q)
+
+    merge_map: dict[str, str] = {}
+    adopted_path = 0
+    adopted_summary = 0
+    used_inquiry: set[str] = set()
+    for kept in priced:
+        brand = (kept.get("brand_norm") or "").strip()
+        key = model_key(kept.get("model"))
+        if not brand or len(key) < 4:
+            continue
+        cands = inquiry_index.get((brand, key)) or []
+        if len(cands) != 1:
+            continue
+        dup = cands[0]
+        if dup["id"] in used_inquiry:
+            continue
+        if has_condition_tag(kept) or has_condition_tag(dup):
+            continue
+        # 분류 경로: 가격 문의 쪽이 "제품분류별 보기"로 탐색된 구체 경로면 쓴다 (#216 G3.2)
+        dup_path = list(dup.get("category_path") or [])
+        if len(dup_path) >= 3 and dup_path[1] == "제품분류별 보기" and dup.get("category"):
+            kept["category_path"] = dup_path
+            kept["category"] = dup["category"]
+            adopted_path += 1
+        # 상품요약정보: 남긴 쪽에 없으면 가져온다
+        dup_summary = next((s for s in (dup.get("specs") or [])
+                            if str(s.get("label") or "").strip() == "상품요약정보" and str(s.get("value") or "").strip()), None)
+        if dup_summary is not None:
+            kept_specs = kept.get("specs") or []
+            if not any(str(s.get("label") or "").strip() == "상품요약정보" for s in kept_specs):
+                kept["specs"] = kept_specs + [dict(dup_summary)]
+                adopted_summary += 1
+        merge_map[dup["id"]] = kept["id"]
+        used_inquiry.add(dup["id"])
+
+    kept_products = [p for p in products if p["id"] not in used_inquiry]
+    stats = {
+        "merged": len(merge_map),
+        "adopted_category_path": adopted_path,
+        "adopted_summary": adopted_summary,
+    }
+    return kept_products, merge_map, stats
+
 
 def is_non_product(product: dict) -> bool:
     """결제창·잔금·계약금 페이지는 상품이 아니므로 카탈로그에서 뺀다 (#216 G1)."""
@@ -518,7 +594,7 @@ def to_light(product: dict, shard: int) -> dict:
     }
 
 
-def write_split_outputs(products: list[dict], out_dir: Path, meta: dict, detail_size: int = DETAIL_PART_SIZE) -> dict:
+def write_split_outputs(products: list[dict], out_dir: Path, meta: dict, detail_size: int = DETAIL_PART_SIZE, merge_map: dict[str, str] | None = None) -> dict:
     """목록 경량 파일·브랜드 파일·상세 분할 파일을 쓴다. 크기/건수를 돌려준다."""
     if detail_size < 1:
         raise ValueError("detail_size must be >= 1")
@@ -598,6 +674,16 @@ def write_split_outputs(products: list[dict], out_dir: Path, meta: dict, detail_
         json.dumps(catalog_payload, ensure_ascii=False, separators=(",", ":")), encoding="utf-8"
     )
 
+    # 병합 치환표: 없어진 id 로 들어온 주소를 남긴 상품으로 이동시킨다 (#216 G2)
+    if merge_map:
+        merge_path = out_dir / "product_merge.js"
+        merge_path.write_text(
+            "/* CGI 상품 병합 치환표 (자동 생성: tools/build_catalog_data.py)\n"
+            "   없어진 가격 문의 상품 id -> 남긴 가격 공개 상품 id. 재생성 금지. */\n"
+            "window.CGI_PRODUCT_MERGE = " + json.dumps(merge_map, ensure_ascii=False, indent=1, sort_keys=True) + ";\n",
+            encoding="utf-8",
+        )
+
     def size_of(path: Path) -> int:
         return path.stat().st_size if path.exists() else 0
 
@@ -644,6 +730,10 @@ def main() -> int:
         if not isinstance(products, list):
             print("[build_catalog_data] products.json must be a JSON array", file=sys.stderr)
             return 1
+        # 같은 상품 병합 (#216 G2): 없어진 id → 남긴 id 치환표도 함께 만든다
+        products, merge_map, merge_stats = merge_duplicate_products(products)
+        print(f"[build_catalog_data] merged duplicates: {merge_stats['merged']} "
+              f"(분류 경로 채택 {merge_stats['adopted_category_path']}, 요약 채택 {merge_stats['adopted_summary']})")
         meta = {
             "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z"),
             "sources": sorted({(p.get("source") or {}).get("site", "") for p in products if (p.get("source") or {}).get("site")}),
@@ -652,7 +742,7 @@ def main() -> int:
             "data_origin": ["site/data/products.json"],
             "notes": ["--split-only: 기존 products.json을 배포용으로 분할했다."],
         }
-        result = write_split_outputs(products, Path(args.out_dir), meta, args.detail_part_size)
+        result = write_split_outputs(products, Path(args.out_dir), meta, args.detail_part_size, merge_map)
         print(
             f"[build_catalog_data] split-only products={result['product_count']} brands={result['brand_count']} "
             f"catalog={result['catalog_bytes']}B brands={result['brands_bytes']}B "
@@ -660,6 +750,8 @@ def main() -> int:
         )
         print(f"[build_catalog_data] wrote {result['catalog']}")
         print(f"[build_catalog_data] wrote {result['brands']}")
+        if merge_map:
+            print(f"[build_catalog_data] wrote {Path(args.out_dir) / 'product_merge.js'} ({len(merge_map)} pairs)")
         return 0
 
     cat_index = build_index(Path(args.categories))
@@ -680,6 +772,11 @@ def main() -> int:
             p["brand_norm"] = norm_brand(p["brand"])
         if not p["name"]:
             p["name"] = p["model"] or p["id"]
+
+    # 같은 상품 병합 (#216 G2): 가격 문의 쪽을 가격 공개 쪽으로 흡수한다
+    products, merge_map, merge_stats = merge_duplicate_products(products)
+    print(f"[build_catalog_data] merged duplicates: {merge_stats['merged']} "
+          f"(분류 경로 채택 {merge_stats['adopted_category_path']}, 요약 채택 {merge_stats['adopted_summary']})")
 
     out_dir = Path(args.out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -734,7 +831,7 @@ def main() -> int:
     (out_dir / "products.js").write_text(js, encoding="utf-8")
 
     # 배포용 경량 산출물 — products.json 이 단일 원본이고, 이것들은 파생물이다.
-    split = write_split_outputs(products, out_dir, meta, args.detail_part_size)
+    split = write_split_outputs(products, out_dir, meta, args.detail_part_size, merge_map)
 
     print(f"[build_catalog_data] products={len(products)} brands={len(brands)} sources={sites}")
     print(f"[build_catalog_data] wrote {out_dir / 'products.json'}")
