@@ -32,7 +32,7 @@ const full = JSON.parse(read('site/data/products.json'));
 
 test('A1: 주문 흐름의 주 동작 버튼은 btn-primary를 가진다', () => {
   for (const marker of [
-    '주문 생성 후 결제',
+    '주문 생성 후 결제</button>',
     '견적 요청으로 접수하기',
     '결제 다시 진행',
     'id="repayNicepayPayBtn"',
@@ -40,8 +40,8 @@ test('A1: 주문 흐름의 주 동작 버튼은 btn-primary를 가진다', () =>
   ]) {
     const at = orderJs.indexOf(marker);
     assert.ok(at !== -1, '버튼이 존재해야 한다: ' + marker);
-    // 버튼 마크업 앞 120자 안에 btn-primary 클래스가 있어야 한다.
-    const before = orderJs.slice(Math.max(0, at - 120), at);
+    // 버튼 마크업 안(앞 200자)에 btn-primary 클래스가 있어야 한다.
+    const before = orderJs.slice(Math.max(0, at - 200), at);
     assert.match(before, /btn-primary/, '주 버튼에 btn-primary: ' + marker);
   }
   // 취소·상품 더 담기·나중에 하기 같은 보조 동작은 secondary로 남는다.

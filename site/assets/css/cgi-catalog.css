@@ -272,18 +272,18 @@ p:last-child { margin-bottom: 0; }
 .card-img.no-image { transform: none; }
 .badge {
   position: absolute; left: 10px; top: 10px; z-index: 1;
-  font-size: 10.5px; font-weight: 700; padding: 3px 8px; border-radius: 999px;
+  font-size: 12px; font-weight: 700; padding: 3px 9px; border-radius: 999px;
   background: var(--cgi-primary-soft); color: var(--cgi-primary-dark);
 }
 .badge.inquiry { background: var(--cgi-warn-soft); color: var(--cgi-warn); }
 .card-body { display: flex; flex-direction: column; gap: 5px; flex: 1 1 auto; padding: 12px 14px 15px; min-width: 0; }
-.card-brand { font-size: 10.5px; font-weight: 800; letter-spacing: .06em; color: var(--cgi-primary-dark); }
+.card-brand { font-size: 12px; font-weight: 800; letter-spacing: .04em; color: var(--cgi-primary-dark); }
 .card-name {
   margin: 0; font-size: 13.5px; font-weight: 700; line-height: 1.42; letter-spacing: -.2px;
   display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
   min-height: 2.84em;
 }
-.card-model { font-size: 11.5px; color: var(--cgi-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.card-model { font-size: 12px; color: var(--cgi-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .card-foot { margin-top: auto; padding-top: 6px; display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
 .price { font-size: 15px; font-weight: 800; color: var(--cgi-ink); }
 .price.inquiry { color: var(--cgi-warn); font-size: 13px; }
@@ -491,13 +491,14 @@ p:last-child { margin-bottom: 0; }
 .quote-form { display: grid; gap: 12px; }
 .form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
 .quote-form label { display: grid; gap: 5px; font-size: 12.5px; font-weight: 700; color: #333; min-width: 0; }
-.quote-form input, .quote-form textarea {
+.quote-form input, .quote-form select, .quote-form textarea {
   width: 100%; padding: 0 12px; border: 1px solid #cfcfcf; border-radius: var(--radius-sm);
   background: #fff; font-size: 14px; font-weight: 400;
 }
-.quote-form input { height: 44px; }
+.quote-form input, .quote-form select { height: 44px; }
+.quote-form select { padding: 0 8px; }
 .quote-form textarea { padding: 11px 12px; resize: vertical; min-height: 96px; }
-.quote-form input:focus, .quote-form textarea:focus {
+.quote-form input:focus, .quote-form select:focus, .quote-form textarea:focus {
   border-color: var(--cgi-primary); outline: none; box-shadow: 0 0 0 3px var(--cgi-primary-soft);
 }
 .form-span { grid-column: 1 / -1; }
@@ -563,6 +564,10 @@ p:last-child { margin-bottom: 0; }
 .order-sum-total { border-bottom: 0; font-size: 14.5px; }
 .order-sum-total span { color: var(--cgi-ink); }
 .order-sum-total strong { color: var(--cgi-primary-dark); }
+/* 주문 화면 필수 표시·결제 수단 안내 (#209 B4) */
+.order-form .req-mark { color: var(--cgi-danger); font-style: normal; font-weight: 800; }
+.order-required-note { margin: 0 0 4px; }
+.order-pay-note { margin: 10px 0 0; }
 .cart-panel {
   background: #fff; border: 1px solid var(--cgi-line); border-radius: var(--radius);
   padding: 18px; box-shadow: var(--shadow-sm);
@@ -608,7 +613,7 @@ p:last-child { margin-bottom: 0; }
 .qty-stepper input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 .qty-stepper input:focus { outline: 2px solid var(--cgi-primary); outline-offset: -2px; }
 .cart-remove {
-  min-height: 38px; padding: 0 10px; border: 1px solid var(--cgi-line); border-radius: var(--radius-sm);
+  min-height: 38px; min-width: 56px; padding: 0 10px; white-space: nowrap; border: 1px solid var(--cgi-line); border-radius: var(--radius-sm);
   background: #fff; color: var(--cgi-muted); font-size: 11.5px; font-weight: 700;
 }
 .cart-remove:hover { border-color: #f0b4ae; background: var(--cgi-danger-soft); color: var(--cgi-danger); }
@@ -845,6 +850,12 @@ p:last-child { margin-bottom: 0; }
   }
   .header-nav a.is-active { border-bottom-color: #232323; border-left-color: var(--cgi-primary); padding-left: 10px; }
   .notice-bar { font-size: 11.5px; padding: 7px 16px; }
+  /* 휴대폰 공지줄은 두 줄까지 허용해 문구가 잘리지 않게 한다 (#209 B6) */
+  .notice-bar { white-space: normal; line-height: 1.45; }
+  .notice-bar #noticeText {
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+    overflow: hidden; white-space: normal;
+  }
 
   .app { padding: 22px 16px 60px; }
   .hero { padding: 30px 22px 26px; border-radius: var(--radius); }
@@ -1184,6 +1195,8 @@ p:last-child { margin-bottom: 0; }
 .auth-hint { font-size: 12px; color: var(--cgi-muted); line-height: 1.5; }
 .auth-consent { display: flex; flex-direction: column; gap: 8px; padding: 12px 14px; border: 1px solid var(--cgi-line-soft); border-radius: var(--radius-sm); background: var(--cgi-bg); }
 .auth-check { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; color: var(--cgi-ink); cursor: pointer; }
+/* 견적 폼의 label 기본(grid)이 동의칸을 세로로 쪼개지 않게 한다 (#209 B3) */
+.quote-form .auth-check, .order-consents .auth-check { display: flex; }
 .auth-check input { margin-top: 2px; width: 16px; height: 16px; flex: none; accent-color: var(--cgi-primary); }
 .auth-check a { color: var(--cgi-primary-dark); text-decoration: underline; }
 .auth-muted { font-size: 13.5px; color: var(--cgi-muted); margin: 0 0 14px; }
@@ -1326,8 +1339,7 @@ p:last-child { margin-bottom: 0; }
 /* CGI UX 2026-11: compact mobile header, home quick links, and seller disclosures */
 @media (max-width: 899px) {
   .header-inner { padding: 8px 12px; gap: 8px; }
-  .notice-bar { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.3; }
-  .notice-bar #noticeText { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+  /* 두 줄 공지는 위쪽 899px 블록에서 정의 (#209 B6) */
   .header-nav .header-auth { order: 5; width: 100%; margin: 0; padding: 12px 4px; border-left: 0; border-top: 1px solid #2a2a2a; }
 }
 .hero-quicklinks { display: grid; gap: 10px; margin-top: 20px; }
