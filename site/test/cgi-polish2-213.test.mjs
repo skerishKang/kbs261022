@@ -33,8 +33,8 @@ const mapSource = read('site/data/category_map.js');
 /* --------------------------------- E1 --------------------------------- */
 
 test('E1: 휴대폰 공지줄 점이 글자 첫 줄에 붙는다', () => {
-  assert.match(css, /\/\* 휴대폰에서 점이 글자 윗줄로 떨어지지 않게 같은 줄에 붙인다 \(#213 E1\) \*\//);
-  assert.match(css, /\.notice-bar \{ display: flex; align-items: flex-start; justify-content: center; \}/);
+  assert.match(css, /\/\* 휴대폰에서 점 바로 뒤에 글자를 왼쪽 정렬로 붙인다 \(#216 H5\) \*\//);
+  assert.match(css, /\.notice-bar \{ display: flex; align-items: flex-start; justify-content: flex-start; text-align: left; \}/);
   assert.match(css, /\.notice-dot \{ flex: 0 0 auto; margin-top: 5px; \}/);
 });
 

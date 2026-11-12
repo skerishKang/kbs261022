@@ -33,5 +33,5 @@ test('the company homepage links to the storefront with relative paths', () => {
 });
 
 test('the changed website config asset carries the next cache-busting version', () => {
-  assert.match(read('website/index.html'), /assets\/config\.js\?v=101a/);
+  assert.match(read('website/index.html'), /assets\/config\.js\?v=104a/);
 });

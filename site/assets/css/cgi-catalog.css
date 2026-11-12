@@ -84,7 +84,6 @@ p:last-child { margin-bottom: 0; }
 .brand-divider { width: 1px; height: 26px; background: #343434; }
 .brand-text { display: flex; flex-direction: column; line-height: 1.2; }
 .brand-text strong { color: #fff; font-size: 15px; letter-spacing: -.2px; }
-.brand-text small { color: #9a9a9a; font-size: 12px; letter-spacing: .14em; font-weight: 600; }
 
 .nav-toggle {
   display: none; margin-left: auto; width: 42px; height: 42px; padding: 0;
@@ -98,10 +97,12 @@ p:last-child { margin-bottom: 0; }
 
 .search-form { flex: 1 1 auto; display: flex; max-width: 520px; min-width: 0; }
 .search-form input {
-  flex: 1 1 auto; min-width: 0; height: 40px; padding: 0 14px;
+  flex: 1 1 auto; min-width: 200px; height: 40px; padding: 0 14px;
   border: 1px solid #fff; border-right: 0; border-radius: var(--radius-sm) 0 0 var(--radius-sm);
   background: #fff; color: var(--cgi-ink);
 }
+/* 입력값 지우기(×) 버튼이 나타나도 안내 글자가 잘리지 않게 한다 (#216 H1) */
+.search-form input::-webkit-search-cancel-button { -webkit-appearance: searchfield-cancel-button; }
 .search-form input::placeholder { color: #8a8a8a; }
 .search-form input:focus { outline: none; box-shadow: inset 0 0 0 2px var(--cgi-primary); }
 .btn-search {
@@ -116,7 +117,7 @@ p:last-child { margin-bottom: 0; }
 .header-nav { display: flex; align-items: center; gap: 2px; flex: 0 0 auto; margin-left: auto; }
 .header-nav a {
   color: #cfcfcf; font-size: 13.5px; font-weight: 600; letter-spacing: .02em;
-  padding: 24px 11px; border-bottom: 3px solid transparent; white-space: nowrap;
+  padding: 24px 9px; border-bottom: 3px solid transparent; white-space: nowrap;
   transition: color .15s ease, border-color .15s ease;
 }
 .header-nav a:hover { color: #fff; }
@@ -188,7 +189,7 @@ p:last-child { margin-bottom: 0; }
 .hero-search button:hover { background: #262626; }
 
 .stat-row {
-  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px; margin: 0 0 34px;
 }
 .stat-card {
@@ -822,11 +823,10 @@ p:last-child { margin-bottom: 0; }
 @media (max-width: 1099px) {
   .header-inner { gap: 14px; }
   .brand img { width: 112px; }
-  .brand-text small { display: none; }
   .header-nav a { padding: 24px 8px; font-size: 13px; }
   .search-form { max-width: 420px; }
   .product-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .stat-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .stat-row { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .detail-grid { grid-template-columns: minmax(0, 420px) minmax(0, 1fr); gap: 28px; }
   /* 태블릿·모바일(≤1099px): 주 버튼 하나를 담은 상품 바로 아래에 (#209 A2)
      - 가격 확정 장바구니: 결제 CTA가 주 → 담은 상품 바로 아래
@@ -861,8 +861,8 @@ p:last-child { margin-bottom: 0; }
   }
   .header-nav a.is-active { border-bottom-color: #232323; border-left-color: var(--cgi-primary); padding-left: 10px; }
   .notice-bar { font-size: 12px; padding: 7px 16px; }
-  /* 휴대폰에서 점이 글자 윗줄로 떨어지지 않게 같은 줄에 붙인다 (#213 E1) */
-  .notice-bar { display: flex; align-items: flex-start; justify-content: center; }
+  /* 휴대폰에서 점 바로 뒤에 글자를 왼쪽 정렬로 붙인다 (#216 H5) */
+  .notice-bar { display: flex; align-items: flex-start; justify-content: flex-start; text-align: left; }
   .notice-dot { flex: 0 0 auto; margin-top: 5px; }
   /* 휴대폰 공지줄은 두 줄까지 허용해 문구가 잘리지 않게 한다 (#209 B6) */
   .notice-bar { white-space: normal; line-height: 1.45; }
@@ -983,7 +983,8 @@ p:last-child { margin-bottom: 0; }
 
 @media (max-width: 399px) {
   .brand-text { display: none; }
-  .stat-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .stat-row { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .stat-card dd { font-size: 16px; }
   .mobile-cta .btn { min-width: 132px; }
 }
 

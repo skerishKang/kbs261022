@@ -1,6 +1,6 @@
 {
- "generated_at": "2026-11-12T12:52:47Z",
- "product_count": 4575,
+ "generated_at": "2026-11-12T21:52:58Z",
+ "product_count": 4546,
  "brands": [
   {
    "name": "SHURE",
@@ -36,11 +36,7 @@
   },
   {
    "name": "MICHAEL TUTTLE GUITARS",
-   "count": 132
-  },
-  {
-   "name": "NASH GUITARS",
-   "count": 128
+   "count": 126
   },
   {
    "name": "REAN",
@@ -53,6 +49,10 @@
   {
    "name": "MESA/BOOGIE",
    "count": 119
+  },
+  {
+   "name": "NASH GUITARS",
+   "count": 117
   },
   {
    "name": "JICO",
@@ -156,7 +156,7 @@
   },
   {
    "name": "ROSCOE GUITARS",
-   "count": 13
+   "count": 12
   },
   {
    "name": "ROCK AND ROLL RELICS",
@@ -167,10 +167,6 @@
    "count": 10
   },
   {
-   "name": "GRAY LONDON GUITARS",
-   "count": 9
-  },
-  {
    "name": "CLOUD",
    "count": 8
   },
@@ -179,11 +175,11 @@
    "count": 8
   },
   {
-   "name": "ACOUSTIC GROVE SYSTEM",
-   "count": 6
+   "name": "GRAY LONDON GUITARS",
+   "count": 8
   },
   {
-   "name": "TC ELECTRONIC",
+   "name": "ACOUSTIC GROVE SYSTEM",
    "count": 6
   },
   {
@@ -207,10 +203,6 @@
    "count": 3
   },
   {
-   "name": "KEN SMITH",
-   "count": 3
-  },
-  {
    "name": "AROBAS MUSIC",
    "count": 2
   },
@@ -219,15 +211,15 @@
    "count": 2
   },
   {
-   "name": "TC HELICON",
-   "count": 2
-  },
-  {
    "name": "UNITED",
    "count": 2
   },
   {
    "name": "HEXACHORDS",
+   "count": 1
+  },
+  {
+   "name": "TC ELECTRONIC",
    "count": 1
   },
   {
