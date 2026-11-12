@@ -25,9 +25,12 @@ function norm(value) {
 function searchSource(p) {
   const category = (p.category && p.category.name) ||
     ((p.category_path && p.category_path.length) ? p.category_path[p.category_path.length - 1] : '미분류');
+  // 구매방법·배송주기 값은 검색 잡음이라 catalog.json 에서도 뺀다 (#216 G4).
+  const NOISE = new Set(['구매방법', '배송주기']);
   return [p.name, p.model, p.brand, p.brand_raw, p.manufacturer, category,
     (p.category_path || []).join(' '),
-    (p.specs || []).map((s) => s.label + ' ' + s.value).join(' ')].join(' ');
+    (p.specs || []).filter((s) => !NOISE.has(String(s.label || '').trim()))
+      .map((s) => s.label + ' ' + s.value).join(' ')].join(' ');
 }
 
 // catalog.json 의 name 은 화면용 이름이다 (#209 A5): 공급처 문구 접두사와 SCM 코드는

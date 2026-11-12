@@ -90,6 +90,15 @@
     return product.brand_norm || product.brand || product.manufacturer ||
       (product.source && product.source.site_label) || '브랜드 미확인';
   }
+  /* '기타' 묶음(비브랜드) 상품은 카드·상세의 브랜드 줄을 비운다 (#216 H3).
+     필터·칩에는 '그 외'라는 이름으로 남긴다. */
+  function brandDisplay(product) {
+    var b = displayBrand(product);
+    return b === '기타' ? '' : b;
+  }
+  function brandLabel(value) {
+    return value === '기타' ? '그 외' : value;
+  }
   function categoryLabel(product) {
     if (product.category && product.category.name) return product.category.name;
     if (product.category_path && product.category_path.length) return product.category_path[product.category_path.length - 1];
@@ -498,7 +507,7 @@
       '<a class="product-card" href="' + esc(productUrl(product.id)) + '" data-product-id="' + esc(product.id) + '">' +
         '<div class="thumb">' + badge + imageHtml(product, 'card-img', priority) + '</div>' +
         '<div class="card-body">' +
-          '<span class="card-brand">' + esc(displayBrand(product)) + '</span>' +
+          '<span class="card-brand">' + esc(brandDisplay(product)) + '</span>' +
           (cond.tag ? '<div class="card-flags"><span class="badge cond">' + esc(cond.tag) + '</span></div>' : '') +
           '<h3 class="card-name">' + esc(cond.name) + '</h3>' +
           (product.model && product.model !== product.name ? '<span class="card-model">' + esc(product.model) + '</span>' : '') +
@@ -592,15 +601,17 @@
       rows += sec.values.map(function (value) {
         var id = 'f-' + name + '-' + (rowIdx++);
         var checked = selected.indexOf(value) !== -1 ? ' checked' : '';
+        var labelText = title === '브랜드' ? brandLabel(value) : value;
         return '<label for="' + id + '">' +
           '<input type="checkbox" id="' + id + '" data-facet="' + name + '" value="' + esc(value) + '"' + checked + '>' +
-          '<span>' + esc(value) + '</span>' +
+          '<span>' + esc(labelText) + '</span>' +
           '<span class="cnt">' + Number(counts[value] || 0).toLocaleString('ko-KR') + '</span>' +
         '</label>';
       }).join('');
     });
+    var facetTotal = title === '브랜드' && values.indexOf('기타') !== -1 ? values.length - 1 : values.length;
     return '<details class="filter-group" open>' +
-      '<summary><span>' + esc(title) + '</span><span class="facet-total">' + values.length + '</span></summary>' +
+      '<summary><span>' + esc(title) + '</span><span class="facet-total">' + facetTotal + '</span></summary>' +
       '<div class="filter-body">' +
         (values.length > 10
           ? '<input type="search" class="facet-search" data-facet-search="' + name + '" placeholder="' + esc(title) + ' 검색" aria-label="' + esc(title) + ' 검색" autocomplete="off">'
@@ -610,9 +621,9 @@
     '</details>';
   }
 
-  function chipHtml(label, count, kind) {
+  function chipHtml(label, count, kind, urlValue) {
     var overrides = { q: '', brands: [], cats: [], sites: [] };
-    if (kind === 'brand') overrides.brands = [label];
+    if (kind === 'brand') overrides.brands = [urlValue || label];
     else overrides.cats = [label];
     return '<a class="chip" href="' + esc(listUrl(overrides)) + '">' + esc(label) +
       '<span class="cnt">' + Number(count || 0).toLocaleString('ko-KR') + '</span></a>';
@@ -624,10 +635,10 @@
     var rest = values.slice(limit);
     return '<section class="section">' +
       '<div class="section-head"><h2>' + esc(title) + '</h2><a class="more" href="#/products">전체 상품 →</a></div>' +
-      '<div class="chip-row">' + top.map(function (v) { return chipHtml(v, counts[v], kind); }).join('') + '</div>' +
+      '<div class="chip-row">' + top.map(function (v) { return chipHtml(kind === 'brand' ? brandLabel(v) : v, counts[v], kind, kind === 'brand' ? v : undefined); }).join('') + '</div>' +
       (rest.length
-        ? '<details class="chip-more"><summary>' + esc(title) + ' 전체 보기 (' + values.length + ')</summary>' +
-            '<div class="chip-row">' + rest.map(function (v) { return chipHtml(v, counts[v], kind); }).join('') + '</div></details>'
+        ? '<details class="chip-more"><summary>' + esc(title) + ' 전체 보기 (' + (kind === 'brand' ? values.length - 1 : values.length) + ')</summary>' +
+            '<div class="chip-row">' + rest.map(function (v) { return chipHtml(kind === 'brand' ? brandLabel(v) : v, counts[v], kind, kind === 'brand' ? v : undefined); }).join('') + '</div></details>'
         : '') +
     '</section>';
   }
@@ -708,7 +719,7 @@
     var priced = state.products.filter(function (p) { return p.price && p.price.state === 'public'; }).length;
     var featured = pickFeatured(8);
     var quickCategories = cats.slice(0, 4).map(function (v) { return chipHtml(v, catCounts[v], 'cat'); }).join('');
-    var quickBrands = brands.slice(0, 4).map(function (v) { return chipHtml(v, brandCounts[v], 'brand'); }).join('');
+    var quickBrands = brands.slice(0, 4).map(function (v) { return chipHtml(brandLabel(v), brandCounts[v], 'brand', v); }).join('');
 
     app.innerHTML =
       '<section class="hero">' +
@@ -906,8 +917,8 @@
           (splitConditionTag(product.name).tag ? '<div class="detail-flags"><span class="badge cond">' + esc(splitConditionTag(product.name).tag) + '</span></div>' : '') +
           '<h1 class="detail-title">' + esc(splitConditionTag(product.name).name) + '</h1>' +
           '<p class="detail-sub">' +
-            esc(displayBrand(product)) +
-            (product.manufacturer && product.manufacturer !== displayBrand(product) ? ' · 제조사 ' + esc(product.manufacturer) : '') +
+            esc(brandDisplay(product)) +
+            (product.manufacturer && product.manufacturer !== brandDisplay(product) ? ' · 제조사 ' + esc(product.manufacturer) : '') +
             (product.model ? ' · 모델 ' + esc(product.model) : '') +
             ' · ' + esc(product._cat) +
           '</p>' +

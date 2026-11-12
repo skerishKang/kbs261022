@@ -55,7 +55,7 @@ test('B1: 대분류는 10~15개고 브랜드명 분류가 없다', () => {
 
 test('B1: catalog.json 의 모든 카테고리가 대분류로 매핑된다', () => {
   const cats = [...new Set(catalog.products.map((p) => p.category.name))];
-  assert.equal(cats.length, 211);
+  assert.equal(cats.length, 208); // #216 G1 로 211 → 208
   const groupSet = new Set(map.groups);
   for (const c of cats) {
     const g = mapCategory(c);

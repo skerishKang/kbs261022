@@ -15,7 +15,7 @@
  *      예) Shure → SHURE, Q Acoustics → Q ACOUSTICS, Allen&Heath → ALLEN&HEATH
  *
  * 3) 취급 브랜드 목록
- *    - 삼아사운드 공개 페이지를 실측해 확정한 31개 (Issue #5).
+ *    - 쇼핑몰 brands.json 을 읽어 자동 표시합니다.
  *    - 각 항목은 쇼핑몰의 브랜드 필터로 연결됩니다.
  *
  * 4) 브랜드 목록 연동 (이슈 #19)

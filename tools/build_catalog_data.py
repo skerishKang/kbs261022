@@ -126,6 +126,21 @@ def canonical_brand(brand: str) -> str:
     return BRAND_ALIASES.get(b, b)
 
 
+# 상품이 아닌 항목(#216 G1): 공급처의 개별 결제용 페이지가 상품으로 올라오는 것을
+# 빌드 단계에서 제외한다. 상품명에 결제창·잔금·계약금 이 들어간 건 전부 해당된다.
+NON_PRODUCT_RE = re.compile(r"결제창|잔금|계약금")
+
+
+# 검색에서 뺄 공급처 구매 옵션 라벨 (#216 G4)
+SEARCH_NOISE_SPEC_LABELS = {"구매방법", "배송주기"}
+
+
+def is_non_product(product: dict) -> bool:
+    """결제창·잔금·계약금 페이지는 상품이 아니므로 카탈로그에서 뺀다 (#216 G1)."""
+    name = str(product.get("name") or "")
+    return bool(NON_PRODUCT_RE.search(name))
+
+
 # 화면용 상품명 정리 (#209 A5): 공급처 문구 접두사([..])와 SCM 코드는 화면에서만 제거하고
 # 원본 products.json 의 name 은 그대로 둔다. 상품 상태 태그([리퍼비쉬] 등)는 사이트가
 # 배지로 분리해 보여 주므로 접두사에 남겨 둔다.
@@ -449,7 +464,11 @@ def _category_label(product: dict) -> str:
 
 
 def _search_text(product: dict) -> str:
-    """cgi-catalog.js prepare() 의 _search 입력과 같은 순서로 만든다."""
+    """cgi-catalog.js prepare() 의 _search 입력과 같은 순서로 만든다.
+
+    구매방법·배송주기 값은 공급처 구매 옵션 문구라 검색 잡음이라 (#216 G4)
+    검색 대상에서 뺀다. "할인"·"정기배송"으로 검색해 전 상품이 나오는 것을 막는다.
+    """
     specs = product.get("specs") or []
     parts = [
         product.get("name") or "",
@@ -459,7 +478,11 @@ def _search_text(product: dict) -> str:
         product.get("manufacturer") or "",
         _category_label(product),
         " ".join(str(p) for p in (product.get("category_path") or [])),
-        " ".join(f"{s.get('label', '')} {s.get('value', '')}".strip() for s in specs),
+        " ".join(
+            f"{s.get('label', '')} {s.get('value', '')}".strip()
+            for s in specs
+            if str(s.get("label", "")).strip() not in SEARCH_NOISE_SPEC_LABELS
+        ),
     ]
     return " ".join(parts)
 
@@ -644,6 +667,14 @@ def main() -> int:
         from_master_csv(Path(args.master_csv), cat_index)
         + from_sample_json(Path(args.sample_json), cat_index)
     )
+    # 상품이 아닌 항목 제외 (#216 G1): 결제창·잔금·계약금 페이지
+    excluded_non_products = [p for p in products if is_non_product(p)]
+    if excluded_non_products:
+        products = [p for p in products if not is_non_product(p)]
+        print(
+            f"[build_catalog_data] excluded non-product pages: {len(excluded_non_products)} "
+            f"({', '.join(sorted(p['id'] for p in excluded_non_products))})"
+        )
     for p in products:
         if not p["brand_norm"]:
             p["brand_norm"] = norm_brand(p["brand"])

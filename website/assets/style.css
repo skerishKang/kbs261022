@@ -214,7 +214,7 @@ button { font: inherit; cursor: pointer; }
   border-color: var(--cgi-green); color: var(--cgi-green-dark); background: var(--cgi-green-soft);
 }
 .brand-grid .brand-count {
-  display: inline-block; margin-left: 6px; font-size: 11px; font-weight: 700;
+  display: inline-block; margin-left: 6px; font-size: 12px; font-weight: 700;
   color: var(--cgi-green-dark); background: var(--cgi-green-soft); border-radius: 999px; padding: 0 6px;
 }
 
@@ -327,7 +327,7 @@ button { font: inherit; cursor: pointer; }
   .wrap { padding: 0 14px; }
   .section { padding: 46px 0; }
   .sec-head h2 { font-size: 24px; }
-  .sec-no { font-size: 11px; }
+  .sec-no { font-size: 12px; }
   .hero-inner { padding: 56px 14px 62px; }
   .hero-title { font-size: 25px; }
   .hero-en { font-size: 13.5px; }
@@ -354,7 +354,7 @@ button { font: inherit; cursor: pointer; }
 .asof {
   display: inline-block; margin-left: 8px; padding: 2px 7px; border-radius: 10px;
   background: var(--cgi-green-soft); color: var(--cgi-green-dark);
-  font-size: 11.5px; font-weight: 700; vertical-align: 1px;
+  font-size: 12px; font-weight: 700; vertical-align: 1px;
 }
 
 /* 조직도 */
@@ -397,7 +397,7 @@ ul.kw-strip { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; margin
 .biz-card { padding: 0; overflow: hidden; }
 .biz-card img { display: block; width: 100%; height: 172px; object-fit: cover; background: var(--cgi-bg); }
 .biz-card h3 { font-size: 16.5px; margin: 16px 20px 10px; }
-.biz-card h3 .en { display: block; font-size: 11.5px; font-weight: 700; letter-spacing: .1em; color: var(--cgi-green); margin-top: 4px; }
+.biz-card h3 .en { display: block; font-size: 12px; font-weight: 700; letter-spacing: .1em; color: var(--cgi-green); margin-top: 4px; }
 .biz-card .biz-no { display: block; padding: 16px 20px 0; }
 .biz-card ul { margin: 0; padding: 0 20px 22px; list-style: none; }
 
@@ -484,10 +484,10 @@ ul.cred-items li {
   .biz-card .field-media, .biz-card img { height: 96px; min-height: 96px; }
   .field-icon-svg { width: 34px; height: 34px; }
   .field-icon { padding: 10px; }
-  .field-icon-label { font-size: 10.5px; }
+  .field-icon-label { font-size: 12px; }
   .biz-card h3 { font-size: 13.5px; margin: 10px 12px 4px; }
-  .biz-card h3 .en { font-size: 10.5px; margin-top: 2px; }
-  .biz-card .biz-no { padding: 10px 12px 0; font-size: 11px; }
+  .biz-card h3 .en { font-size: 12px; margin-top: 2px; }
+  .biz-card .biz-no { padding: 10px 12px 0; font-size: 12px; }
   .biz-card ul { padding: 0 12px 12px; font-size: 12px; }
 }
 
