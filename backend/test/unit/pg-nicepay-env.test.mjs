@@ -12,7 +12,7 @@ import {
   redactNicepay,
   resolveNicepayEnv,
 } from '../../lib/pg-nicepay-env.mjs';
-import { NICEPAY_JS_SDK_PROD } from '../../lib/pg-nicepay.mjs';
+import { NICEPAY_JS_SDK_PROD, NICEPAY_PROD_API, NICEPAY_SANDBOX_API } from '../../lib/pg-nicepay.mjs';
 
 const TEST_IDS = { NICEPAY_TEST_CLIENT_KEY: 'nicepay-fixture-test-client-a', NICEPAY_TEST_SECRET_KEY: 'nicepay-fixture-test-secret-a' };
 const OPS_IDS = { NICEPAY_OPERATING_CLIENT_KEY: 'nicepay-fixture-ops-client-b', NICEPAY_OPERATING_SECRET_KEY: 'nicepay-fixture-ops-secret-b' };
@@ -33,10 +33,21 @@ test('selecting the operating environment swaps host, SDK and credential set', (
   assert.equal(cfg.ok, true);
   assert.equal(cfg.environment, NICEPAY_ENV_OPERATING);
   assert.equal(cfg.mode, 'production');
-  assert.equal(cfg.apiBaseUrl, 'https://api.pay.nicepay.co.kr/v1');
+  assert.equal(cfg.apiBaseUrl, 'https://api.nicepay.co.kr/v1');
   assert.equal(cfg.jsSdkUrl, NICEPAY_JS_SDK_PROD);
   assert.equal(cfg.clientId, OPS_IDS.NICEPAY_OPERATING_CLIENT_KEY);
   assert.equal(cfg.secretKey, OPS_IDS.NICEPAY_OPERATING_SECRET_KEY);
+});
+
+test('API hosts are pinned to the documented NICEPAY endpoints', () => {
+  assert.equal(NICEPAY_PROD_API, 'https://api.nicepay.co.kr');
+  assert.equal(NICEPAY_SANDBOX_API, 'https://sandbox-api.nicepay.co.kr');
+  const asTest = resolveNicepayEnv(full());
+  const asOps = resolveNicepayEnv(full({ [NICEPAY_ENV_VAR]: NICEPAY_ENV_OPERATING }));
+  assert.equal(asTest.apiBaseUrl, `${NICEPAY_SANDBOX_API}/v1`);
+  assert.equal(asOps.apiBaseUrl, `${NICEPAY_PROD_API}/v1`);
+  assert.equal(asOps.apiBaseUrl, 'https://api.nicepay.co.kr/v1');
+  assert.equal(asTest.jsSdkUrl, NICEPAY_JS_SDK_PROD);
 });
 
 test('one variable alone re-points the whole connection', () => {
@@ -122,8 +133,8 @@ test('sandbox API host is never the production host and vice versa', () => {
   const sandbox = resolveNicepayEnv(full());
   const operating = resolveNicepayEnv(full({ [NICEPAY_ENV_VAR]: NICEPAY_ENV_OPERATING }));
   assert.match(sandbox.apiBaseUrl, /^https:\/\/sandbox-api\.nicepay\.co\.kr\/v1$/);
-  assert.doesNotMatch(sandbox.apiBaseUrl, /api\.pay\.nicepay|https:\/\/api\.nicepay/);
-  assert.match(operating.apiBaseUrl, /^https:\/\/api\.pay\.nicepay\.co\.kr\/v1$/);
+  assert.doesNotMatch(sandbox.apiBaseUrl, /^https:\/\/api\.nicepay\.co\.kr\/v1$/);
+  assert.match(operating.apiBaseUrl, /^https:\/\/api\.nicepay\.co\.kr\/v1$/);
   assert.doesNotMatch(operating.apiBaseUrl, /sandbox/);
 });
 

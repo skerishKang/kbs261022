@@ -78,9 +78,24 @@ test('the adapter needs both halves of the credential pair and refuses to guess'
 
 test('production mode moves the host and re-enables partial cancel', () => {
   const { a } = adapter({ mode: 'production', environment: 'operating' });
-  assert.equal(a.apiBaseUrl, 'https://api.pay.nicepay.co.kr/v1');
+  assert.equal(a.apiBaseUrl, 'https://api.nicepay.co.kr/v1');
   assert.equal(a.live, true);
   assert.equal(a.supports.partialCancel, true);
+});
+
+test('a network failure is labelled fetch_failed and names the host without credentials', async () => {
+  const { a } = adapter({
+    mode: 'production', environment: 'operating',
+    handler: () => { throw new TypeError('fetch failed'); },
+  });
+  await assert.rejects(
+    () => a.fetchByPaymentKey(TID),
+    (error) => error instanceof NicepayApiError
+      && error.code === 'fetch_failed'
+      && error.message.includes('api.nicepay.co.kr')
+      && !error.message.includes(SECRET)
+      && !error.message.includes(CLIENT),
+  );
 });
 
 test('window params carry only what the browser legitimately holds', () => {

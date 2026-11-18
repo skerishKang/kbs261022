@@ -43,7 +43,7 @@
 | | `test`(기본) | `operating` |
 | --- | --- | --- |
 | mode | `sandbox` | `production` |
-| API | `https://sandbox-api.nicepay.co.kr/v1` | `https://api.pay.nicepay.co.kr/v1` |
+| API | `https://sandbox-api.nicepay.co.kr/v1` | `https://api.nicepay.co.kr/v1` |
 | SDK include | `https://pay.nicepay.co.kr/v1/js/` (실측: 운영과 동일 호스트) | `https://pay.nicepay.co.kr/v1/js/` |
 | 결제창 호스트 | `https://sandbox-pay.nicepay.co.kr` | `https://pay.nicepay.co.kr` |
 | 키 변수 | `NICEPAY_TEST_CLIENT_KEY` / `NICEPAY_TEST_SECRET_KEY` | `NICEPAY_OPERATING_CLIENT_KEY` / `NICEPAY_OPERATING_SECRET_KEY` |

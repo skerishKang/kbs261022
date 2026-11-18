@@ -192,7 +192,7 @@ export function createNicepayAdapter({
   }
   const base = String(apiBaseUrl || (mode === 'sandbox'
     ? 'https://sandbox-api.nicepay.co.kr/v1'
-    : 'https://api.pay.nicepay.co.kr/v1')).replace(/\/$/, '');
+    : 'https://api.nicepay.co.kr/v1')).replace(/\/$/, '');
   const auth = basicAuth({ shopId: clientId, secretKey });
 
   // Whatever a gateway (or a proxy in front of one) puts in resultMsg ends up in
@@ -217,11 +217,20 @@ export function createNicepayAdapter({
     // NICE does not define an idempotency header; the key is kept for the caller's
     // own ledger and to make a duplicate attempt visible in diagnostics.
     if (idempotencyKey) headers['X-Request-Idempotency-Key'] = String(idempotencyKey).slice(0, 120);
-    const response = await fetchFn(url.toString(), {
-      method,
-      headers,
-      ...(body === undefined ? {} : { body: JSON.stringify(body) }),
-    });
+    let response;
+    try {
+      response = await fetchFn(url.toString(), {
+        method,
+        headers,
+        ...(body === undefined ? {} : { body: JSON.stringify(body) }),
+      });
+    } catch {
+      throw new NicepayApiError({
+        code: 'fetch_failed',
+        message: `fetch failed for ${url.host}${url.pathname}`,
+        endpoint: `${method} ${url.pathname}`,
+      });
+    }
     let payload = null;
     try { payload = await response.json(); } catch { payload = null; }
     const code = payload ? String(payload.resultCode ?? payload.code ?? '') : '';

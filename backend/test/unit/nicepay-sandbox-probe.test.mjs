@@ -146,7 +146,7 @@ test('the operating store is refused unless the operator asks for it explicitly'
     envVars: KEYS, argv: ['--environment', 'operating', '--allow-operating'], fetchFn: allowed.fn, orderId: 'X',
   });
   assert.equal(out.mode, 'production');
-  assert.match(allowed.seen[0].url, /^https:\/\/api\.pay\.nicepay\.co\.kr\/v1\/payments\/find\/X\?/);
+  assert.match(allowed.seen[0].url, /^https:\/\/api\.nicepay\.co\.kr\/v1\/payments\/find\/X\?/);
 });
 
 test('nothing the probe returns can carry a credential', async () => {

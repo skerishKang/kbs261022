@@ -763,6 +763,12 @@ async function confirmPayment(db, body, env, pg) {
       status: 'failed',
       failureCode: e && e.code ? String(e.code) : 'PG_ERROR',
       failureMessage: e && e.message ? String(e.message).slice(0, 500) : String(e),
+      raw: JSON.stringify({
+        resultCode: e && e.code ? String(e.code).slice(0, 80) : null,
+        resultMsg: e && e.message ? String(e.message).slice(0, 300) : null,
+        status: e && e.status ? Number(e.status) : null,
+        endpoint: e && e.endpoint ? String(e.endpoint).slice(0, 120) : null,
+      }),
       // A rejection means the supplied paymentKey never proved anything about
       // THIS order — log it, but leave the order awaiting_payment and retryable.
       touchOrder: false,
