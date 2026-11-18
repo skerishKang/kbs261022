@@ -300,6 +300,8 @@ function shiftIso(now, deltaSeconds) {
 // order item normalization (server is authoritative on prices)
 // ---------------------------------------------------------------------------
 
+const PAYTEST_PRODUCT_ID = 'cgi:paytest-1000';
+
 /**
  * Normalize client items. The Worker looks up every price in PRICE_INDEX and
  * ignores client-supplied prices entirely, so a tampered browser cannot change
@@ -321,6 +323,9 @@ function normalizeItems(rawItems) {
 
     const qty = Math.max(1, toNonNegInt(raw.qty, 1));
     if (qty > 9999) return { error: 'invalid item', detail: 'quantity must be 1..9999' };
+    if (productId === PAYTEST_PRODUCT_ID && qty !== 1) {
+      return { error: 'paytest_quantity_limit', detail: 'paytest product is limited to one unit' };
+    }
 
     const entry = PRICE_INDEX[productId];
     const unitPrice = entry ? entry.p : null;

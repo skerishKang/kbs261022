@@ -30,6 +30,8 @@
     return isNaN(d.getTime()) ? String(value) : d.toLocaleString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' });
   }
   function findProduct(id) {
+    var hidden = window.CGI_PAYTEST_PRODUCT;
+    if (hidden && hidden.id === id) return hidden;
     var list = allProducts();
     for (var i = 0; i < list.length; i++) if (list[i].id === id) return list[i];
     return null;

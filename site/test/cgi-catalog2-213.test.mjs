@@ -146,7 +146,7 @@ test('D3: 상세 담기 버튼 위에 수량 스테퍼가 있고 담기·견적 
   assert.ok(SRC.indexOf('qty-row') < SRC.indexOf('견적 요청하기'), '수량 행은 담기 버튼 위다');
   assert.match(SRC, /addToQuoteCart\(productId, readDetailQty\(\)\)/);
   assert.match(SRC, /addToQuoteCart\(productId, readDetailQty\(\), true\)/);
-  assert.match(SRC, /Math\.min\(999, Math\.max\(1,/);
+  assert.match(SRC, /Math\.min\(detailQtyMax\(input\), Math\.max\(1,/);
 });
 
 /* --------------------------------- D4 --------------------------------- */

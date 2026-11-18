@@ -1,0 +1,44 @@
+[
+  {
+    "label": "390",
+    "view": "detail",
+    "title": "결제 확인용 상품 · 구매 불가",
+    "price": "1,000원",
+    "qtyMax": "1",
+    "overflow": 0
+  },
+  {
+    "label": "390",
+    "view": "search",
+    "text": "0건 · “결제창”",
+    "cards": 0,
+    "empty": true,
+    "overflow": 0
+  },
+  {
+    "label": "390",
+    "view": "console",
+    "errors": []
+  },
+  {
+    "label": "1440",
+    "view": "detail",
+    "title": "결제 확인용 상품 · 구매 불가",
+    "price": "1,000원",
+    "qtyMax": "1",
+    "overflow": 0
+  },
+  {
+    "label": "1440",
+    "view": "search",
+    "text": "0건 · “결제창”",
+    "cards": 0,
+    "empty": true,
+    "overflow": 0
+  },
+  {
+    "label": "1440",
+    "view": "console",
+    "errors": []
+  }
+]

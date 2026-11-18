@@ -105,7 +105,16 @@
     return '미분류';
   }
   function productUrl(id) { return '#/product/' + encodeURIComponent(id); }
+  var paytestProduct = null;
+  function hiddenProduct() {
+    var raw = window.CGI_PAYTEST_PRODUCT;
+    if (!raw || !raw.id) return null;
+    if (!paytestProduct || paytestProduct.id !== raw.id) paytestProduct = prepare(raw);
+    return paytestProduct;
+  }
   function findProduct(id) {
+    var hidden = hiddenProduct();
+    if (hidden && hidden.id === id) return hidden;
     for (var i = 0; i < state.products.length; i++) {
       if (state.products[i].id === id) return state.products[i];
     }
@@ -857,17 +866,21 @@
 
   /* 상세 수량 (#213 D3): −/＋ 스테퍼와 직접 입력. 담기·견적 요청·고정 바의 견적 요청이
      모두 이 값을 쓴다. */
+  function detailQtyMax(input) {
+    var max = parseInt(input.getAttribute('max'), 10);
+    return Number.isFinite(max) && max > 0 ? max : 999;
+  }
   function readDetailQty() {
     var input = document.getElementById('detailQty');
     if (!input) return 1;
     var n = parseInt(String(input.value).replace(/[^0-9]/g, ''), 10);
-    return Math.min(999, Math.max(1, n || 1));
+    return Math.min(detailQtyMax(input), Math.max(1, n || 1));
   }
   function stepDetailQty(delta) {
     var input = document.getElementById('detailQty');
     if (!input) return;
     var n = parseInt(String(input.value).replace(/[^0-9]/g, ''), 10) || 1;
-    n = Math.min(999, Math.max(1, n + delta));
+    n = Math.min(detailQtyMax(input), Math.max(1, n + delta));
     input.value = String(n);
   }
 
@@ -967,7 +980,8 @@
               '<label class="qty-label" for="detailQty">수량</label>' +
               '<div class="qty-stepper">' +
                 '<button type="button" class="qty-btn" data-action="qty-step" data-detail-qty-step="-1" aria-label="수량 줄이기">−</button>' +
-                '<input type="text" inputmode="numeric" class="qty-input" id="detailQty" value="1" maxlength="3" aria-label="수량">' +
+                '<input type="text" inputmode="numeric" class="qty-input" id="detailQty" value="1" maxlength="3"' +
+                  (product.max_qty ? ' max="' + esc(product.max_qty) + '"' : '') + ' aria-label="수량">' +
                 '<button type="button" class="qty-btn" data-action="qty-step" data-detail-qty-step="1" aria-label="수량 늘리기">＋</button>' +
               '</div>' +
             '</div>' +
