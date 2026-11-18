@@ -32,9 +32,9 @@ const EXCLUDED_IDS = [
   'samamusic.co.kr:40', 'samamusic.co.kr:911',
 ];
 
-test('G1: 가격 인덱스는 2,088건이고 제외 id 는 없다', () => {
-  assert.equal(PRICE_INDEX_META.products_total, 4546);
-  assert.equal(PRICE_INDEX_META.products_with_price, 2088);
+test('G1: 가격 인덱스는 2,089건이고 제외 id 는 없다', () => {
+  assert.equal(PRICE_INDEX_META.products_total, 4547);
+  assert.equal(PRICE_INDEX_META.products_with_price, 2089);
   for (const id of EXCLUDED_IDS) {
     assert.equal(PRICE_INDEX[id], undefined, `제외된 id 가 인덱스에 남았다: ${id}`);
   }
@@ -43,7 +43,7 @@ test('G1: 가격 인덱스는 2,088건이고 제외 id 는 없다', () => {
 test('G1: 남은 가격 공개 상품의 id·가격은 카탈로그와 인덱스가 같다', () => {
   const priced = catalog.products.filter((p) => p.price && p.price.state === 'public');
   assert.equal(priced.length, 2088);
-  assert.equal(Object.keys(PRICE_INDEX).length, 2088);
+  assert.equal(Object.keys(PRICE_INDEX).length, 2089);
   for (const p of priced) {
     const entry = PRICE_INDEX[p.id];
     assert.ok(entry, `인덱스에 없는 가격 공개 상품: ${p.id}`);

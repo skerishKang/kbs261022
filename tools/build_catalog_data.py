@@ -700,6 +700,25 @@ def write_split_outputs(products: list[dict], out_dir: Path, meta: dict, detail_
     }
 
 
+def write_paytest_runtime(source: Path, out_dir: Path) -> None:
+    """결제 확인용 숨김 상품을 목록 데이터가 아닌 별도 런타임 파일로만 합친다.
+
+    정의 파일을 지우고 재빌드하면 null 이 되어 사라진다. catalog.json·brands.json·
+    details/ 에는 넣지 않으므로 목록·검색·통계·추천·브랜드 필터에 노출되지 않는다.
+    """
+    target = out_dir / "paytest.js"
+    if source.exists():
+        product = json.loads(source.read_text(encoding="utf-8"))
+        if not isinstance(product, dict):
+            raise ValueError("paytest.json must be a JSON object")
+        payload = json.dumps(product, ensure_ascii=False, separators=(",", ":"))
+        print(f"[build_catalog_data] hidden paytest product: {product.get('id')} (runtime only)")
+    else:
+        payload = "null"
+        print("[build_catalog_data] paytest definition absent; paytest.js set to null")
+    target.write_text("window.CGI_PAYTEST_PRODUCT = " + payload + ";\n", encoding="utf-8")
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description="CGI 카탈로그 사이트 데이터 정규화 빌더")
     root = Path(__file__).resolve().parents[1]
@@ -707,6 +726,7 @@ def main() -> int:
     ap.add_argument("--sample-json", default=str(root / "site/data/_source_sample-products.json"))
     ap.add_argument("--categories", default=str(root / "site/data/_source_category_catalog.csv"))
     ap.add_argument("--out-dir", default=str(root / "site/data"))
+    ap.add_argument("--paytest-json", default=str(root / "site/data/paytest.json"))
     ap.add_argument(
         "--split-only", action="store_true",
         help="products.json을 다시 만들지 않고 배포용 분할 산출물만 다시 쓴다",
@@ -720,6 +740,7 @@ def main() -> int:
         help="상세 분할 파일당 상품 수 (기본 100)",
     )
     args = ap.parse_args()
+    write_paytest_runtime(Path(args.paytest_json), Path(args.out_dir))
 
     if args.split_only:
         source = Path(args.from_json)
