@@ -130,7 +130,7 @@ test('4 주문번호·거래번호 조회 — a missing webhook is recovered by 
   // already-received transactions need no probe
   assert.deepEqual(recoveryRequests({ orders: [{ tid }], receivedTids: [tid], mode: 'sandbox' }), []);
   // reconciliation against the operating store must not be built from a sandbox run
-  assert.match(recoveryRequests({ orders: [{ orderId: 'A' }], mode: 'production' })[0].path, /^https:\/\/api\.pay\.nicepay\.co\.kr\/v1\//);
+  assert.match(recoveryRequests({ orders: [{ orderId: 'A' }], mode: 'production' })[0].path, /^https:\/\/api\.nicepay\.co\.kr\/v1\//);
 });
 
 test('5 중복 승인 차단 — the same (tid, status) notification collapses to one ledger event', () => {

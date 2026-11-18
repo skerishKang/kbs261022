@@ -11,7 +11,7 @@
 // Documented facts encoded here:
 //   * transport: JSON body, `Authorization: Basic or Bearer`,
 //     `Content-Type: application/json` (common/api.md)
-//   * hosts: production api.pay.nicepay.co.kr / sandbox sandbox-api.nicepay.co.kr,
+//   * hosts: production api.nicepay.co.kr / sandbox sandbox-api.nicepay.co.kr,
 //     JS SDK https://pay.nicepay.co.kr/v1/js/ (common/test.md, common/api.md)
 //   * endpoints: POST /v1/access-token, POST /v1/payments/{tid} (승인),
 //     POST /v1/payments/{tid}/cancel, GET /v1/payments/{tid},
@@ -35,7 +35,7 @@
 import { createHash, timingSafeEqual } from 'node:crypto';
 
 export const NICEPAY_PROVIDER = 'nicepay';
-export const NICEPAY_PROD_API = 'https://api.pay.nicepay.co.kr';
+export const NICEPAY_PROD_API = 'https://api.nicepay.co.kr';
 export const NICEPAY_SANDBOX_API = 'https://sandbox-api.nicepay.co.kr';
 export const NICEPAY_JS_SDK_PROD = 'https://pay.nicepay.co.kr/v1/js/';
 export const NICEPAY_WEBHOOK_ACK = 'OK';
