@@ -1623,11 +1623,12 @@ async function recordRelayQueued(db, order, id) {
 
 async function recordRelayResult(db, orderId, status, slipNo, errorText) {
   const ts = nowIso();
+  const eventType = status === 'sent' ? 'erp_relay_sent' : status === 'unknown' ? 'erp_relay_unknown' : 'erp_relay_failed';
   await db.batch([
     db.prepare('UPDATE orders SET erp_status = ?, erp_sent_at = ?, updated_at = ? WHERE id = ?')
       .bind(status, status === 'sent' ? ts : null, ts, orderId),
     db.prepare('INSERT INTO order_events (order_id, type, actor, from_status, to_status, meta, error, created_at) VALUES (?,?,?,?,?,?,?,?)')
-      .bind(orderId, status === 'sent' ? 'erp_relay_sent' : 'erp_relay_failed', 'erp', null, null,
+      .bind(orderId, eventType, 'erp', null, null,
         JSON.stringify({ adapter: ECOUNT_ORDER_ADAPTER, mode: RELAY_MODE, slip_no: slipNo || null }), errorText || null, ts),
   ]);
 }
@@ -1638,8 +1639,8 @@ async function enqueueRelayErpSync(db, env, order, items, force = false) {
   if (!relayEnabled(env)) return refused('switch_off');
 
   const existing = await latestErpSyncForOrder(db, order.id);
-  if (existing && ['sent', 'pending', 'unknown'].includes(existing.status)) return erpSyncSummary(existing, { idempotent: true });
-  if (existing?.status === 'failed' && !force) return erpSyncSummary(existing, { idempotent: true });
+  if (existing && ['sent', 'pending'].includes(existing.status)) return erpSyncSummary(existing, { idempotent: true });
+  if (['unknown', 'failed'].includes(existing?.status) && !force) return erpSyncSummary(existing, { idempotent: true });
 
   const storedMap = await loadApprovedEcountItemMap(db, items);
   const material = relayMaterial({ order, items, approvedItemMap: storedMap, env });
@@ -1717,6 +1718,7 @@ async function handleErpOutbox(url, request, env) {
     items.push({
       id: row.id,
       order_id: row.order_id,
+      dedupe_key: next.dedupe_key || null,
       attempts: toNonNegInt(row.attempts, 0),
       cust: next.relay.cust,
       wh_cd: next.relay.wh_cd,
@@ -1742,7 +1744,8 @@ async function handleErpOutboxResult(idRaw, request, env) {
   const row = await env.DB.prepare("SELECT * FROM erp_sync WHERE id = ? AND adapter = ? AND mode = 'relay'")
     .bind(id, ECOUNT_ORDER_ADAPTER).first();
   if (!row) return notFound();
-  if (row.status !== 'pending') {
+  const manualSent = row.status === 'unknown' && body.ok === true;
+  if (row.status !== 'pending' && !manualSent) {
     return json({ ok: true, idempotent: true, id, status: row.status, attempts: toNonNegInt(row.attempts, 0) });
   }
 
@@ -1750,7 +1753,7 @@ async function handleErpOutboxResult(idRaw, request, env) {
   const ts = nowIso();
   if (body.ok) {
     const next = { ...payload, relay: { ...(payload.relay || {}), slip_no: slipNo, claimed_at: null } };
-    const updated = await env.DB.prepare("UPDATE erp_sync SET payload = ?, status = 'sent', last_error = NULL, updated_at = ? WHERE id = ? AND status = 'pending'")
+    const updated = await env.DB.prepare("UPDATE erp_sync SET payload = ?, status = 'sent', last_error = NULL, updated_at = ? WHERE id = ? AND status IN ('pending','unknown')")
       .bind(JSON.stringify(next), ts, id).run();
     if (Number(updated?.meta?.changes || 0) !== 1) {
       const current = await env.DB.prepare('SELECT * FROM erp_sync WHERE id = ?').bind(id).first();
@@ -1758,6 +1761,15 @@ async function handleErpOutboxResult(idRaw, request, env) {
     }
     await recordRelayResult(env.DB, row.order_id, 'sent', slipNo, null);
     return json({ ok: true, id, status: 'sent', slip_no: slipNo });
+  }
+
+  if (body.unknown === true) {
+    const next = { ...payload, relay: { ...(payload.relay || {}), claimed_at: null, last_result: { ok: false, unknown: true, error: errorText } } };
+    await env.DB.prepare("UPDATE erp_sync SET payload = ?, status = 'unknown', last_error = ?, updated_at = ? WHERE id = ? AND status = 'pending'")
+      .bind(JSON.stringify(next), errorText || 'relay_unknown', ts, id).run();
+    const current = await env.DB.prepare('SELECT * FROM erp_sync WHERE id = ?').bind(id).first();
+    await recordRelayResult(env.DB, row.order_id, 'unknown', null, errorText || 'relay_unknown');
+    return json({ ok: true, id, status: 'unknown', attempts: toNonNegInt(current?.attempts, 0) });
   }
 
   const attempts = toNonNegInt(row.attempts, 0) + 1;

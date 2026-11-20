@@ -177,3 +177,63 @@ test('health exposes the sync mode and token presence but never the token value'
   assert.equal(res.json.erp.relay_token_configured, true);
   assert.equal(res.text.includes(TOKEN), false);
 });
+
+test('the outbox carries a dedupe key for the relay ledger', async () => {
+  const env = relayEnv();
+  await mapProduct(env, PRODUCT_A, 'EC-A001');
+  const { orderId } = await pay(env, 'pk_relay_dedupe');
+  const outbox = await call(env, 'GET', '/api/erp/outbox', undefined, RELAY_HEADERS);
+  const item = outbox.json.items[0];
+  assert.match(item.dedupe_key, /sale_order_create/);
+  assert.match(item.dedupe_key, new RegExp(orderId.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+});
+
+test('an unknown result stops retries and is excluded from the outbox', async () => {
+  const env = relayEnv();
+  await mapProduct(env, PRODUCT_A, 'EC-A001');
+  const { orderId, paid } = await pay(env, 'pk_relay_unknown');
+  const id = (await call(env, 'GET', '/api/erp/outbox', undefined, RELAY_HEADERS)).json.items[0].id;
+  const unknown = await call(env, 'POST', `/api/erp/outbox/${id}/result`, {
+    ok: false, unknown: true, error: 'relay_error: response lost',
+  }, RELAY_HEADERS);
+  assert.equal(unknown.status, 200);
+  assert.equal(unknown.json.status, 'unknown');
+  const row = await rowFor(env, orderId);
+  assert.equal(row.status, 'unknown');
+  assert.equal(row.attempts, 0, 'an uncertain delivery does not consume a retry');
+  assert.equal(JSON.parse(row.payload).relay.last_result.unknown, true);
+
+  const after = await call(env, 'GET', '/api/erp/outbox', undefined, RELAY_HEADERS);
+  assert.equal(after.json.items.length, 0, 'unknown rows are never re-claimed automatically');
+  const replay = await call(env, 'POST', '/api/payments/confirm', {
+    orderId, paymentKey: 'pk_relay_unknown', amount: paid.json.order.totals.total_amount,
+  });
+  assert.equal(replay.status, 200);
+  assert.equal((await rowFor(env, orderId)).status, 'unknown', 'enqueue treats unknown as idempotent');
+});
+
+test('a manual ok result after ERP lookup confirms an unknown row', async () => {
+  const env = relayEnv();
+  await mapProduct(env, PRODUCT_A, 'EC-A001');
+  const { orderId } = await pay(env, 'pk_relay_manual');
+  const id = (await call(env, 'GET', '/api/erp/outbox', undefined, RELAY_HEADERS)).json.items[0].id;
+  await call(env, 'POST', `/api/erp/outbox/${id}/result`, { ok: false, unknown: true, error: 'response lost' }, RELAY_HEADERS);
+  const confirmed = await call(env, 'POST', `/api/erp/outbox/${id}/result`, { ok: true, slipNo: 'SLIP-MANUAL' }, RELAY_HEADERS);
+  assert.equal(confirmed.json.status, 'sent');
+  const row = await rowFor(env, orderId);
+  assert.equal(row.status, 'sent');
+  assert.equal(JSON.parse(row.payload).relay.slip_no, 'SLIP-MANUAL');
+});
+
+test('an admin retry resets an unknown row for one fresh transmission', async () => {
+  const env = relayEnv();
+  await mapProduct(env, PRODUCT_A, 'EC-A001');
+  const { orderId } = await pay(env, 'pk_relay_retry');
+  const id = (await call(env, 'GET', '/api/erp/outbox', undefined, RELAY_HEADERS)).json.items[0].id;
+  await call(env, 'POST', `/api/erp/outbox/${id}/result`, { ok: false, unknown: true, error: 'response lost' }, RELAY_HEADERS);
+  const retried = await call(env, 'POST', `/api/orders/${orderId}/erp/retry`, {}, { Authorization: 'Bearer example-admin-token' });
+  assert.equal(retried.status, 200, retried.text);
+  assert.equal(retried.json.status, 'pending');
+  assert.equal((await rowFor(env, orderId)).status, 'pending');
+  assert.equal((await call(env, 'GET', '/api/erp/outbox', undefined, RELAY_HEADERS)).json.items.length, 1);
+});
