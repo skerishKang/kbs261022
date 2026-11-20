@@ -20,6 +20,11 @@ sys.path.insert(0, ROOT)
 from tools.product_quality import quality as Q  # noqa: E402
 
 
+# 실 마스터(site/data/products.json) 건수: 4,575 → 4,546. #216 G1 에서 상품이 아닌
+# 결제창·잔금·계약금 페이지 29건이 빠졌다.
+REAL_MASTER_COUNT = 4546
+
+
 def record(site_label, product_id, name, brand, manufacturer="", model="",
            english_name=None, brand_row=None, price_value=None, price_state="inquiry_price"):
     site = {"삼아사운드": "samasound.co.kr", "삼아스토어": "samamusic.co.kr"}[site_label]
@@ -104,7 +109,18 @@ class TestEvidence(unittest.TestCase):
     def test_placeholder_manufacturer_is_not_evidence(self) -> None:
         evidence = Q.build_manufacturer_evidence(FIXTURE)
         self.assertNotIn("자체제작", evidence["SHURE"]["candidates"])
-        self.assertNotIn("NNNN", evidence)
+        self.assertNotIn("자체제작", evidence)
+
+    def test_nnnn_is_a_real_brand_not_placeholder(self) -> None:
+        # NNNN 은 노르웨이 스피커 제조사(NNNN AS)의 실제 브랜드 이름이다.
+        self.assertFalse(Q.is_placeholder("NNNN"))
+        self.assertFalse(Q.is_placeholder("nnnn"))
+        for empty in ("", "-", "없음", "자체제작", "자체브랜드", "기타"):
+            self.assertTrue(Q.is_placeholder(empty), empty)
+        fixture = FIXTURE + [record("삼아사운드", "2610", "Comium 30 라우드 스피커", "NNNN", manufacturer="NNNN")]
+        evidence = Q.build_manufacturer_evidence(fixture)
+        self.assertIn("NNNN", evidence)
+        self.assertEqual(evidence["NNNN"]["candidates"], ["NNNN"])
 
     def test_brand_placeholder_record_gets_no_auto_value(self) -> None:
         patch = self.patch("samamusic.co.kr:2", "manufacturer")
@@ -234,8 +250,8 @@ class TestRealMaster(unittest.TestCase):
         with io.open(cls.master_path, "rb") as handle:
             cls.sha_after = hashlib.sha256(handle.read()).hexdigest()
 
-    def test_original_master_is_4575_and_untouched(self) -> None:
-        self.assertEqual(len(self.master), 4575)
+    def test_original_master_count_and_untouched(self) -> None:
+        self.assertEqual(len(self.master), REAL_MASTER_COUNT)
         self.assertEqual(self.sha_before, self.sha_after)
 
     def test_all_artifacts_generated(self) -> None:
@@ -245,8 +261,8 @@ class TestRealMaster(unittest.TestCase):
     def test_improved_output_matches_master_keys(self) -> None:
         with io.open(os.path.join(self.out, "product_quality_improved.json"), encoding="utf-8") as handle:
             payload = json.load(handle)
-        self.assertEqual(payload["original_products"], 4575)
-        self.assertEqual(len(payload["products"]), 4575)
+        self.assertEqual(payload["original_products"], REAL_MASTER_COUNT)
+        self.assertEqual(len(payload["products"]), REAL_MASTER_COUNT)
         self.assertEqual([p["id"] for p in payload["products"]], [r["id"] for r in self.master])
 
     def test_no_value_applied_without_auto_classification(self) -> None:

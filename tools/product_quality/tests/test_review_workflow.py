@@ -153,6 +153,12 @@ class TestDecisionValidation(QueueBuilder):
             out = self.decide(idx, value=bad)
             self.assertEqual(out.approved, [], bad)
 
+    def test_nnnn_brand_value_is_accepted(self) -> None:
+        # NNNN 은 노르웨이 스피커 제조사의 실제 브랜드 이름이라 빈 값으로 거절하지 않는다.
+        idx = next(i for i, r in enumerate(self.queue) if r["제안값"])
+        out = self.decide(idx, value="NNNN", note="공급처 원본 브랜드")
+        self.assertEqual([a.confirmed_value for a in out.approved], ["NNNN"])
+
     def test_custom_value_without_note_is_refused(self) -> None:
         idx = next(i for i, r in enumerate(self.queue) if r["제안값"])
         out = self.decide(idx, value="GLX-2427")
@@ -360,20 +366,23 @@ class TestRealMasterStage3(unittest.TestCase):
     def test_master_is_untouched(self) -> None:
         self.assertEqual(self.sha_before, self.sha_after)
 
+    # 검토 대기열 건수 (실 마스터 4,546건 기준).
+    # 4,575 → 4,546(#216 G1 결제창·잔금·계약금 29건 제외)으로 제조사 검토가 269 → 253,
+    # NNNN 을 실제 브랜드로 보게 되어(빈 값 아님) 제조사 253 → 251, 브랜드 73 → 69.
     def test_queue_matches_stage2_review_count(self) -> None:
-        self.assertEqual(self.stage3["review_queue_rows"], 2311)
+        self.assertEqual(self.stage3["review_queue_rows"], 2289)
         self.assertEqual(self.stage3["model_review"], 1969)
-        self.assertEqual(self.stage3["manufacturer_review"], 269)
-        self.assertEqual(self.stage3["brand_review"], 73)
-        self.assertEqual(self.stage3["priority_counts"], {"1": 156, "2": 620, "3": 239, "4": 1296})
+        self.assertEqual(self.stage3["manufacturer_review"], 251)
+        self.assertEqual(self.stage3["brand_review"], 69)
+        self.assertEqual(self.stage3["priority_counts"], {"1": 156, "2": 620, "3": 239, "4": 1274})
         self.assertEqual(self.stage3["duplicate_pairs"], 1353)
 
     def test_priority_counts_by_field_covers_every_review_row(self) -> None:
         by_field = self.stage3["priority_counts_by_field"]
-        self.assertEqual(sum(sum(v.values()) for v in by_field.values()), 2311)
+        self.assertEqual(sum(sum(v.values()) for v in by_field.values()), 2289)
         self.assertEqual(by_field["model"], {"1": 148, "2": 620, "3": 239, "4": 962})
-        self.assertEqual(by_field["manufacturer"], {"4": 269})
-        self.assertEqual(by_field["brand"], {"1": 8, "4": 65})
+        self.assertEqual(by_field["manufacturer"], {"4": 251})
+        self.assertEqual(by_field["brand"], {"1": 8, "4": 61})
 
     def test_queue_xlsx_and_decisions_are_generated(self) -> None:
         for name in ("product_quality_review_queue.xlsx", "product_review_decisions.json",
@@ -382,7 +391,7 @@ class TestRealMasterStage3(unittest.TestCase):
         with io.open(os.path.join(self.out, "product_review_decisions.json"), encoding="utf-8") as handle:
             payload = json.load(handle)
         self.assertEqual(payload["counts"]["approved"], 0)
-        self.assertEqual(payload["counts"]["pending"], 2311)
+        self.assertEqual(payload["counts"]["pending"], 2289)
         self.assertEqual(payload["errors"], [])
         self.assertFalse(payload["policy"]["original_master_overwritten"])
         self.assertEqual(payload["policy"]["duplicates_merged"], 0)
@@ -391,7 +400,7 @@ class TestRealMasterStage3(unittest.TestCase):
     def test_stage3_does_not_change_stage2_layer(self) -> None:
         self.assertEqual(self.summary["schema_version"], V.STAGE2_VERSION)
         self.assertEqual(self.summary["stage2"]["auto_promoted_model"], 40)
-        self.assertEqual(self.summary["missing_after"]["model"], 2427)
+        self.assertEqual(self.summary["missing_after"]["model"], 2407)
 
     def test_fingerprint_is_stable_across_regeneration(self) -> None:
         from tools.product_quality import build_quality as B

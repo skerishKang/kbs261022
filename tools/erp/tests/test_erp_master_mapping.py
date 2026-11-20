@@ -14,7 +14,7 @@ import unittest
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "..")))
 from tools.erp.erp_master_mapping import (  # noqa: E402
     proposed_code, brand_ok, score_pair, suspect_score, guard_downgrade,
-    build_mapping, integrity_check, summarize, write_mapping_csv,
+    build_mapping, integrity_check, summarize, write_mapping_csv, has_identifier,
     EXACT_FLOOR, SCORE_SUSPECT_MAX,
 )
 
@@ -46,6 +46,13 @@ class TestIdentifiers(unittest.TestCase):
         self.assertTrue(brand_ok(m, erp("000100", "SQ5 믹서", "SQ5", search="allen&heath sq5 믹서")))
         self.assertTrue(brand_ok(m, erp("000100", "SQ5 믹서", "SQ5", search="ALLEN HEATH SQ5")))
         self.assertFalse(brand_ok(m, erp("000100", "SQ5 믹서", "SQ5", search="야마하 sq5")))
+
+    def test_nnnn_is_a_real_brand(self):
+        # NNNN 은 노르웨이 스피커 제조사 이름이다. 모델명이 없어도 브랜드로 식별된다.
+        self.assertTrue(has_identifier(master("samasound:2610", "Comium 30 라우드 스피커", "NNNN", "")))
+        self.assertTrue(has_identifier(master("samasound:2610", "Comium 30 라우드 스피커", "nnnn", "")))
+        for empty in ("", "기타", "none", "null"):
+            self.assertFalse(has_identifier(master("samasound:9", "미확인 제품", empty, "")), empty)
 
 
 class TestScoring(unittest.TestCase):
@@ -107,7 +114,7 @@ class TestMapping(unittest.TestCase):
         self.masters = [
             master("samasound:1", "믹서 SQ5", "ALLEN&HEATH", "SQ5"),
             master("samasound:2", "케이블", "KLOTZ", "PW02X"),
-            master("samasound:3", "미확인 제품", "NNNN", ""),
+            master("samasound:3", "미확인 제품", "기타", ""),
             master("samasound:4", "독립 신규 상품 XYZ", "GENELEC", "XYZ999"),
             master("samasound:5", "SM58 세트 구성", "SHURE", "SM58"),
         ]

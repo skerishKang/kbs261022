@@ -11,7 +11,8 @@ import vm from 'node:vm';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const SITE = join(HERE, '..');
-const read = (p) => readFileSync(join(SITE, p), 'utf8');
+// CRLF 로 받은 사본에서도 \n 기준 정규식이 맞도록 줄바꿈을 LF 로 맞춰 읽는다.
+const read = (p) => readFileSync(join(SITE, p), 'utf8').replace(/\r\n/g, '\n');
 
 const FEEDBACK_JS = read('assets/js/cgi-feedback.js');
 const OPS_JS = read('assets/js/cgi-ops.js');

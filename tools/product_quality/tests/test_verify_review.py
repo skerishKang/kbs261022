@@ -23,6 +23,11 @@ from tools.product_quality import verify_review as V  # noqa: E402
 from tools.product_quality.tests.test_quality import record  # noqa: E402
 
 
+# 실 마스터(site/data/products.json) 건수: 4,575 → 4,546. #216 G1 에서 상품이 아닌
+# 결제창·잔금·계약금 페이지 29건이 빠졌다.
+REAL_MASTER_COUNT = 4546
+
+
 def run_stage2(fixture, confirmed=()):
     pairs = [
         Q.DuplicateCandidate(
@@ -251,7 +256,7 @@ class TestStage2Stats(unittest.TestCase):
     "원본 마스터가 있는 작업 환경에서만 실행",
 )
 class TestRealMasterStage2(unittest.TestCase):
-    """실 데이터 4,575건 — 승격 근거를 원본에서 독립적으로 재대조한다."""
+    """실 데이터 전체(site/data/products.json) — 승격 근거를 원본에서 독립적으로 재대조한다."""
 
     @classmethod
     def setUpClass(cls) -> None:
@@ -277,8 +282,8 @@ class TestRealMasterStage2(unittest.TestCase):
 
     def test_master_untouched_and_count_kept(self) -> None:
         self.assertEqual(self.sha_before, self.sha_after)
-        self.assertEqual(self.result.master_count, 4575)
-        self.assertEqual(len(self.result.improved), 4575)
+        self.assertEqual(self.result.master_count, REAL_MASTER_COUNT)
+        self.assertEqual(len(self.result.improved), REAL_MASTER_COUNT)
 
     def test_promotion_volume_and_missing_delta(self) -> None:
         stats = self.stage2.stats
@@ -345,7 +350,7 @@ class TestRealMasterStage2(unittest.TestCase):
         with io.open(os.path.join(self.out, "product_quality_improved.json"), encoding="utf-8") as handle:
             improved = json.load(handle)
         self.assertEqual(improved["schema_version"], V.STAGE2_VERSION)
-        self.assertEqual(len(improved["products"]), 4575)
+        self.assertEqual(len(improved["products"]), REAL_MASTER_COUNT)
         promoted = [r for r in improved["products"] if "model_stage2_promoted" in r["quality_flags"]]
         self.assertEqual(len(promoted), self.stage2.stats["auto_promoted_model"])
         for rec in promoted:

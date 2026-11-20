@@ -19,7 +19,8 @@ import { dirname, join } from 'node:path';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, '..', '..');
-const read = (rel) => readFileSync(join(ROOT, rel), 'utf8');
+// CRLF 로 받은 사본에서도 \n 기준 정규식이 맞도록 줄바꿈을 LF 로 맞춰 읽는다.
+const read = (rel) => readFileSync(join(ROOT, rel), 'utf8').replace(/\r\n/g, '\n');
 
 const catalog = JSON.parse(read('site/data/catalog.json'));
 const brands = JSON.parse(read('site/data/brands.json'));
