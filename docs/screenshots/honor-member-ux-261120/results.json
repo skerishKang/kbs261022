@@ -1,0 +1,302 @@
+[
+ {
+  "overlaps": [],
+  "searchButtonClickLandsOn": "검색 버튼",
+  "headerHeight": 114,
+  "afterClickHash": "#/products?q=마이크",
+  "consoleErrors": [],
+  "httpErrors": [],
+  "ignoredAnon401": 1,
+  "shot": "header-guest-960.png"
+ },
+ {
+  "overlaps": [],
+  "searchButtonClickLandsOn": "검색 버튼",
+  "headerHeight": 114,
+  "afterClickHash": "#/products?q=마이크",
+  "consoleErrors": [],
+  "httpErrors": [],
+  "ignoredAnon401": 1,
+  "shot": "header-guest-1024.png"
+ },
+ {
+  "overlaps": [],
+  "searchButtonClickLandsOn": "검색 버튼",
+  "headerHeight": 115,
+  "afterClickHash": "#/products?q=마이크",
+  "consoleErrors": [],
+  "httpErrors": [],
+  "ignoredAnon401": 1,
+  "shot": "header-guest-1100.png"
+ },
+ {
+  "overlaps": [],
+  "searchButtonClickLandsOn": "검색 버튼",
+  "headerHeight": 74,
+  "afterClickHash": "#/products?q=마이크",
+  "consoleErrors": [],
+  "httpErrors": [],
+  "ignoredAnon401": 1,
+  "shot": "header-guest-1280.png"
+ },
+ {
+  "overlaps": [],
+  "searchButtonClickLandsOn": "검색 버튼",
+  "headerHeight": 74,
+  "afterClickHash": "#/products?q=마이크",
+  "consoleErrors": [],
+  "httpErrors": [],
+  "ignoredAnon401": 1,
+  "shot": "header-guest-1440.png"
+ },
+ {
+  "overlaps": [],
+  "searchButtonClickLandsOn": "검색 버튼",
+  "headerHeight": 113,
+  "afterClickHash": "#/products?q=마이크",
+  "consoleErrors": [],
+  "httpErrors": [],
+  "ignoredAnon401": 1,
+  "shot": "header-admin-960.png"
+ },
+ {
+  "overlaps": [],
+  "searchButtonClickLandsOn": "검색 버튼",
+  "headerHeight": 113,
+  "afterClickHash": "#/products?q=마이크",
+  "consoleErrors": [],
+  "httpErrors": [],
+  "ignoredAnon401": 1,
+  "shot": "header-admin-1024.png"
+ },
+ {
+  "overlaps": [],
+  "searchButtonClickLandsOn": "검색 버튼",
+  "headerHeight": 114,
+  "afterClickHash": "#/products?q=마이크",
+  "consoleErrors": [],
+  "httpErrors": [],
+  "ignoredAnon401": 1,
+  "shot": "header-admin-1100.png"
+ },
+ {
+  "overlaps": [],
+  "searchButtonClickLandsOn": "검색 버튼",
+  "headerHeight": 141,
+  "afterClickHash": "#/products?q=마이크",
+  "consoleErrors": [],
+  "httpErrors": [],
+  "ignoredAnon401": 1,
+  "shot": "header-admin-1280.png"
+ },
+ {
+  "overlaps": [],
+  "searchButtonClickLandsOn": "검색 버튼",
+  "headerHeight": 141,
+  "afterClickHash": "#/products?q=마이크",
+  "consoleErrors": [],
+  "httpErrors": [],
+  "ignoredAnon401": 1,
+  "shot": "header-admin-1440.png"
+ },
+ {
+  "overflowX": 0,
+  "overflowEls": [],
+  "nameCoveredByDelete": null,
+  "navOpen": false,
+  "consoleErrors": [],
+  "httpErrors": [],
+  "ignoredAnon401": 1,
+  "inquiryCardPriceWordCount": 1,
+  "shot": "list-inquiry-390.png"
+ },
+ {
+  "overflowX": 0,
+  "overflowEls": [],
+  "nameCoveredByDelete": null,
+  "navOpen": false,
+  "consoleErrors": [],
+  "httpErrors": [],
+  "ignoredAnon401": 1,
+  "shot": "detail-390.png"
+ },
+ {
+  "overflowX": 0,
+  "overflowEls": [],
+  "nameCoveredByDelete": false,
+  "navOpen": false,
+  "consoleErrors": [],
+  "httpErrors": [],
+  "ignoredAnon401": 1,
+  "previewLines": [
+   "1. NI Komplete 26 Ultimate S-Series Upgrade (Kontrol S mk3 사용자) (실시간) 컴플리트 26 얼티메이트 컨트롤S 업그레이드 가상악기 VSTi Native Instruments | NATIVE INSTRUMENTS | 소프트웨어·플러그인 | 수량 1 | 가격 919,000원(부가세 포함)",
+   "2. PRESONUS StudioLive RM32 AI 프리소너스 믹서 | PRESONUS | 믹서·프로세서 | 수량 1 | 가격 문의"
+  ],
+  "doublePriceWord": false,
+  "shot": "quote-cart-390.png"
+ },
+ {
+  "overflowX": 0,
+  "overflowEls": [],
+  "nameCoveredByDelete": null,
+  "navOpen": false,
+  "consoleErrors": [],
+  "httpErrors": [],
+  "ignoredAnon401": 1,
+  "pendingRows": [
+   "PRESONUS StudioLive RM32 AI 프리소너스 믹서"
+  ],
+  "pricedRows": [
+   "NI Komplete 26 Ultimate S-Seri"
+  ],
+  "shot": "checkout-pending-390.png"
+ },
+ {
+  "overflowX": 0,
+  "overflowEls": [],
+  "nameCoveredByDelete": null,
+  "navOpen": false,
+  "consoleErrors": [],
+  "httpErrors": [],
+  "ignoredAnon401": 1,
+  "note": "표시된 금액은 결제할 때 다시 확인됩니다. 모든 금액은 부가세 포함입니다.",
+  "shot": "checkout-390.png"
+ },
+ {
+  "overflowX": 0,
+  "overflowEls": [],
+  "nameCoveredByDelete": null,
+  "navOpen": false,
+  "consoleErrors": [],
+  "httpErrors": [],
+  "ignoredAnon401": 1,
+  "amountLine": "ORD-20261120-8K4A6\n\n주문 금액\n919,000원\n부가세 포함\n\n상품 919,000원 + 배송비 0원 (공급가 835,455원 + 부가세 83,545원 포함)",
+  "shot": "payment-390.png"
+ },
+ {
+  "overflowX": 0,
+  "overflowEls": [],
+  "nameCoveredByDelete": null,
+  "navOpen": false,
+  "consoleErrors": [],
+  "httpErrors": [],
+  "ignoredAnon401": 0,
+  "shot": "returns-390.png"
+ },
+ {
+  "overflowX": 0,
+  "overflowEls": [],
+  "nameCoveredByDelete": null,
+  "navOpen": true,
+  "consoleErrors": [],
+  "httpErrors": [],
+  "ignoredAnon401": 1,
+  "shot": "menu-open-390.png"
+ },
+ {
+  "overflowX": 0,
+  "overflowEls": [],
+  "nameCoveredByDelete": null,
+  "navOpen": false,
+  "consoleErrors": [],
+  "httpErrors": [],
+  "ignoredAnon401": 1,
+  "hash": "#/products?q=shure",
+  "shot": "menu-after-search-390.png"
+ },
+ {
+  "overflowX": 0,
+  "overflowEls": [],
+  "nameCoveredByDelete": null,
+  "navOpen": false,
+  "consoleErrors": [],
+  "httpErrors": [],
+  "ignoredAnon401": 1,
+  "hash": "#/quote-cart",
+  "shot": "menu-after-cart-390.png"
+ },
+ {
+  "overflowX": 0,
+  "overflowEls": [],
+  "nameCoveredByDelete": null,
+  "navOpen": false,
+  "consoleErrors": [],
+  "httpErrors": [],
+  "ignoredAnon401": 1,
+  "inquiryCardPriceWordCount": 1,
+  "shot": "list-inquiry-1440.png"
+ },
+ {
+  "overflowX": 0,
+  "overflowEls": [],
+  "nameCoveredByDelete": null,
+  "navOpen": false,
+  "consoleErrors": [],
+  "httpErrors": [],
+  "ignoredAnon401": 1,
+  "shot": "detail-1440.png"
+ },
+ {
+  "overflowX": 0,
+  "overflowEls": [],
+  "nameCoveredByDelete": false,
+  "navOpen": false,
+  "consoleErrors": [],
+  "httpErrors": [],
+  "ignoredAnon401": 1,
+  "previewLines": [
+   "1. NI Komplete 26 Ultimate S-Series Upgrade (Kontrol S mk3 사용자) (실시간) 컴플리트 26 얼티메이트 컨트롤S 업그레이드 가상악기 VSTi Native Instruments | NATIVE INSTRUMENTS | 소프트웨어·플러그인 | 수량 1 | 가격 919,000원(부가세 포함)",
+   "2. PRESONUS StudioLive RM32 AI 프리소너스 믹서 | PRESONUS | 믹서·프로세서 | 수량 1 | 가격 문의"
+  ],
+  "doublePriceWord": false,
+  "shot": "quote-cart-1440.png"
+ },
+ {
+  "overflowX": 0,
+  "overflowEls": [],
+  "nameCoveredByDelete": null,
+  "navOpen": false,
+  "consoleErrors": [],
+  "httpErrors": [],
+  "ignoredAnon401": 1,
+  "pendingRows": [
+   "PRESONUS StudioLive RM32 AI 프리소너스 믹서"
+  ],
+  "pricedRows": [
+   "NI Komplete 26 Ultimate S-Seri"
+  ],
+  "shot": "checkout-pending-1440.png"
+ },
+ {
+  "overflowX": 0,
+  "overflowEls": [],
+  "nameCoveredByDelete": null,
+  "navOpen": false,
+  "consoleErrors": [],
+  "httpErrors": [],
+  "ignoredAnon401": 1,
+  "note": "표시된 금액은 결제할 때 다시 확인됩니다. 모든 금액은 부가세 포함입니다.",
+  "shot": "checkout-1440.png"
+ },
+ {
+  "overflowX": 0,
+  "overflowEls": [],
+  "nameCoveredByDelete": null,
+  "navOpen": false,
+  "consoleErrors": [],
+  "httpErrors": [],
+  "ignoredAnon401": 1,
+  "amountLine": "ORD-20261120-98BBZ\n\n주문 금액\n3,159,000원\n부가세 포함\n\n상품 3,159,000원 + 배송비 0원 (공급가 2,871,818원 + 부가세 287,182원 포함)",
+  "shot": "payment-1440.png"
+ },
+ {
+  "overflowX": 0,
+  "overflowEls": [],
+  "nameCoveredByDelete": null,
+  "navOpen": false,
+  "consoleErrors": [],
+  "httpErrors": [],
+  "ignoredAnon401": 0,
+  "shot": "returns-1440.png"
+ }
+]

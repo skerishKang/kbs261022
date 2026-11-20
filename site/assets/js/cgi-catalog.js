@@ -531,7 +531,8 @@
 
   function cardHtml(product, priority) {
     var price = fmtPrice(product);
-    var badge = price.inquiry ? '<span class="badge inquiry">가격 문의</span>' : '';
+    // 가격 문의는 카드 아래 가격 줄에 한 번만 보인다(사진 위 배지와 두 번 겹쳐 보이던 것 정리).
+    var badge = '';
     var cond = splitConditionTag(product.name);
     return '' +
       '<a class="product-card" href="' + esc(productUrl(product.id)) + '" data-product-id="' + esc(product.id) + '">' +
@@ -1194,6 +1195,7 @@
         '<td class="c-price" data-label="가격">' +
           '<span class="cell-label">가격</span>' +
           '<span class="price ' + price.cls + '">' + esc(price.text) + '</span>' +
+          (price.inquiry ? '' : '<span class="vat-note">부가세 포함</span>') +
         '</td>' +
         '<td class="c-qty" data-label="수량">' +
           '<span class="cell-label">수량</span>' +
@@ -1238,7 +1240,7 @@
         '</div>' +
         (allPublicPrice(items)
           ? '<div class="cart-pay-cta is-primary">' +
-              '<div class="cart-total-line"><span>주문 금액</span><strong id="cartTotalValue">' + money(cartTotal(items)) + '</strong></div>' +
+              '<div class="cart-total-line"><span>주문 금액 <small class="vat-note">부가세 포함</small></span><strong id="cartTotalValue">' + money(cartTotal(items)) + '</strong></div>' +
               '<a class="btn btn-primary btn-block cart-pay-btn" href="#/checkout">결제 주문으로 계속</a>' +
               '<button type="button" class="cart-alt-link" data-scroll-quote-form>견적 요청으로 접수</button>' +
             '</div>'
@@ -1443,7 +1445,7 @@
     items.forEach(function (x, idx) {
       var p = x.product;
       lines.push((idx + 1) + '. ' + p.name + ' | ' + displayBrand(p) + ' | ' + p._cat +
-        ' | 수량 ' + x.cart.qty + ' | 가격 ' + priceText(p));
+        ' | 수량 ' + x.cart.qty + ' | ' + (fmtPrice(p).inquiry ? '가격 문의' : '가격 ' + priceText(p) + '(부가세 포함)'));
     });
     lines.push('');
     lines.push('※ 최종 금액은 CGI 담당자가 확인 후 안내합니다.');
@@ -1680,16 +1682,29 @@
   /* --------------------------------------------------------------- events */
   function navigate(url) { location.hash = url.replace(/^#/, ''); }
 
+  /* 검색 실행. 같은 검색어로 다시 Enter 를 누르면 주소가 그대로라 hashchange 가 오지 않아
+     아무 일도 안 일어났다 — 그때는 직접 다시 그리고 결과 맨 위로 올린다.
+     한글 조합 중 Enter 는 브라우저가 조합을 확정한 뒤 submit 하므로 마지막 글자도 들어간다. */
+  function runSearch(raw) {
+    var q = String(raw || '').trim();
+    var target = '#/products' + (q ? '?q=' + encodeURIComponent(q) : '');
+    if (location.hash === target) {
+      render();
+      window.scrollTo(0, 0);
+    } else {
+      navigate(target);
+    }
+  }
+
   document.addEventListener('submit', function (event) {
     var form = event.target;
-    if (form.id === 'searchForm') {
+    if (form.id === 'searchForm' || form.getAttribute('data-action') === 'hero-search') {
       event.preventDefault();
-      var q = (form.elements.q && form.elements.q.value || '').trim();
-      navigate('#/products' + (q ? '?q=' + encodeURIComponent(q) : ''));
-    } else if (form.getAttribute('data-action') === 'hero-search') {
-      event.preventDefault();
-      var value = (form.elements.q && form.elements.q.value || '').trim();
-      navigate('#/products' + (value ? '?q=' + encodeURIComponent(value) : ''));
+      runSearch(form.elements.q && form.elements.q.value);
+      // 휴대폰에서 검색 후 화상 키보드를 내린다
+      if (form.elements.q && typeof form.elements.q.blur === 'function' && window.matchMedia && window.matchMedia('(max-width: 899px)').matches) {
+        form.elements.q.blur();
+      }
     }
   });
 
