@@ -1156,6 +1156,91 @@
     });
   }
 
+  /* ---------------------------------------------------------- 견적서 출력 */
+  var QUOTE_PRINT_CUSTOMER_KEY = 'cgiQuotePrintCustomer';
+  var QUOTE_PRINT_NO_KEY = 'cgiQuotePrintNo';
+
+  function sessionGet(key) {
+    try { return JSON.parse(sessionStorage.getItem(key) || 'null'); } catch (e) { return null; }
+  }
+  function sessionSet(key, value) {
+    try { sessionStorage.setItem(key, JSON.stringify(value)); } catch (e) {}
+  }
+
+  /** 견적 목록 → 견적서. 견적 요청 칸에 적은 회사명·담당자가 있으면 견적서에 옮긴다. */
+  function openQuotePrint() {
+    var snap = snapshotCartForm() || {};
+    sessionSet(QUOTE_PRINT_CUSTOMER_KEY, {
+      company: String(snap.company || '').trim().slice(0, 100),
+      name: String(snap.name || '').trim().slice(0, 60),
+    });
+    navigate('#/quote-print?print=1');
+  }
+
+  function printQuote() {
+    if (typeof window.print === 'function') window.print();
+  }
+
+  /** 같은 날 같은 장바구니면 같은 임시 번호를 다시 쓴다(인쇄를 여러 번 해도 번호가 바뀌지 않게). */
+  function quotePrintNumber(qp, now, items) {
+    var cartKey = items.map(function (x) { return x.product.id + 'x' + x.cart.qty; }).join('|') + '|' + (state.quoteCartServices || []).join(',');
+    var day = qp.ymd(now);
+    var saved = sessionGet(QUOTE_PRINT_NO_KEY);
+    if (saved && saved.day === day && saved.cartKey === cartKey && /^Q-\d{6}-[A-Z0-9]{4}$/.test(saved.no || '')) return saved.no;
+    var no = qp.quoteNumber(now);
+    sessionSet(QUOTE_PRINT_NO_KEY, { day: day, cartKey: cartKey, no: no });
+    return no;
+  }
+
+  function renderQuotePrint(autoPrint) {
+    var qp = window.CGI_QUOTE_PRINT;
+    var items = cartItems();
+    if (!qp || !items.length) {
+      app.innerHTML =
+        '<div class="breadcrumb"><a href="#/">홈</a><span>›</span><a href="#/quote-cart">견적 목록</a><span>›</span><span>견적서</span></div>' +
+        '<div class="empty-state">' +
+          '<div class="empty-icon" aria-hidden="true">＋</div>' +
+          '<h3>견적서에 넣을 상품이 없습니다</h3>' +
+          '<p>상품을 견적 목록에 담은 뒤 "견적서 출력"을 눌러 주세요.</p>' +
+          '<div class="empty-actions"><a class="btn btn-primary" href="#/products">상품 둘러보기</a></div>' +
+        '</div>';
+      return;
+    }
+    var now = new Date();
+    var services = (state.quoteCartServices || []).map(function (id) {
+      var svc = (window.CGI_SERVICES || []).filter(function (x) { return x.id === id; })[0];
+      return svc ? { id: id, name: svc.name } : null;
+    }).filter(Boolean);
+    var customer = sessionGet(QUOTE_PRINT_CUSTOMER_KEY) || {};
+    var cfg = window.CGI_SITE_CONFIG || {};
+    var sealImageUrl = cfg.quotePrint && cfg.quotePrint.sealImageUrl ? String(cfg.quotePrint.sealImageUrl) : '';
+    app.innerHTML =
+      '<div class="qp-toolbar no-print">' +
+        '<div class="breadcrumb"><a href="#/">홈</a><span>›</span><a href="#/quote-cart">견적 목록</a><span>›</span><span>견적서</span></div>' +
+        '<div class="qp-actions">' +
+          '<button type="button" class="btn btn-primary" data-action="quote-print-now">인쇄 / PDF 저장</button>' +
+          '<a class="btn btn-secondary" href="#/quote-cart">견적 목록으로</a>' +
+        '</div>' +
+        '<p class="form-note">인쇄 창에서 대상(프린터)을 <strong>PDF로 저장</strong>으로 고르면 PDF 파일로 받을 수 있습니다. 받는 분·담당자 칸이 비어 있으면 출력 후 손으로 적으셔도 됩니다.</p>' +
+      '</div>' +
+      qp.renderHtml({
+        items: items.map(function (x) { return { qty: x.cart.qty, product: x.product }; }),
+        services: services,
+        customer: customer,
+        now: now,
+        number: quotePrintNumber(qp, now, items),
+        company: window.CGI_COMPANY,
+        sealImageUrl: sealImageUrl,
+        brandOf: displayBrand,
+        nameOf: function (p) { return splitConditionTag(p.name).name; },
+      });
+    if (autoPrint) {
+      // 새로고침하면 다시 인쇄 창이 뜨지 않게 주소에서 print=1 을 뗀다.
+      try { history.replaceState(null, document.title, location.pathname + location.search + '#/quote-print'); } catch (e) {}
+      setTimeout(printQuote, 350);
+    }
+  }
+
   function renderQuoteCart() {
     var snap = snapshotCartForm();
     if (snap) {
@@ -1223,6 +1308,11 @@
         '<div class="cart-main">' +
           '<section class="cart-panel">' +
             '<div class="cart-panel-head"><h2>담은 상품</h2><span>수량을 확인해 주세요</span></div>' +
+            // 결재용 견적서: 요청 보내기와 별개로 로그인 없이 바로 인쇄·PDF 저장 (명예회원 1회차 최우선 요청)
+            '<div class="cart-print-row">' +
+              '<button type="button" class="btn btn-secondary cart-print-btn" data-action="quote-print">견적서 출력</button>' +
+              '<span class="form-note">결재용 견적서를 바로 인쇄하거나 PDF로 저장합니다. 로그인하지 않아도 됩니다.</span>' +
+            '</div>' +
             '<table class="spec-table cart-table">' +
               '<thead><tr><th>상품</th><th>가격</th><th>수량</th><th><span class="sr-only">삭제</span></th></tr></thead>' +
               '<tbody>' + rows + '</tbody>' +
@@ -1519,6 +1609,9 @@
       route.services = (params.get('services') || '').split('|').filter(Boolean);
     } else if (parts[0] === 'quote-cart') {
       route.view = 'quote-cart';
+    } else if (parts[0] === 'quote-print') {
+      route.view = 'quote-print';
+      route.print = params.get('print') === '1';
     } else if (parts[0] === 'checkout') {
       route.view = 'checkout';
     } else if (parts[0] === 'order' && parts[1]) {
@@ -1595,6 +1688,7 @@
     }     else if (view === 'quote-cart') title = '견적 목록 | CGI';
     else if (view === 'quote') title = '견적 요청 | CGI';
     else if (view === 'checkout') title = '주문 접수 | CGI';
+    else if (view === 'quote-print') title = '견적서 | CGI (주)시지아이';
     else if (view === 'order') title = '주문 상세 | CGI';
     else if (view === 'about') title = '이용 안내 | CGI';
     document.title = title;
@@ -1619,6 +1713,7 @@
     else if (view === 'detail') renderDetail(state.route.id);
     else if (view === 'quote') renderQuote(state.route.id, state.route.services || []);
     else if (view === 'quote-cart') renderQuoteCart();
+    else if (view === 'quote-print') renderQuotePrint(state.route.print);
     else if (view === 'checkout' && window.CGI_ORDER) window.CGI_ORDER.renderCheckout(app);
     else if (view === 'order' && window.CGI_ORDER) window.CGI_ORDER.renderOrderDetail(app, state.route.id);
     else if (view === 'login') renderLogin(app);
@@ -1806,6 +1901,8 @@
         return;
       }
       if (action === 'copy-cart') { window.cgiCopyQuoteCart(); return; }
+      if (action === 'quote-print') { openQuotePrint(); return; }
+      if (action === 'quote-print-now') { printQuote(); return; }
       if (action === 'copy-receipt') { window.cgiCopyReceiptNumber(); return; }
       if (action === 'toggle-quote') { toggleQuoteDetail(target); return; }
       if (action === 'reload-quotes') { renderMyQuotes(document.getElementById('myPageBody')); return; }

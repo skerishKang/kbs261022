@@ -1,0 +1,77 @@
+[
+ {
+  "overflowX": 0,
+  "hash": "#/quote-print",
+  "printCalls": 1,
+  "number": "Q-261120-UP3G",
+  "korean": "금 오백삼십구만구천원정",
+  "supplied": "4,908,182",
+  "vat": "490,818",
+  "total": "5,399,000",
+  "inquiryNote": "별도 견적 품목 1건 — 위 합계에 포함되지 않았으며, 담당자가 가격을 확인한 뒤 안내합니다.",
+  "toCompany": "○○초등학교 방송실 귀하",
+  "rows": 5,
+  "consoleErrors": [],
+  "httpErrors": [],
+  "ignoredAnon401": 1,
+  "shot": "quote-print-390.png",
+  "printCallsAfterButton": 2,
+  "numberAfterReload": "Q-261120-UP3G",
+  "printCallsAfterReload": 0
+ },
+ {
+  "overflowX": 0,
+  "hash": "#/quote-print",
+  "printCalls": 1,
+  "number": "Q-261120-39GN",
+  "korean": "금 오백삼십구만구천원정",
+  "supplied": "4,908,182",
+  "vat": "490,818",
+  "total": "5,399,000",
+  "inquiryNote": "별도 견적 품목 1건 — 위 합계에 포함되지 않았으며, 담당자가 가격을 확인한 뒤 안내합니다.",
+  "toCompany": "○○초등학교 방송실 귀하",
+  "rows": 5,
+  "consoleErrors": [],
+  "httpErrors": [],
+  "ignoredAnon401": 1,
+  "shot": "quote-print-1440.png",
+  "printCallsAfterButton": 2,
+  "numberAfterReload": "Q-261120-39GN",
+  "printCallsAfterReload": 0,
+  "printHidden": [
+   [
+    ".site-header",
+    "none"
+   ],
+   [
+    ".site-footer",
+    "none"
+   ],
+   [
+    ".notice-bar",
+    "none"
+   ],
+   [
+    ".qp-toolbar",
+    "none"
+   ]
+  ]
+ },
+ {
+  "overflowX": 0,
+  "hash": "#/quote-print",
+  "printCalls": 0,
+  "number": "Q-261120-5KC6",
+  "korean": "금 일천구백칠십구만오천원정",
+  "supplied": "17,995,455",
+  "vat": "1,799,545",
+  "total": "19,795,000",
+  "inquiryNote": "별도 견적 품목 5건 — 위 합계에 포함되지 않았으며, 담당자가 가격을 확인한 뒤 안내합니다.",
+  "toCompany": " 귀하",
+  "rows": 25,
+  "consoleErrors": [],
+  "httpErrors": [],
+  "ignoredAnon401": 1,
+  "shot": "quote-print-many-items.pdf"
+ }
+]
