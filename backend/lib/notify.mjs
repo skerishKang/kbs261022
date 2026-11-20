@@ -9,9 +9,8 @@ export const OPS_EVENTS = Object.freeze({
   PAYMENT_FAILED: 'payment_failed',
 });
 
-const OPS_TYPE = 'ops_notification';
-const CUSTOMER_TYPE = 'ops_customer_mail';
 const WINDOW_MS = 30 * 60 * 1000;
+const RETENTION_MS = 24 * 60 * 60 * 1000;
 const USER_CANCEL_CODES = new Set(['PAY_PROCESS_CANCELED', 'USER_CANCELED', 'USER_CANCEL', 'USERCANCEL']);
 
 function splitList(value) {
@@ -65,6 +64,10 @@ async function readSecret(env, name) {
   return String(value);
 }
 
+async function telegramToken(env) {
+  return (await readSecret(env, 'TELEGRAM_BOT_TOKEN')) || (await readSecret(env, 'B66_ALERT_TELEGRAM_BOT_TOKEN'));
+}
+
 function eventEnabled(event, env) {
   const raw = String(env.ORDER_NOTIFY_EVENTS ?? '').trim();
   if (!raw || raw.toLowerCase() === 'all') return true;
@@ -112,7 +115,6 @@ function buildMessages(event, payload, env) {
   if (event === OPS_EVENTS.SIGNUP) {
     const source = payload.source || 'email';
     const joinedAt = payload.joinedAt || '-';
-    const who = [company, name].filter(Boolean).join(' / ') || '-';
     return {
       subject: `[CGI 쇼핑몰] 신규 회원가입`,
       text: `가입 시각: ${joinedAt}\n회사·이름: ${who}\n가입 경로: ${source}\n이메일: ${payload.email || '-'}`,
@@ -137,24 +139,10 @@ function buildMessages(event, payload, env) {
   return null;
 }
 
-async function lastNotice(db, event, subjectId, type) {
+async function lastOutbox(db, event, subjectId) {
   return db.prepare(
-    "SELECT meta, created_at FROM order_events WHERE type = ? AND json_extract(meta, '$.event') = ? AND json_extract(meta, '$.subject_id') = ? ORDER BY created_at DESC LIMIT 1"
-  ).bind(type, event, String(subjectId)).first();
-}
-
-async function recordNotice(db, { event, subjectId, type, now, result }) {
-  await db.prepare(
-    'INSERT INTO order_events (order_id, type, actor, from_status, to_status, meta, created_at) VALUES (?,?,?,?,?,?,?)'
-  ).bind(
-    `ops:${event}:${subjectId}`,
-    type,
-    'notify',
-    null,
-    null,
-    JSON.stringify({ event, subject_id: String(subjectId), result, sent_at: now.toISOString() }),
-    now.toISOString()
-  ).run();
+    'SELECT created_at FROM ops_notify_outbox WHERE event = ? AND subject_id = ? ORDER BY created_at DESC LIMIT 1'
+  ).bind(event, String(subjectId)).first();
 }
 
 async function deliverMail(mailAdapter, message) {
@@ -181,6 +169,94 @@ async function deliverTelegram(fetchFn, token, chatId, text) {
   }
 }
 
+function buildPlan(stored, env, opts) {
+  const message = stored.message;
+  const recipients = Array.isArray(stored.recipients) ? stored.recipients : splitList(env.ORDER_NOTIFY_TO);
+  const chatIds = Array.isArray(stored.chatIds) ? stored.chatIds : splitList(env.ORDER_NOTIFY_TELEGRAM_CHAT_IDS);
+  const token = opts.token;
+  const mailAdapter = opts.mailAdapter || createMailAdapter(env, () => {});
+  const fetchFn = opts.fetchFn || fetch;
+  const plan = [];
+  for (const to of recipients) {
+    plan.push({ kind: 'mail', channel: `mail:${to}`, target: to, send: () => deliverMail(mailAdapter, { ...message, to }) });
+  }
+  if (message.telegram) {
+    for (const chatId of chatIds) {
+      plan.push({
+        kind: 'telegram',
+        channel: `telegram:${chatId}`,
+        target: chatId,
+        send: () => deliverTelegram(fetchFn, token, chatId, message.telegram),
+      });
+    }
+  }
+  if (message.customer) {
+    const to = message.customer.to;
+    plan.push({
+      kind: 'customer',
+      channel: `customer_mail:${to}`,
+      target: to,
+      send: () => deliverMail(mailAdapter, message.customer),
+    });
+  }
+  return plan;
+}
+
+async function dispatchOutbox(row, env, opts = {}) {
+  const db = env.DB;
+  let stored = {};
+  try { stored = JSON.parse(row.payload || '{}'); } catch (e) { stored = {}; }
+  if (!stored.message) return { mail: [], telegram: [], customer: null, outboxId: row.id, done: false };
+
+  const plan = buildPlan(stored, env, { ...opts, token: await telegramToken(env) });
+  let delivered = [];
+  try {
+    const rows = await db.prepare('SELECT channel FROM ops_notify_delivery WHERE outbox_id = ?').bind(row.id).all();
+    delivered = (rows.results || []).map((r) => r.channel);
+  } catch (e) {
+    delivered = [];
+  }
+  const already = new Set(delivered);
+
+  const mail = [];
+  const telegram = [];
+  let customer = null;
+  for (const entry of plan) {
+    let result;
+    if (already.has(entry.channel)) {
+      result = { skipped: true, reason: 'already_delivered' };
+    } else {
+      result = await entry.send();
+      if (result.delivered) {
+        try {
+          await db.prepare(
+            'INSERT OR IGNORE INTO ops_notify_delivery (outbox_id, channel, delivered_at) VALUES (?,?,?)'
+          ).bind(row.id, entry.channel, new Date().toISOString()).run();
+        } catch (e) {
+          result = { ...result, ledger_error: String(e && e.message || e).slice(0, 200) };
+        }
+      }
+    }
+    const targetResult = { ...result, [entry.kind === 'telegram' ? 'chat_id' : 'to']: entry.target };
+    if (entry.kind === 'telegram') telegram.push(targetResult);
+    else if (entry.kind === 'customer') customer = targetResult;
+    else mail.push(targetResult);
+  }
+
+  let done = false;
+  try {
+    const counted = await db.prepare('SELECT COUNT(*) AS n FROM ops_notify_delivery WHERE outbox_id = ?').bind(row.id).first();
+    if (Number(counted && counted.n) >= plan.length) {
+      await db.prepare('UPDATE ops_notify_outbox SET done_at = ? WHERE id = ? AND done_at IS NULL')
+        .bind(new Date().toISOString(), row.id).run();
+      done = true;
+    }
+  } catch (e) {
+    done = false;
+  }
+  return { mail, telegram, customer, outboxId: row.id, done };
+}
+
 export async function notifyOps(event, payload = {}) {
   const env = payload.env;
   if (!env || !env.DB) return { skipped: true, reason: 'no_env' };
@@ -198,7 +274,7 @@ export async function notifyOps(event, payload = {}) {
 
   const db = env.DB;
   try {
-    const prior = await lastNotice(db, event, subjectId, OPS_TYPE);
+    const prior = await lastOutbox(db, event, subjectId);
     if (prior) {
       if (event !== OPS_EVENTS.PAYMENT_FAILED) return { skipped: true, reason: 'duplicate' };
       const at = Date.parse(prior.created_at);
@@ -210,43 +286,62 @@ export async function notifyOps(event, payload = {}) {
     return { skipped: true, reason: 'dedupe_unavailable' };
   }
 
-  const recipients = splitList(env.ORDER_NOTIFY_TO);
-  const chatIds = splitList(env.ORDER_NOTIFY_TELEGRAM_CHAT_IDS);
-  const token = await readSecret(env, 'TELEGRAM_BOT_TOKEN');
-  const mailAdapter = payload.mailAdapter || createMailAdapter(env, () => {});
-  const fetchFn = payload.fetchFn || fetch;
-
-  const mail = [];
-  for (const to of recipients) {
-    mail.push({ to, ...(await deliverMail(mailAdapter, { ...message, to })) });
-  }
-  const telegram = [];
-  if (message.telegram) {
-    for (const chatId of chatIds) {
-      telegram.push({ chat_id: chatId, ...(await deliverTelegram(fetchFn, token, chatId, message.telegram)) });
+  const stored = {
+    event,
+    subjectId: String(subjectId),
+    message,
+    recipients: splitList(env.ORDER_NOTIFY_TO),
+    chatIds: splitList(env.ORDER_NOTIFY_TELEGRAM_CHAT_IDS),
+  };
+  let outboxId = null;
+  try {
+    const inserted = await db.prepare(
+      'INSERT INTO ops_notify_outbox (event, subject_id, payload, created_at) VALUES (?,?,?,?)'
+    ).bind(event, String(subjectId), JSON.stringify(stored), (typeof payload.now === 'function' ? now : new Date()).toISOString()).run();
+    const meta = inserted && inserted.meta;
+    outboxId = meta && (meta.last_row_id ?? meta.lastInsertRowid);
+    if (!outboxId) {
+      const found = await db.prepare(
+        'SELECT id FROM ops_notify_outbox WHERE event = ? AND subject_id = ? ORDER BY id DESC LIMIT 1'
+      ).bind(event, String(subjectId)).first();
+      outboxId = found && found.id;
     }
+  } catch (e) {
+    return { skipped: true, reason: 'outbox_unavailable' };
   }
 
-  let customer = null;
-  if (message.customer) {
+  const dispatch = await dispatchOutbox({ id: outboxId, payload: JSON.stringify(stored) }, env, payload);
+  return { event, subjectId, outboxId, ...dispatch };
+}
+
+export async function retryPendingNotifications(env, { limit = 20, now = new Date(), mailAdapter = null, fetchFn = null } = {}) {
+  if (!env || !env.DB) return { processed: 0, sent: 0, failed: 0 };
+  const since = new Date(now.getTime() - RETENTION_MS).toISOString();
+  let rows;
+  try {
+    const result = await env.DB.prepare(
+      'SELECT id, event, payload FROM ops_notify_outbox WHERE done_at IS NULL AND created_at >= ? ORDER BY created_at ASC LIMIT ?'
+    ).bind(since, Math.max(1, Math.min(Number(limit) || 20, 100))).all();
+    rows = result.results || [];
+  } catch (e) {
+    return { processed: 0, sent: 0, failed: 0 };
+  }
+
+  let processed = 0;
+  let sent = 0;
+  let failed = 0;
+  for (const row of rows) {
+    if (!eventEnabled(row.event, env)) continue;
+    processed += 1;
     try {
-      const priorCustomer = await lastNotice(db, event, subjectId, CUSTOMER_TYPE);
-      if (!priorCustomer) {
-        const sent = await deliverMail(mailAdapter, message.customer);
-        await recordNotice(db, { event, subjectId, type: CUSTOMER_TYPE, now, result: { to: message.customer.to, ...sent } });
-        customer = { to: message.customer.to, ...sent };
-      } else {
-        customer = { skipped: true, reason: 'duplicate' };
+      const result = await dispatchOutbox(row, env, { mailAdapter, fetchFn });
+      for (const item of [...result.mail, ...result.telegram, ...(result.customer ? [result.customer] : [])]) {
+        if (item.delivered) sent += 1;
+        else if (!item.skipped) failed += 1;
       }
     } catch (e) {
-      customer = { delivered: false, error: String(e && e.message || e).slice(0, 200) };
+      failed += 1;
     }
   }
-
-  try {
-    await recordNotice(db, { event, subjectId, type: OPS_TYPE, now, result: { mail, telegram } });
-  } catch (e) {
-    return { event, subjectId, mail, telegram, customer, ledger_error: String(e && e.message || e).slice(0, 200) };
-  }
-  return { event, subjectId, mail, telegram, customer };
+  return { processed, sent, failed };
 }

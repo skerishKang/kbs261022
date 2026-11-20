@@ -154,7 +154,7 @@ test('each log table is limited to one batch per scheduled pass', async () => {
   }
 });
 
-test('scheduled worker reports table counts only and registers one daily cron', async () => {
+test('scheduled worker reports table counts only and registers a daily plus a 10-minute cron', async () => {
   const db = openShopD1();
   const oldStamp = new Date(Date.now() - (SHOP_LOG_RETENTION_DAYS + 1) * 24 * 60 * 60 * 1000).toISOString();
   insertAuthAttempt(db, 'must-not-be-logged', oldStamp);
@@ -163,7 +163,7 @@ test('scheduled worker reports table counts only and registers one daily cron', 
   const originalLog = console.log;
   console.log = (line) => lines.push(String(line));
   try {
-    await worker.scheduled({}, { DB: db }, { waitUntil(promise) { scheduledWork = promise; } });
+    await worker.scheduled({ cron: '0 3 * * *' }, { DB: db }, { waitUntil(promise) { scheduledWork = promise; } });
     await scheduledWork;
   } finally {
     console.log = originalLog;
@@ -175,7 +175,29 @@ test('scheduled worker reports table counts only and registers one daily cron', 
   assert.doesNotMatch(lines[0], /must-not-be-logged/);
   const crons = [...readFileSync(new URL('../../wrangler.toml', import.meta.url), 'utf8')
     .matchAll(/^\s*crons\s*=\s*(.+)$/gm)].map((match) => match[1].trim());
-  assert.deepEqual(crons, ['["0 3 * * *"]']);
+  assert.deepEqual(crons, ['["0 3 * * *", "*/10 * * * *"]']);
+});
+
+test('the 10-minute cron retries notifications without purging shop logs', async () => {
+  const db = openShopD1();
+  const oldStamp = new Date(Date.now() - (SHOP_LOG_RETENTION_DAYS + 1) * 24 * 60 * 60 * 1000).toISOString();
+  insertAuthAttempt(db, 'must-remain', oldStamp);
+  let scheduledWork;
+  const lines = [];
+  const originalLog = console.log;
+  console.log = (line) => lines.push(String(line));
+  let remaining;
+  try {
+    await worker.scheduled({ cron: '*/10 * * * *' }, { DB: db }, { waitUntil(promise) { scheduledWork = promise; } });
+    await scheduledWork;
+    remaining = db._db.prepare("SELECT COUNT(*) AS n FROM auth_attempts WHERE key = 'must-remain'").get().n;
+  } finally {
+    console.log = originalLog;
+    db._db.close();
+  }
+  assert.equal(lines.length, 1);
+  assert.match(lines[0], /^OPS_NOTIFY_RETRY=ok detail=/);
+  assert.equal(remaining, 1);
 });
 
 test('0007 adds an efficient created_at index for member service events', () => {

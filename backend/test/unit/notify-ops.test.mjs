@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 
 import { openD1 } from '../../d1-shim.mjs';
-import { notifyOps, OPS_EVENTS } from '../../lib/notify.mjs';
+import { notifyOps, retryPendingNotifications, OPS_EVENTS } from '../../lib/notify.mjs';
 
 function env(over = {}) {
   return {
@@ -150,6 +150,80 @@ test('a user closing the payment window is never reported', async () => {
   assert.equal(result.reason, 'user_cancel');
   assert.equal(mail.calls.length, 0);
   assert.equal(tg.calls.length, 0);
+});
+
+test('a successful dispatch records one delivery per channel and closes the outbox', async () => {
+  const e = env();
+  const mail = mailer();
+  const tg = telegram();
+  const result = await notifyOps(OPS_EVENTS.ORDER_PAID, { env: e, mailAdapter: mail, fetchFn: tg.fetchFn, ...paidPayload });
+  assert.ok(result.outboxId > 0);
+  assert.equal(result.done, true);
+  const rows = await e.DB.prepare('SELECT channel FROM ops_notify_delivery WHERE outbox_id = ? ORDER BY channel').bind(result.outboxId).all();
+  assert.deepEqual(rows.results.map((r) => r.channel), [
+    'customer_mail:buyer@example.com',
+    'mail:ops1@example.com',
+    'mail:ops2@example.com',
+    'telegram:111',
+    'telegram:222',
+  ]);
+  const row = await e.DB.prepare('SELECT done_at FROM ops_notify_outbox WHERE id = ?').bind(result.outboxId).first();
+  assert.ok(row.done_at);
+});
+
+test('a failed channel is retried alone and closes the outbox', async () => {
+  const e = env({ MAIL_MODE: 'resend', B66_ALERT_RESEND_API_KEY: 're_fake_key_for_tests' });
+  const tg = telegram();
+  const first = await notifyOps(OPS_EVENTS.REFUND_COMPLETED, {
+    env: e, mailAdapter: mailer({ fail: true }), fetchFn: tg.fetchFn,
+    orderId: 'ORD-RETRY', cancelAmount: 500, remainingAmount: 500,
+  });
+  assert.equal(first.done, false);
+  const failedTgCount = tg.calls.length;
+  const delivered = await e.DB.prepare('SELECT channel FROM ops_notify_delivery WHERE outbox_id = ?').bind(first.outboxId).all();
+  assert.deepEqual(delivered.results.map((r) => r.channel), ['telegram:111', 'telegram:222']);
+
+  const goodMail = mailer();
+  const retryFetch = telegram();
+  const summary = await retryPendingNotifications(e, { mailAdapter: goodMail, fetchFn: retryFetch.fetchFn });
+  assert.equal(summary.processed, 1);
+  assert.equal(summary.sent, 2);
+  assert.equal(goodMail.calls.length, 2);
+  assert.equal(retryFetch.calls.length, 0, 'delivered Telegram channels are not sent again');
+  assert.equal(tg.calls.length, failedTgCount);
+  const closed = await e.DB.prepare('SELECT done_at FROM ops_notify_outbox WHERE id = ?').bind(first.outboxId).first();
+  assert.ok(closed.done_at);
+  const again = await retryPendingNotifications(e, { mailAdapter: mailer(), fetchFn: telegram().fetchFn });
+  assert.equal(again.processed, 0);
+});
+
+test('retry ignores outbox rows older than 24 hours', async () => {
+  const e = env();
+  const mail = mailer();
+  const tg = telegram();
+  const first = await notifyOps(OPS_EVENTS.QUOTE_RECEIVED, {
+    env: e, mailAdapter: mailer({ fail: true }), fetchFn: tg.fetchFn, quoteId: 'Q-OLD',
+    now: () => new Date('2026-11-01T00:00:00Z'),
+  });
+  assert.equal(first.done, false);
+  await e.DB.prepare('UPDATE ops_notify_outbox SET done_at = NULL WHERE id = ?').bind(first.outboxId).run();
+  await e.DB.prepare('UPDATE ops_notify_outbox SET created_at = ? WHERE id = ?').bind('2026-11-01T00:00:00Z', first.outboxId).run();
+  const summary = await retryPendingNotifications(e, {
+    now: new Date('2026-11-20T10:00:00Z'), mailAdapter: mailer(), fetchFn: telegram().fetchFn,
+  });
+  assert.equal(summary.processed, 0);
+});
+
+test('a secondary Telegram token name is used when the primary is missing', async () => {
+  const e = env({ TELEGRAM_BOT_TOKEN: '', B66_ALERT_TELEGRAM_BOT_TOKEN: 'fallback-token-not-real' });
+  const tg = telegram();
+  const result = await notifyOps(OPS_EVENTS.SIGNUP, {
+    env: e, mailAdapter: mailer(), fetchFn: tg.fetchFn,
+    memberId: 9, joinedAt: '2026-11-20T10:00:00Z', name: '이름', source: 'email',
+  });
+  assert.equal(result.telegram.length, 2);
+  assert.equal(result.telegram[0].delivered, true);
+  assert.match(tg.calls[0].url, /fallback-token-not-real/);
 });
 
 test('an approval failure is grouped per order within 30 minutes', async () => {

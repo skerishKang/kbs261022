@@ -9,7 +9,7 @@ database_name = "cgi_quotes"
 database_id = "602346ac-b0f3-4503-befd-b921a6a5cfd9"
 
 [triggers]
-crons = ["0 3 * * *"]
+crons = ["0 3 * * *", "*/10 * * * *"]
 
 # ------------------------------------------------------------
 # Secrets Store bindings (issue #79)
@@ -27,6 +27,7 @@ secret_name = "B66_ALERT_RESEND_API_KEY"
 #
 #   ADMIN_TOKEN               staff/admin API bearer token (existing)
 #   TELEGRAM_BOT_TOKEN        (secret) ops notification bot token
+#   B66_ALERT_TELEGRAM_BOT_TOKEN (secret) fallback name when TELEGRAM_BOT_TOKEN is unset
 #   TOSS_WIDGET_SECRET_KEY    test_gsk_... / live_gsk_...  (order-form widget confirm)
 #   TOSS_API_SECRET_KEY       test_sk_...  / live_sk_...   (core API: query / cancel)
 #   NICEPAY_TEST_CLIENT_KEY / NICEPAY_TEST_SECRET_KEY (NICEPAY test store only)

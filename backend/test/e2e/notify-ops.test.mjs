@@ -129,8 +129,9 @@ test('an accepted feedback notifies ops once without the contact email', async (
   assert.match(mails[0].body.subject, new RegExp(`고객 의견 ${res.json.id}`));
   for (const c of capture.calls) assert.doesNotMatch(JSON.stringify(c.body), /guest-notify@example\.com/);
 
-  const ledger = await e.DB.prepare("SELECT meta FROM order_events WHERE order_id = ?").bind(`ops:inquiry_received:${res.json.id}`).all();
+  const ledger = await e.DB.prepare('SELECT id, done_at FROM ops_notify_outbox WHERE event = ? AND subject_id = ?').bind('inquiry_received', res.json.id).all();
   assert.equal(ledger.results.length, 1, 'the alert is recorded once');
+  assert.ok(ledger.results[0].done_at);
 });
 
 test('feedback is still accepted when the alert channels fail', async () => {

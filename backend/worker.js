@@ -116,7 +116,7 @@ import {
 import { GOOGLE_SIGNUP_PASSWORD_SENTINEL } from './lib/migrate.mjs';
 import { purgeExpiredShopLogs, purgeExpiredQuotePii } from './lib/retention.mjs';
 import { createMailAdapter } from './lib/mail.mjs';
-import { notifyOps } from './lib/notify.mjs';
+import { notifyOps, retryPendingNotifications } from './lib/notify.mjs';
 import {
   FEEDBACK_KIND_LABELS,
   validateFeedbackInput,
@@ -3658,7 +3658,14 @@ return notFound();
 // responses must advertise credentials or the browser discards them. The
 // origin stays pinned to the production site; only the credential flag is added.
 export default {
-  async scheduled(_controller, env, ctx) {
+  async scheduled(event, env, ctx) {
+    const cron = String((event && event.cron) || '');
+    if (cron === '*/10 * * * *') {
+      ctx.waitUntil(retryPendingNotifications(env)
+        .then((summary) => console.log(`OPS_NOTIFY_RETRY=ok detail=${JSON.stringify(summary)}`))
+        .catch(() => console.error('OPS_NOTIFY_RETRY=ERROR')));
+      return;
+    }
     const work = Promise.all([purgeExpiredShopLogs(env.DB), purgeExpiredQuotePii(env.DB)])
       .then(([counts, quotePii]) => {
         console.log(`SHOP_RETENTION_PURGE=ok detail=${JSON.stringify({ ...counts, quote_requests_pii: quotePii })}`);
