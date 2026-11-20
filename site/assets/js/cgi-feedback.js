@@ -12,16 +12,18 @@
   var cfg = window.CGI_SITE_CONFIG || {};
   var API = cfg.orderApiUrl || cfg.quoteApiUrl || '';
   var BODY_MAX = 2000;
+  var JOURNAL_MAX = 8000;
   var LINK_LIMIT = 3;
 
   var KINDS = [
-    ['bug', '불편·오류'],
-    ['idea', '기능 제안'],
+    ['bug', '오류'],
+    ['inconvenient', '불편'],
+    ['feature', '요청'],
     ['product', '상품·가격 문의'],
     ['other', '기타']
   ];
   var STATUS_LABELS = {
-    received: '접수', checking: '확인 중', fixed: '고침', answered: '답변 완료', on_hold: '보류'
+    received: '접수', reviewing: '확인 중', fixed: '고침', later: '다음에', closed: '닫음'
   };
   var SOURCE_LABELS = {
     ai_member: 'AI 명예회원이 알려 준 것',
@@ -124,7 +126,8 @@
     if (a && a.refresh) {
       a.refresh().then(function (member) {
         if (member && member.id) {
-          who.innerHTML = '<strong>' + esc(member.name || member.email) + '</strong> 회원님으로 보냅니다. 답글과 처리 상태는 ' +
+          who.innerHTML = '<strong>' + esc(member.name || member.email) + '</strong> 회원님' +
+            (member.is_ai_member || member.role === 'ai_member' ? ' <span class="ai-member-badge">AI 명예회원</span>' : '') + '으로 보냅니다. 답글과 처리 상태는 ' +
             '<a href="index.html#/my-page/feedback">마이페이지 → 내 의견</a>에서 볼 수 있어요.';
         }
       }).catch(function () {});
@@ -176,6 +179,36 @@
     return '<span class="fb-status fb-status-' + esc(status) + '">' + esc(STATUS_LABELS[status] || status) + '</span>';
   }
 
+  function followupHtml(f, x) {
+    return '<li class="fb-followup" data-followup-id="' + esc(x.id) + '">' +
+      '<p class="fb-followup-meta">내가 덧붙임 · ' + esc(fmtDate(x.created_at)) + (x.edited ? ' · 고침' : '') + '</p>' +
+      '<p class="fb-body">' + esc(x.body) + '</p>' +
+      (x.canEdit ? '<div class="fb-followup-actions">' +
+        '<button type="button" class="btn btn-small btn-secondary" data-followup-edit="' + esc(x.id) + '" data-feedback="' + esc(f.id) + '">고치기</button>' +
+        '<button type="button" class="btn btn-small btn-secondary" data-followup-delete="' + esc(x.id) + '" data-feedback="' + esc(f.id) + '">지우기</button></div>' : '') +
+    '</li>';
+  }
+
+  function mineCardHtml(f) {
+    var reopen = f.status === 'fixed' || f.status === 'closed';
+    return '<article class="fb-card" data-feedback-id="' + esc(f.id) + '">' +
+      '<header class="fb-card-head"><span class="fb-id">' + esc(f.id) + '</span>' + statusBadge(f.status) + '</header>' +
+      '<p class="fb-meta">' + esc(fmtDate(f.created_at)) + ' · ' + esc(f.kind_label || kindLabel(f.kind)) + '</p>' +
+      '<p class="fb-body">' + esc(f.body) + '</p>' +
+      (f.admin_reply
+        ? '<div class="fb-reply"><p class="fb-reply-label">운영자 답글</p><p>' + esc(f.admin_reply) + '</p></div>'
+        : '<p class="fb-noreply auth-muted">아직 답글이 없어요.</p>') +
+      ((f.followups || []).length ? '<ul class="fb-followups">' + f.followups.map(function (x) { return followupHtml(f, x); }).join('') + '</ul>' : '') +
+      '<form class="fb-followup-form" data-followup-form="' + esc(f.id) + '">' +
+        '<label class="sr-only" for="fu-' + esc(f.id) + '">덧붙일 말</label>' +
+        '<textarea id="fu-' + esc(f.id) + '" name="body" rows="2" maxlength="' + BODY_MAX + '" placeholder="빠뜨린 내용이나 그 뒤 소식을 덧붙여 주세요"></textarea>' +
+        '<p class="fb-hint">' + (reopen ? '덧붙이면 다시 \'확인 중\'으로 열려요. ' : '') + '이메일·전화번호는 자동으로 가려져요.</p>' +
+        '<div data-followup-msg></div>' +
+        '<button type="submit" class="btn btn-secondary btn-small">덧붙이기</button>' +
+      '</form>' +
+    '</article>';
+  }
+
   function renderMine(body) {
     var a = auth();
     body.innerHTML = '<p class="auth-muted" data-feedback-loading>내 의견을 불러오는 중…</p>';
@@ -196,16 +229,123 @@
           '<p class="auth-muted">불편한 점이나 바라는 기능을 알려 주시면 운영자가 확인하고 답글을 남겨요.</p></div>';
         return;
       }
-      body.innerHTML = head + '<div class="fb-mine-list">' + items.map(function (f) {
-        return '<article class="fb-card" data-feedback-id="' + esc(f.id) + '">' +
-          '<header class="fb-card-head"><span class="fb-id">' + esc(f.id) + '</span>' + statusBadge(f.status) + '</header>' +
-          '<p class="fb-meta">' + esc(fmtDate(f.created_at)) + ' · ' + esc(f.kind_label || kindLabel(f.kind)) + '</p>' +
-          '<p class="fb-body">' + esc(f.body) + '</p>' +
-          (f.admin_reply
-            ? '<div class="fb-reply"><p class="fb-reply-label">운영자 답글</p><p>' + esc(f.admin_reply) + '</p></div>'
-            : '<p class="fb-noreply auth-muted">아직 답글이 없어요.</p>') +
-        '</article>';
-      }).join('') + '</div>';
+      body.innerHTML = head + '<div class="fb-mine-list">' + items.map(mineCardHtml).join('') + '</div>';
+      wireMine(body);
+    });
+  }
+
+  /** 덧붙이기·고치기·지우기(러브트리 append·updateFollowup·deleteFollowup). 지우기는 표시만 숨긴다. */
+  function wireMine(body) {
+    if (body.getAttribute('data-wired') === '1') return;
+    body.setAttribute('data-wired', '1');
+    var a = auth();
+    function path(fid, xid) { return '/api/me/feedback/' + encodeURIComponent(fid) + '/followup' + (xid ? '/' + encodeURIComponent(xid) : ''); }
+    body.addEventListener('submit', function (event) {
+      var form = event.target.closest('[data-followup-form]');
+      if (!form) return;
+      event.preventDefault();
+      var msg = form.querySelector('[data-followup-msg]');
+      var text = String(form.elements.body.value || '').trim();
+      if (!text) { msg.innerHTML = '<p class="fb-alert error">덧붙일 말을 입력해 주세요.</p>'; return; }
+      if (countLinks(text) >= LINK_LIMIT) { msg.innerHTML = '<p class="fb-alert error">링크는 2개까지만 넣을 수 있어요.</p>'; return; }
+      var btn = form.querySelector('button[type="submit"]');
+      btn.disabled = true;
+      a.api('POST', path(form.getAttribute('data-followup-form')), { body: text }).then(function (res) {
+        btn.disabled = false;
+        if (!res.ok) { msg.innerHTML = '<p class="fb-alert error">' + esc(errorText(res)) + '</p>'; return; }
+        renderMine(body);
+      });
+    });
+    body.addEventListener('click', function (event) {
+      var del = event.target.closest('[data-followup-delete]');
+      if (del) {
+        a.api('DELETE', path(del.getAttribute('data-feedback'), del.getAttribute('data-followup-delete'))).then(function () { renderMine(body); });
+        return;
+      }
+      var edit = event.target.closest('[data-followup-edit]');
+      if (!edit) return;
+      var li = edit.closest('[data-followup-id]');
+      var current = li.querySelector('.fb-body').textContent;
+      li.innerHTML = '<form class="fb-followup-edit" data-edit-feedback="' + esc(edit.getAttribute('data-feedback')) + '" data-edit-followup="' + esc(edit.getAttribute('data-followup-edit')) + '">' +
+        '<label class="sr-only">덧붙인 말 고치기</label><textarea name="body" rows="2" maxlength="' + BODY_MAX + '">' + esc(current) + '</textarea>' +
+        '<div data-followup-msg></div><button type="submit" class="btn btn-secondary btn-small">고친 내용 저장</button></form>';
+      var editForm = li.querySelector('form');
+      editForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var text = String(editForm.elements.body.value || '').trim();
+        a.api('PATCH', path(editForm.getAttribute('data-edit-feedback'), editForm.getAttribute('data-edit-followup')), { body: text }).then(function (res) {
+          if (!res.ok) { editForm.querySelector('[data-followup-msg]').innerHTML = '<p class="fb-alert error">' + esc(errorText(res)) + '</p>'; return; }
+          renderMine(body);
+        });
+      });
+    });
+  }
+
+  /* ------------------------------------------------ 마이페이지 '사용 일지'(AI 명예회원) */
+
+  function scoreRadios() {
+    return '<fieldset class="fb-kinds fb-score"><legend>다시 올 점수 <span class="fb-opt">선택</span></legend>' +
+      [1, 2, 3, 4, 5].map(function (n) {
+        return '<label class="fb-kind"><input type="radio" name="score" value="' + n + '"> <span>' + n + '</span></label>';
+      }).join('') + '</fieldset>';
+  }
+
+  function renderJournal(body) {
+    var a = auth();
+    body.innerHTML = '<p class="auth-muted" data-journal-loading>사용 일지를 불러오는 중…</p>';
+    if (!a) { body.innerHTML = '<p class="fb-alert error">로그인 정보를 확인하지 못했어요.</p>'; return; }
+    a.api('GET', '/api/me/journal').then(function (res) {
+      if (res.status === 403) { body.innerHTML = '<p class="fb-alert info">사용 일지는 AI 명예회원만 쓸 수 있어요.</p>'; return; }
+      if (!res.ok) { body.innerHTML = '<p class="fb-alert error">사용 일지를 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.</p>'; return; }
+      var today = res.data.journal;
+      var items = res.data.items || [];
+      var html = '<section class="fb-journal">' +
+        '<p class="fb-who">하루에 한 건씩 남겨요(한국 시각 날짜). 같은 날 다시 쓰면 오늘 일지 아래에 덧붙여요. 이메일·전화번호는 자동으로 가려져요. 일지는 운영자만 읽어요.</p>' +
+        (today ? '<article class="fb-card fb-journal-today"><header class="fb-card-head"><span class="fb-id">' + esc(today.journal_date) + ' · 오늘 일지</span>' +
+          '<span class="fb-status fb-status-reviewing">다시 올 점수 ' + (today.score == null ? '—' : esc(today.score)) + '</span></header>' +
+          '<h3 class="fb-journal-title">' + esc(today.title) + '</h3><p class="fb-body">' + esc(today.body) + '</p></article>' : '') +
+        '<form class="fb-form fb-journal-form" id="journalForm" novalidate>' +
+          (today ? '' : '<div class="fb-field"><label for="jTitle">제목 <span class="fb-opt">선택</span></label><input id="jTitle" name="title" maxlength="120" placeholder="비우면 첫 줄이 제목이 돼요"></div>') +
+          '<div class="fb-field"><label for="jBody">' + (today ? '오늘 일지에 덧붙일 내용' : '오늘 사용한 내용') + ' <span class="fb-req">필수</span></label>' +
+          '<textarea id="jBody" name="body" rows="8" maxlength="' + JOURNAL_MAX + '" required placeholder="오늘 무엇을 찾았고, 어디가 편했고, 어디서 막혔는지 적어 주세요."></textarea>' +
+          '<p class="fb-hint"><span id="jCount" class="fb-count">0 / 8,000자</span>' + (today ? ' · 합쳐서 8,000자까지' : '') + '</p></div>' +
+          scoreRadios() +
+          '<div id="jMsg" aria-live="polite"></div>' +
+          '<button type="submit" class="btn btn-primary btn-block">' + (today ? '오늘 일지에 덧붙이기' : '오늘 일지 쓰기') + '</button>' +
+        '</form>';
+      var past = items.filter(function (j) { return !today || j.id !== today.id; });
+      if (past.length) {
+        html += '<h3 class="fb-journal-past">지난 일지</h3><div class="fb-mine-list">' + past.map(function (j) {
+          return '<details class="fb-card"><summary><span class="fb-id">' + esc(j.journal_date) + '</span> · ' + esc(j.title) +
+            ' · 점수 ' + (j.score == null ? '—' : esc(j.score)) + '</summary><p class="fb-body">' + esc(j.body) + '</p></details>';
+        }).join('') + '</div>';
+      }
+      body.innerHTML = html + '</section>';
+      var form = body.querySelector('#journalForm');
+      var bodyEl = form.elements.body;
+      var counter = body.querySelector('#jCount');
+      bodyEl.addEventListener('input', function () {
+        var n = charCount(bodyEl.value);
+        counter.textContent = n.toLocaleString('ko-KR') + ' / 8,000자';
+        counter.classList.toggle('is-over', n > JOURNAL_MAX);
+      });
+      form.addEventListener('submit', function (event) {
+        event.preventDefault();
+        var msg = body.querySelector('#jMsg');
+        var text = String(bodyEl.value || '').trim();
+        if (!text) { msg.innerHTML = '<p class="fb-alert error">오늘 사용한 내용을 적어 주세요.</p>'; return; }
+        if (charCount(text) > JOURNAL_MAX) { msg.innerHTML = '<p class="fb-alert error">일지는 8,000자까지 적을 수 있어요.</p>'; return; }
+        var scoreEl = form.querySelector('input[name="score"]:checked');
+        var payload = { body: text, score: scoreEl ? Number(scoreEl.value) : null };
+        if (form.elements.title) payload.title = form.elements.title.value.trim();
+        var btn = form.querySelector('button[type="submit"]');
+        btn.disabled = true;
+        a.api('POST', '/api/me/journal', payload).then(function (r) {
+          btn.disabled = false;
+          if (!r.ok) { msg.innerHTML = '<p class="fb-alert error">' + esc(errorText(r)) + '</p>'; return; }
+          renderJournal(body);
+        });
+      });
     });
   }
 
@@ -248,6 +388,7 @@
 
   window.CGI_FEEDBACK = {
     renderMine: renderMine,
+    renderJournal: renderJournal,
     feedbackHref: feedbackHref,
     kinds: KINDS,
     statusLabels: STATUS_LABELS,

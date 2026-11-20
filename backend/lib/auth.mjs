@@ -59,6 +59,9 @@ export const AUTH_POLICY = {
     // 출처에서 같은 내용을 짧은 시간에 다시 보내는 것을 1회로 묶는 제한.
     'feedback-ip': { max: 10, windowSeconds: 15 * 60 },
     'feedback-dup': { max: 1, windowSeconds: 10 * 60 },
+    // 회원 덧붙임·사용 일지 쓰기: 러브트리와 같은 10분 20회.
+    'followup-member': { max: 20, windowSeconds: 10 * 60 },
+    'journal-member': { max: 20, windowSeconds: 10 * 60 },
   },
 };
 

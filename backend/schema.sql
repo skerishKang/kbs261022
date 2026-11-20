@@ -7,6 +7,7 @@
 -- Part 3: members / member_addresses / auth_tokens / auth_attempts / member_events
 --         (customer account system, issue #69 — isolated from PADIEM)
 -- Part 4: feedback / news (운영센터 의견 · 새 소식, migration 0012)
+--         feedback_followup / feedback_journal / admin_customer_views (migration 0014)
 --
 -- Every statement is idempotent (CREATE TABLE IF NOT EXISTS /
 -- CREATE INDEX IF NOT EXISTS) so the whole file can be executed
@@ -395,3 +396,45 @@ CREATE TABLE IF NOT EXISTS ops_notify_delivery (
 );
 
 CREATE INDEX IF NOT EXISTS idx_ops_notify_delivery_outbox ON ops_notify_delivery(outbox_id);
+
+-- ------------------------------------------------------------
+-- Part 4. 운영센터 덧붙임 · 사용 일지 · 고객 열람 기록 (migration 0014)
+-- ------------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS feedback_followup (
+  id          INTEGER PRIMARY KEY AUTOINCREMENT,
+  feedback_id TEXT NOT NULL,
+  member_id   INTEGER NOT NULL,
+  body        TEXT NOT NULL,
+  status      TEXT NOT NULL DEFAULT 'visible',  -- visible|deleted
+  created_at  TEXT NOT NULL,
+  edited_at   TEXT,
+  deleted_at  TEXT
+);
+CREATE INDEX IF NOT EXISTS idx_feedback_followup_feedback ON feedback_followup(feedback_id, created_at);
+CREATE INDEX IF NOT EXISTS idx_feedback_followup_member ON feedback_followup(member_id);
+
+CREATE TABLE IF NOT EXISTS feedback_journal (
+  id           INTEGER PRIMARY KEY AUTOINCREMENT,
+  member_id    INTEGER NOT NULL,
+  journal_date TEXT NOT NULL,                 -- 한국 시각 날짜 YYYY-MM-DD
+  title        TEXT,
+  body         TEXT NOT NULL,
+  score        INTEGER,                       -- 다시 올 점수 1~5
+  append_count INTEGER NOT NULL DEFAULT 0,
+  admin_note   TEXT,                          -- 내부 메모(고객에게 안 보임)
+  created_at   TEXT NOT NULL,
+  updated_at   TEXT NOT NULL,
+  UNIQUE (member_id, journal_date)
+);
+CREATE INDEX IF NOT EXISTS idx_feedback_journal_date ON feedback_journal(journal_date);
+
+CREATE TABLE IF NOT EXISTS admin_customer_views (
+  id              INTEGER PRIMARY KEY AUTOINCREMENT,
+  admin_member_id INTEGER,
+  admin_label     TEXT NOT NULL,
+  customer_id     INTEGER NOT NULL,
+  viewed_at       TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_admin_customer_views_viewed ON admin_customer_views(viewed_at);
+CREATE INDEX IF NOT EXISTS idx_admin_customer_views_customer ON admin_customer_views(customer_id, viewed_at);

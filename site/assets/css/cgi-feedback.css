@@ -62,10 +62,8 @@
 /* 상태 배지 */
 .fb-status { display: inline-block; padding: 2px 9px; border-radius: 999px; font-size: 12px; font-weight: 700; white-space: nowrap; }
 .fb-status-received { background: var(--cgi-warn-soft); color: var(--cgi-warn); }
-.fb-status-checking { background: #eef4ff; color: #1d4ed8; }
+.fb-status-reviewing { background: #eef4ff; color: #1d4ed8; }
 .fb-status-fixed { background: var(--cgi-ok-soft); color: var(--cgi-ok); }
-.fb-status-answered { background: var(--cgi-primary-soft); color: var(--cgi-primary-dark); }
-.fb-status-on_hold { background: var(--cgi-line-soft); color: var(--cgi-muted); }
 
 /* 마이페이지 '내 의견' */
 .fb-mine-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }
@@ -145,4 +143,78 @@
   .ops-form-row { grid-template-columns: minmax(0, 1fr); }
   .ops-detail dl { grid-template-columns: 88px minmax(0, 1fr); }
   .header-nav a.nav-feedback { font-size: 13px; }
+}
+
+/* ── 운영센터 정렬(러브트리 운영센터와 같은 탭 구성) ── */
+.ai-member-badge { display: inline-block; padding: 1px 8px; border-radius: 999px; background: #f3efff; color: #5b3fc4; font-size: 11.5px; font-weight: 700; vertical-align: 2px; white-space: nowrap; }
+.header-nav .ai-member-badge { margin-left: 6px; }
+/* display 를 준 표시라도 hidden 이면 숨긴다(일반 회원 머리글에 'AI 명예회원'이 보이지 않게). */
+.ai-member-badge[hidden] { display: none !important; }
+.ops-detail-static + .ops-section { margin-top: 18px; }
+.fb-status-later { background: var(--cgi-line-soft); color: var(--cgi-muted); }
+.fb-status-closed { background: #eef0f2; color: #495057; }
+
+/* 고객 덧붙임 */
+.fb-followups { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 8px; }
+.fb-followup { border-left: 3px solid var(--cgi-line); padding: 6px 10px; background: var(--cgi-bg); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
+.fb-followup-meta { margin: 0 0 2px; font-size: 12px; color: var(--cgi-muted); }
+.fb-followup-actions { display: flex; gap: 6px; margin-top: 4px; }
+.fb-followup-form, .fb-followup-edit { display: grid; gap: 6px; margin-top: 12px; }
+.fb-followup-form textarea, .fb-followup-edit textarea { width: 100%; max-width: 100%; font: inherit; font-size: 13.5px; padding: 8px 10px; border: 1px solid var(--cgi-line); border-radius: var(--radius-sm); resize: vertical; }
+.fb-followup-form .btn, .fb-followup-edit .btn { justify-self: start; }
+
+/* 사용 일지(마이페이지) */
+.fb-journal { display: grid; gap: 14px; }
+.fb-journal-title { font-size: 15px; margin: 6px 0; overflow-wrap: anywhere; }
+.fb-journal-past { font-size: 15px; margin: 8px 0 0; }
+.fb-journal details summary { cursor: pointer; font-size: 13.5px; }
+.fb-score .fb-kind span { min-width: 38px; text-align: center; }
+
+/* 운영센터 공통 */
+.ops-view { min-width: 0; }
+.ops-section { margin-bottom: 22px; }
+.ops-h { font-size: 15px; margin: 0 0 10px; }
+.ops-h3 { font-size: 14px; margin: 8px 0 6px; overflow-wrap: anywhere; }
+.ops-sub { font-size: 12px; font-weight: 500; color: var(--cgi-muted); margin-left: 4px; }
+.ops-link { color: var(--cgi-primary-dark); font-size: 13px; font-weight: 700; }
+.ops-name { font-size: 13.5px; color: var(--cgi-ink); }
+.ops-tab-count { display: inline-block; min-width: 18px; padding: 0 5px; margin-left: 4px; border-radius: 999px; background: var(--cgi-danger); color: #fff; font-size: 11px; line-height: 18px; text-align: center; }
+.ops-cards { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 10px; margin-bottom: 8px; }
+.ops-cards-small { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.ops-card { background: var(--cgi-card); border: 1px solid var(--cgi-line); border-top: 3px solid var(--cgi-primary); border-radius: var(--radius); padding: 12px 14px; min-width: 0; }
+.ops-card-ai_member { border-top-color: #7c5ce0; }
+.ops-card-tester { border-top-color: var(--cgi-muted); }
+.ops-card-received { border-top-color: var(--cgi-danger); }
+.ops-card-label { margin: 0 0 2px; font-size: 12px; color: var(--cgi-muted); font-weight: 700; }
+.ops-card-value { margin: 0; font-size: 22px; font-weight: 800; letter-spacing: -.5px; }
+.ops-card-detail { margin: 2px 0 0; font-size: 12px; color: var(--cgi-muted); }
+.ops-chip-rows { display: grid; gap: 8px; margin-bottom: 10px; }
+.ops-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.ops-chip { appearance: none; border: 1px solid var(--cgi-line); background: #fff; border-radius: 999px; padding: 6px 12px; font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; color: var(--cgi-ink); }
+.ops-chip.is-active { border-color: var(--cgi-primary); background: var(--cgi-primary-soft); color: var(--cgi-primary-dark); }
+.ops-chip-count { font-size: 12px; color: var(--cgi-muted); font-weight: 500; }
+.ops-toolbar-compact { grid-template-columns: minmax(0, 320px) auto; justify-content: start; }
+.ops-detail-static { position: static; }
+.ops-followups { list-style: none; padding: 0; margin: 0 0 12px; display: grid; gap: 6px; }
+.ops-followup { border-left: 3px solid var(--cgi-primary-line); padding: 6px 10px; background: var(--cgi-bg); }
+.ops-followup p { margin: 2px 0 0; font-size: 13.5px; overflow-wrap: anywhere; }
+.ops-followup.is-deleted { opacity: .6; border-left-color: var(--cgi-line); }
+.ops-journal { border: 1px solid var(--cgi-line); border-radius: var(--radius); padding: 12px 14px; background: #fff; min-width: 0; }
+.ops-journal-body summary { cursor: pointer; font-size: 12.5px; color: var(--cgi-primary-dark); }
+.ops-journal-body p { font-size: 13.5px; overflow-wrap: anywhere; margin: 6px 0 0; }
+.ops-score { font-size: 12px; font-weight: 700; color: var(--cgi-primary-dark); }
+.ops-form-inline { border-top: 0; padding-top: 8px; gap: 6px; }
+.ops-form-inline .btn { justify-self: start; }
+.ops-people { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 10px; }
+.ops-person { font-size: 12px; padding: 3px 10px; border-radius: 999px; background: var(--cgi-bg); border: 1px solid var(--cgi-line); }
+.ops-person.is-risk { border-color: var(--cgi-danger); color: var(--cgi-danger); }
+.ops-views { margin: 0; padding-left: 18px; font-size: 12.5px; color: var(--cgi-muted); }
+.ops-issue { margin-bottom: 16px; }
+.ops-issue h3 a { color: var(--cgi-primary-dark); }
+
+@media (max-width: 899px) {
+  .ops-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ops-cards-small { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ops-toolbar-compact { grid-template-columns: minmax(0, 1fr) auto; }
+  .ops-toolbar-compact label:first-child { grid-column: auto; }
 }

@@ -1,4 +1,4 @@
-// The repository keeps three schema sources in sync: migrations/0001..0013
+// The repository keeps three schema sources in sync: migrations/0001..0014
 // (production truth), schema.sql (fresh databases and the local D1 shim) and
 // lib/migrate.mjs (guarded upgrades). This test applies the migrations to a
 // brand-new SQLite database and compares the tables and columns with schema.sql,
@@ -44,8 +44,8 @@ function migratedDatabase(upto = '0011') {
   return db;
 }
 
-test('schema.sql matches a fresh database built from migrations 0001-0013', () => {
-  const fromMigrations = shape(migratedDatabase('0013'));
+test('schema.sql matches a fresh database built from migrations 0001-0014', () => {
+  const fromMigrations = shape(migratedDatabase('0014'));
   const schemaDb = new DatabaseSync(':memory:');
   applySql(schemaDb, join(BACKEND, 'schema.sql'));
   const schemaShape = shape(schemaDb);
@@ -88,4 +88,32 @@ test('migration 0011 adds consent columns and backfills existing consent events'
     .run('noconsent@example.com', 'pbkdf2-sha512$1$aa$bb', '무동의회원', 'active', now, now);
   const untouched = db.prepare('SELECT terms_consent_version FROM members WHERE email = ?').get('noconsent@example.com');
   assert.equal(untouched.terms_consent_version, null);
+});
+
+test('migration 0014 moves #226 feedback values to the lovetree codes and is safe to re-run', () => {
+  const db = migratedDatabase('0013');
+  const now = '2026-11-20T00:00:00.000Z';
+  const ins = db.prepare("INSERT INTO feedback (id, created_at, kind, body, status, updated_at) VALUES (?,?,?,?,?,?)");
+  ins.run('FB-1', now, 'idea', 'a', 'checking', now);
+  ins.run('FB-2', now, 'bug', 'b', 'answered', now);
+  ins.run('FB-3', now, 'product', 'c', 'on_hold', now);
+  ins.run('FB-4', now, 'weird', 'd', 'mystery', now);
+  ins.run('FB-5', now, 'inconvenient', 'e', 'fixed', now);
+  const file = join(BACKEND, 'migrations', '0014_ops_center_align.sql');
+  applySql(db, file);
+  const rows = Object.fromEntries(db.prepare('SELECT id, kind, status FROM feedback ORDER BY id').all().map((r) => [r.id, `${r.kind}/${r.status}`]));
+  assert.deepEqual(rows, {
+    'FB-1': 'feature/reviewing',
+    'FB-2': 'bug/closed',
+    'FB-3': 'product/later',
+    'FB-4': 'other/received',
+    'FB-5': 'inconvenient/fixed',
+  });
+  // 다시 실행해도 값이 바뀌지 않고 오류도 없다.
+  applySql(db, file);
+  const again = Object.fromEntries(db.prepare('SELECT id, kind, status FROM feedback ORDER BY id').all().map((r) => [r.id, `${r.kind}/${r.status}`]));
+  assert.deepEqual(again, rows);
+  // 같은 회원·같은 날짜 일지는 한 건뿐이다.
+  db.prepare("INSERT INTO feedback_journal (member_id, journal_date, body, created_at, updated_at) VALUES (1, '2026-11-20', 'x', ?, ?)").run(now, now);
+  assert.throws(() => db.prepare("INSERT INTO feedback_journal (member_id, journal_date, body, created_at, updated_at) VALUES (1, '2026-11-20', 'y', ?, ?)").run(now, now));
 });

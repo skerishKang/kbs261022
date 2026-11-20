@@ -7,22 +7,28 @@
 // 개인정보: contact_email 은 관리자 상세 화면에서만 원문으로 내보낸다.
 // 목록 화면은 가린 값만, 회원 본인 화면과 공개 화면에는 아예 싣지 않는다.
 
-export const FEEDBACK_KINDS = ['bug', 'idea', 'product', 'other'];
+// 코드 값은 러브트리 운영센터(lovetree-4.0 server/feedback-service.js)와 같다.
+// 화면 글자만 한국어. product(상품·가격 문의)는 CGI 쇼핑몰에만 있는 종류다.
+// (2026-11-20 migration 0014 가 #226 의 옛 값 idea/checking/answered/on_hold 를 옮긴다.)
+export const FEEDBACK_KINDS = ['bug', 'inconvenient', 'feature', 'other', 'product'];
 export const FEEDBACK_KIND_LABELS = {
-  bug: '불편·오류',
-  idea: '기능 제안',
-  product: '상품·가격 문의',
+  bug: '오류',
+  inconvenient: '불편',
+  feature: '요청',
   other: '기타',
+  product: '상품·가격 문의',
 };
 
-export const FEEDBACK_STATUSES = ['received', 'checking', 'fixed', 'answered', 'on_hold'];
+export const FEEDBACK_STATUSES = ['received', 'reviewing', 'fixed', 'later', 'closed'];
 export const FEEDBACK_STATUS_LABELS = {
   received: '접수',
-  checking: '확인 중',
+  reviewing: '확인 중',
   fixed: '고침',
-  answered: '답변 완료',
-  on_hold: '보류',
+  later: '다음에',
+  closed: '닫음',
 };
+/** 고객이 덧붙이거나 고치면 '확인 중'으로 다시 여는 상태(러브트리 append 와 같은 규칙). */
+export const REOPEN_STATUSES = ['fixed', 'closed'];
 
 export const NEWS_SOURCE_TAGS = ['ai_member', 'user_feedback'];
 export const NEWS_SOURCE_LABELS = {
@@ -237,11 +243,12 @@ export function feedbackListView(row) {
     has_reply: !!row.admin_reply,
     has_note: !!row.admin_note,
     issue_ref: row.issue_ref,
+    followup_count: Number(row.followup_count || 0),
   };
 }
 
-/** 운영센터 상세: 관리자만 받는다. 연락 이메일 원문 포함. */
-export function feedbackAdminView(row) {
+/** 운영센터 상세: 관리자만 받는다. 연락 이메일 원문 포함. 고객이 지운 덧붙임도 '지움'으로 보인다. */
+export function feedbackAdminView(row, followups = []) {
   if (!row) return null;
   return {
     ...feedbackListView(row),
@@ -249,11 +256,27 @@ export function feedbackAdminView(row) {
     contact_email: row.contact_email,
     admin_reply: row.admin_reply,
     admin_note: row.admin_note,
+    followups: followups.map((f) => ({
+      id: f.id,
+      body: f.body,
+      created_at: f.created_at,
+      edited: !!f.edited_at,
+      deleted: f.status === 'deleted',
+    })),
   };
 }
 
+/**
+ * 고객에게 내려 줄 덧붙임 모양 — 러브트리 publicFollowup 과 같은 방식(mine·edited·canEdit·canDelete).
+ * 지운 덧붙임(status='deleted')은 고객 목록에서 뺀다. 고친 시각 값은 내리지 않고 고쳤는지만 알린다.
+ */
+export function publicFollowup(row, viewerMemberId) {
+  const mine = viewerMemberId != null && String(row.member_id) === String(viewerMemberId);
+  return { id: row.id, body: row.body, created_at: row.created_at, edited: !!row.edited_at, mine, canEdit: mine, canDelete: mine };
+}
+
 /** 회원 본인 '내 의견': 내부 메모·이슈 번호·연락 이메일·AI 표시는 싣지 않는다. */
-export function feedbackMemberView(row) {
+export function feedbackMemberView(row, followups = [], viewerMemberId = row && row.member_id) {
   if (!row) return null;
   return {
     id: row.id,
@@ -266,6 +289,7 @@ export function feedbackMemberView(row) {
     body: row.body,
     page_url: row.page_url,
     admin_reply: row.admin_reply,
+    followups: followups.filter((f) => f.status !== 'deleted').map((f) => publicFollowup(f, viewerMemberId)),
   };
 }
 
@@ -344,9 +368,11 @@ export async function listFeedback(db, { kind, status, q, ai, limit = 100, offse
     where.push("(id LIKE ? ESCAPE '\\' OR body LIKE ? ESCAPE '\\' OR IFNULL(admin_reply,'') LIKE ? ESCAPE '\\' OR IFNULL(issue_ref,'') LIKE ? ESCAPE '\\' OR IFNULL(ai_member,'') LIKE ? ESCAPE '\\')");
     args.push(like, like, like, like, like);
   }
-  const lim = Math.max(1, Math.min(200, Number.parseInt(limit, 10) || 100));
+  // 운영센터 '의견' 탭은 칩 숫자를 화면에서 세므로(러브트리 boardStatusTabs 와 같은 방식) 한 번에 넉넉히 읽는다.
+  const lim = Math.max(1, Math.min(500, Number.parseInt(limit, 10) || 100));
   const off = Math.max(0, Number.parseInt(offset, 10) || 0);
-  const sql = 'SELECT * FROM feedback' + (where.length ? ' WHERE ' + where.join(' AND ') : '') +
+  const sql = "SELECT feedback.*, (SELECT COUNT(*) FROM feedback_followup f WHERE f.feedback_id = feedback.id AND f.status = 'visible') AS followup_count FROM feedback" +
+    (where.length ? ' WHERE ' + where.join(' AND ') : '') +
     ' ORDER BY created_at DESC, id DESC LIMIT ? OFFSET ?';
   const { results } = await db.prepare(sql).bind(...args, lim, off).all();
   const countSql = 'SELECT COUNT(*) AS n FROM feedback' + (where.length ? ' WHERE ' + where.join(' AND ') : '');
@@ -406,4 +432,198 @@ export async function listNews(db, { publishedOnly = true, limit = 50 } = {}) {
     : 'SELECT * FROM news ORDER BY COALESCE(published_at, \'9999\') DESC, id DESC LIMIT ?';
   const { results } = await db.prepare(sql).bind(lim).all();
   return results || [];
+}
+
+// ---------------------------------------------------------------------------
+// 덧붙임(followup)·사용 일지(journal) — 러브트리 feedback-service 와 같은 개념·이름
+// ---------------------------------------------------------------------------
+
+export const FOLLOWUP_BODY_MAX = FEEDBACK_BODY_MAX; // 러브트리: 덧붙임 한도 = 의견 한도(2000)
+export const JOURNAL_BODY_MAX = 8000; // 러브트리 MAX_JOURNAL_BODY — 같은 날 덧붙여 쓰므로 의견과 한도를 나눈다
+export const JOURNAL_TITLE_MAX = 120;
+
+const PERSONAL_EMAIL = /[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/g;
+const PERSONAL_PHONE = /0\d{1,2}[-\s]?\d{3,4}[-\s]?\d{4}/g;
+
+/** 이메일·전화번호 꼴을 저장 전에 가린다. 원문은 남기지 않는다(러브트리 maskPersonal 과 같다). */
+export function maskPersonal(text) {
+  return String(text == null ? '' : text)
+    .replace(PERSONAL_EMAIL, '[이메일]')
+    .replace(PERSONAL_PHONE, '[전화번호]');
+}
+
+/**
+ * 일지 날짜(journal_date)는 한국 시각 기준 — UTC 날짜로 쓰면 한국 시각 00:00~09:00 기록이
+ * 하루 전 날짜로 저장된다(러브트리 seoulDate 와 같은 기준).
+ */
+export function seoulDate(ms = Date.now()) {
+  return new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Seoul' }).format(new Date(ms));
+}
+
+/** 한국 시각 'HH:MM' — 같은 날 덧붙인 일지의 구분 줄에 쓴다. */
+export function seoulTime(ms = Date.now()) {
+  return new Intl.DateTimeFormat('en-GB', { timeZone: 'Asia/Seoul', hour: '2-digit', minute: '2-digit', hour12: false }).format(new Date(ms));
+}
+
+const cleanText = (value) => String(value == null ? '' : value).replace(/\r\n?/g, '\n').trim();
+const firstLine = (text, max = JOURNAL_TITLE_MAX) => [...(String(text || '').split('\n').map((l) => l.trim()).find(Boolean) || '')].slice(0, max).join('');
+
+/** 덧붙임 본문 검사 + 개인정보 가림. */
+export function validateFollowupBody(body) {
+  const text = cleanText(body);
+  if (!text) return { error: 'body required', detail: '덧붙일 말을 입력해 주세요.' };
+  if (charLength(text) > FOLLOWUP_BODY_MAX) return { error: 'body too long', detail: `덧붙일 말은 ${FOLLOWUP_BODY_MAX.toLocaleString('en-US')}자까지 적을 수 있어요.` };
+  if (countLinks(text) >= FEEDBACK_LINK_LIMIT) return { error: 'too many links', detail: `링크는 ${FEEDBACK_LINK_LIMIT - 1}개까지만 넣을 수 있어요.` };
+  return { ok: true, body: maskPersonal(text) };
+}
+
+/** 사용 일지 입력 검사(제목은 비우면 본문 첫 줄). 점수는 1~5 정수 또는 비움. */
+export function validateJournalInput(input) {
+  if (!input || typeof input !== 'object' || Array.isArray(input)) return { error: 'invalid body' };
+  const body = cleanText(input.body);
+  if (!body) return { error: 'body required', detail: '오늘 사용한 내용을 적어 주세요.' };
+  if (charLength(body) > JOURNAL_BODY_MAX) return { error: 'body too long', detail: `일지는 ${JOURNAL_BODY_MAX.toLocaleString('en-US')}자까지 적을 수 있어요.` };
+  let score = null;
+  if (input.score !== undefined && input.score !== null && input.score !== '') {
+    score = Number(input.score);
+    if (!Number.isInteger(score) || score < 1 || score > 5) return { error: 'score invalid', detail: '다시 올 점수는 1~5로 골라 주세요.' };
+  }
+  const titleRaw = cleanText(input.title);
+  if (charLength(titleRaw) > JOURNAL_TITLE_MAX) return { error: 'title too long' };
+  const masked = maskPersonal(body);
+  return { ok: true, body: masked, title: maskPersonal(titleRaw) || firstLine(masked), score };
+}
+
+/**
+ * 같은 날 다시 쓰면 아래에 덧붙인다(러브트리 #596: 같은 날 2회차를 덧붙여 쓴다).
+ * 합친 글이 8,000자를 넘으면 거절한다(잘라서 저장하지 않는다).
+ */
+export function appendJournalBody(existing, addition, atMs = Date.now()) {
+  const combined = `${String(existing || '').trimEnd()}\n\n— 덧붙임 ${seoulTime(atMs)} —\n${addition}`;
+  if (charLength(combined) > JOURNAL_BODY_MAX) {
+    return { error: 'journal full', detail: `오늘 일지가 ${JOURNAL_BODY_MAX.toLocaleString('en-US')}자를 넘어 더 덧붙일 수 없어요.` };
+  }
+  return { ok: true, body: combined };
+}
+
+export function journalView(row) {
+  if (!row) return null;
+  return {
+    id: row.id,
+    journal_date: row.journal_date,
+    title: row.title || firstLine(row.body),
+    body: row.body,
+    score: row.score == null ? null : Number(row.score),
+    created_at: row.created_at,
+    updated_at: row.updated_at,
+    append_count: Number(row.append_count || 0),
+  };
+}
+
+/** 운영센터 사용 일지 줄: 고객 이름·역할과 내부 메모를 함께 싣는다. */
+export function journalAdminView(row) {
+  if (!row) return null;
+  return {
+    ...journalView(row),
+    member_id: row.member_id,
+    member_name: row.member_name || '',
+    member_role: row.member_role || '',
+    customer: (row.member_role === 'ai_member' ? 'AI 명예회원 ' : '') + (row.member_name || '고객'),
+    admin_note: row.admin_note || null,
+  };
+}
+
+// ---- D1: 덧붙임 ----
+
+export async function insertFollowup(db, { feedbackId, memberId, body, now }) {
+  const result = await db.prepare(
+    "INSERT INTO feedback_followup (feedback_id, member_id, body, status, created_at, edited_at, deleted_at) VALUES (?, ?, ?, 'visible', ?, NULL, NULL)"
+  ).bind(String(feedbackId), memberId, body, now).run();
+  const id = result && result.meta && result.meta.last_row_id;
+  return db.prepare('SELECT * FROM feedback_followup WHERE id = ?').bind(id).first();
+}
+
+export function getFollowup(db, id) {
+  return db.prepare('SELECT * FROM feedback_followup WHERE id = ?').bind(Number(id)).first();
+}
+
+export async function listFollowups(db, feedbackId) {
+  const { results } = await db.prepare('SELECT * FROM feedback_followup WHERE feedback_id = ? ORDER BY created_at ASC, id ASC')
+    .bind(String(feedbackId)).all();
+  return results || [];
+}
+
+/** 여러 의견의 덧붙임을 한 번에(내 의견 목록용). */
+export async function listFollowupsFor(db, feedbackIds) {
+  const ids = (feedbackIds || []).map(String);
+  const map = new Map(ids.map((id) => [id, []]));
+  if (!ids.length) return map;
+  const marks = ids.map(() => '?').join(',');
+  const { results } = await db.prepare(`SELECT * FROM feedback_followup WHERE feedback_id IN (${marks}) ORDER BY created_at ASC, id ASC`)
+    .bind(...ids).all();
+  for (const row of results || []) map.get(String(row.feedback_id)).push(row);
+  return map;
+}
+
+export async function updateFollowupBody(db, id, body, now) {
+  await db.prepare("UPDATE feedback_followup SET body = ?, edited_at = ? WHERE id = ? AND status = 'visible'").bind(body, now, Number(id)).run();
+  return getFollowup(db, id);
+}
+
+/** 지우기는 표시만 숨긴다(status='deleted'). 운영센터 상세에는 '고객이 지움'으로 남는다. */
+export async function hideFollowup(db, id, now) {
+  await db.prepare("UPDATE feedback_followup SET status = 'deleted', deleted_at = ? WHERE id = ? AND status = 'visible'").bind(now, Number(id)).run();
+  return getFollowup(db, id);
+}
+
+/** 고침·닫음 상태의 의견에 고객이 덧붙이거나 고치면 '확인 중'으로 다시 연다. */
+export async function reopenIfClosed(db, feedback, now) {
+  if (!feedback || !REOPEN_STATUSES.includes(feedback.status)) return feedback ? feedback.status : null;
+  await db.prepare("UPDATE feedback SET status = 'reviewing', updated_at = ? WHERE id = ?").bind(now, String(feedback.id)).run();
+  return 'reviewing';
+}
+
+// ---- D1: 사용 일지 ----
+
+export function getJournalByDate(db, memberId, journalDate) {
+  return db.prepare('SELECT * FROM feedback_journal WHERE member_id = ? AND journal_date = ?').bind(memberId, journalDate).first();
+}
+
+export function getJournal(db, id) {
+  return db.prepare('SELECT * FROM feedback_journal WHERE id = ?').bind(Number(id)).first();
+}
+
+export async function insertJournal(db, { memberId, journalDate, title, body, score, now }) {
+  const result = await db.prepare(
+    'INSERT INTO feedback_journal (member_id, journal_date, title, body, score, append_count, admin_note, created_at, updated_at) VALUES (?, ?, ?, ?, ?, 0, NULL, ?, ?)'
+  ).bind(memberId, journalDate, title, body, score, now, now).run();
+  return getJournal(db, result && result.meta && result.meta.last_row_id);
+}
+
+export async function appendJournal(db, row, { body, score, now }) {
+  const nextScore = score == null ? row.score : score;
+  await db.prepare('UPDATE feedback_journal SET body = ?, score = ?, append_count = append_count + 1, updated_at = ? WHERE id = ?')
+    .bind(body, nextScore, now, row.id).run();
+  return getJournal(db, row.id);
+}
+
+export async function listMemberJournals(db, memberId, limit = 60) {
+  const { results } = await db.prepare('SELECT * FROM feedback_journal WHERE member_id = ? ORDER BY journal_date DESC, id DESC LIMIT ?')
+    .bind(memberId, Math.max(1, Math.min(365, Number(limit) || 60))).all();
+  return results || [];
+}
+
+export async function listJournals(db, { memberId = null, limit = 300 } = {}) {
+  const lim = Math.max(1, Math.min(1000, Number.parseInt(limit, 10) || 300));
+  const base = 'SELECT j.*, m.name AS member_name, m.role AS member_role FROM feedback_journal j LEFT JOIN members m ON m.id = j.member_id';
+  const stmt = memberId
+    ? db.prepare(`${base} WHERE j.member_id = ? ORDER BY j.journal_date DESC, j.id DESC LIMIT ?`).bind(Number(memberId), lim)
+    : db.prepare(`${base} ORDER BY j.journal_date DESC, j.id DESC LIMIT ?`).bind(lim);
+  const { results } = await stmt.all();
+  return results || [];
+}
+
+export async function setJournalNote(db, id, note, now) {
+  await db.prepare('UPDATE feedback_journal SET admin_note = ?, updated_at = ? WHERE id = ?').bind(note, now, Number(id)).run();
+  return getJournal(db, id);
 }

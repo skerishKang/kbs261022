@@ -45,10 +45,11 @@ const ROW = {
 };
 
 test('kinds and statuses carry the agreed Korean labels', () => {
-  assert.deepEqual(FEEDBACK_KINDS, ['bug', 'idea', 'product', 'other']);
-  assert.deepEqual(Object.values(FEEDBACK_KIND_LABELS), ['불편·오류', '기능 제안', '상품·가격 문의', '기타']);
-  assert.deepEqual(FEEDBACK_STATUSES, ['received', 'checking', 'fixed', 'answered', 'on_hold']);
-  assert.deepEqual(Object.values(FEEDBACK_STATUS_LABELS), ['접수', '확인 중', '고침', '답변 완료', '보류']);
+  // 코드 값은 러브트리 운영센터와 같다(product 는 CGI 전용). 화면 글자만 한국어.
+  assert.deepEqual(FEEDBACK_KINDS, ['bug', 'inconvenient', 'feature', 'other', 'product']);
+  assert.deepEqual(Object.values(FEEDBACK_KIND_LABELS), ['오류', '불편', '요청', '기타', '상품·가격 문의']);
+  assert.deepEqual(FEEDBACK_STATUSES, ['received', 'reviewing', 'fixed', 'later', 'closed']);
+  assert.deepEqual(Object.values(FEEDBACK_STATUS_LABELS), ['접수', '확인 중', '고침', '다음에', '닫음']);
   assert.deepEqual(Object.values(NEWS_SOURCE_LABELS), ['AI 명예회원이 알려 준 것', '사용자 의견으로 고친 것']);
 });
 
@@ -58,7 +59,7 @@ test('feedback input: kind and body are required, body capped at 2,000 chars', (
   assert.ok(validateFeedbackInput({ kind: 'bug', body: '가'.repeat(2000) }).ok, '2,000자는 받는다');
   assert.equal(validateFeedbackInput({ kind: 'bug', body: '가'.repeat(2001) }).error, 'body too long');
   assert.equal(validateFeedbackInput(null).error, 'invalid body');
-  const ok = validateFeedbackInput({ kind: 'idea', body: '  비교 기능이 있으면 좋겠어요 \r\n', contact_email: ' Me@Example.COM ' });
+  const ok = validateFeedbackInput({ kind: 'feature', body: '  비교 기능이 있으면 좋겠어요 \r\n', contact_email: ' Me@Example.COM ' });
   assert.equal(ok.body, '비교 기능이 있으면 좋겠어요');
   assert.equal(ok.contact_email, 'me@example.com');
 });
@@ -85,8 +86,8 @@ test('page url keeps http(s) only and masks token-like query values', () => {
 test('admin patch validates each field and normalizes the issue ref', () => {
   assert.equal(validateFeedbackPatch({}).error, 'nothing to update');
   assert.equal(validateFeedbackPatch({ status: 'done' }).error, 'invalid status');
-  const p = validateFeedbackPatch({ status: 'answered', admin_reply: '답변', admin_note: '', issue_ref: 'https://github.com/o/r/issues/231', ai_member: '리모네' });
-  assert.deepEqual(p.fields, { status: 'answered', admin_reply: '답변', admin_note: null, issue_ref: '#231', ai_member: '리모네' });
+  const p = validateFeedbackPatch({ status: 'closed', admin_reply: '답변', admin_note: '', issue_ref: 'https://github.com/o/r/issues/231', ai_member: '리모네' });
+  assert.deepEqual(p.fields, { status: 'closed', admin_reply: '답변', admin_note: null, issue_ref: '#231', ai_member: '리모네' });
   assert.equal(validateFeedbackPatch({ ai_member: false }).fields.ai_member, null);
   assert.equal(normalizeIssueRef('42'), '#42');
   assert.equal(normalizeIssueRef('#42'), '#42');
