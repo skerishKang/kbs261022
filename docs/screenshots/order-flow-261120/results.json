@@ -1,0 +1,148 @@
+[
+ {
+  "shot": "detail-priced-390.png",
+  "width": 390,
+  "overflowX": 0,
+  "overflowEls": [],
+  "consoleErrors": [],
+  "ignored401": 1,
+  "cta": [
+   "qty-btn :: −",
+   "qty-btn :: ＋",
+   "btn btn-primary btn-lg :: 바로 구매",
+   "btn btn-secondary :: 견적 요청하기",
+   "btn btn-secondary :: 견적 목록에 추가",
+   "btn btn-primary :: 바로 구매"
+  ],
+  "emailPrefill": null,
+  "dupNotice": null,
+  "apiCalls": [
+   "GET /api/me"
+  ]
+ },
+ {
+  "shot": "detail-inquiry-390.png",
+  "width": 390,
+  "overflowX": 0,
+  "overflowEls": [],
+  "consoleErrors": [],
+  "ignored401": 1,
+  "cta": [
+   "qty-btn :: −",
+   "qty-btn :: ＋",
+   "btn btn-primary btn-lg :: 견적 요청하기",
+   "btn btn-secondary btn-lg :: 견적 목록에 추가",
+   "btn btn-primary :: 견적 요청"
+  ],
+  "emailPrefill": null,
+  "dupNotice": null,
+  "apiCalls": [
+   "GET /api/me"
+  ]
+ },
+ {
+  "shot": "checkout-member-390.png",
+  "width": 390,
+  "overflowX": 0,
+  "overflowEls": [],
+  "consoleErrors": [],
+  "ignored401": 0,
+  "cta": [],
+  "emailPrefill": "member@example.com",
+  "dupNotice": null,
+  "apiCalls": [
+   "GET /api/me",
+   "GET /api/shop/config"
+  ]
+ },
+ {
+  "shot": "checkout-duplicate-390.png",
+  "width": 390,
+  "overflowX": 0,
+  "overflowEls": [],
+  "consoleErrors": [
+   "Failed to load resource: the server responded with a status of 409 (Conflict)"
+  ],
+  "ignored401": 1,
+  "cta": [],
+  "emailPrefill": null,
+  "dupNotice": "방금 같은 주문이 접수되었습니다. 주문 상세에서 결제를 계속하세요.\n\n주문번호 CGI-20261120-0009\n\n기존 주문 상세로 이동",
+  "apiCalls": [
+   "GET /api/me",
+   "GET /api/shop/config",
+   "POST /api/orders"
+  ]
+ },
+ {
+  "shot": "detail-priced-1440.png",
+  "width": 1440,
+  "overflowX": 0,
+  "overflowEls": [],
+  "consoleErrors": [],
+  "ignored401": 1,
+  "cta": [
+   "qty-btn :: −",
+   "qty-btn :: ＋",
+   "btn btn-primary btn-lg :: 바로 구매",
+   "btn btn-secondary :: 견적 요청하기",
+   "btn btn-secondary :: 견적 목록에 추가"
+  ],
+  "emailPrefill": null,
+  "dupNotice": null,
+  "apiCalls": [
+   "GET /api/me"
+  ]
+ },
+ {
+  "shot": "detail-inquiry-1440.png",
+  "width": 1440,
+  "overflowX": 0,
+  "overflowEls": [],
+  "consoleErrors": [],
+  "ignored401": 1,
+  "cta": [
+   "qty-btn :: −",
+   "qty-btn :: ＋",
+   "btn btn-primary btn-lg :: 견적 요청하기",
+   "btn btn-secondary btn-lg :: 견적 목록에 추가"
+  ],
+  "emailPrefill": null,
+  "dupNotice": null,
+  "apiCalls": [
+   "GET /api/me"
+  ]
+ },
+ {
+  "shot": "checkout-member-1440.png",
+  "width": 1440,
+  "overflowX": 0,
+  "overflowEls": [],
+  "consoleErrors": [],
+  "ignored401": 0,
+  "cta": [],
+  "emailPrefill": "member@example.com",
+  "dupNotice": null,
+  "apiCalls": [
+   "GET /api/me",
+   "GET /api/shop/config"
+  ]
+ },
+ {
+  "shot": "checkout-duplicate-1440.png",
+  "width": 1440,
+  "overflowX": 0,
+  "overflowEls": [],
+  "consoleErrors": [
+   "Failed to load resource: the server responded with a status of 409 (Conflict)"
+  ],
+  "ignored401": 1,
+  "cta": [],
+  "emailPrefill": null,
+  "dupNotice": "방금 같은 주문이 접수되었습니다. 주문 상세에서 결제를 계속하세요.\n\n주문번호 CGI-20261120-0009\n\n기존 주문 상세로 이동",
+  "apiCalls": [
+   "GET /api/me",
+   "GET /api/shop/config",
+   "POST /api/orders"
+  ]
+ }
+]

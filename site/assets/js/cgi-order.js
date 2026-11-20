@@ -96,6 +96,30 @@
         return res.json().then(function (data) { return { ok: res.ok, status: res.status, data: data }; });
       }).catch(function (err) { return { ok: false, status: 0, data: { error: 'network', detail: String(err && err.message || err) } }; });
   }
+  /* 주문 소유 확인이 필요한 요청(결제창·승인 조회·주문 상세). 로그인 회원이면
+     세션 쿠키·CSRF 를 싣는 CGI_AUTH.api 로 보내야 워커가 소유 회원으로 인정한다
+     — 이메일을 비운 회원 주문도 결제창이 열린다. 비회원은 기존처럼 이메일 팩터. */
+  function memberSession() {
+    return !!(window.CGI_AUTH && typeof window.CGI_AUTH.isLoggedIn === 'function' && window.CGI_AUTH.isLoggedIn());
+  }
+  function ownerApi(method, path, body) {
+    if (memberSession() && typeof window.CGI_AUTH.api === 'function') return window.CGI_AUTH.api(method, path, body);
+    return api(method, path, body);
+  }
+  function memberEmail() {
+    if (!memberSession() || typeof window.CGI_AUTH.me !== 'function') return '';
+    var m = window.CGI_AUTH.me();
+    return m && m.email ? String(m.email) : '';
+  }
+  /** 결제창 거절 사유를 한글 안내로. 이메일 팩터 거절은 무엇을 하면 되는지 알려 준다. */
+  function windowErrorMessage(w) {
+    var code = (w && w.data && w.data.error) || ('HTTP ' + (w && w.status));
+    if (code === 'email factor required') {
+      return '결제창을 열 수 없습니다. 주문서에 이메일을 입력하지 않은 비회원 주문은 본인 확인이 필요합니다. ' +
+        '이메일을 입력해 다시 주문하시거나, 회원으로 로그인한 뒤 결제해 주세요.';
+    }
+    return '결제창을 열 수 없습니다. (' + code + ')';
+  }
   function requestKey() {
     if (window.crypto && window.crypto.randomUUID) return 'order-' + window.crypto.randomUUID();
     return 'order-' + Date.now() + '-' + Math.random().toString(36).slice(2, 10);
@@ -214,6 +238,10 @@
     });
 
     var form = app.querySelector('#orderForm');
+    // 회원 이메일이 있으면 주문서 이메일 칸을 미리 채운다(고객이 바꿀 수 있다).
+    var emailInput = form.querySelector('[name="email"]');
+    var knownEmail = memberEmail();
+    if (emailInput && knownEmail && !emailInput.value) emailInput.value = knownEmail;
     var termsEl = form.querySelector('[name="terms_consent"]');
     var privacyEl = form.querySelector('[name="privacy_consent"]');
     var submitBtn = form.querySelector('button[type="submit"]');
@@ -256,7 +284,24 @@
         : function (path, body) { return api('POST', path, body); };
       send(member ? '/api/me/orders' : '/api/orders', payload).then(function (res) {
         if (!res.ok) {
-          status.innerHTML = flash('주문 생성 실패: ' + (res.data.error || ('HTTP ' + res.status)), 'flash-error');
+          var dup = res.data && res.data.error === 'duplicate_order' && res.data.existing_id;
+          if (dup) {
+            // 같은 장바구니를 방금 주문했다 — 새 주문 대신 기존 주문에서 결제를 잇는다.
+            var existingId = String(res.data.existing_id);
+            if (customer.email && !orderEmailFor(existingId)) {
+              try { localStorage.setItem('cgiOrderEmail:' + existingId, customer.email); } catch (e) {}
+            }
+            status.innerHTML =
+              '<div class="order-flash flash-warn duplicate-order-notice" role="alert">' +
+                '<p>방금 같은 주문이 접수되었습니다. 주문 상세에서 결제를 계속하세요.</p>' +
+                '<p class="duplicate-order-id">주문번호 <strong>' + esc(existingId) + '</strong></p>' +
+                '<p><a class="btn btn-primary" id="existingOrderLink" href="#/order/' + encodeURIComponent(existingId) + '">기존 주문 상세로 이동</a></p>' +
+              '</div>';
+            syncConsent();
+            btn.textContent = '주문 생성 후 결제';
+            return;
+          }
+          status.innerHTML = flash('주문 생성 실패: ' + ((res.data && res.data.error) || ('HTTP ' + res.status)), 'flash-error');
           syncConsent();
           btn.textContent = '다시 시도';
           return;
@@ -370,13 +415,13 @@
       payBtn.addEventListener('click', function () {
         payBtn.disabled = true;
         payBtn.textContent = '결제창 준비 중…';
-        api('POST', '/api/payments/nicepay/window', {
+        ownerApi('POST', '/api/payments/nicepay/window', {
           orderId: pay.order_id,
           method: 'card',
           email: orderEmailFor(pay.order_id)
         }).then(function (w) {
           if (!w.ok) {
-            statusBox.innerHTML = flash('결제창을 열 수 없습니다. (' + esc(w.data && w.data.error || ('HTTP ' + w.status)) + ')', 'flash-error');
+            statusBox.innerHTML = flash(windowErrorMessage(w), 'flash-error');
             payBtn.disabled = false;
             payBtn.textContent = '결제창 열기';
             return;
@@ -397,7 +442,7 @@
 
   function renderOrderDetail(app, id) {
     app.innerHTML = shell('<div class="page-head"><p class="page-eyebrow">ORDER</p><h1>주문 상세</h1></div><p class="muted">주문을 불러오는 중입니다…</p>');
-    api('GET', orderLookupPath(id)).then(function (res) {
+    ownerApi('GET', orderLookupPath(id)).then(function (res) {
       if (!res.ok) {
         app.innerHTML = shell('<div class="page-head"><p class="page-eyebrow">ORDER</p><h1>주문 상세</h1></div>' + flash('주문을 찾을 수 없습니다. (' + esc(id) + ')', 'flash-error') + '<p><a class="btn" href="#/products">상품 목록</a></p>');
         return;
@@ -465,13 +510,13 @@
         payBtn.disabled = true;
         payBtn.textContent = '결제창 준비 중…';
         var method = (app.querySelector('input[name="method"]:checked') || {}).value || 'card';
-        api('POST', '/api/payments/nicepay/window', {
+        ownerApi('POST', '/api/payments/nicepay/window', {
           orderId: order.id,
           method: method,
           email: orderEmailFor(order.id)
         }).then(function (w) {
           if (!w.ok) {
-            statusBox.innerHTML = flash('결제창을 열 수 없습니다. (' + esc(w.data && w.data.error || ('HTTP ' + w.status)) + ')', 'flash-error');
+            statusBox.innerHTML = flash(windowErrorMessage(w), 'flash-error');
             payBtn.disabled = false;
             payBtn.textContent = '결제창 열기';
             return;
@@ -524,7 +569,7 @@
       return true;
     }
     app.innerHTML = shell('<div class="page-head"><p class="page-eyebrow">PAYMENT</p><h1>결제 승인 중</h1></div><p class="muted">결제 승인 결과를 확인하고 있습니다…</p>');
-    api('GET', orderLookupPath(orderId)).then(function (r) {
+    ownerApi('GET', orderLookupPath(orderId)).then(function (r) {
       if (!r.ok) { app.innerHTML = shell(flash('주문 조회 실패', 'flash-error')); return; }
       if (r.data.payment_status !== 'paid') {
         app.innerHTML = shell('<div class="page-head"><p class="page-eyebrow">PAYMENT</p><h1>결제 확인 필요</h1></div>' +
