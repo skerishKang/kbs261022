@@ -1188,6 +1188,7 @@ async function cancelPayment(db, env, order, paymentKey, body, pg) {
     }
   }
   const cancelAmount = Math.min(requested, refundable);
+  const firstFullCancel = !hasAmount && toNonNegInt(payment.cancel_amount, 0) === 0 && refundable === toNonNegInt(payment.amount, 0);
   const idempotencyKey = `cgi:cancel:${order.id}:${paymentKey}:${cancelAmount}:${reason}`;
   const cancelOrderId = await resolveCancelOrderId(db, { order, idempotencyKey });
 
@@ -1239,7 +1240,7 @@ async function cancelPayment(db, env, order, paymentKey, body, pg) {
       // Toss ignores the extra key, so both gateways get the truth about the row.
       orderId: order.pg_order_id || order.id,
       cancelOrderId,
-      cancelAmount,
+      cancelAmount: firstFullCancel ? undefined : cancelAmount,
       cancelReason: reason,
       refundReceiveAccount: body.refundReceiveAccount || null,
       idempotencyKey,
