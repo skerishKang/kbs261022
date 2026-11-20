@@ -35,7 +35,8 @@ function searchSource(p, adopt) {
     ((p.category_path && p.category_path.length) ? p.category_path[p.category_path.length - 1] : '미분류');
   const categoryPath = (adopt ? adopt.categoryPath : null) || (p.category_path || []);
   // 구매방법·배송주기 값은 검색 잡음이라 catalog.json 에서도 뺀다 (#216 G4).
-  const NOISE = new Set(['구매방법', '배송주기']);
+  // 공급처 기간 할인 문구(할인판매가·할인 기간)도 같은 이유로 뺀다.
+  const NOISE = new Set(['구매방법', '배송주기', '할인판매가', '할인 기간']);
   const specs = (adopt ? adopt.specs : null) || (p.specs || []);
   return [p.name, p.model, p.brand, p.brand_raw, p.manufacturer, category,
     categoryPath.join(' '),

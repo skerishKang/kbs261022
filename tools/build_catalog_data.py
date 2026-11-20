@@ -131,8 +131,10 @@ def canonical_brand(brand: str) -> str:
 NON_PRODUCT_RE = re.compile(r"결제창|잔금|계약금")
 
 
-# 검색에서 뺄 공급처 구매 옵션 라벨 (#216 G4)
-SEARCH_NOISE_SPEC_LABELS = {"구매방법", "배송주기"}
+# 검색에서 뺄 공급처 구매 옵션 라벨 (#216 G4)과 공급처 기간 할인 문구 라벨.
+# "할인판매가 999,000원 (… 할인)" / "할인 기간 남은시간 …" 은 공급처 행사 정보라
+# 상품을 찾는 말이 아니고, 남은시간 값은 수집 시점마다 바뀐다. 상세 화면 사양에는 그대로 둔다.
+SEARCH_NOISE_SPEC_LABELS = {"구매방법", "배송주기", "할인판매가", "할인 기간"}
 
 # 같은 상품 두 번 올라온 것을 병합한다 (#216 G2). 기준:
 #   - 브랜드(brand_norm)가 같고
@@ -716,6 +718,11 @@ def write_split_outputs(products: list[dict], out_dir: Path, meta: dict, detail_
             json.dumps(payload, ensure_ascii=False, separators=(",", ":")), encoding="utf-8"
         )
         detail_files += 1
+    # 상품 수가 줄면 예전 빌드의 뒤쪽 분할 파일이 남는다. 이번 빌드가 쓰지 않은 번호는 지운다.
+    for stale in details_dir.glob("part-*.json"):
+        m = re.fullmatch(r"part-(\d+)\.json", stale.name)
+        if m and int(m.group(1)) > detail_files:
+            stale.unlink()
 
     catalog_payload = {
         "meta": {

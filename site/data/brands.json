@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-20T03:06:54Z",
+ "generated_at": "2026-11-20T04:24:24Z",
  "product_count": 4002,
  "brands": [
   {
@@ -187,6 +187,10 @@
    "count": 4
   },
   {
+   "name": "NNNN",
+   "count": 4
+  },
+  {
    "name": "CLEAR-COM",
    "count": 3
   },
@@ -224,7 +228,7 @@
   },
   {
    "name": "기타",
-   "count": 76
+   "count": 72
   }
  ]
 }
