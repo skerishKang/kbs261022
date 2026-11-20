@@ -26,6 +26,7 @@ secret_name = "B66_ALERT_RESEND_API_KEY"
 # Secrets — set with `wrangler secret put <NAME>` (NEVER commit).
 #
 #   ADMIN_TOKEN               staff/admin API bearer token (existing)
+#   TELEGRAM_BOT_TOKEN        (secret) ops notification bot token
 #   TOSS_WIDGET_SECRET_KEY    test_gsk_... / live_gsk_...  (order-form widget confirm)
 #   TOSS_API_SECRET_KEY       test_sk_...  / live_sk_...   (core API: query / cancel)
 #   NICEPAY_TEST_CLIENT_KEY / NICEPAY_TEST_SECRET_KEY (NICEPAY test store only)
@@ -37,6 +38,9 @@ secret_name = "B66_ALERT_RESEND_API_KEY"
 #   SITE_PG_PROVIDER          must match site/config.js pgProvider (predeploy check)
 #   PG_NICEPAY_ENV            test | operating (default test)
 #   PG_PROVIDER_MODE          "auto" | "mock" | "live"   (default "auto": live keys -> live, none -> mock)
+#   ORDER_NOTIFY_TO           comma-separated ops mail recipients
+#   ORDER_NOTIFY_TELEGRAM_CHAT_IDS  comma-separated Telegram chat IDs for ops alerts
+#   ORDER_NOTIFY_EVENTS       comma-separated event allowlist (default: all)
 #   ECOUNT_ORDER_SYNC_ENABLED "NO" | "YES"                (default "NO": order sync stays off)
 #   ECOUNT_TARGET             "test" | "prod"             (default "test")
 #   ERP_LIVE_WRITE            legacy OAPI client guard; does not enable order sync

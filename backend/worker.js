@@ -104,6 +104,7 @@ import {
 import { GOOGLE_SIGNUP_PASSWORD_SENTINEL } from './lib/migrate.mjs';
 import { purgeExpiredShopLogs, purgeExpiredQuotePii } from './lib/retention.mjs';
 import { createMailAdapter } from './lib/mail.mjs';
+import { notifyOps } from './lib/notify.mjs';
 import { createOAuthState, decodeOAuthState, normalizeOAuthReturn, resolveOAuthRedirect, buildAuthorizationUrl, exchangeCode, fetchUserInfo, OAUTH_STATE_COOKIE, oauthStateCookieOptions } from './lib/google-oauth.mjs';
 
 const DEFAULT_ALLOWED_ORIGIN = 'https://cgishop.pages.dev';
@@ -618,7 +619,7 @@ async function createOrder(db, body, env, options = {}) {
   // staff quote tool keeps working. The link is stored on orders.source_quote_id.
   let linkedQuote = null;
   if (kind === 'quote') {
-    linkedQuote = await mirrorQuoteRequest(db, orderRow, items, services);
+    linkedQuote = await mirrorQuoteRequest(db, orderRow, items, services, env);
     if (linkedQuote) {
       await db.prepare('UPDATE orders SET source_quote_id = ?, updated_at = ? WHERE id = ?')
         .bind(linkedQuote.id, nowIso(), orderRow.id).run();
@@ -630,7 +631,7 @@ async function createOrder(db, body, env, options = {}) {
 }
 
 /** Mirror a quote order into the existing quote_requests table. */
-async function mirrorQuoteRequest(db, orderRow, items, services) {
+async function mirrorQuoteRequest(db, orderRow, items, services, env) {
   const quoteId = 'Q-' + orderRow.id.slice(-13);
   const quoteItems = items.map((item) => ({
     id: item.product_id,
@@ -651,6 +652,16 @@ async function mirrorQuoteRequest(db, orderRow, items, services) {
       JSON.stringify(services), JSON.stringify(quoteItems), 'received',
       orderRow.customer_id == null ? null : Number(orderRow.customer_id), createdAt
     ).run();
+    await notifyOps('quote_received', {
+      env,
+      quoteId,
+      company: orderRow.customer_company,
+      name: orderRow.customer_name,
+      phone: orderRow.customer_phone,
+      email: orderRow.customer_email,
+      services,
+      items: quoteItems.map((item) => ({ name: item.name, qty: item.qty, unit_price: item.publicPrice })),
+    });
     return { id: quoteId };
   } catch (e) {
     return null;
@@ -725,6 +736,7 @@ async function confirmPayment(db, body, env, pg) {
     const code = String(body.failure_code || 'PAY_PROCESS_CANCELED');
     const message = String(body.failure_message || '');
     await recordPaymentOutcome(db, {
+      env,
       order, paymentKey, amount: order.total_amount, status: 'failed',
       failureCode: code, failureMessage: message, provider: pg.provider, providerMode: pg.mode,
       touchOrder: false,
@@ -776,6 +788,7 @@ async function confirmPayment(db, body, env, pg) {
   }
 
   await recordPaymentOutcome(db, {
+    env,
     order, paymentKey, amount: order.total_amount, provider: pg.provider, providerMode: pg.mode,
     requestedAt: startedAt, ...outcome,
   });
@@ -907,6 +920,7 @@ async function applyNicepayWebhook(db, env, pg, payload) {
 
   if (row.status !== outcome.status) {
     await recordPaymentOutcome(db, {
+      env,
       order, paymentKey: tid, amount: outcome.amount,
       status: outcome.status === 'paid' ? 'paid' : outcome.status === 'failed' ? 'failed' : outcome.status,
       method: outcome.method, balanceAmount: outcome.balanceAmount,
@@ -976,7 +990,7 @@ async function applyNicepayCancellation(db, { order, row, tx, provider, provider
  *  to failed: a PG rejection seen through an attacker-supplied paymentKey must
  *  not damage a live order — the customer can simply retry while it stays
  *  awaiting_payment. */
-async function recordPaymentOutcome(db, { order, paymentKey, amount, status, failureCode, failureMessage, method, requestedAt, approvedAt, suppliedAmount, vat, balanceAmount, raw, provider, providerMode, touchOrder = true }) {
+async function recordPaymentOutcome(db, { env, order, paymentKey, amount, status, failureCode, failureMessage, method, requestedAt, approvedAt, suppliedAmount, vat, balanceAmount, raw, provider, providerMode, touchOrder = true }) {
   const ts = nowIso();
   const stmts = [];
 
@@ -1018,6 +1032,26 @@ async function recordPaymentOutcome(db, { order, paymentKey, amount, status, fai
   }
 
   await db.batch(stmts);
+  if (status === 'paid' && env) {
+    const items = await getOrderItems(db, order.id);
+    await notifyOps('order_paid', {
+      env,
+      orderId: order.id,
+      amount,
+      items,
+      company: order.customer_company,
+      name: order.customer_name,
+      phone: order.customer_phone,
+      email: order.customer_email,
+    });
+  } else if (status === 'failed' && env) {
+    await notifyOps('payment_failed', {
+      env,
+      orderId: order.id,
+      failureCode: failureCode || 'PG_ERROR',
+      reason: failureMessage || '',
+    });
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -1301,6 +1335,13 @@ async function cancelPayment(db, env, order, paymentKey, body, pg) {
   await db.batch(stmts);
 
   if (!outcome.ok) return { status: 502, body: { error: 'refund_failed', detail: outcome.error } };
+
+  await notifyOps('refund_completed', {
+    env,
+    orderId: order.id,
+    cancelAmount: outcome.cancelAmount,
+    remainingAmount: outcome.balanceAmount != null ? outcome.balanceAmount : refundable - cancelAmount,
+  });
 
   const updated = await getOrderFull(db, order.id);
   return {
@@ -2094,6 +2135,15 @@ async function handleAuthRoute(pathname, method, request, db, env) {
       .bind(memberId, 'signup', JSON.stringify({ verified: false }), now).run();
     await db.prepare('INSERT INTO member_events (member_id, type, meta, created_at) VALUES (?, ?, ?, ?)')
       .bind(memberId, 'consent', JSON.stringify({ terms: true, privacy: true, terms_version: termsVersion, privacy_version: privacyVersion }), now).run();
+    await notifyOps('signup', {
+      env,
+      memberId,
+      joinedAt: now,
+      company: company.value,
+      name: name.name,
+      email: email.email,
+      source: 'email',
+    });
     const member = await getMember(db, memberId);
     const issued = await issueToken(db, env, mail, member, 'verify_email', '/auth/verify', 'CGI 이메일 인증', '아래 링크에서 이메일 인증을 완료하세요.');
     const session = await issueSession(db, env, member);
@@ -2176,6 +2226,15 @@ async function handleAuthRoute(pathname, method, request, db, env) {
               terms: true, privacy: true, terms_version: termsVersion, privacy_version: privacyVersion, source: 'google',
             }), now),
         ]);
+        await notifyOps('signup', {
+          env,
+          memberId,
+          joinedAt: now,
+          company: member.company,
+          name: member.name,
+          email: profile.email,
+          source: 'google',
+        });
       }
     }
 
@@ -2630,6 +2689,16 @@ async function handleMeRoute(pathname, method, url, request, db, env) {
       JSON.stringify(fields.services), JSON.stringify(body.items), member.id, createdAt,
       intake.privacy_consent, intake.invoice_type, intake.biz_no, intake.agency_no
     ).run();
+    await notifyOps('quote_received', {
+      env,
+      quoteId: id,
+      company: fields.company,
+      name: fields.name,
+      phone: fields.phone,
+      email: fields.email,
+      services: fields.services,
+      items: body.items,
+    });
     return authJson({ id, created_at: createdAt, status: 'received', member_id: member.id }, 201);
   }
 
@@ -2906,6 +2975,16 @@ const worker = {
         JSON.stringify(fields.services), JSON.stringify(body.items), quoteMemberId, createdAt,
         intake.privacy_consent, intake.invoice_type, intake.biz_no, intake.agency_no
       ).run();
+      await notifyOps('quote_received', {
+        env,
+        quoteId: id,
+        company: fields.company,
+        name: fields.name,
+        phone: fields.phone,
+        email: fields.email,
+        services: fields.services,
+        items: body.items,
+      });
       return json({ id, created_at: createdAt, status: 'received', member_id: quoteMemberId }, 201);
     }
 
