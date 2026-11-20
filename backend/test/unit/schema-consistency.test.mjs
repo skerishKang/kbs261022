@@ -1,4 +1,4 @@
-// The repository keeps three schema sources in sync: migrations/0001..0012
+// The repository keeps three schema sources in sync: migrations/0001..0013
 // (production truth), schema.sql (fresh databases and the local D1 shim) and
 // lib/migrate.mjs (guarded upgrades). This test applies the migrations to a
 // brand-new SQLite database and compares the tables and columns with schema.sql,
@@ -44,8 +44,8 @@ function migratedDatabase(upto = '0011') {
   return db;
 }
 
-test('schema.sql matches a fresh database built from migrations 0001-0012', () => {
-  const fromMigrations = shape(migratedDatabase('0012'));
+test('schema.sql matches a fresh database built from migrations 0001-0013', () => {
+  const fromMigrations = shape(migratedDatabase('0013'));
   const schemaDb = new DatabaseSync(':memory:');
   applySql(schemaDb, join(BACKEND, 'schema.sql'));
   const schemaShape = shape(schemaDb);
