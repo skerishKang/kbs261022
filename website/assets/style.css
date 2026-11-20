@@ -173,7 +173,7 @@ button { font: inherit; cursor: pointer; }
   display: flex; gap: 14px; padding: 9px 0; border-bottom: 1px dashed var(--cgi-line); font-size: 14.5px;
 }
 .contact-list li:last-child { border-bottom: 0; }
-.contact-list .k { flex: none; width: 56px; color: var(--cgi-muted); font-weight: 700; }
+.contact-list .k { flex: none; width: 68px; color: var(--cgi-muted); font-weight: 700; white-space: nowrap; }
 .contact-list .v { color: #222; }
 .contact-list a { color: var(--cgi-green-dark); text-decoration: underline; display: inline-block; padding: 4px 0; }
 
@@ -434,11 +434,62 @@ ul.ref-cards { list-style: none; display: grid; grid-template-columns: repeat(2,
 .rec-year > summary::after { content: "＋"; margin-left: auto; color: var(--cgi-green); font-weight: 800; }
 .rec-year[open] > summary::after { content: "－"; }
 .rec-badge { font-size: 16px; font-weight: 800; color: var(--cgi-ink); min-width: 92px; }
-ul.rec-samples { list-style: none; margin: 0; padding: 2px 16px 16px 16px; border-top: 1px dashed var(--cgi-line); }
-ul.rec-samples li { font-size: 14px; color: #444; line-height: 1.7; padding: 7px 0 7px 14px; position: relative; }
-ul.rec-samples li::before {
-  content: ""; position: absolute; left: 0; top: 15px; width: 5px; height: 5px;
-  border-radius: 50%; background: var(--cgi-green);
+/* 발주처 / 내용 2열 표 (내용은 company.js records 그대로) */
+.rec-table-wrap { border-top: 1px dashed var(--cgi-line); padding: 4px 16px 14px; }
+.rec-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+.rec-col-client { width: 36%; }
+.rec-table thead th {
+  text-align: left; font-size: 12.5px; font-weight: 800; color: var(--cgi-muted); letter-spacing: .04em;
+  padding: 8px 10px; border-bottom: 2px solid var(--cgi-ink);
+}
+.rec-table tbody th, .rec-table tbody td {
+  text-align: left; vertical-align: top; padding: 9px 10px; border-bottom: 1px solid var(--cgi-line);
+  font-size: 14px; line-height: 1.6; overflow-wrap: anywhere; word-break: keep-all;
+}
+.rec-table tbody th { font-weight: 800; color: var(--cgi-ink); }
+.rec-table tbody td { color: #444; }
+.rec-table tbody tr:last-child th, .rec-table tbody tr:last-child td { border-bottom: 0; }
+
+/* 대표 사례 앞의 관공서·공공기관 묶음 (company.js records · maintenanceCases 에서 고름) */
+.public-refs { border-top: 3px solid var(--cgi-green); margin-bottom: 26px; }
+.public-refs-lead { margin: -4px 0 16px; font-size: 14px; color: var(--cgi-muted); }
+.pub-groups { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; align-items: start; }
+.pub-group-name { margin: 0 0 10px; font-size: 15px; font-weight: 800; color: var(--cgi-green-dark); padding-bottom: 6px; border-bottom: 1px solid var(--cgi-line); }
+ul.pub-cards { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.pub-card { border: 1px solid var(--cgi-line); border-radius: var(--cgi-radius); padding: 10px 12px; background: #fbfbfa; }
+.pub-head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+.pub-client { font-size: 15px; font-weight: 800; color: var(--cgi-ink); overflow-wrap: anywhere; }
+.pub-count { flex: none; font-size: 12px; font-weight: 700; color: var(--cgi-green-dark); }
+ul.pub-items { list-style: none; margin: 4px 0 0; padding: 0; }
+ul.pub-items li { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 2px 8px; font-size: 13.5px; line-height: 1.55; padding: 2px 0; color: #444; }
+.pub-year { font-weight: 700; color: var(--cgi-green-dark); white-space: nowrap; font-size: 12.5px; padding-top: 1px; }
+.pub-work { overflow-wrap: anywhere; }
+ul.pub-items li.pub-maint { grid-template-columns: minmax(0, 1fr); gap: 0; }
+.pub-maint .pub-year { white-space: normal; }
+.pub-more { margin-top: 8px; }
+.pub-more > summary { cursor: pointer; font-size: 13.5px; font-weight: 700; color: var(--cgi-green-dark); padding: 6px 0; }
+.pub-more ul.pub-cards { margin-top: 6px; }
+
+/* 공사·설치 상담 (폼 없이 전화·이메일) */
+.consult { border-top: 3px solid var(--cgi-green); margin-bottom: 22px; scroll-margin-top: 90px; }
+.consult-lead { margin: -2px 0 16px; font-size: 15px; color: #333; }
+.consult-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: 22px; align-items: start; }
+.consult-contact .k { width: 72px; }
+.consult-prep { background: var(--cgi-green-soft); border-radius: var(--cgi-radius); padding: 14px 16px; }
+.consult-prep h4 { margin: 0 0 8px; font-size: 15px; font-weight: 800; color: var(--cgi-green-dark); }
+.consult-prep ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.consult-prep li { display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 8px; font-size: 14px; line-height: 1.55; }
+.consult-prep li strong { color: var(--cgi-ink); }
+.consult-prep .note { margin-top: 10px; }
+.consult-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+.btn-outline { border-color: var(--cgi-green); color: var(--cgi-green-dark); background: #fff; }
+.btn-outline:hover { background: var(--cgi-green-soft); }
+.consult-actions .btn-mall { margin-left: auto; }
+.primary-nav .nav-consult a { color: #fff; }
+/* 메뉴에 '공사·설치 상담'이 더해져 901~1180px 에서 한 줄에 들어가도록 간격만 줄인다 */
+@media (min-width: 901px) and (max-width: 1180px) {
+  .primary-nav a { padding-left: 9px; padding-right: 9px; font-size: 13.5px; letter-spacing: .03em; }
+  .primary-nav .nav-cta a { margin-left: 6px; padding: 9px 12px; }
 }
 
 /* 유지보수 */
@@ -470,6 +521,7 @@ ul.cred-items li {
 @media (max-width: 1100px) {
   .biz-grid-full { grid-template-columns: repeat(2, 1fr); }
   ul.ref-cards { grid-template-columns: 1fr; }
+  .pub-groups { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 700px) {
@@ -477,6 +529,12 @@ ul.cred-items li {
   .maint-list li { grid-template-columns: 1fr; }
   .mt-period { justify-self: start; }
   .rec-badge { min-width: 0; }
+  .rec-table-wrap { padding: 2px 10px 10px; }
+  .rec-col-client { width: 38%; }
+  .rec-table tbody th, .rec-table tbody td { padding: 8px 6px; font-size: 13.5px; }
+  .consult-grid { grid-template-columns: 1fr; gap: 14px; }
+  .consult-actions .btn { flex: 1 1 100%; justify-content: center; text-align: center; }
+  .consult-actions .btn-mall { margin-left: 0; }
 
   /* 사업 분야는 2열 작은 카드로 홈 길이를 줄인다 (#209 C1) */
   .biz-grid-full { grid-template-columns: repeat(2, 1fr); gap: 10px; }

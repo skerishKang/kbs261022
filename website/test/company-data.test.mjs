@@ -200,3 +200,71 @@ test('통신판매업신고·이메일·개인정보보호책임자는 company.j
   assert.ok(companyAt > 0 && configAt > 0 && companyAt < configAt,
     'site/index.html 에서 company.js 가 config.js 보다 먼저 로드되어야 한다');
 });
+
+test('CONTACT shows the already-published company email and the consult hours', () => {
+  const start = home.indexOf('<h3>CONTACT');
+  const contact = home.slice(start, home.indexOf('</div>', start));
+  assert.ok(contact.includes(`href="mailto:${CO.legal.privacyOfficer.email}"`), 'CONTACT 에 회사 이메일');
+  assert.match(contact, /<span class="k">이메일<\/span>/);
+  assert.match(contact, /<span class="k">상담 시간<\/span><span class="v" data-consult-hours>/);
+  // 이메일은 company.js 에 있는 값 하나뿐이다(새 회사 정보를 만들지 않음)
+  const emails = new Set((home.match(/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/g) || []));
+  assert.equal([...emails].join(','), CO.legal.privacyOfficer.email);
+  const mainJs = read('website/assets/main.js');
+  assert.match(mainJs, /CO\.legal\.privacyOfficer\.email/, '스크립트도 company.js 값으로 채운다');
+});
+
+test('public-sector cases lead the references and only regroup existing company.js text', () => {
+  const sandbox = createContext({ window: { addEventListener() {}, matchMedia: () => ({ matches: false }) }, document: { readyState: 'loading', addEventListener() {} } });
+  runInContext(read('website/assets/config.js'), sandbox);
+  runInContext(read('website/assets/company.js'), sandbox);
+  runInContext(read('website/assets/main.js'), sandbox);
+  const H = sandbox.window.CGI_HOME;
+  const cases = Array.from(H.publicSectorCases(sandbox.window.CGI_COMPANY));
+  const groups = cases.map((c) => c.group);
+  assert.deepEqual([...new Set(groups)], ['gov', 'edu', 'pub'], '지자체·의회 → 교육청·교육기관 → 공공기관');
+  const clients = cases.map((c) => c.client);
+  for (const name of ['영암군청', '영광군청', '광주광역시 시의회', '광주광역시교육청', '한국농어촌공사']) {
+    assert.ok(clients.includes(name), name);
+  }
+  // 묶음마다 처음 5곳이 보인다: 사용자가 든 대표 발주처가 모두 첫 화면에 있다
+  const visible = (g) => cases.filter((c) => c.group === g).slice(0, 5).map((c) => c.client);
+  assert.ok(visible('gov').includes('영암군청') && visible('gov').includes('영광군청') && visible('gov').includes('광주광역시 시의회'));
+  assert.ok(visible('edu').some((n) => n.includes('교육청')));
+  assert.equal(visible('pub')[0], '한국농어촌공사', '실적이 가장 많은 공공기관이 먼저');
+  // 새 실적 없음: 모든 줄이 records 의 문장 또는 maintenanceCases 의 항목 그대로다
+  const samples = new Set(CO.records.flatMap((r) => r.samples));
+  const maint = new Map(CO.maintenanceCases.map((m) => [m.place, m]));
+  for (const c of cases) {
+    for (const it of c.items) {
+      if (it.kind === 'record') {
+        assert.ok(samples.has(it.source), it.source);
+        assert.ok(it.source.endsWith(' — ' + it.work), it.source);
+        assert.equal(it.source.slice(0, it.source.indexOf(' — ')).replace(/\s+/g, ''), c.client.replace(/\s+/g, ''), '같은 발주처끼리만 묶는다');
+      }
+      else assert.equal(maint.get(c.client).scope, it.work);
+    }
+  }
+  const panel = home.slice(home.indexOf('id="panelInstall"'), home.indexOf('id="refDisclosure"'));
+  assert.match(panel, /id="publicRefs"[\s\S]*id="publicRefGrid"/, '대표 사례(시공 사례) 앞에 놓인다');
+  assert.match(panel, /관공서·공공기관 · 교회/);
+});
+
+test('records render as a client / work table per year with the data text unchanged', () => {
+  const sandbox = createContext({ window: { addEventListener() {}, matchMedia: () => ({ matches: false }) }, document: { readyState: 'loading', addEventListener() {} } });
+  runInContext(read('website/assets/company.js'), sandbox);
+  runInContext(read('website/assets/main.js'), sandbox);
+  const { splitRecord } = sandbox.window.CGI_HOME;
+  for (const s of CO.records.flatMap((r) => r.samples)) {
+    const r = splitRecord(s);
+    assert.ok(r.client && r.work, `발주처/내용으로 나뉜다: ${s}`);
+    assert.equal(`${r.client} — ${r.work}`, s, '글자 그대로');
+  }
+  assert.equal(splitRecord('구분자 없음').client, '');
+  const mainJs = read('website/assets/main.js');
+  const fn = mainJs.slice(mainJs.indexOf('function renderRecords'), mainJs.indexOf('function renderMaintenance'));
+  assert.match(fn, /'rec-table'/);
+  assert.match(fn, /\['발주처', '내용'\]/);
+  assert.match(fn, /setAttribute\('scope', 'row'\)/);
+  assert.match(read('website/assets/style.css'), /\.rec-table \{[^}]*table-layout: fixed/);
+});

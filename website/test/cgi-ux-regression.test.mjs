@@ -34,10 +34,42 @@ test('business images use local company photos with visible SVG field-icon fallb
   assert.ok(existsSync(join(ROOT, 'website/assets/img/biz_led.jpg')));
 });
 
-test('hero and bottom quote buttons link to the catalog quote list', () => {
-  assert.ok((html.match(/data-quote-link/g) || []).length >= 2);
-  assert.match(js, /function applyQuoteLinks\(\)[\s\S]*#\/quote-cart/);
-  assert.match(js, /applyMallLinks\(\);\s*applyQuoteLinks\(\);/);
+test('hero and bottom consult buttons open the in-page construction consult area, not the empty shop quote list', () => {
+  const consultLinks = html.match(/<a [^>]*data-consult-link[^>]*>/g) || [];
+  assert.ok(consultLinks.length >= 3, 'hero, CTA band and CONTACT note');
+  for (const link of consultLinks) assert.match(link, /href="#consult"/, link);
+  assert.match(html, /<a class="btn btn-primary" href="#consult" data-consult-link>공사·설치 상담 문의<\/a>/, 'hero');
+  assert.match(html, /<li class="nav-consult"><a href="#consult">공사·설치 상담<\/a><\/li>/, 'top menu');
+  assert.doesNotMatch(html, /quote-cart|data-quote-link/, 'no button sends visitors to the shop quote list');
+  assert.doesNotMatch(js, /quote-cart|applyQuoteLinks/);
+  assert.match(js, /applyMallLinks\(\);\s*applyConsult\(\);/);
+  assert.match(js, /'consult'\]/, 'scroll spy highlights the consult menu');
+});
+
+test('the consult area lists phone, email, hours and what to tell us, with a separate shop button and no form', () => {
+  const start = html.indexOf('<div class="panel consult" id="consult">');
+  assert.ok(start > html.indexOf('id="support"'), 'inside SUPPORT');
+  const block = html.slice(start, html.indexOf('<div class="grid-2 support-grid">'));
+  assert.match(block, /href="tel:0625768100"/);
+  assert.match(block, /href="tel:0618018100"/);
+  assert.match(block, /href="mailto:cgiinc@naver\.com" data-company-email/);
+  assert.match(block, /data-consult-hours>평일 09:00~18:00</);
+  for (const word of ['장소', '규모', '일정', '예산']) assert.match(block, new RegExp('<strong>' + word + '</strong>'), word);
+  assert.match(block, /<a class="btn btn-outline btn-mall" href="\.\.\/site\/index\.html" data-mall-link>장비 구매/);
+  assert.doesNotMatch(block, /<form|<input|<textarea|feedback/i, 'no consult form, and not mixed with the feedback page');
+  assert.match(css, /\.consult \{[^}]*scroll-margin-top/);
+});
+
+test('consult hours come from config.js (one place) and the page default matches it', () => {
+  const sandbox = createContext({ window: {} });
+  runInContext(read('website/assets/config.js'), sandbox);
+  const hours = sandbox.window.CGI_CONFIG.consultHours;
+  assert.equal(hours, '평일 09:00~18:00');
+  const shown = html.match(/data-consult-hours>([^<]*)</g) || [];
+  assert.equal(shown.length, 2, 'consult area and CONTACT');
+  for (const s of shown) assert.ok(s.endsWith('>' + hours + '<'), s);
+  assert.match(js, /CFG\.consultHours/);
+  assert.match(js, /\[data-consult-hours\]/);
 });
 
 test('history, org chart, and references collapse with JavaScript and keep no-script content', () => {
@@ -72,9 +104,10 @@ test('homepage actions use real URLs so they work without JavaScript', () => {
   for (const link of mallLinks) {
     assert.match(link, /href="\.\.\/site\/index\.html"/, link);
   }
-  const quoteLinks = html.match(/<a [^>]*data-quote-link[^>]*>/g) || [];
-  assert.ok(quoteLinks.length > 0, 'quote links exist');
-  for (const link of quoteLinks) {
-    assert.match(link, /href="\.\.\/site\/index\.html#\/quote-cart"/, link);
+  const consultLinks = html.match(/<a [^>]*data-consult-link[^>]*>/g) || [];
+  assert.ok(consultLinks.length > 0, 'consult links exist');
+  for (const link of consultLinks) {
+    assert.match(link, /href="#consult"/, link);
   }
+  assert.ok(html.includes('id="consult"'), 'the consult anchor exists');
 });
