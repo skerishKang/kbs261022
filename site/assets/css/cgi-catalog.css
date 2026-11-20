@@ -455,6 +455,10 @@ p:last-child { margin-bottom: 0; }
 .qty-input { width: 58px; border: 0; border-left: 1px solid var(--cgi-line); border-right: 1px solid var(--cgi-line); text-align: center; font-size: 14px; font-weight: 700; color: var(--cgi-ink); }
 .qty-input:focus { outline: 2px solid var(--cgi-primary); outline-offset: -2px; }
 .detail-cta-note { font-size: 12px; color: var(--cgi-muted); margin: 0 0 20px; }
+/* 가격 공개 상품: '바로 구매'가 한 줄 전체 주 버튼, 견적 버튼 둘은 그 아래 보조 줄 */
+.detail-cta [data-action="buy-now"] { flex: 1 1 100%; }
+.detail-cta-secondary { display: flex; flex-wrap: wrap; gap: 8px; flex: 1 1 100%; min-width: 0; }
+.detail-cta-secondary .btn { flex: 1 1 0; min-width: 0; white-space: normal; }
 
 .spec-table {
   width: 100%; border-collapse: collapse;
@@ -1381,3 +1385,8 @@ p:last-child { margin-bottom: 0; }
   .footer-seller dl { grid-template-columns: minmax(0, 1fr); gap: 9px; }
   .footer-seller dl > div { grid-template-columns: 124px minmax(0, 1fr); gap: 8px; }
 }
+
+/* 중복 주문 안내: 문장 + 기존 주문 버튼 (줄바꿈 허용, 가로 넘침 없음) */
+.duplicate-order-notice p { margin: 0 0 8px; overflow-wrap: anywhere; }
+.duplicate-order-notice p:last-child { margin-bottom: 0; }
+.duplicate-order-notice .btn { white-space: normal; max-width: 100%; }

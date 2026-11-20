@@ -985,10 +985,20 @@
                 '<button type="button" class="qty-btn" data-action="qty-step" data-detail-qty-step="1" aria-label="수량 늘리기">＋</button>' +
               '</div>' +
             '</div>' +
-            '<button type="button" class="btn btn-primary btn-lg" data-action="quote-now" data-product-id="' + esc(product.id) + '">견적 요청하기</button>' +
-            '<button type="button" class="btn btn-secondary btn-lg" data-action="add-to-cart" data-product-id="' + esc(product.id) + '">견적 목록에 추가</button>' +
+            // 가격이 공개된 상품은 구매가 주 흐름이다: '바로 구매'(담고 주문서로)를 주 버튼으로,
+            // 견적 요청은 보조로 둔다. 가격 문의 상품은 기존 견적 흐름 그대로.
+            (price.inquiry
+              ? '<button type="button" class="btn btn-primary btn-lg" data-action="quote-now" data-product-id="' + esc(product.id) + '">견적 요청하기</button>' +
+                '<button type="button" class="btn btn-secondary btn-lg" data-action="add-to-cart" data-product-id="' + esc(product.id) + '">견적 목록에 추가</button>'
+              : '<button type="button" class="btn btn-primary btn-lg" data-action="buy-now" data-product-id="' + esc(product.id) + '">바로 구매</button>' +
+                '<div class="detail-cta-secondary">' +
+                  '<button type="button" class="btn btn-secondary" data-action="quote-now" data-product-id="' + esc(product.id) + '">견적 요청하기</button>' +
+                  '<button type="button" class="btn btn-secondary" data-action="add-to-cart" data-product-id="' + esc(product.id) + '">견적 목록에 추가</button>' +
+                '</div>') +
           '</div>' +
-          '<p class="detail-cta-note">견적 요청 시 선택한 서비스가 함께 접수됩니다. 최종 금액은 담당자 확인 후 안내합니다.</p>' +
+          '<p class="detail-cta-note">' + (price.inquiry
+            ? '견적 요청 시 선택한 서비스가 함께 접수됩니다. 최종 금액은 담당자 확인 후 안내합니다.'
+            : '바로 구매는 상품을 담고 주문서로 이동합니다. 설치·출장 등 추가 서비스가 필요하면 견적 요청하기를 이용하세요.') + '</p>' +
 
           (specRows.length ? '<table class="spec-table"><tbody>' + specRows.map(function (s) {
             return '<tr><th>' + esc(s.label) + '</th><td>' + esc(s.value) + '</td></tr>';
@@ -1004,7 +1014,9 @@
       '</div>' +
       '<div class="mobile-cta">' +
         '<div class="mobile-cta-price"><small>가격</small><strong>' + esc(price.text) + '</strong></div>' +
-        '<button type="button" class="btn btn-primary" data-action="quote-now" data-product-id="' + esc(product.id) + '">견적 요청</button>' +
+        (price.inquiry
+          ? '<button type="button" class="btn btn-primary" data-action="quote-now" data-product-id="' + esc(product.id) + '">견적 요청</button>'
+          : '<button type="button" class="btn btn-primary" data-action="buy-now" data-product-id="' + esc(product.id) + '">바로 구매</button>') +
       '</div>';
 
     bindServiceInputs('detail');
@@ -1751,6 +1763,24 @@
       }
       if (action === 'add-to-cart' && productId) {
         addToQuoteCart(productId, readDetailQty());
+        return;
+      }
+      if (action === 'buy-now' && productId) {
+        // 담고 바로 주문서로. 장바구니에 가격 문의 상품이 섞여 있으면 결제할 수 없으므로
+        // 견적 목록으로 보내 무엇이 걸리는지 보여 준다.
+        addToQuoteCart(productId, readDetailQty(), true);
+        var buyItems = state.quoteCart.map(function (c) { return { cart: c, product: findProduct(c.id) }; })
+          .filter(function (x) { return x.product; });
+        if (allPublicPrice(buyItems)) {
+          navigate('#/checkout');
+        } else {
+          // 화면 전환(render)이 토스트를 지우므로 전환이 끝난 뒤 안내한다.
+          window.addEventListener('hashchange', function onBuyRedirect() {
+            window.removeEventListener('hashchange', onBuyRedirect);
+            showToast('견적 목록에 가격 문의 상품이 있어 결제 대신 견적 요청으로 접수됩니다.');
+          });
+          navigate('#/quote-cart');
+        }
         return;
       }
       if (action === 'quote-now' && productId) {

@@ -1324,3 +1324,43 @@ test('password reset token is single-use and previous tokens are revoked', async
   assert.equal(confirm2.status, 200);
   assert.equal(confirm2.json.ok, true);
 });
+
+// 회원이 주문서 이메일을 비워도 결제창이 열려야 한다: 사이트가 세션 쿠키·CSRF 를
+// 실은 요청으로 보내면 워커가 소유 회원으로 인정한다. 비회원은 이메일 팩터가 없으면
+// 기존처럼 거절된다.
+test('a member order with no email opens the payment window through the member session', async () => {
+  const environment = env({ PG_PROVIDER: 'nicepay', SITE_PG_PROVIDER: 'nicepay' });
+  const { cookie } = await verifiedSession(environment);
+  const created = await call(environment, 'POST', '/api/me/orders', {
+    ...ORDER_CONSENT,
+    items: [{ product_id: priced[0], qty: 1 }],
+    company: '[E2E] 회사', name: '[E2E] 김회원', phone: '010-1111-2222', email: '',
+    idempotency_key: 'e2e-member-noemail-window',
+  }, { ...csrf, Cookie: cookie });
+  assert.equal(created.status, 201, created.text);
+
+  const anonymous = await call(environment, 'POST', '/api/payments/nicepay/window', { orderId: created.json.id, email: '' }, csrf);
+  assert.equal(anonymous.status, 403, 'without the session the order number alone is not enough');
+
+  const withSession = await call(environment, 'POST', '/api/payments/nicepay/window', { orderId: created.json.id, email: '' }, { ...csrf, Cookie: cookie });
+  assert.equal(withSession.status, 200, withSession.text);
+  assert.equal(withSession.json.request.orderId, created.json.id);
+
+  const lookup = await call(environment, 'GET', `/api/orders/${encodeURIComponent(created.json.id)}`, undefined, { ...csrf, Cookie: cookie });
+  assert.equal(lookup.status, 200);
+  assert.ok(lookup.json.customer, 'the approval lookup sees the full order with the member session');
+});
+
+test('a guest order with no email is still refused the payment window', async () => {
+  const environment = env({ PG_PROVIDER: 'nicepay', SITE_PG_PROVIDER: 'nicepay' });
+  const created = await call(environment, 'POST', '/api/orders', {
+    ...ORDER_CONSENT,
+    items: [{ product_id: priced[1] || priced[0], qty: 1 }],
+    company: '[E2E] 회사', name: '[E2E] 비회원', phone: '010-3333-4444', email: '',
+    idempotency_key: 'e2e-guest-noemail-window',
+  }, csrf);
+  assert.equal(created.status, 201, created.text);
+  const res = await call(environment, 'POST', '/api/payments/nicepay/window', { orderId: created.json.id, email: '' }, csrf);
+  assert.equal(res.status, 403);
+  assert.equal(res.json.error, 'email factor required');
+});
