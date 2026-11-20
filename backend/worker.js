@@ -118,6 +118,7 @@ import { purgeExpiredShopLogs, purgeExpiredQuotePii } from './lib/retention.mjs'
 import { createMailAdapter } from './lib/mail.mjs';
 import { notifyOps } from './lib/notify.mjs';
 import {
+  FEEDBACK_KIND_LABELS,
   validateFeedbackInput,
   validateFeedbackPatch,
   validateNewsInput,
@@ -3109,6 +3110,18 @@ const worker = {
         ai_member: aiMemberFor(personas, member && member.email, fields.contact_email),
       };
       await insertFeedback(env.DB, record);
+      // 운영 알림(#227). 알림이 실패해도 접수는 이미 저장됐으므로 결과와 상관없이 201.
+      // 연락처 이메일은 알림에 싣지 않는다(운영센터에서만 본다).
+      try {
+        await notifyOps('inquiry_received', {
+          env,
+          receiptId: record.id,
+          kind: FEEDBACK_KIND_LABELS[record.kind] || record.kind,
+          body: record.body,
+        });
+      } catch (e) {
+        console.error('[notify] inquiry_received failed', record.id, String((e && e.message) || e).slice(0, 200));
+      }
       return json({ id: record.id, created_at: createdAt, status: 'received', member_linked: !!member }, 201);
     }
 
