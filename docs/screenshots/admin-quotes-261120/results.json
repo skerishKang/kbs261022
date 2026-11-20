@@ -1,0 +1,121 @@
+{
+ "seeded": [
+  {
+   "id": 1,
+   "no": "Q-261120-001",
+   "total": 3630000,
+   "status": "sent"
+  },
+  {
+   "id": 2,
+   "no": "Q-261120-002",
+   "total": 2361000,
+   "status": "won"
+  },
+  {
+   "id": 3,
+   "no": "Q-261120-003",
+   "total": 7860000,
+   "status": "draft"
+  }
+ ],
+ "results": [
+  {
+   "overflowX": 0,
+   "over": [],
+   "consoleErrors": [],
+   "httpErrors": [],
+   "scene": "list",
+   "width": 390,
+   "shot": "list-390.png",
+   "rows": 3
+  },
+  {
+   "overflowX": 0,
+   "over": [],
+   "consoleErrors": [],
+   "httpErrors": [],
+   "scene": "editor",
+   "width": 390,
+   "shot": "editor-390.png",
+   "total": "12,800,000원",
+   "korean": "금 일천이백팔십만원정 (부가세 포함)",
+   "lines": 3,
+   "results": 12,
+   "saved": {
+    "msg": "견적번호 Q-261120-004로 저장했어요. 합계 12,800,000원",
+    "hash": "#/q/4",
+    "total": "12,800,000원"
+   }
+  },
+  {
+   "overflowX": 0,
+   "over": [],
+   "consoleErrors": [],
+   "httpErrors": [],
+   "scene": "print",
+   "width": 390,
+   "shot": "print-390.png",
+   "no": "Q-261120-003",
+   "total": "7,860,000",
+   "korean": "금 칠백팔십육만원정",
+   "provisional": false,
+   "terms": [
+    "납기",
+    "결제 조건"
+   ],
+   "ecount": true,
+   "dataView": "quote-print",
+   "serverTotal": 7860000
+  },
+  {
+   "overflowX": 0,
+   "over": [],
+   "consoleErrors": [],
+   "httpErrors": [],
+   "scene": "list",
+   "width": 1440,
+   "shot": "list-1440.png",
+   "rows": 4
+  },
+  {
+   "overflowX": 0,
+   "over": [],
+   "consoleErrors": [],
+   "httpErrors": [],
+   "scene": "editor",
+   "width": 1440,
+   "shot": "editor-1440.png",
+   "total": "12,800,000원",
+   "korean": "금 일천이백팔십만원정 (부가세 포함)",
+   "lines": 3,
+   "results": 12,
+   "saved": {
+    "msg": "견적번호 Q-261120-005로 저장했어요. 합계 12,800,000원",
+    "hash": "#/q/5",
+    "total": "12,800,000원"
+   }
+  },
+  {
+   "overflowX": 0,
+   "over": [],
+   "consoleErrors": [],
+   "httpErrors": [],
+   "scene": "print",
+   "width": 1440,
+   "shot": "print-1440.png",
+   "no": "Q-261120-003",
+   "total": "7,860,000",
+   "korean": "금 칠백팔십육만원정",
+   "provisional": false,
+   "terms": [
+    "납기",
+    "결제 조건"
+   ],
+   "ecount": true,
+   "dataView": "quote-print",
+   "serverTotal": 7860000,
+   "pdf": "print-A4.pdf"
+  }
+ ]
+}

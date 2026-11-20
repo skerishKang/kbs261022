@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>견적서 | CGI</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" href="../website/assets/img/cgi-mark-green.png">
+<link rel="stylesheet" href="assets/css/cgi-catalog.css?v=90a">
+<link rel="stylesheet" href="assets/css/cgi-staff-orders.css?v=75a">
+<link rel="stylesheet" href="assets/css/cgi-feedback.css?v=2a">
+<link rel="stylesheet" href="assets/css/cgi-admin-quotes.css?v=1a">
+</head>
+<body>
+
+<a class="skip-link" href="#app">본문으로 건너뛰기</a>
+
+<header class="site-header" id="siteHeader">
+  <div class="header-inner">
+    <a class="brand" href="index.html" aria-label="CGI 상품 카탈로그">
+      <img src="../website/assets/img/cgi-mark-white.png" alt="CGI (주)시지아이" width="132" height="42">
+      <span class="brand-divider" aria-hidden="true"></span>
+      <span class="brand-text">
+        <strong>견적서</strong>
+        <small>STAFF ONLY</small>
+      </span>
+    </a>
+    <button class="nav-toggle" type="button" data-action="toggle-nav" aria-expanded="false" aria-controls="siteNav">
+      <span class="bars" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span class="sr-only">메뉴 열기</span>
+    </button>
+    <nav class="header-nav" id="siteNav" aria-label="주요 메뉴">
+      <a href="index.html">상품 카탈로그</a>
+      <a href="staff.html">견적 관리</a>
+      <a href="orders.html">주문 관리</a>
+      <a href="quotes.html" class="is-active" aria-current="page">견적서</a>
+      <a href="ops.html">운영센터</a>
+      <a href="../website/index.html">회사 홈페이지</a>
+    </nav>
+  </div>
+</header>
+
+<main id="app" class="app staff-app ops-app aq-app">
+  <header class="page-head no-print">
+    <p class="page-eyebrow">QUOTES</p>
+    <h1>견적서</h1>
+    <p class="page-sub">관리자가 직접 만드는 정식 견적서입니다. 받는 곳·품목을 넣고 저장하면 견적번호가 발급되고, 바로 인쇄·PDF로 저장할 수 있어요.</p>
+  </header>
+
+  <section id="aqAuth" class="auth-box no-print" hidden>
+    <form id="aqLoginForm">
+      <label>이메일 <input type="email" name="email" autocomplete="username" required></label>
+      <label>비밀번호 <input type="password" name="password" autocomplete="current-password" required></label>
+      <button type="submit" class="btn">로그인</button>
+    </form>
+    <p class="form-note">관리자·총관리자 계정만 들어올 수 있어요. 비밀번호가 없는 총관리자 계정은 <a href="orders.html">주문 관리</a>에서 Google로 로그인한 뒤 이 화면으로 돌아오세요.</p>
+    <div id="aqAuthMsg"></div>
+  </section>
+
+  <section id="aqApp" hidden>
+    <div id="aqView" aria-live="polite"></div>
+  </section>
+</main>
+
+<footer class="site-footer no-print">
+  <div class="footer-bottom">
+    <p>© 주식회사 시지아이. All rights reserved.</p>
+  </div>
+</footer>
+
+<script src="../website/assets/company.js?v=104a"></script>
+<script src="config.js?v=103a"></script>
+<script src="assets/js/cgi-header.js?v=2a"></script>
+<script src="assets/js/cgi-auth.js?v=80a"></script>
+<script src="assets/js/cgi-search.js?v=1a"></script>
+<script src="assets/js/cgi-quote-print.js?v=2a"></script>
+<script src="assets/js/cgi-admin-quotes-view.js?v=1a"></script>
+<script src="assets/js/cgi-admin-quotes.js?v=1a"></script>
+</body>
+</html>

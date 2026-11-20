@@ -64,6 +64,12 @@
 //   GET    /api/admin/customer-views  (admin)   열어 본 기록
 //   GET    /api/admin/journals        (admin)   사용 일지 (member)
 //   PATCH  /api/admin/journals/:id    (admin)   internal note only
+//   GET    /api/admin/quotes          (admin)   관리자 견적서 목록 (q, status)
+//   POST   /api/admin/quotes          (admin)   새 견적서 — 번호 Q-YYMMDD-NNN 서버 발급, 금액 서버 계산
+//   GET    /api/admin/quotes/recipients (admin) 최근에 쓴 받는 곳
+//   GET    /api/admin/quotes/:id      (admin)   견적서 + 줄
+//   PATCH  /api/admin/quotes/:id      (admin)   내용 전체 바꾸기, 또는 {status} 만
+//   POST   /api/admin/quotes/:id/duplicate (admin) 복제해서 새 견적(작성 중)
 //
 // Required secrets: ADMIN_TOKEN
 // Optional secrets: TOSS_WIDGET_SECRET_KEY, TOSS_API_SECRET_KEY,
@@ -198,6 +204,16 @@ import {
   purgeExpiredCustomerViews,
   adminLabelFor,
 } from './lib/ops-center.mjs';
+import {
+  validateQuoteBody,
+  createQuote,
+  updateQuote,
+  setQuoteStatus,
+  getQuote,
+  listQuotes,
+  recentRecipients,
+  duplicateBody,
+} from './lib/admin-quotes.mjs';
 import { createOAuthState, decodeOAuthState, normalizeOAuthReturn, resolveOAuthRedirect, buildAuthorizationUrl, exchangeCode, fetchUserInfo, OAUTH_STATE_COOKIE, oauthStateCookieOptions } from './lib/google-oauth.mjs';
 
 const DEFAULT_ALLOWED_ORIGIN = 'https://cgishop.pages.dev';
@@ -290,6 +306,68 @@ async function isSuperAdmin(request, db, env) {
   if (!member || member.status !== 'active' || !member.email_verified_at) return false;
   const email = String(member.email || '').trim().toLowerCase();
   return SUPERADMIN_EMAILS.has(email) || member.role === 'superadmin';
+}
+
+/** 관리자 견적서 API. 관리자(토큰 또는 관리자 회원 세션)만. 경로가 아니면 null. */
+async function handleAdminQuotes(url, request, env) {
+  const path = url.pathname;
+  const method = request.method;
+  const idMatch = path.match(/^\/api\/admin\/quotes\/(\d+)(\/duplicate)?$/);
+  const known = path === '/api/admin/quotes' || path === '/api/admin/quotes/recipients' || idMatch;
+  if (!known) return null;
+  if (!(await isAdminOrMember(request, env.DB, env))) return unauthorized();
+  const actorOf = async () => {
+    const member = isAdmin(request, env) ? null : await requireMember(request, env.DB, env);
+    return { id: member ? member.id : null, label: adminLabelFor(member) };
+  };
+
+  if (path === '/api/admin/quotes' && method === 'GET') {
+    const items = await listQuotes(env.DB, {
+      q: url.searchParams.get('q') || '',
+      status: url.searchParams.get('status') || '',
+      limit: url.searchParams.get('limit') || 200,
+    });
+    return json({ quotes: items });
+  }
+  if (path === '/api/admin/quotes' && method === 'POST') {
+    const parsed = await readJson(request);
+    if (parsed.error) return badRequest(parsed.error);
+    const checked = validateQuoteBody(parsed.body, { priceIndex: PRICE_INDEX });
+    if (!checked.ok) return badRequest(checked.error, checked.detail);
+    const quote = await createQuote(env.DB, checked, { actor: await actorOf() });
+    return json({ quote }, 201);
+  }
+  if (path === '/api/admin/quotes/recipients' && method === 'GET') {
+    return json({ recipients: await recentRecipients(env.DB, { limit: url.searchParams.get('limit') || 20 }) });
+  }
+  if (idMatch && !idMatch[2] && method === 'GET') {
+    const quote = await getQuote(env.DB, Number(idMatch[1]));
+    return quote ? json({ quote }) : notFound();
+  }
+  if (idMatch && !idMatch[2] && method === 'PATCH') {
+    const parsed = await readJson(request);
+    if (parsed.error) return badRequest(parsed.error);
+    const body = parsed.body || {};
+    const id = Number(idMatch[1]);
+    if (Object.keys(body).length === 1 && Object.prototype.hasOwnProperty.call(body, 'status')) {
+      const quote = await setQuoteStatus(env.DB, id, String(body.status));
+      if (quote) return json({ quote });
+      return (await getQuote(env.DB, id)) ? badRequest('status_invalid', '상태 값이 올바르지 않습니다.') : notFound();
+    }
+    const checked = validateQuoteBody(body, { priceIndex: PRICE_INDEX });
+    if (!checked.ok) return badRequest(checked.error, checked.detail);
+    const quote = await updateQuote(env.DB, id, checked);
+    return quote ? json({ quote }) : notFound();
+  }
+  if (idMatch && idMatch[2] && method === 'POST') {
+    const source = await getQuote(env.DB, Number(idMatch[1]));
+    if (!source) return notFound();
+    const checked = validateQuoteBody(duplicateBody(source), { priceIndex: PRICE_INDEX });
+    if (!checked.ok) return badRequest(checked.error, checked.detail);
+    const quote = await createQuote(env.DB, checked, { actor: await actorOf(), sourceQuoteId: source.id });
+    return json({ quote }, 201);
+  }
+  return json({ error: 'method not allowed' }, 405);
 }
 
 async function isAdminOrMember(request, db, env) {
@@ -3530,6 +3608,13 @@ const worker = {
       if (!patch.ok) return badRequest(patch.error, patch.detail);
       const updated = await updateFeedback(env.DB, id, patch.fields, nowIso());
       return json({ ok: true, feedback: feedbackAdminView(updated, await listFollowups(env.DB, id)) });
+    }
+
+    // ---------------- 관리자 정식 견적서 (admin_quotes, migration 0015) ----------------
+
+    if (url.pathname === '/api/admin/quotes' || url.pathname.startsWith('/api/admin/quotes/')) {
+      const handled = await handleAdminQuotes(url, request, env);
+      if (handled) return handled;
     }
 
     // ---------------- ops center: 한눈에 · 고객 · 사용 일지 (러브트리 운영센터 탭과 같은 구성) ----------------
