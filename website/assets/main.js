@@ -474,7 +474,6 @@
       var det = el('details', 'rec-year');
       var sum = el('summary');
       sum.appendChild(el('span', 'rec-badge', row.year));
-      sum.appendChild(el('span', 'rec-count', '실적 ' + row.count + '건'));
       det.appendChild(sum);
       var ul = el('ul', 'rec-samples');
       row.samples.forEach(function (s) { ul.appendChild(el('li', null, s)); });
