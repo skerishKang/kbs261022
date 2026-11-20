@@ -187,6 +187,8 @@
   function featuredCompare(a, b) {
     var d = featuredFixedRank(a) - featuredFixedRank(b);
     if (d) return d;
+    // 고정 추천끼리는 featured.json 순서 그대로(그룹을 번갈아 둔 순서 — 같은 브랜드가 연달아 나오지 않게)
+    if (!featuredFixedRank(a)) return state.featuredIds.indexOf(a.id) - state.featuredIds.indexOf(b.id);
     d = featuredRank(a) - featuredRank(b);
     if (d) return d;
     // 같은 브랜드가 연달아 나오지 않게: 브랜드 안 가격 높은 순 순번 (#213 D1)
@@ -207,8 +209,13 @@
       if (!b) return;
       (byBrand[b] = byBrand[b] || []).push(p);
     });
+    var pinned = state.featuredIds || [];
     Object.keys(byBrand).forEach(function (b) {
       byBrand[b].sort(function (x, y) {
+        // 고정 추천은 그 브랜드의 앞 순번을 차지한다 — 같은 브랜드의 다른 상품이 추천순 앞쪽에 더 끼지 않게
+        var fx = pinned.indexOf(x.id), fy = pinned.indexOf(y.id);
+        if ((fx !== -1) !== (fy !== -1)) return fx !== -1 ? -1 : 1;
+        if (fx !== -1 && fy !== -1) return fx - fy;
         var px = x.price && x.price.state === 'public' ? Number(x.price.value) : -1;
         var py = y.price && y.price.state === 'public' ? Number(y.price.value) : -1;
         if (px !== py) return py - px;
@@ -218,16 +225,26 @@
     });
     state.brandCounts = countBy(state.products, function (p) { return p._brand; });
   }
-  /* featured.json 은 선택 파일이다 — 없어도 목록은 정상 동작한다. */
+  /* featured.json·search_synonyms.json 은 선택 파일이다 — 없어도 목록은 정상 동작한다. */
   function loadFeaturedSet() {
     var url = new URL('data/featured.json', location.href).toString();
-    return fetch(url, { cache: 'no-cache' }).then(function (res) {
+    var featured = fetch(url, { cache: 'no-cache' }).then(function (res) {
       return res.ok ? res.json() : [];
     }).then(function (rows) {
-      state.featuredIds = Array.isArray(rows) ? rows : [];
+      state.featuredIds = Array.isArray(rows) ? rows.filter(function (id) { return typeof id === 'string' && id; }) : [];
+      if (state.featuredIds.length && state.products.length) computeSortAux();
     }).catch(function () {
       state.featuredIds = [];
     });
+    var synUrl = new URL('data/search_synonyms.json', location.href).toString();
+    var synonyms = fetch(synUrl, { cache: 'no-cache' }).then(function (res) {
+      return res.ok ? res.json() : {};
+    }).then(function (table) {
+      state.searchSynonyms = table && typeof table === 'object' ? table : {};
+    }).catch(function () {
+      state.searchSynonyms = {};
+    });
+    return Promise.all([featured, synonyms]);
   }
   function showToast(message, action) {
     var box = document.getElementById('cgiToast');
@@ -465,6 +482,116 @@
   }
 
   /* --------------------------------------------------------------- filter */
+  /* 검색어가 있을 때 왼쪽 필터 숫자는 "현재 검색 결과" 기준이다.
+     브랜드 숫자는 검색어 + 고른 카테고리, 카테고리 숫자는 검색어 + 고른 브랜드로 센다
+     (같은 줄의 선택끼리는 서로를 줄이지 않는다). 0건 항목은 숨기고, 이미 고른 것만 흐리게 남긴다.
+     검색어가 없으면 지금처럼 전체 기준. */
+  function facetCounts(r) {
+    if (!r.q) {
+      return {
+        scoped: false,
+        brand: countBy(state.products, function (p) { return p._brand; }),
+        cat: countBy(state.products, function (p) { return p._cat; }),
+      };
+    }
+    var q = norm(r.q);
+    var brandSet = {}, catSet = {}, siteSet = {};
+    r.brands.forEach(function (b) { brandSet[b] = true; });
+    r.cats.forEach(function (c) { catSet[c] = true; });
+    r.sites.forEach(function (x) { siteSet[x] = true; });
+    var base = state.products.filter(function (p) {
+      if (p._search.indexOf(q) === -1) return false;
+      if (r.sites.length && !siteSet[p.source.site]) return false;
+      return true;
+    });
+    var brand = countBy(base.filter(function (p) { return !r.cats.length || catSet[p._cat]; }), function (p) { return p._brand; });
+    var cat = countBy(base.filter(function (p) { return !r.brands.length || brandSet[p._brand]; }), function (p) { return p._cat; });
+    // 이미 고른 항목은 0건이어도 보여서 해제할 수 있게 한다.
+    r.brands.forEach(function (b) { if (!brand[b]) brand[b] = 0; });
+    r.cats.forEach(function (c) { if (!cat[c]) cat[c] = 0; });
+    return { scoped: true, brand: brand, cat: cat };
+  }
+
+  /* 0건 검색의 추천 검색어 (site/data/search_synonyms.json).
+     ① 용도어(강당·학교…)를 뺀 검색어와 그 낱말 ② 동의어 표의 추천어 — 실제 결과가 있는 것만, 최대 5개. */
+  function countQuery(text) {
+    var q = norm(text);
+    if (!q) return 0;
+    var n = 0;
+    for (var i = 0; i < state.products.length; i++) if (state.products[i]._search.indexOf(q) !== -1) n++;
+    return n;
+  }
+  function suggestQueries(raw) {
+    var table = state.searchSynonyms || {};
+    var usage = table.usageWords || [];
+    var synonyms = table.synonyms || [];
+    var text = String(raw || '').trim();
+    var key = norm(text);
+    var cands = [];
+    // ① 용도어 빼기: 낱말 단위와 붙여 쓴 경우(강당스피커) 모두
+    var tokens = text.split(/\s+/).filter(Boolean);
+    var core = tokens.filter(function (t) { return usage.indexOf(t) === -1; });
+    var stripped = core.join(' ');
+    usage.slice().sort(function (a, b) { return b.length - a.length; }).forEach(function (u) {
+      if (u.length >= 2) stripped = stripped.split(u).join(' ');
+    });
+    stripped = stripped.replace(/\s+/g, ' ').trim();
+    if (stripped) cands.push(stripped);
+    // ② 동의어 표
+    synonyms.forEach(function (row) {
+      var hit = (row.terms || []).some(function (t) { return t && key.indexOf(norm(t)) !== -1; });
+      if (hit) (row.suggest || []).forEach(function (sug) { cands.push(sug); });
+    });
+    // ③ 남은 낱말 하나씩(두 글자 이상)
+    stripped.split(' ').forEach(function (t) { if (t.length >= 2) cands.push(t); });
+    var seen = {};
+    seen[key] = true;
+    var out = [];
+    cands.forEach(function (c) {
+      var k = norm(c);
+      if (!k || seen[k] || out.length >= 5) return;
+      seen[k] = true;
+      var count = countQuery(c);
+      if (count > 0) out.push({ q: c, count: count });
+    });
+    return out;
+  }
+
+  function emptySearchHtml(r) {
+    var suggestions = suggestQueries(r.q);
+    // 관련 대분류: 추천 검색어 결과에서 많이 나온 대분류 3개(없으면 우선순위 앞쪽 4개)
+    var catCount = {};
+    suggestions.forEach(function (sug) {
+      var q = norm(sug.q);
+      state.products.forEach(function (p) { if (p._search.indexOf(q) !== -1) catCount[p._cat] = (catCount[p._cat] || 0) + 1; });
+    });
+    var cats = Object.keys(catCount).sort(function (a, b) { return catCount[b] - catCount[a] || catOrder(a) - catOrder(b); }).slice(0, 3);
+    if (!cats.length) cats = CATEGORY_ORDER.slice(0, 4);
+    var tel = companyTels()[0];
+    var filtered = r.brands.length || r.cats.length || r.sites.length;
+    return '<div class="empty-state empty-search">' +
+      '<div class="empty-icon" aria-hidden="true">?</div>' +
+      '<h3>“' + esc(r.q) + '” 검색 결과가 없습니다</h3>' +
+      '<p>다른 검색어를 써 보세요. 띄어쓰기를 바꾸거나 용도(강당·학교 등) 대신 장비 이름으로 찾으면 잘 나옵니다.</p>' +
+      (suggestions.length
+        ? '<div class="empty-suggest"><span class="empty-suggest-label">추천 검색어</span>' +
+            suggestions.map(function (sug) {
+              return '<a class="chip" data-suggest-query href="' + esc(listUrl({ q: sug.q, brands: [], cats: [], sites: [] })) + '">' + esc(sug.q) +
+                '<span class="cnt">' + sug.count.toLocaleString('ko-KR') + '</span></a>';
+            }).join('') +
+          '</div>'
+        : '') +
+      '<div class="empty-suggest"><span class="empty-suggest-label">관련 카테고리</span>' +
+        cats.map(function (c) { return '<a class="chip" data-suggest-cat href="' + esc(listUrl({ q: '', brands: [], cats: [c], sites: [] })) + '">' + esc(c) + '</a>'; }).join('') +
+      '</div>' +
+      '<p class="empty-call">찾는 장비가 없으면 전화로 상담해 드립니다. <a href="tel:' + esc(tel.dial) + '"><strong>' + esc(tel.num) + '</strong></a></p>' +
+      '<div class="empty-actions">' +
+        (filtered ? '<button class="btn btn-secondary" data-action="reset-filters">필터 초기화</button>' : '') +
+        '<a class="btn btn-secondary" href="#/products">전체 상품</a>' +
+      '</div>' +
+    '</div>';
+  }
+
   function filteredProducts() {
     var r = state.route;
     var q = norm(r.q);
@@ -544,6 +671,12 @@
   window.cgiDebug.CATEGORY_ORDER = CATEGORY_ORDER;
   window.cgiDebug.orderedCategoryValues = orderedCategoryValues;
   window.cgiDebug.applyCatalog = applyCatalog;
+  window.cgiDebug.facetCounts = facetCounts;
+  window.cgiDebug.suggestQueries = suggestQueries;
+  window.cgiDebug.emptySearchHtml = emptySearchHtml;
+  window.cgiDebug.featuredFromFile = featuredFromFile;
+  window.cgiDebug.filteredProducts = filteredProducts;
+  window.cgiDebug.setState = function (key, value) { state[key] = value; };
 
   function cardHtml(product, priority) {
     var price = fmtPrice(product);
@@ -649,7 +782,8 @@
         var id = 'f-' + name + '-' + (rowIdx++);
         var checked = selected.indexOf(value) !== -1 ? ' checked' : '';
         var labelText = title === '브랜드' ? brandLabel(value) : value;
-        return '<label for="' + id + '">' +
+        var zero = !counts[value];
+        return '<label for="' + id + '"' + (zero ? ' class="is-zero"' : '') + '>' +
           '<input type="checkbox" id="' + id + '" data-facet="' + name + '" value="' + esc(value) + '"' + checked + '>' +
           '<span>' + esc(labelText) + '</span>' +
           '<span class="cnt">' + Number(counts[value] || 0).toLocaleString('ko-KR') + '</span>' +
@@ -688,6 +822,27 @@
             '<div class="chip-row">' + rest.map(function (v) { return chipHtml(kind === 'brand' ? brandLabel(v) : v, counts[v], kind, kind === 'brand' ? v : undefined); }).join('') + '</div></details>'
         : '') +
     '</section>';
+  }
+
+  /* 첫 화면 추천: site/data/featured.json 의 id 를 그 순서대로(tools/build_featured.mjs 가
+     학교·교회·관공서 설치 대표 품목으로 만든다). 파일이 비면 기존 규칙(pickFeatured).
+     목록에 없는 id 는 건너뛰고, 모자라면 기존 규칙으로 채운다. */
+  function featuredFromFile(limit) {
+    var ids = state.featuredIds || [];
+    if (!ids.length) return pickFeatured(limit);
+    var byId = {};
+    state.products.forEach(function (p) { byId[p.id] = p; });
+    var chosen = [], used = {};
+    ids.forEach(function (id) {
+      var p = byId[id];
+      if (p && !used[id] && chosen.length < limit) { chosen.push(p); used[id] = true; }
+    });
+    if (chosen.length < limit) {
+      pickFeatured(limit * 2).forEach(function (p) {
+        if (chosen.length < limit && !used[p.id]) { chosen.push(p); used[p.id] = true; }
+      });
+    }
+    return chosen;
   }
 
   var FEATURED_MIN_PRICE = 50000; // 홈 추천은 일정 가격 이상 대표 상품에서만 (#209 A5)
@@ -764,7 +919,7 @@
     // — 홈페이지 브랜드 목록 수와 같게 맞춘다.
     var brandStat = brands.filter(function (b) { return b !== '기타'; }).length;
     var priced = state.products.filter(function (p) { return p.price && p.price.state === 'public'; }).length;
-    var featured = pickFeatured(8);
+    var featured = featuredFromFile(8);
     var quickCategories = cats.slice(0, 4).map(function (v) { return chipHtml(v, catCounts[v], 'cat'); }).join('');
     var quickBrands = brands.slice(0, 4).map(function (v) { return chipHtml(brandLabel(v), brandCounts[v], 'brand', v); }).join('');
 
@@ -781,6 +936,7 @@
 
       '<section class="section">' +
         '<div class="section-head"><h2>추천 상품</h2><a class="more" href="#/products">전체 상품 보기 →</a></div>' +
+        ((state.featuredIds || []).length ? '<p class="section-sub">학교·교회·관공서 설치에 많이 찾는 무선마이크·스피커·믹서</p>' : '') +
         gridHtml(featured, true) +
       '</section>' +
 
@@ -802,8 +958,9 @@
   function renderList() {
     var r = state.route;
     var list = filteredProducts();
-    var brandCounts = countBy(state.products, function (p) { return p._brand; });
-    var catCounts = countBy(state.products, function (p) { return p._cat; });
+    var facets = facetCounts(r);
+    var brandCounts = facets.brand;
+    var catCounts = facets.cat;
     var siteCounts = countBy(state.products, function (p) { return p.source.site; });
     var brandValues = orderedFacetValues(brandCounts, r.brands);
     var catValues = orderedCategoryValues(catCounts, r.cats);
@@ -830,6 +987,7 @@
         '<aside>' +
           '<button class="filter-toggle" data-action="toggle-filters" aria-expanded="false" aria-controls="filterPanel">필터 열기</button>' +
           '<div class="filter-panel" id="filterPanel">' +
+            (facets.scoped ? '<p class="facet-scope">“' + esc(r.q) + '” 검색 결과 기준</p>' : '') +
             facetBlock('브랜드', 'brand', brandValues, brandCounts, r.brands) +
             facetBlock('카테고리', 'cat', catValues, catCounts, r.cats, catGroupFn) +
             '<button class="filter-reset" data-action="reset-filters">필터 초기화</button>' +
@@ -850,7 +1008,7 @@
             return '<span class="active-filter">' + esc(chip.label) +
               '<button data-remove="' + chip.kind + '" data-value="' + esc(chip.value) + '" aria-label="' + esc(chip.label) + ' 제거">×</button></span>';
           }).join('') + '</div>' : '') +
-          gridHtml(pageItems) +
+          (list.length === 0 && r.q ? emptySearchHtml(r) : gridHtml(pageItems)) +
           paginationHtml(r.page, pages) +
         '</div>' +
       '</div>';

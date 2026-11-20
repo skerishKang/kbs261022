@@ -67,7 +67,7 @@ const settle = () => new Promise((r) => setTimeout(r, 10));
 
 /* --------------------------------- D1 --------------------------------- */
 
-test('D1: featured.json은 상품 id 배열이고 지금은 비어 있다', () => {
+test('D1: featured.json은 상품 id 배열이다(tools/build_featured.mjs 가 만든다)', () => {
   assert.ok(Array.isArray(featured));
 });
 
