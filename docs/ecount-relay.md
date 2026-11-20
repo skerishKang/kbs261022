@@ -29,6 +29,7 @@ POST /api/erp/outbox/:id/result  <-- X-ERP-Relay-Token
 - 잠금 후 15분이 지나면 결과 없이 다시 대기로 돌아간다.
 - 매핑되지 않은 상품이 한 줄이라도 있으면 그 주문은 보내지 않고 `product_mapping_missing` + 상품 id 목록으로 보류한다. 매핑을 추가하면 다음 조회에서 자동으로 다시 나온다.
 - `ECOUNT_ORDER_SYNC_ENABLED`가 `NO`이면 대기 기록도 만들지 않는다.
+- 중계 본문에는 상품 줄만 담는다. 배송비 줄(`ECOUNT_SHIPPING_ITEM_CODE`)은 직접 전송 모드의 기능이며 중계 모드에서는 넣지 않으므로 시험 주문의 `shipping_fee`는 0으로 둔다.
 - 이카운트 OAPI로는 수정·삭제가 불가능하다. 테스트 서버 저장도 실제 장부에 들어가므로 신중히 보낸다.
 
 ## 환경 파일 항목 (값은 적지 않는다)
