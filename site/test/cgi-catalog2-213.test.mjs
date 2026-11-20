@@ -182,7 +182,7 @@ test('D4: 쇼핑몰 통계와 홈페이지 브랜드 수가 같다(기타 제외
   const staticMissing = CFG.brands.filter((s) => !realBrands.has(s.toUpperCase()));
   assert.equal(realBrands.size, brandsJson.brands.length - 1, 'brands.json은 기타 1개를 더 가진다');
   assert.equal(staticMissing.length, 0, '정적 브랜드 목록에 마스터에 없는 이름이 있다: ' + staticMissing.join(', '));
-  assert.equal(realBrands.size, 55, '쇼핑몰·홈페이지 공통 브랜드 수 (#216 G1 로 57 → 55)');
+  assert.equal(realBrands.size, 56, '쇼핑몰·홈페이지 공통 브랜드 수 (#216 G1 로 57 → 55, NNNN 복원으로 56)');
 });
 
 test('D4: 원본 products.json 은 불변이고 별칭 원래 값이 남아 있다', () => {
