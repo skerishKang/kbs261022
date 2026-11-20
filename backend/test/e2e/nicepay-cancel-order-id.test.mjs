@@ -18,7 +18,7 @@ function env() {
   });
 }
 
-function operatingGateway({ failFirstCancel = false } = {}) {
+function operatingGateway({ failFirstCancel = false, rejectAmountOnFullCancel = false } = {}) {
   const amounts = new Map();
   const balances = new Map();
   const used = new Set();
@@ -39,6 +39,9 @@ function operatingGateway({ failFirstCancel = false } = {}) {
       const tid = decodeURIComponent(pathname.split('/').slice(-2)[0]);
       const paid = amounts.get(tid) || 0;
       const before = balances.get(tid) ?? paid;
+      if (rejectAmountOnFullCancel && before === paid && Object.prototype.hasOwnProperty.call(body, 'cancelAmt') && Number(body.cancelAmt) >= before) {
+        return reply({ resultCode: '2033', resultMsg: '부분취소 불가능금액. 전체취소 이용바람.' });
+      }
       const amount = Number(body.cancelAmt) || before;
       const balance = Math.max(0, before - amount);
       balances.set(tid, balance);
@@ -143,4 +146,40 @@ test('a failed cancel and its retry reuse the stored cancel orderId', async () =
   const events = await e.DB.prepare("SELECT meta FROM order_events WHERE order_id = ? AND type = 'payment_cancelled'").bind(order.id).all();
   const meta = JSON.parse(events.results[0].meta);
   assert.equal(meta.cancel_order_id, gw.cancels[1].orderId);
+});
+
+test('a first full cancel omits cancelAmt so NICE does not answer 2033', async () => {
+  const e = env();
+  const gw = operatingGateway({ rejectAmountOnFullCancel: true });
+  const tid = 'NICE-FULL-AMOUNT';
+  const order = await paidOrder(e, gw, tid);
+  const res = await cancel(e, gw, order, tid, { reason: '전체취소' });
+  assert.equal(res.status, 200, res.text);
+  assert.equal(res.json.cancel_amount, order.amount);
+  assert.equal(gw.cancels.length, 1);
+  assert.equal(Object.prototype.hasOwnProperty.call(gw.cancels[0], 'cancelAmt'), false);
+  const row = await e.DB.prepare('SELECT status, cancel_amount FROM payments WHERE payment_key = ?').bind(tid).first();
+  assert.equal(row.status, 'cancelled');
+  assert.equal(row.cancel_amount, order.amount);
+  const events = await e.DB.prepare("SELECT meta FROM order_events WHERE order_id = ? AND type = 'payment_cancelled'").bind(order.id).all();
+  const meta = JSON.parse(events.results[0].meta);
+  assert.equal(meta.cancel_amount, order.amount);
+});
+
+test('a partial cancel and the remaining cancel still send cancelAmt', async () => {
+  const e = env();
+  const gw = operatingGateway({ rejectAmountOnFullCancel: true });
+  const tid = 'NICE-PART-AMOUNT';
+  const order = await paidOrder(e, gw, tid);
+  const part = Math.floor(order.amount / 2);
+  const first = await cancel(e, gw, order, tid, { cancelAmount: part, reason: '일부 반품' });
+  assert.equal(first.status, 200, first.text);
+  const rest = await cancel(e, gw, order, tid, { reason: '나머지 취소' });
+  assert.equal(rest.status, 200, rest.text);
+  assert.equal(gw.cancels.length, 2);
+  assert.equal(gw.cancels[0].cancelAmt, part);
+  assert.equal(gw.cancels[1].cancelAmt, order.amount - part);
+  const row = await e.DB.prepare('SELECT status, balance_amount FROM payments WHERE payment_key = ?').bind(tid).first();
+  assert.equal(row.status, 'cancelled');
+  assert.equal(row.balance_amount, 0);
 });
