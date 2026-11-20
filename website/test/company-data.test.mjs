@@ -28,7 +28,11 @@ test('company.js exposes the 2025 profile as the single source', () => {
   assert.ok(CO, 'window.CGI_COMPANY 가 있어야 한다');
   assert.equal(CO.meta.asOf, '2025');
   assert.match(CO.meta.source, /지명원/);
-  assert.ok(CO.meta.caveat, '기준연도 주의 문구가 있어야 한다');
+  // 2026-11-20: 기준연도 주의 같은 내부 메모는 데이터 값이 아니라 주석으로만 둔다(화면에 새지 않게).
+  assert.equal(CO.meta.caveat, undefined, '내부 메모가 데이터 값으로 남아 있다');
+  assert.equal(CO.credentials.note, undefined, '제증명 내부 메모가 데이터 값으로 남아 있다');
+  const companySrc = read('website/assets/company.js');
+  assert.match(companySrc, /\/\* 내부 메모\(화면에 내지 않음\):/, '내부 메모는 주석으로 남긴다');
 });
 
 test('identity facts match the 2025 profile', () => {
@@ -38,8 +42,10 @@ test('identity facts match the 2025 profile', () => {
   assert.ok(home.includes('김범신, 백정아'), '홈페이지 표기가 company.js 와 일치해야 한다');
   assert.equal(CO.identity.founded, '2011년 1월');
   assert.equal(CO.identity.bizRegNo, '410-86-46283');
-  assert.equal(CO.identity.employees, '6명');
-  assert.equal(CO.identity.employeesAsOf, '2025년 지명원 기준');
+  // 2026-11-20: 직원 수는 회사 개요에서 뺀다(데이터·화면 모두).
+  assert.equal(CO.identity.employees, undefined, '직원 수 값이 남아 있다');
+  assert.equal(CO.identity.employeesAsOf, undefined);
+  assert.ok(!home.includes('직원 수'), '회사 개요에 직원 수 줄이 남아 있다');
 });
 
 test('headquarters is the Jangseong address, not the former Gwangju one', () => {
@@ -70,7 +76,6 @@ test('the launch copy carries no provenance labels for the profile year', () => 
   // 출시 본문 계약(2026-11-04): 화면 문구에서 출처·면책 표기(지명원·발간·
   // 문서 발간 당시 값)를 모두 뺀다. 데이터 필드(meta.source 등)는 화면에
   // 렌더링되지 않으므로 company.js 는 그대로 둔다.
-  assert.ok(home.includes('6명'), '직원 수가 없다');
   assert.doesNotMatch(home, /지명원/);
   assert.doesNotMatch(home, /발간/);
   assert.doesNotMatch(home, /문서 발간 당시 값/);
@@ -101,9 +106,19 @@ test('history spans 2011 through 2025 and drops the old placeholder text', () =>
 test('records and maintenance reference years are stated', () => {
   assert.ok(CO.records.length >= 5);
   assert.equal(CO.records[0].year, '2025');
+  // 2026-11-20: 연도별 건수는 게시하지 않고 대표 사례 목록만 보인다.
   for (const row of CO.records) {
-    assert.ok(row.count > 0, `${row.year} 건수가 없다`);
+    assert.equal(row.count, undefined, `${row.year} 건수 값이 남아 있다`);
     assert.ok(row.samples.length > 0, `${row.year} 사례가 없다`);
+  }
+  const mainJs = read('website/assets/main.js');
+  assert.ok(!/row\.count/.test(mainJs.slice(mainJs.indexOf('function renderRecords'), mainJs.indexOf('function renderMaintenance'))), '실적 건수를 그리는 코드가 남아 있다');
+  assert.ok(!mainJs.includes("'rec-count'"), '실적 건수 표시가 남아 있다');
+  // 개인 실명 농가는 지역·곳 수로만 적는다. 사람 이름을 나열한 '…·…·… 농가' 꼴이 없어야 한다.
+  const farm = CO.records.flatMap((r) => r.samples).filter((s) => s.includes('스마트팜 설치'));
+  assert.ok(farm.includes('전남 지역 농가 6곳 — 스마트팜 설치'));
+  for (const s of CO.records.flatMap((r) => r.samples)) {
+    assert.doesNotMatch(s, /[가-힣]{2,4}(?:·[가-힣]{2,4}){1,} 농가/, `개인 실명 나열이 남아 있다: ${s}`);
   }
   assert.ok(CO.maintenanceCases.some((m) => m.period.includes('진행중')));
   assert.ok(home.includes('id="recordList"'));
@@ -126,6 +141,16 @@ test('certificate originals and personal data are never published', () => {
     assert.ok(!t.includes('010-9226-4351'), `${rel} 에 지명원의 개인 휴대전화 번호가 있다`);
     assert.ok(!t.includes('박준석'), `${rel} 에 지명원의 개인 성명이 있다`);
   }
+});
+
+test('입찰정보는 상단 메뉴에서 빠지고 푸터의 "입찰정보 서비스" 링크 하나만 남는다', () => {
+  const nav = home.match(/<nav class="primary-nav"[\s\S]*?<\/nav>/)[0];
+  assert.ok(!/입찰/.test(nav), '상단 메뉴에 입찰정보가 남아 있다');
+  const foot = home.match(/<footer[\s\S]*?<\/footer>/)[0];
+  const bidLinks = [...home.matchAll(/<a [^>]*href="[^"]*\/bid\/[^"]*"[^>]*>([^<]*)<\/a>/g)];
+  assert.equal(bidLinks.length, 1, '입찰정보 링크는 하나만');
+  assert.equal(bidLinks[0][1], '입찰정보 서비스');
+  assert.ok(foot.includes(bidLinks[0][0]), '그 하나는 푸터에 있다');
 });
 
 test('location offers map links built from the road-name address', () => {

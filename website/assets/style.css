@@ -434,7 +434,6 @@ ul.ref-cards { list-style: none; display: grid; grid-template-columns: repeat(2,
 .rec-year > summary::after { content: "＋"; margin-left: auto; color: var(--cgi-green); font-weight: 800; }
 .rec-year[open] > summary::after { content: "－"; }
 .rec-badge { font-size: 16px; font-weight: 800; color: var(--cgi-ink); min-width: 92px; }
-.rec-count { font-size: 13px; color: var(--cgi-muted); }
 ul.rec-samples { list-style: none; margin: 0; padding: 2px 16px 16px 16px; border-top: 1px dashed var(--cgi-line); }
 ul.rec-samples li { font-size: 14px; color: #444; line-height: 1.7; padding: 7px 0 7px 14px; position: relative; }
 ul.rec-samples li::before {
