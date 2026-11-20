@@ -123,7 +123,7 @@ test('an accepted feedback notifies ops once without the contact email', async (
   assert.equal(tg.length, 2, 'one telegram message per ops chat');
   assert.match(tg[0].body.text, /고객 의견/);
   assert.ok(tg[0].body.text.includes(res.json.id), 'the receipt number is in the alert');
-  assert.match(tg[0].body.text, /불편·오류/, 'the kind is shown in Korean');
+  assert.match(tg[0].body.text, /오류/, 'the kind is shown in Korean');
   const mails = mailCalls(capture.calls);
   assert.equal(mails.length, 2, 'one mail per ops recipient, nothing to the customer');
   assert.match(mails[0].body.subject, new RegExp(`고객 의견 ${res.json.id}`));
@@ -138,7 +138,7 @@ test('feedback is still accepted when the alert channels fail', async () => {
   const e = notifyEnv();
   let res;
   await withFetch(async () => { throw new Error('network down'); }, async () => {
-    res = await sendFeedback(e, { kind: 'idea', body: '설치 사례 사진이 있으면 좋겠습니다.' });
+    res = await sendFeedback(e, { kind: 'feature', body: '설치 사례 사진이 있으면 좋겠습니다.' });
   });
   assert.equal(res.status, 201, res.text);
   const row = await e.DB.prepare('SELECT id, status FROM feedback WHERE id = ?').bind(res.json.id).first();

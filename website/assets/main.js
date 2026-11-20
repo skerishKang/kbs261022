@@ -532,6 +532,16 @@
     });
   }
 
+  /* 의견 보내기(쇼핑몰 의견 폼) — 누르는 순간 지금 보던 홈페이지 주소를 출처(page_url)로 넘긴다. */
+  function initFeedbackLinks() {
+    $$('a[data-feedback-link]').forEach(function (a) {
+      var base = String(a.getAttribute('href') || '').split('?')[0];
+      a.addEventListener('click', function () {
+        a.setAttribute('href', base + '?from=' + encodeURIComponent(window.location.href));
+      });
+    });
+  }
+
   /* ------------------------------------------------------ 시작 */
   function boot() {
     applyMallLinks();
@@ -544,6 +554,7 @@
     initRefTabs();
     initBrandFilter();
     initBrandMore();
+    initFeedbackLinks();
   }
 
   if (document.readyState === 'loading') {

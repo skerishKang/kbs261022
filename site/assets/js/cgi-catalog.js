@@ -2115,6 +2115,10 @@
       var adminLinks = document.querySelectorAll('[data-auth-admin]');
       var isAdmin = !!(u && (u.role === 'admin' || u.role === 'superadmin' || u.is_admin));
       for (var a = 0; a < adminLinks.length; a++) adminLinks[a].hidden = !isAdmin;
+      // 공개 화면 머리글: 이 계정 활동이 AI 명예회원의 것임을 표시한다.
+      var aiBadges = document.querySelectorAll('[data-auth-ai-badge]');
+      var isAiMember = !!(u && (u.is_ai_member || u.role === 'ai_member'));
+      for (var ab = 0; ab < aiBadges.length; ab++) aiBadges[ab].hidden = !isAiMember;
       var badgeEl = document.querySelector('[data-auth-verified-badge]');
       if (badgeEl && u) {
         var verified = u.email_verified;
@@ -2603,8 +2607,11 @@
       return;
     }
     var tab = (state.route.tab || 'profile');
-    var allowed = ['profile', 'addresses', 'orders', 'quotes', 'feedback'].indexOf(tab) === -1 ? 'profile' : tab;
     var user = p.me();
+    // AI 명예회원(운영센터 고객 탭에서 관리자가 지정)에게만 '사용 일지' 탭을 보인다.
+    var isAiMember = !!(user && (user.is_ai_member || user.role === 'ai_member'));
+    var allowedTabs = ['profile', 'addresses', 'orders', 'quotes', 'feedback'].concat(isAiMember ? ['journal'] : []);
+    var allowed = allowedTabs.indexOf(tab) === -1 ? 'profile' : tab;
     var tabs = [
       ['profile', '회원 정보'],
       ['addresses', '배송지'],
@@ -2612,9 +2619,10 @@
       ['quotes', '내 견적'],
       ['feedback', '내 의견']
     ];
+    if (isAiMember) tabs.push(['journal', '사용 일지']);
     var html = '<section class="mypage">' +
       '<header class="mypage-head">' +
-        '<div><h2>마이페이지</h2><p class="auth-muted">' + esc(user.email) +
+        '<div><h2>마이페이지' + (isAiMember ? ' <span class="ai-member-badge">AI 명예회원</span>' : '') + '</h2><p class="auth-muted">' + esc(user.email) +
           (user.email_verified ? ' · 이메일 인증됨' : ' · <span class="auth-warn">이메일 미인증</span>') + '</p></div>' +
         '<nav class="mypage-tabs">' +
           tabs.map(function (t) {
@@ -2630,6 +2638,7 @@
     else if (allowed === 'addresses') renderMyAddresses(body);
     else if (allowed === 'quotes') renderMyQuotes(body);
     else if (allowed === 'feedback') renderMyFeedback(body);
+    else if (allowed === 'journal') renderMyJournal(body);
     else renderMyOrders(body);
   }
 
@@ -2810,6 +2819,15 @@
   }
 
   // 내 의견(운영센터) — 화면은 cgi-feedback.js 가 그린다(GET /api/me/feedback).
+  // 사용 일지(AI 명예회원) — 화면은 cgi-feedback.js 가 그린다(GET·POST /api/me/journal).
+  function renderMyJournal(body) {
+    if (window.CGI_FEEDBACK && window.CGI_FEEDBACK.renderJournal) {
+      window.CGI_FEEDBACK.renderJournal(body);
+      return;
+    }
+    body.innerHTML = authAlert('사용 일지 화면을 불러오지 못했습니다. 새로고침해 주세요.', 'error');
+  }
+
   function renderMyFeedback(body) {
     if (window.CGI_FEEDBACK && window.CGI_FEEDBACK.renderMine) {
       window.CGI_FEEDBACK.renderMine(body);

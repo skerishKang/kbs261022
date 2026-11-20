@@ -43,8 +43,8 @@ async function submit(environment, body) {
 }
 
 test('reply patch is validated by the same function the Worker uses', () => {
-  assert.deepEqual(buildReplyPatch({ status: 'answered', reply: '고쳤어요', issue: '12' }), {
-    status: 'answered', admin_reply: '고쳤어요', issue_ref: '12',
+  assert.deepEqual(buildReplyPatch({ status: 'fixed', reply: '고쳤어요', issue: '12' }), {
+    status: 'fixed', admin_reply: '고쳤어요', issue_ref: '12',
   });
   assert.throws(() => buildReplyPatch({ status: 'done' }), /invalid status/);
   assert.throws(() => buildReplyPatch({}), /nothing to update/);
@@ -67,13 +67,13 @@ test('CLI list / reply / show go through the Worker API with the admin token', a
   assert.ok(!io.out.join('\n').includes(ADMIN_TOKEN), '토큰은 출력에 남지 않는다');
 
   io = capture();
-  const code = await run(['reply', fb.id, '--status', 'answered', '--reply', '수정 배포했습니다', '--note', '원인: 캐시', '--issue', '240'], { fetchImpl, env: cliEnv, ...io });
+  const code = await run(['reply', fb.id, '--status', 'fixed', '--reply', '수정 배포했습니다', '--note', '원인: 캐시', '--issue', '240'], { fetchImpl, env: cliEnv, ...io });
   assert.equal(code, 0, io.err.join('\n'));
   const last = calls[calls.length - 1];
   assert.equal(last.init.method, 'PATCH');
   assert.equal(last.init.headers.Authorization, `Bearer ${ADMIN_TOKEN}`);
   const updated = JSON.parse(io.out.join('\n')).feedback;
-  assert.equal(updated.status, 'answered');
+  assert.equal(updated.status, 'fixed');
   assert.equal(updated.admin_reply, '수정 배포했습니다');
   assert.equal(updated.admin_note, '원인: 캐시');
   assert.equal(updated.issue_ref, '#240');

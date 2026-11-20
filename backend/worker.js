@@ -41,7 +41,10 @@
 //   POST   /api/me/orders/:id/refund/request  request a refund
 //   GET    /api/me/quotes             my quote requests
 //   GET    /api/me/quotes/:id         my quote detail
-//   GET    /api/me/feedback           my feedback (status + staff reply)
+//   GET    /api/me/feedback           my feedback (status + staff reply + my followups)
+//   POST   /api/me/feedback/:id/followup          add a followup (reopens fixed/closed → reviewing)
+//   PATCH|DELETE /api/me/feedback/:id/followup/:fid  edit / hide my followup
+//   GET|POST /api/me/journal          AI 명예회원 사용 일지 (one per Seoul date, same day appends)
 //
 // Ops center (feedback inbox + news):
 //   POST   /api/feedback              (public)  send feedback; member linked when signed in
@@ -52,6 +55,13 @@
 //   GET    /api/admin/news            (admin)   drafts + published
 //   POST   /api/admin/news            (admin)   create (optionally published)
 //   PATCH  /api/admin/news/:id        (admin)   edit / publish / unpublish
+//   GET    /api/admin/ops/stats       (admin)   한눈에: accounts real/ai_member/tester, 7-day new, new feedback
+//   GET    /api/admin/customers       (admin)   고객 목록 (kind, q)
+//   GET    /api/admin/customers/:id   (admin)   고객 자세히 — logs the view (kept 90 days)
+//   PATCH  /api/admin/customers/:id/role (admin) member | ai_member
+//   GET    /api/admin/customer-views  (admin)   열어 본 기록
+//   GET    /api/admin/journals        (admin)   사용 일지 (member)
+//   PATCH  /api/admin/journals/:id    (admin)   internal note only
 //
 // Required secrets: ADMIN_TOKEN
 // Optional secrets: TOSS_WIDGET_SECRET_KEY, TOSS_API_SECRET_KEY,
@@ -61,6 +71,7 @@
 //                     AUTH_RATE_LIMIT_MAX, AUTH_RATE_LIMIT_WINDOW_SECONDS,
 //                     EMAIL_VERIFY_REQUIRED, MAIL_MODE, MAIL_BASE_URL
 // Optional ops var:   AI_MEMBER_PERSONAS ("email:이름,email2:이름2" — AI 명예회원 페르소나)
+//                     TEST_ACCOUNT_EMAILS ("a@x,b@y" — 운영센터 숫자에서 시험 계정으로 셀 주소)
 
 import { computeTotals, cartHash, nextOrderId, toNonNegInt, isValidPgOrderId } from './lib/pricing.mjs';
 import {
@@ -140,7 +151,41 @@ import {
   listNews,
   newsPublicView,
   newsAdminView,
+  validateFollowupBody,
+  validateJournalInput,
+  appendJournalBody,
+  seoulDate,
+  journalView,
+  journalAdminView,
+  insertFollowup,
+  getFollowup,
+  listFollowups,
+  listFollowupsFor,
+  updateFollowupBody,
+  hideFollowup,
+  reopenIfClosed,
+  getJournalByDate,
+  getJournal,
+  insertJournal,
+  appendJournal,
+  listMemberJournals,
+  listJournals,
+  setJournalNote,
+  FEEDBACK_NOTE_MAX,
+  publicFollowup,
 } from './lib/feedback.mjs';
+import {
+  ROLE_AI_MEMBER,
+  ASSIGNABLE_ROLES,
+  computeStats,
+  listCustomers,
+  getCustomer,
+  customerActivity,
+  logCustomerView,
+  listCustomerViews,
+  purgeExpiredCustomerViews,
+  adminLabelFor,
+} from './lib/ops-center.mjs';
 import { createOAuthState, decodeOAuthState, normalizeOAuthReturn, resolveOAuthRedirect, buildAuthorizationUrl, exchangeCode, fetchUserInfo, OAUTH_STATE_COOKIE, oauthStateCookieOptions } from './lib/google-oauth.mjs';
 
 const DEFAULT_ALLOWED_ORIGIN = 'https://cgishop.pages.dev';
@@ -1589,7 +1634,7 @@ function authPolicy(env) {
   if (Number.isFinite(maxAddresses) && maxAddresses > 0) policy.maxAddressesPerMember = maxAddresses;
   // Buckets that must keep their own max/window and are not overridden by the
   // global AUTH_RATE_LIMIT_MAX / AUTH_RATE_LIMIT_WINDOW_SECONDS.
-  const protectedBuckets = new Set(['resend-verify-cooldown', 'login-ip', 'signup-ip', 'password-reset-ip', 'quote-intake-ip', 'email-check-ip', 'feedback-ip', 'feedback-dup']);
+  const protectedBuckets = new Set(['resend-verify-cooldown', 'login-ip', 'signup-ip', 'password-reset-ip', 'quote-intake-ip', 'email-check-ip', 'feedback-ip', 'feedback-dup', 'followup-member', 'journal-member']);
   for (const name of Object.keys(policy.rateLimit)) {
     if (protectedBuckets.has(name)) {
       if (name === 'resend-verify-cooldown' && Number.isFinite(cooldownSec) && cooldownSec >= 0) {
@@ -1671,6 +1716,8 @@ function memberView(member) {
     email_verified_at: member.email_verified_at,
     role,
     is_admin: role === 'admin' || role === 'superadmin',
+    // AI 명예회원(운영센터 고객 탭에서 관리자가 지정). 공개 화면 표시용.
+    is_ai_member: role === 'ai_member',
     status: member.status,
     created_at: member.created_at,
     updated_at: member.updated_at,
@@ -2845,7 +2892,87 @@ async function handleMeRoute(pathname, method, url, request, db, env) {
 
   if (pathname === '/api/me/feedback' && method === 'GET') {
     const rows = await listMemberFeedback(db, member.id);
-    return authJson({ items: rows.map(feedbackMemberView) });
+    const followups = await listFollowupsFor(db, rows.map((r) => r.id));
+    return authJson({ items: rows.map((r) => feedbackMemberView(r, followups.get(String(r.id)) || [], member.id)) });
+  }
+
+  // 고객 덧붙이기(러브트리 append·updateFollowup·deleteFollowup). 본인 의견이 아니면 없는 것과 같이 404.
+  const followupMatch = pathname.match(/^\/api\/me\/feedback\/([^/]+)\/followup(?:\/(\d+))?$/);
+  if (followupMatch) {
+    const feedback = await getFeedback(db, decodeURIComponent(followupMatch[1]));
+    if (!feedback || String(feedback.member_id) !== String(member.id)) {
+      return authJson({ error: 'feedback not found', detail: '글을 찾을 수 없어요.' }, 404);
+    }
+    const now = nowIso();
+    if (!followupMatch[2] && method === 'POST') {
+      const checked = validateFollowupBody(body.body);
+      if (!checked.ok) return authJson({ error: checked.error, detail: checked.detail }, 400);
+      const limit = await rateLimitCheck(db, policy, 'followup-member', String(member.id));
+      if (limit.error) return authJson({ error: limit.error, detail: '잠시 뒤 다시 시도해 주세요.' }, 429);
+      const row = await insertFollowup(db, { feedbackId: feedback.id, memberId: member.id, body: checked.body, now });
+      const status = await reopenIfClosed(db, feedback, now);
+      try {
+        await notifyOps('inquiry_received', {
+          env,
+          receiptId: `${feedback.id}-F${row.id}`,
+          kind: `덧붙임 · ${FEEDBACK_KIND_LABELS[feedback.kind] || feedback.kind}`,
+          body: checked.body,
+        });
+      } catch (e) {
+        console.error('[notify] inquiry_received followup failed', feedback.id, String((e && e.message) || e).slice(0, 200));
+      }
+      return authJson({ followup: { ...publicFollowup(row, member.id), status } }, 201);
+    }
+    if (followupMatch[2] && (method === 'PATCH' || method === 'DELETE')) {
+      const current = await getFollowup(db, followupMatch[2]);
+      if (!current || current.status !== 'visible' || String(current.feedback_id) !== String(feedback.id)) {
+        return authJson({ error: 'followup not found', detail: '덧붙일 말을 찾을 수 없어요.' }, 404);
+      }
+      if (String(current.member_id) !== String(member.id)) {
+        return authJson({ error: 'followup forbidden', detail: '이 덧붙일 말을 고칠 수 없어요.' }, 403);
+      }
+      if (method === 'DELETE') {
+        const hidden = await hideFollowup(db, current.id, now);
+        return authJson({ deleted: true, id: hidden.id });
+      }
+      const checked = validateFollowupBody(body.body);
+      if (!checked.ok) return authJson({ error: checked.error, detail: checked.detail }, 400);
+      const limit = await rateLimitCheck(db, policy, 'followup-member', String(member.id));
+      if (limit.error) return authJson({ error: limit.error, detail: '잠시 뒤 다시 시도해 주세요.' }, 429);
+      const row = await updateFollowupBody(db, current.id, checked.body, now);
+      const status = await reopenIfClosed(db, feedback, now);
+      return authJson({ followup: { ...publicFollowup(row, member.id), status } });
+    }
+    return authJson({ error: 'not found' }, 404);
+  }
+
+  // ---------------- 사용 일지 (AI 명예회원만) ----------------
+
+  if (pathname === '/api/me/journal' && (method === 'GET' || method === 'POST')) {
+    if (member.role !== ROLE_AI_MEMBER) {
+      return authJson({ error: 'ai_member_only', detail: 'AI 명예회원만 사용 일지를 쓸 수 있어요.' }, 403);
+    }
+    const today = seoulDate(Date.now());
+    if (method === 'GET') {
+      const rows = await listMemberJournals(db, member.id, 60);
+      const todayRow = rows.find((r) => r.journal_date === today) || null;
+      return authJson({ today, journal: journalView(todayRow), items: rows.map(journalView) });
+    }
+    const checked = validateJournalInput(body);
+    if (!checked.ok) return authJson({ error: checked.error, detail: checked.detail }, 400);
+    const limit = await rateLimitCheck(db, policy, 'journal-member', String(member.id));
+    if (limit.error) return authJson({ error: limit.error, detail: '잠시 뒤 다시 시도해 주세요.' }, 429);
+    const now = nowIso();
+    const existing = await getJournalByDate(db, member.id, today);
+    // 일지는 알림을 보내지 않는다(운영센터 '사용 일지' 탭에서 읽는다).
+    if (existing) {
+      const merged = appendJournalBody(existing.body, checked.body, Date.parse(now));
+      if (!merged.ok) return authJson({ error: merged.error, detail: merged.detail }, 400);
+      const row = await appendJournal(db, existing, { body: merged.body, score: checked.score, now });
+      return authJson({ journal: journalView(row), appended: true });
+    }
+    const row = await insertJournal(db, { memberId: member.id, journalDate: today, title: checked.title, body: checked.body, score: checked.score, now });
+    return authJson({ journal: journalView(row), appended: false }, 201);
   }
 
   const myQuoteMatch = pathname.match(/^\/api\/me\/quotes\/([^/]+)$/);
@@ -3107,7 +3234,10 @@ const worker = {
         page_url: fields.page_url,
         contact_email: fields.contact_email,
         member_id: member ? member.id : null,
-        ai_member: aiMemberFor(personas, member && member.email, fields.contact_email),
+        // AI 명예회원 역할(members.role='ai_member') 계정의 의견은 그 이름으로 표시한다.
+        ai_member: member && member.role === ROLE_AI_MEMBER
+          ? String(member.name || '').slice(0, 40) || 'AI 명예회원'
+          : aiMemberFor(personas, member && member.email, fields.contact_email),
       };
       await insertFeedback(env.DB, record);
       // 운영 알림(#227). 알림이 실패해도 접수는 이미 저장됐으므로 결과와 상관없이 201.
@@ -3149,13 +3279,89 @@ const worker = {
       const id = decodeURIComponent(adminFeedbackMatch[1]);
       const existing = await getFeedback(env.DB, id);
       if (!existing) return notFound();
-      if (request.method === 'GET') return json({ feedback: feedbackAdminView(existing) });
+      if (request.method === 'GET') return json({ feedback: feedbackAdminView(existing, await listFollowups(env.DB, id)) });
       const parsed = await readJson(request);
       if (parsed.error) return badRequest(parsed.error);
       const patch = validateFeedbackPatch(parsed.body);
       if (!patch.ok) return badRequest(patch.error, patch.detail);
       const updated = await updateFeedback(env.DB, id, patch.fields, nowIso());
-      return json({ ok: true, feedback: feedbackAdminView(updated) });
+      return json({ ok: true, feedback: feedbackAdminView(updated, await listFollowups(env.DB, id)) });
+    }
+
+    // ---------------- ops center: 한눈에 · 고객 · 사용 일지 (러브트리 운영센터 탭과 같은 구성) ----------------
+
+    if (url.pathname === '/api/admin/ops/stats' && request.method === 'GET') {
+      if (!(await isAdminOrMember(request, env.DB, env))) return unauthorized();
+      const stats = await computeStats(env.DB, env, Date.now(), seoulDate(Date.now()));
+      return json({ ok: true, stats });
+    }
+
+    if (url.pathname === '/api/admin/journals' && request.method === 'GET') {
+      if (!(await isAdminOrMember(request, env.DB, env))) return unauthorized();
+      const rows = await listJournals(env.DB, { memberId: url.searchParams.get('member') || null, limit: url.searchParams.get('limit') || 300 });
+      return json({ journals: rows.map(journalAdminView), today: seoulDate(Date.now()) });
+    }
+
+    const adminJournalMatch = url.pathname.match(/^\/api\/admin\/journals\/(\d+)$/);
+    if (adminJournalMatch && request.method === 'PATCH') {
+      if (!(await isAdminOrMember(request, env.DB, env))) return unauthorized();
+      const parsed = await readJson(request);
+      if (parsed.error) return badRequest(parsed.error);
+      const row = await getJournal(env.DB, adminJournalMatch[1]);
+      if (!row) return notFound();
+      const noteRaw = parsed.body && parsed.body.admin_note;
+      const note = noteRaw == null || String(noteRaw).trim() === '' ? null : String(noteRaw).trim();
+      if (note && [...note].length > FEEDBACK_NOTE_MAX) return badRequest('admin_note too long');
+      // 일지는 고객의 하루 기록이라 본문·점수는 고치지 않고 내부 메모만 남긴다(러브트리 journal_internal_only).
+      await setJournalNote(env.DB, row.id, note, nowIso());
+      const [joined] = (await listJournals(env.DB, { memberId: row.member_id, limit: 1000 })).filter((j) => j.id === row.id);
+      return json({ ok: true, journal: journalAdminView(joined) });
+    }
+
+    if (url.pathname === '/api/admin/customers' && request.method === 'GET') {
+      if (!(await isAdminOrMember(request, env.DB, env))) return unauthorized();
+      const customers = await listCustomers(env.DB, env, { kind: url.searchParams.get('kind') || '', q: url.searchParams.get('q') || '' });
+      return json({ customers });
+    }
+
+    if (url.pathname === '/api/admin/customer-views' && request.method === 'GET') {
+      if (!(await isAdminOrMember(request, env.DB, env))) return unauthorized();
+      return json({ views: await listCustomerViews(env.DB, { limit: url.searchParams.get('limit') || 100 }) });
+    }
+
+    const adminCustomerMatch = url.pathname.match(/^\/api\/admin\/customers\/(\d+)(\/role)?$/);
+    if (adminCustomerMatch && ((request.method === 'GET' && !adminCustomerMatch[2]) || (request.method === 'PATCH' && adminCustomerMatch[2]))) {
+      if (!(await isAdminOrMember(request, env.DB, env))) return unauthorized();
+      const customerId = Number(adminCustomerMatch[1]);
+      const customer = await getCustomer(env.DB, env, customerId);
+      if (!customer) return notFound();
+      // 토큰 호출이면 세션이 없다 — 기록에는 '관리자 토큰'으로 남긴다.
+      const actor = isAdmin(request, env) ? null : await requireMember(request, env.DB, env);
+      if (request.method === 'GET') {
+        await logCustomerView(env.DB, { adminMemberId: actor ? actor.id : null, adminLabel: adminLabelFor(actor), customerId, nowIso: nowIso() });
+        const feedbackRows = (await listMemberFeedback(env.DB, customerId));
+        const journals = await listJournals(env.DB, { memberId: customerId, limit: 365 });
+        return json({
+          customer: {
+            ...customer,
+            ...(await customerActivity(env.DB, customerId)),
+            feedback: feedbackRows.map((r) => feedbackListView(r)),
+            journals: journals.map(journalAdminView),
+          },
+          views: await listCustomerViews(env.DB, { customerId, limit: 20 }),
+        });
+      }
+      const parsed = await readJson(request);
+      if (parsed.error) return badRequest(parsed.error);
+      const role = String((parsed.body || {}).role || '').trim().toLowerCase();
+      if (!ASSIGNABLE_ROLES.includes(role)) return badRequest('role must be member or ai_member', ASSIGNABLE_ROLES.join(', '));
+      // 관리자·최고관리자 역할은 여기서 바꾸지 않는다(기존 총관리자 화면 /api/admin/members 에서만).
+      const email = String(customer.email || '').trim().toLowerCase();
+      if (customer.role === 'admin' || customer.role === 'superadmin' || SUPERADMIN_EMAILS.has(email)) {
+        return conflict('staff_role_locked', { detail: '관리자 계정의 역할은 운영센터 고객 탭에서 바꾸지 않습니다.' });
+      }
+      await env.DB.prepare('UPDATE members SET role = ?, updated_at = ? WHERE id = ?').bind(role, nowIso(), customerId).run();
+      return json({ ok: true, customer: await getCustomer(env.DB, env, customerId) });
     }
 
     if (url.pathname === '/api/admin/news' && (request.method === 'GET' || request.method === 'POST')) {
@@ -3666,9 +3872,10 @@ export default {
         .catch(() => console.error('OPS_NOTIFY_RETRY=ERROR')));
       return;
     }
-    const work = Promise.all([purgeExpiredShopLogs(env.DB), purgeExpiredQuotePii(env.DB)])
-      .then(([counts, quotePii]) => {
-        console.log(`SHOP_RETENTION_PURGE=ok detail=${JSON.stringify({ ...counts, quote_requests_pii: quotePii })}`);
+    // 운영센터 고객 열람 기록은 90일 보관(러브트리 admin_customer_views 와 같은 기한).
+    const work = Promise.all([purgeExpiredShopLogs(env.DB), purgeExpiredQuotePii(env.DB), purgeExpiredCustomerViews(env.DB)])
+      .then(([counts, quotePii, customerViews]) => {
+        console.log(`SHOP_RETENTION_PURGE=ok detail=${JSON.stringify({ ...counts, quote_requests_pii: quotePii, admin_customer_views: customerViews })}`);
       })
       .catch(() => {
         // Never print database error values or row data from a scheduled pass.

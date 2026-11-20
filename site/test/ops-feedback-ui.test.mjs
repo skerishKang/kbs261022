@@ -46,8 +46,9 @@ test('every customer page has a small header link and a footer link to 의견 �
   assert.match(CSS, /@media \(max-width: 899px\) \{\n  \.header-nav a\.nav-feedback \.nav-feedback-short \{ display: none; \}/, '모바일은 전체 문구');
 });
 
-test('feedback form: 4 kinds, required 2,000-char body, auto page url, optional email', () => {
-  for (const [value, label] of [['bug', '불편·오류'], ['idea', '기능 제안'], ['product', '상품·가격 문의'], ['other', '기타']]) {
+test('feedback form: lovetree kinds + product, required 2,000-char body, auto page url, optional email', () => {
+  // 코드 값은 러브트리와 같다(bug/inconvenient/feature/other) + CGI 전용 product. 화면 글자는 한국어.
+  for (const [value, label] of [['bug', '오류'], ['inconvenient', '불편'], ['feature', '요청'], ['product', '상품·가격 문의'], ['other', '기타']]) {
     assert.match(FORM, new RegExp(`name="kind" value="${value}"[^>]*>\\s*<span>${label}</span>`), label);
   }
   assert.match(FORM, /<textarea id="fbBody" name="body"[^>]*maxlength="2000" required/);
@@ -90,7 +91,7 @@ test('my page has the 내 의견 tab rendered by the feedback module', () => {
   assert.match(CATALOG, /allowed === 'feedback'\) renderMyFeedback/);
   assert.match(CATALOG, /window\.CGI_FEEDBACK\.renderMine\(body\)/);
   assert.match(FEEDBACK_JS, /'\/api\/me\/feedback'/);
-  for (const label of ["received: '접수'", "checking: '확인 중'", "fixed: '고침'", "answered: '답변 완료'", "on_hold: '보류'"]) {
+  for (const label of ["received: '접수'", "reviewing: '확인 중'", "fixed: '고침'", "later: '다음에'", "closed: '닫음'"]) {
     assert.ok(FEEDBACK_JS.includes(label), label);
   }
   assert.match(FEEDBACK_JS, /운영자 답글/);
@@ -107,28 +108,27 @@ test('news page shows only the grouped source, never who said it', () => {
   assert.match(read('index.html'), /<li><a href="news\.html">새 소식<\/a><\/li>/, '쇼핑몰 푸터에서 새 소식으로');
 });
 
-test('ops center: admin tabs, inbox filters, reply + internal note + issue + AI member', () => {
+test('ops center: lovetree tab set, detail form keeps reply + internal note + issue + AI member', () => {
   for (const page of ['staff.html', 'orders.html', 'sync.html', 'ops.html']) {
     assert.match(navOf(read(page)), /<a href="ops\.html"[^>]*>운영센터<\/a>/, `${page} 운영센터 탭`);
   }
-  assert.match(OPS, /data-ops-tab="inbox">의견 받은함/);
-  assert.match(OPS, /data-ops-tab="news">새 소식/);
-  for (const name of ['q', 'kind', 'status', 'ai']) assert.match(OPS, new RegExp(`name="${name}"`), `필터 ${name}`);
-  assert.match(OPS, /<option value="only">AI 명예회원만<\/option>/);
-  assert.match(OPS_JS, /'\/api\/admin\/feedback' \+ query\(\)/);
+  assert.match(OPS, /id="opsTabs"/);
+  assert.match(OPS, /cgi-ops-view\.js\?v=[0-9a-z]+[\s\S]*cgi-ops\.js\?v=[0-9a-z]+/, '순수 조각을 먼저 싣는다');
+  assert.match(OPS_JS, /V\.MENU_TABS\.map/);
   assert.match(OPS_JS, /api\('PATCH', '\/api\/admin\/feedback\/'/);
   assert.match(OPS_JS, /고객에게 보이는 답글/);
   assert.match(OPS_JS, /내부 메모 \(고객에게 안 보임\)/);
   assert.match(OPS_JS, /GitHub 이슈/);
   assert.match(OPS_JS, /AI 명예회원 이름/);
-  assert.match(OPS_JS, /member\.role === 'admin' \|\| member\.role === 'superadmin'/);
+  assert.match(OPS_JS, /m\.role === 'admin' \|\| m\.role === 'superadmin'/);
   assert.ok(!/localStorage|Bearer/.test(OPS_JS), '관리자 토큰을 브라우저에 두지 않는다');
   assert.match(OPS_JS, /'\/api\/admin\/news'/);
 });
 
 test('rendered values are escaped in every new screen', () => {
+  assert.match(FEEDBACK_JS, /function esc\(s\)/, 'cgi-feedback.js esc');
+  assert.match(OPS_JS, /var esc = V\.escapeText;/, 'cgi-ops.js 는 순수 조각의 escapeText 를 쓴다');
   for (const [name, src] of [['cgi-feedback.js', FEEDBACK_JS], ['cgi-ops.js', OPS_JS]]) {
-    assert.match(src, /function esc\(s\)/, `${name} esc`);
     assert.ok(!/innerHTML = [^;]*\+ f\.body \+/.test(src), `${name} 본문을 그대로 넣지 않는다`);
   }
   assert.match(OPS_JS, /function safeHref/, '보던 화면 링크는 http(s)만');

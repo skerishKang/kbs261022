@@ -85,7 +85,7 @@ test('guest feedback is accepted with a receipt number and lands in the inbox', 
   assert.equal(list.json.total, 1);
   const item = list.json.items[0];
   assert.equal(item.id, r.json.id);
-  assert.equal(item.kind_label, '불편·오류');
+  assert.equal(item.kind_label, '오류');
   assert.equal(item.status_label, '접수');
   assert.equal(item.contact_email_masked, 'gu***@ex***.com');
   assert.ok(!list.text.includes('guest@example.com'), '목록 응답에 원문 이메일이 없어야 한다');
@@ -120,13 +120,13 @@ test('validation: kind, empty body, 2,000 chars, 3 links, non-JSON', async () =>
 test('same source + same content is refused for a short while; other content passes', async () => {
   const e = env();
   const ip = { 'CF-Connecting-IP': '203.0.113.7' };
-  assert.equal((await send(e, { kind: 'idea', body: '비교 기능 부탁드려요' }, ip)).status, 201);
-  const again = await send(e, { kind: 'idea', body: '  비교   기능 부탁드려요 ' }, ip);
+  assert.equal((await send(e, { kind: 'feature', body: '비교 기능 부탁드려요' }, ip)).status, 201);
+  const again = await send(e, { kind: 'feature', body: '  비교   기능 부탁드려요 ' }, ip);
   assert.equal(again.status, 429);
   assert.equal(again.json.error, 'duplicate feedback');
-  assert.equal((await send(e, { kind: 'idea', body: '다른 내용입니다' }, ip)).status, 201);
+  assert.equal((await send(e, { kind: 'feature', body: '다른 내용입니다' }, ip)).status, 201);
   // 다른 출처의 같은 내용은 막지 않는다.
-  assert.equal((await send(e, { kind: 'idea', body: '비교 기능 부탁드려요' }, { 'CF-Connecting-IP': '198.51.100.2' })).status, 201);
+  assert.equal((await send(e, { kind: 'feature', body: '비교 기능 부탁드려요' }, { 'CF-Connecting-IP': '198.51.100.2' })).status, 201);
 });
 
 test('one source address is capped at 10 submissions per window', async () => {
@@ -153,10 +153,10 @@ test('signed-in member is linked and sees status + reply (never the internal not
   assert.equal(noCsrf.json.member_linked, false);
 
   const patch = await call(e, 'PATCH', `/api/admin/feedback/${r.json.id}`, {
-    status: 'answered', admin_reply: '견적 메일로 보내드렸습니다.', admin_note: '대리점가 확인 필요', issue_ref: '231',
+    status: 'fixed', admin_reply: '견적 메일로 보내드렸습니다.', admin_note: '대리점가 확인 필요', issue_ref: '231',
   }, BEARER);
   assert.equal(patch.status, 200, patch.text);
-  assert.equal(patch.json.feedback.status, 'answered');
+  assert.equal(patch.json.feedback.status, 'fixed');
   assert.equal(patch.json.feedback.issue_ref, '#231');
   assert.equal(patch.json.feedback.admin_note, '대리점가 확인 필요');
 
@@ -165,8 +165,8 @@ test('signed-in member is linked and sees status + reply (never the internal not
   assert.equal(mine.json.items.length, 1, '내 의견에는 회원으로 연결된 것만');
   const row = mine.json.items[0];
   assert.equal(row.id, r.json.id);
-  assert.equal(row.status, 'answered');
-  assert.equal(row.status_label, '답변 완료');
+  assert.equal(row.status, 'fixed');
+  assert.equal(row.status_label, '고침');
   assert.equal(row.admin_reply, '견적 메일로 보내드렸습니다.');
   assert.ok(!mine.text.includes('대리점가 확인 필요'), '내부 메모는 고객에게 보이지 않는다');
   assert.ok(!mine.text.includes('#231'), '이슈 번호도 고객 화면에 싣지 않는다');
@@ -202,7 +202,7 @@ test('ops center is admin-only: anon and plain members get 401, superadmin sessi
 
 test('AI honorary members: persona emails are flagged, admin can set or clear, inbox filters', async () => {
   const e = env({ AI_MEMBER_PERSONAS: 'limone@example.com:리모네' });
-  const ai = await send(e, { kind: 'idea', body: '검색 결과에 브랜드 필터가 있으면 좋아요', contact_email: 'Limone@example.com' });
+  const ai = await send(e, { kind: 'feature', body: '검색 결과에 브랜드 필터가 있으면 좋아요', contact_email: 'Limone@example.com' });
   const human = await send(e, { kind: 'bug', body: '사람이 보낸 의견' });
   assert.equal(ai.status, 201);
 
@@ -224,14 +224,14 @@ test('inbox filters by kind and status, searches text, newest first', async () =
   const e = env();
   const a = await send(e, { kind: 'bug', body: '첫 번째 결제 화면 오류' });
   await new Promise((resolve) => setTimeout(resolve, 5));
-  const b = await send(e, { kind: 'idea', body: '두 번째 제안 위시리스트' });
-  await call(e, 'PATCH', `/api/admin/feedback/${a.json.id}`, { status: 'checking' }, BEARER);
+  const b = await send(e, { kind: 'feature', body: '두 번째 제안 위시리스트' });
+  await call(e, 'PATCH', `/api/admin/feedback/${a.json.id}`, { status: 'reviewing' }, BEARER);
 
   const all = await call(e, 'GET', '/api/admin/feedback', null, BEARER);
   assert.deepEqual(all.json.items.map((x) => x.id), [b.json.id, a.json.id], '최신순');
   const bugs = await call(e, 'GET', '/api/admin/feedback?kind=bug', null, BEARER);
   assert.deepEqual(bugs.json.items.map((x) => x.id), [a.json.id]);
-  const checking = await call(e, 'GET', '/api/admin/feedback?status=checking', null, BEARER);
+  const checking = await call(e, 'GET', '/api/admin/feedback?status=reviewing', null, BEARER);
   assert.deepEqual(checking.json.items.map((x) => x.id), [a.json.id]);
   const search = await call(e, 'GET', '/api/admin/feedback?q=' + encodeURIComponent('위시리스트'), null, BEARER);
   assert.deepEqual(search.json.items.map((x) => x.id), [b.json.id]);
