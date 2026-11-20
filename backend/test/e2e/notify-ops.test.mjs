@@ -102,3 +102,62 @@ test('an accepted quote request notifies ops', async () => {
   assert.match(telegramCalls(capture.calls)[0].body.text, /견적 요청/);
   assert.equal(mailCalls(capture.calls).length, 2);
 });
+
+// 의견 보내기(#226) 접수 → 운영 알림 inquiry_received. 알림이 실패해도 접수는 201.
+function sendFeedback(e, body) {
+  return call(e, 'POST', '/api/feedback', body, { Origin: 'https://skerishkang.github.io' });
+}
+
+test('an accepted feedback notifies ops once without the contact email', async () => {
+  const e = notifyEnv();
+  const capture = captureFetch();
+  let res;
+  await withFetch(capture.fetchFn, async () => {
+    res = await sendFeedback(e, {
+      kind: 'bug', body: '견적 목록에서 수량을 바꿔도 합계가 바로 안 바뀝니다.',
+      page_url: 'https://cgishop.pages.dev/site/index.html#/quote-cart', contact_email: 'guest-notify@example.com',
+    });
+  });
+  assert.equal(res.status, 201, res.text);
+  const tg = telegramCalls(capture.calls);
+  assert.equal(tg.length, 2, 'one telegram message per ops chat');
+  assert.match(tg[0].body.text, /고객 의견/);
+  assert.ok(tg[0].body.text.includes(res.json.id), 'the receipt number is in the alert');
+  assert.match(tg[0].body.text, /불편·오류/, 'the kind is shown in Korean');
+  const mails = mailCalls(capture.calls);
+  assert.equal(mails.length, 2, 'one mail per ops recipient, nothing to the customer');
+  assert.match(mails[0].body.subject, new RegExp(`고객 의견 ${res.json.id}`));
+  for (const c of capture.calls) assert.doesNotMatch(JSON.stringify(c.body), /guest-notify@example\.com/);
+
+  const ledger = await e.DB.prepare("SELECT meta FROM order_events WHERE order_id = ?").bind(`ops:inquiry_received:${res.json.id}`).all();
+  assert.equal(ledger.results.length, 1, 'the alert is recorded once');
+});
+
+test('feedback is still accepted when the alert channels fail', async () => {
+  const e = notifyEnv();
+  let res;
+  await withFetch(async () => { throw new Error('network down'); }, async () => {
+    res = await sendFeedback(e, { kind: 'idea', body: '설치 사례 사진이 있으면 좋겠습니다.' });
+  });
+  assert.equal(res.status, 201, res.text);
+  const row = await e.DB.prepare('SELECT id, status FROM feedback WHERE id = ?').bind(res.json.id).first();
+  assert.equal(row && row.status, 'received');
+});
+
+test('feedback is still accepted when the notifier itself throws', async () => {
+  // 비밀값 바인딩 읽기가 예외를 던지는 경우: notifyOps 밖으로 예외가 나와도 접수는 유지
+  const e = notifyEnv({ TELEGRAM_BOT_TOKEN: { get() { throw new Error('secret store unavailable'); } } });
+  const original = console.error;
+  const logged = [];
+  console.error = (...args) => logged.push(args.join(' '));
+  let res;
+  try {
+    res = await sendFeedback(e, { kind: 'other', body: '세금계산서는 언제 발행되나요?' });
+  } finally {
+    console.error = original;
+  }
+  assert.equal(res.status, 201, res.text);
+  assert.ok(logged.some((l) => l.includes('inquiry_received failed')), 'the failure is logged');
+  const row = await e.DB.prepare('SELECT id FROM feedback WHERE id = ?').bind(res.json.id).first();
+  assert.ok(row);
+});

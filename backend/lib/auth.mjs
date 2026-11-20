@@ -55,6 +55,10 @@ export const AUTH_POLICY = {
     'password-reset-ip': { max: 30, windowSeconds: 15 * 60 },
     // Guest quote intake is unauthenticated; bound it per source address.
     'quote-intake-ip': { max: 20, windowSeconds: 15 * 60 },
+    // 운영센터 '의견 보내기'도 비로그인 접수다. 출처 IP당 횟수 제한과, 같은
+    // 출처에서 같은 내용을 짧은 시간에 다시 보내는 것을 1회로 묶는 제한.
+    'feedback-ip': { max: 10, windowSeconds: 15 * 60 },
+    'feedback-dup': { max: 1, windowSeconds: 10 * 60 },
   },
 };
 

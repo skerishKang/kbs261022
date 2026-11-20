@@ -1,0 +1,148 @@
+/* CGI 운영센터 — 의견 보내기 · 내 의견 · 새 소식 · 운영센터(관리자)
+   cgi-catalog.css 의 토큰(--cgi-*)을 그대로 쓴다. */
+
+/* 헤더·푸터의 작은 '의견 보내기' 링크 */
+.header-nav a.nav-feedback { font-size: 12px; opacity: .82; }
+.header-nav a.nav-feedback:hover, .header-nav a.nav-feedback.is-active { opacity: 1; }
+/* 쇼핑몰 머리글은 검색칸·장바구니와 한 줄이라 넓은 화면에서는 '의견'으로 줄여 자리를 아낀다.
+   접근 이름(aria-label)과 모바일 메뉴에서는 '의견 보내기' 전체를 쓴다. */
+.header-nav a.nav-feedback .nav-feedback-full { display: none; }
+@media (min-width: 900px) {
+  .header-nav a.nav-feedback-compact { padding-left: 4px; padding-right: 4px; }
+}
+@media (max-width: 899px) {
+  .header-nav a.nav-feedback .nav-feedback-short { display: none; }
+  .header-nav a.nav-feedback .nav-feedback-full { display: inline; }
+}
+
+.fb-page { max-width: 760px; }
+.fb-panel {
+  background: var(--cgi-card); border: 1px solid var(--cgi-line); border-radius: var(--radius);
+  padding: 24px; box-shadow: var(--shadow-sm);
+}
+.fb-who { margin: 0 0 18px; padding: 12px 14px; border-radius: var(--radius-sm); background: var(--cgi-primary-soft); font-size: 13.5px; color: var(--cgi-ink); }
+.fb-who a, .fb-done a:not(.btn) { color: var(--cgi-primary-dark); }
+.fb-form { display: grid; gap: 18px; }
+/* display 를 준 블록도 hidden 이면 숨긴다(접수 뒤 폼 → 접수번호 화면 전환). */
+.fb-form[hidden], .fb-done[hidden], .ops-form[hidden], [data-ops-panel][hidden] { display: none; }
+.fb-kinds { border: 0; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; min-width: 0; }
+.fb-kinds legend { width: 100%; padding: 0; margin-bottom: 8px; font-weight: 700; font-size: 14px; }
+.fb-kind { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; }
+.fb-kind input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.fb-kind span {
+  display: inline-block; padding: 8px 14px; border: 1px solid var(--cgi-line); border-radius: 999px;
+  font-size: 13.5px; background: #fff; transition: border-color .15s, background .15s;
+}
+.fb-kind input:checked + span { border-color: var(--cgi-primary); background: var(--cgi-primary-soft); color: var(--cgi-primary-dark); font-weight: 700; }
+.fb-kind input:focus-visible + span { outline: 2px solid var(--cgi-primary); outline-offset: 2px; }
+.fb-field { display: grid; gap: 6px; min-width: 0; }
+.fb-field label { font-weight: 700; font-size: 14px; }
+.fb-field textarea, .fb-field input, .ops-form textarea, .ops-form input, .ops-form select, .ops-toolbar input, .ops-toolbar select {
+  width: 100%; max-width: 100%; font: inherit; font-size: 14px; padding: 10px 12px;
+  border: 1px solid var(--cgi-line); border-radius: var(--radius-sm); background: #fff; color: var(--cgi-ink);
+}
+.fb-field textarea { resize: vertical; min-height: 160px; line-height: 1.6; }
+.fb-field input[readonly] { background: var(--cgi-bg); color: var(--cgi-muted); font-size: 12.5px; }
+.fb-req, .fb-opt, .fb-auto { font-size: 11px; font-weight: 600; padding: 1px 6px; border-radius: 4px; margin-left: 4px; vertical-align: 1px; }
+.fb-req { background: var(--cgi-danger-soft); color: var(--cgi-danger); }
+.fb-opt { background: var(--cgi-line-soft); color: var(--cgi-muted); }
+.fb-auto { background: var(--cgi-primary-soft); color: var(--cgi-primary-dark); }
+.fb-hint { margin: 0; font-size: 12.5px; color: var(--cgi-muted); }
+.fb-count.is-over { color: var(--cgi-danger); font-weight: 700; }
+.fb-alert { margin: 0; padding: 10px 12px; border-radius: var(--radius-sm); font-size: 13.5px; }
+.fb-alert.error { background: var(--cgi-danger-soft); color: var(--cgi-danger); }
+.fb-alert.ok { background: var(--cgi-ok-soft); color: var(--cgi-ok); }
+.fb-alert.info { background: var(--cgi-primary-soft); color: var(--cgi-primary-dark); }
+.fb-done { text-align: center; padding: 12px 0; outline: none; }
+.fb-done h2 { font-size: 20px; margin-bottom: 8px; }
+.fb-receipt { font-size: 15px; }
+.fb-receipt strong { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 17px; color: var(--cgi-primary-dark); letter-spacing: .5px; }
+.fb-actions { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 16px; }
+
+/* 상태 배지 */
+.fb-status { display: inline-block; padding: 2px 9px; border-radius: 999px; font-size: 12px; font-weight: 700; white-space: nowrap; }
+.fb-status-received { background: var(--cgi-warn-soft); color: var(--cgi-warn); }
+.fb-status-checking { background: #eef4ff; color: #1d4ed8; }
+.fb-status-fixed { background: var(--cgi-ok-soft); color: var(--cgi-ok); }
+.fb-status-answered { background: var(--cgi-primary-soft); color: var(--cgi-primary-dark); }
+.fb-status-on_hold { background: var(--cgi-line-soft); color: var(--cgi-muted); }
+
+/* 마이페이지 '내 의견' */
+.fb-mine-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }
+.fb-mine-head .auth-muted { margin: 0; }
+.fb-mine-list { display: grid; gap: 12px; }
+.fb-card { border: 1px solid var(--cgi-line); border-radius: var(--radius); padding: 16px; background: #fff; min-width: 0; }
+.fb-card-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+.fb-id { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13px; font-weight: 700; }
+.fb-meta { margin: 4px 0 8px; font-size: 12.5px; color: var(--cgi-muted); }
+.fb-body { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; font-size: 14px; }
+.fb-reply { margin-top: 12px; padding: 10px 12px; border-left: 3px solid var(--cgi-primary); background: var(--cgi-primary-soft); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
+.fb-reply p { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; font-size: 13.5px; }
+.fb-reply .fb-reply-label { font-size: 12px; font-weight: 700; color: var(--cgi-primary-dark); margin-bottom: 4px; }
+.fb-noreply { margin: 10px 0 0; font-size: 12.5px; }
+
+/* 새 소식 */
+.news-list { display: grid; gap: 14px; }
+.news-item { background: var(--cgi-card); border: 1px solid var(--cgi-line); border-radius: var(--radius); padding: 18px 20px; min-width: 0; }
+.news-item h2 { font-size: 17px; margin: 4px 0 8px; overflow-wrap: anywhere; }
+.news-meta { margin: 0; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: 12.5px; color: var(--cgi-muted); }
+.news-tag { padding: 2px 8px; border-radius: 999px; font-size: 11.5px; font-weight: 700; }
+.news-tag-ai_member { background: #f3efff; color: #5b3fc4; }
+.news-tag-user_feedback { background: var(--cgi-primary-soft); color: var(--cgi-primary-dark); }
+.news-body { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; font-size: 14px; }
+.news-cta { margin-top: 20px; font-size: 13.5px; color: var(--cgi-muted); }
+.news-cta a { color: var(--cgi-primary-dark); font-weight: 700; }
+
+/* 운영센터(관리자) */
+.ops-app { max-width: 1240px; }
+.ops-tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--cgi-line); margin-bottom: 16px; overflow-x: auto; }
+.ops-tab { appearance: none; border: 0; background: none; font: inherit; font-size: 14px; font-weight: 700; padding: 10px 14px; color: var(--cgi-muted); border-bottom: 2px solid transparent; cursor: pointer; white-space: nowrap; }
+.ops-tab.is-active { color: var(--cgi-ink); border-bottom-color: var(--cgi-primary); }
+.ops-tab[data-action="logout"] { margin-left: auto; font-weight: 500; font-size: 13px; }
+.ops-check span { display: inline-flex; align-items: center; gap: 6px; font-weight: 700; }
+.ops-check input { width: auto; }
+.ops-detail .fb-body { margin-bottom: 14px; }
+.ops-toolbar { display: grid; grid-template-columns: minmax(0, 2fr) repeat(3, minmax(0, 1fr)) auto; gap: 8px; align-items: end; margin-bottom: 12px; }
+.ops-toolbar label { display: grid; gap: 4px; font-size: 12px; font-weight: 700; color: var(--cgi-muted); min-width: 0; }
+.ops-count { margin: 0 0 8px; font-size: 12.5px; color: var(--cgi-muted); }
+.ops-split { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 16px; align-items: start; }
+.ops-list { display: grid; gap: 8px; min-width: 0; }
+.ops-row {
+  display: grid; gap: 4px; text-align: left; width: 100%; font: inherit; cursor: pointer;
+  padding: 12px 14px; border: 1px solid var(--cgi-line); border-radius: var(--radius); background: #fff; min-width: 0;
+}
+.ops-row:hover { border-color: var(--cgi-primary-line); }
+.ops-row.is-selected { border-color: var(--cgi-primary); box-shadow: 0 0 0 1px var(--cgi-primary) inset; }
+.ops-row-top { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-size: 12px; color: var(--cgi-muted); }
+.ops-row-top .fb-id { color: var(--cgi-ink); }
+.ops-row-body { margin: 0; font-size: 13.5px; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow-wrap: anywhere; }
+.ops-ai { display: inline-block; padding: 1px 8px; border-radius: 999px; background: #f3efff; color: #5b3fc4; font-size: 11.5px; font-weight: 700; }
+.ops-flag { font-size: 11.5px; color: var(--cgi-muted); }
+.ops-detail { background: var(--cgi-card); border: 1px solid var(--cgi-line); border-radius: var(--radius); padding: 18px; min-width: 0; position: sticky; top: calc(var(--header-h) + 12px); }
+.ops-detail h2 { font-size: 16px; margin: 0 0 6px; overflow-wrap: anywhere; }
+.ops-detail dl { display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 6px 10px; margin: 10px 0 14px; font-size: 13px; }
+.ops-detail dt { color: var(--cgi-muted); }
+.ops-detail dd { margin: 0; overflow-wrap: anywhere; }
+.ops-form { display: grid; gap: 12px; border-top: 1px solid var(--cgi-line-soft); padding-top: 14px; }
+.ops-form label { display: grid; gap: 4px; font-size: 12.5px; font-weight: 700; min-width: 0; }
+.ops-form .ops-note-label { color: var(--cgi-warn); }
+.ops-form textarea { min-height: 88px; resize: vertical; line-height: 1.5; }
+.ops-form-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.ops-empty { padding: 28px 12px; text-align: center; color: var(--cgi-muted); border: 1px dashed var(--cgi-line); border-radius: var(--radius); font-size: 13.5px; }
+.ops-news-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; align-items: start; }
+.ops-news-item { border: 1px solid var(--cgi-line); border-radius: var(--radius); padding: 12px 14px; background: #fff; display: grid; gap: 6px; min-width: 0; }
+.ops-news-item h3 { font-size: 14.5px; margin: 0; overflow-wrap: anywhere; }
+.ops-news-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+
+@media (max-width: 899px) {
+  .ops-toolbar { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .ops-toolbar label:first-child { grid-column: 1 / -1; }
+  .ops-split, .ops-news-grid { grid-template-columns: minmax(0, 1fr); }
+  .ops-detail { position: static; }
+}
+@media (max-width: 560px) {
+  .fb-panel { padding: 16px; }
+  .ops-form-row { grid-template-columns: minmax(0, 1fr); }
+  .ops-detail dl { grid-template-columns: 88px minmax(0, 1fr); }
+  .header-nav a.nav-feedback { font-size: 13px; }
+}

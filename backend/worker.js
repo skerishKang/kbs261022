@@ -41,6 +41,17 @@
 //   POST   /api/me/orders/:id/refund/request  request a refund
 //   GET    /api/me/quotes             my quote requests
 //   GET    /api/me/quotes/:id         my quote detail
+//   GET    /api/me/feedback           my feedback (status + staff reply)
+//
+// Ops center (feedback inbox + news):
+//   POST   /api/feedback              (public)  send feedback; member linked when signed in
+//   GET    /api/news                  (public)  published news
+//   GET    /api/admin/feedback        (admin)   inbox: kind/status/q/ai filters
+//   GET    /api/admin/feedback/:id    (admin)   detail incl. contact email + internal note
+//   PATCH  /api/admin/feedback/:id    (admin)   status / reply / note / issue_ref / ai_member
+//   GET    /api/admin/news            (admin)   drafts + published
+//   POST   /api/admin/news            (admin)   create (optionally published)
+//   PATCH  /api/admin/news/:id        (admin)   edit / publish / unpublish
 //
 // Required secrets: ADMIN_TOKEN
 // Optional secrets: TOSS_WIDGET_SECRET_KEY, TOSS_API_SECRET_KEY,
@@ -49,6 +60,7 @@
 //                     AUTH_CSRF_TOKEN, AUTH_PBKDF2_ITERATIONS, AUTH_SESSION_TTL_DAYS,
 //                     AUTH_RATE_LIMIT_MAX, AUTH_RATE_LIMIT_WINDOW_SECONDS,
 //                     EMAIL_VERIFY_REQUIRED, MAIL_MODE, MAIL_BASE_URL
+// Optional ops var:   AI_MEMBER_PERSONAS ("email:이름,email2:이름2" — AI 명예회원 페르소나)
 
 import { computeTotals, cartHash, nextOrderId, toNonNegInt, isValidPgOrderId } from './lib/pricing.mjs';
 import {
@@ -105,6 +117,30 @@ import { GOOGLE_SIGNUP_PASSWORD_SENTINEL } from './lib/migrate.mjs';
 import { purgeExpiredShopLogs, purgeExpiredQuotePii } from './lib/retention.mjs';
 import { createMailAdapter } from './lib/mail.mjs';
 import { notifyOps } from './lib/notify.mjs';
+import {
+  FEEDBACK_KIND_LABELS,
+  validateFeedbackInput,
+  validateFeedbackPatch,
+  validateNewsInput,
+  normalizeForDuplicate,
+  parseAiPersonas,
+  aiMemberFor,
+  newFeedbackId,
+  insertFeedback,
+  getFeedback,
+  listFeedback,
+  updateFeedback,
+  listMemberFeedback,
+  feedbackListView,
+  feedbackAdminView,
+  feedbackMemberView,
+  insertNews,
+  getNews,
+  updateNews,
+  listNews,
+  newsPublicView,
+  newsAdminView,
+} from './lib/feedback.mjs';
 import { createOAuthState, decodeOAuthState, normalizeOAuthReturn, resolveOAuthRedirect, buildAuthorizationUrl, exchangeCode, fetchUserInfo, OAUTH_STATE_COOKIE, oauthStateCookieOptions } from './lib/google-oauth.mjs';
 
 const DEFAULT_ALLOWED_ORIGIN = 'https://cgishop.pages.dev';
@@ -1553,7 +1589,7 @@ function authPolicy(env) {
   if (Number.isFinite(maxAddresses) && maxAddresses > 0) policy.maxAddressesPerMember = maxAddresses;
   // Buckets that must keep their own max/window and are not overridden by the
   // global AUTH_RATE_LIMIT_MAX / AUTH_RATE_LIMIT_WINDOW_SECONDS.
-  const protectedBuckets = new Set(['resend-verify-cooldown', 'login-ip', 'signup-ip', 'password-reset-ip', 'quote-intake-ip', 'email-check-ip']);
+  const protectedBuckets = new Set(['resend-verify-cooldown', 'login-ip', 'signup-ip', 'password-reset-ip', 'quote-intake-ip', 'email-check-ip', 'feedback-ip', 'feedback-dup']);
   for (const name of Object.keys(policy.rateLimit)) {
     if (protectedBuckets.has(name)) {
       if (name === 'resend-verify-cooldown' && Number.isFinite(cooldownSec) && cooldownSec >= 0) {
@@ -2805,6 +2841,13 @@ async function handleMeRoute(pathname, method, url, request, db, env) {
     return authJson({ items: (results || []).map(memberQuoteView) });
   }
 
+  // ---------------- my feedback (ops center) ----------------
+
+  if (pathname === '/api/me/feedback' && method === 'GET') {
+    const rows = await listMemberFeedback(db, member.id);
+    return authJson({ items: rows.map(feedbackMemberView) });
+  }
+
   const myQuoteMatch = pathname.match(/^\/api\/me\/quotes\/([^/]+)$/);
   if (myQuoteMatch && method === 'GET') {
     const id = decodeURIComponent(myQuoteMatch[1]);
@@ -3021,6 +3064,124 @@ const worker = {
       await env.DB.prepare('UPDATE quote_requests SET status = ?, admin_prices = ?, total = ?, updated_at = ? WHERE id = ?')
         .bind(status, adminPrices, total, updatedAt, id).run();
       return json({ id, status, total, updated_at: updatedAt });
+    }
+
+    // ---------------- ops center: feedback + news ----------------
+
+    if (url.pathname === '/api/feedback' && request.method === 'POST') {
+      // 비로그인 접수: 본문을 읽기 전에 출처 IP당 횟수부터 묶는다.
+      const fbIp = clientIp(request);
+      const policy = authPolicy(env);
+      if (fbIp) {
+        const ipLimit = await rateLimitCheck(env.DB, policy, 'feedback-ip', fbIp);
+        if (ipLimit.error) return json({ error: ipLimit.error, detail: ipLimit.detail }, 429);
+      }
+      const parsed = await readJson(request);
+      if (parsed.error) {
+        if (parsed.error === 'content_type_json_required') return json({ error: parsed.error, detail: parsed.detail }, 415);
+        return badRequest(parsed.error);
+      }
+      const input = parsed.body && typeof parsed.body === 'object' ? { ...parsed.body } : parsed.body;
+      if (input && typeof input === 'object' && !input.page_url) input.page_url = request.headers.get('Referer') || null;
+      const fields = validateFeedbackInput(input);
+      if (!fields.ok) return badRequest(fields.error, fields.detail);
+      // 같은 출처 + 같은 내용은 짧은 시간 안에 한 번만 받는다.
+      const dupKey = await sha256Hex(`${fbIp || '-'}|${fields.kind}|${normalizeForDuplicate(fields.body)}`);
+      const dup = await rateLimitCheck(env.DB, policy, 'feedback-dup', dupKey);
+      if (dup.error) {
+        return json({ error: 'duplicate feedback', detail: '같은 내용이 방금 접수되었어요. 잠시 후 다시 보내 주세요.' }, 429);
+      }
+      // 로그인 회원은 Origin + CSRF 를 통과할 때만 연결한다. 미인증 회원도 접수는 된다.
+      let member = null;
+      if (originOk(request, env) && csrfOk(request, env)) {
+        member = await requireMember(request, env.DB, env, { allowUnverified: true });
+        if (member && member.status !== 'active') member = null;
+      }
+      const personas = parseAiPersonas(env.AI_MEMBER_PERSONAS);
+      const createdAt = nowIso();
+      const record = {
+        id: newFeedbackId(new Date(createdAt)),
+        created_at: createdAt,
+        kind: fields.kind,
+        body: fields.body,
+        page_url: fields.page_url,
+        contact_email: fields.contact_email,
+        member_id: member ? member.id : null,
+        ai_member: aiMemberFor(personas, member && member.email, fields.contact_email),
+      };
+      await insertFeedback(env.DB, record);
+      // 운영 알림(#227). 알림이 실패해도 접수는 이미 저장됐으므로 결과와 상관없이 201.
+      // 연락처 이메일은 알림에 싣지 않는다(운영센터에서만 본다).
+      try {
+        await notifyOps('inquiry_received', {
+          env,
+          receiptId: record.id,
+          kind: FEEDBACK_KIND_LABELS[record.kind] || record.kind,
+          body: record.body,
+        });
+      } catch (e) {
+        console.error('[notify] inquiry_received failed', record.id, String((e && e.message) || e).slice(0, 200));
+      }
+      return json({ id: record.id, created_at: createdAt, status: 'received', member_linked: !!member }, 201);
+    }
+
+    if (url.pathname === '/api/news' && request.method === 'GET') {
+      const rows = await listNews(env.DB, { publishedOnly: true, limit: url.searchParams.get('limit') || 50 });
+      return json({ items: rows.map(newsPublicView) });
+    }
+
+    if (url.pathname === '/api/admin/feedback' && request.method === 'GET') {
+      if (!(await isAdminOrMember(request, env.DB, env))) return unauthorized();
+      const page = await listFeedback(env.DB, {
+        kind: url.searchParams.get('kind') || '',
+        status: url.searchParams.get('status') || '',
+        q: url.searchParams.get('q') || '',
+        ai: url.searchParams.get('ai') || '',
+        limit: url.searchParams.get('limit') || 100,
+        offset: url.searchParams.get('offset') || 0,
+      });
+      return json({ items: page.items.map(feedbackListView), total: page.total, limit: page.limit, offset: page.offset });
+    }
+
+    const adminFeedbackMatch = url.pathname.match(/^\/api\/admin\/feedback\/([^/]+)$/);
+    if (adminFeedbackMatch && (request.method === 'GET' || request.method === 'PATCH')) {
+      if (!(await isAdminOrMember(request, env.DB, env))) return unauthorized();
+      const id = decodeURIComponent(adminFeedbackMatch[1]);
+      const existing = await getFeedback(env.DB, id);
+      if (!existing) return notFound();
+      if (request.method === 'GET') return json({ feedback: feedbackAdminView(existing) });
+      const parsed = await readJson(request);
+      if (parsed.error) return badRequest(parsed.error);
+      const patch = validateFeedbackPatch(parsed.body);
+      if (!patch.ok) return badRequest(patch.error, patch.detail);
+      const updated = await updateFeedback(env.DB, id, patch.fields, nowIso());
+      return json({ ok: true, feedback: feedbackAdminView(updated) });
+    }
+
+    if (url.pathname === '/api/admin/news' && (request.method === 'GET' || request.method === 'POST')) {
+      if (!(await isAdminOrMember(request, env.DB, env))) return unauthorized();
+      if (request.method === 'GET') {
+        const rows = await listNews(env.DB, { publishedOnly: false, limit: 200 });
+        return json({ items: rows.map(newsAdminView) });
+      }
+      const parsed = await readJson(request);
+      if (parsed.error) return badRequest(parsed.error);
+      const news = validateNewsInput(parsed.body);
+      if (!news.ok) return badRequest(news.error, news.detail);
+      const row = await insertNews(env.DB, news.fields, nowIso());
+      return json({ ok: true, news: newsAdminView(row) }, 201);
+    }
+
+    const adminNewsMatch = url.pathname.match(/^\/api\/admin\/news\/(\d+)$/);
+    if (adminNewsMatch && request.method === 'PATCH') {
+      if (!(await isAdminOrMember(request, env.DB, env))) return unauthorized();
+      const parsed = await readJson(request);
+      if (parsed.error) return badRequest(parsed.error);
+      const news = validateNewsInput(parsed.body, { partial: true });
+      if (!news.ok) return badRequest(news.error, news.detail);
+      if (!(await getNews(env.DB, adminNewsMatch[1]))) return notFound();
+      const row = await updateNews(env.DB, adminNewsMatch[1], news.fields, nowIso());
+      return json({ ok: true, news: newsAdminView(row) });
     }
 
     // ---------------- health ----------------

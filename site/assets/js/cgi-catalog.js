@@ -2475,13 +2475,14 @@
       return;
     }
     var tab = (state.route.tab || 'profile');
-    var allowed = ['profile', 'addresses', 'orders', 'quotes'].indexOf(tab) === -1 ? 'profile' : tab;
+    var allowed = ['profile', 'addresses', 'orders', 'quotes', 'feedback'].indexOf(tab) === -1 ? 'profile' : tab;
     var user = p.me();
     var tabs = [
       ['profile', '회원 정보'],
       ['addresses', '배송지'],
       ['orders', '주문 내역'],
-      ['quotes', '내 견적']
+      ['quotes', '내 견적'],
+      ['feedback', '내 의견']
     ];
     var html = '<section class="mypage">' +
       '<header class="mypage-head">' +
@@ -2500,6 +2501,7 @@
     if (allowed === 'profile') renderMyProfile(body);
     else if (allowed === 'addresses') renderMyAddresses(body);
     else if (allowed === 'quotes') renderMyQuotes(body);
+    else if (allowed === 'feedback') renderMyFeedback(body);
     else renderMyOrders(body);
   }
 
@@ -2677,6 +2679,15 @@
     if (open) detail.removeAttribute('hidden'); else detail.setAttribute('hidden', '');
     btn.setAttribute('aria-expanded', open ? 'true' : 'false');
     btn.textContent = open ? '내용 닫기' : '내용 보기';
+  }
+
+  // 내 의견(운영센터) — 화면은 cgi-feedback.js 가 그린다(GET /api/me/feedback).
+  function renderMyFeedback(body) {
+    if (window.CGI_FEEDBACK && window.CGI_FEEDBACK.renderMine) {
+      window.CGI_FEEDBACK.renderMine(body);
+      return;
+    }
+    body.innerHTML = authAlert('내 의견 화면을 불러오지 못했습니다. 새로고침해 주세요.', 'error');
   }
 
   function renderMyQuotes(body) {
