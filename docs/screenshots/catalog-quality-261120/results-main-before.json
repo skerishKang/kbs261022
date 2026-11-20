@@ -1,0 +1,71 @@
+[
+ {
+  "count": "6건 · “SM7B”",
+  "heading": "“SM7B” 검색 결과 6건입니다.",
+  "first": [
+   "SHURE SM7B 슈어 레코딩용 유선 마이크",
+   "SHURE RK345 슈어 SM7B용 윈드스크린",
+   "RPM106",
+   "RPM602",
+   "RPM604",
+   "SHURE A7WS / 슈어 마이크 윈드스크린"
+  ],
+  "cards": 6,
+  "overflowX": 0,
+  "scene": "search-sm7b",
+  "width": 1440,
+  "demotedInFirst12": 0,
+  "consoleErrors": [],
+  "httpErrors": []
+ },
+ {
+  "count": "777건 · “스피커”",
+  "heading": "“스피커” 검색 결과 777건입니다.",
+  "first": [
+   "[리퍼비쉬] DYNAUDIO BM5 MKIII / 스튜디오 모니터 스피커",
+   "[리퍼비쉬] DYNAUDIO BM5 MKIII / 스튜디오 모니터 스피커",
+   "[리퍼비쉬] GENELEC 8040B (다크그레이) 스튜디오 모니터 스피커 (1통)",
+   "[리퍼비쉬] GENELEC 8351B (블랙) 제네렉 SAM 동축 스튜디오 모니터 스피커(1통)",
+   "[리퍼비쉬] PreSonus Eris Studio 5 프리소너스 에리스 스튜디오 5 모니터 스피커 (1통) E5 XT 후속작",
+   "[리퍼비쉬] Q Acoustics QA3550 큐어쿠스틱 하이파이 북쉘프 톨보이 스피커 (Pair) 그라파이트 그레이 - , 445-1",
+   "[리퍼비쉬] Q Acoustics QA8204 스피커",
+   "[리퍼비쉬] Q Acoustics QA8204 스피커",
+   "[박스손상] GENELEC 8050B 제네렉 스튜디오 모니터 스피커 (다크그레이)",
+   "[박스손상] PRESONUS Eris E5 BT 프리소너스 블루투스 모니터 스피커 1조(2통)",
+   "[박스손상] PreSonus Eris Studio 8 프리소너스 에리스 스튜디오 8 모니터 스피커 (1통)",
+   "[박스손상] QED Connect Speaker Cable 커넥트 스피커 케이블 (6m)"
+  ],
+  "cards": 24,
+  "overflowX": 0,
+  "scene": "speaker-featured",
+  "width": 1440,
+  "demotedInFirst12": 12,
+  "consoleErrors": [],
+  "httpErrors": []
+ },
+ {
+  "count": "102건",
+  "heading": "브랜드와 카테고리로 원하는 장비를 찾아보세요.",
+  "first": [
+   "PreSonus StudioLive 64S 프리소너스 디지털 믹서",
+   "A&H QU-7 / QU-7D 알렌앤히스 컴팩트 디지털 믹서",
+   "PreSonus StudioLive 32S 프리소너스 디지털 믹서",
+   "A&H QU-6 / QU-6D 알렌앤히스 컴팩트 디지털 믹서",
+   "A&H QU-5 / QU-5D 알렌앤히스 컴팩트 디지털 믹서",
+   "A&H CQ-18T 알렌히스 컴팩트 디지털 믹서",
+   "PreSonus StudioLive 32SX 프리소너스 디지털 믹서",
+   "A&H CQ-20B 알렌히스 컴팩트 디지털 믹서",
+   "iZOTOPE Mix & Master Bundle Advanced 아이조톱 믹싱 및 마스터링 필수 번들",
+   "A&H CQ-12T 알렌히스 컴팩트 디지털 믹서",
+   "PreSonus StudioLive 32R 프리소너스 디지털 랙 믹서",
+   "PreSonus StudioLive 24R 프리소너스 디지털 랙 믹서"
+  ],
+  "cards": 24,
+  "overflowX": 0,
+  "scene": "mixer-category",
+  "width": 1440,
+  "demotedInFirst12": 0,
+  "consoleErrors": [],
+  "httpErrors": []
+ }
+]

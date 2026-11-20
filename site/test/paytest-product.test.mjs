@@ -43,7 +43,7 @@ test('G1 non-product payment pages stay excluded from every catalog source', () 
   const nonProduct = /결제창|잔금|계약금/;
   for (const p of catalog.products) assert.equal(nonProduct.test(p.name), false, `catalog has ${p.id}`);
   for (const p of products) assert.equal(nonProduct.test(p.name), false, `products.json has ${p.id}`);
-  assert.equal(catalog.products.length, 4026);
+  assert.equal(catalog.products.length, 4002);
   assert.equal(catalog.products.filter((p) => p.price && p.price.state === 'public').length, 2088);
 });
 
