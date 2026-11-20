@@ -1,14 +1,14 @@
 {
- "generated_at": "2026-11-12T22:11:54Z",
- "product_count": 4026,
+ "generated_at": "2026-11-20T03:06:54Z",
+ "product_count": 4002,
  "brands": [
   {
    "name": "SHURE",
-   "count": 1006
+   "count": 1002
   },
   {
    "name": "KLOTZ",
-   "count": 313
+   "count": 312
   },
   {
    "name": "PRESONUS",
@@ -16,7 +16,7 @@
   },
   {
    "name": "GENELEC",
-   "count": 169
+   "count": 164
   },
   {
    "name": "NEUTRIK",
@@ -48,7 +48,7 @@
   },
   {
    "name": "MESA/BOOGIE",
-   "count": 97
+   "count": 96
   },
   {
    "name": "JICO",
@@ -88,7 +88,7 @@
   },
   {
    "name": "COMPLY",
-   "count": 52
+   "count": 51
   },
   {
    "name": "Q ACOUSTICS",
@@ -109,10 +109,6 @@
   {
    "name": "DYNAUDIO",
    "count": 33
-  },
-  {
-   "name": "ANTARES",
-   "count": 31
   },
   {
    "name": "ALLEN&HEATH",
@@ -143,11 +139,15 @@
    "count": 21
   },
   {
-   "name": "ROTOSOUND",
-   "count": 15
+   "name": "ANTARES",
+   "count": 20
   },
   {
    "name": "AUDIOSCAPE",
+   "count": 14
+  },
+  {
+   "name": "ROTOSOUND",
    "count": 14
   },
   {

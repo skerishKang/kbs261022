@@ -35,8 +35,9 @@ const webCss = read('website/assets/style.css');
 test('G1: 결제창·잔금·계약금 페이지는 카탈로그에 없다', () => {
   const bad = catalog.products.filter((p) => /결제창|잔금|계약금/.test(p.name));
   assert.deepEqual(bad.map((p) => p.id), []);
-  // #216 G2 병합으로 가격 문의 쪽 중복 520건도 catalog.json 에서는 빠진다(4546 → 4026).
-  assert.equal(catalog.products.length, 4026, '전체 상품 수 4575 → 4546(G1) → 4026(G2 병합)');
+  // #216 G2 병합으로 가격 문의 쪽 중복도 catalog.json 에서는 빠진다
+  // (4546 → 모델명 병합 520 → 4026 → 상품명 완전 일치 병합 24 → 4002, 2026-11-20).
+  assert.equal(catalog.products.length, 4002, '전체 상품 수 4575 → 4546(G1) → 4002(G2 병합 544)');
 });
 
 test('G1: 가격 공개 상품은 2,088건이다', () => {

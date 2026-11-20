@@ -153,8 +153,53 @@ def has_condition_tag(product: dict) -> bool:
     return bool(m and m.group(1).strip() in CONDITION_DISPLAY_TAGS)
 
 
+# 리퍼·전시·박스손상 표시 상품에는 병합하지 않는다. 대괄호 태그가 아니어도
+# 상품명 어디에든 이 표시가 있으면 상태가 다른 상품이다.
+_CONDITION_WORD_RE = re.compile(r"리퍼|전시|박스손상")
+
+
+def is_condition_product(product: dict) -> bool:
+    return has_condition_tag(product) or bool(_CONDITION_WORD_RE.search(str(product.get("name") or "")))
+
+
+def merge_brand(product: dict) -> str:
+    """병합 비교용 브랜드: 화면·필터와 같은 정리된 값(별칭 통일, 비브랜드는 '기타' → 비교 제외)."""
+    brand = canonical_brand(product.get("brand_norm") or product.get("brand") or "")
+    return "" if brand in ("", OTHER_BRAND_LABEL) else brand
+
+
+def name_key(value: str) -> str:
+    """상품명 완전 일치 비교용: 공급처 접두사를 뗀 화면 이름에서 공백·기호만 뺀다(한글 유지)."""
+    return re.sub(r"[^0-9A-Z가-힣]", "", display_name(value).upper())
+
+
+def _adopt_from_duplicate(kept: dict, dup: dict, counters: dict) -> None:
+    # 분류 경로: 가격 문의 쪽이 "제품분류별 보기"로 탐색된 구체 경로면 쓴다 (#216 G3.2)
+    dup_path = list(dup.get("category_path") or [])
+    if len(dup_path) >= 3 and dup_path[1] == "제품분류별 보기" and dup.get("category"):
+        kept["category_path"] = dup_path
+        kept["category"] = dup["category"]
+        counters["adopted_category_path"] += 1
+    # 상품요약정보: 남긴 쪽에 없으면 가져온다
+    dup_summary = next((s for s in (dup.get("specs") or [])
+                        if str(s.get("label") or "").strip() == "상품요약정보" and str(s.get("value") or "").strip()), None)
+    if dup_summary is not None:
+        kept_specs = kept.get("specs") or []
+        if not any(str(s.get("label") or "").strip() == "상품요약정보" for s in kept_specs):
+            kept["specs"] = kept_specs + [dict(dup_summary)]
+            counters["adopted_summary"] += 1
+
+
 def merge_duplicate_products(products: list[dict]) -> tuple[list[dict], dict[str, str], dict]:
-    """중복 상품을 병합한다. (남긴 상품 목록, removed→kept 치환표, 통계) (#216 G2)"""
+    """중복 상품을 병합한다. (남긴 상품 목록, removed→kept 치환표, 통계)
+
+    1단계(모델명, #216 G2): 정리된 브랜드가 같고, 가격 공개 쪽 model 과 가격 문의 쪽 name 을
+       정규화(영문 대문자·숫자만)한 값이 같고, 4자 이상이며 가격 문의 쪽 후보가 하나뿐일 때.
+    2단계(상품명 완전 일치): 1단계에 안 걸린 것 중 정리된 브랜드가 같고 화면 상품명이
+       공백·기호만 빼고 완전히 같은(한글 포함) 가격 공개 1건 ↔ 가격 문의 1건.
+    두 단계 모두 리퍼·전시·박스손상 표시 상품에는 합치지 않는다. 남기는 쪽은 가격 공개
+    상품(id·이름·가격·사진 그대로)이고, 가격 문의 쪽에서는 분류 경로·상품요약정보만 가져온다.
+    """
     priced, inquiry = [], []
     for p in products:
         state = (p.get("price") or {}).get("state")
@@ -162,18 +207,17 @@ def merge_duplicate_products(products: list[dict]) -> tuple[list[dict], dict[str
 
     inquiry_index: dict[tuple[str, str], list[dict]] = {}
     for q in inquiry:
-        brand = (q.get("brand_norm") or "").strip()
+        brand = merge_brand(q)
         key = model_key(q.get("name"))
         if not brand or len(key) < 4:
             continue
         inquiry_index.setdefault((brand, key), []).append(q)
 
     merge_map: dict[str, str] = {}
-    adopted_path = 0
-    adopted_summary = 0
+    counters = {"adopted_category_path": 0, "adopted_summary": 0}
     used_inquiry: set[str] = set()
     for kept in priced:
-        brand = (kept.get("brand_norm") or "").strip()
+        brand = merge_brand(kept)
         key = model_key(kept.get("model"))
         if not brand or len(key) < 4:
             continue
@@ -183,30 +227,50 @@ def merge_duplicate_products(products: list[dict]) -> tuple[list[dict], dict[str
         dup = cands[0]
         if dup["id"] in used_inquiry:
             continue
-        if has_condition_tag(kept) or has_condition_tag(dup):
+        if is_condition_product(kept) or is_condition_product(dup):
             continue
-        # 분류 경로: 가격 문의 쪽이 "제품분류별 보기"로 탐색된 구체 경로면 쓴다 (#216 G3.2)
-        dup_path = list(dup.get("category_path") or [])
-        if len(dup_path) >= 3 and dup_path[1] == "제품분류별 보기" and dup.get("category"):
-            kept["category_path"] = dup_path
-            kept["category"] = dup["category"]
-            adopted_path += 1
-        # 상품요약정보: 남긴 쪽에 없으면 가져온다
-        dup_summary = next((s for s in (dup.get("specs") or [])
-                            if str(s.get("label") or "").strip() == "상품요약정보" and str(s.get("value") or "").strip()), None)
-        if dup_summary is not None:
-            kept_specs = kept.get("specs") or []
-            if not any(str(s.get("label") or "").strip() == "상품요약정보" for s in kept_specs):
-                kept["specs"] = kept_specs + [dict(dup_summary)]
-                adopted_summary += 1
+        _adopt_from_duplicate(kept, dup, counters)
         merge_map[dup["id"]] = kept["id"]
         used_inquiry.add(dup["id"])
+    by_model = len(merge_map)
+
+    # 2단계: 상품명 완전 일치 (같은 상품이 두 공급처에 가격 공개·가격 문의로 따로 올라온 경우)
+    kept_ids = set(merge_map.values())
+    priced_by_name: dict[tuple[str, str], list[dict]] = {}
+    inquiry_by_name: dict[tuple[str, str], list[dict]] = {}
+    for p in priced:
+        brand, key = merge_brand(p), name_key(p.get("name"))
+        if brand and len(key) >= 4:
+            priced_by_name.setdefault((brand, key), []).append(p)
+    for q in inquiry:
+        if q["id"] in used_inquiry:
+            continue
+        brand, key = merge_brand(q), name_key(q.get("name"))
+        if brand and len(key) >= 4:
+            inquiry_by_name.setdefault((brand, key), []).append(q)
+    for key, cands in sorted(inquiry_by_name.items()):
+        targets = priced_by_name.get(key) or []
+        if len(cands) != 1 or len(targets) != 1:
+            continue
+        dup, kept = cands[0], targets[0]
+        if is_condition_product(kept) or is_condition_product(dup):
+            continue
+        _adopt_from_duplicate(kept, dup, counters)
+        merge_map[dup["id"]] = kept["id"]
+        used_inquiry.add(dup["id"])
+        kept_ids.add(kept["id"])
 
     kept_products = [p for p in products if p["id"] not in used_inquiry]
     stats = {
         "merged": len(merge_map),
-        "adopted_category_path": adopted_path,
-        "adopted_summary": adopted_summary,
+        "merged_by_model": by_model,
+        "merged_by_name": len(merge_map) - by_model,
+        "adopted_category_path": counters["adopted_category_path"],
+        "adopted_summary": counters["adopted_summary"],
+        "before_total": len(products),
+        "before_inquiry": len(inquiry),
+        "after_total": len(kept_products),
+        "after_inquiry": len(inquiry) - len(used_inquiry),
     }
     return kept_products, merge_map, stats
 
@@ -754,7 +818,10 @@ def main() -> int:
         # 같은 상품 병합 (#216 G2): 없어진 id → 남긴 id 치환표도 함께 만든다
         products, merge_map, merge_stats = merge_duplicate_products(products)
         print(f"[build_catalog_data] merged duplicates: {merge_stats['merged']} "
-              f"(분류 경로 채택 {merge_stats['adopted_category_path']}, 요약 채택 {merge_stats['adopted_summary']})")
+              f"(모델명 {merge_stats['merged_by_model']} + 상품명 일치 {merge_stats['merged_by_name']}; "
+              f"분류 경로 채택 {merge_stats['adopted_category_path']}, 요약 채택 {merge_stats['adopted_summary']}; "
+              f"전체 {merge_stats['before_total']}→{merge_stats['after_total']}, "
+              f"가격 문의 {merge_stats['before_inquiry']}→{merge_stats['after_inquiry']})")
         meta = {
             "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z"),
             "sources": sorted({(p.get("source") or {}).get("site", "") for p in products if (p.get("source") or {}).get("site")}),
@@ -797,7 +864,10 @@ def main() -> int:
     # 같은 상품 병합 (#216 G2): 가격 문의 쪽을 가격 공개 쪽으로 흡수한다
     products, merge_map, merge_stats = merge_duplicate_products(products)
     print(f"[build_catalog_data] merged duplicates: {merge_stats['merged']} "
-          f"(분류 경로 채택 {merge_stats['adopted_category_path']}, 요약 채택 {merge_stats['adopted_summary']})")
+          f"(모델명 {merge_stats['merged_by_model']} + 상품명 일치 {merge_stats['merged_by_name']}; "
+          f"분류 경로 채택 {merge_stats['adopted_category_path']}, 요약 채택 {merge_stats['adopted_summary']}; "
+          f"전체 {merge_stats['before_total']}→{merge_stats['after_total']}, "
+          f"가격 문의 {merge_stats['before_inquiry']}→{merge_stats['after_inquiry']})")
 
     out_dir = Path(args.out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)

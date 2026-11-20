@@ -381,7 +381,9 @@
     var key = 'data/details/part-' + shardNumber.padStart(4, '0') + '.json';
     var pending = detailCache[key];
     if (!pending) {
-      pending = fetch(new URL(key, location.href).toString()).then(function (res) {
+      // 재생성하면 상품이 들어 있는 분할 파일이 바뀐다 — 목록 생성 시각을 붙여 옛 캐시와 섞이지 않게 한다.
+      var stamp = state.meta && state.meta.generated_at ? '?v=' + encodeURIComponent(state.meta.generated_at) : '';
+      pending = fetch(new URL(key + stamp, location.href).toString()).then(function (res) {
         if (!res.ok) throw new Error('상세 데이터를 읽지 못했습니다: ' + res.status);
         return res.json();
       });
@@ -417,10 +419,15 @@
       (p.category_path || []).join(' '),
       (p.specs || []).map(function (s) { return s.label + ' ' + s.value; }).join(' ')].join(' '));
     p._cat = mapCategory(categoryLabel(p), p.name);
+    p._demoted = DEMOTE_RE.test(String(p.name || ''));
     p._brand = displayBrand(p);
     state.brandSet[p._brand.toUpperCase()] = true;
     return p;
   }
+
+  /* 추천순 뒤로 보낼 상품(명예회원 1회차: 스피커 추천순 맨 위가 리퍼·박스손상).
+     목록·검색 결과에는 그대로 나오고, 추천순에서만 같은 조건 상품 뒤에 둔다. */
+  var DEMOTE_RE = /리퍼|박스손상|전시|단종|클리어런스/;
 
   /* 공급처 분류 211종을 대분류로 묶는다 (#209 B1). 매핑표는 site/data/category_map.js.
      원본 분류는 _search(검색 대상)에 그대로 남고, 화면·필터는 대분류만 쓴다. */
@@ -435,6 +442,8 @@
       var broadRules = CAT_MAP.broadRules || [];
       var productNameNorm = String(productName);
       for (var bi = 0; bi < broadRules.length; bi++) {
+        var onlyLabels = broadRules[bi].labels;
+        if (onlyLabels && onlyLabels.indexOf(name) === -1) continue;
         var broadKeywords = broadRules[bi].keywords || [];
         for (var bk = 0; bk < broadKeywords.length; bk++) {
           if (productNameNorm.indexOf(broadKeywords[bk]) !== -1) return broadRules[bi].group;
@@ -486,10 +495,17 @@
       return s;
     };
     list.sort(function (a, b) {
+      // 추천순(검색어가 있어 관련도순으로 보일 때 포함)에서는 리퍼·박스손상·전시·단종·클리어런스를 뒤로
+      if (sort === 'featured') {
+        var dd = (a._demoted ? 1 : 0) - (b._demoted ? 1 : 0);
+        if (dd) return dd;
+      }
       if (useRelevance) {
         var d = relevance(b) - relevance(a);
         if (d) return d;
-        return recentCompare(a, b);
+        // 관련도가 같으면 추천순 기준(대분류 순서·브랜드 순번)으로 — "스피커" 검색 첫 화면이
+        // 스피커 스탠드·케이블이 아니라 스피커가 되게. 최근순은 그대로 최근순.
+        return sort === 'featured' ? featuredCompare(a, b) : recentCompare(a, b);
       }
       if (sort === 'price_asc' || sort === 'price_desc') {
         var av = a.price && a.price.value !== null && a.price.value !== undefined ? a.price.value : null;
@@ -680,7 +696,7 @@
     var candidates = state.products.filter(function (p) {
       // 박스손상·리퍼 등 상태 태그 상품은 추천에서 제외 — 첫 화면은 정상 재고 면모.
       return p.images.length && p.price && p.price.state === 'public' &&
-        Number(p.price.value) >= FEATURED_MIN_PRICE && !splitConditionTag(p.name).tag;
+        Number(p.price.value) >= FEATURED_MIN_PRICE && !splitConditionTag(p.name).tag && !p._demoted;
     }).sort(recentCompare);
     var chosen = [], usedId = {}, usedBrand = {};
     priority.forEach(function (brand) {

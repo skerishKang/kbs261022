@@ -48,7 +48,9 @@ test('G2: 병합 치환표의 쌍은 유효하다(없어진 id 는 목록에, �
 });
 
 test('G2: 전체 상품 수와 가격 공개 수', () => {
-  assert.equal(catalog.products.length, 4026, '4546 − 병합 520');
+  assert.equal(catalog.products.length, 4002, '4546 − 병합 544(모델명 520 + 상품명 일치 24)');
+  assert.equal(Object.keys(MERGE).length, 544);
+  assert.equal(inquiry.length, 1914, '가격 문의 2458 → 1914');
   assert.equal(priced.length, 2088, '가격 공개 상품 수는 병합 전후 같다');
 });
 
