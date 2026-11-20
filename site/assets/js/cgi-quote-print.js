@@ -9,6 +9,10 @@
    - 가격 문의 품목은 "별도 견적"으로 표시하고 합계에서 뺀다.
    - 공급자 정보는 website/assets/company.js(CGI_COMPANY) 단일 출처에서 읽는다.
    - 직인 이미지는 site/config.js 의 quotePrint.sealImageUrl 설정(비어 있으면 빈 칸).
+   - 관리자 정식 견적서(quotes.html)도 같은 계산·화면을 쓴다. 그때만 쓰는 값:
+       줄의 unit(직접 입력 단가, null 이면 별도 견적)·discount_type/discount_value(금액·%),
+       renderHtml 의 official(정식 번호, 가견적 표시 없음)·validDays·customer 연락처·terms.
+     서버(backend/lib/admin-quotes.mjs computeAdminQuote)가 같은 규칙으로 다시 계산해 저장한다.
    ========================================================================== */
 (function (root) {
   'use strict';
@@ -28,24 +32,41 @@
     return { supplied: supplied, vat: t - supplied, total: t };
   }
 
+  /** 할인 금액: amount 는 줄 금액 이내, pct 는 0~100 을 1원 단위 반올림(서버 discountAmount 와 같다). */
+  function discountAmount(gross, type, value) {
+    var g = Math.max(0, Math.trunc(Number(gross) || 0));
+    var v = Number(value) || 0;
+    if (type === 'amount') return Math.min(g, Math.max(0, Math.trunc(v)));
+    if (type === 'pct') return Math.min(g, Math.max(0, Math.round((g * Math.min(100, Math.max(0, v))) / 100)));
+    return 0;
+  }
+
   function isPriced(product) {
     return !!(product && product.price && product.price.state === 'public' &&
       product.price.value !== null && product.price.value !== undefined && Number.isFinite(Number(product.price.value)));
   }
 
   /**
-   * 견적 계산. items: [{ qty, product }]. 반환: 줄(번호·단가·공급가액·부가세·합계 또는 별도 견적)과 합계.
+   * 견적 계산. items: [{ qty, product, unit?, discount_type?, discount_value?, memo? }].
+   *   unit 키가 있으면 그 값(직접 입력 단가, null=별도 견적), 없으면 상품 공개가.
+   * 반환: 줄(번호·단가·할인·공급가액·부가세·합계 또는 별도 견적)과 합계.
    */
   function computeQuote(items) {
     var lines = (items || []).map(function (x, i) {
       var qty = Math.max(1, toNonNegInt(x.qty || (x.cart && x.cart.qty)) || 1);
       var product = x.product || {};
-      if (!isPriced(product)) {
-        return { no: i + 1, product: product, qty: qty, priced: false, unit: null, supplied: null, vat: null, total: null };
+      var hasUnit = Object.prototype.hasOwnProperty.call(x, 'unit') && x.unit !== undefined;
+      var memo = x.memo || '';
+      if (hasUnit ? x.unit === null || x.unit === '' : !isPriced(product)) {
+        return { no: i + 1, product: product, qty: qty, priced: false, unit: null, gross: null, discount: 0, supplied: null, vat: null, total: null, memo: memo };
       }
-      var unit = toNonNegInt(product.price.value);
-      var s = splitTax(unit * qty);
-      return { no: i + 1, product: product, qty: qty, priced: true, unit: unit, supplied: s.supplied, vat: s.vat, total: s.total };
+      var unit = hasUnit ? Math.max(0, Math.trunc(Number(x.unit) || 0)) : toNonNegInt(product.price.value);
+      var gross = unit * qty;
+      var discount = discountAmount(gross, x.discount_type, x.discount_value);
+      var s = splitTax(gross - discount);
+      return { no: i + 1, product: product, qty: qty, priced: true, unit: unit, gross: gross, discount: discount,
+        discountType: discount ? x.discount_type : 'none', discountValue: discount ? Number(x.discount_value) : 0,
+        supplied: s.supplied, vat: s.vat, total: s.total, memo: memo };
     });
     var priced = lines.filter(function (l) { return l.priced; });
     var grand = priced.reduce(function (sum, l) { return sum + l.total; }, 0);
@@ -158,16 +179,23 @@
     var customer = opts.customer || {};
     var services = opts.services || [];
     var phone = sup.tels[0] || '';
+    var official = !!opts.official;
+    var validDays = official && Number(opts.validDays) > 0 ? Math.trunc(Number(opts.validDays)) : VALID_DAYS;
+    var terms = opts.terms || {};
+    var inquiryLabel = official ? '별도 협의' : '별도 견적';
 
     var rows = q.lines.map(function (l) {
       var p = l.product;
       var brand = brandOf(p);
       var model = p.model && p.model !== p.name ? p.model : '';
       var label = '<span class="qp-item-name">' + esc(nameOf(p)) + '</span>' +
-        ((brand || model) ? '<span class="qp-item-sub">' + esc([brand, model].filter(Boolean).join(' / ')) + '</span>' : '');
+        ((brand || model) ? '<span class="qp-item-sub">' + esc([brand, model].filter(Boolean).join(' / ')) + '</span>' : '') +
+        (l.discount ? '<span class="qp-item-sub qp-item-discount">할인 ' +
+          (l.discountType === 'pct' ? esc(String(l.discountValue)) + '% ' : '') + '−' + money(l.discount) + '원 (정가 ' + money(l.gross) + '원)</span>' : '') +
+        (l.memo ? '<span class="qp-item-sub qp-item-memo">' + esc(l.memo) + '</span>' : '');
       if (!l.priced) {
         return '<tr class="qp-inquiry"><td class="qp-c">' + l.no + '</td><td>' + label + '</td><td class="qp-c">' + l.qty + '</td>' +
-          '<td class="qp-c" colspan="4">별도 견적</td></tr>';
+          '<td class="qp-c" colspan="4">' + inquiryLabel + '</td></tr>';
       }
       return '<tr><td class="qp-c">' + l.no + '</td><td>' + label + '</td><td class="qp-c">' + l.qty + '</td>' +
         '<td class="qp-n">' + money(l.unit) + '</td><td class="qp-n">' + money(l.supplied) + '</td>' +
@@ -186,16 +214,18 @@
       '<article class="qp-sheet" aria-label="견적서">' +
         '<header class="qp-head">' +
           '<h1 class="qp-title">견 적 서</h1>' +
-          '<p class="qp-provisional">가견적 · 쇼핑몰 표시 가격 기준</p>' +
+          (official ? '' : '<p class="qp-provisional">가견적 · 쇼핑몰 표시 가격 기준</p>') +
         '</header>' +
         '<div class="qp-meta-grid">' +
           '<section class="qp-box qp-to" aria-label="받는 분">' +
             '<table class="qp-kv"><tbody>' +
-              '<tr><th>견적번호</th><td><strong data-quote-no>' + esc(opts.number) + '</strong> <span class="qp-tag">가견적</span></td></tr>' +
+              '<tr><th>견적번호</th><td><strong data-quote-no>' + esc(opts.number) + '</strong>' + (official ? '' : ' <span class="qp-tag">가견적</span>') + '</td></tr>' +
               '<tr><th>견적일</th><td>' + esc(koreanDate(now)) + '</td></tr>' +
-              '<tr><th>유효기간</th><td>' + esc(koreanDate(addDays(now, VALID_DAYS))) + '까지 (견적일로부터 ' + VALID_DAYS + '일)</td></tr>' +
+              '<tr><th>유효기간</th><td>' + esc(koreanDate(addDays(now, validDays))) + '까지 (견적일로부터 ' + validDays + '일)</td></tr>' +
               '<tr><th>받는 분</th><td class="qp-fill">' + (customer.company ? esc(customer.company) : '') + ' <span class="qp-honor">귀하</span></td></tr>' +
               '<tr><th>담당자</th><td class="qp-fill">' + (customer.name ? esc(customer.name) : '') + '</td></tr>' +
+              (official && (customer.phone || customer.email)
+                ? '<tr><th>연락처</th><td>' + esc([customer.phone, customer.email].filter(Boolean).join(' · ')) + '</td></tr>' : '') +
             '</tbody></table>' +
             '<p class="qp-greet">아래와 같이 견적합니다.</p>' +
           '</section>' +
@@ -224,10 +254,19 @@
             '<tr><th colspan="4">합계</th><td class="qp-n" data-quote-supplied>' + money(q.supplied) + '</td><td class="qp-n" data-quote-vat>' + money(q.vat) + '</td><td class="qp-n qp-strong" data-quote-total>' + money(q.total) + '</td></tr>' +
           '</tfoot>' +
         '</table>' +
-        (q.inquiryCount ? '<p class="qp-inquiry-note" data-quote-inquiry>별도 견적 품목 ' + q.inquiryCount + '건 — 위 합계에 포함되지 않았으며, 담당자가 가격을 확인한 뒤 안내합니다.</p>' : '') +
+        (q.inquiryCount ? (official
+          ? '<p class="qp-inquiry-note" data-quote-inquiry>별도 협의 품목 ' + q.inquiryCount + '건 — 위 합계에 포함되지 않았습니다.</p>'
+          : '<p class="qp-inquiry-note" data-quote-inquiry>별도 견적 품목 ' + q.inquiryCount + '건 — 위 합계에 포함되지 않았으며, 담당자가 가격을 확인한 뒤 안내합니다.</p>') : '') +
         (services.length ? '<p class="qp-inquiry-note">추가 서비스는 현장 조건 확인 후 별도 협의합니다.</p>' : '') +
+        (official && (terms.delivery || terms.payment)
+          ? '<table class="qp-kv qp-terms"><tbody>' +
+            (terms.delivery ? '<tr><th>납기</th><td>' + esc(terms.delivery) + '</td></tr>' : '') +
+            (terms.payment ? '<tr><th>결제 조건</th><td>' + esc(terms.payment) + '</td></tr>' : '') +
+            '</tbody></table>' : '') +
         '<footer class="qp-foot">' +
-          '<p>본 견적은 쇼핑몰 표시 가격 기준 가견적이며, 재고·납기·최종 금액은 담당자 확인 후 확정됩니다.</p>' +
+          (official
+            ? '<p>위 금액은 부가세 포함이며, 유효기간 안에 주문하시면 이 견적 금액으로 공급합니다.</p>'
+            : '<p>본 견적은 쇼핑몰 표시 가격 기준 가견적이며, 재고·납기·최종 금액은 담당자 확인 후 확정됩니다.</p>') +
           '<p>문의 ' + esc(phone) + (sup.email ? ' · ' + esc(sup.email) : '') + '</p>' +
         '</footer>' +
       '</article>';
@@ -238,6 +277,7 @@
     VALID_DAYS: VALID_DAYS,
     splitTax: splitTax,
     computeQuote: computeQuote,
+    discountAmount: discountAmount,
     koreanNumber: koreanNumber,
     koreanAmount: koreanAmount,
     quoteNumber: quoteNumber,

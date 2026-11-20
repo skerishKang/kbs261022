@@ -8,6 +8,7 @@
 --         (customer account system, issue #69 — isolated from PADIEM)
 -- Part 4: feedback / news (운영센터 의견 · 새 소식, migration 0012)
 --         feedback_followup / feedback_journal / admin_customer_views (migration 0014)
+-- Part 5: admin_quotes / admin_quote_items (관리자 정식 견적서, migration 0015)
 --
 -- Every statement is idempotent (CREATE TABLE IF NOT EXISTS /
 -- CREATE INDEX IF NOT EXISTS) so the whole file can be executed
@@ -438,3 +439,59 @@ CREATE TABLE IF NOT EXISTS admin_customer_views (
 );
 CREATE INDEX IF NOT EXISTS idx_admin_customer_views_viewed ON admin_customer_views(viewed_at);
 CREATE INDEX IF NOT EXISTS idx_admin_customer_views_customer ON admin_customer_views(customer_id, viewed_at);
+
+-- ------------------------------------------------------------
+-- Part 5. 관리자 정식 견적서 (migration 0015)
+-- ------------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS admin_quotes (
+  id                 INTEGER PRIMARY KEY AUTOINCREMENT,
+  quote_no           TEXT NOT NULL UNIQUE,              -- Q-YYMMDD-NNN (한국 날짜, 서버 발급)
+  status             TEXT NOT NULL DEFAULT 'draft',     -- draft(작성 중)|sent(발송)|won(수주)|canceled(취소)
+  quote_date         TEXT NOT NULL,                     -- 견적일 YYYY-MM-DD (한국 시각)
+  valid_days         INTEGER NOT NULL DEFAULT 14,
+  valid_until        TEXT NOT NULL,                     -- quote_date + valid_days
+  recipient_company  TEXT NOT NULL,
+  recipient_name     TEXT,
+  recipient_phone    TEXT,
+  recipient_email    TEXT,
+  recipient_memo     TEXT,
+  delivery_terms     TEXT,                              -- 납기 메모
+  payment_terms      TEXT,                              -- 결제 조건 메모
+  supplied_amount    INTEGER NOT NULL DEFAULT 0,
+  vat_amount         INTEGER NOT NULL DEFAULT 0,
+  total_amount       INTEGER NOT NULL DEFAULT 0,
+  item_count         INTEGER NOT NULL DEFAULT 0,
+  inquiry_count      INTEGER NOT NULL DEFAULT 0,        -- 단가 없는(별도 견적) 줄 수
+  source_quote_id    INTEGER,                           -- 복제한 원본
+  ecount_status      TEXT NOT NULL DEFAULT 'not_sent',  -- 이카운트 전송은 다음 단계(지금은 항상 not_sent)
+  created_by_id      INTEGER,
+  created_by_label   TEXT NOT NULL,
+  created_at         TEXT NOT NULL,
+  updated_at         TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_admin_quotes_created ON admin_quotes(created_at);
+CREATE INDEX IF NOT EXISTS idx_admin_quotes_status ON admin_quotes(status, created_at);
+
+CREATE TABLE IF NOT EXISTS admin_quote_items (
+  id              INTEGER PRIMARY KEY AUTOINCREMENT,
+  quote_id        INTEGER NOT NULL,
+  line_no         INTEGER NOT NULL,
+  kind            TEXT NOT NULL,                        -- product(카탈로그)|custom(직접 입력: 설치비·출장비 등)
+  product_id      TEXT,
+  name            TEXT NOT NULL,
+  brand           TEXT,
+  spec            TEXT,                                 -- 모델·규격
+  qty             INTEGER NOT NULL,
+  unit_price      INTEGER,                              -- NULL = 별도 견적(합계 제외)
+  unit_source     TEXT NOT NULL,                        -- catalog(공개가)|manual(직접 입력)|inquiry(단가 없음)
+  discount_type   TEXT NOT NULL DEFAULT 'none',         -- none|amount|pct
+  discount_value  REAL NOT NULL DEFAULT 0,
+  discount_amount INTEGER NOT NULL DEFAULT 0,
+  memo            TEXT,
+  supplied_amount INTEGER,
+  vat_amount      INTEGER,
+  total_amount    INTEGER,
+  UNIQUE (quote_id, line_no)
+);
+CREATE INDEX IF NOT EXISTS idx_admin_quote_items_quote ON admin_quote_items(quote_id, line_no);
