@@ -16,7 +16,9 @@
 //   POST   /api/orders/:id/payments/:paymentKey/cancel (admin) refund
 //   POST   /api/orders/:id/erp       (admin)   build + transmit ERP payload
 //   POST   /api/orders/:id/erp/retry (admin)   retry ERP sync
-//   POST   /api/admin/ecount/item-mappings/import (admin) import reviewed CSV approvals
+//   GET  /api/erp/outbox           (relay token) claim pending paid orders as SaleOrder material
+//   POST /api/erp/outbox/:id/result (relay token) acknowledge a transmission result
+//   POST /api/admin/ecount/item-mappings/import (admin) import reviewed CSV approvals
 //   GET    /api/admin/health         (admin)   mode readout, no secrets
 //
 // Customer accounts (issue #69) - cookie session + X-CSRF-Token, origin pinned:
@@ -109,6 +111,16 @@ import {
   parseApprovedEcountMappingCsv,
   sha256Hex,
 } from './lib/ecount-item-mapping.mjs';
+import {
+  ecountSyncMode,
+  relayEnabled,
+  relayMaterial,
+  parseRelayPayload,
+  constantTimeEquals,
+  RELAY_MODE,
+  RELAY_CLAIM_TTL_MS,
+  RELAY_MAX_ATTEMPTS,
+} from './lib/ecount-relay.mjs';
 import { PRICE_INDEX, PRICE_INDEX_META } from './data/price_index.mjs';
 import {
   AUTH_POLICY,
@@ -1481,6 +1493,7 @@ async function enqueueErpSync(db, env, order, items, force = false) {
   if (!order?.id || order.payment_status !== 'paid' || order.status !== 'paid') {
     return { status: 'not_configured', mode: ecountOrderMode(env), delivered: false, attempts: 0, live_write: false, note: 'payment_not_complete' };
   }
+  if (ecountSyncMode(env) === RELAY_MODE) return enqueueRelayErpSync(db, env, order, items, force);
 
   let approvedItemMap = null;
   if (order.status === 'paid' && order.payment_status === 'paid' && ecountOrderMode(env) !== 'disabled') {
@@ -1589,7 +1602,228 @@ async function enqueueErpSync(db, env, order, items, force = false) {
 // ERP persistence and transport failures must never turn a confirmed payment into a failed response.
 async function safeEnqueueErpSync(db, env, order, items) {
   try { return await enqueueErpSync(db, env, order, items); }
-  catch { return { status: 'failed', mode: ecountOrderMode(env), delivered: false, attempts: 0, live_write: false, note: 'erp_queue_unavailable' }; }
+  catch { return { status: 'failed', mode: ecountSyncMode(env), delivered: false, attempts: 0, live_write: false, note: 'erp_queue_unavailable' }; }
+}
+
+function isRelayAuthorized(request, env) {
+  const expected = String(env.ERP_RELAY_TOKEN || '');
+  if (!expected) return false;
+  return constantTimeEquals(request.headers.get('X-ERP-Relay-Token') || '', expected);
+}
+
+async function recordRelayQueued(db, order, id) {
+  const ts = nowIso();
+  await db.batch([
+    db.prepare("UPDATE orders SET erp_status = 'pending', erp_sent_at = NULL, updated_at = ? WHERE id = ?").bind(ts, order.id),
+    db.prepare('INSERT INTO order_events (order_id, type, actor, from_status, to_status, meta, error, created_at) VALUES (?,?,?,?,?,?,?,?)')
+      .bind(order.id, 'erp_relay_queued', 'erp', order.status, null,
+        JSON.stringify({ adapter: ECOUNT_ORDER_ADAPTER, mode: RELAY_MODE, erp_sync_id: id }), null, ts),
+  ]);
+}
+
+async function recordRelayResult(db, orderId, status, slipNo, errorText) {
+  const ts = nowIso();
+  const eventType = status === 'sent' ? 'erp_relay_sent' : status === 'unknown' ? 'erp_relay_unknown' : 'erp_relay_failed';
+  await db.batch([
+    db.prepare('UPDATE orders SET erp_status = ?, erp_sent_at = ?, updated_at = ? WHERE id = ?')
+      .bind(status, status === 'sent' ? ts : null, ts, orderId),
+    db.prepare('INSERT INTO order_events (order_id, type, actor, from_status, to_status, meta, error, created_at) VALUES (?,?,?,?,?,?,?,?)')
+      .bind(orderId, eventType, 'erp', null, null,
+        JSON.stringify({ adapter: ECOUNT_ORDER_ADAPTER, mode: RELAY_MODE, slip_no: slipNo || null }), errorText || null, ts),
+  ]);
+}
+
+async function enqueueRelayErpSync(db, env, order, items, force = false) {
+  const refused = (note) => ({ status: 'not_configured', mode: RELAY_MODE, delivered: false, attempts: 0, live_write: false, note });
+  if (order.payment_status !== 'paid' || order.status !== 'paid') return refused('payment_not_complete');
+  if (!relayEnabled(env)) return refused('switch_off');
+
+  const existing = await latestErpSyncForOrder(db, order.id);
+  if (existing && ['sent', 'pending'].includes(existing.status)) return erpSyncSummary(existing, { idempotent: true });
+  if (['unknown', 'failed'].includes(existing?.status) && !force) return erpSyncSummary(existing, { idempotent: true });
+
+  const storedMap = await loadApprovedEcountItemMap(db, items);
+  const material = relayMaterial({ order, items, approvedItemMap: storedMap, env });
+  const note = material.ready ? null
+    : material.reason === 'product_mapping_missing'
+      ? `product_mapping_missing:${material.missingProductIds.join(',')}`
+      : `not_configured:${material.reason}`;
+  // retry_gen: 운영자가 이카운트에 전표가 없음을 확인하고 unknown 을 재시도할 때만 올라간다.
+  // 중계 장부는 같은 dedupe_key 의 sending/unknown 을 막지만, 더 높은 retry_gen 은 한 번 보낸다.
+  const priorGen = toNonNegInt(parseRelayPayload(existing?.payload)?.relay?.retry_gen, 0);
+  const retryGen = existing?.status === 'unknown' && force ? priorGen + 1 : priorGen;
+  material.payload.relay = { ...material.payload.relay, retry_gen: retryGen };
+  const payload = JSON.stringify(material.payload);
+  const ts = nowIso();
+  const dedupeKey = material.payload.dedupe_key;
+
+  if (existing) {
+    await db.prepare(
+      `UPDATE erp_sync SET adapter = ?, mode = 'relay', action = ?, dedupe_key = ?, payload = ?, status = 'pending',
+         attempts = 0, last_error = ?, updated_at = ? WHERE id = ?`
+    ).bind(ECOUNT_ORDER_ADAPTER, ECOUNT_ORDER_ACTION, dedupeKey, payload, note, ts, existing.id).run();
+    const row = await db.prepare('SELECT * FROM erp_sync WHERE id = ?').bind(existing.id).first();
+    await recordRelayQueued(db, order, existing.id);
+    return erpSyncSummary(row, { note });
+  }
+
+  const inserted = await db.prepare(
+    `INSERT OR IGNORE INTO erp_sync (order_id, adapter, mode, action, dedupe_key, payload, status, attempts, last_error, created_at, updated_at)
+     VALUES (?, ?, 'relay', ?, ?, ?, 'pending', 0, ?, ?, ?)`
+  ).bind(order.id, ECOUNT_ORDER_ADAPTER, ECOUNT_ORDER_ACTION, dedupeKey, payload, note, ts, ts).run();
+  if (Number(inserted?.meta?.changes || 0) !== 1) return erpSyncSummary(await latestErpSyncForOrder(db, order.id), { idempotent: true });
+  const row = await db.prepare('SELECT * FROM erp_sync WHERE dedupe_key = ?').bind(dedupeKey).first();
+  await recordRelayQueued(db, order, row.id);
+  return erpSyncSummary(row, { note });
+}
+
+async function handleErpOutbox(url, request, env) {
+  if (!isRelayAuthorized(request, env)) return unauthorized();
+  const dryRun = request.headers.get('X-ERP-Dry-Run') === '1' || url.searchParams.get('dry') === '1';
+  const limit = Math.min(100, Math.max(1, toNonNegInt(url.searchParams.get('limit'), 20) || 20));
+  const { results } = await env.DB.prepare(
+    "SELECT * FROM erp_sync WHERE adapter = ? AND mode = 'relay' AND status = 'pending' ORDER BY id LIMIT ?"
+  ).bind(ECOUNT_ORDER_ADAPTER, limit).all();
+
+  const items = [];
+  const held = [];
+  const now = Date.now();
+  for (const row of results || []) {
+    const payload = parseRelayPayload(row.payload);
+    const meta = payload?.relay;
+    if (!meta) continue;
+    const claimedAt = Date.parse(meta.claimed_at || '');
+    if (!dryRun && Number.isFinite(claimedAt) && now - claimedAt < RELAY_CLAIM_TTL_MS) continue;
+
+    const map = await loadApprovedEcountItemMap(env.DB, meta.items || []);
+    const material = relayMaterial({
+      order: meta.order,
+      items: meta.items,
+      approvedItemMap: map,
+      env: { ECOUNT_DEFAULT_CUST_CODE: meta.cust, ECOUNT_DEFAULT_WH_CD: meta.wh_cd },
+    });
+    if (!material.ready) {
+      held.push({ id: row.id, order_id: row.order_id, reason: material.reason, product_ids: material.missingProductIds });
+      const holdNote = material.reason === 'product_mapping_missing'
+        ? `product_mapping_missing:${material.missingProductIds.join(',')}`
+        : `not_configured:${material.reason}`;
+      if (row.last_error !== holdNote) {
+        await env.DB.prepare("UPDATE erp_sync SET last_error = ?, updated_at = ? WHERE id = ? AND status = 'pending'")
+          .bind(holdNote, nowIso(), row.id).run();
+      }
+      continue;
+    }
+
+    const retryGen = toNonNegInt(meta.retry_gen, 0);
+    const next = { ...material.payload, relay: { ...material.payload.relay, retry_gen: retryGen, claimed_at: dryRun ? null : nowIso() } };
+    if (!dryRun) {
+      const updated = await env.DB.prepare("UPDATE erp_sync SET payload = ?, last_error = NULL, updated_at = ? WHERE id = ? AND status = 'pending'")
+        .bind(JSON.stringify(next), nowIso(), row.id).run();
+      if (Number(updated?.meta?.changes || 0) !== 1) continue;
+    }
+    items.push({
+      id: row.id,
+      order_id: row.order_id,
+      dedupe_key: next.dedupe_key || null,
+      retry_gen: retryGen,
+      attempts: toNonNegInt(row.attempts, 0),
+      cust: next.relay.cust,
+      wh_cd: next.relay.wh_cd,
+      lines: next.lines,
+      body: next.body,
+      note: next.note,
+    });
+  }
+  return json({ items, held, limit, dry_run: dryRun });
+}
+
+// unknown·rejected 회신마다 운영 알림(메일+텔레그램). 알림 실패가 회신 처리를 깨지 않는다.
+// subject 에 erp_sync id·종류·순번을 넣어 같은 사건은 한 번만, 다음 시도는 다시 알린다.
+async function notifyErpSyncAttention(env, row, { state, error, seq = 0, attempts = null, final = false }) {
+  try {
+    await notifyOps('erp_sync_attention', {
+      env,
+      subjectId: `${row.order_id}#erp${row.id}-${state}-${seq}`,
+      orderId: row.order_id,
+      erpSyncId: row.id,
+      state,
+      error,
+      attempts,
+      final,
+    });
+  } catch (e) {
+    console.error('[notify] erp_sync_attention failed', row.order_id, String((e && e.message) || e).slice(0, 200));
+  }
+}
+
+async function handleErpOutboxResult(idRaw, request, env) {
+  if (!isRelayAuthorized(request, env)) return unauthorized();
+  const id = Number(idRaw);
+  if (!Number.isInteger(id) || id <= 0) return badRequest('invalid id');
+  const parsed = await readJson(request);
+  if (parsed.error) return badRequest(parsed.error);
+  const body = parsed.body || {};
+  if (typeof body.ok !== 'boolean') return badRequest('ok must be boolean');
+  const slipNo = body.slipNo == null ? null : (String(body.slipNo).trim().slice(0, 80) || null);
+  const errorText = body.error == null ? null : (String(body.error).trim().slice(0, 500) || null);
+
+  const row = await env.DB.prepare("SELECT * FROM erp_sync WHERE id = ? AND adapter = ? AND mode = 'relay'")
+    .bind(id, ECOUNT_ORDER_ADAPTER).first();
+  if (!row) return notFound();
+  const manualSent = row.status === 'unknown' && body.ok === true;
+  if (row.status !== 'pending' && !manualSent) {
+    return json({ ok: true, idempotent: true, id, status: row.status, attempts: toNonNegInt(row.attempts, 0) });
+  }
+
+  const payload = parseRelayPayload(row.payload) || {};
+  const ts = nowIso();
+  if (body.ok) {
+    const next = { ...payload, relay: { ...(payload.relay || {}), slip_no: slipNo, claimed_at: null } };
+    const updated = await env.DB.prepare("UPDATE erp_sync SET payload = ?, status = 'sent', last_error = NULL, updated_at = ? WHERE id = ? AND status IN ('pending','unknown')")
+      .bind(JSON.stringify(next), ts, id).run();
+    if (Number(updated?.meta?.changes || 0) !== 1) {
+      const current = await env.DB.prepare('SELECT * FROM erp_sync WHERE id = ?').bind(id).first();
+      return json({ ok: true, idempotent: true, id, status: current?.status || 'sent', attempts: toNonNegInt(current?.attempts, 0) });
+    }
+    await recordRelayResult(env.DB, row.order_id, 'sent', slipNo, null);
+    return json({ ok: true, id, status: 'sent', slip_no: slipNo });
+  }
+
+  if (body.pending === true) {
+    // 이카운트가 처리하지 않은 것이 확실한 경우(rate_limited·세션 만료 재시도 실패·로그인 실패):
+    // 시도 횟수를 쓰지 않고 claim 만 풀어 다음 주기에 다시 나가게 한다.
+    const next = { ...payload, relay: { ...(payload.relay || {}), claimed_at: null, last_result: { ok: false, pending: true, error: errorText } } };
+    await env.DB.prepare("UPDATE erp_sync SET payload = ?, last_error = ?, updated_at = ? WHERE id = ? AND status = 'pending'")
+      .bind(JSON.stringify(next), errorText || 'relay_deferred', ts, id).run();
+    return json({ ok: true, id, status: 'pending', attempts: toNonNegInt(row.attempts, 0), deferred: true });
+  }
+
+  if (body.unknown === true) {
+    const next = { ...payload, relay: { ...(payload.relay || {}), claimed_at: null, last_result: { ok: false, unknown: true, error: errorText } } };
+    const updated = await env.DB.prepare("UPDATE erp_sync SET payload = ?, status = 'unknown', last_error = ?, updated_at = ? WHERE id = ? AND status = 'pending'")
+      .bind(JSON.stringify(next), errorText || 'relay_unknown', ts, id).run();
+    const current = await env.DB.prepare('SELECT * FROM erp_sync WHERE id = ?').bind(id).first();
+    if (Number(updated?.meta?.changes || 0) === 1) {
+      await recordRelayResult(env.DB, row.order_id, 'unknown', null, errorText || 'relay_unknown');
+      await notifyErpSyncAttention(env, row, {
+        state: 'unknown', error: errorText || 'relay_unknown', seq: toNonNegInt(payload?.relay?.retry_gen, 0),
+      });
+    }
+    return json({ ok: true, id, status: current?.status || 'unknown', attempts: toNonNegInt(current?.attempts, 0) });
+  }
+
+  const attempts = toNonNegInt(row.attempts, 0) + 1;
+  const finalStatus = attempts >= RELAY_MAX_ATTEMPTS ? 'failed' : 'pending';
+  const next = { ...payload, relay: { ...(payload.relay || {}), claimed_at: null, last_result: { ok: false, error: errorText } } };
+  const updated = await env.DB.prepare("UPDATE erp_sync SET payload = ?, status = ?, attempts = ?, last_error = ?, updated_at = ? WHERE id = ? AND status = 'pending'")
+    .bind(JSON.stringify(next), finalStatus, attempts, errorText || 'relay_failed', ts, id).run();
+  if (Number(updated?.meta?.changes || 0) === 1) {
+    if (finalStatus === 'failed') await recordRelayResult(env.DB, row.order_id, 'failed', null, errorText);
+    await notifyErpSyncAttention(env, row, {
+      state: 'rejected', error: errorText || 'relay_failed', seq: attempts, attempts, final: finalStatus === 'failed',
+    });
+  }
+  return json({ ok: true, id, status: finalStatus, attempts });
 }
 
 // ---------------------------------------------------------------------------
@@ -3107,6 +3341,16 @@ const worker = {
       return requireMember(request, env.DB, env);
     }
 
+    // ---------------- ERP outbox (relay token, not admin token) ----------------
+
+    if (url.pathname === '/api/erp/outbox' && request.method === 'GET') {
+      return handleErpOutbox(url, request, env);
+    }
+    const relayResultMatch = url.pathname.match(/^\/api\/erp\/outbox\/([^/]+)\/result$/);
+    if (relayResultMatch && request.method === 'POST') {
+      return handleErpOutboxResult(decodeURIComponent(relayResultMatch[1]), request, env);
+    }
+
     // ---------------- existing quote routes ----------------
 
     if (url.pathname === '/api/quotes' && request.method === 'POST') {
@@ -3414,7 +3658,9 @@ const worker = {
         erp: {
           adapter: ECOUNT_ORDER_ADAPTER,
           mode: ecountOrderMode(env),
-          enabled: String(env.ECOUNT_ORDER_SYNC_ENABLED || 'NO').toUpperCase() === 'YES',
+          sync_mode: ecountSyncMode(env),
+          enabled: relayEnabled(env),
+          relay_token_configured: !!String(env.ERP_RELAY_TOKEN || '').trim(),
           live_write: ecountOrderMode(env) === 'prod',
         },
         shipping_fee_default: toNonNegInt(env.SHIPPING_FEE_DEFAULT, 0),

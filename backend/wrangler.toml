@@ -33,6 +33,7 @@ secret_name = "B66_ALERT_RESEND_API_KEY"
 #   NICEPAY_TEST_CLIENT_KEY / NICEPAY_TEST_SECRET_KEY (NICEPAY test store only)
 #   B66_ALERT_RESEND_API_KEY  Resend API key (from Secrets Store, issue #79)
 #   SENDGRID_API_KEY          SendGrid API key for email delivery (issue #72)
+#   ERP_RELAY_TOKEN           shared secret for /api/erp/outbox* (relay PC only)
 #
 # Optional variables (defaults are safe):
 #   PG_PROVIDER               nicepay | tosspayments (default nicepay)
@@ -43,6 +44,7 @@ secret_name = "B66_ALERT_RESEND_API_KEY"
 #   ORDER_NOTIFY_TELEGRAM_CHAT_IDS  comma-separated Telegram chat IDs for ops alerts
 #   ORDER_NOTIFY_EVENTS       comma-separated event allowlist (default: all)
 #   ECOUNT_ORDER_SYNC_ENABLED "NO" | "YES"                (default "NO": order sync stays off)
+#   ECOUNT_SYNC_MODE          "relay" | "direct"          (default "relay": Worker queues, PC transmits)
 #   ECOUNT_TARGET             "test" | "prod"             (default "test")
 #   ERP_LIVE_WRITE            legacy OAPI client guard; does not enable order sync
 #   ALLOWED_ORIGINS           comma separated extra origins for CORS
@@ -84,6 +86,7 @@ CORS_ALLOWED_ORIGINS = "https://cgishop.pages.dev"
 ERP_LIVE_WRITE = "NO"
 ERP_MODE = "test"
 ECOUNT_ORDER_SYNC_ENABLED = "NO"
+ECOUNT_SYNC_MODE = "relay"
 ECOUNT_TARGET = "test"
 ECOUNT_DEFAULT_CUST_CODE = ""
 ECOUNT_DEFAULT_WH_CD = ""

@@ -18,6 +18,7 @@ export function makeEnv(overrides = {}) {
     PG_PROVIDER_MODE: 'mock',
     ERP_LIVE_WRITE: 'NO',
     ERP_MODE: 'test',
+    ECOUNT_SYNC_MODE: 'direct',
     SHIPPING_FEE_DEFAULT: '0',
     CORS_ALLOWED_ORIGINS: ORIGIN,
     ...overrides,

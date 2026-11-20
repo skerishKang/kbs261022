@@ -7,6 +7,7 @@ export const OPS_EVENTS = Object.freeze({
   SIGNUP: 'signup',
   INQUIRY_RECEIVED: 'inquiry_received',
   PAYMENT_FAILED: 'payment_failed',
+  ERP_SYNC_ATTENTION: 'erp_sync_attention',
 });
 
 const WINDOW_MS = 30 * 60 * 1000;
@@ -134,6 +135,20 @@ function buildMessages(event, payload, env) {
       subject: `[CGI 쇼핑몰] 결제 실패 ${id} ${code}`,
       text: `주문번호: ${id}\n실패 사유 코드: ${code}\n사유: ${clip(payload.reason || '', 200)}\n주문 상세: ${detailUrl}`,
       telegram: `[결제 실패] ${id} ${code}\n${detailUrl}`,
+    };
+  }
+  if (event === OPS_EVENTS.ERP_SYNC_ATTENTION) {
+    const orderId = String(payload.orderId || id);
+    const unknown = payload.state === 'unknown';
+    const label = unknown ? '전송 여부 불명(UNKNOWN)' : '이카운트 거절';
+    const action = unknown
+      ? '이카운트 판매조회(주문서)에서 이 주문을 확인하세요. 있으면 중계 PC에서 --mark-sent 로 결과를 회신하고, 없으면 관리자 화면에서 ERP 재시도를 누르세요. 자동 재전송은 하지 않습니다.'
+      : `거절 사유를 확인하세요. 시도 ${payload.attempts ?? '-'}회${payload.final ? ' — 자동 재시도 종료' : ', 다음 주기에 다시 보냅니다'}.`;
+    const adminUrl = payload.adminUrl || orderAdminUrl(env, orderId);
+    return {
+      subject: `[CGI 쇼핑몰] 이카운트 주문서 확인 필요 ${orderId} (${unknown ? 'UNKNOWN' : '거절'})`,
+      text: `주문번호: ${orderId}\n중계 항목: ${payload.erpSyncId ?? '-'}\n상태: ${label}\n사유: ${clip(payload.error || '-', 300)}\n할 일: ${action}\n관리자 주문 화면: ${adminUrl}`,
+      telegram: `[이카운트 확인 필요] ${orderId} ${unknown ? 'UNKNOWN' : '거절'}\n${clip(payload.error || '-', 160)}\n${adminUrl}`,
     };
   }
   return null;
