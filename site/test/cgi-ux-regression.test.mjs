@@ -33,8 +33,11 @@ test('product condition and fulfillment prefixes are rendered as small badges', 
   assert.match(js, /\|\\\(\(\[\^\)\]\+\)\\\)\)/);
 });
 
-test('cards keep useful inquiry badges and omit the public-sale badge', () => {
-  assert.match(js, /badge inquiry/);
+test('cards show 가격 문의 once (price line) and omit the public-sale badge', () => {
+  // 명예회원 1회차: 사진 위 배지와 아래 가격 줄에 '가격 문의'가 두 번 보였다 → 가격 줄 한 번만.
+  const card = js.slice(js.indexOf('function cardHtml'), js.indexOf('function gridHtml'));
+  assert.doesNotMatch(card, /badge inquiry/);
+  assert.match(card, /'<span class="price ' \+ price\.cls \+ '">' \+ esc\(price\.text\) \+ '<\/span>'/);
   assert.doesNotMatch(js, /class="badge">공개 판매가/);
 });
 

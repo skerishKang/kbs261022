@@ -846,6 +846,26 @@ p:last-child { margin-bottom: 0; }
   .footer-links { grid-column: 1 / -1; }
 }
 
+/* PC 머리글(≥900px): 검색칸이 눌려 검색 버튼이 장바구니·메뉴 아래로 깔리던 문제
+   (960~1,200px, 로그인 시 1,440px 에서도 — 검색 클릭이 견적 목록·메뉴로 감).
+   검색칸은 내용 폭(입력+버튼) 아래로 줄지 않고, 한 줄에 다 안 들어가면 겹치는 대신
+   메뉴가 다음 줄로 내려간다. 순서는 늘 로고 · 검색 · 장바구니 · 메뉴. */
+@media (min-width: 900px) {
+  .header-inner { flex-wrap: wrap; row-gap: 0; }
+  .search-form { flex: 1 1 240px; min-width: 240px; }
+  .search-form input { min-width: 0; }
+  /* 윗줄 높이를 머리글 높이로 고정해 한 줄일 때와 같은 자리에 놓이게 한다 */
+  .brand { min-height: var(--header-h); }
+}
+/* 검색칸이 있는 머리글(쇼핑몰 본 화면)만: 900~1259px 는 손님 메뉴도 한 줄에 안 들어가므로 처음부터 두 줄:
+   윗줄 로고 · 검색 · 장바구니, 아랫줄 메뉴(높이를 줄여 머리글이 너무 커지지 않게). */
+@media (min-width: 900px) and (max-width: 1259px) {
+  .header-inner.has-search { column-gap: 14px; }
+  .has-search .header-nav { flex: 1 1 100%; justify-content: flex-end; flex-wrap: wrap; margin-left: 0; padding-bottom: 6px; }
+  .has-search .header-nav a { padding: 8px 8px 7px; }
+  .has-search .header-nav .header-auth .btn { min-height: 34px; }
+}
+
 @media (max-width: 899px) {
   :root { --header-h: 60px; }
   .header-inner { flex-wrap: wrap; padding: 10px 16px; gap: 10px; }
@@ -921,16 +941,18 @@ p:last-child { margin-bottom: 0; }
   .cart-table tbody { display: grid; gap: 10px; }
   .cart-table tr {
     position: relative;
-    display: grid; grid-template-columns: minmax(0, 1fr) auto;
-    grid-template-areas: "prod prod" "price qty";
+    display: grid; grid-template-columns: minmax(0, 1fr) auto auto;
+    grid-template-areas: "prod prod remove" "price qty qty";
     gap: 10px 12px; padding: 13px;
     border: 1px solid var(--cgi-line); border-radius: var(--radius); background: #fff;
   }
   .cart-table td { display: block; padding: 0; border: 0; }
-  .cart-table .c-product { grid-area: prod; padding-right: 52px; }
+  /* 상품명이 삭제 버튼에 가리지 않게: 삭제 버튼을 겹쳐 띄우지 않고 오른쪽 칸에 둔다.
+     상품명은 남은 폭 안에서 줄바꿈한다. */
+  .cart-table .c-product { grid-area: prod; min-width: 0; }
   .cart-table .c-price { grid-area: price; display: flex; align-items: center; }
   .cart-table .c-qty { grid-area: qty; justify-self: end; }
-  .cart-table .c-remove { grid-area: remove; position: absolute; top: 10px; right: 10px; }
+  .cart-table .c-remove { grid-area: remove; align-self: start; justify-self: end; }
   .cell-label { display: inline; }
   .cart-product { gap: 10px; align-items: flex-start; }
   .cart-thumb { width: 52px; height: 52px; }
@@ -1390,3 +1412,23 @@ p:last-child { margin-bottom: 0; }
 .duplicate-order-notice p { margin: 0 0 8px; overflow-wrap: anywhere; }
 .duplicate-order-notice p:last-child { margin-bottom: 0; }
 .duplicate-order-notice .btn { white-space: normal; max-width: 100%; }
+
+/* 금액 옆 "부가세 포함" 표시 (견적 목록·주문 화면) */
+.vat-note { display: inline-block; margin-left: 4px; font-size: 12px; font-weight: 600; color: var(--cgi-muted); white-space: nowrap; vertical-align: middle; }
+.c-price .vat-note { display: block; margin: 2px 0 0; }
+th .vat-note { margin-left: 2px; font-size: 12px; }
+@media (max-width: 719px) {
+  .cart-table .c-price { flex-wrap: wrap; column-gap: 4px; }
+  .c-price .vat-note { display: inline-block; margin: 0; }
+}
+
+/* 안내 문서(교환·반품·환불): 메인 쇼핑몰 머리글·색 안에서 읽기 좋은 본문 카드 */
+.legal-article {
+  max-width: 920px; background: var(--cgi-card, #fff); border: 1px solid var(--cgi-line); border-radius: var(--radius);
+  padding: 28px 32px; color: var(--cgi-ink); font-size: 14.5px; line-height: 1.8;
+}
+.legal-article h2 { font-size: 17px; margin: 1.8em 0 .6em; padding-left: 12px; border-left: 4px solid var(--cgi-primary); }
+.legal-article p, .legal-article li { word-break: keep-all; overflow-wrap: anywhere; }
+.legal-article a { color: var(--cgi-primary-dark); }
+.legal-article .note { padding: 14px 18px; background: var(--cgi-primary-soft); border-radius: var(--radius-sm); }
+@media (max-width: 639px) { .legal-article { padding: 20px 16px; font-size: 14px; } }

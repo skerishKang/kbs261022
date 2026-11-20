@@ -159,17 +159,28 @@
       return;
     }
     if (!cartPayable()) {
+      // 안내 문장 아래에는 실제로 판매가가 미확정인 상품만 나열한다. 가격이 확정된 상품은
+      // 따로 "함께 담긴 상품"으로 보여 준다(확정 상품까지 미확정 목록에 섞여 보이던 문제).
+      var pending = items.filter(function (x) { return !isPublicPrice(x.product); });
+      var priced = items.filter(function (x) { return isPublicPrice(x.product); });
       app.innerHTML = shell(
         '<div class="page-head"><p class="page-eyebrow">CHECKOUT</p><h1>주문 접수</h1></div>' +
         '<div class="quote-branch">' +
           '<h2>이 장바구니는 결제 대신 견적 요청으로 접수됩니다</h2>' +
           '<p>아래 상품은 판매가가 미확정 상태라서 온라인 결제를 할 수 없습니다. 견적 요청을 보내면 담당자가 가격을 확인 후 안내해 드립니다.</p>' +
-          '<table class="order-items"><thead><tr><th>상품</th><th>수량</th><th>가격</th></tr></thead><tbody>' +
-          items.map(function (x) {
-            return '<tr><td>' + esc(x.product.name) + '</td><td>' + x.cart.qty + '</td><td>' +
-              (isPublicPrice(x.product) ? money(x.product.price.value) : '<span class="badge inquiry">가격 문의</span>') + '</td></tr>';
+          '<table class="order-items order-items-pending"><thead><tr><th>판매가 미확정 상품</th><th>수량</th><th>가격</th></tr></thead><tbody>' +
+          pending.map(function (x) {
+            return '<tr><td>' + esc(x.product.name) + '</td><td>' + x.cart.qty + '</td><td><span class="badge inquiry">가격 문의</span></td></tr>';
           }).join('') +
           '</tbody></table>' +
+          (priced.length
+            ? '<p class="muted">함께 담긴 아래 상품은 가격이 확정되어 있으며, 같은 견적 요청에 함께 접수됩니다.</p>' +
+              '<table class="order-items order-items-priced"><thead><tr><th>함께 담긴 상품</th><th>수량</th><th>가격 <small class="vat-note">부가세 포함</small></th></tr></thead><tbody>' +
+              priced.map(function (x) {
+                return '<tr><td>' + esc(x.product.name) + '</td><td>' + x.cart.qty + '</td><td>' + money(x.product.price.value) + '</td></tr>';
+              }).join('') +
+              '</tbody></table>'
+            : '') +
         '</div>' +
         '<p><a class="btn btn-primary" href="#/quote-cart">견적 요청으로 접수하기</a> <a class="btn btn-secondary" href="#/products">상품 더 담기</a></p>'
       );
@@ -192,13 +203,13 @@
           '</fieldset>' +
           '<aside class="order-summary">' +
             '<h2>주문 내역</h2>' +
-            '<table class="order-items"><thead><tr><th>상품</th><th>수량</th><th>단가</th><th>금액</th></tr></thead><tbody>' +
+            '<table class="order-items"><thead><tr><th>상품</th><th>수량</th><th>단가 <small class="vat-note">부가세 포함</small></th><th>금액 <small class="vat-note">부가세 포함</small></th></tr></thead><tbody>' +
             items.map(function (x) {
               var p = x.product, unit = Number(p.price.value);
               return '<tr><td>' + esc(p.name) + '<small>' + esc(p.brand_norm || p.brand || '') + '</small></td><td>' + x.cart.qty + '</td><td>' + money(unit) + '</td><td>' + money(unit * x.cart.qty) + '</td></tr>';
             }).join('') +
             '</tbody></table>' +
-            '<p class="order-summary-note">금액은 서버에서 카탈로그 가격 기준으로 재계산됩니다. 고객님이 입력한 금액은 무시됩니다.</p>' +
+            '<p class="order-summary-note">표시된 금액은 결제할 때 다시 확인됩니다. 모든 금액은 부가세 포함입니다.</p>' +
             '<div id="orderTotal" class="order-sum-lines"></div>' +
           '</aside>' +
         '</div>' +
@@ -224,10 +235,10 @@
       var host = app.querySelector('#orderTotal');
       if (!host) return;
       host.innerHTML =
-        '<div class="order-sum-line"><span>상품 합계</span><strong>' + money(itemsTotal) + '</strong></div>' +
+        '<div class="order-sum-line"><span>상품 합계 <small class="vat-note">부가세 포함</small></span><strong>' + money(itemsTotal) + '</strong></div>' +
         '<div class="order-sum-line"><span>배송비</span><strong>' +
           (shippingFee === null ? '주문 생성 시 확정' : (shippingFee > 0 ? money(shippingFee) : '무료')) + '</strong></div>' +
-        '<div class="order-sum-line order-sum-total"><span>총액</span><strong>' + money(itemsTotal + (shippingFee || 0)) + '</strong></div>';
+        '<div class="order-sum-line order-sum-total"><span>총액 <small class="vat-note">부가세 포함</small></span><strong>' + money(itemsTotal + (shippingFee || 0)) + '</strong></div>';
     }
     renderOrderTotals();
     api('GET', '/api/shop/config').then(function (res) {
@@ -476,7 +487,7 @@
       '<div class="payment-card">' +
         '<div class="payment-order">' +
           '<p><strong>' + esc(order.id) + '</strong></p>' +
-          '<p class="order-total">주문 금액 <strong>' + money(order.totals.total_amount) + '</strong></p>' +
+          '<p class="order-total">주문 금액 <strong>' + money(order.totals.total_amount) + '</strong> <small class="vat-note">부가세 포함</small></p>' +
           '<p class="muted">상품 ' + money(order.totals.item_total) + ' + 배송비 ' + money(order.totals.shipping_fee) +
             ' (공급가 ' + money(order.totals.supplied_amount) + ' + 부가세 ' + money(order.totals.vat_amount) + ' 포함)</p>' +
         '</div>' +
