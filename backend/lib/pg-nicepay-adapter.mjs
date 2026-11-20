@@ -18,6 +18,7 @@ import {
   NICEPAY_PROVIDER,
   approvePayload,
   basicAuth,
+  cancelOrderIdFor,
   cancelPayload,
   querySignature,
   toCgiOutcome,
@@ -312,10 +313,11 @@ export function createNicepayAdapter({
       return toCgiOutcome({ ...tx, tid: tx.tid || paymentKey, orderId: tx.orderId || orderId }, { orderAmount: amount });
     },
 
-    async cancel({ paymentKey, orderId, cancelAmount, cancelReason, refundReceiveAccount, idempotencyKey }) {
+    async cancel({ paymentKey, orderId, cancelAmount, cancelReason, refundReceiveAccount, idempotencyKey, cancelOrderId }) {
       const ediDate = isoNow(nowFn());
+      const requestOrderId = cancelOrderId || cancelOrderIdFor({ orderId, idempotencyKey, now: nowFn() });
       const body = cancelPayload({
-        orderId,
+        orderId: requestOrderId,
         // the worker speaks Toss's field name; the endpoint's is `reason`
         reason: cancelReason || '고객 요청에 의한 취소',
         ...(cancelAmount ? { cancelAmount } : {}),

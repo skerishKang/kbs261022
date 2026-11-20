@@ -223,6 +223,20 @@ export function cancelPayload({ orderId, reason, cancelAmount, refundAccount }) 
   return body;
 }
 
+export function cancelOrderIdFor({ orderId, idempotencyKey = '', sequence = 1, now = new Date() }) {
+  const base = String(orderId ?? '')
+    .replace(/[^A-Za-z0-9-]/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 30) || 'CANCEL';
+  const seq = Math.max(1, Math.trunc(Number(sequence)) || 1);
+  const stamp = now instanceof Date
+    ? now.getTime().toString(36)
+    : String(now).replace(/[^A-Za-z0-9]/g, '').slice(0, 8);
+  const digest = createHash('sha256').update(String(idempotencyKey)).digest('hex').slice(0, 8);
+  return `${base}-C${seq}-${stamp}-${digest}`.replace(/[^A-Za-z0-9-]/g, '').slice(0, 64).replace(/-+$/, '');
+}
+
 /**
  * The refund guard the worker already enforces (Math.min(requested, refundable))
  * is expressed here against NICE's own fields so a partial cancel cannot exceed

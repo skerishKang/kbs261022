@@ -70,7 +70,7 @@ import {
   createNicepayAdapter,
   createNicepayMockAdapter,
 } from './lib/pg-nicepay-adapter.mjs';
-import { cancelAmountOf } from './lib/pg-nicepay.mjs';
+import { cancelAmountOf, cancelOrderIdFor } from './lib/pg-nicepay.mjs';
 import { resolveNicepayEnv } from './lib/pg-nicepay-env.mjs';
 import { erpCodeFor } from './lib/erp.mjs';
 import {
@@ -1148,6 +1148,23 @@ async function confirmQuotePrices(db, env, order, body) {
   };
 }
 
+async function resolveCancelOrderId(db, { order, idempotencyKey }, now = new Date()) {
+  const prior = await db.prepare(
+    "SELECT meta FROM order_events WHERE order_id = ? AND type IN ('payment_cancelled','payment_cancel_failed') AND json_extract(meta, '$.cancel_idempotency_key') = ? ORDER BY created_at DESC LIMIT 1"
+  ).bind(order.id, idempotencyKey).first();
+  if (prior) {
+    try {
+      const stored = JSON.parse(prior.meta || '{}').cancel_order_id;
+      if (stored) return stored;
+    } catch (e) {}
+  }
+  const used = await db.prepare(
+    "SELECT COUNT(*) AS n FROM order_events WHERE order_id = ? AND type IN ('payment_cancelled','payment_cancel_failed')"
+  ).bind(order.id).first();
+  const sequence = (Number(used?.n) || 0) + 1;
+  return cancelOrderIdFor({ orderId: order.pg_order_id || order.id, idempotencyKey, sequence, now });
+}
+
 /** Admin refund / payment void. */
 async function cancelPayment(db, env, order, paymentKey, body, pg) {
   const payment = await db.prepare('SELECT * FROM payments WHERE payment_key = ? AND order_id = ?').bind(paymentKey, order.id).first();
@@ -1171,6 +1188,8 @@ async function cancelPayment(db, env, order, paymentKey, body, pg) {
     }
   }
   const cancelAmount = Math.min(requested, refundable);
+  const idempotencyKey = `cgi:cancel:${order.id}:${paymentKey}:${cancelAmount}:${reason}`;
+  const cancelOrderId = await resolveCancelOrderId(db, { order, idempotencyKey });
 
   // A retry for the same (payment, reason, amount) returns the recorded outcome
   // instead of refunding twice. An explicit cancelAmount is part of the key: a
@@ -1219,10 +1238,11 @@ async function cancelPayment(db, env, order, paymentKey, body, pg) {
       // NICE cancels by its own orderId field and rejects the call without it;
       // Toss ignores the extra key, so both gateways get the truth about the row.
       orderId: order.pg_order_id || order.id,
+      cancelOrderId,
       cancelAmount,
       cancelReason: reason,
       refundReceiveAccount: body.refundReceiveAccount || null,
-      idempotencyKey: `cgi:cancel:${order.id}:${paymentKey}:${cancelAmount}`,
+      idempotencyKey,
     });
     const transactions = Array.isArray(result.cancels) ? result.cancels : [];
     const lastCancel = transactions.length ? transactions[transactions.length - 1] : null;
@@ -1249,7 +1269,7 @@ async function cancelPayment(db, env, order, paymentKey, body, pg) {
         'admin',
         order.status,
         null,
-        JSON.stringify({ payment_key: paymentKey, cancel_amount: cancelAmount, reason, provider_mode: pg.mode }),
+        JSON.stringify({ payment_key: paymentKey, cancel_amount: cancelAmount, reason, provider_mode: pg.mode, cancel_order_id: cancelOrderId, cancel_idempotency_key: idempotencyKey }),
         outcome.ok ? null : outcome.error,
         ts
       ),

@@ -173,7 +173,8 @@ test('cancel omits cancelAmt for a full refund and sends it for a partial one', 
   assert.equal(full.t.seen[0].url, `https://sandbox-api.nicepay.co.kr/v1/payments/${TID}/cancel`);
   const body = JSON.parse(full.t.seen[0].init.body);
   assert.equal(Object.prototype.hasOwnProperty.call(body, 'cancelAmt'), false);
-  assert.equal(body.orderId, 'CGI-ORDER-4711');
+  assert.notEqual(body.orderId, 'CGI-ORDER-4711');
+  assert.match(body.orderId, /^CGI-ORDER-4711-C1-[0-9a-z]+-[0-9a-f]{8}$/);
   assert.equal(body.reason, '환불 요청');
 
   const partial = adapter();
@@ -181,15 +182,47 @@ test('cancel omits cancelAmt for a full refund and sends it for a partial one', 
   assert.equal(JSON.parse(partial.t.seen[0].init.body).cancelAmt, 20000);
 });
 
-test('cancel carries the merchant orderId the gateway requires', async () => {
+test('cancel carries a unique cancel orderId, never the id the approval consumed', async () => {
   const { a, t } = adapter();
   await a.cancel({ paymentKey: TID, orderId: 'CGI-ORDER-4711', cancelReason: '환불' });
   const body = JSON.parse(t.seen[0].init.body);
-  assert.equal(body.orderId, 'CGI-ORDER-4711', 'NICE rejects the call without orderId');
+  assert.equal(body.orderId.startsWith('CGI-ORDER-4711-C'), true);
+  assert.notEqual(body.orderId, 'CGI-ORDER-4711', 'a reused id would answer U112');
+  assert.match(body.orderId, /^[A-Za-z0-9-]{1,64}$/);
   assert.equal(body.reason, '환불');
   assert.match(body.signData, /^[0-9a-f]{64}$/, 'cancel must carry the 조회-rule digest');
   assert.match(body.ediDate, /^\d{4}-\d{2}-\d{2}T/);
-  assert.equal(body.reason, '환불');
+});
+
+test('a cancel orderId stored for the intent is sent verbatim on a retry', async () => {
+  const { a, t } = adapter();
+  const stored = 'CGI-ORDER-4711-C2-mvqc5ls0-deadbeef';
+  await a.cancel({ paymentKey: TID, orderId: 'CGI-ORDER-4711', cancelOrderId: stored, idempotencyKey: 'cgi:cancel:1', cancelReason: '환불' });
+  assert.equal(JSON.parse(t.seen[0].init.body).orderId, stored);
+});
+
+test('a live-style gateway rejecting a reused orderId accepts two distinct cancels', async () => {
+  const used = new Set();
+  const seen = [];
+  const { a } = adapter({
+    handler: async (url, init) => {
+      const body = JSON.parse(init.body);
+      if (used.has(body.orderId)) {
+        return { ok: false, status: 200, async json() { return { resultCode: 'U112', resultMsg: '이미 사용된 OrderId 입니다.' }; } };
+      }
+      used.add(body.orderId);
+      seen.push(body.orderId);
+      return { ok: true, status: 200, async json() { return { resultCode: '0000', tid: TID, status: 'paid', amount: AMOUNT, balanceAmt: AMOUNT }; } };
+    },
+  });
+  await a.cancel({ paymentKey: TID, orderId: 'CGI-ORDER-4711', idempotencyKey: 'cgi:cancel:full', cancelReason: '전액' });
+  await a.cancel({ paymentKey: TID, orderId: 'CGI-ORDER-4711', idempotencyKey: 'cgi:cancel:part', cancelAmount: 20000, cancelReason: '부분' });
+  assert.equal(seen.length, 2);
+  assert.notEqual(seen[0], seen[1]);
+  await assert.rejects(
+    () => a.cancel({ paymentKey: TID, orderId: 'CGI-ORDER-4711', cancelOrderId: seen[0], cancelReason: 'retry' }),
+    (e) => e instanceof NicepayApiError && e.code === 'U112',
+  );
 });
 
 test('lookups sign with the 조회 rule and keep the secret out of the URL', async () => {

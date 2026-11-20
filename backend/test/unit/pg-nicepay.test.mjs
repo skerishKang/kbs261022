@@ -14,7 +14,7 @@ import {
   NICEPAY_PROVIDER, NICEPAY_PROD_API, NICEPAY_SANDBOX_API, NICEPAY_WEBHOOK_ACK,
   TX_STATUS, niceApiBase, basicAuth, bearerAuth, transactionSignature,
   windowReturnSignature, verifyWindowReturn,
-  verifyTransactionMessage, cancelPayload, refundableAmount, canPartialCancel,
+  verifyTransactionMessage, cancelPayload, cancelOrderIdFor, refundableAmount, canPartialCancel,
   latestCancel, cancelAmountOf, toCgiOutcome, webhookDedupeKey, webhookAck,
   recoveryRequests,
 } from '../../lib/pg-nicepay.mjs';
@@ -174,6 +174,20 @@ test('a full cancel omits cancelAmt, because omission is what means full', () =>
   assert.throws(() => cancelPayload({ orderId: ORDER_ID, reason: '' }), RangeError);
   assert.throws(() => cancelPayload({ orderId: ORDER_ID, reason: 'x', cancelAmount: -1 }), RangeError);
   assert.throws(() => cancelPayload({ orderId: ORDER_ID, reason: 'x', cancelAmount: '300000' }), RangeError);
+});
+
+test('a cancel orderId is unique, bounded and safe for the gateway', () => {
+  const now = new Date('2026-11-20T10:00:00+09:00');
+  const id = cancelOrderIdFor({ orderId: ORDER_ID, idempotencyKey: 'cgi:cancel:1', sequence: 2, now });
+  assert.match(id, /^[A-Za-z0-9-]{1,64}$/);
+  assert.equal(id.startsWith(`${ORDER_ID}-C2-`), true);
+  assert.equal(cancelOrderIdFor({ orderId: ORDER_ID, idempotencyKey: 'cgi:cancel:1', sequence: 2, now }), id);
+  assert.notEqual(cancelOrderIdFor({ orderId: ORDER_ID, idempotencyKey: 'cgi:cancel:2', sequence: 2, now }), id);
+  assert.notEqual(cancelOrderIdFor({ orderId: ORDER_ID, idempotencyKey: 'cgi:cancel:1', sequence: 3, now }), id);
+  assert.notEqual(cancelOrderIdFor({ orderId: ORDER_ID, idempotencyKey: 'cgi:cancel:1', sequence: 2, now: new Date(now.getTime() + 1) }), id);
+  const long = cancelOrderIdFor({ orderId: '한글 주문!/@#' + 'X'.repeat(80), idempotencyKey: 'k'.repeat(200), sequence: 1, now });
+  assert.match(long, /^[A-Za-z0-9-]{1,64}$/);
+  assert.equal(long.length <= 64, true);
 });
 
 test('refund account maps only the documented bank code and account fields', () => {
