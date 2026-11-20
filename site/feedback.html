@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>의견 보내기 | CGI 상품 쇼핑몰</title>
+<meta name="description" content="㈜시지아이(CGI) 쇼핑몰을 쓰면서 불편했던 점, 바라는 기능, 상품·가격 문의를 보내 주세요.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#07913A">
+<link rel="icon" href="../website/assets/img/cgi-mark-green.png">
+<link rel="stylesheet" href="assets/css/cgi-catalog.css?v=87a">
+<link rel="stylesheet" href="assets/css/cgi-feedback.css?v=1a">
+</head>
+<body>
+
+<a class="skip-link" href="#app">본문으로 건너뛰기</a>
+
+<header class="site-header" id="siteHeader">
+  <div class="header-inner">
+    <a class="brand" href="index.html" aria-label="CGI 상품 카탈로그 홈">
+      <img src="../website/assets/img/cgi-mark-white.png" alt="CGI (주)시지아이" width="132" height="42">
+      <span class="brand-divider" aria-hidden="true"></span>
+      <span class="brand-text"><strong>의견 보내기</strong></span>
+    </a>
+    <button class="nav-toggle" type="button" data-action="toggle-nav" aria-expanded="false" aria-controls="siteNav">
+      <span class="bars" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span class="sr-only">메뉴 열기</span>
+    </button>
+    <nav class="header-nav" id="siteNav" aria-label="주요 메뉴">
+      <a href="index.html#/products">전체 상품</a>
+      <a href="index.html#/my-page">마이페이지</a>
+      <a href="news.html">새 소식</a>
+      <a href="feedback.html" class="nav-feedback is-active" aria-current="page" data-feedback-link>의견 보내기</a>
+      <a href="../website/index.html" data-home-link>회사 홈페이지</a>
+    </nav>
+  </div>
+</header>
+
+<main id="app" class="app fb-page" tabindex="-1">
+  <header class="page-head">
+    <p class="page-eyebrow">FEEDBACK</p>
+    <h1>의견 보내기</h1>
+    <p class="page-sub">쓰면서 불편했던 점, 있었으면 하는 기능, 상품·가격 문의를 알려 주세요. 운영자가 읽고 고치거나 답글을 남깁니다.</p>
+  </header>
+
+  <section class="fb-panel">
+    <p class="fb-who" id="fbWho">로그인하지 않아도 보낼 수 있어요. 로그인하고 보내면 <a href="index.html#/my-page/feedback">마이페이지 → 내 의견</a>에서 처리 상태와 답글을 볼 수 있어요.</p>
+
+    <form id="feedbackForm" class="fb-form" novalidate>
+      <fieldset class="fb-kinds">
+        <legend>종류 <span class="fb-req">필수</span></legend>
+        <label class="fb-kind"><input type="radio" name="kind" value="bug" required> <span>불편·오류</span></label>
+        <label class="fb-kind"><input type="radio" name="kind" value="idea"> <span>기능 제안</span></label>
+        <label class="fb-kind"><input type="radio" name="kind" value="product"> <span>상품·가격 문의</span></label>
+        <label class="fb-kind"><input type="radio" name="kind" value="other"> <span>기타</span></label>
+      </fieldset>
+
+      <div class="fb-field">
+        <label for="fbBody">내용 <span class="fb-req">필수</span></label>
+        <textarea id="fbBody" name="body" rows="8" maxlength="2000" required placeholder="어느 화면에서 무엇을 하려다 어떤 일이 있었는지 적어 주시면 빨리 고칠 수 있어요."></textarea>
+        <p class="fb-hint"><span id="fbCount" class="fb-count">0 / 2,000자</span> · 링크는 2개까지</p>
+      </div>
+
+      <div class="fb-field">
+        <label for="fbPage">지금 보던 화면 주소 <span class="fb-auto">자동</span></label>
+        <input id="fbPage" name="page_url" type="url" readonly placeholder="(바로 들어온 경우 비어 있어요)">
+      </div>
+
+      <div class="fb-field">
+        <label for="fbEmail">연락받을 이메일 <span class="fb-opt">선택</span></label>
+        <input id="fbEmail" name="contact_email" type="email" autocomplete="email" maxlength="200" placeholder="name@example.com">
+        <p class="fb-hint">답이 필요할 때만 적어 주세요. 운영 관리자만 볼 수 있어요.</p>
+      </div>
+
+      <div id="fbMsg" aria-live="polite"></div>
+      <button type="submit" class="btn btn-primary btn-block">보내기</button>
+    </form>
+
+    <section id="fbDone" class="fb-done" tabindex="-1" hidden></section>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-bottom">
+    <p>© 주식회사 시지아이. All rights reserved. · <a href="news.html" style="color:inherit">새 소식</a> · <a href="feedback.html" style="color:inherit" data-feedback-link>의견 보내기</a></p>
+  </div>
+</footer>
+
+<script src="../website/assets/company.js?v=103a"></script>
+<script src="config.js?v=102a"></script>
+<script src="assets/js/cgi-header.js"></script>
+<script src="assets/js/cgi-auth.js?v=80a"></script>
+<script src="assets/js/cgi-feedback.js?v=1a"></script>
+</body>
+</html>

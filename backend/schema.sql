@@ -6,6 +6,7 @@
 --         (order + payment + ERP-sync pipeline, issue #67)
 -- Part 3: members / member_addresses / auth_tokens / auth_attempts / member_events
 --         (customer account system, issue #69 — isolated from PADIEM)
+-- Part 4: feedback / news (운영센터 의견 · 새 소식, migration 0012)
 --
 -- Every statement is idempotent (CREATE TABLE IF NOT EXISTS /
 -- CREATE INDEX IF NOT EXISTS) so the whole file can be executed
@@ -341,3 +342,35 @@ CREATE TABLE IF NOT EXISTS member_events (
 CREATE INDEX IF NOT EXISTS idx_member_events_member_id ON member_events(member_id);
 CREATE INDEX IF NOT EXISTS idx_member_events_type ON member_events(type);
 CREATE INDEX IF NOT EXISTS idx_member_events_created_at ON member_events(created_at);
+
+-- ------------------------------------------------------------
+-- Part 4. 운영센터 의견 / 새 소식 (migration 0012)
+-- ------------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS feedback (
+  id            TEXT PRIMARY KEY,
+  created_at    TEXT NOT NULL,
+  kind          TEXT NOT NULL,
+  body          TEXT NOT NULL,
+  page_url      TEXT,
+  contact_email TEXT,
+  member_id     INTEGER,
+  ai_member     TEXT,
+  status        TEXT NOT NULL DEFAULT 'received',
+  admin_reply   TEXT,
+  admin_note    TEXT,
+  issue_ref     TEXT,
+  updated_at    TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_feedback_created ON feedback(created_at);
+CREATE INDEX IF NOT EXISTS idx_feedback_status ON feedback(status, created_at);
+CREATE INDEX IF NOT EXISTS idx_feedback_member ON feedback(member_id, created_at);
+
+CREATE TABLE IF NOT EXISTS news (
+  id           INTEGER PRIMARY KEY AUTOINCREMENT,
+  title        TEXT NOT NULL,
+  body         TEXT NOT NULL,
+  source_tag   TEXT NOT NULL,
+  published_at TEXT
+);
+CREATE INDEX IF NOT EXISTS idx_news_published ON news(published_at);
