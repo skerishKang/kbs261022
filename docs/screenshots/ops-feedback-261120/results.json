@@ -1,0 +1,167 @@
+[
+ {
+  "shot": "detail-priced-390.png",
+  "overflowX": 0,
+  "overflowEls": [],
+  "consoleErrors": [],
+  "httpErrors": [],
+  "ignoredAnon401": [
+   "401 /api/me"
+  ],
+  "cta": [
+   "−",
+   "＋",
+   "바로 구매",
+   "견적 요청하기",
+   "견적 목록에 추가",
+   "바로 구매"
+  ],
+  "opsRows": 0,
+  "formLabels": [
+   "상품 검색"
+  ]
+ },
+ {
+  "shot": "feedback-form-390.png",
+  "overflowX": 0,
+  "overflowEls": [],
+  "consoleErrors": [],
+  "httpErrors": [],
+  "ignoredAnon401": [
+   "401 /api/me"
+  ],
+  "cta": [],
+  "opsRows": 0,
+  "formLabels": [
+   "불편·오류",
+   "기능 제안",
+   "상품·가격 문의",
+   "기타",
+   "내용 필수",
+   "지금 보던 화면 주소 자동",
+   "연락받을 이메일 선택"
+  ]
+ },
+ {
+  "shot": "ops-inbox-390.png",
+  "overflowX": 0,
+  "overflowEls": [],
+  "consoleErrors": [],
+  "httpErrors": [],
+  "ignoredAnon401": [
+   "401 /api/me"
+  ],
+  "cta": [],
+  "opsRows": 3,
+  "formLabels": [
+   "검색",
+   "종류\n          \n            전체\n           ",
+   "상태\n          \n            전체\n           ",
+   "보낸 사람\n          \n            전체\n        "
+  ]
+ },
+ {
+  "shot": "ops-detail-390.png",
+  "overflowX": 0,
+  "overflowEls": [],
+  "consoleErrors": [],
+  "httpErrors": [],
+  "ignoredAnon401": [
+   "401 /api/me"
+  ],
+  "cta": [],
+  "opsRows": 3,
+  "formLabels": [
+   "검색",
+   "종류\n          \n            전체\n           ",
+   "상태\n          \n            전체\n           ",
+   "보낸 사람\n          \n            전체\n        ",
+   "상태접수확인 중고침답변 완료보류",
+   "GitHub 이슈",
+   "AI 명예회원 이름",
+   "고객에게 보이는 답글"
+  ]
+ },
+ {
+  "shot": "detail-priced-1440.png",
+  "overflowX": 0,
+  "overflowEls": [],
+  "consoleErrors": [],
+  "httpErrors": [],
+  "ignoredAnon401": [
+   "401 /api/me"
+  ],
+  "cta": [
+   "−",
+   "＋",
+   "바로 구매",
+   "견적 요청하기",
+   "견적 목록에 추가"
+  ],
+  "opsRows": 0,
+  "formLabels": [
+   "상품 검색"
+  ]
+ },
+ {
+  "shot": "feedback-form-1440.png",
+  "overflowX": 0,
+  "overflowEls": [],
+  "consoleErrors": [],
+  "httpErrors": [],
+  "ignoredAnon401": [
+   "401 /api/me"
+  ],
+  "cta": [],
+  "opsRows": 0,
+  "formLabels": [
+   "불편·오류",
+   "기능 제안",
+   "상품·가격 문의",
+   "기타",
+   "내용 필수",
+   "지금 보던 화면 주소 자동",
+   "연락받을 이메일 선택"
+  ]
+ },
+ {
+  "shot": "ops-inbox-1440.png",
+  "overflowX": 0,
+  "overflowEls": [],
+  "consoleErrors": [],
+  "httpErrors": [],
+  "ignoredAnon401": [
+   "401 /api/me"
+  ],
+  "cta": [],
+  "opsRows": 3,
+  "formLabels": [
+   "검색",
+   "종류\n          \n            전체\n           ",
+   "상태\n          \n            전체\n           ",
+   "보낸 사람\n          \n            전체\n        "
+  ]
+ },
+ {
+  "shot": "ops-detail-1440.png",
+  "overflowX": 0,
+  "overflowEls": [],
+  "consoleErrors": [],
+  "httpErrors": [],
+  "ignoredAnon401": [
+   "401 /api/me"
+  ],
+  "cta": [],
+  "opsRows": 3,
+  "formLabels": [
+   "검색",
+   "종류\n          \n            전체\n           ",
+   "상태\n          \n            전체\n           ",
+   "보낸 사람\n          \n            전체\n        ",
+   "상태접수확인 중고침답변 완료보류",
+   "GitHub 이슈",
+   "AI 명예회원 이름",
+   "고객에게 보이는 답글"
+  ]
+ }
+]
