@@ -10,6 +10,8 @@ import {
   createFileLedger,
   ledgerByDedupe,
   isUnknownTransmissionError,
+  classifySendError,
+  markSent,
   readEnvFile,
   redactSecrets,
   runRelay,
@@ -191,20 +193,170 @@ test('session_invalid re-logs in once and still sends only one order', async () 
   assert.deepEqual(state.results, [{ ok: true, slipNo: 'SLIP-9' }]);
 });
 
-test('rate_limited is reported as pending without an immediate resend', async () => {
+test('rate_limited is reported as pending, the rest of the batch is released unsent, and the next cycle sends', async () => {
   const ledger = memoryLedger();
-  const { fetchFn, state } = fakeFetch({
-    items: [outboxItem(1, 'ORD-RATE')],
+  const sleeps = [];
+  const first = fakeFetch({
+    items: [outboxItem(1, 'ORD-RATE'), outboxItem(2, 'ORD-RATE-2')],
     saveHandler: () => response({ Status: '200', Error: { Code: 'LIMIT', Message: 'too many calls' } }, 412),
   });
-  const summary = await runRelay({ env: ENV, once: true, dryRun: false, limit: 5 }, relayDeps({ fetchFn, ledger }));
+  const summary = await runRelay({ env: ENV, once: true, dryRun: false, limit: 5 }, relayDeps({
+    fetchFn: first.fetchFn, ledger, sleep: async (ms) => { sleeps.push(ms); },
+  }));
   assert.equal(summary.sent, 0);
-  assert.equal(summary.failed, 1);
-  assert.equal(state.saves.length, 1, 'rate_limited must not be retried inside the same run');
-  assert.equal(ledger.entries.at(-1).state, 'rejected');
-  assert.equal(state.results[0].ok, false);
-  assert.equal(state.results[0].unknown, undefined);
-  assert.match(state.results[0].error, /rate_limited/);
+  assert.equal(summary.failed, 0);
+  assert.equal(summary.deferred, 2);
+  assert.equal(first.state.saves.length, 1, 'rate_limited is never resent immediately, and the next order is not tried');
+  assert.equal(first.state.results.length, 2);
+  for (const result of first.state.results) {
+    assert.equal(result.ok, false);
+    assert.equal(result.pending, true);
+    assert.equal(result.unknown, undefined);
+  }
+  assert.match(first.state.results[0].error, /rate_limited/);
+  assert.deepEqual(ledger.entries.map((entry) => entry.state), ['sending', 'deferred'], 'the second order never reached the ledger');
+
+  const second = fakeFetch({ items: [outboxItem(1, 'ORD-RATE'), outboxItem(2, 'ORD-RATE-2')] });
+  const next = await runRelay({ env: ENV, once: true, dryRun: false, limit: 5 }, relayDeps({ fetchFn: second.fetchFn, ledger }));
+  assert.equal(next.sent, 2, 'a deferred order is sent on the next cycle');
+  assert.equal(second.state.saves.length, 2);
+});
+
+test('rate_limited in loop mode waits the vendor window before the next poll', async () => {
+  const sleeps = [];
+  let polls = 0;
+  const base = fakeFetch({
+    items: [outboxItem(1, 'ORD-RATE-LOOP')],
+    saveHandler: () => response({}, 412),
+  });
+  const fetchFn = async (url, init) => {
+    if (new URL(String(url)).pathname === '/api/erp/outbox') {
+      polls += 1;
+      if (polls > 1) throw new Error('stop loop');
+    }
+    return base.fetchFn(url, init);
+  };
+  await assert.rejects(runRelay({ env: ENV, once: false, dryRun: false, limit: 5 }, relayDeps({
+    fetchFn, sleep: async (ms) => { sleeps.push(ms); },
+  })), /stop loop/);
+  assert.ok(sleeps.includes(600_000), `sleeps=${sleeps}`);
+  assert.equal(base.state.saves.length, 1);
+});
+
+test('a second session_invalid after re-login is deferred, never sent a third time', async () => {
+  const ledger = memoryLedger();
+  const { fetchFn, state } = fakeFetch({
+    items: [outboxItem(1, 'ORD-SESSION-2')],
+    saveHandler: () => response({ Error: { Code: 'EXP00001', Message: 'Please login.' } }, 500),
+  });
+  const summary = await runRelay({ env: ENV, once: true, dryRun: false, limit: 5 }, relayDeps({ fetchFn, ledger }));
+  assert.equal(state.saves.length, 2, 'one original send plus exactly one resend after re-login');
+  assert.equal(state.logins, 2);
+  assert.equal(summary.deferred, 1);
+  assert.equal(state.results[0].pending, true);
+  assert.equal(ledger.entries.at(-1).state, 'deferred');
+});
+
+test('a login failure sends nothing, writes no sending entry and releases every claimed order', async () => {
+  const ledger = memoryLedger();
+  const base = fakeFetch({ items: [outboxItem(1, 'ORD-L1'), outboxItem(2, 'ORD-L2')] });
+  const fetchFn = async (url, init) => {
+    if (new URL(String(url)).pathname === '/OAPI/V2/OAPILogin') {
+      return response({ Status: '200', Error: { Code: 201, Message: 'login refused' } });
+    }
+    return base.fetchFn(url, init);
+  };
+  const summary = await runRelay({ env: ENV, once: true, dryRun: false, limit: 5 }, relayDeps({ fetchFn, ledger }));
+  assert.equal(base.state.saves.length, 0);
+  assert.deepEqual(ledger.entries, []);
+  assert.equal(summary.deferred, 2);
+  assert.deepEqual(base.state.results.map((r) => r.pending), [true, true]);
+});
+
+test('server errors, partial row success, a missing slip number and a timeout are all unknown', async () => {
+  const cases = [
+    ['5xx', () => response({ Error: { Code: 'E500', Message: 'internal' } }, 503)],
+    ['partial', () => response({ Status: '200', Data: {
+      SuccessCnt: 1, FailCnt: 1, SlipNos: '[]',
+      ResultDetails: JSON.stringify([{ IsSuccess: true }, { IsSuccess: false, TotalError: 'bad line' }]),
+    } })],
+    ['html200', () => new Response('<html>proxy</html>', { status: 200 })],
+    ['timeout', () => { throw new DOMException('The operation was aborted due to timeout', 'TimeoutError'); }],
+  ];
+  for (const [name, saveHandler] of cases) {
+    const ledger = memoryLedger();
+    const first = fakeFetch({ items: [outboxItem(1, `ORD-${name}`)], saveHandler });
+    const summary = await runRelay({ env: ENV, once: true, dryRun: false, limit: 5 }, relayDeps({ fetchFn: first.fetchFn, ledger }));
+    assert.equal(summary.unknown, 1, name);
+    assert.equal(first.state.saves.length, 1, `${name}: no immediate resend`);
+    assert.equal(first.state.results[0].unknown, true, name);
+    assert.equal(ledger.entries.at(-1).state, 'unknown', name);
+    const second = fakeFetch({ items: [outboxItem(1, `ORD-${name}`)] });
+    await runRelay({ env: ENV, once: true, dryRun: false, limit: 5 }, relayDeps({ fetchFn: second.fetchFn, ledger }));
+    assert.equal(second.state.saves.length, 0, `${name}: not resent on the next run`);
+  }
+});
+
+test('every SaveSaleOrder request carries a time limit', async () => {
+  const signals = [];
+  const base = fakeFetch({ items: [outboxItem(1, 'ORD-SIGNAL')] });
+  const fetchFn = async (url, init = {}) => {
+    if (String(url).includes('/OAPI/')) signals.push(init.signal);
+    return base.fetchFn(url, init);
+  };
+  await runRelay({ env: ENV, once: true, dryRun: false, limit: 5 }, relayDeps({ fetchFn }));
+  assert.ok(signals.length >= 3);
+  assert.ok(signals.every((signal) => signal && typeof signal.aborted === 'boolean'));
+});
+
+test('a fully rejected row set is rejected, not unknown', () => {
+  assert.equal(classifySendError({ code: 'row_failures', rows: [{ IsSuccess: false }] }), 'rejected');
+  assert.equal(classifySendError({ code: 'row_failures', rows: [{ IsSuccess: true }, { IsSuccess: false }] }), 'unknown');
+  assert.equal(classifySendError({ code: 'status_500' }), 'rejected');
+  assert.equal(classifySendError({ code: 'server_error' }), 'unknown');
+  assert.equal(classifySendError({ code: 'rate_limited' }), 'deferred');
+  assert.equal(classifySendError({ code: 'api_error', reauthAvailable: true }), 'deferred');
+  assert.equal(classifySendError({ code: 'something_new' }), 'unknown');
+  assert.equal(classifySendError(new TypeError('fetch failed')), 'unknown');
+});
+
+test('an operator retry (higher retry_gen) sends an unknown order exactly once', async () => {
+  const ledger = memoryLedger([
+    { id: 1, order_id: 'ORD-OP', dedupe_key: 'dedupe:ORD-OP', retry_gen: 0, at: 't0', state: 'sending' },
+    { id: 1, order_id: 'ORD-OP', dedupe_key: 'dedupe:ORD-OP', retry_gen: 0, at: 't1', state: 'unknown' },
+  ]);
+  const same = fakeFetch({ items: [outboxItem(1, 'ORD-OP')] });
+  await runRelay({ env: ENV, once: true, dryRun: false, limit: 5 }, relayDeps({ fetchFn: same.fetchFn, ledger }));
+  assert.equal(same.state.saves.length, 0, 'the same generation stays blocked');
+
+  const retried = fakeFetch({
+    items: [{ ...outboxItem(1, 'ORD-OP'), retry_gen: 1 }],
+    saveHandler: () => { throw new TypeError('fetch failed'); },
+  });
+  await runRelay({ env: ENV, once: true, dryRun: false, limit: 5 }, relayDeps({ fetchFn: retried.fetchFn, ledger }));
+  assert.equal(retried.state.saves.length, 1, 'a higher retry_gen is sent once');
+  assert.equal(ledger.entries.at(-1).retry_gen, 1);
+
+  const again = fakeFetch({ items: [{ ...outboxItem(1, 'ORD-OP'), retry_gen: 1 }] });
+  await runRelay({ env: ENV, once: true, dryRun: false, limit: 5 }, relayDeps({ fetchFn: again.fetchFn, ledger }));
+  assert.equal(again.state.saves.length, 0, 'that generation is blocked again after its own unknown');
+});
+
+test('--mark-sent reports a manual success and records sent in the ledger', async () => {
+  const ledger = memoryLedger([
+    { id: 7, order_id: 'ORD-M', dedupe_key: 'dedupe:ORD-M', retry_gen: 0, at: 't0', state: 'unknown' },
+  ]);
+  const { fetchFn, state } = fakeFetch();
+  await markSent({ env: ENV, markSent: 7, slip: '20261120-3' }, { fetchFn, ledger, log: () => {}, now: () => 0 });
+  assert.deepEqual(state.results, [{ ok: true, slipNo: '20261120-3' }]);
+  assert.equal(ledger.entries.at(-1).state, 'sent');
+  assert.equal(ledger.entries.at(-1).dedupe_key, 'dedupe:ORD-M');
+  const next = fakeFetch({ items: [outboxItem(7, 'ORD-M')] });
+  await runRelay({ env: ENV, once: true, dryRun: false, limit: 5 }, relayDeps({ fetchFn: next.fetchFn, ledger }));
+  assert.equal(next.state.saves.length, 0);
+  assert.deepEqual(next.state.results, [{ ok: true, slipNo: '20261120-3' }]);
+  assert.deepEqual(parseArgs(['--env', 'e', '--mark-sent', '7', '--slip', 'S']).markSent, 7);
+  assert.throws(() => parseArgs(['--env', 'e', '--mark-sent', 'x']), /erp_sync id/);
 });
 
 test('an injected clock proves consecutive saves are ten seconds apart', async () => {

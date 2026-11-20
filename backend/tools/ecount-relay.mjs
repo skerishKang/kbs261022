@@ -5,10 +5,20 @@ import { createErpOapiClient } from '../lib/erp-oapi.mjs';
 
 export const DEFAULT_LIMIT = 20;
 export const DEFAULT_LEDGER_NAME = 'ecount-relay-ledger.jsonl';
+export const SEND_TIMEOUT_MS = 60_000;
+export const RATE_LIMIT_WAIT_MS = 600_000;
 const POLL_MS = 30_000;
 
+// 장부 상태
+//   sending  : SaveSaleOrder 를 보내기 직전에 기록. 다음 기록이 없으면 결과를 모르는 것.
+//   sent     : 이카운트가 전표번호를 돌려줌. 같은 dedupe_key 는 다시 보내지 않고 결과만 재회신.
+//   unknown  : 응답을 못 받았거나 해석할 수 없음(들어갔을 수 있음). 사람이 확인하기 전엔 보내지 않음.
+//   rejected : 이카운트가 명확히 거절(전표 미생성). 다음 주기에 다시 보낼 수 있음.
+//   deferred : 이카운트가 처리하지 않은 것이 확실함(rate_limited·세션 만료). 다음 주기에 다시 보냄.
+const BLOCKING_STATES = new Set(['sending', 'unknown']);
+
 export function parseArgs(argv = []) {
-  const options = { envFile: null, ledger: null, once: false, dryRun: false, confirmProd: false, limit: DEFAULT_LIMIT };
+  const options = { envFile: null, ledger: null, once: false, dryRun: false, confirmProd: false, limit: DEFAULT_LIMIT, markSent: null, slip: null };
   for (let index = 0; index < argv.length; index += 1) {
     const arg = String(argv[index]);
     if (arg === '--once') options.once = true;
@@ -17,10 +27,13 @@ export function parseArgs(argv = []) {
     else if (arg === '--env') { options.envFile = argv[++index]; }
     else if (arg === '--ledger') { options.ledger = argv[++index]; }
     else if (arg === '--limit') { options.limit = Number(argv[++index]); }
+    else if (arg === '--mark-sent') { options.markSent = Number(argv[++index]); }
+    else if (arg === '--slip') { options.slip = String(argv[++index] ?? '').trim() || null; }
     else throw new Error(`unknown argument: ${arg}`);
   }
   if (!options.envFile) throw new Error('--env is required');
   if (!Number.isInteger(options.limit) || options.limit <= 0) throw new Error('--limit must be a positive integer');
+  if (options.markSent !== null && (!Number.isInteger(options.markSent) || options.markSent <= 0)) throw new Error('--mark-sent needs an erp_sync id');
   return options;
 }
 
@@ -62,12 +75,43 @@ export function ledgerByDedupe(entries) {
   return map;
 }
 
-export function isUnknownTransmissionError(error) {
+// 이카운트가 요청을 처리하지 않은 것이 확실한 코드: 다시 보내도 중복이 생기지 않는다.
+const NOT_PROCESSED_CODES = new Set([
+  'rate_limited', 'session_invalid', 'http_404_path_absent',
+  'stopped', 'disabled', 'not_configured', 'unknown_endpoint',
+  'zone_failed', 'login_failed', 'login_no_session',
+]);
+// 이카운트가 요청을 받아 명확히 거절한 코드(전표가 생기지 않음).
+const REJECTED_CODES = new Set(['api_error']);
+
+/**
+ * SaveSaleOrder 실패를 세 갈래로 나눈다.
+ *   'deferred' — 처리되지 않았음이 확실(다음 주기 재전송 가능)
+ *   'rejected' — 이카운트가 명확히 거절
+ *   'unknown'  — 들어갔을 수 있음(응답 없음·시간 초과·5xx·해석 불가·일부 행 성공)
+ * 모르는 코드는 unknown 으로 둔다: 중복 전표는 지울 수 없으므로 사람이 확인하는 쪽이 안전하다.
+ */
+export function classifySendError(error) {
   const code = String(error?.code || '');
-  if (!code) return true;
-  if (code === 'body_unparseable' || code === 'envelope_unparseable') return true;
-  if (/^(fetch|network|timeout|econn|socket|abort)/i.test(code)) return true;
-  return false;
+  if (!code) return 'unknown';
+  if (error?.reauthAvailable === true || NOT_PROCESSED_CODES.has(code)) return 'deferred';
+  if (REJECTED_CODES.has(code) || /^status_\d+$/.test(code)) return 'rejected';
+  if (code === 'row_failures') {
+    const rows = Array.isArray(error?.rows) ? error.rows : [];
+    return rows.some((row) => row && row.IsSuccess === true) ? 'unknown' : 'rejected';
+  }
+  return 'unknown';
+}
+
+export function isUnknownTransmissionError(error) {
+  return classifySendError(error) === 'unknown';
+}
+
+function withTimeout(fetchFn, timeoutMs) {
+  return (url, init = {}) => {
+    if (init.signal || !timeoutMs || typeof AbortSignal?.timeout !== 'function') return fetchFn(url, init);
+    return fetchFn(url, { ...init, signal: AbortSignal.timeout(timeoutMs) });
+  };
 }
 
 export function readEnvFile(source) {
@@ -130,114 +174,209 @@ export async function runRelay(options, deps = {}) {
   const stamp = () => new Date(now()).toISOString();
 
   log(`target: ${target === 'prod' ? 'PROD' : target === 'test' ? 'TEST' : 'UNKNOWN'}`);
-  if (!['test', 'prod'].includes(target)) return { blocked: true, sent: 0, failed: 0, dry: 0, reposted: 0, unknown: 0 };
+  if (!['test', 'prod'].includes(target)) return { blocked: true, sent: 0, failed: 0, dry: 0, reposted: 0, unknown: 0, deferred: 0 };
   if (target === 'prod' && !options.confirmProd) {
     log('prod target requires --confirm-prod; nothing sent');
-    return { blocked: true, sent: 0, failed: 0, dry: 0, reposted: 0, unknown: 0 };
+    return { blocked: true, sent: 0, failed: 0, dry: 0, reposted: 0, unknown: 0, deferred: 0 };
   }
 
   const base = String(env.WORKER_BASE || '').replace(/\/+$/, '');
   const token = String(env.ERP_RELAY_TOKEN || '');
   const client = options.dryRun ? null : createErpOapiClient({
     env: { ...env, ERP_MODE: 'live', ERP_LIVE_WRITE: 'YES' },
-    fetchFn,
+    fetchFn: withTimeout(fetchFn, options.timeoutMs ?? SEND_TIMEOUT_MS),
     now,
     sleep,
   });
   if (client && !client.configured) {
     log('missing ECOUNT credentials; nothing sent');
-    return { blocked: true, sent: 0, failed: 0, dry: 0, reposted: 0, unknown: 0 };
+    return { blocked: true, sent: 0, failed: 0, dry: 0, reposted: 0, unknown: 0, deferred: 0 };
   }
 
-  let sent = 0;
-  let failed = 0;
-  let dry = 0;
-  let reposted = 0;
-  let unknown = 0;
+  const counts = { sent: 0, failed: 0, dry: 0, reposted: 0, unknown: 0, deferred: 0 };
+  const report = async (item, result) => {
+    try {
+      await postResult({ base, token, id: item.id, result, fetchFn });
+      return true;
+    } catch {
+      log(`order ${item.order_id}: RESULT_REPORT_FAILED`);
+      return false;
+    }
+  };
+  const clean = (error) => {
+    const code = String(error?.code || 'relay_error').slice(0, 80);
+    const message = redactSecrets(String(error?.message || error), secrets).slice(0, 300);
+    return { code, text: `${code}: ${message}` };
+  };
+  // 보내지 않은 항목을 claim 에서 풀어 준다(시도 횟수 쓰지 않음).
+  const release = async (items, reason) => {
+    for (const rest of items) {
+      await report(rest, { ok: false, pending: true, error: reason });
+      log(`order ${rest.order_id}: DEFERRED ${reason}`);
+      counts.deferred += 1;
+    }
+  };
+
   for (;;) {
     const ledgerMap = ledgerByDedupe(ledger.read());
     const outbox = await fetchOutbox({ base, token, limit: options.limit || DEFAULT_LIMIT, dryRun: options.dryRun, fetchFn });
-    for (const item of outbox.items || []) {
+    const queue = [...(outbox.items || [])];
+    let pause = 0;
+    while (queue.length) {
+      const item = queue.shift();
       if (options.dryRun) {
         log(`order ${item.order_id}: DRY body=${JSON.stringify(item.body)}`);
-        dry += 1;
+        counts.dry += 1;
         continue;
       }
       const ledgerKey = String(item.dedupe_key || `id:${item.id}`);
+      const retryGen = Number(item.retry_gen || 0) || 0;
       const prior = ledgerMap.get(ledgerKey);
       if (prior?.state === 'sent') {
         log(`order ${item.order_id}: ALREADY_SENT ledger state=sent; re-reporting result`);
-        try {
-          await postResult({ base, token, id: item.id, result: { ok: true, slipNo: prior.slipNo || null }, fetchFn });
-          reposted += 1;
-        } catch {
-          log(`order ${item.order_id}: RESULT_REPORT_FAILED`);
+        if (await report(item, { ok: true, slipNo: prior.slipNo || null })) counts.reposted += 1;
+        continue;
+      }
+      if (prior && BLOCKING_STATES.has(prior.state)) {
+        if (retryGen > (Number(prior.retry_gen || 0) || 0)) {
+          log(`order ${item.order_id}: OPERATOR_RETRY ledger state=${prior.state} retry_gen=${retryGen}; sending once`);
+        } else {
+          log(`order ${item.order_id}: UNKNOWN 확인 필요 (ledger state=${prior.state})`);
+          counts.unknown += 1;
+          continue;
         }
-        continue;
       }
-      if (prior && ['sending', 'unknown'].includes(prior.state)) {
-        log(`order ${item.order_id}: UNKNOWN 확인 필요 (ledger state=${prior.state})`);
-        unknown += 1;
-        continue;
-      }
-      const started = { id: item.id, order_id: item.order_id, dedupe_key: ledgerKey, at: stamp(), state: 'sending' };
-      ledger.append(started);
-      ledgerMap.set(ledgerKey, started);
-      let outcome;
-      let slipNo = null;
-      try {
-        if (!client.sessionId) await client.bootstrap();
-        let response;
+
+      // 로그인은 sending 기록 전에: 여기서 실패하면 아무것도 보내지 않은 것이다.
+      if (!client.sessionId) {
         try {
+          await client.bootstrap();
+        } catch (error) {
+          const { text } = clean(error);
+          log(`login failed; nothing sent: ${text}`);
+          await release([item, ...queue], text);
+          queue.length = 0;
+          pause = POLL_MS;
+          break;
+        }
+      }
+
+      const record = (state, extra = {}) => {
+        const entry = { id: item.id, order_id: item.order_id, dedupe_key: ledgerKey, retry_gen: retryGen, at: stamp(), state, ...extra };
+        ledger.append(entry);
+        ledgerMap.set(ledgerKey, entry);
+        return entry;
+      };
+      record('sending');
+
+      let response = null;
+      let failure = null;
+      try {
+        response = await client.call('saveSaleOrder', item.body);
+      } catch (error) {
+        failure = error;
+      }
+      // 즉시 재전송은 세션 만료만: 재로그인 후 한 번.
+      if (failure && classifySendError(failure) === 'deferred' && (failure.code === 'session_invalid' || failure.reauthAvailable === true)) {
+        log(`order ${item.order_id}: session_invalid; re-login and resend once`);
+        failure = null;
+        try {
+          await client.bootstrap();
           response = await client.call('saveSaleOrder', item.body);
         } catch (error) {
-          if (error?.code === 'session_invalid' || error?.reauthAvailable === true) {
-            await client.bootstrap();
-            response = await client.call('saveSaleOrder', item.body);
-          } else throw error;
+          failure = error;
         }
-        slipNo = Array.isArray(response?.slipNos) ? (response.slipNos[0] || null) : null;
-        outcome = { ...started, at: stamp(), state: 'sent', slipNo };
-      } catch (error) {
-        const code = String(error?.code || 'relay_error').slice(0, 80);
-        const message = redactSecrets(String(error?.message || error), secrets).slice(0, 300);
-        const uncertain = isUnknownTransmissionError(error);
-        outcome = { ...started, at: stamp(), state: uncertain ? 'unknown' : 'rejected' };
-        ledger.append(outcome);
-        ledgerMap.set(ledgerKey, outcome);
-        try {
-          await postResult({
-            base,
-            token,
-            id: item.id,
-            result: { ok: false, ...(uncertain ? { unknown: true } : {}), error: `${code}: ${message}` },
-            fetchFn,
-          });
-        } catch {
-          log(`order ${item.order_id}: RESULT_REPORT_FAILED`);
+      }
+
+      if (!failure) {
+        const slipNo = Array.isArray(response?.slipNos) ? (response.slipNos[0] || null) : null;
+        if (!slipNo) {
+          // 성공처럼 보이지만 전표번호가 없다(예: JSON 이 아닌 200 응답). 들어갔는지 알 수 없다.
+          record('unknown');
+          await report(item, { ok: false, unknown: true, error: 'no_slip_no: response had no SlipNos' });
+          log(`order ${item.order_id}: UNKNOWN no_slip_no`);
+          counts.unknown += 1;
+          continue;
         }
-        log(`order ${item.order_id}: ${uncertain ? 'UNKNOWN' : 'FAIL'} ${code}: ${message}`);
-        if (uncertain) unknown += 1;
-        else failed += 1;
+        record('sent', { slipNo });
+        if (await report(item, { ok: true, slipNo })) {
+          log(`order ${item.order_id}: OK slip=${slipNo}`);
+          counts.sent += 1;
+        } else {
+          log(`order ${item.order_id}: ledger=state:sent; result will be re-reported`);
+        }
         continue;
       }
-      ledger.append(outcome);
-      ledgerMap.set(ledgerKey, outcome);
-      try {
-        await postResult({ base, token, id: item.id, result: { ok: true, slipNo }, fetchFn });
-        log(`order ${item.order_id}: OK slip=${slipNo || '-'}`);
-        sent += 1;
-      } catch {
-        log(`order ${item.order_id}: RESULT_REPORT_FAILED ledger=state:sent; result will be re-reported`);
+
+      const kind = classifySendError(failure);
+      const { code, text } = clean(failure);
+      if (kind === 'deferred') {
+        record('deferred', { code });
+        await report(item, { ok: false, pending: true, error: text });
+        log(`order ${item.order_id}: DEFERRED ${text}`);
+        counts.deferred += 1;
+        if (code === 'rate_limited') {
+          // 한도 초과: 이번 주기에는 더 보내지 않는다. 남은 항목도 claim 을 풀고 다음 주기로.
+          await release(queue, 'rate_limited: not sent this cycle');
+          queue.length = 0;
+          pause = Number(failure?.retryAfterMs) > 0 ? Number(failure.retryAfterMs) : RATE_LIMIT_WAIT_MS;
+        } else if (client.stopped) {
+          await release(queue, `stopped: ${code}`);
+          queue.length = 0;
+          pause = POLL_MS;
+        }
+        continue;
       }
+      if (kind === 'unknown') {
+        record('unknown', { code });
+        await report(item, { ok: false, unknown: true, error: text });
+        log(`order ${item.order_id}: UNKNOWN ${text}`);
+        counts.unknown += 1;
+        continue;
+      }
+      record('rejected', { code });
+      await report(item, { ok: false, error: text });
+      log(`order ${item.order_id}: FAIL ${text}`);
+      counts.failed += 1;
     }
     for (const held of outbox.held || []) {
       log(`order ${held.order_id}: HELD ${held.reason} product_ids=${(held.product_ids || []).join(',')}`);
     }
     if (options.once) break;
-    if (!(outbox.items || []).length) await sleep(POLL_MS);
+    if (pause) await sleep(pause);
+    else if (!(outbox.items || []).length) await sleep(POLL_MS);
   }
-  return { blocked: false, sent, failed, dry, reposted, unknown };
+  return { blocked: false, ...counts };
+}
+
+/**
+ * 운영자가 이카운트 판매조회에서 전표를 확인한 unknown 항목을 수동으로 성공 회신한다.
+ * 장부에도 sent 로 남겨, 같은 주문을 다시 보내지 않게 한다.
+ */
+export async function markSent(options, deps = {}) {
+  const log = deps.log || console.log;
+  const fetchFn = deps.fetchFn || fetch;
+  const now = deps.now || (() => Date.now());
+  const ledger = deps.ledger || createFileLedger(options.ledger || defaultLedgerPath(options.envFile));
+  const env = options.env || {};
+  const base = String(env.WORKER_BASE || '').replace(/\/+$/, '');
+  const token = String(env.ERP_RELAY_TOKEN || '');
+  const id = options.markSent;
+  const slipNo = options.slip || null;
+  const last = [...ledger.read()].reverse().find((entry) => Number(entry.id) === id) || null;
+  const result = await postResult({ base, token, id, result: { ok: true, slipNo }, fetchFn });
+  ledger.append({
+    id,
+    order_id: last?.order_id ?? null,
+    dedupe_key: last?.dedupe_key ?? `id:${id}`,
+    retry_gen: last?.retry_gen ?? 0,
+    at: new Date(now()).toISOString(),
+    state: 'sent',
+    slipNo,
+    manual: true,
+  });
+  log(`erp_sync ${id}: MARKED_SENT slip=${slipNo || '-'} status=${result?.status || '-'}`);
+  return result;
 }
 
 async function main() {
@@ -250,6 +389,10 @@ async function main() {
     if (missing.length) {
       console.error(`missing env entries: ${missing.join(', ')}`);
       process.exitCode = 2;
+      return;
+    }
+    if (args.markSent !== null) {
+      await markSent({ ...args, env }, { log: console.log });
       return;
     }
     const summary = await runRelay({ ...args, env }, { log: console.log });

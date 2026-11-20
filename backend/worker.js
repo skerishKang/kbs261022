@@ -1648,6 +1648,11 @@ async function enqueueRelayErpSync(db, env, order, items, force = false) {
     : material.reason === 'product_mapping_missing'
       ? `product_mapping_missing:${material.missingProductIds.join(',')}`
       : `not_configured:${material.reason}`;
+  // retry_gen: 운영자가 이카운트에 전표가 없음을 확인하고 unknown 을 재시도할 때만 올라간다.
+  // 중계 장부는 같은 dedupe_key 의 sending/unknown 을 막지만, 더 높은 retry_gen 은 한 번 보낸다.
+  const priorGen = toNonNegInt(parseRelayPayload(existing?.payload)?.relay?.retry_gen, 0);
+  const retryGen = existing?.status === 'unknown' && force ? priorGen + 1 : priorGen;
+  material.payload.relay = { ...material.payload.relay, retry_gen: retryGen };
   const payload = JSON.stringify(material.payload);
   const ts = nowIso();
   const dedupeKey = material.payload.dedupe_key;
@@ -1709,7 +1714,8 @@ async function handleErpOutbox(url, request, env) {
       continue;
     }
 
-    const next = { ...material.payload, relay: { ...material.payload.relay, claimed_at: dryRun ? null : nowIso() } };
+    const retryGen = toNonNegInt(meta.retry_gen, 0);
+    const next = { ...material.payload, relay: { ...material.payload.relay, retry_gen: retryGen, claimed_at: dryRun ? null : nowIso() } };
     if (!dryRun) {
       const updated = await env.DB.prepare("UPDATE erp_sync SET payload = ?, last_error = NULL, updated_at = ? WHERE id = ? AND status = 'pending'")
         .bind(JSON.stringify(next), nowIso(), row.id).run();
@@ -1719,6 +1725,7 @@ async function handleErpOutbox(url, request, env) {
       id: row.id,
       order_id: row.order_id,
       dedupe_key: next.dedupe_key || null,
+      retry_gen: retryGen,
       attempts: toNonNegInt(row.attempts, 0),
       cust: next.relay.cust,
       wh_cd: next.relay.wh_cd,
@@ -1728,6 +1735,25 @@ async function handleErpOutbox(url, request, env) {
     });
   }
   return json({ items, held, limit, dry_run: dryRun });
+}
+
+// unknown·rejected 회신마다 운영 알림(메일+텔레그램). 알림 실패가 회신 처리를 깨지 않는다.
+// subject 에 erp_sync id·종류·순번을 넣어 같은 사건은 한 번만, 다음 시도는 다시 알린다.
+async function notifyErpSyncAttention(env, row, { state, error, seq = 0, attempts = null, final = false }) {
+  try {
+    await notifyOps('erp_sync_attention', {
+      env,
+      subjectId: `${row.order_id}#erp${row.id}-${state}-${seq}`,
+      orderId: row.order_id,
+      erpSyncId: row.id,
+      state,
+      error,
+      attempts,
+      final,
+    });
+  } catch (e) {
+    console.error('[notify] erp_sync_attention failed', row.order_id, String((e && e.message) || e).slice(0, 200));
+  }
 }
 
 async function handleErpOutboxResult(idRaw, request, env) {
@@ -1763,21 +1789,40 @@ async function handleErpOutboxResult(idRaw, request, env) {
     return json({ ok: true, id, status: 'sent', slip_no: slipNo });
   }
 
+  if (body.pending === true) {
+    // 이카운트가 처리하지 않은 것이 확실한 경우(rate_limited·세션 만료 재시도 실패·로그인 실패):
+    // 시도 횟수를 쓰지 않고 claim 만 풀어 다음 주기에 다시 나가게 한다.
+    const next = { ...payload, relay: { ...(payload.relay || {}), claimed_at: null, last_result: { ok: false, pending: true, error: errorText } } };
+    await env.DB.prepare("UPDATE erp_sync SET payload = ?, last_error = ?, updated_at = ? WHERE id = ? AND status = 'pending'")
+      .bind(JSON.stringify(next), errorText || 'relay_deferred', ts, id).run();
+    return json({ ok: true, id, status: 'pending', attempts: toNonNegInt(row.attempts, 0), deferred: true });
+  }
+
   if (body.unknown === true) {
     const next = { ...payload, relay: { ...(payload.relay || {}), claimed_at: null, last_result: { ok: false, unknown: true, error: errorText } } };
-    await env.DB.prepare("UPDATE erp_sync SET payload = ?, status = 'unknown', last_error = ?, updated_at = ? WHERE id = ? AND status = 'pending'")
+    const updated = await env.DB.prepare("UPDATE erp_sync SET payload = ?, status = 'unknown', last_error = ?, updated_at = ? WHERE id = ? AND status = 'pending'")
       .bind(JSON.stringify(next), errorText || 'relay_unknown', ts, id).run();
     const current = await env.DB.prepare('SELECT * FROM erp_sync WHERE id = ?').bind(id).first();
-    await recordRelayResult(env.DB, row.order_id, 'unknown', null, errorText || 'relay_unknown');
-    return json({ ok: true, id, status: 'unknown', attempts: toNonNegInt(current?.attempts, 0) });
+    if (Number(updated?.meta?.changes || 0) === 1) {
+      await recordRelayResult(env.DB, row.order_id, 'unknown', null, errorText || 'relay_unknown');
+      await notifyErpSyncAttention(env, row, {
+        state: 'unknown', error: errorText || 'relay_unknown', seq: toNonNegInt(payload?.relay?.retry_gen, 0),
+      });
+    }
+    return json({ ok: true, id, status: current?.status || 'unknown', attempts: toNonNegInt(current?.attempts, 0) });
   }
 
   const attempts = toNonNegInt(row.attempts, 0) + 1;
   const finalStatus = attempts >= RELAY_MAX_ATTEMPTS ? 'failed' : 'pending';
   const next = { ...payload, relay: { ...(payload.relay || {}), claimed_at: null, last_result: { ok: false, error: errorText } } };
-  await env.DB.prepare("UPDATE erp_sync SET payload = ?, status = ?, attempts = ?, last_error = ?, updated_at = ? WHERE id = ? AND status = 'pending'")
+  const updated = await env.DB.prepare("UPDATE erp_sync SET payload = ?, status = ?, attempts = ?, last_error = ?, updated_at = ? WHERE id = ? AND status = 'pending'")
     .bind(JSON.stringify(next), finalStatus, attempts, errorText || 'relay_failed', ts, id).run();
-  if (finalStatus === 'failed') await recordRelayResult(env.DB, row.order_id, 'failed', null, errorText);
+  if (Number(updated?.meta?.changes || 0) === 1) {
+    if (finalStatus === 'failed') await recordRelayResult(env.DB, row.order_id, 'failed', null, errorText);
+    await notifyErpSyncAttention(env, row, {
+      state: 'rejected', error: errorText || 'relay_failed', seq: attempts, attempts, final: finalStatus === 'failed',
+    });
+  }
   return json({ ok: true, id, status: finalStatus, attempts });
 }
 

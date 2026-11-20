@@ -237,3 +237,112 @@ test('an admin retry resets an unknown row for one fresh transmission', async ()
   assert.equal((await rowFor(env, orderId)).status, 'pending');
   assert.equal((await call(env, 'GET', '/api/erp/outbox', undefined, RELAY_HEADERS)).json.items.length, 1);
 });
+
+function notifyRelayEnv() {
+  return relayEnv({
+    MAIL_MODE: 'resend',
+    B66_ALERT_RESEND_API_KEY: 're_fake_key_for_tests',
+    ORDER_NOTIFY_TO: 'ops@example.com',
+    ORDER_NOTIFY_TELEGRAM_CHAT_IDS: '111',
+    TELEGRAM_BOT_TOKEN: 'fake-token-for-tests',
+  });
+}
+
+async function withCapturedFetch(fn) {
+  const calls = [];
+  const original = globalThis.fetch;
+  globalThis.fetch = async (url, init = {}) => {
+    calls.push({ url: String(url), body: JSON.parse(init.body || '{}') });
+    return { ok: true, status: 200, async text() { return '{}'; }, async json() { return {}; } };
+  };
+  try { await fn(); } finally { globalThis.fetch = original; }
+  return calls;
+}
+
+const attention = (calls) => calls.filter((c) => /이카운트/.test(JSON.stringify(c.body)));
+
+test('a pending result releases the claim without using an attempt', async () => {
+  const env = relayEnv();
+  await mapProduct(env, PRODUCT_A, 'EC-A001');
+  const { orderId } = await pay(env, 'pk_relay_pending');
+  const id = (await call(env, 'GET', '/api/erp/outbox', undefined, RELAY_HEADERS)).json.items[0].id;
+  assert.equal((await call(env, 'GET', '/api/erp/outbox', undefined, RELAY_HEADERS)).json.items.length, 0, 'claimed');
+  const res = await call(env, 'POST', `/api/erp/outbox/${id}/result`, {
+    ok: false, pending: true, error: 'rate_limited: server request limit exceeded',
+  }, RELAY_HEADERS);
+  assert.equal(res.status, 200);
+  assert.equal(res.json.status, 'pending');
+  const row = await rowFor(env, orderId);
+  assert.equal(row.status, 'pending');
+  assert.equal(row.attempts, 0);
+  assert.match(row.last_error, /rate_limited/);
+  assert.equal((await call(env, 'GET', '/api/erp/outbox', undefined, RELAY_HEADERS)).json.items.length, 1, 'claimable again');
+});
+
+test('an unknown result alerts ops by mail and telegram once, and is not re-claimed', async () => {
+  const env = notifyRelayEnv();
+  await mapProduct(env, PRODUCT_A, 'EC-A001');
+  const { orderId } = await pay(env, 'pk_relay_alert_unknown');
+  const id = (await call(env, 'GET', '/api/erp/outbox', undefined, RELAY_HEADERS)).json.items[0].id;
+  const calls = await withCapturedFetch(async () => {
+    await call(env, 'POST', `/api/erp/outbox/${id}/result`, { ok: false, unknown: true, error: 'relay_error: fetch failed' }, RELAY_HEADERS);
+    await call(env, 'POST', `/api/erp/outbox/${id}/result`, { ok: false, unknown: true, error: 'relay_error: fetch failed' }, RELAY_HEADERS);
+  });
+  const sent = attention(calls);
+  assert.equal(sent.filter((c) => c.url.startsWith('https://api.telegram.org/')).length, 1);
+  assert.equal(sent.filter((c) => c.url.includes('api.resend.com')).length, 1);
+  const text = JSON.stringify(sent);
+  assert.match(text, new RegExp(orderId));
+  assert.match(text, /UNKNOWN/);
+  assert.match(text, /판매조회/);
+  assert.equal(text.includes(TOKEN), false);
+  const outbox = await env.DB.prepare("SELECT * FROM ops_notify_outbox WHERE event = 'erp_sync_attention'").all();
+  assert.equal(outbox.results.length, 1);
+  assert.equal((await call(env, 'GET', '/api/erp/outbox', undefined, RELAY_HEADERS)).json.items.length, 0);
+});
+
+test('each rejection alerts ops and the last one says retries stopped', async () => {
+  const env = notifyRelayEnv();
+  await mapProduct(env, PRODUCT_A, 'EC-A001');
+  const { orderId } = await pay(env, 'pk_relay_alert_reject');
+  const calls = await withCapturedFetch(async () => {
+    for (let i = 0; i < 3; i += 1) {
+      const item = (await call(env, 'GET', '/api/erp/outbox', undefined, RELAY_HEADERS)).json.items[0];
+      await call(env, 'POST', `/api/erp/outbox/${item.id}/result`, { ok: false, error: 'api_error: E001 bad customer' }, RELAY_HEADERS);
+    }
+  });
+  const telegrams = attention(calls).filter((c) => c.url.startsWith('https://api.telegram.org/'));
+  assert.equal(telegrams.length, 3);
+  const mails = attention(calls).filter((c) => c.url.includes('api.resend.com'));
+  assert.match(JSON.stringify(mails.at(-1).body), /자동 재시도 종료/);
+  assert.equal((await rowFor(env, orderId)).status, 'failed');
+});
+
+test('a pending result and a success never alert', async () => {
+  const env = notifyRelayEnv();
+  await mapProduct(env, PRODUCT_A, 'EC-A001');
+  await pay(env, 'pk_relay_alert_none');
+  const calls = await withCapturedFetch(async () => {
+    let item = (await call(env, 'GET', '/api/erp/outbox', undefined, RELAY_HEADERS)).json.items[0];
+    await call(env, 'POST', `/api/erp/outbox/${item.id}/result`, { ok: false, pending: true, error: 'rate_limited' }, RELAY_HEADERS);
+    item = (await call(env, 'GET', '/api/erp/outbox', undefined, RELAY_HEADERS)).json.items[0];
+    await call(env, 'POST', `/api/erp/outbox/${item.id}/result`, { ok: true, slipNo: 'SLIP-OK' }, RELAY_HEADERS);
+  });
+  assert.equal(attention(calls).length, 0);
+});
+
+test('an admin retry of an unknown row raises retry_gen so the relay ledger allows exactly one resend', async () => {
+  const env = relayEnv();
+  await mapProduct(env, PRODUCT_A, 'EC-A001');
+  const { orderId } = await pay(env, 'pk_relay_gen');
+  const first = (await call(env, 'GET', '/api/erp/outbox', undefined, RELAY_HEADERS)).json.items[0];
+  assert.equal(first.retry_gen, 0);
+  await call(env, 'POST', `/api/erp/outbox/${first.id}/result`, { ok: false, unknown: true, error: 'lost' }, RELAY_HEADERS);
+  await call(env, 'POST', `/api/orders/${orderId}/erp/retry`, {}, { Authorization: 'Bearer example-admin-token' });
+  const second = (await call(env, 'GET', '/api/erp/outbox', undefined, RELAY_HEADERS)).json.items[0];
+  assert.equal(second.retry_gen, 1);
+  assert.equal(second.dedupe_key, first.dedupe_key, 'the ERP dedupe key itself never changes');
+  // a plain re-enqueue (payment confirm replay) does not bump the generation
+  await call(env, 'POST', `/api/erp/outbox/${second.id}/result`, { ok: false, pending: true, error: 'rate_limited' }, RELAY_HEADERS);
+  assert.equal((await call(env, 'GET', '/api/erp/outbox', undefined, RELAY_HEADERS)).json.items[0].retry_gen, 1);
+});
