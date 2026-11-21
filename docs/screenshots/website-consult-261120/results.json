@@ -1,0 +1,195 @@
+[
+ {
+  "overflowX": 0,
+  "over": [],
+  "heroConsult": "#consult",
+  "ctaConsult": "#consult",
+  "quoteCartLinks": 0,
+  "hours": [
+   "평일 09:00~18:00",
+   "평일 09:00~18:00"
+  ],
+  "emails": [
+   "mailto:cgiinc@naver.com",
+   "mailto:cgiinc@naver.com",
+   "mailto:cgiinc@naver.com"
+  ],
+  "publicGroups": [
+   [
+    "지자체 · 의회",
+    [
+     "영암군청",
+     "영광군청",
+     "곡성군청",
+     "광주광역시 광산구청",
+     "광주광역시 시의회"
+    ]
+   ],
+   [
+    "교육청 · 교육기관",
+    [
+     "광주시교육청 · 전라남도교육청 교육연구정보원",
+     "광주광역시교육청",
+     "전라남도교육연구정보원",
+     "전라남도교육정보원",
+     "전라남도 창의융합교육원"
+    ]
+   ],
+   [
+    "공공기관",
+    [
+     "한국농어촌공사",
+     "국립아시아문화전당",
+     "한전 KDN",
+     "고흥우체국",
+     "한국농어촌공사인재개발원"
+    ]
+   ]
+  ],
+  "recYears": 9,
+  "recRows": 50,
+  "recHead": [
+   "발주처",
+   "내용"
+  ],
+  "headerHeight": 64,
+  "navWraps": 7,
+  "width": 390,
+  "consoleErrors": [],
+  "httpErrors": [],
+  "afterHeroClick": {
+   "hash": "#consult",
+   "consultTop": 90
+  },
+  "afterTabs": {
+   "overflowX": 0,
+   "over": []
+  }
+ },
+ {
+  "overflowX": 0,
+  "over": [],
+  "heroConsult": "#consult",
+  "ctaConsult": "#consult",
+  "quoteCartLinks": 0,
+  "hours": [
+   "평일 09:00~18:00",
+   "평일 09:00~18:00"
+  ],
+  "emails": [
+   "mailto:cgiinc@naver.com",
+   "mailto:cgiinc@naver.com",
+   "mailto:cgiinc@naver.com"
+  ],
+  "publicGroups": [
+   [
+    "지자체 · 의회",
+    [
+     "영암군청",
+     "영광군청",
+     "곡성군청",
+     "광주광역시 광산구청",
+     "광주광역시 시의회"
+    ]
+   ],
+   [
+    "교육청 · 교육기관",
+    [
+     "광주시교육청 · 전라남도교육청 교육연구정보원",
+     "광주광역시교육청",
+     "전라남도교육연구정보원",
+     "전라남도교육정보원",
+     "전라남도 창의융합교육원"
+    ]
+   ],
+   [
+    "공공기관",
+    [
+     "한국농어촌공사",
+     "국립아시아문화전당",
+     "한전 KDN",
+     "고흥우체국",
+     "한국농어촌공사인재개발원"
+    ]
+   ]
+  ],
+  "recYears": 9,
+  "recRows": 50,
+  "recHead": [
+   "발주처",
+   "내용"
+  ],
+  "headerHeight": 77.9375,
+  "navWraps": 2,
+  "width": 1000,
+  "consoleErrors": [],
+  "httpErrors": []
+ },
+ {
+  "overflowX": 0,
+  "over": [],
+  "heroConsult": "#consult",
+  "ctaConsult": "#consult",
+  "quoteCartLinks": 0,
+  "hours": [
+   "평일 09:00~18:00",
+   "평일 09:00~18:00"
+  ],
+  "emails": [
+   "mailto:cgiinc@naver.com",
+   "mailto:cgiinc@naver.com",
+   "mailto:cgiinc@naver.com"
+  ],
+  "publicGroups": [
+   [
+    "지자체 · 의회",
+    [
+     "영암군청",
+     "영광군청",
+     "곡성군청",
+     "광주광역시 광산구청",
+     "광주광역시 시의회"
+    ]
+   ],
+   [
+    "교육청 · 교육기관",
+    [
+     "광주시교육청 · 전라남도교육청 교육연구정보원",
+     "광주광역시교육청",
+     "전라남도교육연구정보원",
+     "전라남도교육정보원",
+     "전라남도 창의융합교육원"
+    ]
+   ],
+   [
+    "공공기관",
+    [
+     "한국농어촌공사",
+     "국립아시아문화전당",
+     "한전 KDN",
+     "고흥우체국",
+     "한국농어촌공사인재개발원"
+    ]
+   ]
+  ],
+  "recYears": 9,
+  "recRows": 50,
+  "recHead": [
+   "발주처",
+   "내용"
+  ],
+  "headerHeight": 79.640625,
+  "navWraps": 2,
+  "width": 1440,
+  "consoleErrors": [],
+  "httpErrors": [],
+  "afterHeroClick": {
+   "hash": "#consult",
+   "consultTop": 90
+  },
+  "afterTabs": {
+   "overflowX": 0,
+   "over": []
+  }
+ }
+]

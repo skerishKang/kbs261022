@@ -7,6 +7,9 @@
  *  3) 취급 브랜드 목록 렌더링 → 클릭 시 쇼핑몰 브랜드 필터로 이동
  *  4) 쇼핑몰 링크 일괄 적용 (config.js 의 mallUrl 고정 — URL 파라미터로 덮어쓰지 않음)
  *  5) REFERENCE 탭 전환 (INSTALL / RENTAL)
+ *  6) 공사·설치 상담: 상담 시간(config.js consultHours)·이메일(company.js)을 한 곳에서 채운다
+ *  7) 대표 사례 앞의 '관공서·공공기관' 묶음 — company.js 실적·유지보수에서 고르기만 한다(새 실적 없음)
+ *  8) 납품·설치 실적을 연도별 '발주처 / 내용' 표로
  */
 (function () {
   'use strict';
@@ -43,13 +46,18 @@
     });
   }
 
-  function applyQuoteLinks() {
-    var url = mallBase().replace(/#.*$/, '') + '#/quote-cart';
-    $$('[data-quote-link]').forEach(function (a) {
-      a.setAttribute('href', url);
-      a.setAttribute('target', '_blank');
-      a.setAttribute('rel', 'noopener');
-    });
+  /* 공사·설치 상담: 상담 시간은 config.js, 이메일은 company.js 단일 출처에서 채운다.
+     HTML 에도 같은 글자가 기본값으로 있어 스크립트가 꺼져도 보인다. */
+  function applyConsult() {
+    var hours = String(CFG.consultHours || '').trim();
+    if (hours) { $$('[data-consult-hours]').forEach(function (n) { n.textContent = hours; }); }
+    var email = CO && CO.legal && CO.legal.privacyOfficer ? String(CO.legal.privacyOfficer.email || '') : '';
+    if (email) {
+      $$('a[data-company-email]').forEach(function (a) {
+        a.setAttribute('href', 'mailto:' + email);
+        if (/@/.test(a.textContent)) { a.textContent = email; }
+      });
+    }
   }
 
   /* ------------------------------------------------------ 브랜드 목록 */
@@ -225,7 +233,7 @@
   /* ------------------------------------------------------ 헤더 상태 */
   function initScrollSpy() {
     var head = $('.site-head');
-    var sections = ['about', 'business', 'products', 'reference', 'support'];
+    var sections = ['about', 'business', 'products', 'reference', 'support', 'consult'];
     var links = $$('.primary-nav a[href^="#"]');
     if (!head) { return; }
 
@@ -271,6 +279,58 @@
 
   /* ══════════════════════════════════ 2025년 지명원 회사정보 렌더링 */
   var CO = window.CGI_COMPANY || null;
+
+  /* 관공서·공공기관 묶음: 발주처 이름으로 고른다. 지자체·의회 → 교육청·교육기관 → 공공기관 순. */
+  var PUBLIC_GROUPS = [
+    { key: 'gov', label: '지자체 · 의회', re: /(군청|시청|구청|도청|시의회|행정복지센터)/ },
+    { key: 'edu', label: '교육청 · 교육기관', re: /(교육청|교육연구정보원|교육정보원|교육원)/ },
+    { key: 'pub', label: '공공기관', re: /(한국농어촌공사|한전\s?KDN|우체국|국립|진흥원|상무대)/ }
+  ];
+
+  /** 실적 한 줄 '발주처 — 내용' 을 나눈다. 구분자가 없으면 내용만. */
+  function splitRecord(text) {
+    var s = String(text || '');
+    var i = s.indexOf(' — ');
+    return i < 0 ? { client: '', work: s } : { client: s.slice(0, i), work: s.slice(i + 3) };
+  }
+
+  function publicGroupOf(client) {
+    for (var i = 0; i < PUBLIC_GROUPS.length; i++) { if (PUBLIC_GROUPS[i].re.test(client)) { return PUBLIC_GROUPS[i]; } }
+    return null;
+  }
+
+  /** company.js 의 실적(records)·유지보수(maintenanceCases) 중 관공서·공공기관만 발주처별로 묶는다.
+   *  글자는 데이터 그대로이며 순서·묶음만 바꾼다. */
+  function publicSectorCases(co) {
+    var byClient = {};
+    var order = [];
+    function add(client, entry) {
+      var group = publicGroupOf(client);
+      if (!group) { return; }
+      var key = client.replace(/\s+/g, '');
+      if (!byClient[key]) { byClient[key] = { client: client, group: group.key, groupLabel: group.label, items: [] }; order.push(key); }
+      byClient[key].items.push(entry);
+    }
+    (co.records || []).forEach(function (row) {
+      row.samples.forEach(function (sample) {
+        var r = splitRecord(sample);
+        if (r.client) { add(r.client, { kind: 'record', year: row.year, work: r.work, source: sample }); }
+      });
+    });
+    (co.maintenanceCases || []).forEach(function (m) {
+      add(m.place, { kind: 'maintenance', year: m.period, work: m.scope, source: m.place });
+    });
+    var rank = {};
+    PUBLIC_GROUPS.forEach(function (g, i) { rank[g.key] = i; });
+    // 묶음 순서 → 실적이 많은 발주처 → 데이터 순서(최근 연도 먼저)
+    return order.map(function (k, i) { return { idx: i, c: byClient[k] }; })
+      .sort(function (a, b) {
+        return (rank[a.c.group] - rank[b.c.group]) || (b.c.items.length - a.c.items.length) || (a.idx - b.idx);
+      })
+      .map(function (x) { return x.c; });
+  }
+
+  window.CGI_HOME = { splitRecord: splitRecord, publicSectorCases: publicSectorCases, PUBLIC_GROUPS: PUBLIC_GROUPS };
 
   function el(tag, cls, text) {
     var n = document.createElement(tag);
@@ -466,18 +526,86 @@
     });
   }
 
+  var PUBLIC_VISIBLE = 5; // 묶음마다 처음 보이는 발주처 수
+
+  function publicCard(c) {
+    var li = el('li', 'pub-card pub-' + c.group);
+    var head = el('div', 'pub-head');
+    head.appendChild(el('strong', 'pub-client', c.client));
+    head.appendChild(el('span', 'pub-count', c.items.length > 1 ? c.items.length + '건' : ''));
+    li.appendChild(head);
+    var ul = el('ul', 'pub-items');
+    c.items.forEach(function (it) {
+      var row = el('li', it.kind === 'maintenance' ? 'pub-maint' : null);
+      row.appendChild(el('span', 'pub-year', it.kind === 'maintenance' ? '유지보수 · ' + it.year : it.year));
+      row.appendChild(el('span', 'pub-work', it.work));
+      ul.appendChild(row);
+    });
+    li.appendChild(ul);
+    return li;
+  }
+
+  function renderPublicRefs() {
+    var host = document.getElementById('publicRefGrid');
+    if (!host) { return; }
+    host.innerHTML = '';
+    var cases = publicSectorCases(CO);
+    var grid = el('div', 'pub-groups');
+    PUBLIC_GROUPS.forEach(function (g) {
+      var rows = cases.filter(function (c) { return c.group === g.key; });
+      if (!rows.length) { return; }
+      var box = el('section', 'pub-group-box');
+      box.appendChild(el('h4', 'pub-group-name', g.label));
+      var first = el('ul', 'pub-cards');
+      var rest = el('ul', 'pub-cards');
+      rows.forEach(function (c, i) { (i < PUBLIC_VISIBLE ? first : rest).appendChild(publicCard(c)); });
+      box.appendChild(first);
+      if (rows.length > PUBLIC_VISIBLE) {
+        var more = el('details', 'pub-more');
+        more.appendChild(el('summary', null, g.label + ' 더 보기 (' + (rows.length - PUBLIC_VISIBLE) + ')'));
+        more.appendChild(rest);
+        box.appendChild(more);
+      }
+      grid.appendChild(box);
+    });
+    host.appendChild(grid);
+  }
+
   function renderRecords() {
     var host = document.getElementById('recordList');
     if (!host) { return; }
     host.innerHTML = '';
-    CO.records.forEach(function (row) {
+    CO.records.forEach(function (row, index) {
       var det = el('details', 'rec-year');
       var sum = el('summary');
       sum.appendChild(el('span', 'rec-badge', row.year));
       det.appendChild(sum);
-      var ul = el('ul', 'rec-samples');
-      row.samples.forEach(function (s) { ul.appendChild(el('li', null, s)); });
-      det.appendChild(ul);
+      var table = el('table', 'rec-table');
+      table.appendChild(el('caption', 'sr-only', row.year + ' 납품·설치 실적'));
+      var colgroup = el('colgroup');
+      colgroup.appendChild(el('col', 'rec-col-client'));
+      colgroup.appendChild(el('col', 'rec-col-work'));
+      table.appendChild(colgroup);
+      var thead = el('thead');
+      var hr = el('tr');
+      ['발주처', '내용'].forEach(function (t) { var th = el('th', null, t); th.setAttribute('scope', 'col'); hr.appendChild(th); });
+      thead.appendChild(hr);
+      table.appendChild(thead);
+      var tbody = el('tbody');
+      row.samples.forEach(function (s) {
+        var r = splitRecord(s);
+        var tr = el('tr');
+        var th = el('th', 'rec-client', r.client || '—');
+        th.setAttribute('scope', 'row');
+        tr.appendChild(th);
+        tr.appendChild(el('td', 'rec-work', r.work));
+        tbody.appendChild(tr);
+      });
+      table.appendChild(tbody);
+      var wrap = el('div', 'rec-table-wrap');
+      wrap.appendChild(table);
+      det.appendChild(wrap);
+      det.open = index === 0; // 가장 최근 연도만 펼쳐 둔다
       host.appendChild(det);
     });
   }
@@ -516,6 +644,7 @@
     renderKeywords();
     renderBusiness();
     renderAgencies();
+    renderPublicRefs();
     renderReferences();
     renderRecords();
     renderMaintenance();
@@ -545,7 +674,7 @@
   /* ------------------------------------------------------ 시작 */
   function boot() {
     applyMallLinks();
-    applyQuoteLinks();
+    applyConsult();
     loadMasterBrands();
     renderCompany();
     initPhotoGridFallbacks();

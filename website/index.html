@@ -15,7 +15,7 @@
 <meta property="og:site_name" content="(주)시지아이 CGI">
 <link rel="canonical" href="https://cgishop.pages.dev/website/">
 <link rel="icon" type="image/png" href="assets/img/cgi-mark-green.png">
-<link rel="stylesheet" href="assets/style.css?v=106a">
+<link rel="stylesheet" href="assets/style.css?v=107a">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -69,6 +69,7 @@
           <li><a href="#products">PRODUCTS</a></li>
           <li><a href="#reference">REFERENCE</a></li>
           <li><a href="#support">SUPPORT</a></li>
+          <li class="nav-consult"><a href="#consult">공사·설치 상담</a></li>
           <li class="nav-cta"><a href="../site/index.html" id="mallLinkTop" data-mall-link>제품 보기 <span aria-hidden="true">→</span></a></li>
         </ul>
       </nav>
@@ -95,7 +96,7 @@
       </p>
       <div class="hero-actions">
         <a class="btn btn-primary" href="../site/index.html" id="mallLinkHero" data-mall-link>제품 보기 (쇼핑몰) <span aria-hidden="true">→</span></a>
-        <a class="btn btn-primary" href="../site/index.html#/quote-cart" data-quote-link>견적·상담 문의</a>
+        <a class="btn btn-primary" href="#consult" data-consult-link>공사·설치 상담 문의</a>
         <a class="btn btn-ghost" href="#products">취급 브랜드 보기</a>
       </div>
     </div>
@@ -317,9 +318,15 @@
 
       <div class="ref-panel" id="panelInstall" role="tabpanel" aria-labelledby="tabInstall">
         <p class="lead">
-          교회 · 공연장 · 방송국 · 전시공간에 음향·영상·조명·LED 시스템을 설계·시공했습니다.
-          아래는 대표 시공 사례와 설치 사양입니다.
+          관공서·공공기관 · 교회 · 공연장 · 방송국 · 전시공간에 음향·영상·조명·LED 시스템을 설계·시공했습니다.
+          아래는 대표 사례와 설치 사양입니다.
         </p>
+        <div class="panel public-refs" id="publicRefs">
+          <h3>관공서 · 공공기관 <span class="en">PUBLIC SECTOR</span></h3>
+          <p class="public-refs-lead">지자체·의회, 교육청·교육기관, 공공기관에서 맡은 설치·유지보수입니다. 발주처별로 묶었습니다.</p>
+          <div id="publicRefGrid"><!-- JS 로 주입 (company.js records · maintenanceCases 중 관공서·공공기관) --></div>
+          <noscript><p class="note">관공서·공공기관 실적은 아래 ‘RECORDS 납품·설치 실적’과 ‘SERVICE 유지보수’에서도 볼 수 있습니다.</p></noscript>
+        </div>
       <details class="content-disclosure ref-disclosure" id="refDisclosure" open>
         <summary><h3>시공 사례 <span class="en">REFERENCES</span></h3><span class="disclosure-hint">사례 전체 보기</span></summary>
         <div id="refGrid"><!-- JS 로 주입 (company.js references) --></div>
@@ -355,7 +362,7 @@
 
       <div class="ref-panel" id="panelRecords" role="tabpanel" aria-labelledby="tabRecords" hidden>
         <p class="lead">
-          2009년부터 2025년까지 납품·설치공사 실적입니다.
+          2009년부터 2025년까지 납품·설치공사 실적입니다. 연도를 누르면 발주처와 내용을 표로 볼 수 있습니다.
         </p>
         <div id="recordList"><!-- JS 로 주입 (company.js records) --></div>
       </div>
@@ -380,8 +387,39 @@
       <header class="sec-head">
         <span class="sec-no">05</span>
         <h2>SUPPORT</h2>
-        <p class="sec-sub">문의 · FAQ · Q&amp;A</p>
+        <p class="sec-sub">공사·설치 상담 · 문의 · FAQ</p>
       </header>
+
+      <!-- 공사·설치 상담: 폼 없이 전화·이메일로. 장비 구매는 쇼핑몰, 홈페이지 불편 신고는 '의견 보내기'(따로) -->
+      <div class="panel consult" id="consult">
+        <h3>공사·설치 상담 <span class="en">CONSULTING</span></h3>
+        <p class="consult-lead">
+          학교·관공서·교회·공연장의 방송·음향·영상·LED·조명·CCTV 공사와 설치는 전화나 이메일로 상담해 드립니다.
+          장비만 구매하실 때는 아래 ‘장비 구매’ 버튼으로 쇼핑몰을 이용해 주세요.
+        </p>
+        <div class="consult-grid">
+          <ul class="contact-list consult-contact" data-cgi-consult>
+            <li><span class="k">전화</span><span class="v"><a href="tel:0625768100">062) 576-8100</a> &nbsp;·&nbsp; <a href="tel:0618018100">061) 801-8100</a></span></li>
+            <li><span class="k">이메일</span><span class="v"><a href="mailto:cgiinc@naver.com" data-company-email>cgiinc@naver.com</a></span></li>
+            <li><span class="k">상담 시간</span><span class="v" data-consult-hours>평일 09:00~18:00</span></li>
+          </ul>
+          <div class="consult-prep">
+            <h4>상담 때 알려 주시면 좋은 정보</h4>
+            <ul>
+              <li><strong>장소</strong><span>시설 종류(강당·회의실·예배당·공연장 등)와 주소</span></li>
+              <li><strong>규모</strong><span>면적·좌석 수·층수 등 대략의 크기</span></li>
+              <li><strong>일정</strong><span>희망 공사 시기, 행사·개관 날짜</span></li>
+              <li><strong>예산</strong><span>대략의 범위(정해지지 않았으면 비워 두셔도 됩니다)</span></li>
+            </ul>
+            <p class="note">도면이나 현장 사진이 있으면 이메일로 함께 보내 주시면 상담이 빨라집니다.</p>
+          </div>
+        </div>
+        <div class="consult-actions">
+          <a class="btn btn-primary" href="tel:0625768100">전화 상담 062) 576-8100</a>
+          <a class="btn btn-outline" href="mailto:cgiinc@naver.com" data-company-email>이메일로 상담 요청</a>
+          <a class="btn btn-outline btn-mall" href="../site/index.html" data-mall-link>장비 구매 — CGI 상품 쇼핑몰 <span aria-hidden="true">→</span></a>
+        </div>
+      </div>
 
       <div class="grid-2 support-grid">
         <div class="panel">
@@ -389,13 +427,15 @@
           <ul class="contact-list" data-cgi-contact>
             <li><span class="k">TEL</span><span class="v"><a href="tel:0625768100">062) 576-8100</a> &nbsp;·&nbsp; <a href="tel:0618018100">061) 801-8100</a></span></li>
             <li><span class="k">FAX</span><span class="v">062) 576-8181</span></li>
+            <li><span class="k">이메일</span><span class="v"><a href="mailto:cgiinc@naver.com" data-company-email>cgiinc@naver.com</a></span></li>
+            <li><span class="k">상담 시간</span><span class="v" data-consult-hours>평일 09:00~18:00</span></li>
             <li><span class="k">본사</span><span class="v">[57248] 전라남도 장성군 남면 나노산단로 102 (삼태리)</span></li>
             <li><span class="k">블로그</span><span class="v"><a href="https://blog.naver.com/cgiinc" target="_blank" rel="noopener">blog.naver.com/cgiinc</a></span></li>
             <li><span class="k">의견</span><span class="v"><a href="../site/feedback.html" data-feedback-link>의견 보내기</a> — 홈페이지·쇼핑몰을 쓰며 불편했던 점이나 바라는 점</span></li>
           </ul>
           <p class="note">
-            견적·시공·렌탈 문의는 위 연락처로 접수 받고 있습니다. CGI 상품 쇼핑몰에서 회원 가입 후
-            견적 요청과 주문을 이용하실 수 있습니다.
+            견적·시공·렌탈 문의는 위 연락처로 접수 받고 있습니다(<a href="#consult" data-consult-link>공사·설치 상담 안내</a>).
+            장비는 CGI 상품 쇼핑몰에서 회원 가입 후 견적 요청과 주문을 이용하실 수 있습니다.
           </p>
         </div>
 
@@ -431,7 +471,7 @@
       </div>
       <div class="cta-actions">
         <a class="btn btn-light" href="../site/index.html" id="mallLinkCta" data-mall-link>제품 보기 <span aria-hidden="true">→</span></a>
-        <a class="btn btn-light" href="../site/index.html#/quote-cart" data-quote-link>견적·상담 문의 <span aria-hidden="true">→</span></a>
+        <a class="btn btn-light" href="#consult" data-consult-link>공사·설치 상담 <span aria-hidden="true">→</span></a>
       </div>
     </div>
   </section>
@@ -472,8 +512,8 @@
   </div>
 </footer>
 
-<script src="assets/config.js?v=104a"></script>
+<script src="assets/config.js?v=105a"></script>
 <script src="assets/company.js?v=104a"></script>
-<script src="assets/main.js?v=104a"></script>
+<script src="assets/main.js?v=105a"></script>
 </body>
 </html>
