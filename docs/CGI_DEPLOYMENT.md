@@ -63,6 +63,7 @@ wrangler d1 execute cgi_quotes_sandbox --remote --file=migrations/0011_member_co
 - `wrangler d1 execute`는 파일 단위로 실행된다. 이미 적용된 migration을 다시 실행하면
   `duplicate column`으로 실패하므로, 새 파일만 적용한다.
 - 결과 확인 시 이메일·전화번호 등 개인정보를 출력하지 않는다(건수만 확인).
+- 운영 D1 마이그레이션은 반드시 `wrangler d1 migrations apply --remote` 로만 적용(직접 execute 금지).
 
 #### 샌드박스 D1 재구성 (손으로 칸을 더한 DB를 버릴 때)
 
