@@ -164,7 +164,8 @@ def has_identifier(master) -> bool:
     if model_of_master(master):
         return True
     b = norm(master["cgi_brand"])
-    return bool(b) and b not in {"nnnn", "기타", "none", "null"}
+    # "nnnn" 은 빈 값이 아니라 노르웨이 스피커 제조사 NNNN 의 실제 브랜드 이름이다.
+    return bool(b) and b not in {"기타", "none", "null"}
 
 
 def build_mapping(masters, erps, naver_ids=None):

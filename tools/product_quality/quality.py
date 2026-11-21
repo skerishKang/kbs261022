@@ -37,7 +37,7 @@ PLACEHOLDERS: frozenset[str] = frozenset(
         "미정",
         "unknown",
         "n/a",
-        "nnnn",
+        # "nnnn" 은 빈 값이 아니다 — 노르웨이 스피커 제조사 NNNN(NNNN AS)의 실제 브랜드 이름.
         "자체브랜드",
         "자체제작",
         "기타",

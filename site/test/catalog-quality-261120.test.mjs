@@ -49,7 +49,7 @@ test('남은 상품의 id·가격·이름·사진은 원본(products.json)과 �
   }
   assert.equal(checked, 4002);
   // 서버 결제 가격표도 원본 공개 가격과 같다
-  const idx = read('backend/data/price_index.mjs').match(/export const PRICE_INDEX = (\{.*?\});\n/s);
+  const idx = read('backend/data/price_index.mjs').match(/export const PRICE_INDEX = (\{.*?\});\r?\n/s);
   const PRICE_INDEX = JSON.parse(idx[1]);
   for (const p of products) {
     if (p.price && p.price.state === 'public' && typeof p.price.value === 'number') {

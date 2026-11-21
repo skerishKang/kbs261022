@@ -1,4 +1,55 @@
+# 줄바꿈: 텍스트 파일은 어느 OS 에서 받아도 LF 로 둔다.
+# Windows 의 core.autocrlf=true 사본에서 시험이 \n 기준 정규식·바이트 비교로 실패하던 것을 막는다.
+* text=auto eol=lf
+
+# 바이너리는 줄바꿈 변환을 하지 않는다.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.ico binary
+*.pdf binary
+*.xlsx binary
+*.xls binary
+*.docx binary
+*.hwp binary
+*.hwpx binary
+*.zip binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.otf binary
+*.mp3 binary
+*.mp4 binary
+*.wav binary
+*.sqlite binary
+*.db binary
+
 # 데이터·증거 파일은 도구가 계산한 바이트와 항상 일치해야 한다.
 # (EOL 변환으로 sha256 핀이 플랫폼마다 달라지는 것을 막는다)
 data/** -text
 reports/** -text
+
+# 저장소에 CRLF·혼합 줄바꿈으로 들어 있는 파일은 바이트를 그대로 둔다
+# (내용·해시를 바꾸지 않고, 다른 작업 브랜치와 줄바꿈 충돌을 만들지 않기 위해).
+backend/lib/auth.mjs -text
+backend/lib/change-detect.mjs -text
+backend/lib/erp-duplicate-match.mjs -text
+backend/lib/erp.mjs -text
+backend/lib/sync-engine.mjs -text
+backend/lib/sync-state.mjs -text
+backend/test/unit/auth.test.mjs -text
+backend/test/unit/change-detect.test.mjs -text
+backend/test/unit/erp-duplicate-match.test.mjs -text
+backend/test/unit/sync-engine.test.mjs -text
+backend/test/unit/sync-state.test.mjs -text
+bid/assets/data/bid-data.js -text
+bid/assets/data/rate-stats.js -text
+site/data/paytest.js -text
+site/data/products.js -text
+site/test/cgi-flow-209.test.mjs -text
+tools/catalog_collection/README.md -text
+tools/catalog_collection/collect_full_catalog.py -text
+tools/catalog_collection/verify_browser.py -text
+tools/procurement/fixtures/cgi_tier_gold.json -text

@@ -13,7 +13,8 @@ import vm from 'node:vm';
 import { splitTax as backendSplitTax, computeTotals } from '../../backend/lib/pricing.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
-const read = (rel) => readFileSync(join(HERE, '..', rel), 'utf8');
+// CRLF 로 받은 사본에서도 \n 기준 정규식이 맞도록 줄바꿈을 LF 로 맞춰 읽는다.
+const read = (rel) => readFileSync(join(HERE, '..', rel), 'utf8').replace(/\r\n/g, '\n');
 const QP_SRC = read('assets/js/cgi-quote-print.js');
 const COMPANY_SRC = readFileSync(join(HERE, '..', '..', 'website', 'assets', 'company.js'), 'utf8');
 
